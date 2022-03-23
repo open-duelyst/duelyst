@@ -1,1 +1,1 @@
-# duelyst
+# OPEN DUELYST
