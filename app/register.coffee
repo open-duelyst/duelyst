@@ -61,7 +61,8 @@ UtilityGameMenuItemView = require 'app/ui/views/item/utility_game_menu'
 EscGameMenuItemView = require 'app/ui/views/item/esc_game_menu'
 EscMainMenuItemView = require 'app/ui/views/item/esc_main_menu'
 
-LoginMenuItemView = require 'app/ui/views2/bnea/bnea_login_menu'
+# LoginMenuItemView = require 'app/ui/views2/bnea/bnea_login_menu'
+LoginMenuItemView = require 'app/ui/views/item/login_menu'
 
 if process.env.BNEA_ENABLED
 	BneaWelcomeItemView = require 'app/ui/views2/bnea/bnea_welcome'
@@ -115,9 +116,9 @@ App.main = ->
 
 			if !window.sessionStorage.getItem(Storage.namespace() + '.hasAcceptedEula')
 				return App._showBneaTerms()
-			else 
+			else
 				return App._showLoginMenu()
-			
+
 			# # get and reset last game data
 			# lastGameType = CONFIG.lastGameType
 			# wasSpectate = CONFIG.lastGameWasSpectate
@@ -387,7 +388,7 @@ App.onLogin = (data) ->
 	Storage.set('bneaToken', data.bneaToken)
 	Storage.set('bneaRefresh', data.bneaRefresh)
 	Storage.set('bneaLinked', true)
-	
+
 
 	# setup ajax headers for jquery/backbone requests
 	$.ajaxSetup
@@ -395,7 +396,7 @@ App.onLogin = (data) ->
 			Authorization: "Bearer #{data.token}"
 			"Client-Version": window.BUILD_VERSION
 		}
-	
+
 	# this is neccesary to include here to track their first login
 	# application.coffee will be the second login in a redirect flow
 	# region analytics data

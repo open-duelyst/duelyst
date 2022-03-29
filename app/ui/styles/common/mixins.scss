@@ -46,7 +46,7 @@
 
 	// image at all resource scales
 	@each $resourceScale in $resourceScales {
-		$escapedScale: str-replace(quote($resourceScale), ".", "\\.");
+		$escapedScale: str-replace(#{$resourceScale}, ".", "\\.");
 		@at-root .resource-scale-#{$escapedScale} {
 			#{$this} {
 				background-image: url(str-insert($unquotedPath, #{"@" + $resourceScale + "x"}, $extIndex)) + $appendValue;

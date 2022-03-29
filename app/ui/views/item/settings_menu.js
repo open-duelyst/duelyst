@@ -25,7 +25,7 @@ var ProfileManager = require("app/ui/managers/profile_manager");
 var moment = require('moment')
 var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
 var openUrl = require('app/common/openUrl');
-var BneaKongregateConvertModalView = require('app/ui/views2/bnea/bnea_kongregate_convert');
+// var BneaKongregateConvertModalView = require('app/ui/views2/bnea/bnea_kongregate_convert');
 var openUrl = require('app/common/openUrl');
 
 var SettingsMenuView = Backbone.Marionette.ItemView.extend({
@@ -246,7 +246,7 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 	},
 
 	onKongregateConvertClicked: function (e) {
-		NavigationManager.getInstance().showModalView(new BneaKongregateConvertModalView({}));
+		// NavigationManager.getInstance().showModalView(new BneaKongregateConvertModalView({}));
 	},
 
 	onResetAccountInventoryPressed: function() {

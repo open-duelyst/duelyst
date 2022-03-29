@@ -10,7 +10,7 @@
 @import "common/animations";
 
 /* ---------- OTHER MODULES ---------- */
-@import '../views2/tutorial/styles/tutorial_lessons.scss';
+@import '../views2/tutorial/styles/tutorial_lessons';
 
 /* ---------- GENERAL ---------- */
 
@@ -235,7 +235,7 @@ ul {
 @import 'layouts/play';
 @import 'layouts/game';
 @import './../views2/shop/styles/shop';
-@import './../views2/bnea/styles/bnea';
+// @import './../views2/bnea/styles/bnea';
 @import 'layouts/tutorial';
 @import './../views2/codex/codex';
 @import './../views2/watch/watch';

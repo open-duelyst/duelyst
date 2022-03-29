@@ -1,7 +1,7 @@
 const Promise = require('bluebird')
 const promiseThrottle = require('p-throttle')
 const promiseWhilst = require('p-whilst')
-const {ChromaApp, Color, Keyboard} = require('@counterplay/chromajs')
+const {ChromaApp, Color, Keyboard} = require('../../packages/chroma-js')
 
 const App = new ChromaApp('Duelyst', 'The ULTIMATE collectible tactics game', 'Counterplay Games')
 
@@ -68,7 +68,7 @@ function setAll(color) {
 module.exports = {
 	Color,
 	setAll,
-	flashTurnTimer, 
-	flashAction, 
+	flashTurnTimer,
+	flashAction,
 	flashActionThrottled
 }

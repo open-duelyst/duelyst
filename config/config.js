@@ -36,7 +36,7 @@ var config = convict({
 	},
 	firebase: {
 		doc: "Firebase URL.",
-		format: "url",
+		// format: "url",
 		default: "https://duelyst-local.firebaseio.com/",
 		env: "FIREBASE_URL"
 	},
@@ -271,7 +271,7 @@ var config = convict({
 	},
 	paypalEnvironmentUrl:{
 		doc: "Paypal Environment Base URL.",
-		format: "url",
+		// format: "url",
 		default: "https://sandbox.paypal.com/",
 	},
 	paypalButtons: {
@@ -424,7 +424,7 @@ var config = convict({
 		apiUrl: {
 			doc: "BNEA App ID",
 			default: "",
-			format: "url",
+			// format: "url",
 			env: "BNEA_API_URL"
 		},
 		clientAppId: {
@@ -487,7 +487,7 @@ var config = convict({
 		},
 		landingPageUrl: {
 			doc: "Landing page to redirect new users to",
-			format: "url",
+			// format: "url",
 			default: "",
 			env: "BNEA_LANDING_PAGE_URL"
 		},
