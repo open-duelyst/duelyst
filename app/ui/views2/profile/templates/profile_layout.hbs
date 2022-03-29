@@ -1,0 +1,51 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<div class="profile-header">
+							{{#if isViewingBuddyProfile}}
+								<div class="btn-clean {{divisionClassNameForRank rank}} portrait">
+									<img />
+								</div>
+								<div class="user-info">
+									<div class="btn-clean username">
+										<h1 class="username-content">{{username}}</h1>
+									</div>
+								</div>
+							{{else}}
+								<button class="btn-clean portrait {{divisionClassNameForRank rank}} change-portrait">
+									<img />
+								</button>
+								<div class="user-info">
+									<button class="btn-clean username change-username">
+										<h1 class="username-content">{{username}}</h1>
+										<i class="fa fa-pencil"></i>
+									</button>
+									{{!--<button class="btn-clean change-password">{{localize 'settings.account_change_password_button_label'}}</button>--}}
+									<div class="season-count">{{localize key='profile.season_played_label' season_count=season_count}}</div>
+								</div>
+							{{/if}}
+						</div>
+						<ul id="profile_tabs" class="nav nav-tabs">
+							<li role="select" data-value="summary"><a>{{localize 'profile.category_summary_label'}}</a></li>
+							<li role="select" data-value="faction_levels"><a>{{localize 'profile.category_faction_levels_label'}}</a></li>
+							<li role="select" data-value="rank_history"><a>{{localize 'profile.category_rank_history_label'}}</a></li>
+							<li role="select" data-value="match_history"><a>{{localize 'profile.category_match_history_label'}}</a></li>
+							<!--<li role="select" data-value="rift_summary"><a>{{localize 'profile.category_rift_label'}}</a></li>-->
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-body clearfix">
+			<div class="content-region"><!-- MARIONETTE REGION --></div>
+		</div>
+		<div class="modal-footer">
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

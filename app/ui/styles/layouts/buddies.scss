@@ -1,0 +1,688 @@
+#app-buddies {
+
+  background:transparent;
+
+	.btn-cancel-primary {
+		top: 0;
+		right: -7.9rem;
+	}
+
+  .modal-dialog {
+    width:80%;
+    border:solid transparentize(#000,0.0) 0.2rem;
+    box-shadow:0 0 4.0rem #000;
+    border-radius:0.4rem;
+    animation:reverseZoomIn 0.5s;
+  }
+
+  .modal-body {
+    height:100%;
+    max-height:100%;
+    display: flex;
+    flex-flow: row nowrap;
+		overflow: visible;
+  }
+
+  .buddy-list-region {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-start;
+    flex: 1;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.75);
+
+		.buddy-list {
+			flex: 1;
+		}
+
+		.buddy-controls {
+			.buddy-controls-header {
+				position: relative;
+				padding: 1.0rem 1.0rem 0 1.0rem;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: space-around;
+				.add-buddy {
+					font-size: 1.4rem;
+					text-transform: uppercase;
+					color: #00fbff;
+					transition: color 0.5s, text-shadow 0.5s;
+					&:hover {
+						color: #fff;
+						text-shadow: 0 0 0.8rem #00fbff;
+					}
+				}
+				.do-not-disturb {
+					position: relative;
+					font-size: 1.2rem;
+					text-transform: uppercase;
+					color: #999999;
+					padding-left: 1.6rem;
+					.fa {
+						position: absolute;
+						top: 0.8rem;
+						left: 0;
+						font-size: 1.2rem;
+					}
+					.fa-bell-slash {
+						display: none;
+					}
+					.fa-bell {
+						display: inline-block;
+					}
+					&.active {
+						color: $light-red;
+						.fa-bell-slash {
+							display: inline-block;
+						}
+						.fa-bell {
+							display: none;
+						}
+					}
+				}
+			}
+			.search {
+				position:relative;
+				width:100%;
+				padding: 1.0rem 1.0rem 1.5rem 1.0rem;
+				border-bottom: 0.1rem solid rgba(255,255,255,0.1);
+				input {
+					border-radius:2.5rem;
+					border: solid 0.1rem rgba(255,255,255,0.2);
+					margin:0;
+					&:focus {
+						border: solid 0.1rem transparentize(#00fbff,0.25);
+					}
+				}
+				span {
+					color:#666;
+					pointer-events:none;
+					z-index: 100;
+					position:absolute;
+					right: 2.5rem;
+					top: 2.2rem;
+				}
+			}
+		}
+    .add-buddy-prompt {
+      display:none;
+      z-index:500;
+      position:absolute;
+      width:100%; height:100%; left:0; top:0;
+      background-color:rgba(0,0,0,0.5);
+      > div {
+        position:absolute;
+        left:50%;
+        top:50%;
+        width:40.0rem;
+        margin-left:-20.0rem;
+        margin-top:-5.0rem;
+      }
+      .buddies-controls {
+        width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content:center;
+      }
+      .add-buddy-input {
+        opacity:0;
+        flex: 1;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+        text-transform: uppercase;
+        float: left;
+        background-color: rgba(10, 110, 150, 0.5);
+        width: 35.0rem;
+        height: 4.1rem;
+        padding: 1.0rem;
+        margin: 2.0rem 0;
+        border: 0.1rem solid rgba(140, 255, 255, 1.0);
+        box-shadow: 0 0 1.0rem rgba(56, 176, 176, 1);
+        animation:revealInput 0.2s;
+        animation-delay:0.0s;
+        animation-fill-mode: forwards;
+      }
+      .add-buddy-cancel {
+        opacity:0;
+        animation:revealInput 0.2s;
+        animation-delay:0.1s;
+        animation-fill-mode: forwards;
+      }
+      .add-buddy-submit {
+        opacity:0;
+        animation:revealInput 0.2s;
+        animation-delay:0.2s;
+        animation-fill-mode: forwards;
+      }
+      .add-buddy-submit, .add-buddy-input {
+        min-width:18.0rem;
+        &.done {
+          opacity: 1.0;
+          border-color: #96ff96;
+          color: #96ff96;
+        }
+        &.fail {
+          opacity: 1.0;
+          border-color: #FF4C4C;
+          color: #FF4C4C;
+        }
+      }
+    }
+	}
+
+  .buddy-selection-region {
+    flex: 3;
+    display: flex;
+    flex-flow: column nowrap;
+    height:100%;
+    max-height: 100%;
+    background: rgba(0,0,0,0.75);
+    border-left: 0.1rem solid rgba(255,255,255,0.1);
+	.buddy-selection-empty {
+		height: 100%;
+		display:flex;
+		flex-flow: column;
+		align-items: center;
+		justify-content: center;
+		> * {
+			margin: 1rem;
+		}
+		h1 {
+			font-size:3rem;
+			font-weight: 300;
+		}
+		p {
+			color:$off-white;
+		}
+		> button {
+			font-size: 1.25rem;
+		}
+	}
+  }
+
+  .buddy-list-container {
+    width: 100%;
+    height: 40.0rem;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+  }
+
+  .buddy-list-items {
+		width: 100%;
+    padding: 0;
+    margin: 0;
+    position:relative;
+    overflow:hidden;
+  }
+
+	.last-played {
+		height:7.0rem;
+		text-align:left;
+		position:relative;
+		padding:1.0rem 2.0rem;
+		background:rgba(0,0,0,0.6);
+		display: none;
+		.label {
+			padding:0; margin:0.5rem 0;
+			display:block;
+			text-align:left;
+			color:#999;
+			font-weight:300;
+		}
+		.username {
+			display:block;
+			height:3.0rem;
+			line-height:3.0rem;
+			vertical-align:middle;
+			font-weight:bold;
+			text-transform:uppercase;
+		}
+		.btn {
+			position:absolute;
+			right:1.5rem;
+			top:1.5rem;
+			border:solid 0.1rem #00fbff;
+			border-radius:2.0rem;
+			padding:0.5rem 1.2rem;
+			margin-left:1.0rem;
+			text-transform:uppercase;
+			color:#00fbff !important;
+			font-size:1.6rem;
+			&:hover {
+				color:#fff !important;
+				border-color:#fff;
+			}
+		}
+		.sent {
+			display:none;
+			position:absolute;
+			right:1.5rem;
+			top:1.5rem;
+			padding:0.5rem 1.2rem;
+			font-size:1.6rem;
+			color:#96ff96;
+		}
+		&.active {
+			display: block;
+		}
+		&.invite-sent {
+			background:none;
+			.btn {
+				display:none;
+			}
+			.sent {
+				display:block;
+			}
+		}
+	}
+
+  .buddy {
+    .buddy-profile {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-content: center;
+      align-items: center;
+			overflow: visible;
+    }
+
+    .portrait {
+      width:4.0rem;
+      height:4.0rem;
+      margin:0.4rem;
+      border-radius:2.4rem;
+      margin-right:1.0rem;
+      position:relative;
+      border: solid 0.1rem #000;
+    }
+
+    .details-aside {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+
+    .unread-indicator {
+			position: relative;
+      font-size: 2.4rem;
+      color: #00b9fd;
+      display: none;
+      .fa-exclamation {
+        position: absolute;
+				top: 0.6rem;
+				left: 1.0rem;
+        font-size: 1.4rem;
+        color: #333;
+      }
+    }
+
+    .rank {
+			display: inline-block;
+      color: rgba(255,255,255,0.75);
+      width: 3.2rem;
+      height: 3.2rem;
+      line-height: 3.2rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 2.6rem;
+      font-size: 1.6rem;
+      text-align: center;
+      text-shadow: 0 0 1.5rem $key-color, 0 0 2.0rem $key-color;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+
+    .details {
+      text-align: left;
+      flex: 1;
+    }
+
+    .username-block {
+      @include headerFullStyle();
+      font-size: 1.3rem;
+      opacity: 0.6;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .status-block {
+      font-size:1.2rem;
+      color: #ddd;
+      opacity: 0.5;
+    }
+
+    .status-icon {
+      width: 1.6rem;
+      height: 1.6rem;
+      margin: 1.0rem;
+      border-radius: 50%;
+      background-color: #666;
+    }
+
+    .action-menu {
+      text-align: left;
+
+      a {
+        display: inline-block;
+        color: #fff;
+        opacity: 0.8;
+        margin: 0.5rem;
+
+        &.disabled {
+          opacity: 0.5;
+        }
+
+        &:hover:not(.disabled) {
+          color: #fff;
+          opacity: 1.0;
+        }
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &.unread {
+      .unread-indicator {
+				display: inline-block;
+      }
+    }
+
+		&.online, &.loading {
+			.username-block, .status-block {
+				opacity: 1.0;
+			}
+			.status-block {
+				color:rgba(150,255,150,1);
+			}
+			.status-icon {
+				background-color:rgba(150,255,150,1);
+			}
+		}
+
+		&.game, &.queue, &.challenge, &.watching {
+			.username-block, .status-block {
+				opacity: 1.0;
+			}
+			.status-block {
+				color:rgba(50,200,200,1);
+			}
+			.status-icon {
+				background-color:rgba(50,200,200,1);
+			}
+		}
+
+    &.away {
+      .username-block, .status-block {
+        opacity: 1.0;
+      }
+      .status-block {
+        color:rgba(200,200,50,1);
+      }
+      .status-icon {
+        background-color:rgba(200,200,50,1);
+      }
+    }
+
+    &.active {
+      .username-block, .status-block {
+        opacity: 1.0;
+      }
+    }
+  }
+
+  .buddy-preview {
+
+    position:absolute;
+
+		@extend .mouse-select;
+		width: 100%;
+		padding: 0.8rem;
+    padding-left:2.2rem;
+    pointer-events: auto;
+    border-bottom: 0.1rem solid rgba(255,255,255,0.1);
+    transition: background-color 0.1s;
+
+    @include backgroundImage("resources/profile_icons/borders/unknown.png");
+		background-repeat: no-repeat;
+		background-position: 1.9rem 0.5rem;
+    background-size: 5.4rem 5.4rem;
+
+    &.bronze { @include backgroundImage("resources/profile_icons/borders/bronze.png"); }
+    &.silver { @include backgroundImage("resources/profile_icons/borders/silver.png"); }
+    &.gold { @include backgroundImage("resources/profile_icons/borders/gold.png"); }
+    &.diamond { @include backgroundImage("resources/profile_icons/borders/diamond.png"); }
+    &.elite { @include backgroundImage("resources/profile_icons/borders/elite.png"); }
+
+    &:hover {
+      background-color: rgba(0,0,0,0.3);
+    }
+
+    &:active {
+      color: #fff;
+      background-color: rgba(255,255,255,0.2);
+    }
+
+    &.active {
+      color: #fff;
+      background-color: transparentize(#00b9fd,0.5);
+      border-bottom-color: #00b9fd;
+    }
+
+    &:after {
+      content:' ';
+      display:block;
+      position:absolute;
+      left: 0.4rem;
+      top: 0.4rem;
+      width:0.4rem;
+      border-radius:0.4rem;
+      height:5.2rem;
+      display:none;
+    }
+
+    &.online {
+      &:after {
+        display:block;
+        background-color:#96fb04;
+        box-shadow:0 0 0.5rem #96fb04;
+      }
+    }
+
+    &.game, &.queue, &.away {
+      &:after {
+        display:block;
+        background-color:#fffd04;
+        box-shadow:0 0 0.5rem #fffd04;
+      }
+    }
+
+    &.unread {
+      &:after {
+        display:block;
+        background-color:#00fbff;
+        box-shadow:0 0 0.5rem #00fbff;
+        animation:flashUnread 1s;
+        animation-iteration-count: infinite;
+      }
+    }
+
+  }
+
+  .buddy-selection {
+    height:100%;
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 0;
+
+    .buddy-profile {
+      padding: 1.0rem;
+      justify-content: space-between;
+      border-bottom: 0.1rem solid rgba(255,255,255,0.1);
+    }
+
+		.invite-buddy-to-game {
+			background-size: 20rem 5.5rem;
+			padding: 1rem 2rem;
+			min-width: 20rem;
+			min-height: 5.5rem;
+			img {
+				width: 1.4rem;
+				margin-top: -0.4rem;
+				margin-left: 0.25rem;
+			}
+		}
+
+    .conversation-region {
+      height:100%;
+      flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+    }
+
+    .details {
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+    }
+
+    .conversation {
+      height:100%;
+      flex: 1;
+      display: flex;
+      flex-flow: column nowrap;
+	  .messages-list .message .game-info { display:flex; }
+    }
+
+    .messages-list {
+      height:100%;
+      flex: 1;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      overflow-y: auto;
+
+      .message {
+        position: relative;
+        display: inline-block;
+        float: left;
+        clear: both;
+        max-width: 75%;
+        text-align: left;
+        margin: 1.0rem 1.0rem 1.0rem 2.5rem;
+        color: #000;
+        background-color: #96ff96;
+        border-radius: 1.2rem;
+        .arrow {
+          position: absolute;
+          width: 0;
+          height: 0;
+          top: 2.25rem;
+          left: -1.0rem;
+          margin-top: -1.0rem;
+          border-width: 1.0rem 1.0rem 1.0rem 0;
+          border-style: solid;
+          border-color: transparent;
+          border-right-color: #96ff96;
+        }
+        .from-username {
+          display: none;
+        }
+		.message-content {
+			padding: 1.0rem 1.5rem;
+			user-select: auto;
+			pointer-events: auto;
+		}
+		.game-info {
+			padding: 1.0rem 1.5rem;
+			background: #000;
+			// display:flex;
+			display:none;
+			flex-flow: column;
+			justify-content: center;
+			align-items: center;
+			border-bottom-left-radius: 1.2rem;
+			border-bottom-right-radius: 1.2rem;
+			.faction-general {
+				width:14rem;
+				height:14rem;
+				float:left;
+				background-size: cover;
+				background-position: center;
+			}
+			button {
+				background: #000;
+				border:solid 2px #96ff96;
+				color: #96ff96;
+				border-radius: 100rem;
+				margin:1rem;
+				margin-top: -3rem;
+				padding:0.5rem 1rem;
+				pointer-events:auto;
+				&:hover {
+					color:#fff;
+					border-color:#fff;
+				}
+			}
+		}
+        &.from-me {
+          float: right;
+          margin: 1.0rem 2.5rem 1.0rem 1.0rem;
+          color: #96ff96;
+          background-color: #000;
+          border: 0.1rem solid #000;
+          .arrow {
+            right: -1.0rem;
+            left: auto;
+            border-width: 1.0rem 0 1.0rem 1.0rem;
+            border-color: transparent;
+            border-left-color: #000;
+          }
+        }
+      }
+    }
+
+    .current-message {
+      display: flex;
+      flex-flow: row nowrap;
+      .chat-input, .btn {
+        border-radius: 0;
+        border: 0;
+        margin: 0;
+        height:5.0rem;
+      }
+      .chat-input {
+        flex: 5;
+        &:focus {
+          box-shadow: none;
+        }
+      }
+      .btn {
+        flex: 1;
+        font-size:1.6rem;
+        text-transform:uppercase;
+        background-color:#00b9fd;
+        &:hover {
+          color:#fff;
+          background-color:#47ceff;
+        }
+        &:active {
+          background-color:#00b9fd;
+        }
+      }
+    }
+
+    &.offline {
+      .current-message {
+        .btn {
+          background-color: #999;
+        }
+      }
+    }
+  }
+}

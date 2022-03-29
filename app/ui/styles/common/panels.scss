@@ -1,0 +1,126 @@
+/* ---------- PANEL LAYOUT ---------- */
+
+.panel {
+  @include overlayPanel();
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-shadow: none;
+  text-align: left;
+  pointer-events: auto;
+}
+
+.panel-content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  left: 0;
+  &:not(:only-child) {
+    width: 75%;
+  }
+}
+
+.panel-sidebar {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  background: rgba(20, 20, 20, 0.9);
+  border-radius: 0 0.4rem 0.4rem 0;
+  right: 0;
+  &:not(:only-child) {
+    width: 25%;
+  }
+}
+
+.panel-header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-content: center;
+  align-items: center;
+  font-size: 2.3rem;
+  line-height: 3.3rem;
+  text-transform: uppercase;
+  margin-bottom: 1.0rem;
+	padding: 1.0rem 0;
+  border-bottom: 0.1rem solid rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- MENUS ---------- */
+
+.panel-menu {
+  position: relative;
+  color: #ddd;
+  a, .btn {
+    color: #bbb;
+    &:hover, &:focus, &:active {
+      color: #fff;
+      outline: none;
+      box-shadow: none;
+    }
+  }
+  a {
+    text-align: center;
+    &:hover {
+      text-shadow: 0 0 0.5rem rgba(0,255,255,0.5);
+    }
+  }
+  .btn {
+    display: block;
+    position: relative;
+    width: 100%;
+    font-size: 2.6rem;
+    line-height: 3.6rem;
+    @include headerFont();
+    text-transform: uppercase;
+
+    .small {
+      display:block;
+      letter-spacing: 0;
+      font-family: "Open Sans", sans-serif;
+      color:rgba(255,255,255,0.75);
+      font-size:1.0rem;
+      line-height:1.2rem;
+    }
+  }
+}
+
+
+/* ---------- BUTTONS ---------- */
+
+.panel-controls {
+  display: flex;
+  flex-flow: row nowrap;
+  text-align: center;
+  margin-bottom: 1.0rem;
+  &:last-child {
+    margin-bottom: 0;
+  }
+  input {
+    color: #333;
+    border-radius: 0.4rem;
+    &:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+    &:last-child {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+  .btn {
+    float: none;
+    flex: 1;
+  }
+  .btn-panel {
+    flex: 3;
+  }
+}

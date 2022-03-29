@@ -1,0 +1,190 @@
+/* ---------- CRAFTING ---------- */
+#app-crafting {
+		flex: 1;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: space-between;
+		align-content: center;
+		.crafting-materials {
+				border-bottom: 0.1rem solid $main-border-color;
+		}
+		.crafting-workbench {
+				flex: 1;
+				display: none;
+				flex-flow: column nowrap;
+				justify-content: space-around;
+				.crafting-requirements {
+					.material-count {
+						border-color:$light-red !important;
+					}
+				}
+				.crafting-rewards {
+					.material-count {
+						border-color:$light-blue !important;
+					}
+				}
+				.crafting-materials {
+						border-bottom: none;
+						.material-item {
+							display:flex;
+							flex-flow: column;
+							justify-content: center;
+							align-items: center;
+							.material-count {
+									text-align: center;
+									font-size: 2.0rem;
+									border: solid 1px $off-white;
+									color: #fff;
+									border-radius: 100rem;
+									width:6rem;
+									height:6rem;
+									line-height: 6rem;
+									margin:1rem 0;
+							}
+							.material-name {
+									line-height: 1.2rem;
+									font-size: 1.5rem;
+									text-align: center;
+									text-transform: uppercase;
+									margin:1rem 0;
+									color: #428bca;
+							}
+						}
+				}
+				&.active {
+						display: flex;
+				}
+		}
+		.crafting-instructions {
+				flex: 1;
+				display: none;
+				flex-flow: column nowrap;
+				justify-content: space-around;
+				text-align: center;
+				.crafting-disenchant-all-block {
+						.panel-controls {
+								margin-bottom: 0;
+						}
+						// disenchant all button
+						.crafting-disenchant-all {
+								font-size: 1.4rem;
+								background-size: 24rem 5.5rem;
+								min-width: 25rem;
+								&.highlight {
+										animation-name: pulsateBrightness;
+										animation-duration: 1.5s;
+										animation-iteration-count: infinite;
+								}
+						}
+				}
+				&.active {
+						display: flex;
+				}
+		}
+		.crafting-card-container {
+				margin: 1.5rem auto 0;
+				padding: 0;
+				.card {
+						animation-name: flashBrightness;
+						animation-duration: 0.5s;
+						animation-iteration-count: 1;
+						margin: 0;
+						&:not(:hover) {
+								.glow {
+										display: block;
+										opacity: 1;
+										filter:hue-rotate(220deg);
+								}
+						}
+						.sidebar {
+								width: 18.0rem;
+								top: 1.5rem;
+								right: 100%;
+								left: auto;
+								z-index: -1;
+						}
+				}
+		}
+		.crafting-options {
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				.crafting-options-materials {
+						width: 100%;
+						display: flex;
+						flex-flow: row nowrap;
+						text-align: center;
+						> * {
+								flex: 1;
+								margin-right: 0.5rem;
+								&:last-child {
+										margin-right: 0;
+								}
+						}
+				}
+				.crafting-options-controls {
+						.btn-clean-primary {
+								width: 15.0rem;
+								height: 4.7rem;
+								min-width: 15.0rem;
+								min-height: 4.7rem;
+								padding: 1.3rem 2.0rem;
+						}
+				}
+				.crafting-warning {
+						text-align: center;
+						font-size: 1.6rem;
+				}
+		}
+		.crafting-rewards {
+				.collection-list-header {
+						text-transform: uppercase;
+						font-size: 1.4rem;
+						line-height: 2.0rem;
+				}
+		}
+}
+.crafting-materials {
+		padding-bottom: 0.5rem;
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: flex-end;
+		.material-item {
+				position: relative;
+				height: 100%;
+				flex: 1;
+				padding: 0 0.5rem;
+				&.gold {
+						.material-name {
+								color: gold;
+						}
+				}
+		}
+		.material-count {
+				text-align: center;
+				font-size: 2.0rem;
+				color: #fff;
+		}
+		.material-name {
+				font-size: 1.1rem;
+				line-height: 1.6rem;
+				text-align: center;
+				color: #428bca;
+		}
+}
+#crafting-rewards-dialog {
+		.modal-body {
+				min-height: auto;
+		}
+		.crafting-materials {
+				border: none;
+				.material-count {
+						font-size: 4.5rem;
+						line-height: 5.0rem;
+				}
+				.material-name {
+						font-size: 2.0rem;
+						line-height: 2.4rem;
+				}
+		}
+}

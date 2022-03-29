@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_explosionmediumblue_ground_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,172},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{57,86},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{57,43},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{57,0},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{57,129},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,129},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,86},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,43},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+			<key>fx_explosionmediumblue_ground_008.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{56,42}}</string>
+				<key>sourceSize</key>
+				<string>{56,42}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{128,256}</string>
+			<key>textureFileName</key>
+			<string>fx_explosionblue.png</string>
+			</dict>
+		</dict>
+</plist>

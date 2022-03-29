@@ -1,0 +1,7 @@
+{
+	"min_char_requirement_error":"Minimum 3 characters",
+	"failed_to_redeem_error":"Failed to redeem gift code. Please retry.",
+	"redeem_gift_code_title":"Enter Gift / Referral Code:",
+	"redeem_success_message":"Gift / Referral Code Redeemed...",
+	"gift_code_default":"Gift code"
+}

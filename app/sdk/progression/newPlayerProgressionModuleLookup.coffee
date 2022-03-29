@@ -1,0 +1,21 @@
+class Modules
+	@Core: "core"
+	@Quest: "quest"
+	@Matchmaking: "matchmaking"
+	@Collection: "collection"
+	@BoosterUnlock: "booster_unlock"
+	@GameGoldTips: "game_gold_tips"
+	@StarterDeckTab: "starter_decks_tab"
+	@AiDecksTab: "ai_decks_tab"
+	@SinglePlayerPlayed: "single_player_played"
+	@SpiritOrbOpened: "spirit_orb_opened"
+	@CraftedCard: "crafted_card"
+	@Monetized: "monetized"
+	@BloodbornSpellInfo: "bloodborn_spell_info"
+	@BattlePetInfo: "battle_pet_info"
+	@BattlePetReminder: "battle_pet_reminder"
+	@BattlePetActionNotification: "battle_pet_action_notification"
+	@ReceivedCrate: "received_crate"
+	@RiftUpgradeUsed: "rift_upgrade_used"
+
+module.exports = Modules

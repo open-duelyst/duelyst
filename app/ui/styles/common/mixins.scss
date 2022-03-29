@@ -1,0 +1,298 @@
+/* ---------- MIXINS ---------- */
+
+/**
+ * Creates a mobile selector from the current selector scope.
+ * @example
+ * .my-class {
+ *  color: black;
+ *  @include mobile() {
+ *   color: red;
+ *  }
+ * }
+ */
+@mixin mobile() {
+	@each $selector in & {
+		@at-root .mobile #{$selector} {
+			@content;
+		}
+	}
+}
+
+/**
+ * Creates a not mobile selector from the current selector scope.
+ * @example
+ * .my-class {
+ *  color: black;
+ *  @include notMobile() {
+ *   color: red;
+ *  }
+ * }
+ */
+@mixin notMobile() {
+	@each $selector in & {
+		@at-root .not-mobile #{$selector} {
+			@content;
+		}
+	}
+}
+
+@mixin backgroundImage($imagePath, $appendValue: "") {
+	$unquotedPath: unquote($imagePath);
+	$extIndex: str-last-index($unquotedPath, ".");
+	$this: #{&};
+
+	// image at 1x
+	background-image: url($unquotedPath) + $appendValue;
+
+	// image at all resource scales
+	@each $resourceScale in $resourceScales {
+		$escapedScale: str-replace(quote($resourceScale), ".", "\\.");
+		@at-root .resource-scale-#{$escapedScale} {
+			#{$this} {
+				background-image: url(str-insert($unquotedPath, #{"@" + $resourceScale + "x"}, $extIndex)) + $appendValue;
+			}
+		}
+	}
+}
+
+@mixin backgroundImageNoScale($imagePath) {
+	$unquotedPath: unquote($imagePath);
+	background-image: url($unquotedPath);
+}
+
+@mixin cursorImage($imagePath, $type: "auto") {
+	$unquotedPath: unquote($imagePath);
+	$unquotedType: unquote($type);
+	$extIndex: str-last-index($unquotedPath, ".");
+
+	// cursor fallback
+	cursor: url($unquotedPath), $unquotedType;
+
+	// cursor at all resource scales
+	$all: append((), url($unquotedPath) 1x, comma);
+	@each $resourceScale in $resourceScales {
+		@if $resourceScale > 1 {
+			$imagePathForScale: str-insert($unquotedPath, #{"@" + $resourceScale + "x"}, $extIndex);
+			$all: append($all, url($imagePathForScale) #{$resourceScale + "x"}, comma)
+		}
+	}
+	cursor: -webkit-image-set($all), $unquotedType;
+	cursor: image-set($all), $unquotedType;
+}
+
+@mixin cursorImageNoScale($imagePath) {
+	$unquotedPath: unquote($imagePath);
+	cursor: url($unquotedPath), auto;
+}
+
+@mixin bodyFont() {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  font-weight: 400;
+}
+@mixin headerFont($letterSpacing:0.0em) {
+  font-family: "Lato", sans-serif;
+  letter-spacing: $letterSpacing;
+}
+@mixin headerFullStyle($letterSpacing:0.0em) {
+  font-family: "Lato", sans-serif;
+  letter-spacing: $letterSpacing;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+@mixin altHeaderFont($letterSpacing:0.0em) {
+  font-family: "Open Sans", Arial, Helvetica, sans-serif;
+  letter-spacing: $letterSpacing;
+}
+@mixin quiet() {
+  font-size: 0.75em;
+  opacity: 0.8;
+}
+
+@mixin fillParent() {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+@mixin fixedSize($width, $height) {
+  position: relative;
+  width:$width;
+  height:$height;
+  margin: auto;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+@mixin overlayPanel() {
+  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: rgba(0,0,0, 0.5);
+  /*border: solid 0.1rem transparentize($key-color,0.25);*/
+  border-radius: 0.4rem;
+  h1,h2,h3,h4,h5,h6{
+    color:#fff;
+  }
+}
+
+@mixin shineLineBackground() {
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%);
+}
+
+@mixin linear-gradient($fromColor, $toColor, $direction:bottom) {
+  background: linear-gradient(to $direction, $fromColor, $toColor);
+}
+
+@mixin vertical-quad-gradient($color1, $color1Pct, $color2, $color2Pct, $color3, $color3Pct, $color4, $color4Pct) {
+	background: linear-gradient(to bottom, $color1 $color1Pct, $color2 $color2Pct, $color3 $color3Pct, $color4 $color4Pct);
+}
+
+@mixin chevron-right($w, $h, $color, $chevronPct:0.65) {
+	width: $w;
+	height: $h;
+	background: $color;
+	/* clip path polygon should be pairs comma separated and space separated within each pair */
+	clip-path: polygon(/**/ 0 0, /**/ $w $h * $chevronPct, /**/ 0 $h, /**/ 0 $h * $chevronPct);
+}
+
+@mixin move-shine($duration:2s, $opacity:1.0) {
+	&:after {
+		content:' ';
+		opacity: 1.0;
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 150%;
+		animation: moveShine $duration linear;
+		animation-iteration-count: infinite;
+		background: linear-gradient(135deg, rgba(255,255,255,0) 27%,rgba(255,255,255,$opacity) 49%,rgba(255,255,255,0) 71%);
+		mix-blend-mode:overlay;
+	}
+
+	@keyframes moveShine {
+		0% { opacity:0; transform: translateY(20.0rem); }
+		50% { opacity:1; }
+		100% { opacity:0; transform: translateY(-20.0rem); }
+	}
+}
+
+@mixin move-shine-rtl($duration:2s, $opacity:1.0) {
+	&:after {
+		content:' ';
+		opacity: 1.0;
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 100%;
+		animation: moveShineRtl $duration linear;
+		animation-iteration-count: infinite;
+		background: linear-gradient(60deg, rgba(255,255,255,0) 27%,rgba(255,255,255,$opacity) 49%,rgba(255,255,255,0) 71%);
+		mix-blend-mode:overlay;
+	}
+
+	@keyframes moveShineRtl {
+		0% { opacity:0; transform: translateX(40.0rem); }
+		50% { opacity:1; }
+		100% { opacity:0; transform: translateX(-40.0rem); }
+	}
+}
+
+@mixin move-shine-prismatic($duration:8s, $opacity:1.0) {
+	&:after {
+		content:' ';
+		opacity: 1.0;
+		position: absolute;
+		left:0;
+		top:0;
+		width: 100%;
+		height: 150%;
+		animation: moveShinePrismatic $duration ease-in;
+		animation-iteration-count: infinite;
+		background: linear-gradient(135deg, rgba(255, 255, 255, 0) 27%, rgba(255, 255, 255, 0.35) 50%, rgba(255, 255, 255, 0) 71%);
+		mix-blend-mode:overlay;
+	}
+
+	@keyframes moveShinePrismatic {
+		0% { opacity:0; transform: translateY(100%); } // fake delay between looping
+		10% { opacity:0; transform: translateY(100%); }
+		20% { opacity:1; }
+		30% { opacity:0; transform: translateY(-100%); }
+		100% { opacity:0; transform: translateY(-100%); } // fake delay between looping
+	}
+}
+
+@mixin rotate-prismatic($duration:10s, $reverse:false) {
+	@if $reverse == true {
+		animation: rotatingPrismaticGradientReverse $duration linear;
+	} @else {
+		animation: rotatingPrismaticGradient $duration linear;
+	}
+	animation-iteration-count: infinite;
+
+	@keyframes rotatingPrismaticGradient {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+
+	@keyframes rotatingPrismaticGradientReverse {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(-360deg); }
+	}
+}
+
+@mixin scrollbars($color: rgba(255, 255, 255, 1), $size: 1.2rem) {
+	$borderSize: $size / 4.0; // as this number gets bigger, the scroll thumb becomes smaller
+	$borderRadiusSize: $size * 10.0; // more or less rounded edges for scroll thumb
+	$minSize: $size * 3.0;
+
+	::-webkit-scrollbar {
+		width: $size;
+		height: $size;
+		background-color: rgba(0,0,0,0);
+		border-radius: $borderRadiusSize;
+		overflow: visible;
+	}
+	::-webkit-scrollbar-thumb:vertical {
+		background: transparentize($color, 0.3);
+		border-radius: $borderRadiusSize;
+		background-clip: padding-box;
+		border: $borderSize solid rgba(0,0,0,0);
+		min-height: $minSize;
+	}
+	::-webkit-scrollbar-thumb:vertical:active, ::-webkit-scrollbar-thumb:vertical:hover {
+		background: transparentize($color, 0.6);
+		border-radius: $borderRadiusSize;
+		background-clip: padding-box;
+		border: $borderSize solid rgba(0,0,0,0);
+		min-height: $minSize;
+	}
+	::-webkit-scrollbar-thumb:horizontal {
+		background: transparentize($color, 0.3);
+		border-radius: $borderRadiusSize;
+		background-clip: padding-box;
+		border: $borderSize solid rgba(0,0,0,0);
+		min-width: $minSize;
+	}
+	::-webkit-scrollbar-thumb:horizontal:active, ::-webkit-scrollbar-thumb:horizontal:hover {
+		background: transparentize($color, 0.6);
+		border-radius: $borderRadiusSize;
+		background-clip: padding-box;
+		border: $borderSize solid rgba(0,0,0,0);
+		min-width: $minSize;
+	}
+}
+
+@mixin scrollX() {
+	overflow: hidden;
+	overflow-x: auto;
+	-webkit-overflow-scrolling: touch;
+}

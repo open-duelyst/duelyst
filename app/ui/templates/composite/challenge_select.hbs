@@ -1,0 +1,28 @@
+<div class="background" style="background-image: url({{imageForResourceScale img}})"></div>
+
+<div class="sliding-panel-content">
+    <div class="name">{{name}}</div>
+		<div class="completion">
+    {{#if numChallengesCompleted}}
+	    {{numChallengesCompleted}}/{{challenges.length}} <span class="lowercase">{{localize 'common.generic_complete_message'}}<span class="lowercase">
+    {{else}}
+	    {{challenges.length}} <span class="lowercase">{{localize 'challenges.challenge_label_plural'}}</span>
+    {{/if}}
+    </div>
+    <div class="description">
+        <hr class="shine">
+        <div>{{description}}</div>
+    </div>
+</div>
+
+<div class="locked-label"><i class="fa fa-lock"></i>
+	{{#if unlockMessage}}
+		{{{unlockMessage}}}
+	{{else}}
+		{{localize 'common.generic_not_available_message'}}
+	{{/if}}
+</div>
+
+<div class="sliding-panel-active-content">
+    <ul class="sliding-panel-active-content-choices choices"></ul>
+</div>

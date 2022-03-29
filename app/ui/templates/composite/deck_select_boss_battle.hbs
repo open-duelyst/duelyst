@@ -1,0 +1,80 @@
+<div class="sliding-panel-select-content">
+	<div class="sliding-panel-select-header">
+			<ul class="nav nav-tabs deck-groups">
+					<li role="select" data-value="custom"><a>{{localize 'main_menu.deck_select_tab_custom_decks'}}</a></li>
+					<li role="select" data-value="starter"><a>{{localize 'main_menu.deck_select_tab_starters'}}</a></li>
+			</ul>
+			<div class="input-group search">
+					<input type="search" class="form-control" placeholder="{{localize 'common.search_input_label'}}">
+					<span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+					<span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+			</div>
+			<div class="btn-group deck-settings">
+				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-cog"></i>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<button class="toggle toggle-faction" data-faction="1">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f1.png'}}"/>
+					</button>
+					<button class="toggle toggle-faction" data-faction="2">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f2.png'}}"/>
+					</button>
+					<button class="toggle toggle-faction" data-faction="3">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f3.png'}}"/>
+					</button>
+					<button class="toggle toggle-faction" data-faction="4">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f4.png'}}"/>
+					</button>
+					<button class="toggle toggle-faction" data-faction="5">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f5.png'}}"/>
+					</button>
+					<button class="toggle toggle-faction" data-faction="6">
+						<img src="{{imageForResourceScale 'resources/crests/crest_f6.png'}}"/>
+					</button>
+					<li role="separator" class="divider"></li>
+					<div class="deck-color-code-select-list">
+						{{#getColorCodes}}
+							<button class="toggle deck-color-code {{cssClass}}" data-code="{{code}}"></button>
+						{{/getColorCodes}}
+					</div>
+				</ul>
+			</div>
+	</div>
+	<div class="sliding-panel-select-body">
+		<div class="sliding-panel-select-choices">
+			<ul class="choices"></ul>
+			<div class="previous-page">
+				<div class="btn btn-clean"></div>
+			</div>
+			<div class="next-page">
+				<div class="btn btn-clean"></div>
+			</div>
+		</div>
+		<div class="boss-opponent-select">
+			<h4 class="boss-opponent-select-header header-dashed-text">{{localize 'common.your_opponent_label'}}</h4>
+			<ul class="boss-opponent-select-choices choices">
+				{{#opponents}}
+					<li class="boss-opponent f{{factionId}} {{#if defeated}}defeated{{/if}}" data-opponent-id="{{id}}" data-faction-id="{{factionId}}">
+						<div class="boss-opponent-portrait"><img src="{{imageForResourceScale portraitImg}}"></div>
+						<div class="boss-opponent-name">
+							<div>{{name}}</div>
+						</div>
+						<p class="boss-opponent-description">{{description}}</p>
+						<div class="boss-opponent-status {{#if defeated}}defeated{{/if}}">
+							<div>
+								{{#if defeated}}{{localize 'common.defeated_label'}}{{else}}{{localize 'common.reward_available_label'}}{{/if}}
+							</div>
+						</div>
+					</li>
+				{{/opponents}}
+			</ul>
+		</div>
+	</div>
+	<div class="sliding-panel-select-footer">
+		<div class="btn-group btn-group-centered">
+			<!-- {{#if hasAnyBattleMapCosmetics}}<button class="battlemap-select"><span class="icon"><i class="fa fa-question" /></span> Select Battle Map</button>{{/if}} -->
+			<button class="btn btn-clean deck-select-confirm">{{localize 'common.play_button_label'}}</button>
+		</div>
+	</div>
+</div>

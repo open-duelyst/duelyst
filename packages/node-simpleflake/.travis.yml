@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+  - "0.10"
+  - "4"
+  - "5"
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+before_install:
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+  - g++ -v

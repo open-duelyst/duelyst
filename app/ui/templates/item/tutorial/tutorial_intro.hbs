@@ -1,0 +1,22 @@
+<div class="dialog-background"></div>
+
+<div class="dialog-content">
+	<div class="dialog-header">
+		<div class="image">
+			<img src="{{imageForResourceScale challenge.iconUrl}}" />
+		</div>
+	</div>
+	<div class="dialog-body">
+		<div class="challenge-name">{{challenge.name}}</div>
+		<div class="challenge-difficulty">{{challenge.difficulty}}</div>
+		<div class="challenge-description">{{challenge.description}}</div>
+		{{#if gold_reward}}
+			<div class="challenge-reward">
+				<p class="challenge-reward-name">{{localize 'common.reward'}}</p>
+				<div class="icon-gold">{{gold_reward}}</div>
+			</div>
+		{{/if}}
+		<button class="btn btn-clean btn-clean-secondary start">{{localize 'tutorial.tutorial_intro_plate_start_button_label'}}</button>
+	</div>
+	<div class="dialog-footer"></div>
+</div>

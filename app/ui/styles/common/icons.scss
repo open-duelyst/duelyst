@@ -1,0 +1,102 @@
+.icon {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	background-position: 50%;
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.icon-gold {
+	@extend .icon;
+	@include backgroundImage("resources/ui/icon_gold.png");
+	width: 7.1rem;
+	height: 7.1rem;
+	color: $gold-dark-color;
+	font-weight: bold;
+	&.inline {
+		line-height:7.1rem;
+		display:inline-block;
+	}
+}
+
+.icon-premium {
+	@extend .icon;
+	@include backgroundImage("resources/ui/icon_premium.png");
+	width: 7.1rem;
+	height: 7.1rem;
+	color: #000000;
+	font-weight: bold;
+	&.inline {
+		line-height:7.1rem;
+		display:inline-block;
+	}
+}
+
+.icon-mana {
+	@extend .icon;
+	@include backgroundImage("resources/ui/icon_mana.png");
+	width: 6.2rem;
+	height: 6.9rem;
+}
+
+.icon-hp {
+	@extend .icon;
+	@include backgroundImage("resources/ui/icon_hp.png");
+	width: 6.8rem;
+	height: 7.1rem;
+}
+
+.icon-atk {
+	@extend .icon;
+	@include backgroundImage("resources/ui/icon_atk.png");
+	width: 6.8rem;
+	height: 7.1rem;
+}
+
+.icon-card {
+	@extend .icon;
+	//@include backgroundImage("resources/ui/card.png"); <-- resource doesn't exist
+	width: 5.4rem;
+	height: 7.1rem;
+}
+
+.icon-label-pairs-title {
+	text-transform: uppercase;
+}
+
+ul.icon-label-pairs {
+	margin: 0;
+	margin-left: 1.2em;
+	padding: 0;
+
+	li {
+		display: inline-block;
+		vertical-align: middle;
+		.icon, .label {
+			display: inline-block;
+		}
+		.icon {
+			vertical-align: middle;
+		}
+		.label {
+			padding: 0;
+		}
+
+		// Add a plus sign before all but first child
+		&:nth-child(1) {
+			&:before {
+				content: initial;
+				padding: 0;
+			}
+		}
+		&:before {
+			content: "+";
+			font-weight: bold;
+			font-size: 1.25em;
+			vertical-align: middle;
+			padding: 0.6em;
+		}
+	}
+}

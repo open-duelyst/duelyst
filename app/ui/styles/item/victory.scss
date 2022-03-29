@@ -1,0 +1,143 @@
+#app-victory {
+
+  pointer-events:none;
+
+  .btn-group {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 0.35s;
+    animation-delay: 1.0s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    margin-top: 1.0rem;
+  }
+
+  .result-content {
+    font-size: 5.0rem;
+    opacity: 0;
+    transform: scale(5) rotate(30deg);
+    transition: opacity 0.25s ease-in 0.4s, transform 0.15s cubic-bezier(.84,.11,.3,1.68) 0.5s;
+
+    &.active {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  .opponent-info {
+
+    line-height:4.0rem;
+
+    .opponent-name {
+      color:#fff;
+      font-weight:bold;
+      text-transform:uppercase;
+    }
+    .btn {
+        border:solid 0.1rem $key-color;
+        margin-top:0;
+        border-radius:2.0rem;
+        padding:0.5rem 1.2rem;
+        margin-left:1.0rem;
+        text-transform:uppercase;
+        color:$key-color !important;
+        font-size:1.4rem;
+        &:hover {
+          color:#fff !important;
+          border-color:#fff;
+        }
+    }
+    .btn-report-opponent {
+      border-color:red;
+      color:red !important;
+    }
+    .btn-tip-opponent {
+      border-color:#ffd802;
+      color:#ffd802 !important;
+      &.animate-out {
+
+      }
+    }
+    .sent {
+        color:#96ff96;
+    }
+  }
+
+  .level-progress {
+    width: 50.0rem;
+    margin: 2.0rem auto 1.0rem auto;
+    background-color:rgba(0,0,0,0.5);
+    border-radius:0;
+    line-height:3.0rem;
+    height:3.0rem;
+    box-shadow:none;
+    border:solid rgba(255,255,255,0.5) 0.1rem;
+    overflow:visible;
+    padding:0.4rem;
+    .level-progress-bar {
+      box-shadow: 0 0 4.0rem #fff;
+      border-radius:0;
+      line-height:2.0rem;
+      height:2.0rem;
+      background-color: #fff;
+      color:#000;
+      transition:none;
+      &.earned {
+        background-color: $key-color;
+      }
+    }
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    .stat {
+      font-weight:300;
+      margin: 0 1.0rem;
+      width: 12.0rem;
+      text-transform:uppercase;
+    }
+  }
+
+  .progression-reward-counter {
+    clear:both;
+    color:rgba(255,255,255,0.5);
+    i {
+      display:inline-block;
+      margin:0 0.2rem;
+      color:#fff !important;
+    }
+  }
+
+  .level-up-notice {
+    opacity:0;
+    position:absolute;
+    text-transform:uppercase;
+    font-weight:600;
+    width:30.0rem;
+    left:50%;
+    top: 40%;
+    margin-left:-15.0rem;
+    margin-top:-10.0rem;
+    color:#fff;
+    font-size:4.0rem;
+    text-shadow:
+      0 0 1.0rem #fff,
+      0 0 2.0rem $key-color,
+      0 0 0.2rem #000,
+      0 0 4.0rem #000,
+      0 0 4.0rem #000;
+    padding:1.0rem;
+  }
+
+}
+
+#confirm_report_dialog {
+  display:none;
+  z-index:1050;
+  #report_text {
+    width:100%;
+    height:10.0rem;
+    margin-top:4.0rem;
+  }
+}

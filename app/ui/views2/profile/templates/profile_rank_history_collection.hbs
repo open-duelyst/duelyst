@@ -1,0 +1,77 @@
+<div class="container">
+	<!-- -->
+	<div id="rank_history_chart" class="row">
+		<div class="col-md-12">
+			{{#each rankHistory}}
+				<div class="rank-history-column">
+					<div class="rank-label">{{rank}}</div>
+					<ul class="ticks">
+						{{#ifNotNull rank}}
+							{{#fromTo rank 31}}
+								<li></li>
+							{{/fromTo}}
+						{{/ifNotNull}}
+					</ul>
+					<div class="month-label">{{localizedMonth starting_at}}</div>
+					{{#ifNotNull rank}}
+						<div class="medal-container"><img class="division-medal" src="{{imageForResourceScale (concat 'resources/season_rewards/season_rank_' (divisionClassNameForRank rank) '.png')}}" /></div>
+						<div class="win-count-label"><strong>{{win_count}}</strong> {{localize key='common.win_plural' count=2}}</div>
+					{{else}}
+						<div class="medal-container"><img class="division-medal disabled" src="{{imageForResourceScale 'resources/season_rewards/season_rank_bronze.png'}}" /></div>
+						<div class="win-count-label disabled"><strong>-</strong> {{localize key='common.win_plural' count=2}}</div>
+					{{/ifNotNull}}
+				</div>
+			{{/each}}
+		</div>
+	</div>
+	<!-- -->
+	<div id="division_stats" class="row">
+		<div class="col-md-12">
+			<div class="division-sum {{#unless divisionStats.Bronze.count}}disabled{{/unless}}">
+				<div class="medal-container">
+					<div>
+						<img src="{{imageForResourceScale 'resources/season_rewards/season_rank_bronze.png'}}" />
+					</div>
+				</div>
+				<div class="value">{{divisionStats.Bronze.count}}</div>
+				<div class="label">{{localize 'rank.bronze_division_name'}}</div>
+			</div>
+			<div class="division-sum {{#unless divisionStats.Silver.count}}disabled{{/unless}}">
+				<div class="medal-container">
+					<div>
+						<img src="{{imageForResourceScale 'resources/season_rewards/season_rank_silver.png'}}" />
+					</div>
+				</div>
+				<div class="value">{{divisionStats.Silver.count}}</div>
+				<div class="label">{{localize 'rank.silver_division_name'}}</div>
+			</div>
+			<div class="division-sum {{#unless divisionStats.Gold.count}}disabled{{/unless}}">
+				<div class="medal-container">
+					<div>
+						<img src="{{imageForResourceScale 'resources/season_rewards/season_rank_gold.png'}}" />
+					</div>
+				</div>
+				<div class="value">{{divisionStats.Gold.count}}</div>
+				<div class="label">{{localize 'rank.gold_division_name'}}</div>
+			</div>
+			<div class="division-sum {{#unless divisionStats.Diamond.count}}disabled{{/unless}}">
+				<div class="medal-container">
+					<div>
+						<img src="{{imageForResourceScale 'resources/season_rewards/season_rank_diamond.png'}}" />
+					</div>
+				</div>
+				<div class="value">{{divisionStats.Diamond.count}}</div>
+				<div class="label">{{localize 'rank.diamond_division_name'}}</div>
+			</div>
+			<div class="division-sum {{#unless divisionStats.Elite.count}}disabled{{/unless}}">
+				<div class="medal-container">
+					<div>
+						<img src="{{imageForResourceScale 'resources/season_rewards/season_rank_elite.png'}}" />
+					</div>
+				</div>
+				<div class="value">{{divisionStats.Elite.count}}</div>
+				<div class="label">{{localize 'rank.elite_division_name'}}</div>
+			</div>
+		</div>
+	</div>
+</div>

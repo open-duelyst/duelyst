@@ -1,0 +1,33 @@
+<div class="quest-content">
+	<div class="description">
+		<h2 class="title">{{#if title}}{{title}}{{else}}{{quest_name}}{{/if}}</h2>
+		{{#if gold}}
+			<div class="gold-reward">{{gold}}</div>
+		{{/if}}
+		{{#if gift_chests}}
+			<!--<div class="gift-chests-reward" data-toggle="popover" data-content="{{ rewards_details }}"><img style="width:10rem; margin-top:-2rem;" src="{{imageForResourceScale (imageForResourceName 'gift_loot_crate_sphere')}}" /></div>-->
+        <div class="gift-chests-reward"><img style="width:10rem; margin-top:-2rem;" src="{{imageForResourceScale (imageForResourceName 'gift_loot_crate_sphere')}}" /></div>
+		{{/if}}
+		{{#if spirit_orbs}}
+			<div class="spirit-orbs-reward">{{spirit_orbs}}</div>
+		{{/if}}
+		{{#if cosmetic_key}}
+			<!--<div class="{{cosmetic_key}}-cosmetic-key-reward" data-toggle="popover" data-content="{{ rewards_details }}"></div>-->
+        <div class="{{cosmetic_key}}-cosmetic-key-reward"></div>
+		{{/if}}
+		<div class="instructions">{{{quest_instructions}}}</div>
+	</div>
+	<div class="progress">{{progress}} / {{params.completionProgress}}</div>
+	<button data-quest-index="{{id}}" {{#if is_replaceable}} {{#ifUTCDayPassedSince mulliganed_at}} {{else}} disabled {{/ifUTCDayPassedSince}} {{else}} disabled {{/if}} class="btn btn-clean btn-clean-secondary replace uppercase">
+		{{#if is_beginner}}
+			{{localize 'quests.replace_button_starter_label'}}
+		{{else}}
+			{{#if is_catch_up}}
+			{{else}}
+				{{#ifUTCDayPassedSince mulliganed_at}}
+					{{localize 'quests.replace_button_label'}}
+				{{/ifUTCDayPassedSince}}
+			{{/if}}
+		{{/if}}
+	</button>
+</div>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_attackplus_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{33,49},{16,43}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{17,3},{16,43}}</string>
+				<key>sourceSize</key>
+				<string>{50,50}</string>
+			</dict>
+
+			<key>fx_attackplus_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,49},{33,47}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{8,1},{33,47}}</string>
+				<key>sourceSize</key>
+				<string>{50,50}</string>
+			</dict>
+
+			<key>fx_attackplus_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{50,49}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,1},{50,49}}</string>
+				<key>sourceSize</key>
+				<string>{50,50}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{64,128}</string>
+			<key>textureFileName</key>
+			<string>fx_attackplus.png</string>
+			</dict>
+		</dict>
+</plist>

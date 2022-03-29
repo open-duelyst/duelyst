@@ -1,0 +1,27 @@
+<div class="challenge-preview-content">
+	{{#if iconUrl}}
+		<div class="challenge-icon"><img src="{{imageForResourceScale iconUrl}}" /></div>
+	{{/if}}
+	<div class="challenge-caption">
+		<div class="challenge-name">{{name}}</div>
+		<div class="challenge-description">{{description}}</div>
+	</div>
+	{{#if completed_at}}
+		<div class="challenge-reward">
+			<i class="fa fa-check complete-icon"></i>
+		</div>
+	{{else}}
+		{{#if rewards.goldReward}}
+			<div class="challenge-reward">
+				<p class="challenge-reward-name">{{localize 'common.reward'}}</p>
+				<div class="icon-gold">{{rewards.goldReward}}</div>
+			</div>
+		{{/if}}
+	{{/if}}
+</div>
+
+{{#unless enabled}}
+	<div class="locked-label"><i class="fa fa-lock"></i>
+		{{#if unlockMessage}}{{{unlockMessage}}}{{else}}{{localize 'challenges.challenge_locked_label'}}{{/if}}
+	</div>
+{{/unless}}

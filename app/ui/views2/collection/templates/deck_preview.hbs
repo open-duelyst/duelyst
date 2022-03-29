@@ -1,0 +1,14 @@
+<div class="deck-color-code {{classForColorCode color_code}}"></div>
+{{#if generalId}}
+	<div class="faction-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId generalId)}})"></div>
+{{/if}}
+<div class="deck-preview-content">
+	<div class="deck-caption">
+		<h4 class="deck-name">{{name}}</h4>
+		<p class="deck-data">
+			<i class="fa fa-exclamation-triangle deck-invalid-icon"></i>
+			<strong>{{minion_count}}</strong> {{localize 'common.unit_label_plural'}} - <strong>{{spell_count}}</strong> {{localize 'common.spell_label_plural'}} - <strong>{{artifact_count}}</strong> {{localize 'common.artifact_label_plural'}}
+		</p>
+	</div>
+	<button class="btn btn-clean deck-delete"><span class="fa fa-trash-o"></span></button>
+</div>

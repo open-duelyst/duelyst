@@ -1,0 +1,96 @@
+<div class="collection-content">
+	<div class="collection-top">
+		<div class="collection-controls-main">
+			<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary btn-nav-back"></button>
+			<div class="collection-faction-tabs btn-group">
+				{{#factions.models}}
+					<button class="btn btn-clean faction-tab {{#isFactionDisabledInCollection attributes.id}}disabled{{/isFactionDisabledInCollection}}" data-factionid="{{id}}">
+						{{{attributes.short_name}}}
+						<div class="badges">
+							<span class="badge badge-unread-cards"></span>
+							<i class="badge badge-unread-lore fa fa-book"></i>
+						</div>
+					</button>
+				{{/factions.models}}
+			</div>
+			<div class="input-group search">
+				<input type="search" class="form-control" placeholder="{{localize 'common.search_input_label'}}">
+				<span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+				<span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+			</div>
+			<div class="btn-group collection-settings">
+				<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa fa-cog"></i>
+				</button>
+				<ul class="dropdown-menu dropdown-menu-right">
+					<li class="dismiss-new">
+						<i class="fa fa-exclamation-circle"></i><i class="fa fa-ban"></i> {{localize 'collection.action_dismiss_all_new'}}
+					</li>
+					<li role="separator" class="divider"></li>
+					<li class="toggle toggle-prismatics">
+						<i class="fa fa-check"></i><i class="fa fa-ban"></i> {{localize 'collection.action_filter_prismatics'}}
+					</li>
+					<li class="toggle toggle-prismatics-crafting">
+						<i class="fa fa-check"></i><i class="fa fa-ban"></i> {{localize 'collection.action_filter_prismatic_crafting'}}
+					</li>
+					<li class="toggle toggle-skins">
+						<i class="fa fa-check"></i><i class="fa fa-ban"></i> {{localize 'collection.action_filter_card_skins'}}
+					</li>
+					<li class="toggle toggle-lore-notifications">
+						<i class="fa fa-check"></i><i class="fa fa-ban"></i> {{localize 'collection.action_filter_lore'}}
+					</li>
+					<li role="separator" class="divider"></li>
+					<li class="toggle toggle-card-set" data-card-set="0">
+						<i class="fa fa-asterisk"></i> {{localize 'collection.action_filter_all_cards'}}
+					</li>
+					<li class="toggle toggle-card-set" data-card-set="1">
+						<img src="resources/booster_pack_opening/booster_orb.png" width="10" /> {{localize 'card_sets.core_set_name'}}
+					</li>
+					<li class="toggle toggle-card-set" data-card-set="2">
+						<img src="resources/booster_pack_opening/booster_orb_set_2.png" width="10" /> {{localize 'card_sets.shimzar_set_name'}}
+					</li>
+					<!--<li class="toggle toggle-card-set" data-card-set="3">-->
+						<!--<img src="resources/booster_pack_opening/booster_orb_set_3.png" width="10" /> {{localize 'card_sets.bloodborn_set_name'}}-->
+					<!--</li>-->
+					<!--<li class="toggle toggle-card-set" data-card-set="4">-->
+						<!--<img src="resources/booster_pack_opening/booster_orb_set_4.png" width="10" /> {{localize 'card_sets.ancient_bonds_set_name'}}-->
+					<!--</li>-->
+					<li class="toggle toggle-card-set" data-card-set="7">
+							<img src="resources/booster_pack_opening/booster_orb_set_4.png" width="10" /> {{localize 'card_sets.combined_unlockables_set_name'}}
+					</li>
+					<li class="toggle toggle-card-set" data-card-set="5">
+						<img src="resources/booster_pack_opening/booster_orb_set_5.png" width="10" /> {{localize 'card_sets.firstwatch_set_name'}}
+					</li>
+					<li class="toggle toggle-card-set" data-card-set="6">
+						<img src="resources/booster_pack_opening/booster_orb_set_6.png" width="10" /> {{localize 'card_sets.wartech_set_name'}}
+					</li>
+					<li class="toggle toggle-card-set" data-card-set="8">
+						<img src="resources/booster_pack_opening/booster_orb_set_8.png" width="10" /> {{localize 'card_sets.fate_set_name'}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="collection-center">
+		<div class="collection-cards-region">
+
+		</div>
+	</div>
+	<div class="collection-bottom">
+		<div class="collection-controls-alt">
+			<div class="previous-page">
+				<div class="btn btn-clean"></div>
+			</div>
+			<button class="btn btn-clean btn-clean-primary crafting-mode-start">{{localize 'collection.crafting_button_label'}} <i class="fa fa-wrench"></i></button>
+			<button class="btn btn-clean btn-clean-primary crafting-mode-stop">{{localize 'collection.back_button_label'}}  <i class="fa fa-reply"></i></button>
+			<div class="next-page">
+				<div class="btn btn-clean"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="collection-sidebar-region">
+
+</div>
+<div class="collection-selected-card-region">
+</div>

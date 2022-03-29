@@ -1,0 +1,172 @@
+/* ---------- LOGIN ---------- */
+
+#app-login {
+	position: absolute;
+	left: 50%;
+	top: 60%;
+	transform: translate(-50%, -60%);
+	background: radial-gradient(ellipse closest-side at 50% 60%,rgba(0,0,0,0.5), transparent);
+	padding: 6.0rem;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	a, button {
+		text-align: center;
+		@include altHeaderFont();
+	}
+	button {
+		&:after {
+			left: -12.5%;
+		}
+	}
+
+	.brand-cpg {
+		position: absolute;
+		bottom: -5rem;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	.login-form {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+
+	 	div.utility-links {
+			color:rgba(255,255,255,0.5);
+			margin:1rem 0;
+			a {
+				font-size: 1.25rem;
+				text-transform: uppercase;
+				display: inline;
+				font-weight: bold;
+				text-shadow: 0px 0px 10px #000, 0px 0px 10px #000;
+				&:hover {
+					color:#fff;
+					text-shadow: 0px 0px 10px $blue, 0px 0px 10px $blue;
+				}
+			}
+		}
+
+		.input-group {
+			margin: 0;
+		}
+		.form-group {
+			position: relative;
+			margin: 0;
+			&.has-error {
+				.form-control {
+					border-color: #c10000;
+					background: rgba(127,0,0,0.5);
+				}
+				.tooltip {
+					.tooltip-inner {
+						color: #FFF;
+						text-shadow: none;
+						background-color: rgba(255,0,60,1);
+						border: none;
+					}
+					&.left {
+						.tooltip-arrow {
+							border-left-color: rgba(255,0,60,1);
+						}
+					}
+					&.right {
+						.tooltip-arrow {
+							border-right-color: rgba(255,0,60,1);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.login {
+		margin-top: 1.5rem;
+	}
+
+	.registration {
+		display: block;
+		width: 20.0rem;
+		margin-bottom: 1.0rem;
+		color: #fff;
+		text-shadow: none;
+	}
+
+	.registration-message {
+		color: #fff;
+		font-size: 1.4rem;
+		text-align: center;
+		text-shadow: 0 0 1.0rem black;
+	}
+
+	.registration-block {
+		margin-top: 2.0rem;
+		.registration-message, .registration {
+			opacity:0;
+			transform-origin: top center;
+		}
+		&.active {
+			.registration-message {
+				animation: scaleIn 0.3s ease-out forwards;
+			}
+			.registration {
+				animation: slideInFromBottom 0.3s 0.15s ease-out forwards;
+			}
+		}
+	}
+}
+
+/* ---------- REGISTRATION ---------- */
+
+#app-registration {
+	#show_friend_referral_code_button {
+		font-size: 1.5rem;
+		color: $off-white;
+		&:hover {
+			color: white;
+		}
+	}
+	#existing_account_button {
+		margin-top: 1.0rem;
+		font-size: 1.5rem;
+		color: $off-white;
+		&:hover {
+			color: white;
+		}
+	}
+}
+
+/* ---------- FORGOT PASSWORD ---------- */
+
+#app-forgot-password {
+
+}
+
+/* ---------- CHANGE USERNAME ---------- */
+
+#app-change-username {
+	text-align: center;
+	.btn {
+		overflow: visible;
+		.icon-gold {
+			text-indent: 0;
+			position: absolute;
+			left: 1.5rem;
+			top: -1.0rem;
+		}
+		.text-gold {
+			margin-left: 6.0rem;
+		}
+	}
+}
+
+/* ---------- CHANGE PASSWORD ---------- */
+
+#app-change-password {
+	text-align: center;
+}

@@ -1,0 +1,44 @@
+{
+	"env": "production",
+	"api": "",
+	"firebase": "",
+	"firebaseToken": "",
+	"cdn": "",
+	"s3_url":"",
+	"consul": {
+		"gameServiceName": "production-game"
+	},
+	"s3": {
+		"params": {
+			"Bucket": "duelyst-assets"
+		},
+		"accessKeyId": "",
+		"secretAccessKey": "",
+		"region": "us-west-2"
+	},
+	"analyticsEnabled": true,
+	"amaId":"",
+	"gaId":"",
+	"stripeClientKey":"",
+	"zendeskEnabled": true,
+	"bugsnag": {
+		"client_key": ""
+	},
+	"postgres_connection_string": "",
+	"recordClientLogs":true,
+	"inviteCodesActive":false,
+	"watchSectionCacheTTL":3600,
+	"recaptcha": {
+		"enabled":false
+	},
+	"steam": {
+		"sandbox": false
+	},
+	"bnea": {
+		"enabled": false
+	},
+	"fastly": {
+		"token": "",
+		"serviceId": ""
+	}
+}

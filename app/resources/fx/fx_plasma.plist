@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_blueplasma_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,141},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{49,47},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{49,0},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,188},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{49,94},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,94},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,47},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+			<key>fx_blueplasma_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{48,46}}</string>
+				<key>sourceSize</key>
+				<string>{48,46}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{128,256}</string>
+			<key>textureFileName</key>
+			<string>fx_plasma.png</string>
+			</dict>
+		</dict>
+</plist>

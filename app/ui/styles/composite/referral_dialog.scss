@@ -1,0 +1,211 @@
+#referral_dialog {
+	width:72.4rem;
+	div.modal-header {
+		h4 {
+			#referral_code {
+				background-color: #000;
+				display: inline-block;
+				padding: 0 1rem;
+				line-height: 3.5rem;
+				pointer-events: auto;
+				font-weight: bold;
+				margin: 0;
+				height:4rem;
+				vertical-align: middle;
+				border:none;
+				outline: none;
+				resize:none;
+				overflow: none;
+				text-align: center;
+				width:20.0rem;
+			}
+		}
+		p {
+			color: $off-white;
+			margin: 2.0rem 0;
+		}
+	}
+	div.modal-body {
+		position:relative;
+		&:before {
+			display: block;
+			content: ' ';
+			width:71.1rem;
+			height:19.6rem;
+			background: url("resources/referral_dialog/stats_bg.jpg") no-repeat;
+			background-size: cover;
+			position: absolute;
+			z-index: 1;
+			left:0.1rem;
+			top:-0.9rem;
+		}
+	}
+	div#referral_stats {
+		position:relative;
+		z-index: 2;
+		display:flex;
+		flex-flow:row;
+		justify-content: space-between;
+		width: 100%;
+		> div {
+			width:14.0rem;
+		}
+		canvas#referral_stats_bg_canvas {
+			display:none;
+		}
+		div.referral-pie-chart-container {
+			position:relative;
+			width:14.0rem;
+			height:14.0rem;
+			border-radius:10.0rem;
+			background:#000;
+			&:before {
+				content:" ";
+				position:absolute;
+				width:100%;
+				height:100%;
+				border-radius:10.0rem;
+				border:solid 0.1rem #1e3045;
+			}
+			&:after {
+				content:" ";
+				left:1.0rem; top:1.0rem;
+				position:absolute;
+				width:12.0rem;
+				height:12.0rem;
+				border-radius:10.0rem;
+				border:solid 0.1rem #1e3045;
+			}
+			canvas.pie-chart-canvas {
+				position:absolute;
+				width:100%;
+				height:100%;
+			}
+			div.label {
+				padding:0; margin:0;
+				left:1.0rem; top:1.0rem;
+				position:absolute;
+				width:12.0rem;
+				height:12.0rem;
+				border-radius:10.0rem;
+				background-color: #071325;
+				display:flex;
+				flex-flow: column;
+				justify-content: center;
+				// box-shadow:0.0rem 0.0rem 0.5rem rgba(255,255,255,0.5);
+				strong {
+					font-family:Lato;
+					font-size: 1.8rem;
+					font-weight: 600;
+					display:block;
+					line-height: 3.0rem;
+				}
+				span {
+					font-family:Lato;
+					font-size: 1.6rem;
+					font-weight: 300;
+					display:block;
+					text-transform: uppercase;
+					color:$off-white;
+				}
+			}
+		}
+		div.description {
+			margin:3.0rem 0;
+			font-size: 1.2rem;
+			font-family: Lato;
+		}
+	}
+	div.modal-content {
+		background: #0a1b35;
+	}
+	div.modal-footer {
+		background: #071325;
+		div.referral-rewards {
+			float:left;
+			line-height: 4rem;
+			> div {
+				display: inline-block;
+				color:$off-white;
+				margin:0 1rem;
+				strong { color:#fff; }
+			}
+			.gold-reward {
+				// strong { color:lighten($light-yellow,30%); }
+			}
+			.spirit-orb-reward {
+				// strong { color:lighten($light-blue,40%); }
+			}
+		}
+		#claim_rewards_button {
+			float:right;
+		}
+		#claim_rewards_success {
+			color:$light-green;
+		}
+		#event_history_button {
+			height: 4rem;
+			line-height: 4rem;
+		}
+	}
+}
+
+#referral-event-history {
+	.modal-dialog {
+		.modal-content {
+			justify-content: flex-start;
+		}
+		.container {
+			width:100%;
+		}
+	}
+}
+
+table#referral_history_list {
+	width:100%;
+	border-collapse:separate;
+	border-spacing:0 0.1rem;
+	thead {
+		background: rgba(0, 0, 60, 0.75);
+	}
+	th {
+		text-align: left;
+		font-size: 1.2rem;
+		font-weight: 500;
+		padding:0.5rem;
+		text-transform: uppercase;
+		color:$off-white;
+	}
+	tr {
+		background: rgba(0, 0, 60, 0.5);
+		margin-bottom: 1.0rem;
+		&:hover { background: rgba(0, 0, 40, 0.6); }
+	}
+	td {
+		text-align: left;
+		font-size: 1.6rem;
+		font-weight: 300;
+		padding:0.5rem;
+		&.win {
+			text-shadow: 0 0 1.5rem $light-yellow;
+		}
+		&.loss {
+			text-shadow: 0 0 1.5rem $light-red;
+			color: rgba(255,0,0,0.75);
+		}
+	}
+	td.icon img { height:4.0rem; }
+	button {
+		border:solid 0.1rem $key-color;
+		margin-top:0;
+		border-radius:2.0rem;
+		padding:0.5rem 1.2rem;
+		text-transform:uppercase;
+		color:$key-color !important;
+		font-size:1.4rem;
+		&:hover {
+			color:#fff !important;
+			border-color:#fff;
+		}
+	}
+}

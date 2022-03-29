@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>frames</key>
+        <dict>
+            <key>distortion_water_bubble_001.png</key>
+            <dict>
+                <key>frame</key>
+                <string>{{2,2},{272,272}}</string>
+                <key>offset</key>
+                <string>{0,0}</string>
+                <key>rotated</key>
+                <false/>
+                <key>sourceColorRect</key>
+                <string>{{0,0},{272,272}}</string>
+                <key>sourceSize</key>
+                <string>{272,272}</string>
+            </dict>
+        </dict>
+        <key>metadata</key>
+        <dict>
+            <key>format</key>
+            <integer>2</integer>
+            <key>realTextureFileName</key>
+            <string>fx_distortion_water_bubble.png</string>
+            <key>size</key>
+            <string>{512,512}</string>
+            <key>smartupdate</key>
+            <string>$TexturePacker:SmartUpdate:a17e19ce3d1faf83b7e840f2cddf53f8:4b38c1b6326035e3ce904f75fd6cba6c:2d245ff6db626966f2cf7763ff6d87fb$</string>
+            <key>textureFileName</key>
+            <string>fx_distortion_water_bubble.png</string>
+        </dict>
+    </dict>
+</plist>

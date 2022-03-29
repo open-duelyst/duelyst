@@ -1,0 +1,25 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary cancel-dialog"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">{{title}}</h4>
+		</div>
+		{{#if message}}
+			<div class="modal-body">
+				<div class="modal-message">{{message}}</div>
+			</div>
+		{{/if}}
+		<div class="modal-footer">
+			<div class="btn-group btn-group-centered">
+				<button class="btn btn-clean btn-clean-primary cancel-dialog">{{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+				<button class="btn btn-clean btn-clean-primary confirm-dialog">
+					{{#if buttonLabel}}
+						{{buttonLabel}}
+					{{else}}
+						{{localize 'common.default_confirm_dialog_button_continue_label'}}
+					{{/if}}
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

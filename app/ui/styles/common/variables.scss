@@ -1,0 +1,102 @@
+/* ----------- VARS ----------- */
+
+// minimum width and height supported
+$minWidth: 1280px;
+$minHeight: 720px;
+
+// list of resource scales enabled other than 1x (NOTE: if you change this, you must also change RESOURCE_SCALES in app/common/config!)
+// these will be suffixed to the end of all image paths as needed, ex: path/to/img.png -> path/to/img@2x.png
+// TODO: load these from the config file
+$resourceScales: 2;
+
+//$main-color: rgb(21,171,195); // blue-green
+$main-color: #444444;
+$main-panel-color: darken($main-color, 5%);
+$main-border-color: darken($main-color, 2.5%);
+
+$highlight-color: lighten($main-color, 20%);
+
+$header-color: #ffffff;
+$subheader-color: darken($header-color, 15%);
+$copy-color: darken($header-color, 0%);
+
+$hover-color: lighten($main-color, 5%);
+$hover-border-color: lighten($main-border-color, 5%);
+$hover-header-color: lighten($header-color, 5%);
+$hover-subheader-color: lighten($subheader-color, 5%);
+$hover-copy-color: lighten($copy-color, 5%);
+
+$disable-color: darken($main-color, 2.5%);
+$disable-border-color: darken($main-border-color, 2.5%);
+
+$button-color: #0C7ED8;
+$button-alt-color: darken($button-color, 10%);
+$button-dark-color: darken($button-color, 25%);
+
+$button-confirm-color: #27e956;
+$button-cancel-color: #e93f33;
+
+$tooltip-arrow-size: 0.75rem;
+$tooltip-color: rgba(25, 25, 25, 1.0);
+$tooltip-alt-color: rgba(225, 225, 225, 1.0);
+
+$key-color: rgba(92,204,228,1);
+
+$stat-base-color: #eeeeee;
+$stat-buffed-color: #27e956;
+$stat-nerfed-color: #e93f33;
+$hp-color: #e93f33;
+$atk-color: #f4ce37;
+$mana-color: rgba(12,82,161,1.0);
+
+$booster-pack-color: #539961;
+$booster-pack-glow: rgba(0, 255, 122, 1.0);
+
+$rank-color: rgba(109, 247, 177, 1.0);
+$rank-dark-color: rgba(54, 213, 132, 1.0);
+
+$entity-card-color: #3B444E;
+$general-card-color: #373F52;
+$spell-card-color: #454053;
+$artifact-card-color: #44403E;
+
+$card-title-color:#fff;
+$card-subheader-color:#ccc;
+
+$gold-color: #FFD83E;
+$gold-dark-color: #CBA200;
+
+$glow-color:rgba(0, 255, 255, 1.0);
+$blue-glow-color:rgba(164, 255, 255, 1.0);
+
+$profile-top-rank-color: #FEC12D;
+$profile-current-rank-color: #00FFFF;
+$profile-history-rank-color: #3B9595;
+
+
+// colors
+$blue: #00b9fd;
+$light-blue: #00fbff;
+$cyan: #00c19a;
+$green: #4db802;
+$light-green: #96fb04;
+$yellow: #ffd802;
+$light-yellow: #fffd04;
+$orange: #FF6000;
+$red: #be0001;
+$light-red: #fc0002;
+$pink: #9e0467;
+$light-pink: #fa08c9;
+$purple: #6e10ac;
+$light-purple: #d61ffb;
+$off-white: #c2cbdc;
+$light-off-white: #fcfcfd;
+$light-gray: #a9a9a9;
+
+
+
+$popover-color:rgba(0,0,0,0.8);
+$popover-alt-color:white;
+$popover-content-color:lighten($light-blue,30%);
+
+$edge-spacing: 1.5rem;

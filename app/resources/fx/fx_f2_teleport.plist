@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_f2_teleport_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{126,126},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{378,0},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{252,126},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{252,0},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{378,126},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{126,0},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,126},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+			<key>fx_f2_teleport_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{125,125}}</string>
+				<key>sourceSize</key>
+				<string>{125,125}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{512,256}</string>
+			<key>textureFileName</key>
+			<string>fx_f2_teleport.png</string>
+			</dict>
+		</dict>
+</plist>

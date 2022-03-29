@@ -1,0 +1,30 @@
+# Mac
+.DS_Store
+
+#windows
+Thumbs.db
+Desktop.ini
+
+# IntelliJ IDEA files
+*.iml
+.idea
+
+# node modules from npm
+/node_modules
+
+# ignore mobile src as it is copied from main src
+/www
+
+# ignore plugins
+/plugins
+
+# ignore platforms
+/platforms
+
+# res
+res/mipmap-ldpi
+res/mipmap-mdpi
+res/mipmap-hdpi
+res/mipmap-xhdpi
+res/mipmap-xxhdpi
+res/mipmap-xxxhdpi

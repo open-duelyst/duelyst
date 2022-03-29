@@ -1,0 +1,75 @@
+#app-play {
+	@include fillParent();
+
+	.mode-region {
+		@include fillParent();
+	}
+
+	.btn-cancel-primary {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		margin: 0;
+		width: 9.0rem;
+		height: 9.0rem;
+		border-radius: 0;
+		background-size: contain;
+		background-position: top left;
+		&, &:hover, &:focus, &:active, &:active:focus {
+			@include backgroundImage("resources/ui/button_back_corner.png");
+		}
+		&:before {
+			top: -50%;
+			left: -50%;
+		}
+	}
+}
+
+/* ---------- PLAY MODE SELECT ---------- */
+
+.play-mode-select {
+	.play-mode {
+
+		&.emphasize {
+			.background {
+				// position: relative;
+				@include move-shine();
+			}
+		}
+
+		.popover.top {
+			margin-top: -2.0rem;
+		}
+
+		.popover.bottom {
+			margin-top: 5.0rem;
+		}
+
+		.availability-info {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			padding: 1.5rem 1.0rem 6.0rem 1.0rem;
+			line-height: 1.8rem;
+			background: linear-gradient(to bottom, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+		}
+
+		&:after {
+			content: ' ';
+			position: absolute;
+			width: 101%;
+			height: 5.9rem;
+			bottom: -3.8rem;
+			left: -0.5%;
+			@include backgroundImage("resources/ui/sliding_panel/panel_trim_plate.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: contain;
+		}
+		&.disabled:after {
+			filter:saturate(0) brightness(0.5);
+		}
+	}
+}

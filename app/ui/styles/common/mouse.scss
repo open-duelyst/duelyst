@@ -1,0 +1,29 @@
+/* ---------- MOUSE ----------- */
+
+.mouse-auto {
+	@include cursorImage("resources/ui/mouse_auto.png");
+}
+
+.mouse-select {
+	@include cursorImage("resources/ui/mouse_select.png", "pointer");
+}
+
+.mouse-disabled {
+	@include cursorImage("resources/ui/mouse_disabled.png");
+}
+
+.mouse-move {
+	@include cursorImage("resources/ui/mouse_move.png", "pointer");
+}
+
+.mouse-attack {
+	@include cursorImage("resources/ui/mouse_attack.png", "pointer");
+}
+
+.mouse-assist {
+	@include cursorImage("resources/ui/mouse_assist.png", "pointer");
+}
+
+.mouse-card {
+	@include cursorImage("resources/ui/mouse_card.png", "pointer");
+}

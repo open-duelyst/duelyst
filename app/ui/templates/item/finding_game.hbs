@@ -1,0 +1,38 @@
+<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary btn-nav-back"></button>
+
+<div class="status-content">
+		<div class="mode finding-mode">
+        <div class="bracketed-text friendly">
+            <h1 class="bracketed-text-content status-header uppercase">{{localize 'battle.finding_game'}}</h1>
+        </div>
+        <h2 id="clock">00:00</h2>
+        <div id="expected-wait" style="color: white; height: 25px; opacity: 0;"></div>
+        <button class="btn btn-clean btn-clean-primary btn-user-cancel"><i class="fa fa-angle-double-left"></i> {{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+		</div>
+		<div class="mode single-player-mode">
+        <div class="bracketed-text friendly">
+            <h1 class="bracketed-text-content status-header uppercase">{{localize 'battle.starting_practice_game'}}</h1>
+        </div>
+        <button class="btn btn-clean btn-clean-primary btn-user-cancel"><i class="fa fa-angle-double-left"></i> {{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+		</div>
+		<div class="mode found-mode">
+        <div class="players">
+            <div class="player player1">
+                <h3 class="user-name"></h3>
+                <div class="player-general"></div>
+                <div class="player-general-platform"></div>
+            </div>
+            <div class="player player2">
+                <h3 class="user-name"></h3>
+                <div class="player-general"></div>
+                <div class="player-general-platform"></div>
+            </div>
+        </div>
+
+        <div class="bracketed-text friendly">
+            <h1 class="bracketed-text-content status-header uppercase">{{localize 'battle.loading_battle'}}</h1>
+        </div>
+		</div>
+
+    <div class="game-tip"></div>
+</div>

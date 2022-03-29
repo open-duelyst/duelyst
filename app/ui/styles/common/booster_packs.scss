@@ -1,0 +1,267 @@
+#booster_pack_collection {
+
+	background-color:transparent;
+	pointer-events:none;
+
+	.input-group-addon {
+		line-height: initial;
+		width: auto;
+		color: #ccc;
+	}
+
+	.btn-cancel-primary {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		margin: 0;
+		width: 9.0rem;
+		height: 9.0rem;
+		border-radius: 0;
+		background-size: contain;
+		background-position: top left;
+		&, &:hover, &:focus, &:active, &:active:focus {
+			@include backgroundImage("resources/ui/button_back_corner.png");
+		}
+		&:before {
+			top: -50%;
+			left: -50%;
+		}
+	}
+
+	.card {
+		margin: 0.8rem;
+		margin-bottom: 2.5rem;
+		.inventory-count, .deck-count, .keyword-descriptions {
+			display: none;
+		}
+		.faction-name {
+			display: block;
+		}
+		&:hover {
+			z-index: 1000;
+			.keyword-descriptions {
+				display: block;
+			}
+		}
+		&:nth-child(3), &:nth-child(6) {
+			.sidebar {
+				left: auto;
+				right: 100%;
+			}
+		}
+	}
+
+	.booster-packs-controls {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 28.0rem;
+		height: 100%;
+		padding: 2.0rem;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		@include linear-gradient(rgba(0,0,0,0), rgba(0,0,0,1), right);
+		transform: translate(100%, 0);
+		transition: transform 0.9s cubic-bezier(0.46, 0.48, 0.17, 1.0);
+		transition-delay: 0.1s;
+		pointer-events: none;
+		&.active {
+			transform: translate(0, 0);
+			pointer-events: auto;
+		}
+	}
+
+	.booster-buy {
+		position: relative;
+		z-index: 1;
+		margin-bottom: 1.5rem;
+		min-height: 7rem;
+
+		.gold-remaining {
+			position: absolute;
+			background: #444;
+			color: #bbb;
+			padding: 0.5rem 1.0rem 0 1.0rem;
+			margin-top: 0.1rem;
+			top: 100%;
+			left: 1.0rem;
+			border-radius: 0 0 0.6rem 0.6rem;
+			z-index: -1;
+			p {
+				position: relative;
+				display: inline-block;
+				top: -0.5rem;
+			}
+			.gold {
+				color: $gold-color;
+			}
+			.icon-gold {
+				position: relative;
+				display: inline-block;
+				width: 2.2rem;
+				height: 2.2rem;
+			}
+			.icon-premium {
+				position: relative;
+				display: inline-block;
+				width: 2.2rem;
+				height: 2.2rem;
+			}
+		}
+		.booster-cost {
+			position: absolute;
+			right: 0;
+			top: -2.0rem;
+		}
+	}
+
+	.booster-packs-dispenser, .booster-packs-dispenser-2, .booster-packs-dispenser-3, .booster-packs-dispenser-4, .booster-packs-dispenser-5, .booster-packs-dispenser-6, .booster-packs-dispenser-8 {
+		display: flex;
+		flex-flow: column nowrap;
+		margin-bottom: 6rem;
+		pointer-events:auto;
+	}
+
+	.booster-packs {
+	}
+
+	.booster-packs-list {
+		width: 100%;
+		height: 10rem;
+		padding: 0;
+		margin: 0 0 1.0rem 0;
+		display:flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-content: flex-start;
+	}
+
+	.booster-packs-info {
+		text-align: center;
+		color: #ccc;
+		font-size: 1.6rem;
+		margin-top: 1.5rem;
+	}
+
+	.total-booster-packs-count {
+		color: white;
+		font-size: 2rem;
+		font-weight: bold;
+	}
+
+	.booster-pack-unlock {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		padding: 1.0rem;
+		display: flex;
+		flex-flow: column nowrap;
+		align-content: center;
+		align-items: center;
+		justify-content: center;
+		&.booster-pack-dragging {
+			pointer-events:auto;
+		}
+		&.booster-pack-over {
+			.booster-pack-unlock-directions {
+				color: darken($booster-pack-glow, 25%);
+			}
+		}
+		&.booster-pack-unlocked {
+			.booster-pack-unlock-directions {
+				opacity: 0.0;
+			}
+		}
+	}
+
+	.booster-pack-contents {
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		.cards {
+			display: flex;
+			flex-flow: row wrap;
+			justify-content: center;
+		}
+	}
+}
+
+.booster-pack-preview {
+	flex: 0 10.0rem;
+	width: 10rem;
+	height: 10rem;
+	min-width: 10rem;
+	min-height: 10rem;
+	margin: 0;
+	margin-left: -2rem;
+	@include backgroundImage("resources/booster_pack_opening/booster_orb.png");
+	background-repeat: no-repeat;
+	background-position: 50% 47%;
+	background-size: 160%;
+	border-radius: 50%;
+	display: flex;
+	z-index: 10;
+	transition: box-shadow 0.35s ease-out;
+	box-shadow: 0 0 1.0rem rgba(0, 0, 0, 0.5);
+	&.card-set-2 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_2.png");
+	}
+	&.card-set-3 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_3.png");
+	}
+	&.card-set-4 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_4.png");
+	}
+	&.card-set-5 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_5.png");
+	}
+	&.card-set-6 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_6.png");
+	}
+	&.card-set-7 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_4.png");
+	}
+	&.card-set-8 {
+		@include backgroundImage("resources/booster_pack_opening/booster_orb_set_8.png");
+	}
+	&:nth-child(1) {
+		z-index: 16;
+	}
+	&:nth-child(2) {
+		z-index: 15;
+		filter: brightness(0.7);
+	}
+	&:nth-child(3) {
+		z-index: 14;
+		filter: brightness(0.5);
+	}
+	&.booster-pack-dragging {
+		box-shadow: 0 0 1.0rem transparentize(white, 0.5), 0 0 4.0rem transparentize($booster-pack-glow, 0.5);
+		z-index: 100;
+		filter: none;
+	}
+	&.booster-pack-over {
+		box-shadow: 0 0 1.0rem white, 0 0 4.0rem $booster-pack-glow;
+		z-index: 100;
+		filter: none;
+	}
+	&.booster-pack-unlocked {
+		box-shadow: none;
+		z-index: 100;
+		filter: none;
+	}
+	&:hover {
+		filter: brightness(1.2);
+	}
+	h4 {
+		margin-top: 8.0rem;
+		font-size: 1.2rem;
+		text-shadow: 0 0.1rem 0.1rem #000;
+		text-transform: uppercase;
+	}
+}

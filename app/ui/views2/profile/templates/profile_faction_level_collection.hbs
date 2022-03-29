@@ -1,0 +1,27 @@
+<div class="container">
+	<!-- -->
+	<div class="row">
+		<div id="faction_levels" class="col-md-12">
+			{{#each factionProgression}}
+				<div class="faction-level">
+					<div class="faction-image">
+						<img class="faction-crest f{{ faction_id }}" src="{{imageForResourceScale (concat 'resources/crests/crest_f' faction_id '.png')}}" />
+						<div class="general-portrait">
+							<div class="general-portrait-image" style="background-image:url({{imageForResourceScale (concat 'resources/generals/general_portrait_image_f' faction_id '.png')}})"></div>
+						</div>
+					</div>
+					<div class="progress">
+						<div class="progress-bar level-progress-bar" style="width: {{ progress_percent }}%">
+							<span class="sr-only"></span>
+						</div>
+					</div>
+					<h2 class="label">
+						<span class="level">{{localize 'common.abbreviated_level_label'}} {{ level_for_user }}</span>
+						<span class="faction-name">{{ faction_name }}</span>
+					</h2>
+					<p class="next-reward"><strong>{{localize 'common.abbreviated_level_label'}} {{ next_reward_level }} {{ localize 'common.reward' }}:</strong> {{ next_reward_description }}.</p>
+				</div>
+			{{/each}}
+		</div>
+	</div>
+</div>

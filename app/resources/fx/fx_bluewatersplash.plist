@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_bluewatersplash_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,132},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{45,0},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,198},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,165},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{45,33},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,99},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,66},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,33},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+			<key>fx_bluewatersplash_008.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{44,32}}</string>
+				<key>sourceSize</key>
+				<string>{44,32}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{128,256}</string>
+			<key>textureFileName</key>
+			<string>fx_bluewatersplash.png</string>
+			</dict>
+		</dict>
+</plist>

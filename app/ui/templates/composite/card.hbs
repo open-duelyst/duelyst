@@ -1,0 +1,149 @@
+{{#if card}}
+<div class="glow"></div>
+<div class="bg">
+	{{#if isPrismatic}}
+      <div class="prismatic-gradient">
+					<!-- uncomment below for moving additive gradients, disabled for performance reasons -->
+					<!--
+          <div class="prismatic-red"></div>
+          <div class="prismatic-green"></div>
+          <div class="prismatic-blue"></div>
+          -->
+      </div>
+	{{/if}}
+</div>
+<div class="is-unread-block">
+    <div class="is-lore-unread-label"><i class="fa fa-book"></i></div>
+    <div class="is-unread-label">{{localize 'collection.new_card_popover_msg'}}</div>
+</div>
+
+<div class="sidebar">
+	{{#if keywordDescriptions}}
+      <div class="keyword-descriptions">
+				{{#keywordDescriptions}}
+            <div class="keyword-description">
+                <h6 class="keyword-name">{{name}}</h6>
+                <p class="keyword-definition">{{description}}</p>
+            </div>
+				{{/keywordDescriptions}}
+      </div>
+	{{/if}}
+</div>
+
+{{#if isSkinned}}
+	{{#unless inventoryCount}}
+      <div class="locked-label skin-needed-to-unlock-label">
+					<i class="fa fa-lock"></i>
+					Unlock this skin by unlocking the normal {{#if isPrismatic}}and prismatic cards{{else}}card{{/if}}.
+			</div>
+	{{/unless}}
+{{else}}
+	{{#if isUnlockablePrismaticWithAchievement}}
+		{{#unless inventoryCount}}
+        <div class="locked-label level-needed-to-unlock-label"><i class="fa fa-lock"></i>{{localize 'collection.unlock_prismatic_crafting_by_normal_unlock_msg'}}</div>
+		{{/unless}}
+	{{else}}
+		{{#if isUnlockableWithAchievement}}
+			{{#unless inventoryCount}}
+          <div class="locked-label achievement-locked"><i class="fa fa-lock"></i> {{unlockMessage}}</div>
+			{{/unless}}
+		{{else}}
+			{{#if isUnlockablePrismaticBasic}}
+				{{#unless inventoryCount}}
+            <div class="locked-label level-needed-to-unlock-label"><i class="fa fa-lock"></i>{{localize key='collection.unlock_prismatic_crafting_by_leveling_faction_msg' faction_name=unlocksWithFactionName unlocksAtLevel=(math unlocksAtLevel "+" 1)}}</div>
+				{{/unless}}
+			{{else}}
+				{{#if isUnlockableBasic}}
+					{{#unless inventoryCount}}
+							{{#if isGeneral}}
+                  <div class="locked-label level-needed-to-unlock-label"><i class="fa fa-lock"></i>{{localize key='collection.unlock_general_by_leveling_msg' faction_name=unlocksWithFactionName unlocksAtLevel=(math unlocksAtLevel "+" 1)}}</div>
+							{{else}}
+                  <div class="locked-label level-needed-to-unlock-label"><i class="fa fa-lock"></i>{{localize key='collection.unlock_card_by_leveling_msg' faction_name=unlocksWithFactionName level=(math unlocksAtLevel "+" 1)}}</div>
+							{{/if}}
+					{{/unless}}
+				{{else}}
+					{{#if isUnlockablePrismaticWithSpiritOrbs}}
+						{{#unless inventoryCount}}
+                <div class="locked-label level-needed-to-unlock-label"><i class="fa fa-lock"></i>{{localize 'collection.unlock_prismatic_crafting_by_normal_unlock_msg'}}</div>
+						{{/unless}}
+					{{else}}
+						{{#if isUnlockableWithSpiritOrbs}}
+							{{#unless inventoryCount}}
+                  <div class="locked-label orb-only-unlock-label"><i class="fa fa-lock"></i>{{localize key='collection.unlock_through_spirit_orbs_msg' card_set_name=cardSetName}}</div>
+							{{/unless}}
+						{{else}}
+							{{#isFactionLocked factionId}}
+                  <div class="locked-label faction-locked-label"><i class="fa fa-lock"></i> {{localize key='collection.unlock_faction_msg' faction_name=factionName}}</div>
+							{{/isFactionLocked}}
+						{{/if}}
+					{{/if}}
+				{{/if}}
+			{{/if}}
+		{{/if}}
+	{{/if}}
+{{/if}}
+
+<div class="locked-label show-when-max-copies-reached"><i class="fa fa-lock"></i> {{localize key='collection.max_copies_added_to_deck'}}</div>
+
+<div class="card-header">
+		{{#if isGeneral}}
+        <div class="signature-card-sprite">
+            <div class="sprite"></div>
+				</div>
+		{{else}}
+        <div class="mana-cost">{{manaCost}}</div>
+		{{/if}}
+</div>
+
+<div class="card-sprite">
+    <div class="shadow"></div>
+    <div class="sprite"></div>
+</div>
+<div class="card-caption">
+  <h5 class="{{#if longCardName}}name-long{{else}}name{{/if}}">{{name}}</h5>
+	<p class="type">
+			{{#if isGeneral}}
+				{{localize 'common.general_label'}}
+			{{else}}
+				{{#if isUnit}}
+					{{#if raceName}}{{raceName}}{{else}}{{localize 'common.unit_label'}}{{/if}}
+				{{else}}
+					{{#if isArtifact}}
+						{{localize 'common.artifact_label'}}
+					{{else}}
+						{{#if isSpell}}
+							{{localize 'common.spell_label'}}
+						{{else}}
+							{{#if isTile}}
+								{{localize 'common.tile_label'}}
+							{{/if}}
+						{{/if}}
+					{{/if}}
+				{{/if}}
+			{{/if}}
+	</p>
+  {{#if showRarity}}<p class="rarity {{downcase rarityDevName}}" style="color:{{rarityColor}};">{{rarityName}}</p>{{/if}}
+  {{#if isEntity}}
+  <ul class="stats">
+      <li class="stat-property stat-atk">
+          <span class="value">{{atk}}</span>
+      </li>
+      <li class="stat-property stat-hp">
+          <span class="value">{{hp}}</span>
+      </li>
+  </ul>
+  {{/if}}
+</div>
+
+<p class="{{#if longCardDescription}}card-description-long{{else}}card-description{{/if}}"><span>{{{description}}}</span></p>
+
+<div class="inventory-count">x {{inventoryCount}}</div>
+<div class="deck-count">x {{deckCount}}</div>
+
+<div class="modifiers">
+    <div class="modifiers-list"></div>
+</div>
+{{else}}
+<div class="glow"></div>
+<div class="bg" style="background-image: url({{imageForResourceScale (cardBackImgForId id)}}"></div>
+{{/if}}

@@ -1,0 +1,94 @@
+<div class="sliding-panel-select-content">
+    <div class="sliding-panel-select-header">
+        <ul class="nav nav-tabs deck-groups">
+            <li role="select" data-value="custom"><a>{{localize 'main_menu.deck_select_tab_custom_decks'}}</a></li>
+            <li role="select" data-value="starter"><a>{{localize 'main_menu.deck_select_tab_starters'}}</a></li>
+        </ul>
+        <div class="input-group search">
+            <input type="search" class="form-control" placeholder="{{localize 'common.search_input_label'}}">
+            <span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+            <span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+        </div>
+        <div class="btn-group deck-settings">
+          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <button class="toggle toggle-faction" data-faction="0">
+              <i class="fa fa-asterisk"></i>
+            </button>
+            <button class="toggle toggle-faction" data-faction="1">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f1.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="2">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f2.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="3">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f3.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="4">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f4.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="5">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f5.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="6">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f6.png'}}"/>
+            </button>
+            <li role="separator" class="divider"></li>
+            <div class="deck-color-code-select-list">
+              {{#getColorCodes}}
+                <button class="toggle deck-color-code {{cssClass}}" data-code="{{code}}"></button>
+              {{/getColorCodes}}
+            </div>
+          </ul>
+        </div>
+    </div>
+		<div class="sliding-panel-select-body">
+        <div class="sliding-panel-select-choices">
+            <ul class="choices"></ul>
+            <div class="previous-page"><div class="btn btn-clean"></div></div>
+            <div class="next-page"><div class="btn btn-clean"></div></div>
+        </div>
+				<div class="ai-opponent-select">
+					<h4 class="ai-opponent-select-header header-dashed-text">{{localize 'game_setup.choose_your_opponent_header'}}</h4>
+					<ul class="ai-opponent-select-choices choices">
+							{{#opponents}}
+								<li class="ai-opponent f{{factionId}} {{#if recommended}}recommended{{/if}}" data-opponent-id="{{id}}" data-faction-id="{{factionId}}">
+										<div class="ai-opponent-portrait"><img src="{{imageForResourceScale portraitImg}}"></div>
+										{{#if recommended}}
+										<div class="ai-opponent-name">
+											<div>{{name}}</div>
+											<div class="ai-opponent-recommended">{{localize 'game_setup.recommended_ai_opponent_label'}}</div>
+										</div>
+										<div class="shine"></div>
+										{{else}}
+										<div class="ai-opponent-name">
+												<div>{{name}}</div>
+										</div>
+										{{/if}}
+								</li>
+							{{/opponents}}
+					</ul>
+					<div class="setting setting-single-line setting-difficulty ai-tool">
+							<label for="difficulty" class="setting-label range">Difficulty</label>
+							<input type="range" id="difficulty" class="range" min=-0.1 max=1.0 step=0.1 />
+							<output for="difficulty" class="range">Auto</output>
+					</div>
+					<div class="setting setting-single-line setting-num-random-cards ai-tool">
+							<label for="num-random-cards" class="setting-label range">Random Cards</label>
+							<input type="range" id="num-random-cards" class="range" min=-1 max={{maxNumRandomCards}} step=1 />
+							<output for="num-random-cards" class="range">Auto</output>
+					</div>
+        </div>
+		</div>
+    <div class="sliding-panel-select-footer">
+        <div class="btn-group btn-group-centered">
+					{{#if hasAnyBattleMapCosmetics}}
+              <button class="battlemap-select"><span class="icon"><i class="fa fa-question" /></span> {{localize 'main_menu.select_battle_map_button_label'}}</button>
+					{{/if}}
+            <button class="btn btn-clean deck-select-confirm">{{localize 'main_menu.deck_select_play_practice_button_label'}}</button>
+        </div>
+    </div>
+	</div>
+</div>

@@ -1,0 +1,15 @@
+<div class="tab-body">
+	<div class="shop-premium-packs {{name}}">
+		<ul class="premium-pack-product-list">
+				{{#packProducts}}
+						<li class="{{sku}}">
+                <!--This will show the full amount with bonus included-->
+                <!--<h2>{{platinum}} {{localize "common.currency_premium_plural"}}</h2>-->
+                <h2>{{base_platinum}} {{localize "common.currency_premium_plural"}}{{#if bonus_platinum}} {{localize key="shop.bonus_label" amount=bonus_platinum}}{{/if}}</h2>
+								<div class="product-icon {{sku}}" style="background-image: url({{imageForResourceScale (imageForResourceName icon_image_resource_name)}})"></div>
+								<button data-product-sku-id="{{sku_id}}" data-price="{{price}}" type="button" class="btn btn-clean btn-clean-secondary btn-buy">{{{formatCurrency price}}}</button>
+						</li>
+				{{/packProducts}}
+		</ul>
+	</div>
+</div>

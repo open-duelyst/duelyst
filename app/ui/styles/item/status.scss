@@ -1,0 +1,295 @@
+/* ---------- STATUS ---------- */
+
+.status {
+  @include fillParent();
+  text-align: center;
+
+	button {
+		margin-top: 2.0rem;
+		font-size: 2.0rem;
+	}
+
+  .status-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 4.0rem;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .status-header {
+    &, h1, h2 {
+			position: relative;
+			@include headerFullStyle();
+			color: #fff;
+			font-size: 3.4rem;
+			margin-bottom: 0;
+      font-weight:normal;
+    }
+    p {
+      font-size:1.4rem;
+    }
+    p.small {
+      font-size:1.2rem;
+    }
+  }
+  .status-body {
+    position: relative;
+    color: #ddd;
+    font-size: 1.8rem;
+    line-height: 3.2rem;
+    @include altHeaderFont();
+    margin-bottom: 2.0rem;
+  }
+  .status-footer {
+    position: relative;
+    margin-bottom: 2.0rem;
+  }
+  .status-panel {
+    position: relative;
+    width: 44.6rem;
+    height: 16.7rem;
+    margin: 4.0rem auto 10.0rem auto;
+    padding-top: 5.7rem;
+    @include backgroundImage("resources/ui/status_panel.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+    &:before, &:after {
+      content: "";
+      position: absolute;
+      width: 15.0rem;
+      height: 16.7rem;
+      top: 0.1rem;
+      @include backgroundImage("resources/ui/status_highlight_enemy.png");
+      background-repeat: no-repeat;
+      background-position: 50%;
+    }
+    &:before {
+      left: -2.3rem;
+      transform: scaleX(-1.0);
+    }
+    &:after {
+      right: -2.3rem;
+    }
+  }
+  .ring {
+    position: relative;
+    height: 3.2rem;
+    width: 3.2rem;
+    margin: 2.0rem auto;
+    border: 0.4rem solid #999;
+    border-radius: 3.0rem;
+    opacity: 0.0;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+  }
+}
+
+/* ---------- MATCHMAKING ---------- */
+
+#app-finding-game, #app-resume-game {
+
+	.btn-cancel-primary {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		margin: 0;
+		width: 9.0rem;
+		height: 9.0rem;
+		border-radius: 0;
+		background-size: contain;
+		background-position: top left;
+		&, &:hover, &:focus, &:active, &:active:focus {
+			@include backgroundImage("resources/ui/button_back_corner.png");
+		}
+		&:before {
+			top: -50%;
+			left: -50%;
+		}
+	}
+
+	.mode {
+		margin-bottom: 15.0rem;
+	}
+}
+
+#app-finding-game {
+	.game-tip {
+		position: absolute;
+		max-width: 60.0rem;
+		margin: 0 auto;
+		bottom: 7.0rem;
+		left: 0;
+		right: 0;
+		color: #ddd;
+	}
+}
+
+#app-resume-game {
+}
+
+#app-reconnect-to-game {
+  @include backgroundImageNoScale("resources/ui/vignette.png");
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 100%;
+}
+
+.game-vs {
+  .players {
+    position: absolute;
+    width: 75%;
+    height: 100%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  .player {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.25s ease-in;
+		left: -17%;
+		bottom: 0;
+		width: 50%;
+		height: 33.0rem;
+
+    .player-portrait {
+      display: block;
+      width: 6.4rem;
+      height: 6.4rem;
+      margin: 0 auto 2.0rem auto;
+    }
+
+    .user-name {
+      @include headerFullStyle();
+      color: #fff;
+      font-size: 3.0rem;
+      font-weight: bold;
+      margin-bottom: 4.0rem;
+    }
+
+    .player-general {
+      @extend .pixelated;
+			position: absolute;
+			width: 16.0rem;
+			height: 16.0rem;
+			bottom: 8.5rem;
+			left: 50%;
+			margin: 0;
+			z-index: 1;
+    }
+    .player-general-platform {
+      position: absolute;
+      width: 10.0rem;
+      height: 15.7rem;
+      bottom: 0;
+      left: 50%;
+      margin-left: -5.0rem;
+      @include backgroundImage("resources/ui/matchmaking_platform_friendly.png");
+      background-repeat: no-repeat;
+      background-position: 50%;
+    }
+
+    &.enemy {
+      .user-name {
+        color: rgba(255,200,200,1.0);
+        text-shadow: 0 0 1.0rem #FF0000, 0 0 2.0rem #FF0000;
+      }
+      .player-general-platform {
+        @include backgroundImage("resources/ui/matchmaking_platform_enemy.png");
+      }
+    }
+  }
+
+  .player2 {
+    right: -17%;
+    left: auto;
+    .player-general {
+      transform: scaleX(-1.0);
+    }
+  }
+
+  &.active {
+    .player {
+      opacity: 1;
+    }
+  }
+}
+
+/* ---------- GAME END ---------- */
+
+#app-game-end {
+  @include fillParent();
+}
+
+#app-quest-reward {
+
+}
+
+#app-game-counter-reward {
+  .reward {
+    * {
+      position:relative;
+      z-index:100;
+    }
+    font-family: "Lato","Open Sans";
+    display: inline-block;
+    position: relative;
+    width: 33.0rem;
+    height: 33.0rem;
+    background-color:rgba(0,0,0,0.5);
+    box-shadow:0 0 6.0rem rgba(0,0,0,0.25);
+    border-radius:18.0rem;
+    p {
+      font-weight:300;
+      line-height:2.4rem;
+      color:rgba(255,255,255,0.75);
+      padding:0 4.0rem;
+      margin:1.0rem 0;
+    }
+    .small {
+      font-size:1.2rem;
+      line-height:1.4rem;
+      color:rgba(255,255,255,0.5);
+    }
+    canvas {
+      margin-bottom:2.0rem;
+    }
+    .spirit-reward {
+      margin-top:8.0rem;
+      padding:1.0rem 0;
+      font-size:3.2rem;
+      font-weight:300;
+      color:#fff;
+      text-shadow: 0 0 1.0rem $blue-glow-color, 0 0 1.0rem $blue-glow-color;
+    }
+    .gold-reward {
+      display:inline;
+      margin:10.0rem auto 1.5rem auto;
+      line-height:7.1rem;
+    }
+		.card-reward {
+			display:inline;
+			margin:10.0rem auto 1.5rem auto;
+			line-height:7.1rem;
+		}
+    .booster-reward {
+      margin:3.0rem auto;
+
+      animation-name: pulsateBrightness;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+    }
+    .symbol-main-menu {
+      position:absolute;
+      top:0;
+      left:0;
+      z-index:50;
+    }
+  }
+}

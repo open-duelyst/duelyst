@@ -1,0 +1,36 @@
+<ul class="sub-category-menu nav nav-tabs">
+	{{#packProductSets}}
+		<li role="select" data-value="{{name}}" class="{{name}}"><a>{{title}}</a></li>
+	{{/packProductSets}}
+</ul>
+
+<div class="tab-body">
+	<div class="card-set-link-out-region">
+		<button class="btn card-set-link-out-btn">
+				<canvas class="zodiac-symbol-canvas"></canvas>
+				<span class="card-set-link-out-label"></span>
+		</button>
+	</div>
+	{{#packProductSets}}
+		<div class="shop-spirit-orbs {{name}}">
+			<ul class="spirit-orb-product-list">
+				{{#packProducts}}
+					{{#if price}}
+              <li class="product-for-premium {{sku}}">
+                  <h2>{{localized_name}}</h2>
+                  <div class="product-icon {{sku}}" style="background-image: url({{imageForResourceScale (imageForResourceName icon_image_resource_name)}})"></div>
+                  <!--<button data-product-sku="{{sku}}" data-orb-count="{{qty}}" data-card-set="{{card_set}}" data-price="{{price}}" type="button" class="btn btn-clean btn-clean-secondary btn-buy {{#if set_is_complete}}disabled{{/if}}">{{{formatCurrency price}}}</button>-->
+                  <button data-product-sku="{{sku}}" data-orb-count="{{qty}}" data-card-set="{{card_set}}" data-price="{{price}}" type="button" class="btn btn-clean btn-clean-secondary btn-buy {{#if set_is_complete}}disabled{{/if}}"><span class="icon-premium">{{price}}</span> {{localize 'common.currency_premium_plural'}}</button>
+              </li>
+					{{else}}
+						<li class="product-for-gold {{sku}}">
+							<h2>{{localized_name}}</h2>
+							<div class="product-icon {{sku}}" style="background-image: url({{imageForResourceScale (imageForResourceName icon_image_resource_name)}})"></div>
+							<button data-product-sku="{{sku}}" data-orb-count="{{qty}}" data-card-set="{{card_set}}" data-gold="{{gold}}" type="button" class="btn btn-clean btn-clean-secondary btn-buy {{#if set_is_complete}}disabled{{/if}}"><span class="icon-gold">{{gold}}</span> {{localize 'common.currency_gold'}}</button>
+						</li>
+					{{/if}}
+				{{/packProducts}}
+			</ul>
+		</div>
+	{{/packProductSets}}
+</div>

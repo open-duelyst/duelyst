@@ -1,0 +1,18 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="header-dashed-text modal-title">{{localize 'battle.choose_starting_hand_title'}}</h4>
+			<p class="modal-subtitle">{{localize 'battle.choose_starting_hand_instructions'}}</p>
+			<!-- <p class="modal-subtitle">Click to replace up to {{maxMulliganCount}} {{#compare maxMulliganCount "==" 1}}card{{/compare}}{{#compare maxMulliganCount ">" 1}}cards{{/compare}}.</p> -->
+        </div>
+        <div class="modal-body game-choose-hand">
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-clean btn-clean-confirm confirm"><i class="fa fa-check"></i> {{localize 'battle.choose_starting_hand_confirm_button_label'}}</button>
+            <div class="opponent-connection">
+                <div class="opponent-connecting modal-body">{{localize 'battle.opponent_connection_status_connecting'}} <i class="fa fa-circle"></i></div>
+                <div class="opponent-connected modal-body">{{localize 'battle.opponent_connection_status_connected'}} <i class="fa fa-circle"></i></div>
+            </div>
+        </div>
+    </div>
+</div>

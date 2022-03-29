@@ -1,0 +1,42 @@
+{
+  "name": "backfire",
+  "description": "The officially supported Backbone binding for Firebase",
+  "version": "0.4.0",
+  "authors": [
+    "Firebase <support@firebase.com> (https://www.firebase.com/)"
+  ],
+  "homepage": "https://github.com/firebase/backfire/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/firebase/backfire.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "backbone",
+    "firebase",
+    "realtime"
+  ],
+  "main": [
+    "dist/backfire.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "src",
+    "test",
+    "examples",
+    "node_modules",
+    "bower_components",
+    "package.json",
+    "Gruntfile.js",
+    "changelog.txt",
+    "index.html"
+  ],
+  "dependencies": {
+    "firebase": "2.0.x",
+    "backbone": "<=1.1.0",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {
+    "jasmine": "~2.0.0"
+  }
+}

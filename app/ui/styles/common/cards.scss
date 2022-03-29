@@ -1,0 +1,867 @@
+/* ---------- CARDS ---------- */
+.cards {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+}
+
+.card {
+	@extend .mouse-select;
+	font-family: "Lato",sans-serif;
+	position: relative;
+	z-index: 1;
+	float: left;
+	width: 22.4rem;
+	height: 29.6rem;
+	padding: 0.8rem 0.6rem;
+
+	// &:before {
+	// 	display: block;
+	// 	width: 95%;
+	// 	height: 95%;
+	// 	left:2%;
+	// 	top:2%;
+	// 	content: " ";
+	// 	position: absolute;
+	// 	z-index: 0;
+	// 	// box-shadow:0 0.5rem 1.0rem rgba(0,0,0,0.5);
+	// }
+	margin: 0.5rem;
+	font-size: 1.4rem;
+	border-radius: 0.7rem;
+	color: $copy-color;
+	font-smooth: always;
+	-webkit-font-smoothing: subpixel-antialiased;
+	text-shadow: none;
+	img {
+		position: relative;
+	}
+	.glow {
+		width: 25.3rem;
+		height: 32.0rem;
+		content: " ";
+		position: absolute;
+		z-index: 1;
+		top: -1.4rem;
+		left: -1.5rem;
+		opacity:0;
+		transition: opacity 0.1s;
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50%;
+		@include backgroundImage("resources/card_backgrounds/card_glow_line.png");
+
+	}
+	.bg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		@include backgroundImage("resources/card_backgrounds/neutral_spell.png");
+		background-size: cover;
+		background-repeat: no-repeat;
+		background-position: 50%;
+		overflow: hidden;
+	}
+	.is-unread-block {
+		position: absolute;
+		top: -1.0rem;
+		right: 1.0rem;
+		display: flex;
+		flex-flow: row nowrap;
+		border-radius: 1.0rem;
+		background: rgba(0,0,0,0.5);
+		box-shadow: 0 0 1rem rgba(0,0,0,1.0);
+		z-index: 2;
+	}
+	.is-unread-label,
+	.is-lore-unread-label {
+		display: none;
+		font-size: 1.8rem;
+		font-weight: bold;
+		color: rgba(255,255,175,1);
+		margin: 0 0.5rem;
+	}
+	h1, h2, h3, h4, h5, h6 {
+		color: $header-color;
+	}
+	.card-header {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+	}
+	.card-sprite {
+		position: relative;
+		width: 10.0rem;
+		height: 10.0rem;
+		margin: 0 auto;
+		top: 1.25rem;
+		pointer-events: none;
+		.sprite {
+			top: 53%;
+			left: 50%;
+		}
+		.shadow {
+			position: absolute;
+			width: 10.0rem;
+			height: 4.0rem;
+			top: 60%;
+			left: 50%;
+			margin-left: -5.0rem;
+			margin-top: -2.0rem;
+			opacity: 0.5;
+			@include backgroundImageNoScale("resources/ui/unit_shadow.png");
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: 50%;
+		}
+	}
+	.card-caption {
+		position: relative;
+		text-align: center;
+		height: 7.5rem;
+		dl {
+			margin-bottom: 0;
+		}
+	}
+	.type {
+		color: #90cacf;
+		// rgb(123,215,255);
+		font-weight: 300;
+		text-transform: uppercase;
+		font-size: 1.2rem;
+		line-height: 0;
+		padding: 0;
+		margin: 0;
+		margin-top: 0.5rem;
+	}
+	.rarity {
+		position: absolute;
+		display: block;
+		@include bodyFont();
+		font-size: 0.9rem;
+		line-height: 0.9rem;
+		text-transform: uppercase;
+		top: 3.3rem;
+		left: 0;
+		padding: 0;
+		width: 100%;
+		height: 0;
+		text-indent: 999.9rem;
+		&::after {
+			display: block;
+			width: 4.4rem;
+			height: 4.4rem;
+			content: " ";
+			position: absolute;
+			top: 0.0rem;
+			left: 10.1rem;
+			margin-left: -1.6rem;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+		}
+		&.common::after {
+			@include backgroundImage("resources/ui/collection_card_rarity_common.png");
+		}
+		&.rare::after {
+			@include backgroundImage("resources/ui/collection_card_rarity_rare.png");
+		}
+		&.epic::after {
+			@include backgroundImage("resources/ui/collection_card_rarity_epic.png");
+		}
+		&.legendary::after {
+			@include backgroundImage("resources/ui/collection_card_rarity_legendary.png");
+		}
+    &.mythron::after {
+			@include backgroundImage("resources/ui/collection_card_rarity_mythron.png");
+		}
+	}
+	.race {
+		display: inline;
+		font-size: 1.2rem;
+		line-height: 1.4rem;
+		color: $card-subheader-color;
+	}
+	.name {
+		color: $card-title-color;
+		text-transform: uppercase;
+		font-size: 1.4rem;
+		font-weight: 400;
+		line-height: 1.9rem;
+		margin-top: 0.9rem;
+		min-height: 2.0rem;
+	}
+	.name-long {
+		color: $card-title-color;
+		text-transform: uppercase;
+		font-size: 1.2rem;
+		font-weight: 400;
+		line-height: 1.9rem;
+		margin-top: 0.9rem;
+		min-height: 2.0rem;
+	}
+	.inventory-count {
+		font-size: 1.2rem;
+		position: absolute;
+		display: block;
+		width: 100%;
+		left: 0;
+		right: 0;
+		bottom: -0.1rem;
+		text-transform: uppercase;
+		text-align: center;
+		line-height: 1.8rem;
+		color: $card-subheader-color;
+		z-index: 1;
+	}
+	.deck-count {
+		display: none;
+	}
+	.mana-cost {
+		@extend .icon-mana;
+		position: absolute;
+		z-index: 200;
+		font-size: 2.2rem;
+		font-weight: bold;
+		color: #0C52A1;
+		text-shadow: 0 0 1.0rem fade-out($blue-glow-color,0.5);
+		left: -1.5rem;
+		top: -1.2rem;
+	}
+	.signature-card-sprite {
+		position: absolute;
+		z-index: 200;
+		@include backgroundImage("resources/card_backgrounds/signature_card_ring_small.png");
+		background-repeat: no-repeat;
+		background-size: cover;
+		background-position: 50%;
+		width: 6.2rem;
+		height: 6.2rem;
+		left: -1.5rem;
+		top: -1.2rem;
+		.sprite {
+		}
+	}
+	.card-description {
+		text-align: center;
+		font-size: 1.3rem;
+		font-weight: 300;
+		margin: 0 auto;
+		padding: 0;
+		position: absolute;
+		top: 19.6rem;
+		left: 0;
+		right: 0;
+		width: 19.0rem;
+		height: 7.0rem;
+		overflow: hidden;
+		color: #90cacf;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		span {
+			display: inline-block;
+			vertical-align: middle;
+			line-height: normal;
+		}
+	}
+	.card-description-long {
+		text-align: center;
+		font-size: 1.1rem;
+		font-weight: 300;
+		margin: 0 auto;
+		padding: 0;
+		position: absolute;
+		top: 19.6rem;
+		left: 0;
+		right: 0;
+		width: 19.0rem;
+		height: 7.0rem;
+		overflow: hidden;
+		color: #90cacf;
+		display: flex;
+		flex-flow: column nowrap;
+		align-items: center;
+		justify-content: center;
+		span {
+			display: inline-block;
+			vertical-align: middle;
+			line-height: normal;
+		}
+	}
+	.sidebar {
+		position: absolute;
+		pointer-events: none;
+		width: 18.0rem;
+		top: 1.8rem;
+		left: 100%;
+	}
+	.keyword-descriptions {
+		padding: 0.5rem 0;
+		background: rgba(20,20,20,0.95);
+		box-shadow: 0 0 1.0rem rgba(0,0,0,0.5);
+	}
+	.keyword-description {
+		padding: 0.5rem 1.0rem;
+		.keyword-name {
+			display: block;
+			@include headerFullStyle();
+			color: #fff;
+			font-size: 1.3rem;
+			line-height: 1.3rem;
+		}
+		.keyword-definition {
+			font-size: 1.2rem;
+			line-height: 1.4rem;
+			color: #ddd;
+		}
+	}
+	.modifiers {
+		display: none;
+		position: absolute;
+		width: 18.0rem;
+		top: 98%;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+		padding-top: 0.5rem;
+		background: rgba(20,20,20,0.95);
+		box-shadow: 0 0 1.0rem rgba(0,0,0,0.5);
+		z-index: -1;
+	}
+	.modifier {
+		padding: 0.5rem 1.0rem;
+		margin: 0;
+		.modifier-header {
+			display: block;
+			@include headerFullStyle();
+			color: #fff;
+			font-size: 1.3rem;
+			line-height: 1.3rem;
+		}
+		.modifier-description {
+			display: block;
+			font-size: 1.2rem;
+			line-height: 1.4rem;
+			color: #ddd;
+		}
+		.modifier-source {
+			display: block;
+			font-size: 1.0rem;
+			font-style: italic;
+			line-height: 1.2rem;
+			color: #bbb;
+		}
+	}
+	&:hover, &:active, &:active:focus {
+		color: $hover-copy-color;
+		h1, h2, h3, h4, h5, h6 {
+			color: #fff;
+		}
+		.glow {
+			display: block;
+			opacity: 1;
+		}
+	}
+	&.is-unread {
+		.bg {
+			filter: brightness(1.5) contrast(115%);
+		}
+		.is-unread-label {
+			display: block;
+		}
+		.glow {
+			opacity:1;
+			@include backgroundImage("resources/card_backgrounds/card_glow_line_new.png");
+		}
+	}
+	&.is-lore-unread {
+		.bg {
+			filter: brightness(1.5) contrast(115%);
+		}
+		.is-lore-unread-label {
+			display: block;
+		}
+		.glow {
+			opacity:1;
+			@include backgroundImage("resources/card_backgrounds/card_glow_line_new.png");
+		}
+	}
+	&.prismatic {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/neutral_prismatic_spell.png");
+			// uncomment below to enable shine wipe effect across card
+			// disabled for performance reasons
+			/*
+			-webkit-mask-image: url("resources/card_backgrounds/neutral_spell.png");
+			@include move-shine-prismatic();
+			*/
+		}
+		.card-sprite {
+			.shadow {
+				opacity: 0.8;
+			}
+		}
+		.prismatic-gradient {
+			position: absolute;
+			top: 7.0rem;
+			left: 50%;
+
+			// static background gradient
+			width: 16rem;
+			height: 16rem;
+			margin-top: -8.0rem;
+			margin-left: -8.0rem;
+			background-image: url(resources/prismatic/prismatic_gradients.png);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: 50%;
+			opacity: 0.5;
+
+			// uncomment below for moving additive gradients
+			// disabled for performance reasons
+			/*
+			$prismaticSize: 16.0rem;
+			$prismaticRadius: $prismaticSize * 0.1;
+			.prismatic-red,
+			.prismatic-green,
+			.prismatic-blue {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: $prismaticSize;
+				height: $prismaticSize;
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: 50%;
+				opacity: 0.7;
+				mix-blend-mode: color-dodge;
+			}
+			.prismatic-red {
+				margin-left: -$prismaticSize * 0.5 - $prismaticRadius * 0.7;
+				margin-top: -$prismaticSize * 0.5 + $prismaticRadius * 0.7;
+				transform-origin: ($prismaticSize * 0.5 + $prismaticRadius * 0.7) ($prismaticSize * 0.5 - $prismaticRadius * 0.7);
+				@include backgroundImageNoScale("resources/prismatic/prismatic_gradient_red.png");
+				@include rotate-prismatic(10s, false);
+			}
+			.prismatic-green {
+				margin-left: -$prismaticSize * 0.5;
+				margin-top: -$prismaticSize * 0.5 - $prismaticRadius * 1.0;
+				transform-origin: ($prismaticSize * 0.5) ($prismaticSize * 0.5 + $prismaticRadius * 1.0);
+				@include backgroundImageNoScale("resources/prismatic/prismatic_gradient_blue.png");
+				@include rotate-prismatic(15s, true);
+			}
+			.prismatic-blue {
+				margin-left: -$prismaticSize * 0.5 + $prismaticRadius * 0.7;
+				margin-top: -$prismaticSize * 0.5 + $prismaticRadius * 0.7;
+				transform-origin: ($prismaticSize * 0.5 - $prismaticRadius * 0.7) ($prismaticSize * 0.5 - $prismaticRadius * 0.7);
+				@include backgroundImageNoScale("resources/prismatic/prismatic_gradient_green.png");
+				@include rotate-prismatic(20s, false);
+			}
+			*/
+		}
+	}
+	// &.faction-1 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f1_spell.png");
+	// 	}
+	// }
+	// &.faction-2 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f2_spell.png");
+	// 	}
+	// }
+	// &.faction-3 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f3_spell.png");
+	// 	}
+	// }
+	// &.faction-4 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f4_spell.png");
+	// 	}
+	// }
+	// &.faction-5 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f5_spell.png");
+	// 	}
+	// }
+	// &.faction-6 {
+	// 	.bg {
+	// 		@include backgroundImage("resources/card_backgrounds/f6_spell.png");
+	// 	}
+	// }
+	&.entity {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/neutral_unit.png");
+		}
+		.stats {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 3.3rem;
+			padding: 0;
+			margin: 0 auto;
+			width: 18.5rem;
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: space-between;
+			li {
+				position:relative;
+				@extend .icon;
+				margin: 0;
+				width: 6.5rem;
+				height: 5.7rem;
+				span.value {
+					font-size: 2.4rem;
+					font-weight: Bold;
+					color: #fff;
+				}
+				&.stat-hp {
+					// @extend .icon-hp;
+					/*
+					span.value {
+						color: $hp-color;
+						text-shadow: 0 0 1.0rem fade-out($hp-color,0.5);
+					}
+					*/
+				}
+				&.stat-atk {
+					// @extend .icon-atk;
+					/*
+					span.value {
+						color: $atk-color;
+						text-shadow: 0 0 1.0rem fade-out($hp-color,0.5);
+					}
+					*/
+				}
+			}
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/neutral_prismatic_unit.png");
+			}
+		}
+		// &.faction-1 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f1_unit.png");
+		// 	}
+		// }
+		// &.faction-2 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f2_unit.png");
+		// 	}
+		// }
+		// &.faction-3 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f3_unit.png");
+		// 	}
+		// }
+		// &.faction-4 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f4_unit.png");
+		// 	}
+		// }
+		// &.faction-5 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f5_unit.png");
+		// 	}
+		// }
+		// &.faction-6 {
+		// 	.bg {
+		// 		@include backgroundImage("resources/card_backgrounds/f6_unit.png");
+		// 	}
+		// }
+		&.craftable {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/craftable_unit.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/craftable_prismatic_unit.png");
+				}
+			}
+		}
+	}
+	&.unit, &.general {
+		.card-sprite {
+			.sprite {
+				top: auto;
+				bottom: -2.0rem;
+				transform-origin: bottom center;
+			}
+			.shadow {
+				top: auto;
+				bottom: -0.6rem;
+			}
+		}
+	}
+	&.spell, &.artifact {
+		.card-sprite {
+			.shadow {
+				top: auto;
+				bottom: 0.0rem;
+			}
+		}
+	}
+	&.artifact {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/neutral_artifact.png");
+		}
+		.type {
+			color: rgb(237,209,68);
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/neutral_prismatic_artifact.png");
+			}
+		}
+		// 	&.faction-1 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f1_artifact.png");
+		// 		}
+		// 	}
+		// 	&.faction-2 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f2_artifact.png");
+		// 		}
+		// 	}
+		// 	&.faction-3 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f3_artifact.png");
+		// 		}
+		// 	}
+		// 	&.faction-4 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f4_artifact.png");
+		// 		}
+		// 	}
+		// 	&.faction-5 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f5_artifact.png");
+		// 		}
+		// 	}
+		// 	&.faction-6 {
+		// 		.bg {
+		// 			@include backgroundImage("resources/card_backgrounds/f6_artifact.png");
+		// 		}
+		// 	}
+		&.craftable {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/craftable_artifact.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/craftable_prismatic_artifact.png");
+				}
+			}
+		}
+	}
+	&.tile {
+		.card-sprite {
+			.shadow {
+				display: none;
+			}
+		}
+	}
+	&.unlockable {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/unusable_spell.png");
+		}
+		.card-sprite {
+			.shadow {
+				opacity: 0.5;
+			}
+		}
+		.card-description {
+			display:none;
+		}
+		.inventory-count {
+			display: none;
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_prismatic_spell.png");
+			}
+		}
+		&.entity {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_unit.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/unusable_prismatic_unit.png");
+				}
+			}
+		}
+		&.artifact {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_artifact.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/unusable_prismatic_artifact.png");
+				}
+			}
+		}
+	}
+	&.craftable {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/craftable_spell.png");
+		}
+		.inventory-count {
+			display: none;
+		}
+		&:hover, &:active, &:active:focus {
+			.bg {
+				opacity: 1.0;
+			}
+			.glow {
+				// box-shadow: 0 0 2.0rem rgba(85,0,255,1);
+			}
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/craftable_prismatic_spell.png");
+			}
+		}
+	}
+	&.unusable {
+		.bg {
+			@include backgroundImage("resources/card_backgrounds/unusable_spell.png");
+		}
+		.card-sprite {
+			.shadow {
+				opacity: 0.5;
+			}
+		}
+		.card-description {
+			color: #999999;
+		}
+		.glow, .card-sprite .faction-glow {
+			display: none;
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_prismatic_spell.png");
+			}
+		}
+		&.entity {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_unit.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/unusable_prismatic_unit.png");
+				}
+			}
+		}
+		&.artifact {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/unusable_artifact.png");
+			}
+			&.prismatic {
+				.bg {
+					@include backgroundImage("resources/card_backgrounds/unusable_prismatic_artifact.png");
+				}
+			}
+		}
+	}
+	&.invisible {
+		opacity: 0;
+		pointer-events: none;
+	}
+	&.ui-draggable-dragging {
+		z-index: 1000;
+		opacity: 1.0 !important;
+		.inventory-count, .deck-count, .glow, .keyword-descriptions, .modifiers {
+			display: none !important;
+		}
+	}
+	// by default do not display the locked label
+	.locked-label {
+		font-size: 1.2rem;
+		line-height: 1.8rem;
+		font-weight: 300;
+		bottom: 0%;
+		z-index: 500;
+		display: none;
+		position: absolute;
+		width: 86%;
+		height: 6.0rem;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-content: center;
+		align-items: center;
+		margin-left: 4%;
+		margin-bottom: 2.5rem;
+		text-align: left;
+		background: rgba(0,0,0,0.75);
+		border-radius: 1.0rem;
+		padding: 1.0rem 1.0rem 1.0rem 0;
+		text-shadow: 0 0 1.0rem #000,0 0 1.0rem #000,0 0 1.0rem #000,0 0 1.0rem #000;
+		i {
+			font-size: 2.4rem;
+			width: 2.4rem;
+			margin: 1.0rem;
+			float: left;
+		}
+	}
+	&.collection-card {
+		&.unlockable {
+			.level-needed-to-unlock-label,
+			.skin-needed-to-unlock-label,
+			.faction-locked-label,
+			.achievement-locked ,
+			.orb-only-unlock-label {
+				display: flex;
+			}
+		}
+	}
+	&.maxed-out {
+		.show-when-max-copies-reached {
+			display: flex;
+		}
+	}
+}
+
+.card {
+  &.ui-draggable-dragging {
+	animation-name: flashBrightness;
+	animation-duration: 0.5s;
+	animation-iteration-count: 1;
+  }
+  &.ui-draggable-reverting {
+	animation-name: flashBrightnessOut;
+	animation-duration: 0.4s;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+  }
+}
+
+/* ---------- UTILITY ---------- */
+
+.card-container-hover-keywords {
+  .card {
+		.keyword-descriptions {
+			display:none;
+		}
+		&:not(.interaction-locked) {
+			&:hover, &:active, &:active:focus {
+				z-index: 1000;
+				.keyword-descriptions {
+					display: block;
+				}
+			}
+		}
+  }
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+		<head>
+				<meta charset="utf-8">
+				<meta http-equiv="X-UA-Compatible" content="IE=edge">
+				<title>DUELYST</title>
+				<link rel="icon" type="image/gif" href="https://duelyst.freetls.fastly.net/favicon.gif">
+				<link rel="shortcut icon" href="https://duelyst.freetls.fastly.net/favicon.ico">
+				<meta name="description" content="">
+				<meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+				<meta name="screen-orientation" content="portrait"/>
+				<meta name="apple-mobile-web-app-capable" content="yes"/>
+				<meta name="msapplication-tap-highlight" content="no">
+				<meta name="full-screen" content="yes"/>
+				<meta name="x5-fullscreen" content="true"/>
+
+				<script type="text/javascript">
+					// this is for cocos
+					window.ccMapLimit = 100
+				</script>
+
+				<!-- DUELYST CSS HERE ++ -->
+				<link rel="stylesheet" href="duelyst.css">
+
+				{{#if analyticsEnabled}}
+				<!-- Google Analytics initialization code-->
+				<script>
+					(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+							(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+									m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+					})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+					if (window.isDesktop) {
+						var uuid = window.uuid
+						if (!localStorage["gaClientId"])
+							localStorage.setItem("gaClientId",uuid.v4())
+						var clientId = localStorage["gaClientId"];
+						ga('create', "{{gaId}}",{
+							'storage': 'none',
+							'clientId': clientId
+						});
+						ga('set', 'checkProtocolTask', function(){}); // Disable file protocol checking.
+					} else {
+						ga('create', "{{gaId}}", 'auto');
+					}
+					ga('send', 'pageview');
+				</script>
+				{{/if}}
+		</head>
+		<body>
+		<!-- Kongregate SDK initialization -->
+		<script>
+			window.isKongregate = window.location.hostname.indexOf('kongregate.com') > -1 || document.referrer.indexOf('kongregate.com') > -1
+			if (window.isKongregate) {
+				(function(d, s, id){
+					var js, kjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {return;}
+					js = d.createElement(s); js.id = id;
+					js.src = "https://cdn1.kongregate.com/javascripts/kongregate_api.js";
+					kjs.parentNode.insertBefore(js, kjs);
+				}(document, 'script', 'kongregate-jssdk'));
+			}
+		</script>
+
+		<!-- Facebook SDK initialization -->
+		<script>
+			if (window.location.host === 'apps.facebook.com') {
+				window.fbAsyncInit = function() {
+					FB.init({
+						appId: '213105529114508',
+						xfbml: false,
+						status: true,
+						cookie: true,
+						version: 'v2.8'
+					});
+					FB.AppEvents.logPageView();
+				};
+				(function(d, s, id){
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) {return;}
+					js = d.createElement(s); js.id = id;
+					js.src = "//connect.facebook.net/en_US/sdk.js";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			}
+		</script>
+		
+		<!-- application container div -->
+		<div id="app">
+		<div id="app-main">
+					<div id="app-horizontal">
+					<canvas id="app-gamecanvas"></canvas>
+					<div id="app-content-region"></div>
+					<div id="app-utility-region"></div>
+					</div>
+			<div id="app-vertical">
+				<div id="app-modal-region"></div>
+				<div id="app-notifications-region"></div>
+			</div>
+		</div>
+		<div id="app-overlay-region"></div>
+		<div id="maintenance-announcements-region"></div>
+		<div id="app-preloading">
+			<div class="brand-main">
+				<h1>DUELYST</h1>
+			</div>
+			<img class="mystic-loader" src="https://duelyst.freetls.fastly.net/loading.gif">
+		</div>
+		</div>
+		<!-- end container div -->
+
+		<!-- DUELYST JS HERE ++ -->
+		<script src="vendor.js" crossorigin></script>
+		<script src="duelyst.js" crossorigin></script>
+
+		{{#if zendeskEnabled}}
+		<!-- Start of duelystsupport Zendesk Widget script -->
+		<script>/*<![CDATA[*/window.zEmbed = function(e,t){var n,o,d,i,s,a=[],r=document.createElement("iframe");window.zEmbed=function()
+		{a.push(arguments)}
+		,window.zE=window.zE||window.zEmbed,r.src="javascript:false",r.title="",r.role="presentation",(r.frameElement||r).style.cssText="display: none",d=document.getElementsByTagName("script"),d=d[d.length-1],d.parentNode.insertBefore(r,d),i=r.contentWindow,s=i.document;try
+		{o=s}
+		catch(e)
+		{n=document.domain,r.src='javascript:var d=document.open();d.domain="'+n+'";void(0);',o=s}
+		o.open()._l=function()
+		{var e=this.createElement("script");n&&(this.domain=n),e.id="js-iframe-async",e.src="https://assets.zendesk.com/embeddable_framework/main.js",this.t=+new Date,this.zendeskHost="duelystsupport.zendesk.com",this.zEQueue=a,this.body.appendChild(e)}
+		,o.write('<body onload="document._l();">'),o.close()};
+		/*]]>*/</script>
+		<!-- End of duelystsupport Zendesk Widget script -->
+		{{/if}}
+
+		</body>
+</html>

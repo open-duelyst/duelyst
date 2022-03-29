@@ -1,0 +1,47 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="header-dashed-text modal-title">{{localize 'game_setup.battle_map_select_title'}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="prompt-form cosmetics-list">
+				<button class="cosmetic clear-selection" data-cosmetic-id="">
+					<i class="fa fa-question"></i>
+					<div class="label">{{localize 'game_setup.battle_map_random'}}</div>
+				</button>
+				{{#each _cosmetics}}
+					<button class="cosmetic prompt-submit{{#if _canPurchase}} purchasable{{else}}{{#unless _canUse}} disabled{{/unless}}{{/if}}" data-cosmetic-id="{{id}}">
+						<img src="{{imageForResourceScale img}}" />
+						{{#if _canPurchase}}
+							<div class="locked-label">
+								<i class="fa fa-lock"></i> {{localize 'common.click_to_unlock'}}
+							</div>
+						{{/if}}
+					</button>
+				{{/each}}
+			</div>
+
+			<div class="prompt-submitted">
+				<div class="activity-animation">
+					<div class="activity-animation-image"></div>
+				</div>
+				<h2 class="prompt-title">{{localize 'common.loading_dialog_one_moment_label'}}</h2>
+			</div>
+
+			<div class="prompt-success">
+				<div class="icon-container"><i class="fa fa-check"></i></div>
+				<h2 class="prompt-title">{{localize 'common.success_title'}}</h2>
+				<p class="prompt-message">{{localize 'game_setup.battle_map_saved_success_msg'}}</p>
+			</div>
+
+			<div class="prompt-error">
+				<div class="icon-container"><i class="fa fa-times"></i></div>
+				<h2 class="prompt-title">{{localize 'common.error_occurred_title'}}</h2>
+				<p class="prompt-message error-message"></p>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

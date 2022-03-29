@@ -1,0 +1,116 @@
+<div class="crafting-materials">
+	<div class="material-item spirit">
+		<div class="material-count">
+			{{#if spirit_amount}}
+				{{spirit_amount}}
+			{{else}}
+				0
+			{{/if}}
+		</div>
+		<div class="material-name">{{localize 'common.currency_spirit'}}</div>
+	</div>
+</div>
+
+<div class="crafting-instructions">
+	<div class="crafting-instruction-text">
+		<h5>{{localize 'collection.crafting_instructions'}}</h5>
+		<!-- <p>Note: costs vary with card rarity.</p> -->
+	</div>
+	<div class="crafting-disenchant-all-container">
+		<!-- <small>- OR -</small> -->
+		<div class="crafting-disenchant-all-block">
+			<div class="btn-group btn-group-centered">
+				<button class="crafting-disenchant-all btn btn-clean btn-clean-primary highlight">{{localize 'collection.crafting_disenchant_duplicates_button_label'}}</button>
+			</div>
+		</div>
+		<small>({{localize 'collection.crafting_disenchant_duplicates_instructions'}})</small>
+	</div>
+</div>
+
+<div class="crafting-workbench">
+
+	<ul class="crafting-card-container"></ul>
+	<div class="crafting-options">
+
+		{{#if isCraftable}}
+
+		<div class="crafting-options-materials">
+			<div class="crafting-requirements">
+				<div class="crafting-materials">
+					{{#each craftMaterials}}
+						<div class="material-item {{#downcase type}}{{/downcase}} {{#downcase rarity}}{{/downcase}}">
+							<div class="material-count">-{{amount}}</div>
+							<div class="material-name">
+								{{#if rarity}}{{rarity}}<br/>{{/if}}
+								{{localizedType}}
+							</div>
+						</div>
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="crafting-rewards">
+				<div class="crafting-materials">
+					{{#unless disenchantMaterials}}
+						<div class="material-item">
+							<div class="material-count"><i class="fa fa-spinner fa-spin"></i></div>
+							<div class="material-name">{{localize 'common.currency_spirit'}}</div>
+						</div>
+					{{else}}
+						{{#each disenchantMaterials}}
+							<div class="material-item {{#downcase type}}{{/downcase}} {{#downcase rarity}}{{/downcase}}">
+								<div class="material-count">+{{amount}}</div>
+								<div class="material-name">
+									{{#if rarity}}{{rarity}}<br/>{{/if}}
+									{{localizedType}}
+								</div>
+							</div>
+						{{/each}}
+					{{/unless}}
+				</div>
+			</div>
+		</div>
+
+		<div class="btn-group btn-group-centered crafting-options-controls">
+			<button class="btn btn-clean btn-clean-primary crafting-create">{{localize 'collection.craft_card_button_label'}}</button>
+			<button class="btn btn-clean btn-clean-primary crafting-disenchant">{{localize 'collection.disenchant_card_button_label'}}</button>
+		</div>
+
+        {{else}}
+					{{#if isSkinned}}
+						{{#if isUnlocked}}
+                <div class="crafting-warning">You cannot disenchant card skins.</div>
+						{{else}}
+                <div class="btn-group btn-group-centered crafting-options-controls">
+                    <button class="btn btn-clean btn-clean-primary skin-unlock">Unlock</button>
+                </div>
+						{{/if}}
+					{{else}}
+						{{#if isUnlockablePrismaticWithAchievement}}
+								<div class="crafting-warning">{{localize "collection.cannot_craft_prismatic_achievement_cards_yet_msg"}}</div>
+						{{else}}
+							{{#if isUnlockableWithAchievement}}
+									<div class="crafting-warning">{{localize "collection.cannot_craft_achievement_cards_msg"}}</div>
+							{{else}}
+								{{#if isUnlockableThroughProgression}}
+										<div class="crafting-warning">{{localize "collection.cannot_craft_progression_cards_msg"}}</div>
+								{{else}}
+									{{#if isUnlockablePrismaticWithSpiritOrbs}}
+											<div class="crafting-warning">{{localize key="collection.cannot_craft_prismatic_of_unlockable_set_msg" cardSetName=cardSetName}}</div>
+									{{else}}
+										{{#if isUnlockableWithSpiritOrbs}}
+                        <div class="crafting-warning">{{localize key="collection.cannot_craft_cards_of_unlockable_set_msg" cardSetName=cardSetName}}</div>
+										{{else}}
+                        <div class="crafting-warning">{{localize "collection.cannot_craft_basic_cards_msg"}}</div>
+										{{/if}}
+									{{/if}}
+								{{/if}}
+							{{/if}}
+						{{/if}}
+					{{/if}}
+        {{/if}}
+    </div>
+	<div class="btn-group btn-group-centered">
+		<button class="btn btn-clean btn-clean-secondary crafting-cancel">{{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+	</div>
+</div>

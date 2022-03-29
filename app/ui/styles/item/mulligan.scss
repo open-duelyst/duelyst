@@ -1,0 +1,48 @@
+
+/* ---------- MULLIGAN ---------- */
+
+#app-game-choose-hand, #app-game-starting-hand {
+	background: transparent;
+	pointer-events: none;
+
+	.modal-title {
+		font-size: 2.6rem;
+	}
+	.modal-subtitle {
+		font-size: 1.8rem;
+	}
+
+	.status-content {
+		margin-top: 10.0rem;
+		justify-content: center;
+	}
+	.modal-content {
+		/* flex SHOULD work but appears to break on Linux Chrome */
+		/*justify-content: flex-end;*/
+		display: block;
+		height: auto;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+	}
+	.opponent-connection {
+		position: relative;
+		top: 2.0rem;
+		left: 0;
+		right: 0;
+		text-transform: uppercase;
+		.opponent-connecting {
+			color: rgba(255, 0, 87, 0.75);
+		}
+		.opponent-connected {
+			color: rgba(0, 255, 42, 0.75);
+		}
+		.opponent-connecting, .opponent-connected {
+			display:none;
+			&.active {
+				display: block;
+			}
+		}
+	}
+}

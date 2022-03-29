@@ -1,0 +1,118 @@
+var path = require('path')
+require('app-module-path').addPath(path.join(__dirname, '../../../../'))
+require('coffee-script/register')
+var expect = require('chai').expect;
+var config = require('../../../../config/config.js');
+var Promise = require('bluebird');
+var Logger = require('../../../../app/common/logger');
+var _ = require('underscore');
+var SDK = require('../../../../app/sdk');
+
+// disable the logger for cleaner test output
+Logger.enabled = false;
+
+describe("faction progression", function() {
+
+	describe("levelForXP()", function() {
+
+		it('expect level 0 at 0-6 XP', function() {
+			expect(SDK.FactionProgression.levelForXP(0)).to.equal(0);
+			expect(SDK.FactionProgression.levelForXP(6)).to.equal(0);
+		});
+
+		it('expect level 1 at 7-13 XP', function() {
+			expect(SDK.FactionProgression.levelForXP(7)).to.equal(1);
+			expect(SDK.FactionProgression.levelForXP(13)).to.equal(1);
+		});
+
+		it('expect level 2 at 14-20 XP', function() {
+			expect(SDK.FactionProgression.levelForXP(14)).to.equal(2);
+			expect(SDK.FactionProgression.levelForXP(20)).to.equal(2);
+		});
+
+		it('expect level 7 at 86-104 XP', function() {
+			expect(SDK.FactionProgression.levelForXP(86)).to.equal(7);
+			expect(SDK.FactionProgression.levelForXP(104)).to.equal(7);
+		});
+
+	});
+
+	describe("deltaXPForLevel()", function() {
+
+		it('expect level 0-1 to require 7 XP', function() {
+			expect(SDK.FactionProgression.deltaXPForLevel(1)).to.equal(7);
+		});
+
+		it('expect level 1-2 to require 7 XP', function() {
+			expect(SDK.FactionProgression.deltaXPForLevel(2)).to.equal(7);
+		});
+
+		it('expect level 2-3 to require 7 XP', function() {
+			expect(SDK.FactionProgression.deltaXPForLevel(3)).to.equal(7);
+		});
+
+		it('expect level 3-4 to require 11 XP', function() {
+			expect(SDK.FactionProgression.deltaXPForLevel(4)).to.equal(11);
+		});
+
+		it('expect level 6-7 to require 20 XP', function() {
+			expect(SDK.FactionProgression.deltaXPForLevel(7)).to.equal(20);
+		});
+
+	});
+
+	describe("totalXPForLevel()", function() {
+
+		it('expect level 2 to require 14 total XP', function() {
+			expect(SDK.FactionProgression.totalXPForLevel(2)).to.equal(14);
+		});
+
+		it('expect level 5 to require 45 total XP', function() {
+			expect(SDK.FactionProgression.totalXPForLevel(5)).to.equal(45);
+		});
+
+	});
+
+	describe("hasLeveledUp()", function() {
+
+		it('expect that gaining level 10XP on top of 0XP will level up to 1', function() {
+			var xpBefore = 0;
+			var xpEarned = 10;
+			expect(SDK.FactionProgression.hasLeveledUp(xpBefore+xpEarned,xpEarned)).to.equal(true);
+			expect(SDK.FactionProgression.levelForXP(xpBefore+xpEarned)).to.equal(1);
+		});
+
+		it('expect that gaining level 10XP on top of 35XP will level up to 5', function() {
+			var xpBefore = 35;
+			var xpEarned = 10;
+			expect(SDK.FactionProgression.hasLeveledUp(xpBefore+xpEarned,xpEarned)).to.equal(true);
+			expect(SDK.FactionProgression.levelForXP(xpBefore+xpEarned)).to.equal(5);
+		});
+
+	});
+
+	describe("rewardDataForLevel()", function() {
+
+		it('expect a card reward for Lyonar level 1', function() {
+			var reward = SDK.FactionProgression.rewardDataForLevel(SDK.Factions.Faction1,1);
+			expect(reward).to.exist;
+			expect(reward.cards).to.exist;
+			expect(reward.cards[0].id).to.exist;
+			expect(reward.cards[0].count).to.equal(3);
+		});
+
+		it('expect a prismatic card reward for Lyonar level 13', function () {
+			var reward = SDK.FactionProgression.rewardDataForLevel(SDK.Factions.Faction1,13);
+			expect(reward).to.exist;
+			expect(SDK.Cards.getIsPrismaticCardId(reward.cards[0].id)).to.equal(true);
+		});
+
+		it('expect a prismatic general card reward for Lyonar level 49', function () {
+			var reward = SDK.FactionProgression.rewardDataForLevel(SDK.Factions.Faction1,49);
+			expect(reward).to.exist;
+			expect(reward.cards[0].id).to.equal(SDK.Cards.Faction1.AltGeneral + SDK.Cards.Prismatic);
+		});
+
+	});
+
+});

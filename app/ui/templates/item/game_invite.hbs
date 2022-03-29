@@ -1,0 +1,31 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-cancel-primary cancel"></button>
+	<div class="modal-content">
+
+		<div class="modal-header">
+
+		</div>
+
+		<div class="modal-body">
+			<div class="invite">
+				<p class="invite-message">{{message}}</p>
+				<h2 class="player-name">{{playerName}}</h2>
+				<div class="btn-group">
+					{{#compare type "==" "recieved-invite"}}
+						<button class="btn btn-clean btn-clean-confirm cta-button"><i class="fa fa-check"></i> {{localize 'buddy_list.accept_invite_button_label'}}</button>
+						<button class="btn btn-clean btn-clean-cancel cancel"><i class="fa fa-times"></i> {{localize 'buddy_list.decline_invite_button_label'}}</button>
+					{{/compare}}
+					{{#compare type "==" "sent-invite"}}
+						<button class="btn btn-clean btn-clean-confirm disabled"></button>
+						<button class="btn btn-clean btn-clean-cancel cancel"><i class="fa fa-times"></i> {{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+					{{/compare}}
+				</div>
+			</div>
+		</div>
+
+		<div class="modal-footer">
+
+		</div>
+
+	</div>
+</div>

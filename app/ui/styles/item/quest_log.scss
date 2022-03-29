@@ -1,0 +1,54 @@
+//.quest-log {
+//  perspective: 100.0rem;
+//  .replace-instructions {
+//    animation:zFadeInLarge 0.6s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+//    animation-delay:0.4s;
+//    opacity:0;
+//    margin-top: 2.0rem;
+//  }
+//	.rollover-countdown {
+//    animation:zFadeInSmall 0.6s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+//    animation-delay:0.6s;
+//    opacity:0;
+//		font-size: 1.4rem;
+//		color: $off-white;
+//		margin-top: 0.3rem;
+//	}
+//  .first-win-of-the-day-available {
+//	  font-size:1.8rem;
+//    animation:fadeFlashTextIn 1.2s forwards;
+//    animation-delay:1.0s;
+//    opacity:0;
+//		margin:1.0rem 0 2.0rem 0;
+//  }
+//}
+//
+//.quest-log-list {
+//  padding:0;
+//  margin:0;
+//  white-space: nowrap;
+//  .quest {
+//	  white-space: normal;
+//    .replace, .play-challenge {
+//      position: absolute;
+//			left: 1.6rem;
+//			bottom: -1.4rem;
+//			width: 14.5rem;
+//			height: 4.8rem;
+//    }
+//  }
+//}
+//
+//
+//@keyframes zFadeInLarge {
+//  0% { transform:translateZ(-40.0rem); opacity:0; }
+//  100% { transform:translateZ(0); opacity:1; }
+//}
+//@keyframes zFadeInSmall {
+//  0% { transform:translateZ(-20.0rem); opacity:0; }
+//  100% { transform:translateZ(0); opacity:1; }
+//}
+//@keyframes fadeFlashTextIn {
+//  0% { opacity:0; }
+//  100% { opacity:1; }
+//}

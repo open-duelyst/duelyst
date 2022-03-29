@@ -1,0 +1,45 @@
+<div class="sliding-panel-select-content">
+	<div class="sliding-panel-select-header">
+		<!-- <ul class="nav nav-tabs">
+			<li role="select" data-value="custom"><a>All Rift Decks</a></li>
+		</ul>
+		<div class="input-group search">
+			<input type="search" class="form-control" placeholder="Search">
+			<span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+			<span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+		</div> -->
+		<h1>{{localize 'rift.rift_title'}}</h1>
+	</div>
+	<div class="sliding-panel-select-body">
+		<div class="sliding-panel-select-choices">
+			<ul class="choices rift-runs-list"></ul>
+			<div class="previous-page">
+				<div class="btn btn-clean"></div>
+			</div>
+			<div class="next-page">
+				<div class="btn btn-clean"></div>
+			</div>
+		</div>
+	</div>
+	<div class="sliding-panel-select-footer" class="hide">
+		<ul id="start_new_run_container_buy" class="btn-group hide">
+				<li>
+        <span class="cost-label">{{localize 'rift.purchase_rift_ticket_message'}}</span>
+        </li>
+				<li>
+				<!--CONFIG.RIFT_TICKET_GOLD_PRICE - Tagging for search-->
+				<button id="start_new_run_button_with_gold" data-gold="150" type="button" class="btn btn-clean btn-clean-secondary btn-buy product-for-gold"><span class="icon-gold">150</span> {{localize 'common.currency_gold'}}</button>
+        </li>
+        <li>
+        <button id="start_new_run_button_with_currency" data-price="199" type="button" class="btn btn-clean btn-clean-secondary btn-buy">{{{formatPremiumCurrency 199}}}</button>
+        </li>
+		</ul>
+
+		<div id="start_new_run_container_existing" class="hide">
+			<button id="start_new_run_button_with_existing" class="btn btn-clean btn-clean-primary">{{localize 'rift.start_run_button_label'}}</button>
+		</div>
+		{{#if hasAnyStoredRiftUpgrades}}
+			<span class="stored-upgrades-label">{{localize key='rift.stored_upgrade_count_label' storedUpgradeCount=getStoredRiftUpgradesCount}}</span>
+		{{/if}}
+	</div>
+</div>

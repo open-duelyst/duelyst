@@ -1,0 +1,170 @@
+/* ---------- DIALOG ----------- */
+
+.dialog {
+  @include fillParent();
+  pointer-events:auto;
+  color: #fff;
+  text-align: center;
+  display:flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-background {
+	@include fillParent();
+	pointer-events:auto;
+	background-color: rgba(0, 0, 0, 0.7);
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.dialog-content {
+  position: relative;
+  margin:0;
+  width:70.0rem;
+  opacity:0;
+  text-align: center;
+  display:flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: center;
+  animation: slideInFromBottom 0.2s ease-out 0.1s;
+  animation-fill-mode: forwards;
+}
+
+.dialog-header {
+  position: relative;
+}
+.dialog-body {
+  position: relative;
+	margin-bottom: 3.0rem;
+}
+.dialog-footer {
+  position: relative;
+}
+
+.dialog-title {
+	@include headerFont();
+	font-size: 2.8rem;
+	font-weight: 300;
+	margin-top: 1.0rem;
+	padding: 0.5rem;
+}
+
+.dialog-message {
+  margin: 1.0rem;
+  padding: 0.5rem;
+}
+
+/* ---------- ERROR DIALOG ----------- */
+
+#app-error-dialog {
+	.modal-title {
+		font-size: 3.0rem;
+	}
+	.modal-body {
+		min-height: auto;
+		.modal-message {
+			font-size: 1.8rem;
+		}
+	}
+}
+
+/* ---------- PROMPT DIALOG ----------- */
+
+#app-prompt-dialog {
+	.modal-title {
+		font-size: 3.0rem;
+	}
+	.modal-body {
+		min-height: auto;
+		.modal-message {
+			font-size: 1.8rem;
+		}
+	}
+}
+
+/* ---------- ACTIVITY DIALOG ----------- */
+
+#app-activity-dialog {
+	.dialog-content {
+		animation-duration: 0s;
+	}
+  .dialog-body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .dialog-footer {
+    margin-top:1.0rem;
+  }
+  .dialog-message {
+    @include headerFullStyle();
+    color: #fff;
+  }
+}
+
+/* ---------- LOADING DIALOG ----------- */
+
+#app-preloading {
+	@include fillParent();
+	background-color: rgba(0, 0, 0, 1.0);
+	z-index: 9999;
+
+	.mystic-loader {
+		position: relative;
+		top: 52.5%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.brand-main {
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		@include backgroundImage("resources/ui/brand_duelyst_preloading.png");
+	}
+
+	&.in {
+		opacity: 1.0;
+		transition: opacity 0.35s;
+	}
+
+	&.out {
+		opacity: 0;
+		transition: opacity 0.35s;
+	}
+}
+
+#app-loading-dialog {
+	.dialog-content {
+		animation-duration: 0s;
+	}
+  .dialog-body {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  .dialog-footer {
+    margin-top:1.0rem;
+  }
+  .dialog-message {
+    @include headerFullStyle();
+		font-size: 1.6rem;
+		color: #999;
+  }
+
+	.game-tip {
+		color:$off-white;
+		position: absolute;
+		width: 60.0rem;
+		left: 50%;
+		margin-left: -30.0rem;
+		margin-top: 15.0rem;
+	}
+}

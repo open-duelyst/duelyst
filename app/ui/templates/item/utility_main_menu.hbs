@@ -1,0 +1,43 @@
+<div class="utility-top">
+
+</div>
+
+<div class="utility-bottom">
+
+	<div class="btn-group">
+		<button type="button" class="animate-reveal gold" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.gold_currency_indicator_tooptip'}}">
+			<span class="icon-gold"></span><span class="gold-count">{{gold_amount}}</span>
+		</button>
+		<button type="button" class="animate-reveal diamond" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.premium_currency_indicator_tooltip'}}">
+				<span class="icon-premium"></span><span class="diamond-count">0</span>
+		</button>
+		<!-- <button type="button" class="btn btn-default shop disabled"><div class="symbol"></div>Store</button> -->
+		<button type="button" class="btn btn-default animate-reveal quest-log">
+			<div class="symbol"></div>{{localize 'main_menu.menu_item_quests'}}</button>
+		<button type="button" class="btn btn-default animate-reveal profile">
+			<div class="symbol"></div>{{localize 'main_menu.menu_item_profile'}}</button>
+		{{#if isShopEnabled}}
+			<button type="button" class="btn btn-default animate-reveal shop">
+				<div class="symbol"></div>{{localize 'main_menu.menu_item_shop'}}
+			</button>
+		{{/if}}
+		<button type="button" class="btn btn-default animate-reveal settings">
+			<div class="symbol"></div>{{localize 'main_menu.menu_item_settings'}}</button>
+		<button type="button" class="btn btn-default animate-reveal buddy-list">
+			<div class="symbol"></div>{{localize 'main_menu.menu_item_buddy_list'}} (<strong class="buddy-count"></strong>)
+			<div class="unread-conversation-block hide"><i class="fa fa-comment"></i>
+				<div class="unread-conversation-count">0</div>
+			</div>
+		</button>
+	</div>
+
+	<button class="btn animate-reveal booster-pack-collection">
+		<div class="symbol-booster-pack">
+			<div class="symbol-booster-pack-center"></div>
+			<div class="symbol-booster-pack-ring"></div>
+		</div>
+		<!--TODO: count should be localized-->
+		<div class="booster-pack-count-label"><span class="count">{{_booster_pack_count}}</span> <span class="booster-pack-descriptor">{{localize 'common.spirit_orb_plural'}}</span></div>
+	</button>
+
+</div>

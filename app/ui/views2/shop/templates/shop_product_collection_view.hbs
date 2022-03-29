@@ -1,0 +1,17 @@
+
+<div class="filters">
+	<ul class="sub-category-menu nav nav-tabs">
+		{{#each categories}}
+			<li role="select" data-value="{{title}}" class="{{#if is_active}}active{{/if}}"><a>{{localized_title}}</a></li>
+		{{/each}}
+	</ul>
+	<div class="input-group search">
+		<input type="search" class="form-control search-input-field" placeholder="{{localize 'common.search_input_label'}}">
+		<span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+		<span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+	</div>
+</div>
+
+<ul class="product-list">
+	<!-- Product Item Views go here -->
+</ul>

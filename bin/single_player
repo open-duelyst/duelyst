@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+'use strict'
+
+const path = require('path')
+require('app-module-path').addPath(path.join(__dirname, '..'))
+require('coffee-script/register')
+
+// Load config first so it has chance to synchronously validate .json config files
+// *before* any other code executes
+const config = require('config/config')
+// Monkey-patches console.log to Winston/Papertrail
+if (config.get('winston')) {
+	const winston = require('server/winston')
+	winston.setup('ai')
+}
+
+// Setup exceptionReporter
+const exceptionReporter = require('@counterplay/exception-reporter')
+exceptionReporter.init({
+	apiKey: config.get('bugsnag.ai_key'),
+	releaseStage: config.get('env'),
+	appVersion: config.version,
+	isDevelopment: config.isDevelopment(),
+	quitOnError: false
+})
+
+module.exports = require('server/single_player')

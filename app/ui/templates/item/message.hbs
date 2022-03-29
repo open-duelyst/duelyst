@@ -1,0 +1,8 @@
+<div class="arrow"></div>
+<div class="message-content">{{body}}</div>
+{{#if gameId}}
+	<div class="game-info">
+		<div class="faction-general general-{{generalId}}" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId generalId)}})"></div>
+		<button class="btn-watch-replay" type="button">WATCH</button>
+	</div>
+{{/if}}

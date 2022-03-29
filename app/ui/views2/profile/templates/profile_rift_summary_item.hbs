@@ -1,0 +1,24 @@
+<div class="container">
+	<div id="rift_summary_stats" class="row">
+		<div class="col-md-4">
+			<div class="summary-box">
+				<h1>Highest Rating</h1>
+          <div class="general-portrait-container">
+						<img src="{{imageForResourceScale (generalPortraitHexImageForGeneralId highest_rated_run.general_id)}}" class="general-portrait" />
+          </div>
+				<h2 class="rank">Level <strong>{{statOrDash highest_rated_run.rift_level}}</strong></h2>
+				<h3 class="season">__TBD</h3>
+				<div class="progress">
+					<div class="progress-bar level-progress-bar" style="width: {{highest_rated_run.rift_level_percent}}%">
+						<span class="sr-only"></span>
+					</div>
+				</div>
+				<div class="stats">
+					<div class="stat">Rift Wins <span class="value">{{statOrDash highest_rated_run.win_count}}</span></div>
+					<div class="stat">Rift Rating <span class="value">{{highest_rated_run.rift_rating}}</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

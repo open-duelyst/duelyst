@@ -1,0 +1,79 @@
+<div class="container">
+	<div id="summary_stats" class="row">
+		<div class="col-md-4">
+			<div class="summary-box">
+				<h1>{{localize 'profile.summary_current_rank'}}</h1>
+				<div class="division-medal-container">
+					<div>
+						<img src="{{imageForResourceScale (concat 'resources/season_rewards/season_rank_' (divisionClassNameForRank currentSeasonRank.rank) '.png')}}" class="division-medal" />
+					</div>
+				</div>
+				<h2 class="rank">{{localize 'rank.rank'}} <strong>{{statOrDash currentSeasonRank.rank}}</strong> - <span>{{divisionNameForRank currentSeasonRank.rank}}</span>{{#if currentSeasonLadderPositionModel.ladder_position}}<div class="badge ladder-position">{{currentSeasonLadderPositionModel.ladder_position}}</div>{{/if}}</h2>
+				<h3 class="season">{{currentSeasonRank.season_label}}</h3>
+				<div class="progress">
+					<div class="progress-bar level-progress-bar" style="width: {{currentSeasonRank.rank_progress_percent}}%">
+						<span class="sr-only"></span>
+					</div>
+				</div>
+				<div class="stats">
+					<div class="stat">{{localize 'profile.summary_current_win_streak'}} <span class="value">{{currentSeasonRank.win_streak}}</span></div>
+					<div class="stat">{{localize 'profile.summary_current_ranked_wins'}} <span class="value">{{statOrDash currentSeasonGameCounterModel.win_count}}</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="summary-box profile-ranked-stats">
+				<h1>{{localize 'profile.summary_top_rank'}}</h1>
+				<div class="division-medal-container">
+					<div>
+						<img src="{{imageForResourceScale (concat 'resources/season_rewards/season_rank_' (divisionClassNameForRank topRank.top_rank) '.png')}}" class="division-medal" />
+					</div>
+				</div>
+				<h2 class="rank">{{localize 'rank.rank'}} <strong>{{topRank.top_rank}}</strong> - <span>{{divisionNameForRank topRank.top_rank}}</span></h2>
+				<h3 class="season">{{topRank.season_label}}</h3>
+				<div class="progress">
+					<div class="progress-bar level-progress-bar" style="width: {{topRank.rank_progress_percent}}%">
+						<span class="sr-only"></span>
+					</div>
+				</div>
+				<div class="stats">
+					<div class="stat">{{localize 'profile.summary_top_win_streak'}} <span class="value">{{statOrDash topRank.top_win_streak}}</span></div>
+					<div class="stat">{{localize 'profile.summary_total_ranked_wins'}} <span class="value">{{statOrDash ranked.win_count}}</span></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="summary-box profile-gauntlet-stats">
+				<h1>{{localize 'profile.summary_gauntlet'}}</h1>
+				<div class="gauntlet-run {{#unless run.win_count}}disabled{{/unless}}">
+					<div class="division-medal-container">
+						<div>
+							<img src="{{imageForResourceScale (concat 'resources/arena/key_blades/' run.blade_id '.png')}}" class="division-medal" />
+						</div>
+					</div>
+					<h2>{{localize 'common.key_blade'}}</h2>
+					<h3>{{statOrDash run.win_count}} {{localize key='common.win' count=2}}</h3>
+					<div class="progress">
+						<div class="progress-bar level-progress-bar" style="width: {{run.gauntlet_progress_percent}}%">
+							<span class="sr-only"></span>
+						</div>
+					</div>
+				</div>
+				<div class="stats">
+					<div class="stat">{{localize 'profile.summary_gauntlet'}} <span class="value">{{statOrDash run.win_count}}</span></div>
+					<div class="stat">{{localize 'profile.summary_gauntlet_total_wins'}} <span class="value">{{statOrDash gauntlet.win_count}}</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="ribbons" class="row">
+		<h1>{{localize 'profile.summary_battle_ribbons_label'}}</h1>
+		<div class="ribbons-list">
+			{{#each ribbons}}
+				<img src="{{imageForResourceScale (concat 'resources/ribbons/' id '.png')}}" class="{{#unless count}}disabled{{/unless}}" />
+			{{/each}}
+		</div>
+	</div>
+
+</div>

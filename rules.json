@@ -1,0 +1,878 @@
+/* Ordering guideline:
+
+- Any read/write rules ->
+- Validation for this node ->
+- Child Nodes ->
+- Alphabetical order (duh)
+
+*/
+
+{
+	"rules": {
+
+		// These can be uncommented to debug if firebase rules are preventing necessary read/writes
+		//".read": "true",
+		//".write": "true",
+
+		/* CHAT TREE
+		- Holds data surrounding player chat and buddy invites
+
+		- Permissions:
+		- default no read/write access
+		- Read: users can read conversations they are a part of
+		- Write: users can write to the messages in a conversation they are a part of
+		- Read: users can read invites sent to them
+
+		*/
+		"chat": {
+			// chat/conversations holds the data for messages between two users
+			"conversations": {
+				"$conversation_id": {
+					"messages": {
+						// users can read the tree of all of their messages of any conversation they are a part of
+						".read": "$conversation_id.contains(auth.id)",
+
+
+						"$message_id": {
+							// TODO: test this after figuring out issue with challenges
+							// Prevent users from writing to a conversation with a null userID,
+							// - allow users to write to a message in a conversation they are a part of, but don't let them delete it
+							".write": "auth.id != null && $conversation_id.contains(auth.id) && newData.exists()",
+							// Validate that any message created has all the required fields
+							".validate": "newData.hasChildren(['body','.priority','fromId','id','timestamp','toId'])",
+
+							// .priority child in $other_key because firebase doesn't like . in key names
+							"body": {".validate": "newData.isString()"},
+							"generalId": {".validate": "newData.isNumber()"},
+							"gameId": {".validate": "newData.isString()"},
+							"fromId": {".validate": "newData.isString()"},
+							"id": {".validate": "newData.isString()"},
+							"timestamp": {".validate": "newData.isNumber()"},
+							"toId": {".validate": "newData.isString()"},
+							"$other_key": {
+								// Work around for .priority due to . in key
+								".validate": "$other_key == '.priority' && newData.isNumber()"
+							}
+						}
+					}
+				}
+			},
+			"users": {
+				"$user_id": {
+					// Users can read their own buddy invites
+					".read": "$user_id == auth.id",
+					"portrait_id": {
+						".write": "$user_id == auth.id"
+					},
+					// holds pending buddy invites for $user_id
+					"buddy-invites": {
+						"$sender_id": {
+							// Prevent writing to a null sender-id, allow users to write to a sender-id matching their own, but don't let them delete it
+							// ".write": "auth.id != null && $sender_id == auth.id && newData.exists()"//,
+							// allow deletion
+							".write": "auth.id != null && ($sender_id == auth.id || $user_id == auth.id)"//,
+							/* TODO: Test when internets back up
+							"fromUserId": {".validate": "newData.isString()"},
+							"fromName": {".validate": "newData.isString()"},
+							"sentAt": {".validate": "newData.isString()"} // TODO: not sure if this will be string or number
+							*/
+						}
+					}
+				},
+				// CUSTOM RULE TO EXCLUDE STREAMERS FROM BUDDY INVITES
+				"-K8Io7-Q6KeFFsoRhAJM": { // PRODUCTION TempoReynad
+					"buddy-invites": {
+						".write":false
+					}
+				},
+				"-K82guULktWDAF3-6H-t": { // PRODUCTION ArchonAmaz
+					"buddy-invites": {
+						".write":false
+					}
+				},
+				"-K8LVwNAUZn0iAMUXfQm": { // PRODUCTION Trumpo
+					"buddy-invites": {
+						".write":false
+					}
+				},
+				"-K8_dUIqRjcTX9Qud8gc": { // PRODUCTION itshafu
+					"buddy-invites": {
+						".write":false
+					}
+				},
+				"-K71u7Fr3PRGx1sUvQgX": { // PRODUCTION ArchonFirebat
+					"buddy-invites": {
+						".write":false
+					}
+				},
+				"-K4LX8_QU_DYmkjPPaIB": { // PRODUCTION Kibler
+					"buddy-invites": {
+						".write":false
+					}
+				}
+			}
+		},
+
+		/* EMAIL INDEX TREE
+		- Stores a user's id by their escaped email when they register
+
+		- no one except admins can read the entire tree
+		- individual email lookups are allowed if a user is authenticated
+
+		*/
+
+		"email-index": {
+			".read" : false // don't allow reads for the whole tree
+		},
+
+		/* boss-events tree
+		Stores live event data for boss events
+
+		- Read: A signed in user can read this entire tree
+		- Write No user can write to this tree
+
+		*/
+
+		"boss-events": {
+			".read" : "auth.id != null",
+			// Structure definition, no further rules needed
+			"$event-id": {
+				//event_id
+				//boss_id
+				//event_start
+				//event_end
+				//valid_end
+			}
+		},
+
+		/* shop-sales tree
+		Stores per product diamond discounts
+
+		- Read: A signed in user can read this entire tree
+		- Write No user can write to this tree
+
+		*/
+
+		"shop-sales": {
+			".read" : "auth.id != null"
+		},
+
+		/* GAMES DATA TREE
+		- Stores data for game sessions past and current
+		- Only the server's write to the games-data
+		- User's only read from the server to load the initial game-data
+		- TODO: Need to prevent users from reading the other players data (e.g. deck) somehow
+
+		*/
+
+		"games-data": {
+			"$game_id": {
+				// Allow users to read games-data if they are in the game
+				// TODO: I believe this is the problem with games getting started // maybe not...
+				".read": "data.child('players').child('0').child('playerId').val() == auth.id || data.child('players').child('1').child('playerId').val() == auth.id"
+			}
+		},
+
+		/* INVITE CODES TREE
+			Not used anywhere in code?
+		*/
+
+		"invite-codes": {
+
+		},
+
+		/* JOB QUEUES TREE
+
+		*/
+
+		"job-queues": {
+
+		},
+
+		/* MATHCMAKING TREE
+
+		*/
+
+		"matchmaking": {
+			"$namespace": {
+				// Game requests are players joining matchmaking queue
+				"game-request-queue": {
+					"$request_id": {
+						// should be identical to /matchmaking/$namespace/invite-request-queue/$request_id
+
+						// Allow a user to edit invite request queue if they are adding or editing a request with their id or editing a request that doesn't yet exist
+						// - Allows deletion
+
+						".read": "auth.id != null && data.child('id').val() == auth.id",
+						".write": "auth.id != null && (!data.exists() || data.child('id').val() == auth.id || newData.child('id').val() == auth.id)"
+
+						/* TODO: test when internets back up
+						"deck": {".validate": "newData.isString()"}, // TODO: match deck model (array of ints I think?)
+						"factionId": {".validate": "newData.isNumber()"},// TODO: verify if this is number or string
+						"gameType": {".validate": "newData.isString()"},// TODO: only can be normal for now, should match any new gametypes
+						"id": {".validate": "newData.isString()"},
+						"inviteId": {".validate": "newData.isString()"},
+						"name": {".validate": "newData.isString()"},
+						"namespace": {".validate": "newData.isString()"},
+						"ranking": {".validate": "newData.isString()"},// TODO: match ranking model
+						"timestamp": {".validate": "newData.isString()"} // TODO: check if timestamp is number or string
+						*/
+
+					}
+				},
+				"game-waiting-queue": {
+					"$request_id": {
+						// should be identical to /matchmaking/$namespace/invite-waiting-queue/$request_id
+
+						// TODO: prevent junk data from being written here, users only need to be able to delete this entry (if they are a part of it)
+						// Allow users to delete matchmaking queue item by ref
+						".read": "auth.id != null && data.child('id').val() == auth.id",
+						".write": "auth.id != null && data.child('id').val() == auth.id"
+					}
+				},
+				// Invite requests - game requests from friend challenges
+				"invite-request-queue": {
+					"$request_id": {
+						// should be identical to /matchmaking/$namespace/game-request-queue/$request_id
+
+						// Allow a user to edit invite request queue if they are adding or editing a request with their id or editing a request that doesn't yet exist
+						".read": "auth.id != null && data.child('id').val() == auth.id",
+						".write": "auth.id != null && (!data.exists() || data.child('id').val() == auth.id || newData.child('id').val() == auth.id)"
+
+						/* TODO: test when internets back up
+            "deck": {".validate": "newData.isString()"}, // TODO: match deck model (array of ints I think?)
+            "factionId": {".validate": "newData.isNumber()"},// TODO: verify if this is number or string
+            "gameType": {".validate": "newData.isString()"},// TODO: only can be normal for now, should match any new gametypes
+            "id": {".validate": "newData.isString()"},
+            "inviteId": {".validate": "newData.isString()"},
+            "name": {".validate": "newData.isString()"},
+            "namespace": {".validate": "newData.isString()"},
+            "ranking": {".validate": "newData.isString()"},// TODO: match ranking model
+            "timestamp": {".validate": "newData.isString()"}, // TODO: check if timestamp is number or string
+            // prevent creation of junk keys
+            "$other_key": {".validate": "false"}
+            */
+
+					}
+				},
+				"invite-waiting-queue": {
+					"$request_id": {
+						// should be identical to /matchmaking/$namespace/game-waiting-queue/$request_id
+
+						// TODO: prevent junk data from being written here, users only need to be able to delete this entry (if they are a part of it)
+
+						// Allow users to delete matchmaking queue item by ref
+						".read": "auth.id != null && data.child('id').val() == auth.id",
+						".write": "auth.id != null && data.child('id').val() == auth.id"
+					}
+				},
+				"invites": {
+					"to": {
+						"$recipient_id": {
+							// Allow users to read invites directed to themselves
+							".read": "auth.id == $recipient_id",
+							"$invite_id": {
+								// Allow users to read game request if they are the sender
+								".read": "auth.id == data.child('fromId').val()",// TODO: test that this works
+								// Allow users to write a game request to a user
+								".write": "auth.id != null",
+
+								/* TODO Verify after internet is back up
+								"createdAt": {".validate": "newData.isString()"},// Verify if number or string
+								"fromId": {".validate": "newData.isString()"},
+								"fromName": {".validate": "newData.isString()"},
+								"status": {".validate": "newData.isString()"},
+								"toId": {".validate": "newData.isString()"},
+								"toName": {".validate": "newData.isString()"},
+								// Prevent creation of junk keys
+								"$other_key": {".validate": "false"}
+								*/
+							}
+						}
+					}
+				},
+				"failed-invite-request-queue": {
+					"$request_id": {
+						".read": "auth.id != null && (!data.exists() || data.child('id').val() == auth.id)"
+					}
+				},
+				"failed-game-request-queue": {
+					"$request_id": {
+						".read": "auth.id != null && (!data.exists() || data.child('id').val() == auth.id)"
+					}
+				}
+			}
+		},
+
+
+		/* TELEMENTRY Tree
+
+		*/
+
+		"telemetry": {
+			"$category": {
+				"$type": {
+					"$status_id": {
+						// TODO: make a validation
+						// ".write": "auth.id == newData.child('u').val() || 'anon' == newData.child('u').val()"
+						// Users can write to or delete telemetry data by a status id
+						".write": "true",
+						"u": {
+
+						},
+						"e": {
+
+						},
+						"l": {
+
+						},
+						"v": {
+
+						}//,
+						/* TODO Test when internet back up
+						// Prevent creation of junk keys
+						"$other_key": {
+							".validate": "false"
+						}
+						*/
+					}
+				}
+			}
+
+		},
+
+		/* transactions-in-progress Tree
+		Tracks transactions the servers makes for users such as disenchanting cards
+
+		- Users don't need access to this tree
+
+		*/
+
+		"transactions-in-progress": {
+
+		},
+
+		/* user-aggregates Tree
+		Maintains a count of events that occur for users
+
+		- User's dont need access to this tree
+
+		*/
+
+		"user-aggregates": {
+
+		},
+
+		/* user-premium-receipts tree
+		Holds player visible premium receipts
+
+		- Read: Players can read the entire tree of premium receipts for themselves
+
+		*/
+
+		"user-premium-receipts": {
+			"$user_id": {
+				".read": "auth.id == $user_id"
+			}
+		},
+
+		/* user-decks tree
+		Holds player's custom decks
+
+		- Read: Players can read the entire tree of custom decks for themself
+		- Write: Players can write single nodes onto that tree
+
+		*/
+
+		"user-decks": {
+			"$user_id": {
+				// allow reads for individual records if the user owns the record
+				".read": "auth.id == $user_id",
+				"$deck_id": {
+					// Allow users to add or delete custom decks
+					".write": "auth.id != null && auth.id == $user_id"
+				}
+			}
+		},
+
+		/* user-game-job-status tree
+		Stores users game job status
+
+		- Read: Players can read their own past game status
+
+
+		*/
+
+		"user-game-job-status": {
+			"$user_id": {
+				".read" : "auth.id == $user_id",
+			}
+		},
+
+		/* user-games tree
+		Stores users past games
+
+		- Read: Players can read their own past games
+
+
+		*/
+
+		"user-games": {
+			"$user_id": {
+				".read" : "auth.id == $user_id",
+				".write": "auth.id != null && auth.id == $user_id"
+			}
+		},
+
+		/* user-inventory tree
+	    Stores users wallet, inventory and boost pack data
+
+	    - Read: Users can read their own inventory
+
+	    */
+
+		"user-inventory": {
+			"$user_id": {
+				".read" : "auth.id == $user_id",
+				"card-collection": {
+					"$card_id": {
+						"is_unread": {
+							".write": "auth.id == $user_id"
+						},
+						"is_new": {
+							".write": "auth.id == $user_id"
+						}
+					}
+				},
+				"spirit-orbs": {
+				},
+				"cosmetic-chests": {
+				},
+				"cosmetic-chest-keys": {
+				},
+				"cosmetic-inventory": {
+				},
+				"wallet": {
+				}
+
+			}
+		},
+
+		/* user-logs tree
+		Stores a log of user data
+
+		- Users don't need access to this tree
+
+		*/
+
+		"user-logs": {
+
+		},
+
+		/* user-quests tree
+	    Stores users current and completed daily quests
+
+	    */
+
+		"user-quests": {
+			"$user_id": {
+				".read" : "auth.id == $user_id",
+				"daily": {
+					"current": {
+						"quests": {
+							"$quest_index": {
+								"is_unread": {
+									// Allow users to mark their own quests as read
+									".write": "auth.id == $user_id"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+
+		/* user-ranking tree
+		Stores ranking data per user
+
+		- Read: Any user can look up any other users ranking by id
+
+		*/
+
+		"user-ranking": {
+			"$user_id": {
+				// Any user can lookup another users ranking, if signed on
+				".read" : "auth.id != null",
+
+				"current": {
+					"is_unread": {
+						// Allow users to mark their own ranking as read
+						".write": "auth.id == $user_id"
+					}
+				}
+			}
+		},
+
+		/* user-stats tree
+		Stores stats data per user
+
+		- Read: Any user can look up their own stats
+
+		*/
+
+		"user-stats": {
+			"$user_id": {
+				// Any user can lookup another users ranking, if signed on
+				".read" : "auth.id == $user_id"
+			}
+		},
+
+		/* user-transactions tree
+		Holds per user transaction
+
+		- User needs no access to this tree
+
+		*/
+
+		"user-transactions": {
+
+		},
+
+		/* USERNAME INDEX TREE
+
+		- no one except admins can read the entire tree
+		- individual email lookups are allowed if a user is authenticated
+
+		*/
+
+		"username-index": {
+			"$username": {
+				".read" : "auth.id != null" // allow reads for individual records for logged in users
+			}
+		},
+
+		/* USERS TREE
+
+	    - no one except admins can read the entire tree
+	    - individual user lookups are allowed if a user is authenticated
+	    - presence updates are only allowed by the user themselves
+	    - buddy list items can be written to only by the owner themselves or by the user for that buddy id
+
+	    */
+
+		"users": {
+			"$user_id": {
+				".read": "auth.id != null",
+				".write": "auth.id == $user_id",
+				"username": {
+					".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 18"
+				},
+				"presence": {
+					".write": "auth.id != null && auth.id == $user_id",
+					".read": "auth.id != null",
+					"username": {
+						".validate": "newData.isString() && newData.val().length >= 3 && newData.val().length <= 18"
+					}
+				},
+				"buddy-list": {
+					"$buddy_id": {
+						".write" : "auth.id != null && !data.exists() || $buddy_id == auth.id || $buddy_id == $user_id"
+					}
+				},
+				"buddies": {
+					"$buddy_id": {
+						// Allow users to write themselves into others buddy list
+						// TODO: verify this came from a buddy invite
+						".write": "auth.id == $buddy_id"
+					}
+				}
+			}
+		},
+
+		/* user-achievements tree
+		Stores achievement data per user
+
+		- Read: A user can read their own achievements
+		- Write A user can write to their last read property
+
+		*/
+
+		"user-achievements": {
+			"$user_id": {
+				// Any user can lookup another users ranking, if signed on
+				".read" : "auth.id == $user_id",
+				"completed": {
+					".indexOn": "completed_at",
+					"$achievement_id": {
+						"is_unread": {
+							".write": "auth.id == $user_id"
+						}
+					}
+				},
+				"status": {
+					".write": "auth.id == $user_id"
+				}
+			}
+		},
+
+		/* user-twitch-rewards tree
+		Stores twitch rewards data per user
+
+		- Read: A user can read their own twitch rewards
+		- Write A user can write to their last claimed property
+
+		*/
+
+		"user-twitch-rewards": {
+			"$user_id": {
+				".read" : "auth.id == $user_id",
+				"status": {
+					".write": "auth.id == $user_id"
+				}
+			}
+		},
+
+		/* user-ladder-position tree
+    Stores srank ladder position data per season per user
+
+    - Read: Currently users can read their own ladder position
+    - Write Currently no one can write
+
+    */
+
+		"user-ladder-position": {
+			"$season_start": {
+				"$user_id": {
+					// Any user can lookup another users ranking, if signed on
+
+					"ladder_position": {
+						".read": "auth.id != null",
+						".indexOn": "ladder_position"
+					}
+				}
+			}
+		},
+
+		/* user-progression tree
+		Stores progress data per user
+
+		- Read: A user can read their own progression
+		- Write A user can write to the is_unread property
+
+		*/
+
+		"user-progression": {
+			"$user_id": {
+				// Any user can lookup another users ranking, if signed on
+				".read" : "auth.id == $user_id",
+
+				"game-counter-rewards": {
+					"$reward_id":{
+						"is_unread": {
+							// Allow users to mark their own ranking as read
+							".write": "auth.id == $user_id"
+						}
+					}
+				}
+			}
+		},
+
+		/* user-bosses-defeated tree
+		Stores what bosses have been defeated data per user
+
+		- Read: A user can read their own progression
+		- Write A user can write to the is_unread property
+
+		*/
+
+		"user-bosses-defeated": {
+			"$user_id": {
+				// Any user can lookup another users ranking, if signed on
+				".read" : "auth.id == $user_id",
+
+				// Structure definition, no further rules needed
+				"boss-id": {
+					//boss_id
+					//boss_event_id
+					//defeated_at
+				}
+			}
+		},
+
+		/* user-matchmaking errors tree
+		Stores matchmaking errors
+
+		- Read: A user can read their own errors
+
+		*/
+		"user-matchmaking-errors": {
+			"$user_id": {
+				".read" : "auth.id == $user_id"
+			}
+		},
+
+
+		"system-status": {
+			".read": true,
+			".write" : "auth.uid == '1372d9b92f1e' && auth.continous_integration_user == true"
+		},
+
+
+		/* news tree
+		Stores news and announcements
+
+		- Read: All users can read news
+
+		*/
+		"news": {
+			"$news": {
+				// Any user can read news
+				".read" : true
+			}
+		},
+
+
+		/* user-news tree
+		Stores records related to user interaction with news section
+
+		- Read: A user can read their own news data
+		- Write: A user can read their own news data
+
+		*/
+		"user-news": {
+			"$user_id": {
+				// Users can manage their own news datarecords
+				".read" : "auth.id == $user_id",
+				".write" : "auth.id == $user_id"
+			}
+		},
+
+
+		/* user-faction-progression tree
+		Stores records related to user faction progression
+
+		- Read: A user can read their own news data
+		- Write: A user can read their own news data
+
+		*/
+		"user-faction-progression": {
+			"$user_id": {
+				// Users can manage their own news datarecords
+				".read" : "auth.id == $user_id",
+				".write" : false
+			}
+		},
+
+		"user-new-player-progression": {
+			"$user_id": {
+				// Users can manage their own news datarecords
+				".read" : "auth.id == $user_id",
+				".write" : "auth.id == $user_id",
+			}
+		},
+
+		/* user-challenge-progression tree
+		Stores records related to user challenge progression
+
+		- Read: A user can read their own news data
+		- Write: A user can read their own news data
+
+		*/
+		"user-challenge-progression": {
+			"$user_id": {
+				// Only the server can write because we want users to get rewards,
+				// but users can read their challenge progress
+				".read" : "auth.id == $user_id",
+				".write" : false,
+				"$challenge_type": {
+					"last_attempted_at": {
+						".write" : "auth.id == $user_id"
+					}
+				}
+			}
+		},
+
+
+		/* crafting tree
+		Stores records related to card crafting data, promos, etc.
+
+		- Read: A user can read this data.
+		- Write: A user can NOT write to this data.
+
+		*/
+		"crafting": {
+			".read" : true,
+			".write" :  false
+		},
+
+
+		/* arena/gauntlet tree
+		Stores records related to a user's arena runs
+
+		- Read: A user can read this data.
+		- Write: A user can NOT write to this data.
+
+		*/
+		"user-gauntlet-run": {
+			"$user_id": {
+				// Users can manage their own news datarecords
+				".read" : "auth.id == $user_id",
+				".write" : "auth.id == $user_id"
+			}
+		},
+
+
+		/* receipts tree
+		Stores records related to a user's purchases
+
+		- Read: A user can read this data.
+
+		*/
+		"user-receipts": {
+			"$user_id": {
+				// Users can read their own receipts
+				".read" : "auth.id == $user_id",
+			}
+		},
+
+		/* remote notifications tree
+		objects added here will appear in a user's game window and will be dismissable
+
+		- Read: A user can read their own notifications.
+
+		*/
+		"user-notifications": {
+			"$user_id": {
+				// Users can read their own receipts
+				".read" : "auth.id == $user_id",
+				".indexOn": "created_at"
+			}
+		},
+
+		/* user ribbons tree
+		- Read: A user can read anyone's ribbons.
+		*/
+		"user-ribbons": {
+			"$user_id": {
+				// Users can read ribbons
+				".read" : true,
+			}
+		},
+
+		"daily-challenges": {
+			".read": true
+		},
+
+		"streamer-whitelist": {
+			".read": true
+		},
+
+		"user-purchase-counts": {
+			"$user_id": {
+				// Users can read ribbons
+				".read" : true,
+			}
+		}
+
+	}
+}

@@ -1,0 +1,17 @@
+{
+  "name": "sarlac_prime",
+  "version": "1.0.0",
+  "description": "",
+  "devDependencies": {
+    "canvas": "*",
+    "plist": "*",
+		"mkdirp": "*",
+		"csv": "*"
+  },
+  "main": "codex.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Collin",
+  "license": "ISC"
+}

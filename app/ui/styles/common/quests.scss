@@ -1,0 +1,391 @@
+// alternate animation here: http://jsfiddle.net/q8j69xo3/3/
+#quest-log {
+	.btn-cancel-primary {
+		right: -6rem;
+		top: 0.6rem;
+
+		@include mobile() {
+			top: 0;
+			right: auto;
+		}
+	}
+	.modal-dialog {
+		width: 100.0rem;
+
+		.modal-content {
+			padding-left: 0;
+			padding-right: 0;
+			&.starter-only {
+//				@include mobile() {
+//					justify-content: center;
+//				}
+			}
+		}
+
+		.modal-footer {
+//			@include mobile() {
+//				display: none;
+//			}
+		}
+
+		.quest-sections-container {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+
+			@include scrollX();
+			margin: 0 0;
+			padding: 2.0rem 0;
+
+			& > * {
+				&:first-child {
+					padding-left:$edge-spacing;
+				}
+				&:last-child {
+					padding-right:$edge-spacing;
+				}
+			}
+
+			.free-card-of-the-day-region {
+				padding-right: 4rem;
+			}
+		}
+	}
+	.quest {
+		display: inline-block;
+		position: relative;
+		z-index: 1;
+		width: 19.0rem;
+		height: 28.5rem;
+		@include backgroundImage("resources/ui/frame_quest.png");
+		background-repeat: no-repeat;
+		background-position: 50%;
+		background-size: 100%;
+		text-align: center;
+		margin: 0.5rem;
+		padding: 1.5rem;
+
+		@include mobile() {
+			width: 25.0rem;
+			height: 37.0rem;
+		}
+
+		&.replacing {
+			opacity: 0.5;
+		}
+		&.animateIn {
+			opacity: 0;
+			animation: showQuest 0.8s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+		}
+		&.daily-challenge, &.free-card-of-the-day {
+			@include backgroundImage("resources/ui/frame_quest_challenge.png");
+		}
+
+		&.free-card-of-the-day {
+			.instructions {
+				padding-top:1.5rem;
+			}
+		}
+
+		&.animateInShake {
+			opacity: 0;
+			animation: bringQuestPlateInAndShake 1.6s cubic-bezier(0.645, 0.045, 0.355, 1.000) forwards;
+		}
+
+		&:after {
+			display: none;
+			content: " ";
+			position: absolute;
+			z-index: -1;
+			width: 84%;
+			height: 80%;
+			border-radius: 2.0rem;
+			left: 8%;
+			top: 8%;
+		}
+		&:nth-child(1) {
+			animation-delay: 0.3s;
+		}
+		&:nth-child(2) {
+			animation-delay: 0.4s;
+		}
+		&:nth-child(3) {
+			animation-delay: 0.5s;
+		}
+		&:nth-child(4) {
+			animation-delay: 0.6s;
+		}
+		&:first-child {
+			//						margin-left: 0;
+		}
+		&:last-child {
+			//						margin-right: 0;
+		}
+		.description {
+			height: 19.0rem;
+			@include mobile() {
+				height: 25.75rem;
+			}
+		}
+		.claim-card {
+			bottom: -3rem;
+		}
+		.replace {
+			bottom: -1rem;
+		}
+		.title {
+			@include headerFont();
+			font-size: 2.0rem;
+			line-height: 2.5rem;
+			height: 5.0rem;
+			text-shadow: 0 0 1.0rem rgba(255,255,255,0.75);
+			margin-right: 1.5rem;
+			margin-left: 1.5rem;
+			margin-top: 1.5rem;
+
+			@include mobile() {
+				font-size: 2.7rem;
+				line-height: 3.5rem;
+				height: 7rem;
+				margin: 1.0rem 0 0 0;
+			}
+		}
+		.gold-reward {
+			@extend .icon-gold;
+			@include headerFullStyle();
+			width: 7.1rem;
+			height: 7.1rem;
+			margin: 1.0rem auto;
+			font-size: 2.0rem;
+
+			@include mobile() {
+				font-size: 2.5rem;
+				width: 9.1rem;
+				height: 9.1rem;
+				margin: 0.5rem auto;
+			}
+		}
+		.gift-chests-reward {
+			width: 11.0rem;
+			height: 7.1rem;
+			margin: 1.0rem auto;
+
+			@include mobile() {
+				width: 14.0rem;
+				height: 9.1rem;
+				margin: 0.5rem auto;
+			}
+
+			img {
+				width: 10.0rem;
+				margin-top:-2rem;
+
+				@include mobile() {
+					margin-top: -3.5rem;
+				}
+			}
+		}
+		.card-reward {
+			width: 7.1rem;
+			height: 7.1rem;
+			margin: 1.0rem auto;
+			font-size: 2.0rem;
+			position: relative;
+			img {
+				left: -0.5rem;
+				transform: scale(2.0);
+				position: absolute;
+			}
+		}
+		.spirit-orbs-reward {
+			@include headerFullStyle();
+			width: 9.0rem;
+			height: 9.0rem;
+			line-height: 7.1rem;
+			@include backgroundImage("resources/booster_pack_opening/booster_orb.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			color: transparent;
+			margin: auto auto -1.0rem;
+			font-size: 2.0rem;
+
+			@include mobile() {
+				width: 11.0rem;
+				height: 11.0rem;
+			}
+		}
+		.bronze-cosmetic-key-reward {
+			@include headerFullStyle();
+			width: 4rem;
+			height: 11rem;
+			line-height: 7.1rem;
+			@include backgroundImage("resources/loot_crates/mystery/t1/loot_crate_key.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			color: transparent;
+			margin: auto auto -1.0rem;
+			font-size: 2.0rem;
+		}
+		.gold-cosmetic-key-reward {
+			@include headerFullStyle();
+			width: 4rem;
+			height: 11rem;
+			line-height: 7.1rem;
+			@include backgroundImage("resources/loot_crates/mystery/t2/loot_crate_key.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			color: transparent;
+			margin: auto auto -1.0rem;
+			font-size: 2.0rem;
+		}
+		.platinum-cosmetic-key-reward {
+			@include headerFullStyle();
+			width: 4rem;
+			height: 11rem;
+			line-height: 7.1rem;
+			@include backgroundImage("resources/loot_crates/mystery/t3/loot_crate_key.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			color: transparent;
+			margin: auto auto -1.0rem;
+			font-size: 2.0rem;
+		}
+		.boss-cosmetic-key-reward {
+			@include headerFullStyle();
+			width: 4rem;
+			height: 11rem;
+			line-height: 7.1rem;
+			@include backgroundImage("resources/loot_crates/mystery/boss/loot_crate_key.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
+			color: transparent;
+			margin: auto auto -1.0rem;
+			font-size: 2.0rem;
+		}
+		.complete-icon {
+			font-size:3.0rem;
+			line-height:9.0rem;
+			color:#96fb04;
+		}
+		.instructions {
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-content: center;
+			align-items: center;
+			height: 4rem;
+			font-size: 1.2rem;
+			line-height: 1.8rem;
+
+			@include mobile() {
+				height: 6rem;
+				font-size: 2.0rem;
+				line-height: 2.4rem;
+			}
+		}
+		.progress {
+			height: auto;
+			background: transparent;
+			margin-top: 0.2rem;
+			box-shadow: none;
+			margin-bottom: 0;
+			border-radius: 0;
+			color: $gold-color;
+			text-shadow: 0 0 1.0rem $gold-dark-color;
+			font-size: 1.6rem;
+			line-height: 2.0rem;
+
+			@include mobile() {
+				font-size: 2.4rem;
+				line-height: 3.0rem;
+			}
+		}
+	}
+}
+
+.quest-log {
+	perspective: 100.0rem;
+
+	.replace-instructions {
+		animation:zFadeInLarge 0.6s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+		animation-delay:0.4s;
+		opacity:0;
+		margin-top: 2.0rem;
+
+		@include mobile() {
+			display: none;
+			font-size: 2.1rem;
+		}
+	}
+
+	.starter-quest-instructions {
+		animation:zFadeInLarge 0.6s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+		animation-delay:0.4s;
+		opacity:0;
+		margin-top: 3.2rem;
+
+		@include mobile() {
+			font-size: 2.0rem;
+		}
+	}
+
+	.rollover-countdown {
+		animation:zFadeInSmall 0.6s cubic-bezier(0.075, 0.820, 0.165, 1.000) forwards;
+		animation-delay:0.6s;
+		opacity:0;
+		font-size: 1.4rem;
+		color: $off-white;
+		margin-top: 0.3rem;
+
+		@include mobile() {
+			margin-top: 4rem;
+			font-size: 1.94rem;
+		}
+	}
+	.first-win-of-the-day-available {
+		font-size:1.8rem;
+		animation:fadeFlashTextIn 1.2s forwards;
+		animation-delay:1.0s;
+		opacity:0;
+		margin:1.0rem 0 2.0rem 0;
+
+		@include mobile() {
+			margin-bottom: 1.0rem;
+		}
+	}
+}
+
+.quest-log-list {
+	padding:0;
+	margin:0;
+	white-space: nowrap;
+	.quest {
+		white-space: normal;
+
+		.popover {
+			min-width: 18rem;
+		}
+
+		.quest-bottom-button {
+			position: absolute;
+			left: 1.6rem;
+			bottom: -1.4rem;
+			width: 14.5rem;
+			height: 4.8rem;
+
+			@include mobile() {
+				width: 18.5rem;
+				height: 5.8rem;
+				bottom: -1.6rem;
+				left: 2.4rem;
+				font-size: 2.0rem;
+			}
+		}
+	}
+}

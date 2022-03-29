@@ -1,0 +1,37 @@
+<div class="modal-dialog">
+    <button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+    <div class="modal-content {{#unless is_replace_instruction_visible}}starter-only{{/unless}}">
+        <div class="modal-header">
+					{{#if is_replace_instruction_visible}}
+              <h4 class="header-dashed-text modal-title">{{localize 'quests.quest_log_title'}}</h4>
+					{{/if}}
+        </div>
+        <div class="modal-body quest-log">
+					{{#if is_first_win_visible}}
+						{{#if first_win_of_the_day_available}}
+                <p class="first-win-of-the-day-available">{{localize key='quests.first_win_of_the_day_active' first_win_gold_amount=first_win_gold_amount}}</p>
+						{{else}}
+                <p class="first-win-of-the-day-countdown small">{{localize 'quests.first_win_of_the_day_available_in'}} <span></span></p>
+						{{/if}}
+					{{/if}}
+            <div class="quest-sections-container">
+                <ul class="free-card-of-the-day-region quest-log-list"></ul>
+                <ul class="daily-challenge-region quest-log-list"></ul>
+                <div class="daily-quests-region"></div>
+            </div>
+					{{#if is_replace_instruction_visible}}
+              <p class="replace-instructions">{{localize 'quests.replace_quest_instructions'}}</p>
+              <p class="rollover-countdown">{{localize 'quests.quest_rollover_instructions'}} </p>
+					{{else}}
+						{{#if has_starter_quests}}
+                <p class="starter-quest-instructions">Complete this starter quest to get a new one!</p>
+						{{/if}}
+					{{/if}}
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-clean btn-clean-secondary btn-user-cancel {{#unless is_confirm_visible}}hide{{/unless}}">{{localize 'common.acknowledge_dismiss_button_label'}}</button>
+        </div>
+    </div>
+    <!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_smokeground_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,78},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{81,52},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{81,26},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{81,0},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{81,78},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,52},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,26},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+			<key>fx_smokeground_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{80,25}}</string>
+				<key>sourceSize</key>
+				<string>{80,25}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{256,128}</string>
+			<key>textureFileName</key>
+			<string>fx_smoke2.png</string>
+			</dict>
+		</dict>
+</plist>

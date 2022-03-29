@@ -1,0 +1,39 @@
+<div class="deck-metadata-header">
+	<input class="deck-name" value="{{name}}" />
+	<button class="btn deck-card-back"><img /></button>
+	<div class="btn-group">
+		<button class="btn deck-color-code-select deck-color-code {{classForColorCode color_code}} dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa fa-adjust"></i>
+		</button>
+		<div class="deck-color-code-select-menu dropdown-menu dropdown-menu-right">
+			<div class="deck-color-code-select-list">
+				{{#getColorCodes}}
+					<button class="btn deck-color-code {{cssClass}}" data-code="{{code}}"></button>
+				{{/getColorCodes}}
+			</div>
+		</div>
+	</div>
+	<button class="btn btn-clean deck-delete"><span class="fa fa-trash-o"></span></button>
+</div>
+
+<div class="deck-histogram"></div>
+
+<div class="deck-counters">
+	<div class="counter">
+		<p>{{minion_count}}</p>
+	</div>
+	<p class="counter-header">{{localize 'common.unit_label_plural'}}</p>
+	<div class="counter">
+		<p>{{spell_count}}</p>
+	</div>
+	<p class="counter-header">{{localize 'common.spell_label_plural'}}</p>
+	<div class="counter">
+		<p>{{artifact_count}}</p>
+	</div>
+	<p class="counter-header">{{localize 'common.artifact_label_plural'}}</p>
+	<div class="counter">
+		<p>{{getDeckSize}}</p>
+		<p class="separator">/</p>
+		<p>{{getDeckSizeMax}}</p>
+	</div>
+</div>

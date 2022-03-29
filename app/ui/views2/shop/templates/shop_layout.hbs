@@ -1,0 +1,29 @@
+<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary btn-nav-back"></button>
+<div class="shop-sidebar">
+	<div>
+		<ul class="shop-menu">
+			<li class="shop-category"><button class="specials hide" data-value="specials"><img src="{{imageForResourceScale 'resources/shop/menu_icon_bundles.png'}}" /> {{localize 'shop.category_specials_name'}} <span class="badge">!</span></button></li>
+      <li class="shop-category"><button class="sales hide" data-value="sales"><img src="{{imageForResourceScale 'resources/ui/icon_premium.png'}}" /> {{localize 'shop.category_sales_name'}} <span class="badge">!</span></button></li>
+			<li class="shop-category"><button class="active spirit-orbs" data-value="spirit-orbs"><img src="{{imageForResourceScale 'resources/shop/menu_icon_orbs.png'}}" /> {{localize 'shop.category_spirit_orbs_name'}}</button></li>
+			<li class="shop-category"><button class="emotes" data-value="emotes"><img src="{{imageForResourceScale 'resources/shop/menu_icon_emotes.png'}}" /> {{localize 'shop.category_emotes_name'}}</button></li>
+			<li class="shop-category"><button class="profile-icons" data-value="profile-icons"><img src="{{imageForResourceScale 'resources/shop/menu_icon_profile_icons.png'}}" /> {{localize 'shop.category_profile_icons_name'}}</button></li>
+			<li class="shop-category"><button class="card-backs" data-value="card-backs"><img src="{{imageForResourceScale 'resources/shop/menu_icon_card_backs.png'}}" /> {{localize 'shop.category_card_backs_name'}}</button></li>
+			<li class="shop-category"><button class="card-skins" data-value="card-skins"><img src="{{imageForResourceScale 'resources/shop/menu_icon_skins.png'}}" /> {{localize 'shop.category_general_skins_name'}}</button></li>
+			<li class="shop-category"><button class="battle-maps" data-value="battle-maps"><img src="{{imageForResourceScale 'resources/shop/menu_icon_battlemaps.png'}}" /> {{localize 'shop.category_battle_maps_name'}}</button></li>
+			<li class="shop-category"><button class="bundles" data-value="bundles"><img src="{{imageForResourceScale 'resources/shop/menu_icon_bundles.png'}}" /> {{localize 'shop.category_bundles_name'}}</button></li>
+		</ul>
+		<ul class="inventory-list">
+			<li><span class="icon-gold"></span> <span class="gold-amount"></span></li>
+			<li class="uppercase"><i class="fa fa-circle icon-spirit" /> <span class="spirit-amount"></span> {{localize 'common.currency_spirit'}}</li>
+			<li class="hide"><i class="fa fa-dot-circle-o" /> <span class="spirit-orb-count">0</span> {{localize 'common.spirit_orb_plural'}}</li>
+		</ul>
+		<ul class="inventory-list">
+				<li class="premium-currency-amount"><i class="fa icon-premium" /> <span class="premium-amount"></span> {{localize 'common.currency_premium_emphasized_plural'}}</li>
+		</ul>
+		<button class="btn-redeem-gift-code"><i class="fa fa-gift"></i> {{localize 'shop.gift_code_button_label'}}</button>
+		<button class="btn-get-help hide"><i class="fa fa-question"></i> {{localize 'shop.help_button_label'}}</button>
+	</div>
+</div>
+<div class="shop-product-collection-region">
+	<!-- Layout puts shop collections in here -->
+</div>

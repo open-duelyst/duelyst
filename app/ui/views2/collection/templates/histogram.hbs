@@ -1,0 +1,8 @@
+{{#each histogram}}
+    <div class="histogram-item">
+        <div class="histogram-bar">
+            <div class="histogram-fill" style="height:{{height}}%;"><span>{{#if count}}{{count}}{{/if}}</span></div>
+        </div>
+        <p class="histogram-number">{{histogramDisplayCost}}</p>
+    </div>
+{{/each}}

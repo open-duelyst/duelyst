@@ -1,0 +1,16 @@
+{
+  "name": "codex",
+  "version": "1.0.0",
+  "description": "",
+  "devDependencies": {
+    "canvas": "*",
+    "plist": "*",
+    "gifencoder": "*"
+  },
+  "main": "codex.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Emil",
+  "license": "ISC"
+}

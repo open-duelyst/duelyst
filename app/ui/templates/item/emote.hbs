@@ -1,0 +1,17 @@
+{{#if img}}
+	{{#if sale_id}}
+      <div class="sale-badge">
+          <span> {{sale_discount_percent}}% Off!</span>
+      </div>
+	{{/if}}
+    <img class="emote-img" src="{{imageForResourceScale img}}">
+{{else}}
+    <div class="emote-title" >{{title}}</div>
+{{/if}}
+<!--
+{{#if _canPurchase}}
+    <div class="locked-label">
+        <i class="fa fa-lock"></i>
+        Click to unlock.
+    </div>
+{{/if}} -->

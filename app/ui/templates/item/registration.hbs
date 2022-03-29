@@ -1,0 +1,61 @@
+<div class="modal-dialog">
+    <button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="header-dashed-text modal-title">{{localize 'registration.registration_title'}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="prompt-form">
+                <div class="form-group">
+                    <label>{{localize 'registration.registration_email_label'}}</label>
+                    <input type="email" class="form-control email" required placeholder="{{localize 'registration.registration_email_label'}}">
+                </div>
+                <div class="form-group">
+                    <label>{{localize 'registration.registration_username_label'}}</label>
+                    <input type="text" class="form-control username" required placeholder="{{localize 'registration.registration_username_label'}}">
+                </div>
+                <div class="form-group">
+                    <label>{{localize 'registration.registration_password_label'}}</label>
+                    <input type="password" class="form-control password" required placeholder="{{localize 'registration.registration_password_label'}}">
+                    <input type="password" class="form-control password-confirm" required placeholder="{{localize 'registration.registration_password_confirmation_label'}}">
+                </div>
+                <div class="form-group {{#unless areInviteCodesActive}}hide{{/unless}}">
+                    <label>{{localize 'registration.registration_invite_code_label'}}</label>
+                    <input type="text" class="form-control invite-code" required placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+                </div>
+                <div id="formGroupFriendReferralButton" class="form-group">
+									<button id="show_friend_referral_code_button" tabindex="-1">{{localize 'registration.registration_show_referral_button_label'}}</button>
+                </div>
+                <div id="formGroupFriendReferralInput" class="form-group hide">
+                    <label>{{localize 'registration.registration_referral_field_label'}}</label>
+                    <input type="text" class="form-control friend-referral-code" required placeholder="{{localize 'registration.registration_referral_field_placeholder'}}">
+                </div>
+                {{#if isRecaptchaActive}}
+                <div class="form-group">
+                    <div id="recaptcha"></div>
+                </div>
+                {{/if}}
+                <div class="form-control-buttons">
+                    <button class="btn btn-clean btn-clean-confirm prompt-submit">{{localize 'registration.registration_submit_button_label'}}</button>
+                </div>
+            </div>
+
+            <div class="prompt-submitted">
+                <div class="activity-animation"><div class="activity-animation-image"></div></div>
+				<h2 class="prompt-title">{{localize 'common.loading_dialog_one_moment_label'}}</h2>
+            </div>
+
+            <div class="prompt-success">
+                <div class="icon-container"><i class="fa fa-check"></i></div>
+				<h2 class="prompt-title">{{localize 'common.success_title'}}</h2>
+                <p class="prompt-message">{{localize 'registration.registration_success_message'}}</p>
+            </div>
+
+            <div class="prompt-error">
+                <div class="icon-container"><i class="fa fa-times"></i></div>
+				<h2 class="prompt-title">{{localize 'common.error_occurred_title'}}</h2>
+                <p class="prompt-message error-message"></p>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

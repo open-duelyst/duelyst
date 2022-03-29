@@ -1,0 +1,189 @@
+#app-tutorial {
+	display:flex;
+	flex-flow: column;
+	justify-content: space-between;
+	@include backgroundImageNoScale("resources/tutorial/vignette.png");
+	background-size: cover;
+	background-color: rgba(7,15,65,0.5);
+	.header {
+		h1 {
+			font-size:1.6em;
+			text-transform:uppercase;
+			color:#fff;
+			font-weight: 300;
+			margin-top:1.5em;
+		}
+		hr {
+			@include shineLineBackground();
+			height:0.1rem;
+			width:50%;
+			margin:1.5em auto;
+			opacity:0.5;
+			border-bottom: none;
+			color:rgba(0,0,0,0);
+		}
+		p {
+			color:$off-white;
+		}
+	}
+	.lessons {
+		display: flex;
+		flex-flow: row;
+		position: relative;
+		div.line {
+			content:' ';
+			z-index: 0;
+			position: absolute;
+			top:6.5rem;
+			left:50%;
+			margin-left:-35.0rem;
+			width:70.0rem;
+			height:0.1rem;
+			background:rgba(0,0,0,0.5);
+		}
+		div.lesson {
+			pointer-events: none;
+			width:30.0rem;
+			padding:0 2.0rem;
+			position: relative;
+			z-index: 1;
+			div.image {
+				margin: 0 auto;
+				margin-bottom:1em;
+				width: 12.8rem;
+				height: 12.8rem;
+				position: relative;
+				img {
+					position: relative;
+					width: 10.0rem;
+					height: 10.0rem;
+					z-index: 2;
+					border-radius: 12.8rem;
+					border:solid 0.1rem #000;
+					box-shadow: inset 0 0.2rem 0.2rem #fff;
+					margin:1.4rem;
+					filter: sepia(100%) hue-rotate(180deg);
+				}
+				&:before {
+					content:' ';
+					position: absolute;
+					z-index: 1;
+					left:0;
+					top:0;
+					width: 12.8rem;
+					height: 12.8rem;
+					@include backgroundImage("resources/tutorial/lesson_ring.png");
+					background-size: 12.8rem 12.8rem;
+					background-position: center;
+				}
+				&:after {
+					content:' ';
+					position: absolute;
+					z-index: 3;
+					left:1.4rem;
+					top:1.4rem;
+					border:solid 0.1rem #000;
+					border-radius: 12.8rem;
+					width: 10.0rem;
+					height: 10.0rem;
+					box-shadow: inset 0 0.2rem 0.2rem #fff;
+
+				}
+				div.glow, div.slash {
+					opacity: 0;
+					transition: 0.2s all;
+					position: absolute;
+					z-index: 1;
+					top:-2.3rem;
+					left:-2.3rem;
+					width: 17.4rem;
+					height: 17.4rem;
+					@include backgroundImage("resources/tutorial/lesson_ring_glow.png");
+					background-size: 17.4rem 17.4rem;
+					background-position: center;
+				}
+				div.slash {
+					transform:scale(1.5);
+					@include backgroundImage("resources/tutorial/lesson_complete.png");
+				}
+			}
+			h2 {
+				opacity: 0.2;
+				font-size: 1.2em;
+				text-transform: uppercase;
+			}
+			.time {
+				opacity: 0.2;
+				color: $off-white;
+				font-size:0.75em;
+			}
+			p {
+				opacity: 0.2;
+				color: $light-off-white;
+				font-size:0.9em;
+			}
+			&.has-emphasis {
+				pointer-events: auto;
+				> * {
+					opacity: 1;
+				}
+				h2 {
+					text-shadow: 0 0 1.0rem $light-blue;
+				}
+				div.image {
+					img {
+						filter:none;
+					}
+					div.glow {
+						opacity: 1;
+						&:after {
+							content:' ';
+							transition: 0.2s all;
+							animation: rotateGlow 4s linear;
+							animation-iteration-count: infinite;
+							position: absolute;
+							opacity: 0.5;
+							left:0;
+							top:0;
+							z-index: 1;
+							width: 17.4rem;
+							height: 17.4rem;
+							@include backgroundImage("resources/tutorial/lesson_ring_glow_part.png");
+							background-size: 17.4rem 17.4rem;
+							background-position: center;
+						}
+
+						@keyframes rotateGlow {
+							from { transform: rotateZ(360deg); }
+							to { transform: rotateZ(0deg); }
+						}
+					}
+					&:hover div.glow {
+						filter:hue-rotate(90deg);
+					}
+					&:active div.glow {
+						filter:hue-rotate(-40deg);
+					}
+				}
+			}
+			&.complete {
+				div.image {
+					div.slash {
+						opacity: 1;
+						transform:scale(1.0);
+						z-index: 5;
+					}
+				}
+			}
+		}
+	}
+	.action-bar {
+		margin:4.0rem 0;
+		#button_continue {
+			min-width: 20rem;
+			font-size: 2rem;
+			display:block;
+			margin-bottom: 1rem;
+		}
+	}
+}

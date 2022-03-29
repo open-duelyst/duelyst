@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>fx_f2_backstab_000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{145,0},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{290,0},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{145,290},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{145,145},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{290,145},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,290},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,145},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+			<key>fx_f2_backstab_007.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false/>
+				<key>sourceColorRect</key>
+				<string>{{0,0},{144,144}}</string>
+				<key>sourceSize</key>
+				<string>{144,144}</string>
+			</dict>
+
+		</dict>
+
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>size</key>
+			<string>{512,512}</string>
+			<key>textureFileName</key>
+			<string>fx_f2_backstab.png</string>
+			</dict>
+		</dict>
+</plist>

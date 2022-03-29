@@ -1,0 +1,153 @@
+<div class="modal-dialog">
+	<div class="product-details-container">
+		<div class="product-cover-image"></div>
+		<div class="product-shadow"></div>
+		<img src="" class="product-icon" />
+		<div class="product-animation">
+			<div class="sprite"></div>
+		</div>
+		<h1 class="product-name">Product Name</h1>
+		<p class="product-type-name hide">Product Type Name</p>
+		<p class="product-description">Product Description</p>
+		<h2 class="product-price">Product Price</h2>
+		<h2 class="product-spirit-cost">0 Spirit</h2>
+		<h2 class="product-gold-cost">0 Gold</h2>
+		<button type="button" class="btn btn-clean btn-clean-secondary btn-craft">{{localize 'collection.craft_card_button_label'}}</button>
+	</div>
+	<div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="btn btn-clean close cancel">&times;</button>
+
+			<div class="for-purchase-with-gold">
+				<ul class="nav nav-pills centered confirm_purchase_nav">
+					<li class="nav-item" data-purchase-type="gold"><a>{{localize 'common.currency_gold'}}</a></li>
+				</ul>
+			</div>
+
+				<div class="for-normal-purchase">
+						<ul class="nav nav-pills centered confirm_purchase_nav">
+								<li class="nav-item" data-purchase-type="premium"><a>{{localize 'common.currency_premium_plural'}}</a></li>
+						</ul>
+				</div>
+		</div>
+        <div class="modal-body">
+            <div class="nav-tabs">
+                <!-- region gold -->
+                <div class="for-purchase-with-gold">
+                    <div class="nav-tab hide" data-purchase-type="gold">
+                        <div class="payment-content">
+                            <div class="form-group">
+                                <label>{{localize 'shop.confirm_purchase_dialog_quantity_label'}}</label>
+                                <input class="form-control quantity" type="text" placeholder="1" maxlength="3" />
+                            </div>
+                            <p>Each Spirit Orb will cost <span class="product-gold-cost">0 Gold</span></p>
+                        </div>
+                        <div class="purchase-controls">
+                            <button type="button" class="btn btn-clean btn-clean-cancel cancel">{{localize 'shop.confirm_purchase_dialog_cancel_button_label'}}</button>
+                            <button type="button" class="btn btn-clean btn-clean-confirm confirm">{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- endregion gold -->
+                <!-- region normal purchase -->
+                <div class="for-normal-purchase">
+										<!-- region cc -->
+										<div class="nav-tab hide" data-purchase-type="creditcard">
+												<div class="payment-content">
+														<div id="card_form_error" class="alert alert-danger hide" role="alert">
+																<span class="error-message"></span>
+																<button class="btn-get-help">HELP</button>
+														</div>
+														<div id="card_form_region"></div>
+														<div id="card_info" class="alert alert-info hide">
+																<span><i class="fa fa-credit-card"></i> Using card ending with <em id="card_ending_digits">{{card_last_four_digits}}</em></span>
+																<button class="btn-update-card">CHANGE</button>
+																<button class="btn-delete-card">DELETE</button>
+														</div>
+												</div>
+												<div class="purchase-controls">
+														<button type="button" class="btn btn-clean btn-clean-cancel cancel">{{localize 'shop.confirm_purchase_dialog_cancel_button_label'}}</button>
+														<button type="button" class="btn btn-clean btn-clean-confirm confirm">{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}</button>
+												</div>
+										</div>
+										<!-- endregion cc -->
+										<!-- region premium -->
+										<div class="nav-tab hide" data-purchase-type="premium">
+												<div class="payment-content">
+													<div class="balance-change-container hide">
+                              <table class="balance-change-table">
+																<tbody>
+																	<tr>
+																		<td class="balance-change-column-label">{{localize 'shop.balance_label'}}</td>
+																		<td class="balance-change-column-value balance-change-balance-label"></td>
+																	</tr>
+																	<tr>
+																		<td class="balance-change-column-label">{{localize 'shop.cost_label'}}</td>
+																		<td class="balance-change-column-value balance-change-price-label"></td>
+																	</tr>
+																	<tr>
+																		<td class="balance-change-column-label">{{localize 'shop.remaining_label'}}</td>
+																		<td class="balance-change-column-value balance-change-remaining-label"></td>
+																	</tr>
+                                </tbody>
+                              </table>
+													</div>
+													<p class="refill-premium-msg"></p>
+												</div>
+												<div class="purchase-controls">
+														<button type="button" class="btn btn-clean btn-clean-cancel cancel">{{localize 'shop.confirm_purchase_dialog_cancel_button_label'}}</button>
+														<button type="button" class="btn btn-clean btn-clean-confirm confirm">{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}</button>
+														<button type="button" class="btn btn-clean btn-clean-secondary refill">{{localize 'shop.confirm_purchase_dialog_refill_button_label'}}</button>
+												</div>
+										</div>
+										<!-- endregion premium -->
+										<!-- region paypal -->
+										<div class="nav-tab hide" data-purchase-type="paypal">
+												<div class="payment-content">
+													{{#if isPaypalEnabled}}
+
+												<p>{{localize 'shop.paypal_instructions'}}</p>
+												<p class="text-center">
+														<button type="button" class="btn-paypal confirm">
+																<div class="paypal-checkout-logo" alt="Check out with PayPal"></div>
+														</button>
+												</p>
+
+											{{else}}
+
+									<p>{{localize 'shop.payment_option_disabled_message'}}</p>
+
+													{{/if}}
+												</div>
+												<div class="purchase-controls">
+														<button type="button" class="btn btn-clean btn-clean-cancel cancel">{{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+												</div>
+										</div>
+										<!-- endregion paypal -->
+                </div>
+                <!-- endregion normal purchase -->
+            </div>
+
+			<div class="prompt-submitted">
+				<div class="activity-animation">
+					<div class="activity-animation-image"></div>
+				</div>
+				<h2 class="prompt-title">{{localize 'common.loading_dialog_one_moment_label'}}</h2>
+			</div>
+
+			<div class="prompt-success">
+				<div class="icon-container"><i class="fa fa-check"></i></div>
+				<h2 class="prompt-title"></h2>
+			</div>
+
+			<div class="prompt-error">
+				<div class="icon-container"><i class="fa fa-times"></i></div>
+				<h2 class="prompt-title">{{localize 'common.error_occurred_title'}}</h2>
+				<p class="prompt-message error-message"></p>
+			</div>
+
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

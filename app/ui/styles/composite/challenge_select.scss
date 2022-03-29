@@ -1,0 +1,147 @@
+/* ---------- CHALLENGE CATEGORY SELECT ---------- */
+
+.challenge-category-select {
+
+	.challenge-select {
+
+		.sliding-panel-content {
+			.completion {
+				@include headerFullStyle();
+				font-size: 1.4rem;
+				color: #999;
+				margin-top: 0.5rem;
+			}
+		}
+
+		.challenge-preview {
+			@include bodyFont();
+			position: relative;
+			width: 100%;
+			margin: 1.0rem 0;
+			// background: rgba(40, 40, 40, 1.0);
+			background: rgba(0,0,0,0.5);
+			color: $copy-color;
+			border: none;
+			pointer-events:auto;
+			z-index: 0;
+			border-bottom:solid 0.4rem $key-color;
+			&:first-child {
+				margin-top:0;
+			}
+			&:last-child {
+				margin-bottom: 0;
+			}
+			.challenge-preview-content {
+				min-height: 9.0rem;
+				display: flex;
+				flex-flow: row;
+				justify-content: flex-start;
+				align-items: center;
+				.challenge-icon {
+					width:6.5rem;
+					height:6.5rem;
+					margin:0 1.0rem;
+					background:#000 url("resources/ui/dialogue_border.png") no-repeat;
+					background-size:100%;
+					border-radius: 5.0rem;
+					img {
+						border-radius:2.5rem;
+						width:4.5rem;
+						height:4.5rem;
+						margin:1.0rem;
+					}
+				}
+				.challenge-caption {
+					width:43.0rem;
+					position: relative;
+					margin-top: 0;
+					padding: 0;
+					.challenge-name {
+						@include headerFullStyle();
+						font-size: 1.4rem;
+						line-height: 2.0rem;
+						color: #fff;
+					}
+					.challenge-description {
+						color: #999;
+						font-size: 1.1rem;
+						line-height: 1.4rem;
+					}
+				}
+				.challenge-reward {
+					text-align:center;
+					width:8.0rem;
+					.challenge-reward-name {
+						margin: 0.5rem 0 -0.5rem 0;
+						color: #999;
+					}
+					.icon-gold {
+						width:6.0rem;
+						height:6.0rem;
+						margin: 0 0.5rem 0.5rem 1.0rem;
+					}
+				}
+				.complete-icon {
+					font-size:3.0rem;
+					line-height:10.0rem;
+					color:#96fb04;
+				}
+			}
+
+			&.disabled {
+				border-bottom: 0;
+				opacity: 1.0;
+				.challenge-preview-content {
+					filter: unquote("grayscale(100%)");
+				}
+				.locked-label {
+					position: relative;
+					bottom: 0;
+					right: 0;
+					height: 4.0rem;
+					font-size: 1.2rem;
+					line-height: 1.8rem;
+					font-weight: 300;
+					top: 0;
+					left: 0;
+					z-index: 500;
+					display: flex;
+					flex-flow: row nowrap;
+					justify-content: center;
+					align-content: center;
+					align-items: center;
+					background: rgb(65, 65, 65);
+					overflow: hidden;
+					i {
+						font-size:2.4rem;
+						margin:1.0rem;
+					}
+				}
+			}
+			&:hover, &.active {
+				background: rgba(0,0,0,0.75);
+			}
+		}
+
+		&.is-new:not(.active):not(.disabled) {
+			&:after {
+				display: block;
+				content: "NEW";
+				font-size: 1.4rem;
+				font-weight: bold;
+				padding: 0.3rem 1.0rem;
+				position: absolute;
+				top: -0.5rem;
+				right: -0.5rem;
+				color: #ffffaf;
+				background: rgba(0,0,0,1.0);
+			}
+		}
+
+		&.disabled {
+			.locked-label {
+				bottom: -12%;
+			}
+		}
+	}
+}

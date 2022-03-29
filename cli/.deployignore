@@ -1,0 +1,15 @@
+/node_modules/
+/desktop/
+/public/
+/dist/
+/terraform/
+/test/
+/scripts/*
+config/production.json
+config/staging.json
+rules.json
+circle.yml
+Dockerfile
+Vagrantfile
+*.md
+*.txt

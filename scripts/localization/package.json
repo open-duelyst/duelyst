@@ -1,0 +1,14 @@
+{
+  "name": "localization",
+  "version": "1.0.0",
+  "description": "dependencies for the localization scripts",
+  "main": "none",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "npm-run": "^4.1.2"
+  }
+}

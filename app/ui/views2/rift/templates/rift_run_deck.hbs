@@ -1,0 +1,23 @@
+<div class="background"></div>
+
+<div class="sliding-panel-content run-content">
+	{{#if faction_id}}
+		<div class="faction-crest"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-hover"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player2"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player1"></div>
+		<div class="faction-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId general_id)}})"></div>
+	{{/if}}
+	<div class="deck-caption">
+		<h4 class="deck-name">
+			{{name}}
+		</h4>
+		<div class="level">{{localize key='rift.rift_level_label' level=rift_level}}</div>
+		<div class="rating">{{localize key='rift.rift_rating_label' rating=rift_rating}}</div>
+		<p class="progress-data">{{localize key='rift.progress_over_required_xp_message' current=rift_points_so_far required=level_up_points_required}}</p>
+		<div class="progress">
+			<div class="complete" style="width:{{progress_percent}}%"></div>
+		</div>
+		<!-- <p class="deck-data">{{upgrades_available_count}} shards</p> -->
+	</div>
+</div>

@@ -1,0 +1,149 @@
+/* ---------- SETTINGS MENU ---------- */
+
+.settings-menu {
+	@include headerFont();
+	background-color: rgba(0, 0, 60, 0.5);
+	.modal-body {
+		height: 48.0rem;
+	}
+	.row {
+		display: flex;
+	}
+
+	.tooltip {
+		.tooltip-inner {
+			width: 20rem;
+			max-width: 20rem;
+		}
+	}
+}
+
+.settings-category {
+	background: rgba(0,0,60,0.5);
+	border-radius: 1.0rem;
+	padding: 0.5rem 1.5rem;
+	margin-bottom: 2.0rem;
+	.modal-title {
+		display: inline-block;
+		color: white;
+		font-size: 1.2rem;
+		line-height: 1.6rem;
+		font-weight: normal;
+		font-family: Lato,sans-serif;
+		text-transform: uppercase;
+		margin-bottom: 0.5rem;
+		i {
+			position: absolute;
+			top: 0.4rem;
+			left: -2.0rem;
+		}
+	}
+}
+
+.setting {
+	position: relative;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+	height: 3.3rem;
+	label {
+		color: $off-white;
+		font-weight: normal;
+		font-size: 1.4rem;
+		margin: 0;
+		padding: 0;
+	}
+	.btn-group {
+		> .btn {
+			padding: 0.2rem 1.3rem;
+		}
+	}
+	.btn-clean {
+		text-transform: none;
+		font-size: 1.4rem;
+		padding: 0;
+		color: $off-white;
+		&:hover, &:active, &:focus {
+			color: white;
+		}
+	}
+
+	input[type=range] {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 100%;
+		margin: 0.4rem 0;
+		background: transparent;
+		border: none;
+	}
+	input[type=range]:focus {
+		outline: none;
+	}
+	input[type=range]::-webkit-slider-runnable-track {
+		@extend .mouse-select;
+		-webkit-appearance: none;
+		appearance: none;
+		width: 100%;
+		height: 1.0rem;
+		box-shadow: 0 0 0.1rem #000000, 0 0 0 #0d0d0d;
+		background: #7f7f7f;
+		border-radius: 1.0rem;
+		border: 0.3rem solid #7f7f7f;
+	}
+	input[type=range]::-webkit-slider-thumb {
+		@extend .mouse-select;
+		-webkit-appearance: none;
+		appearance: none;
+		box-shadow: 0 0 0.2rem rgba(0, 0, 0, 0.5), 0 0 0.1rem rgba(13, 13, 13, 0.5);
+		border: 0 solid #000000;
+		width: 2.5rem;
+		height: 1.0rem;
+		margin-top: -0.3rem;
+		border-radius: 1.5rem;
+		background: #ffffff;
+	}
+	input[type=range]:focus::-webkit-slider-runnable-track {
+		background: #969696;
+	}
+
+	output {
+		font-size: 1.4rem;
+		text-align: left;
+		color: white;
+		margin: 0;
+		padding: 0;
+		font-weight: bold;
+	}
+
+	select {
+		font-size: 1.2rem !important;
+		width: 20.0rem;
+		padding: 0.1rem 1.0rem;
+		border-radius: 1.0rem;
+		color: rgba(50,50,50,1);
+	}
+
+	&.setting-single-line {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: space-between;
+		align-items: center;
+		input[type="range"] {
+			width: 65%;
+			&::-webkit-slider-thumb {
+				height: 1.0rem;
+			}
+			&::-webkit-slider-runnable-track {
+				height: 1.0rem;
+			}
+		}
+	}
+}
+
+#version-tag {
+	position: absolute;
+	color: $off-white;
+	bottom: -4.0rem;
+	left: 50%;
+	transform: translateX(-50%);
+}

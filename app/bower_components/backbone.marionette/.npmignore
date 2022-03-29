@@ -1,0 +1,13 @@
+.jshintrc
+.travis.yml
+.grunt
+.editorconfig
+_SpecRunner.html
+bower.json
+component.json
+bower_components
+tmp
+SpecRunner.html
+coverage
+test
+jsdoc

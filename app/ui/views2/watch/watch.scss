@@ -1,0 +1,321 @@
+#app_watch {
+	background-image:none;
+
+	.btn-cancel-primary {
+		top: 3rem;
+		right: -10.9rem;
+	}
+
+	.modal-dialog {
+		height:100%;
+		padding-top:4rem;
+
+	}
+	.modal-header {
+		h2 {
+			float: left;
+			font-size: 2rem;
+			text-transform: uppercase;
+			line-height: 2.5rem;
+			margin-right: 2rem;
+			font-weight: 300;
+			color:$off-white;
+		}
+		#watch_tabs_type {
+			float:left;
+			padding-right: 3rem;
+			margin-right: 3rem;
+			// border-right: solid 1px transparentize($off-white, 0.4);
+			#live_streams_tab_item {
+				i {
+					display: none;
+					color:$light-red;
+					text-shadow: 0 0 5px $light-red;
+				}
+				&.any-live {
+					i {
+						display: inline-block;
+					}
+				}
+			}
+		}
+		.nav-tabs {
+			li {
+				// padding-left: 5rem;
+				// background-size: 5rem auto;
+				// background-repeat: no-repeat;
+				// &.bronze { @include backgroundImage("resources/season_rewards/season_rank_bronze.png"); }
+				// &.silver { @include backgroundImage("resources/season_rewards/season_rank_silver.png"); }
+				// &.gold { @include backgroundImage("resources/season_rewards/season_rank_gold.png"); }
+				// &.diamond { @include backgroundImage("resources/season_rewards/season_rank_diamond.png"); }
+				// &.elite { @include backgroundImage("resources/season_rewards/season_rank_elite.png"); }
+			}
+		}
+	}
+	.modal-content {
+		justify-content: flex-start;
+		height:100%;
+	}
+	.modal-body {
+		max-height: none;
+		overflow: hidden;
+		overflow-y: scroll;
+		padding-right: 1rem;
+	}
+	.watch-games-loading {
+		text-align: center;
+		display:flex;
+		flex-flow: column;
+		align-items: center;
+		align-content: center;
+	}
+	.watch-game-list {
+		width:100%;
+		.watch-game-item {
+
+			// filter:sepia() hue-rotate(180deg);
+			clear:both;
+			background: rgba(0, 0, 60, 0.5);
+			transition: background 0.2s;
+			width:100%;
+			padding:1.0rem;
+			margin-bottom: 1.0rem;
+			position: relative;
+			div.matchup-details {
+				div.player {
+					position: relative;
+					width:50%;
+					color:$off-white;
+					.profile-icon {
+						display: none;
+						width:4.0rem;
+						height:4.0rem;
+						border-radius: 2.0rem;
+						float:left;
+						margin:0 1.0rem;
+					}
+					.username {
+						display:block;
+						// font-weight: bold;
+						color:white;
+						text-transform: uppercase;
+					}
+					.division {
+						display:block;
+						font-size:1.0rem;
+						text-transform: uppercase;
+						margin-bottom: 1rem;
+						opacity: 0.5;
+						&.bronze > .colored { }
+						&.bronze > .colored { }
+						&.bronze > .colored { }
+						&.bronze > .colored { }
+					}
+					.general-portrait {
+						position: absolute;
+						z-index: 1;
+						right:0;
+						top: -1.0rem;
+						width: 11.0rem;
+						height: 11.0rem;
+						background-size: 100%;
+						background-position: 50% 80%;
+						background-repeat: no-repeat;
+					}
+					ul.key-units {
+						margin-bottom: 1.0rem;
+						padding:0;
+						height:4.0rem;
+						li {
+							float:left;
+							position: relative;
+							width: 6rem;
+							height: 5rem;
+							.sprite {
+								left:50%;
+								top:auto;
+								bottom: -1.0rem;
+								position: absolute;
+								z-index: 1;
+							}
+							&:before {
+								position: absolute;
+								z-index: 0;
+								content:" ";
+								width: 6.0rem;
+								height: 3.0rem;
+								top: 100%;
+								left: 50%;
+								margin-left: -3.0rem;
+								margin-top: -2.4rem;
+								opacity: 0.35;
+								@include backgroundImageNoScale("resources/ui/unit_shadow.png");
+								background-repeat: no-repeat;
+								background-size: cover;
+								background-position: 50%;
+							}
+						}
+					}
+					.deck-spirit-cost {
+						display:none;
+						clear:both;
+						font-size: 1rem;
+						margin-top:1rem;
+						opacity: 0.75;
+					}
+
+					&.p1 {
+						text-align: left;
+						float:left;
+						.general-portrait {
+							right:1rem;
+						}
+					}
+
+					&.p2 {
+						text-align: right;
+						float:right;
+						.general-portrait {
+							left:1rem;
+						}
+						.profile-icon {
+							float:right;
+						}
+						ul.key-units {
+							float:right;
+							li {
+								transform: scaleX(-1.0);
+							}
+						}
+					}
+				}
+
+				button.player-1 {
+					position: absolute;
+					left:50%;
+					top:50%;
+					width:12rem;
+					margin-left:-20rem;
+					margin-top:-2rem;
+				}
+
+				button.player-2 {
+					position: absolute;
+					left:50%;
+					top:50%;
+					width:12rem;
+					margin-left:8rem;
+					margin-top:-2rem;
+				}
+			}
+
+			div.game-stats {
+				display: none;
+				clear:both;
+			}
+
+			&:hover {
+				background: rgba(0, 0, 60, 0.75);
+				div.player {
+					ul.key-units > li {
+						filter:none !important;
+						opacity: 1 !important;
+					}
+				}
+			}
+
+			&.read {
+				filter:sepia() hue-rotate(180deg);
+			}
+		}
+	}
+	.watch-streams-list {
+		.watch-stream-item {
+			margin-top: 2rem;
+			&:first-child {
+				margin-top: 0;
+			}
+		}
+		.stream-preview {
+			position: relative;
+			background: rgba(0, 0, 60, 0.5);
+			&.offline {
+				.thumbnail-preview a { }
+				.stream-details {
+					opacity: 0.5;
+				}
+			}
+			.thumbnail-preview {
+				position: absolute;
+				width: 40%;
+				height: 100%;
+				background: rgba(0,0,0,0.5);
+				.live-icon, .offline-icon {
+					position: absolute;
+					left: 0;
+					top: 2rem;
+					background: rgba(0,0,0,0.7);
+					padding: 0.5rem 1rem 0.5rem 2rem;
+				}
+				.live-icon i {
+					color:$light-red;
+				}
+				a {
+					position: relative;
+					pointer-events: all;
+					display: block;
+					width: 100%;
+					height: 100%;
+					overflow: hidden;
+					> img {
+						position: absolute;
+						width: auto;
+						height: 100%;
+						min-width: 100%;
+						max-width: none;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						transition: transform 0.1s;
+					}
+					&:hover {
+						img {
+							transform: translate(-50%, -50%) scale(1.05);
+						}
+					}
+				}
+			}
+			.stream-details {
+				position: relative;
+				left: 40%;
+				width: 60%;
+				padding: 2rem 5rem;
+				text-align: left;
+				.name {
+					font-size: 3rem;
+					font-weight: bold;
+					color:#fff;
+					margin: 1rem 0 2rem 0;
+					img {
+						border-radius: 1rem;
+					}
+				}
+				.description {
+					color:$off-white;
+					margin-bottom: 2rem;
+				}
+				.viewers {
+					position: absolute;
+					top:3rem;
+					right:4rem;
+					color:$off-white;
+				}
+				button {
+					margin-left:-1rem;
+					min-width: 15rem;
+					font-size: 1.25rem;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,65 @@
+<ul class="card-region"></ul>
+
+<div class="card-information">
+	<h1 class="card-name">{{name}}</h1>
+	<div class="card-attribute card-type">
+		<!-- <h4>Type:</h4> -->
+		{{#if isArtifact}}
+			<p>{{localize 'common.artifact_label'}}</p>
+			<p class="card-type-description">{{localize 'collection.artifact_desc'}}</p>
+		{{/if}}
+			{{#if isUnit}}
+				{{#if isGeneral}}
+            <p>{{localize 'common.general_label'}}</p>
+            <p class="card-type-description">{{localize 'collection.general_desc'}}</p>
+				{{else}}
+            <p>{{localize 'common.unit_label'}}</p>
+            <p class="card-type-description">{{localize 'collection.minion_desc'}}</p>
+				{{/if}}
+			{{/if}}
+			{{#if isSpell}}
+          <p>{{localize 'common.spell_label'}}</p>
+          <p class="card-type-description">{{localize 'collection.spell_desc'}}</p>
+			{{/if}}
+    </div>
+    <div class="card-attribute card-rarity">
+        <h4>{{localize 'common.rarity_label'}}:</h4>
+        <p {{#compare rarityName "!==" "Basic"}}style="color:{{rarityColor}};"{{/compare}}>{{rarityName}}</p>
+    </div>
+    <div class="card-attribute card-count">
+        <h4>{{localize 'collection.copies_label'}}</h4>
+        <p>{{inventoryCount}}/{{#if isGeneral}}1{{else}}3{{/if}}</p>
+    </div>
+    <div class="card-help">
+			{{#if keywordDescriptions}}
+          <hr class="shine">
+          <div class="keyword-descriptions">
+						{{#keywordDescriptions}}
+                <div class="keyword-description">
+                    <h6 class="keyword-name">{{name}}</h6>
+                    <p class="keyword-definition">{{description}}</p>
+                </div>
+						{{/keywordDescriptions}}
+          </div>
+			{{/if}}
+    </div>
+</div>
+
+{{#if lore}}
+	{{#lore}}
+		<div class="card-lore">
+			{{#if name}}
+				<h1 class="card-lore-name">{{name}}</h1>{{/if}}
+			{{#if description}}
+				<p class="card-lore-description">{{{description}}}</p>
+			{{/if}}
+			{{#compare name "||" description}}
+				<hr class="shine shine-above">
+			{{/compare}}
+			<p class="card-lore-text">{{{text}}}</p>
+			{{#compare name "||" description}}
+				<hr class="shine shine-below">
+			{{/compare}}
+		</div>
+	{{/lore}}
+{{/if}}

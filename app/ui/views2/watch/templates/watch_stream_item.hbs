@@ -1,0 +1,23 @@
+<div class="stream-preview {{#unless streamData.stream}}offline{{/unless}}">
+	{{#if streamData.stream}}
+		<div class="thumbnail-preview online">
+			<a href="{{url}}" data-toggle="tooltip" data-placement="right" title="{{localize 'watch.opens_in_browser_tooltip'}}">
+				<img src="{{streamData.stream.preview.large}}"/>
+			</a>
+			<div class="live-icon"><i class="fa fa-circle"></i> {{localize 'watch.stream_live_message'}}</div>
+		</div>
+	{{else}}
+		<div class="thumbnail-preview offline">
+			<a href="{{url}}" data-toggle="tooltip" data-placement="right" title="{{localize 'watch.opens_in_browser_tooltip'}}">
+					<img src="{{streamData.stream.preview.large}}"/>
+			</a>
+			<div class="offline-icon"><i class="fa fa-circle-o"></i> {{localize 'watch.stream_offline_message'}}</div>
+		</div>
+	{{/if}}
+	<div class="stream-details">
+		<div class="name"><img src="{{avatar_image_url}}" width="40" /> {{name}}</div>
+		<div class="description">{{description}}</div>
+		<button class="btn-clean btn-clean-primary" data-toggle="tooltip" data-placement="left" title="{{localize 'watch.opens_in_browser_tooltip'}}">{{localize 'watch.watch_on_twitch_message'}}</button>
+		{{#if streamData.stream}}<div class="viewers"><i class="fa fa-group"></i> {{streamData.stream.viewers}}</div>{{/if}}
+	</div>
+</div>

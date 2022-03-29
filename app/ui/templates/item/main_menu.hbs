@@ -1,0 +1,117 @@
+<div class="panel-menu main-menu">
+
+	<div class="brand-main">
+		<h1>DUELYST</h1>
+	</div>
+
+	<div class="btn-group scene-switcher">
+			<button class="btn btn-clean previous-scene"><i class="fa fa-chevron-circle-left"></i></button>
+			<div class="scene-name"></div>
+			<div class="loading-spinner"><i class="fa fa-spinner"></i></div>
+			<button class="btn btn-clean next-scene"><i class="fa fa-chevron-circle-right"></i></button>
+	</div>
+
+	<button class="btn play animate-reveal">
+		<canvas class="zodiac-symbol-canvas"></canvas>
+		<span class="play-label">{{localize 'main_menu.menu_item_play'}}</span>
+		<div class="badges"><span class="badge"></span></div>
+	</button>
+	<button class="btn watch animate-reveal" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.menu_item_watch_tooltip'}}">
+		<canvas class="zodiac-symbol-canvas"></canvas>
+		<span class="watch-label">{{localize 'main_menu.menu_item_watch'}}</span>
+		<div class="badges"><i class="badge badge-live fa fa-circle"></i></div>
+	</button>
+	<button class="btn collection animate-reveal" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.menu_item_collection_tooltip'}}">
+		<canvas class="zodiac-symbol-canvas"></canvas>
+		{{localize 'main_menu.menu_item_collection'}}
+		<div class="badges">
+        <span class="badge badge-unread-cards"></span>
+        <i class="badge badge-unread-lore fa fa-book"></i>
+		</div>
+	</button>
+	<button class="btn crate-inventory animate-reveal" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.menu_item_crates_tooltip'}}">
+		<canvas class="zodiac-symbol-canvas"></canvas>
+		{{localize 'main_menu.menu_item_crates'}}
+		<div class="badges"><span class="badge"></span></div>
+	</button>
+	<button class="btn codex animate-reveal" data-toggle="tooltip" data-placement="left" title="{{localize 'main_menu.menu_item_codex_tooltip'}}">
+		<canvas class="zodiac-symbol-canvas"></canvas>
+		{{localize 'main_menu.menu_item_codex'}}
+		<div class="badges"><span class="badge"></span></div>
+	</button>
+
+</div>
+
+<div class="symbol-main-menu">
+	<div class="symbol-main-menu-center"></div>
+	<div class="symbol-main-menu-diamond"></div>
+	<div class="symbol-main-menu-ring-inner"></div>
+	<div class="symbol-main-menu-ring-outer"></div>
+	<div class="symbol-main-menu-icon"></div>
+</div>
+
+<div class="shop-cardset-promo hide">
+	<img class="btn-cardset-promo" src="{{imageForResourceScale 'resources/shop/frostfire_purchase_main_menu_promo.png'}}" width="266" />
+</div>
+
+<div class="purchase-promo hide">
+		<h2>
+			{{localize 'mystery_crates.frostfire_adjective'}}
+		</h2>
+    <img class="btn-purchase-promo" src="{{imageForResourceScale 'resources/loot_crates/mystery/frostfire/crate_snapshot.png'}}" width="106" />
+    <div class="purchase-promo-text">
+			{{localize 'mystery_crates.frostfire_promo_text'}}
+    </div>
+    <div class="purchase-promo-text">
+			{{localize 'mystery_crates.frostfire_promo_text2'}}
+    </div>
+    <button class="btn btn-clean btn-clean-secondary purchase-promo-btn">
+				{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}
+    </button>
+</div>
+
+<div class="premium-purchase-promo hide">
+    <h2>
+			{{localize 'mystery_crates.frostfire_premium_adjective'}}
+    </h2>
+    <img class="btn-premium-purchase-promo" src="{{imageForResourceScale 'resources/loot_crates/mystery/frostfire_premium/crate_snapshot.png'}}" width="106" />
+    <div class="premium-purchase-promo-text">
+        {{localize 'mystery_crates.frostfire_premium_promo_text'}}
+    </div>
+    <div class="premium-purchase-promo-text">
+			{{localize 'mystery_crates.frostfire_premium_promo_text2'}}
+    </div>
+    <button class="btn btn-clean btn-clean-secondary premium-purchase-promo-btn">
+			{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}
+    </button>
+</div>
+
+<div class="boss-toast-promo hide {{#if boss_battle_is_defeated}}inactive{{/if}} {{#unless boss_battle_is_available}}inactive{{/unless}}" data-toggle="tooltip" data-placement="left" title="{{localize 'boss_battles.instructions'}}">
+	<h2>
+		{{#unless boss_battle_is_defeated}}
+			{{#if boss_battle_is_available}}
+				{{localize 'boss_battles.boss_battle_available'}}
+			{{else}}
+				{{localize 'boss_battles.boss_battle_upcoming'}}
+			{{/if}}
+		{{else}}
+			{{boss_battle_name}}
+		{{/unless}}
+	</h2>
+	<img class="btn-boss-promo" src="{{imageForResourceScale boss_battle_portrait}}" width="106" />
+	<div class="boss-reward-text">
+		{{#unless boss_battle_is_defeated}}
+			{{localize 'common.reward'}}: 1 {{localize 'common.spirit_orb_plural'}}
+		{{else}}
+			{{localize 'common.defeated_label'}}
+		{{/unless}}
+	</div>
+	<div class="boss-toast-promo-timer">&nbsp;</div>
+	<button class="btn btn-clean btn-clean-secondary" {{#unless boss_battle_is_available}}disabled{{/unless}}>
+		{{#if boss_battle_is_available}}
+			{{localize 'boss_battles.play_button_label'}}
+		{{else}}
+			{{localize 'common.coming_soon_label'}}
+		{{/if}}
+	</button>
+</div>

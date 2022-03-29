@@ -1,0 +1,60 @@
+<div class="container">
+	<!-- -->
+	<div class="row">
+		<div class="col-md-12">
+			<table id="match_history_list">
+				<thead>
+					<tr>
+						<th></th>
+						<th></th>
+						<th>{{localize 'battle.opponent_name_default_label'}}</th>
+						<th>{{localize 'profile.match_history_game_type'}}</th>
+						<th>{{localize 'profile.match_history_win_loss'}}</th>
+						<th>{{localize 'profile.match_history_duration'}}</th>
+						<th>{{localize 'profile.match_history_replay'}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each matchHistory}}
+						<tr class="match">
+							<td class="icon {{faction_dev_name}}" data-deck-hash="{{digest}}"><img src="{{imageForResourceScale (concat 'resources/crests/crest_f' faction_id '.png')}}" /></td>
+							<td class="faction {{faction_dev_name}}">{{faction_name}}</td>
+							<td class="opponent">{{opponent_username}}</td>
+							<td>{{localize (concat 'common.game_type_' (replace game_type " " "_"))}}</td>
+							{{#if is_pending}}
+								<td class="pending"><i class="fa fa-spinner"></i></td>
+							{{else}}
+								{{#if is_winner}}
+									<td class="win"><i class="fa fa-trophy"></i></td>
+								{{else}}
+									{{#if is_draw}}
+										<td class="draw"><i class="fa fa-circle-o"></i></td>
+									{{else}}
+										<td class="loss"><i class="fa fa-times"></i></td>
+									{{/if}}
+								{{/if}}
+							{{/if}}
+							<td>{{timeAgo created_at}}</td>
+							<td class="replay">
+								{{#if is_pending}}
+									...
+								{{else}}
+									{{#if replay_available}}
+										<button class="btn replay-button" data-game-id="{{game_id}}" data-user-id="{{user_id}}">{{localize 'profile.match_history_replay'}}</button>
+										<input type="hidden" value="copied?" />
+										{{#if replay_shareble}}
+											<button class="btn share-replay-button" data-game-id="{{game_id}}" data-user-id="{{user_id}}">share</button>
+										{{/if}}
+									{{else}}
+										N/A
+									{{/if}}
+								{{/if}}
+							</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+			<button id="button_next_page" class="btn btn-clean">{{localize 'profile.match_history_next_page'}}</button>
+		</div>
+	</div>
+</div>

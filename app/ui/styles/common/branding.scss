@@ -1,0 +1,70 @@
+/* ---------- BRANDING ---------- */
+
+.brand-main {
+	position: relative;
+	width: 25.0rem;
+	height: 5.4rem;
+	pointer-events: none;
+  @include backgroundImage("resources/ui/brand_duelyst.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  position:relative;
+  z-index:100;
+  * {
+    display: none;
+  }
+}
+
+.brand-dynamic {
+	position: relative;
+	width: 32.0rem;
+	height: 14.0rem;
+  margin: auto;
+	overflow: visible;
+  pointer-events: none;
+  opacity: 0.0;
+  transition: opacity 0.25s linear;
+
+  &.active {
+    opacity: 1.0;
+  }
+
+  svg {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		margin: auto;
+		left: 0;
+		right: 0;
+		top: 0;
+		bottom: 0;
+		overflow: visible;
+
+    .draw-line {
+      fill: transparent;
+      stroke: url(#myLinearGradient1);
+      stroke-width: 1;
+    }
+    .fill {
+      fill: #ffffff;
+      opacity: 0;
+    }
+  }
+}
+
+.brand-cpg {
+	position: relative;
+	width: 25.0rem;
+	height: 5.4rem;
+	pointer-events: none;
+	@include backgroundImage("resources/ui/brand_cpg.png");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	position:relative;
+	z-index:100;
+	* {
+		display: none;
+	}
+}

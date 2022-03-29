@@ -1,0 +1,24 @@
+{
+	"exhausted_message": "[Exhausted] - cannot move or attack.",
+	"battlepet_message": "[Battle Pet] - has a mind of its own!",
+	"stunned_message": "[Stunned] - cannot move or attack.",
+	"replace_bloodborn_message": "[Bloodbound Spell] - cannot be replaced.",
+	"out_of_mulligan_message": "Can only replace {{count}} card.",
+	"out_of_mulligan_message_plural": "Can only replace {{count}} cards.",
+	"hand_is_full_message": "My hand is full!",
+	"out_of_cards_message": "I'm out of cards!",
+
+	"my_bloodborn_refresh_message": "Your [Bloodbound Spell] refreshes on your next turn.",
+	"my_bloodborn_refresh_message_plural": "Your [Bloodbound Spell] refreshes in {{count}} turns.",
+
+	"opponent_bloodborn_refresh_message": "Your opponent's [Bloodbound Spell] refreshes on their next turn.",
+	"opponent_bloodborn_refresh_message_plural": "Your opponent's [Bloodbound Spell] refreshes in {{count}} turns.",
+
+	"connected_label": "connected",
+	"disconnected_label": "disconnected",
+
+	"label_your_turn":"YOUR TURN",
+	"label_enemy_turn":"ENEMY TURN",
+	"label_automatic_moves":"AUTOMATIC MOVES"
+
+}

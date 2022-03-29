@@ -1,0 +1,31 @@
+<div class="rank-content">
+
+    <div class="symbol-rank">
+        <div class="symbol-rank-center"></div>
+        <div class="symbol-rank-ring-inner"></div>
+        <div class="symbol-rank-ring-outer"></div>
+    </div>
+
+    {{#compare rank_win_streak ">=" 3}}
+			{{#if shouldShowWinStreakBonus}}
+        <h2 class="win-streak-bonus-message">{{rank_win_streak}} wins in a row! +1 BONUS PROGRESS</h2>
+			{{/if}}
+    {{/compare}}
+
+    <div class="stars">
+        <ul class="stars-list"></ul>
+    </div>
+
+    <div class="rank current-rank">
+        <p class="rank-label">Rank</p>
+        <h1 class="rank-value"></h1>
+    </div>
+
+    <h2 class="division-title">Division</h2>
+	<div class="symbol-medal"><img id="img_medal" /></div>
+    <h2 class="division-name">{{divisionName}}</h2>
+
+    {{#if nextDivisionName}}
+        <h3 class="next-division-rank-message">You will reach <span class="division">{{nextDivisionName}}</span> at Rank {{nextDivisionRank}}<h3>
+    {{/if}}
+</div>

@@ -1,0 +1,14 @@
+varying vec2 v_texCoord;
+
+uniform float u_xStep;
+uniform float u_yStep;
+
+void main() {
+	vec4 color = vec4(0.0);
+
+	{{#each kernelRows}}
+	color += texture2D(CC_Texture0, vec2(v_texCoord.x {{operator}} {{offset}} * u_xStep, v_texCoord.y {{operator}} {{offset}} * u_yStep)) * {{value}};
+	{{/each}}
+
+	gl_FragColor = vec4(color.rgb * {{brightness}}, color.a);
+}

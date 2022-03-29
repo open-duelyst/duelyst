@@ -1,0 +1,16 @@
+#app-account-wipe {
+	h1 {
+		text-align: center;
+		font-weight: bold;
+		color:#fff;
+	}
+	ul {
+		margin:3rem 0;
+		color:$off-white !important;
+		list-style: disc;
+		li {
+			margin:0.5rem 0;
+			font-size: 0.9em;
+		}
+	}
+}

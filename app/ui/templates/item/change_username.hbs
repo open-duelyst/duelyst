@@ -1,0 +1,59 @@
+<div class="modal-dialog">
+    <button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="header-dashed-text modal-title">{{localize 'profile.change_username_title'}}</h4>
+        </div>
+        <div class="modal-body">
+            <div class="prompt-form">
+							{{#if canChangeUsernameThisMonth}}
+									<div class="form-group">
+										{{#if canChangeUsernameForFree}}
+												<p>{{{localize 'profile.change_username_free_message'}}}</p>
+										{{else}}
+												<p>{{{localize 'profile.change_username_message'}}}</p>
+										{{/if}}
+									</div>
+                  <div class="form-group">
+                      <input type="text" class="form-control username" required placeholder="{{localize 'profile.username_placeholder'}}">
+                  </div>
+                  <div class="form-control-buttons">
+											{{#if canChangeUsernameForFree}}
+                      <button class="btn btn-clean btn-clean-confirm prompt-submit">
+													Change
+                      </button>
+											{{else}}
+                      <button class="btn btn-clean btn-clean-secondary prompt-submit">
+                          <span class="icon-gold">100</span> <span class="text-gold">{{localize 'common.currency_gold'}}</span>
+                      </button>
+											{{/if}}
+                  </div>
+							{{else}}
+              		<div class="form-group">
+                  	<p>{{localize 'profile.change_username_max_per_month_error'}}</p>
+									</div>
+                  <div style="text-align: center; margin-top:20px;">
+                      <button class="btn btn-clean btn-clean-cancel prompt-cancel">OK</button>
+                  </div>
+							{{/if}}
+            </div>
+
+            <div class="prompt-submitted">
+                <div class="activity-animation"><div class="activity-animation-image"></div></div>
+                <h2 class="prompt-title">{{localize 'common.loading_dialog_one_moment_label'}}</h2>
+            </div>
+
+            <div class="prompt-success">
+                <div class="icon-container"><i class="fa fa-check"></i></div>
+                <h2 class="prompt-title">{{localize 'common.success_title'}}</h2>
+                <p class="prompt-message">{{localize 'common.change_username_success'}}</p>
+            </div>
+
+            <div class="prompt-error">
+                <div class="icon-container"><i class="fa fa-times"></i></div>
+                <h2 class="prompt-title">{{localize 'common.error_occurred_title'}}</h2>
+                <p class="prompt-message error-message"></p>
+            </div>
+        </div>
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

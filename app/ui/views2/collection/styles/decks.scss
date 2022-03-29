@@ -1,0 +1,414 @@
+#app-deck {
+	@include scrollbars(rgba(255,255,255, 1));
+	flex: 1;
+	display: flex;
+	flex-flow: column nowrap;
+	#app-deck-cards-region {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-flow: column nowrap;
+		margin-bottom: 1.8rem;
+	}
+	.deck-controls {
+		flex: none;
+		margin-bottom: 1.0rem;
+		.btn-clean-primary {
+			width: 15.0rem;
+			height: 4.7rem;
+			min-width: 15.0rem;
+			min-height: 4.7rem;
+			padding: 1.3rem 2.0rem;
+		}
+	}
+	.deck-import-export {
+		flex: none;
+	}
+	.deck-cards {
+		@include fillParent();
+		margin-bottom: 1.8rem;
+	}
+	.cards-list {
+	}
+	.cards {
+		position: relative;
+		display: flex;
+		flex-flow: column nowrap;
+	}
+	.card {
+		width: 28.5rem;
+		height: 5.3rem;
+		padding: 0.9rem;
+		margin: 0 0.5rem 0.5rem 0;
+		border: 0;
+		flex-flow: row nowrap;
+		display: flex;
+		align-items: baseline;
+		overflow: hidden;
+		border-radius: 0 0.6rem 0.6rem 0;
+		.bg {
+			width: 28.5rem;
+			height: 5.3rem;
+			@include backgroundImage("resources/card_backgrounds/deck_builder_card_bg.png");
+			background-position: 0;
+			border-radius: 0 0.6rem 0.6rem 0;
+		}
+		.type, .stats, .rarity, .shadow, .glow, .card-description, .race {
+			display: none;
+		}
+		.mana-cost {
+			position: relative;
+			top: auto;
+			left: auto;
+			right: auto;
+			width: 4.0rem;
+			height: 3.5rem;
+			margin: 0 1.0rem 0 -0.4rem;
+			font-size: 1.8rem;
+			background-image: none;
+		}
+		.signature-card-sprite {
+			left: 0.3rem;
+			top: 0.4rem;
+			width: 4.6rem;
+			height: 4.6rem;
+		}
+		.inventory-count {
+			display:none;
+		}
+		.deck-count {
+			display: flex;
+			align-items: center;
+			padding: 0.5rem;
+			position: relative;
+			font-weight: bold;
+		}
+		.card-header {
+			width: 4.6rem;
+		}
+		.card-caption {
+			height: auto;
+			text-align: left;
+			max-width: 18.0rem;
+		}
+		.card-sprite {
+			position: absolute;
+			width: 6.4rem;
+			height: 6.4rem;
+			left: 22.5rem;
+			top: auto;
+			bottom: -2.5rem;
+			opacity: 0.4;
+		}
+		.caption {
+			margin-left: 0.5rem;
+		}
+		.faction, .type {
+			margin: 0;
+			padding-top: 0.7rem;
+		}
+		.name {
+			color: #fff;
+			height: auto;
+			margin-left: 0.5rem;
+			margin-top: 0;
+			font-size: 1.3rem;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.name-long {
+			color: #fff;
+			height: auto;
+			margin-left: 0.5rem;
+			margin-top: 0;
+			font-size: 1.3rem;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		.keyword-descriptions {
+			display:none;
+		}
+		&.prismatic {
+			.bg {
+				-webkit-mask-image: initial;
+				.prismatic-gradient {
+					display: none;
+				}
+				&:after {
+					display: none;
+				}
+			}
+		}
+		&.entity {
+			.card-sprite {
+				left: 21.0rem;
+				.sprite {
+					bottom: -2.0rem;
+					right: -2.5rem;
+					transform: scaleX(-1.0);
+				}
+			}
+		}
+		&.general {
+			.card-sprite {
+				.sprite {
+					bottom: -4.0rem;
+				}
+			}
+		}
+		&.spell, &.artifact {
+			.card-sprite {
+				.sprite {
+					position: absolute;
+					width: 6.4rem;
+					height: 6.4rem;
+					margin: auto;
+					left: auto;
+					right: 0;
+					bottom: 0;
+					top: 0;
+				}
+			}
+		}
+		&.prismatic {
+			.bg {
+				@include backgroundImage("resources/card_backgrounds/deck_builder_prismatic_card_bg.png");
+			}
+		}
+	}
+}
+
+#app-deck-metadata-region {
+	flex: none;
+}
+
+.deck-metadata {
+	.tooltip {
+		.tooltip-arrow {
+			border-bottom-color: #46637f;
+		}
+		.tooltip-inner {
+			background-color: #46637f;
+		}
+	}
+	.deck-metadata-header {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		.deck-name {
+			flex: 1;
+			border: none;
+			background: none;
+			color: white;
+			@include headerFullStyle();
+			font-size: 2.3rem;
+			line-height: 3.3rem;
+			padding: 0.2rem 0;
+			margin: 0.2rem 0.2rem 0.2rem 0;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			width: 85%;
+			&:focus {
+				background-color: rgba(255, 255, 255, 0.1);
+				border-bottom: 0.1rem solid rgba(255, 255, 255, 0.50);
+			}
+		}
+		.deck-card-back {
+			position: relative;
+			width: 2.7rem;
+			height: 3.0rem;
+			margin: 0 0.75rem 0 0;
+			padding: 0.3rem 0.2rem;
+			img {
+				max-height: 100%;
+			}
+		}
+		.deck-color-code {
+			position: relative;
+			width: 2.4rem;
+			height: 2.4rem;
+			margin: 0;
+			padding: 0;
+			color: #444444;
+			border-radius: 0.5rem;
+		}
+		.deck-color-code-select {
+			&.color-code-none {
+				background-color: #ffffff;
+			}
+		}
+		.deck-color-code-select-menu {
+			padding: 0.4rem;
+			border-radius: 0.5rem;
+			background-color: rgba(100,100,100,0.9);
+			.deck-color-code-select-list {
+				display: flex;
+				flex-flow: row nowrap;
+				align-items: center;
+				align-content: center;
+				justify-content: center;
+			}
+			.deck-color-code {
+				margin: 0.2rem;
+				padding: 0;
+			}
+			.color-code-none {
+				background-color: #ffffff;
+			}
+		}
+		.deck-delete {
+			position: relative;
+			font-size: 2.0rem;
+		}
+	}
+}
+
+.deck-histogram {
+	height: 9.0rem;
+	padding-bottom: 0.5rem;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: flex-end;
+	flex: 2;
+	.histogram-item {
+		height: 90%;
+		flex: 1;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-end;
+		align-content: flex-end;
+	}
+	.histogram-bar {
+		position: relative;
+		width: 70%;
+		height: 65%;
+		max-width: 2.5rem;
+		margin: 0.5rem auto 0 auto;
+		border-bottom: 0.1rem solid $main-border-color;
+	}
+	.histogram-fill {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		bottom: 0;
+		transition: all 0.5s ease-in-out;
+		border-radius:0.4rem 0.4rem 0 0;
+		background:linear-gradient(#428bca,darken(#428bca,20));
+		box-shadow:inset 0 0.2rem 0.2rem rgba(255, 255, 255, 0.5), 0 0 0.4rem lighten(#428bca,10);
+		span {
+			position:absolute;
+			top:-2.2rem;
+			text-align:center;
+			width:100%;
+			color:#fff;
+		}
+	}
+	.histogram-number {
+		text-align: center;
+		color: #428bca;
+	}
+}
+
+.deck-counters {
+	border-top: 0.1rem solid $main-border-color;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: center;
+	align-content: center;
+	.counter-header {
+		padding: 0.4rem;
+		text-align: left;
+		color: #999;
+	}
+	.counter {
+		font-size: 1.6rem;
+		padding: 0.3rem 0.3rem 0.3rem 1.5rem;
+		color: #428bca;
+		border-radius: 0.3rem;
+		* {
+			display: inline-block;
+		}
+		.separator {
+			color: #777;
+		}
+	}
+}
+
+#app-deck-card-back-select {
+	flex: 1;
+	display: flex;
+	flex-flow: column nowrap;
+
+	.deck-card-back-controls {
+		.btn-clean-primary {
+			width: 15.0rem;
+			height: 4.7rem;
+			min-width: 15.0rem;
+			min-height: 4.7rem;
+			padding: 1.3rem 2.0rem;
+		}
+	}
+
+	.deck-card-back-select-title {
+		@include headerFullStyle();
+		margin:0;
+		padding:0;
+		position: relative;
+		font-size: 2.4rem;
+		text-align: center;
+		margin-top: 2rem;
+	}
+
+	.deck-preview {
+		@extend .mouse-auto;
+		display: flex;
+		background: transparent;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		height: auto;
+		.faction-portrait {
+			position: relative;
+			top: auto;
+			left: auto;
+		}
+		.deck-preview-content {
+			padding: 0;
+			text-align: center;
+		}
+		.deck-type {
+			display: none;
+		}
+		.deck-delete {
+			display: none;
+		}
+	}
+
+	.deck-card-back {
+		position: relative;
+		flex: 1;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: space-between;
+		align-items: center;
+		align-content: center;
+		margin-bottom: 1.8rem;
+		.deck-card-back-img {
+			width: 20.0rem;
+			margin-top: 30%;
+		}
+		&.active {
+			.deck-card-back-img {
+				animation-name: flashBrightness;
+				animation-duration: 0.5s;
+				animation-iteration-count: 1;
+			}
+		}
+		&.purchasable {
+		}
+	}
+}

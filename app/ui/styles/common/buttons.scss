@@ -1,0 +1,462 @@
+a, button, .btn, input {
+	@extend .mouse-select;
+	pointer-events: auto;
+  &.disabled {
+		@extend .mouse-disabled;
+  }
+}
+
+.btn {
+	font-size: 1.4rem;
+	padding: 0.6rem 1.2rem;
+	&:focus {
+		outline: none;
+	}
+	&:active, &.active {
+		box-shadow: none;
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+.btn-clean {
+	position: relative;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-radius: 0;
+	border: 0;
+	outline: 0;
+	overflow: hidden;
+	&:before {
+		content: "";
+		display: block;
+		position: absolute;
+		background: rgba(255, 255, 255, 0.5);
+		border-radius: 50%;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		transform: scale(0);
+	}
+	&:hover, &:focus, &:active, &:active:focus {
+		color: #fff;
+		border: 0;
+		outline: 0;
+	}
+	&:focus, &:active, &:active:focus {
+		&:before {
+			animation: ripple 0.2s ease-out;
+		}
+	}
+	&[disabled], &.disabled {
+		filter:unquote("grayscale(100%)");
+	}
+}
+
+.btn-bnea {
+	font-family: 'avertabold';
+	background: #f36f20;
+}
+
+.btn-panel {
+	background: $button-color;
+	&:hover {
+		background: lighten($button-color, 7%);
+	}
+}
+
+.btn-panel-alt {
+	background: $button-alt-color;
+	&:hover {
+		background: darken($button-alt-color, 7%);
+	}
+}
+
+.btn-glowing {
+  color: #ddd;
+  &:hover, &:focus, &:active, &:active:focus {
+    text-shadow: 0 0 1.0rem rgba(0,255,255,0.9);
+  }
+}
+
+.btn-user-cancel {
+}
+
+.btn-cancel-primary, .btn-nav-back {
+	float: none;
+	color: #fff;
+	font-size: 3.4rem;
+	padding: 1.0rem;
+	z-index: 9999;
+	width: 6.2rem;
+	height: 6.2rem;
+	border-radius: 50%;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+
+	&, &:hover, &:focus, &:active, &:active:focus, &.active {
+		@include backgroundImage("resources/ui/button_close.png");
+	}
+
+	&.btn-clean {
+		&:focus, &:active, &:active:focus {
+			&:before {
+				animation: ripple2x 0.35s ease-out;
+			}
+		}
+	}
+	&.btn-nav-back {
+		&, &:hover, &:focus, &:active, &:active:focus, &.active {
+			@include backgroundImage("resources/ui/button_back.png");
+		}
+	}
+}
+
+.btn-clean-round {
+  @extend .clean-round;
+  &:hover, &:focus, &:active, &:active:focus {
+    border-color:#fff;
+    color:#fff;
+    outline: none;
+  }
+}
+
+.btn-clean-primary {
+  min-width: 17.4rem;
+  min-height: 5.4rem;
+	font-size: 1.6rem;
+	padding: 1.5rem 3.0rem;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+	&:before {
+		transform: scaleX(0);
+		border-radius: 0;
+		width: 95%;
+		height: 77%;
+		top: 11.5%;
+		left: 2.5%;
+		/* clip path polygon should be pairs comma separated and space separated within each pair */
+		clip-path: polygon(0% 65%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+	}
+	&, &.active {
+		@include backgroundImage("resources/ui/button_primary.png");
+	}
+  &:hover, &:focus, &:active, &:active:focus {
+		@include backgroundImage("resources/ui/button_primary_glow.png");
+	}
+}
+
+input.btn-clean-primary {
+  padding: 0.2rem 2.7rem 0 2.7rem;
+}
+
+.btn-clean-secondary {
+	min-width: 13.0rem;
+	min-height: 4.0rem;
+	font-size: 1.4rem;
+	padding: 1.5rem 2.5rem;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+	&:before {
+		transform: scaleX(0);
+		border-radius: 0;
+		width: 95%;
+		height: 77%;
+		top: 11.5%;
+		left: 2.5%;
+		/* clip path polygon should be pairs comma separated and space separated within each pair */
+		clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+	}
+	&, &.active {
+		@include backgroundImage("resources/ui/button_secondary.png");
+	}
+	&:hover, &:focus, &:active, &:active:focus {
+		@include backgroundImage("resources/ui/button_secondary_glow.png");
+	}
+}
+
+.btn-clean-cancel {
+	min-width: 17.4rem;
+	min-height: 5.8rem;
+	color: lighten($button-cancel-color,30%);
+	font-size: 1.6rem;
+	padding: 1.5rem 3.0rem;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+	&:before {
+		transform: scaleX(0);
+		border-radius: 0;
+		width: 95%;
+		height: 77%;
+		top: 11.5%;
+		left: 2.5%;
+		/* clip path polygon should be pairs comma separated and space separated within each pair */
+		clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+	}
+	&, &.active {
+		@include backgroundImage("resources/ui/button_cancel.png");
+	}
+	&:hover, &:focus, &:active, &:active:focus {
+		color: $button-cancel-color;
+		@include backgroundImage("resources/ui/button_cancel_glow.png");
+	}
+}
+
+.btn-clean-confirm {
+	min-width: 17.4rem;
+	min-height: 5.8rem;
+	color: lighten($button-confirm-color,30%);
+	font-size: 1.6rem;
+	padding: 1.5rem 3.0rem;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+	&:before {
+		transform: scaleX(0);
+		border-radius: 0;
+		width: 95%;
+		height: 77%;
+		top: 11.5%;
+		left: 2.5%;
+		/* clip path polygon should be pairs comma separated and space separated within each pair */
+		clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+	}
+	&, &.active {
+		@include backgroundImage("resources/ui/button_confirm.png");
+	}
+	&:hover, &:focus, &:active, &:active:focus {
+		color: $button-confirm-color;
+		@include backgroundImage("resources/ui/button_confirm_glow.png");
+	}
+}
+
+.btn-clean-icon {
+	width: 7.8rem;
+	height: 5.4rem;
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background-size: auto 100%;
+	&:before {
+		transform: scaleX(0);
+		border-radius: 0;
+		width: 95%;
+		height: 77%;
+		top: 11.5%;
+		left: 2.5%;
+		/* clip path polygon should be pairs comma separated and space separated within each pair */
+		clip-path: polygon(0% 50%, 10% 0%, 90% 0%, 100% 50%, 90% 100%, 10% 100%);
+	}
+}
+
+.btn-group {
+	.vertical-separator {
+		height: 4.0rem;
+		margin: 0 2.0rem;
+	}
+  .btn-clean-primary {
+    &:first-child:not(:last-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_primary_left.png");
+			}
+			margin-right: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 60%, 10% 0%, 100% 0%, 100% 100%, 0% 100%);
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_primary_left_glow.png");
+			}
+    }
+    &:last-child:not(:first-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_primary_right.png");
+			}
+			margin-left: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 90% 100%, 0% 100%)
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_primary_right_glow.png");
+			}
+    }
+    &:not(:last-child):not(:first-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_primary_middle.png");
+			}
+			margin-left: -0.5rem;
+			margin-right: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_primary_middle_glow.png");
+      }
+    }
+  }
+
+  .btn-clean-icon {
+    &:first-child:not(:last-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_icon_left.png");
+			}
+			margin-right: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 60%, 20% 0%, 100% 0%, 100% 100%, 0% 100%);
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_icon_left_glow.png");
+			}
+    }
+    &:last-child:not(:first-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_icon_right.png");
+			}
+			margin-left: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 0%, 100% 0%, 100% 40%, 80% 100%, 0% 100%);
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_icon_right_glow.png");
+			}
+    }
+    &:not(:last-child):not(:first-child) {
+			&, &.active {
+				@include backgroundImage("resources/ui/button_icon_middle.png");
+			}
+			margin-left: -0.5rem;
+			margin-right: -0.5rem;
+			&:before {
+				/* clip path polygon should be pairs comma separated and space separated within each pair */
+				clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+			}
+			&:hover, &:focus, &:active, &:active:focus {
+				@include backgroundImage("resources/ui/button_icon_middle_glow.png");
+      }
+    }
+  }
+}
+
+.btn-group-centered {
+	margin: 0 auto;
+}
+
+.user-triggered-navigation-locked {
+	.btn-user-cancel, .btn-user-skip, .btn-user-exit, .btn-user-confirm {
+		@extend .disabled;
+		@extend .mouse-disabled;
+	}
+}
+
+/** SWITCH **/
+
+.switch {
+	width: 7rem;
+	height: 2.0rem;
+	margin: 0;
+	position: relative;
+
+	label {
+		width: 100%;
+		height: 100%;
+		position: relative;
+		display: block;
+		background: #a5a39d;
+		border-radius: 3.0rem;
+		box-shadow:
+			inset 0 0.2rem 0.5rem 0.1rem rgba(0,0,0,0.2),
+			0 0.1rem 0 rgba(255,255,255,0.5);
+
+		i {
+			display: block;
+			height: 100%;
+			width: 60%;
+			border-radius: inherit;
+			position: absolute;
+			z-index: 2;
+			right: 40%;
+			top: 0;
+			background: linear-gradient(#f7f2f6, #b2ac9e);
+			box-shadow:
+				inset 0 0.1rem 0 white,
+				0 0 0.5rem rgba(0,0,0,0.3),
+				0 0.3rem 0.3rem rgba(0,0,0,0.2);
+
+			&::after {
+				content: "";
+				position: absolute;
+				left: 15%;
+				top: 25%;
+				width: 70%;
+				height: 50%;
+				background: linear-gradient(#cbc7bc, #d2cbc3);
+				border-radius: inherit;
+			}
+
+			&:before {
+				content: "off";
+				text-transform: uppercase;
+				font-style: normal;
+				font-weight: bold;
+				color: rgba(0,0,0,0.4);
+				text-shadow: 0 0.1rem 0 #bcb8ae, 0 -0.1rem 0 #97958e;
+				font-family: Helvetica, Arial, sans-serif;
+				font-size: 1.0rem;
+				position: absolute;
+				top: 50%;
+				margin-top: -1.1rem;
+				right: -55%;
+			}
+		}
+
+		&:after {
+			content: "";
+			position: absolute;
+			z-index: -1;
+			top: -0.2rem;
+			right: -0.2rem;
+			bottom: -0.2rem;
+			left: -0.2rem;
+			border-radius: inherit;
+			background: linear-gradient(#f2f2f2, #ababab);
+			box-shadow: 0 0 1.0rem rgba(0,0,0,0.3), 0 0.1rem 0.1rem rgba(0,0,0,0.25);
+		}
+	}
+
+	input {
+		@extend .mouse-select;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		opacity: 0;
+		z-index: 100;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+
+		&:checked ~ label {
+			background: $blue;
+			i {
+				right: -1%;
+				&:before {
+					content: "on";
+					right: 115%;
+					color: rgba(50, 50, 50, 0.75);
+					text-shadow: 0 0.1rem 0 #8CD5F1, 0 -0.1rem 0 #79B1C1;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>DUELYST</title>
+	<link rel="icon" type="image/gif" href="https://duelyst.freetls.fastly.net/favicon.gif">
+	<link rel="shortcut icon" href="https://duelyst.freetls.fastly.net/favicon.ico">
+	<meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="screen-orientation" content="portrait" />
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="full-screen" content="yes" />
+	<meta name="x5-fullscreen" content="true" />
+
+	<script type="text/javascript">
+		// this is for cocos
+		window.ccMapLimit = 100
+	</script>
+
+	<!-- DUELYST CSS HERE ++ -->
+	<link rel="stylesheet" href="{{ gameVersionAssetBucket }}/duelyst.css">
+</head>
+
+<body>
+
+	<!-- application container div -->
+	<div id="app">
+		<div id="app-main">
+			<div id="app-horizontal">
+				<canvas id="app-gamecanvas"></canvas>
+				<div id="app-content-region"></div>
+				<div id="app-utility-region"></div>
+			</div>
+			<div id="app-vertical">
+				<div id="app-modal-region"></div>
+				<div id="app-notifications-region"></div>
+			</div>
+		</div>
+		<div id="app-overlay-region"></div>
+		<div id="maintenance-announcements-region"></div>
+		<div id="app-preloading">
+			<div class="brand-main">
+				<h1>DUELYST</h1>
+			</div>
+		</div>
+	</div>
+	<!-- end container div -->
+
+	<!-- DUELYST JS HERE ++ -->
+	<script src="{{ gameVersionAssetBucket }}/vendor.js" crossorigin></script>
+	<script src="{{ gameVersionAssetBucket }}/duelyst.js" crossorigin></script>
+
+</body>
+
+</html>

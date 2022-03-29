@@ -1,0 +1,27 @@
+<div class="product-item-container" data-sale-id="{{sale_id}}" data-sale-price="{{sale_price}}" >
+	<div class="product-shadow"></div>
+	<img src="" class="product-icon" />
+	<div class="product-animation">
+			<div class="sprite"></div>
+	</div>
+	{{#if sale_id}}
+		<div class="sale-badge">
+			<span class="sale-discount-label"> {{sale_discount_percent}}% Off!</span>
+			<!--<span class="sale-expires-label"> {{sale_expires_msg}}</span>-->
+		</div>
+	{{/if}}
+	<div class="product-info">
+		<!--<h3 class="name">{{name}}</h3>-->
+		{{#if rarity_id}}
+		<h4 class="rarity" style="color:{{rarityHexColorForId rarity_id}}; text-shadow:0 0 5px {{rarityHexColorForId rarity_id}};">{{rarityNameForId rarity_id}}</h4>
+		{{/if}}
+		<div class="price">
+			{{#if spirit_cost}}
+			<span class="soft-currency"><strong>{{spirit_cost}}</strong> {{localize 'common.currency_spirit'}}</span>
+			<span class="or">/</span>
+			{{/if}}
+			<span class="hard-currency">{{{formatPremiumCurrency price}}}</span>
+		</div>
+	</div>
+	<div class="you-own-this"><i class="fa fa-check"></i></div>
+</div>

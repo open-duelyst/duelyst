@@ -1,0 +1,18 @@
+{
+	"env": "development",
+	"api": "",
+	"postgres_connection_string": "",
+	"firebase": "",
+	"firebaseToken": "",
+	"redis": {
+		"ip": "",
+		"port": 6379,
+		"ttl": 60000,
+		"password": ""
+	},
+	"inviteCodesActive":false,
+	"datGuiEditorEnabled":true,
+	"aiToolsEnabled":true,
+	"allCardsAvailable":true,
+	"watchSectionMinCurrentVersionGameCount":1
+}

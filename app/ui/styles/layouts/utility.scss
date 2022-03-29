@@ -1,0 +1,381 @@
+/* ---------- UTILITY ---------- */
+
+#app-utility-region {
+	@include fillParent();
+	z-index: 1;
+}
+
+/* ---------- UTILITY MENU ---------- */
+
+.utility-menu {
+	position: absolute;
+	bottom: 1.0rem;
+	right: 1.0rem;
+
+	.buddy-list {
+		.unread-conversation-block {
+			position: absolute;
+			top: 0;
+			right: 1.0rem;
+			margin: 0;
+			padding: 0;
+			color: #fff;
+			font-weight: bold;
+			text-align: center;
+			.unread-conversation-count {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				line-height: 100%;
+				z-index: 1;
+			}
+			.fa-comment {
+				position: relative;
+				color: #EF6599;
+				font-size: 2.4rem;
+				margin-top: -0.6rem;
+			}
+		}
+	}
+}
+
+/* ---------- UTILITY MAIN MENU ---------- */
+
+#app-utility-main-menu {
+	@include fillParent();
+
+	.utility-top,
+	.utility-bottom {
+		padding: 3.0rem;
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: flex-end;
+	}
+
+	.utility-top {
+		position: absolute;
+		top: 0;
+		bottom: auto;
+		left: 0;
+		right: 0;
+		width: 100%;
+	}
+
+	.utility-bottom {
+		position: absolute;
+		top: auto;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		width: 100%;
+	}
+
+	.popover {
+		&.top {
+			margin-top: -2.0rem;
+		}
+	}
+
+	.btn-group {
+		display: flex;
+		flex-flow: row nowrap;
+		vertical-align: bottom;
+		align-items: baseline;
+	}
+
+	.btn {
+		@include altHeaderFont();
+		text-transform: uppercase;
+		font-size: 1.2rem;
+		color: #FFF;
+		background: transparent;
+		margin: 0;
+		padding: 0;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		width: 8.0rem;
+		text-shadow: 0 0 0.6rem rgba(0,0,0,1.0);
+		margin-right: 1.0rem;
+		transition: transform 0.05s;
+		position: relative;
+		.symbol {
+			width: 4.8rem;
+			height: 4.8rem;
+			margin: 0 auto;
+			margin-bottom: 0.8rem;
+			background-position: center;
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
+		&:hover, &:focus, &:active {
+			text-shadow: 0 0 0.4rem rgba(255, 255, 255, 0.5);
+		}
+		&:first-child {
+			// margin-right: 0;
+		}
+		&:last-child {
+			// margin-left: 0;
+		}
+		&:hover, &:focus, &:active {
+			filter:brightness(1.2);
+		}
+		&:active {
+			transform: scale(0.98);
+			filter:brightness(0.9);
+		}
+
+		&.glow {
+			&:before {
+				content:' ';
+				transition: 0.2s all;
+				animation: rotateGlow 2s linear;
+				animation-iteration-count: infinite;
+				position: absolute;
+				opacity: 1.0;
+				z-index: 1;
+				width:7.0rem;
+				height:7.0rem;
+				top:-1.1rem;
+				left:0.5rem;
+				mix-blend-mode:color-dodge;
+				@include backgroundImage("resources/tutorial/lesson_ring_glow_part.png");
+				background-size: cover;
+				background-position: center;
+			}
+			@keyframes rotateGlow {
+				from { transform: rotateZ(360deg); }
+				to { transform: rotateZ(0deg); }
+			}
+			&:after {
+				animation:fadeGlowFlashIn 1.0s;
+				animation-delay: 1s;
+				animation-iteration-count: 3;
+				opacity: 0;
+				content:' ';
+				position:absolute;
+				z-index: 50;
+				width:6.4rem;
+				height:6.4rem;
+				top:-0.8rem;
+				left:0.8rem;
+				background-size: cover;
+				// mix-blend-mode:color-dodge;
+			}
+			@keyframes fadeGlowFlashIn {
+			  0% { opacity: 0 }
+			  50% { opacity: 1 }
+			  100% { opacity: 0 }
+			}
+		}
+	}
+
+	.shop {
+		.symbol {
+			@include backgroundImage("resources/ui/utility_menu/armory.png");
+		}
+		&.glow {
+			&:after {
+				@include backgroundImage("resources/ui/utility_menu/armory_glow_outline.png");
+			}
+		}
+	}
+
+	.quest-log {
+		.symbol {
+			@include backgroundImage("resources/ui/utility_menu/quests.png");
+		}
+		&.glow {
+			&:after {
+				@include backgroundImage("resources/ui/utility_menu/quests_glow_outline.png");
+			}
+		}
+	}
+
+	.profile {
+		.symbol {
+			@include backgroundImage("resources/ui/utility_menu/profile.png");
+		}
+	}
+
+	.settings {
+		.symbol {
+			@include backgroundImage("resources/ui/utility_menu/settings.png");
+		}
+	}
+
+	.buddy-list {
+		.symbol {
+			width: 8.1rem;
+			height: 8.9rem;
+			@include backgroundImage("resources/ui/utility_menu/friends.png");
+		}
+	}
+
+	.gold {
+		position: relative;
+		bottom: 2rem;
+		right: 2rem;
+		@include backgroundImage("resources/ui/gold_main_menu_container.png");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 100%;
+		border-radius:1.2rem;
+		height: 4.8rem;
+		width:12.0rem;
+		* {
+			color: lighten($gold-color,25);
+			pointer-events:auto;
+		}
+		.icon-gold {
+			display: inline-block;
+			vertical-align:middle;
+			width: 2.4rem;
+			height: 2.4rem;
+			margin-top:-0.4rem;
+		}
+		.gold-count {
+			display: inline-block;
+			font-size:1.8rem;
+			height: 1.8rem;
+			line-height: 2.4rem;
+			padding-top:0.5rem;
+			margin:0 0.5rem;
+		}
+		&:hover, &:focus, &:active {
+			filter:brightness(1.5);
+		}
+	}
+
+	.diamond {
+		position: relative;
+		bottom: 2rem;
+		right: 2rem;
+		@include backgroundImage("resources/ui/diamond_main_menu_container.png");
+		background-repeat: no-repeat;
+		background-position: center;
+		background-size: 100%;
+		border-radius:1.2rem;
+		height: 4.8rem;
+		width:12.0rem;
+		* {
+			color: lighten($gold-color,25);
+			pointer-events:auto;
+		}
+		.icon-premium {
+			display: inline-block;
+			vertical-align:middle;
+			width: 2.4rem;
+			height: 2.4rem;
+			margin-top:-0.4rem;
+		}
+		.diamond-count {
+			display: inline-block;
+			font-size:1.8rem;
+			height: 1.8rem;
+			line-height: 2.4rem;
+			padding-top:0.5rem;
+			margin:0 0.5rem;
+		}
+		&:hover, &:focus, &:active {
+			filter:brightness(1.5);
+		}
+	}
+
+	.booster-pack-collection {
+		position: absolute;
+		text-align: right;
+		font-weight: 400;
+		text-shadow: 0 0 1.0rem $pink;
+		line-height: 2.0rem;
+		letter-spacing: 0.2rem;
+		padding: 0;
+		width: auto;
+		height: 13.0rem;
+		bottom: 0.0rem;
+		left: 3.0rem;
+
+		display:flex;
+		flex-flow:row;
+		align-items: center;
+
+		.symbol-booster-pack {
+			width: 13.0rem;
+			min-width: 13.0rem;
+			height: 13.0rem;
+			min-height: 13.0rem;
+			position: relative;
+			.symbol-booster-pack-center,
+			.symbol-booster-pack-ring {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-size: cover;
+				background-repeat: no-repeat;
+			}
+			.symbol-booster-pack-center {
+				@include backgroundImage("resources/ui/symbol_booster_pack_center.png");
+				opacity: 0.5;
+			}
+			.symbol-booster-pack-ring {
+				@include backgroundImage("resources/ui/symbol_booster_pack_ring.png");
+			}
+			.symbol-booster-pack-caret {
+				@include backgroundImage("resources/ui/symbol_booster_pack_caret.png");
+			}
+		}
+		.booster-pack-count-label {
+			font-size: 2.4rem;
+		}
+	}
+}
+
+/* ---------- UTILITY MATCHMAKING MENU ---------- */
+
+#app-utility-matchmaking-menu {
+	.btn-group {
+		transform: scale(0.8);
+	}
+}
+
+/* ---------- UTILITY DESKTOP MENU ---------- */
+
+#app-utility-desktop-menu {
+	.btn-group {
+		transform: scale(0.8);
+	}
+}
+
+/* ---------- UTILITY GAME MENU ---------- */
+
+#app-utility-game-menu {
+	bottom: 0;
+	left: 0;
+	right: auto;
+
+	.btn-group {
+		transform: scale(0.8);
+		transform-origin: 25%;
+	}
+
+	button {
+		font-size: 1.6rem;
+		background-color: transparent;
+		border-radius: 0;
+		border: 0;
+		padding: 0;
+	}
+
+	.buddy-list {
+		.unread-conversation-block {
+			top: 0.5rem;
+			right: 0.1rem;
+			.fa-comment {
+				font-size: 3.0rem;
+			}
+		}
+	}
+}

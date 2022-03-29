@@ -1,0 +1,15 @@
+{
+  "name": "aws-utility",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+	  "aws-sdk": "*",
+	  "moniker": "*"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

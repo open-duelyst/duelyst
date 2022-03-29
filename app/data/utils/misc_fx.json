@@ -1,0 +1,1010 @@
+{
+	"Factions": {
+		"Faction1": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"spriteIdentifier": "fxTeleportRecall2",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 0,
+						"g": 255,
+						"b": 255
+					}
+				}
+			]
+		},
+		"Faction2": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 255,
+						"g": 100,
+						"b": 100
+					}
+				},
+				{
+					"spriteIdentifier": "fxFaerieFireRed"
+				}
+			]
+		},
+		"Faction3": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 255,
+						"g": 255,
+						"b": 0
+					}
+				},
+				{
+					"spriteIdentifier": "fxFaerieFireRed"
+				}
+			]
+		},
+		"Faction4": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 127,
+						"g": 127,
+						"b": 255
+					}
+				},
+				{
+					"spriteIdentifier": "fxFaerieFirePurple"
+				}
+			]
+		},
+		"Faction5": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 127,
+						"g": 255,
+						"b": 127
+					}
+				}
+			]
+		},
+		"Faction6": {
+		},
+		"Neutral": {
+			"UnitSpawnFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				}
+			],
+			"SpawnSpecialFX": [
+				{
+					"spriteIdentifier": "fxTeleportRecall",
+					"offset": {
+						"x": 0,
+						"y": -10
+					}
+				},
+				{
+					"spriteIdentifier": "fxBladestorm",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				},
+				{
+					"spriteIdentifier": "fxSmokeGround",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -80
+					},
+					"duration": 0.5,
+					"castsShadows": true,
+					"radius": 270,
+					"intensity": 5,
+					"colorTo": {
+						"r": 225,
+						"g": 225,
+						"b": 225
+					}
+				},
+				{
+					"type": "Shockwave",
+					"offset": {
+						"x": 0,
+						"y": -20
+					},
+					"radius": 160,
+					"duration": 0.75
+				}
+			],
+			"UnitDamagedFX": [
+				{
+					"spriteIdentifier": "BloodExplosionMedium"
+				},
+				{
+					"type": "Particles",
+					"plist": "resources/particles/blood.plist",
+					"scale": 1.75,
+					"duration": 0.2
+				},
+				{
+					"type": "Decal",
+					"spriteIdentifier": [
+						"fxBloodGround3",
+						"fxBloodGround4"
+					],
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				}
+			],
+			"UnitHealedFX": [
+				{
+					"spriteIdentifier": "fxSwirlRingsGreen"
+				},
+				{
+					"type": "Particles",
+					"plistFile": "resources/particles/dotsquaregreen.plist"
+				}
+			],
+			"UnitDiedFX": [
+				{
+					"type": "Decal",
+					"spriteIdentifier": [
+						"fxBloodGround",
+						"fxBloodGround2"
+					],
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				}
+			]
+		}
+	},
+	"Cards": {
+		"Spell": {
+			"FireBlast": {
+				"TargetFX": [
+					{
+						"spriteIdentifier": "fxSearingChasm",
+						"type": "Explosion",
+						"intensity": 3,
+						"offset": {
+							"x": 0,
+							"y": 30
+						},
+						"emitFX": {
+							"type": "Light",
+							"radius": 360,
+							"offset": {
+								"x": 0,
+								"y": -50
+							},
+							"intensity": 3,
+							"colorTo": {
+								"r": 127,
+								"g": 255,
+								"b": 255
+							}
+						}
+					},
+					{
+						"spriteIdentifier": "fxSmokeGround",
+						"offset": {
+							"x": 0,
+							"y": -40
+						}
+					}
+				]
+			},
+			"FireTornado": {
+				"TargetFX": [
+					{
+						"plistFile": "resources/particles/fireexplosion.plist",
+						"type": "Particles"
+					},
+					{
+						"type": "Shockwave",
+						"offset": {
+							"x": 0,
+							"y": -20
+						},
+						"radius": 90,
+						"duration": 0.75
+					},
+					{
+						"spriteIdentifier": "fxFireTornado",
+						"emitFX": {
+							"type": "Light",
+							"offset": {
+								"x": 0,
+								"y": -45
+							},
+							"radius": 480,
+							"intensity": 3
+						}
+					},
+					{
+						"spriteIdentifier": "fxSwirlRingsBlue"
+					},
+					{
+						"spriteIdentifier": "fxSmokeGround"
+					}
+				]
+			}
+		},
+		"Artifact": {
+			"General": {
+				"TargetFX": [
+					{
+						"spriteIdentifier": "fx_attackplus_002.png",
+						"opacity": 200,
+						"duration": 0.75,
+						"fadeInDurationPct": 0.2,
+						"fadeOutDurationPct": 0.35,
+						"offset": {
+							"x": 0,
+							"y": 20
+						},
+						"emitFX": {
+							"type": "Light",
+							"offset": {
+								"x": 0,
+								"y": -45
+							},
+							"radius": 480,
+							"intensity": 3
+						}
+					},
+					{
+						"spriteIdentifier": "fxSwirlRingsBlue",
+						"offset": {
+							"x": 0,
+							"y": -20
+						}
+					},
+					{
+						"spriteIdentifier": "fxSmokeGround",
+						"offset": {
+							"x": 0,
+							"y": -45
+						}
+					}
+				]
+			}
+		}
+	},
+	"Actions": {
+		"Teleport": {
+			"MoveSourceFX": [
+				{
+					"spriteIdentifier": "ForceField",
+					"offset": {
+						"x": 0,
+						"y": -5
+					}
+				},
+				{
+					"spriteIdentifier": "fxBuffSimpleGold"
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Shockwave",
+					"offset": {
+						"x": 0,
+						"y": -20
+					},
+					"radius": 72,
+					"duration": 0.9
+				}
+			],
+			"MoveTargetFX": [
+				{
+					"spriteIdentifier": "ForceField",
+					"offset": {
+						"x": 0,
+						"y": -5
+					}
+				},
+				{
+					"spriteIdentifier": "fxBuffSimpleGold"
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -45
+					}
+				},
+				{
+					"type": "Shockwave",
+					"offset": {
+						"x": 0,
+						"y": -20
+					},
+					"radius": 72,
+					"duration": 0.9
+				}
+			],
+			"MoveFX": [
+				{
+					"type": "Particles",
+					"plistFile": "resources/particles/teleport_ball.plist",
+					"needsDepthTest": true,
+					"pixelGridAligned": true,
+					"positionType": "PARTICLE_TYPE_FOLLOW",
+					"maxInertia": 8,
+					"maxInertiaRandom": 6,
+					"friction": 0.95,
+					"duration": 0.2,
+					"scale": 0.8
+				}
+			]
+		},
+		"RefreshArtifacts": {
+			"TargetFX": [
+				{
+					"spriteIdentifier": "ForceField",
+					"offset": {
+						"x": 0,
+						"y": -4.5
+					},
+					"emitFX": {
+						"type": "Light",
+						"offset": {
+							"x": 0,
+							"y": -45
+						},
+						"radius": 360,
+						"intensity": 3,
+						"colorTo": {
+							"r": 40,
+							"g": 40,
+							"b": 255
+						}
+					}
+				},
+				{
+					"spriteIdentifier": "fxBuffSimpleGold"
+				}
+			]
+		}
+	},
+	"Modifiers": {
+		"Buff": {
+			"ModifierAppliedFX": [
+				{
+					"spriteIdentifier": "fxBuffSimpleGold"
+				}
+			]
+		},
+		"Frenzy": {
+			"ModifierTriggeredFX": [
+				{
+					"spriteIdentifier": "fxBladestorm"
+				}
+			]
+		},
+		"Silence": {
+			"ModifierAppliedFX": [
+				{
+					"plistFile": "resources/particles/waterexplosion.plist",
+					"type": "Particles",
+					"fadeInAtLifePct": 0.1,
+					"friction": 0.95,
+					"emit": [
+						{
+							"plistFile": "resources/particles/waterexplosion.plist",
+							"fadeInAtLifePct": 0.1,
+							"friction": 0.95
+						}
+					],
+					"zOrder": 1
+				},
+				{
+					"spriteIdentifier": "fxCleanse",
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"zOrder": -1
+				},
+				{
+					"spriteIdentifier": "fxSwirlRingsBlue",
+					"offset": {
+						"x": 0,
+						"y": -20
+					}
+				}
+			]
+		},
+		"Explosion": {
+			"ModifierTriggeredFX": [
+				{
+					"spriteIdentifier": [
+						"fxImpactWhiteMedium",
+						"fxImpactBigOrange",
+						"fxImpactMediumOrange"
+					]
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"radius": 360,
+					"intensity": 3,
+					"colorTo": {
+						"r": 255,
+						"g": 50,
+						"b": 50
+					}
+				},
+				{
+					"spriteIdentifier": "fxExplosionMediumBlueGround",
+					"type": "Decal",
+					"offset": {
+						"x": 0,
+						"y": -25
+					}
+				}
+			]
+		},
+		"Forcefield": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "fxDistortionHexShield",
+					"type": "Distortion",
+					"scale": 0.75,
+					"color": {
+						"r": 225,
+						"g": 255,
+						"b": 255
+					}
+				}
+			]
+		},
+		"Immunity": {
+			"ModifierFX": [
+				{
+					"plistFile": "resources/particles/phalanx.plist",
+					"type": "Particles",
+					"particleOffset": {
+						"x": 10,
+						"y": -55
+					},
+					"directionAligned": true,
+					"needsDepthTest": true,
+					"relativeToParent": true,
+					"fadeInAtLifePct": 0.2,
+					"friction": 0.98
+				}
+			]
+		},
+		"Zealed": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/decals/banded.png",
+					"antiAlias": true,
+					"looping": true,
+					"scale": 1,
+					"opacity": 127,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 0
+					},
+					"xyzRotationPerSecond": {
+						"x": 0,
+						"y": 0,
+						"z": 45
+					},
+					"blendSrc": "SRC_ALPHA",
+					"blendDst": "ONE"
+				}
+			]
+		},
+		"ZealedHeal": {
+			"ModifierTriggeredFX": [
+				{
+					"type": "Light",
+					"radius": 360,
+					"opacity": 50,
+					"offset": {
+						"x": 0,
+						"y": -30
+					},
+					"colorTo": {
+						"r": 0,
+						"g": 255,
+						"b": 127
+					}
+				}
+			]
+		},
+		"Provoke": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/decals/provoke.png",
+					"antiAlias": true,
+					"looping": true,
+					"scale": 1,
+					"opacity": 200,
+					"pulseScaleMin": 0.0,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 0
+					},
+					"blendSrc": "SRC_ALPHA",
+					"blendDst": "ONE"
+				}
+			]
+		},
+		"Provoked": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/decals/provoked.png",
+					"antiAlias": true,
+					"looping": true,
+					"scale": 1,
+					"opacity": 100,
+					"pulseScaleMin": 1.0,
+					"pulseScaleMax": 0.0,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 0
+					},
+					"blendSrc": "SRC_ALPHA",
+					"blendDst": "ONE"
+				}
+			],
+			"ModifierAppliedFX": [
+				{
+					"spriteIdentifier": "fxRadialBlueNoise",
+					"scale": 2,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 0
+					}
+				}
+			]
+		},
+		"Strikeback": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/decals/strikeback.png",
+					"antiAlias": true,
+					"looping": true,
+					"scale": 1,
+					"opacity": 127,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 30
+					},
+					"xyzRotationPerSecond": {
+						"x": 0,
+						"y": 0,
+						"z": 45
+					},
+					"blendSrc": "SRC_ALPHA",
+					"blendDst": "ONE"
+				}
+			]
+		},
+		"Stunned": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/decals/stunned.png",
+					"antiAlias": true,
+					"looping": true,
+					"scale": 1,
+					"opacity": 127,
+					"zOrder": -1,
+					"offset": {
+						"x": 0,
+						"y": -45
+					},
+					"xyzRotation": {
+						"x": 26,
+						"y": 0,
+						"z": 90
+					},
+					"xyzRotationPerSecond": {
+						"x": 0,
+						"y": 0,
+						"z": 45
+					},
+					"blendSrc": "SRC_ALPHA",
+					"blendDst": "ONE"
+				}
+			]
+		},
+		"CollectibleBonusCard": {
+			"ModifierTriggeredFX": [
+				{
+					"plistFile": "resources/particles/coins.plist",
+					"type": "Particles",
+					"offset": {
+						"x": 0,
+						"y": 20
+					}
+				},
+				{
+					"plistFile": "resources/particles/cards.plist",
+					"type": "Particles",
+					"offset": {
+						"x": 0,
+						"y": 20
+					},
+					"directionAligned": true
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -40
+					},
+					"duration": 1,
+					"radius": 480,
+					"intensity": 3,
+					"opacity": 127,
+					"colorTo": {
+						"r": 127,
+						"g": 255,
+						"b": 255
+					}
+				}
+			]
+		},
+		"CollectibleBonusMana": {
+			"ModifierFX": [
+				{
+					"spriteIdentifier": "resources/ui/unit_shadow.png",
+					"offset": {
+						"x": 0,
+						"y": -5
+					},
+					"scale": 1,
+					"opacity": 200,
+					"needsDepthDraw": false,
+					"removeOnEnd": false,
+					"zOrder": -1000
+				},
+				{
+					"plistFile": "resources/particles/manaswirl.plist",
+					"type": "Particles",
+					"layerName": "middlegroundLayer",
+					"needsDepthTest": true,
+					"directionAligned": true,
+					"fadeInAtLifePct": 0.2,
+					"friction": 0.98,
+					"offset": {
+						"x": 0,
+						"y": 45
+					}
+				},
+				{
+					"spriteIdentifier": "fxDistortionWaterBubble",
+					"type": "Distortion",
+					"shader": "Water",
+					"layerName": "middlegroundLayer",
+					"scale": 0.35,
+					"duration": 1,
+					"speed": 0.05,
+					"amplitude": 2,
+					"frequency": 75,
+					"color": {
+						"r": 200,
+						"g": 255,
+						"b": 255
+					},
+					"removeOnEnd": false,
+					"depthOffset": -50,
+					"offset": {
+						"x": 0,
+						"y": 50
+					}
+				}
+			],
+			"ModifierTriggeredFX": [
+				{
+					"plistFile": "resources/particles/manaspring.plist",
+					"type": "Particles",
+					"layerName": "middlegroundLayer",
+					"needsDepthTest": true,
+					"particleDepthOffset": 0,
+					"friction": {
+						"x": 0.98,
+						"y": 0.95
+					},
+					"offset": {
+						"x": 0,
+						"y": 20
+					},
+					"fadeInAtLifePct": 0.1
+				},
+				{
+					"type": "Light",
+					"offset": {
+						"x": 0,
+						"y": -40
+					},
+					"duration": 1,
+					"radius": 480,
+					"intensity": 3,
+					"opacity": 127,
+					"colorTo": {
+						"r": 0,
+						"g": 255,
+						"b": 255
+					}
+				}
+			]
+		}
+	}
+}

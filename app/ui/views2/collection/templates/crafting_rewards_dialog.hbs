@@ -1,0 +1,28 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary cancel-dialog"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="header-dashed-text modal-title">{{localize 'collection.crafting_rewards_title'}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="dialog-message">
+				<!-- fixed pull -->
+				<div class="crafting-materials">
+					<div class="material-item spirit">
+						<div class="material-count">
+							{{#if spirit_gained}}
+								{{spirit_gained}}
+							{{else}}
+								0
+							{{/if}}
+						</div>
+						<div class="material-name">{{localize 'common.currency_spirit'}}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-clean btn-clean-primary cancel-dialog">{{localize 'common.acknowledge_dismiss_button_label'}}</button>
+		</div>
+	</div>
+</div>

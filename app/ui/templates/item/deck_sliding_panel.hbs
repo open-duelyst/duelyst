@@ -1,0 +1,33 @@
+<div class="background"></div>
+
+<div class="sliding-panel-content deck-preview-content">
+	{{#if faction_id}}
+		{{#if isStarter}}
+			<div class="faction-crest"></div>
+		{{else}}
+			<div class="deck-card-backs">
+				<img src="{{imageForResourceScale (cardBackImgForId card_back_id)}}" class="larger" />
+				<img src="{{imageForResourceScale (cardBackImgForId card_back_id)}}" class="smaller" />
+			</div>
+		{{/if}}
+		<div class="faction-crest-bubble faction-crest-bubble-hover"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player2"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player1"></div>
+		<div class="faction-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId generalId)}})"></div>
+	{{/if}}
+	<div class="deck-caption">
+		<h4 class="deck-name">
+			<div class="deck-color-code {{classForColorCode color_code}}"></div>
+			{{name}}
+		</h4>
+		{{#if _isUnlocked}}
+			{{#if isStarter}}
+				<p class="deck-data">{{numCardsUnlocked}} / {{numCardsUnlockable}} {{localize 'new_player_experience.faction_cards_unlocked_progress_label'}}</p>
+			{{else}}
+				<p class="deck-data"><i class="fa fa-exclamation-triangle deck-invalid-icon"></i><strong>{{minion_count}}</strong> {{localize 'common.unit_label_plural'}} - <strong>{{spell_count}}</strong> {{localize 'common.spell_label_plural'}} - <strong>{{artifact_count}}</strong> {{localize 'common.artifact_label_plural'}}</p>
+			{{/if}}
+		{{else}}
+			<p class="deck-data">{{localize 'main_menu.deck_select_faction_locked'}}</p>
+		{{/if}}
+	</div>
+</div>

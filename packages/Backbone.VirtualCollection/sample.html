@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <title>Backbone VirtualCollection</title>
+    <script src="node_modules/underscore/underscore.js"></script>
+    <script src="node_modules/backbone/backbone.js"></script>
+    <script src="dist/backbone.virtual-collection.js"></script>
+    <script type="text/javascript" charset="utf-8">
+
+      var houses = new Backbone.Collection([
+        {color: 'white', with_garden: true},
+        {color: 'white', with_garden: false},
+        {color: 'red', with_garden: false},
+        {color: 'white', with_garden: true, renovated: true}
+        ]);
+
+      var red_houses = new VirtualCollection(houses, {
+        filter: {color: 'red'}
+      });
+
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>

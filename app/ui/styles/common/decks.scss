@@ -1,0 +1,105 @@
+/* ---------- DECKS ---------- */
+
+.decks {
+  margin: 0;
+  padding: 0;
+}
+
+.deck-preview {
+	@extend .mouse-select;
+	position: relative;
+	overflow: visible;
+	width: 28.5rem;
+	height: 7.2rem;
+	background-color: #243341;
+	margin-bottom: 1.0rem;
+	.deck-preview-content {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		padding: 0.9rem 0.9rem 0.9rem 7.5rem;
+		margin: 0;
+		overflow: hidden;
+	}
+	.deck-delete {
+		position: absolute;
+		bottom: -2.2rem;
+		right: -2.2rem;
+		width: 5.6rem;
+		height: 5.6rem;
+		padding: 0 1.6rem 1.6rem 0;
+		border-radius: 50%;
+		background-color: #304456;
+		color: #BFBFBF;
+		display: none;
+	}
+  .deck-name {
+    @include headerFullStyle();
+    margin:0;
+    padding:0;
+    position: relative;
+    font-size:1.6rem;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+  }
+  .deck-data {
+    display: inline-block;
+    position: relative;
+    font-size: 1.2rem;
+    line-height: 1.4rem;
+    color: #999;
+    strong {
+      font-weight:normal;
+      color:#fff;
+    }
+  }
+	.deck-invalid-icon {
+		display: none;
+		position: relative;
+		font-size: 1.4rem;
+		margin-right: 1.0rem;
+		color:#fff;
+	}
+	.deck-color-code {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 0.3rem;
+		padding: 0;
+		height: 100%;
+	}
+	.faction-portrait {
+		position: absolute;
+		width: 9rem;
+		height: 9rem;
+		top: -1.5rem;
+		left: -1.0rem;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: 50%;
+	}
+	&.invalid {
+		.deck-invalid-message, .deck-invalid-icon {
+			display: inline-block;
+		}
+	}
+  &:last-child {
+    margin-bottom: 0;
+  }
+	&:hover, &:active, &:active:focus {
+		background-color: lighten(#243341, 5%);
+		.deck-delete {
+			background-color: #3D5367;
+			&:hover, &:active, &:active:focus {
+				background-color: #4B657D;
+			}
+		}
+	}
+}
+
+.deck-card-ids {
+  width: 70%;
+  padding: 0.6rem 1.2rem;
+}

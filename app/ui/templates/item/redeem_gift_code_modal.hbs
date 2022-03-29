@@ -1,0 +1,42 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="header-dashed-text modal-title">{{localize 'gift_code_modal.redeem_gift_code_title'}}</h4>
+		</div>
+		<div class="modal-body">
+
+			<div class="prompt-form">
+				<div class="form-group">
+					<label>{{localize 'gift_code_modal.redeem_gift_code_title'}}</label>
+					<input type="text" class="form-control gift-code" required placeholder="{{localize 'gift_code_modal.gift_code_default'}}">
+				</div>
+				<div class="form-control-buttons">
+					<button class="btn btn-clean btn-clean-cancel btn-user-cancel">{{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+					<button class="btn btn-clean btn-clean-confirm prompt-submit">{{localize 'common.confirm_button_label'}}</button>
+				</div>
+			</div>
+
+			<div class="prompt-submitted">
+				<div class="activity-animation">
+					<div class="activity-animation-image"></div>
+				</div>
+				<h2 class="prompt-title">{{localize 'common.loading_dialog_one_moment_label'}}</h2>
+			</div>
+
+			<div class="prompt-success">
+				<div class="icon-container"><i class="fa fa-check"></i></div>
+				<h2 class="prompt-title">{{localize 'common.success_title'}}</h2>
+				<p class="prompt-message">{{localize 'gift_code_modal.redeem_success_message'}}</p>
+			</div>
+
+			<div class="prompt-error">
+				<div class="icon-container"><i class="fa fa-times"></i></div>
+				<h2 class="prompt-title">{{localize 'common.error_occurred_title'}}</h2>
+				<p class="prompt-message error-message"></p>
+			</div>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

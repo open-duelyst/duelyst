@@ -1,0 +1,749 @@
+/* ---------- COLLECTION ---------- */
+
+#app-collection {
+	@include overlayPanel();
+	background: rgba(0,0,90,0.3);
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	box-shadow: none;
+	text-align: left;
+	pointer-events: auto;
+	display: flex;
+	flex-flow: row nowrap;
+
+	.btn-cancel-primary {
+		position: absolute;
+		top: 0;
+		left: 0;
+		padding: 0;
+		margin: 0;
+		width: 9.0rem;
+		height: 9.0rem;
+		border-radius: 0;
+		background-size: contain;
+		background-position: top left;
+		&, &:hover, &:focus, &:active, &:active:focus {
+			@include backgroundImage("resources/ui/button_back_corner.png");
+		}
+		&:before {
+			top: -50%;
+			left: -50%;
+		}
+	}
+
+  .collection-content {
+		position: relative;
+		flex: 1;
+		height: 100%;
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: flex-start;
+		align-content: center;
+		align-items: center;
+  }
+
+  .collection-top {
+		width: 100%;
+  }
+  .collection-center {
+		position: relative;
+		width: 100%;
+		height: 84%;
+  }
+  .collection-bottom {
+    width: 100%;
+  }
+
+  // crafting start button
+  .crafting-mode-start {
+    &.highlight {
+      animation-name: pulsateBrightness;
+      animation-duration: 1.5s;
+      animation-iteration-count: infinite;
+    }
+  }
+
+  .collection-cards-region {
+		@include fillParent();
+    padding: 1.0rem;
+  }
+
+  .collection-sidebar-region {
+		position: relative;
+		width: 32.0rem;
+		height: 100%;
+		padding: 1.0rem;
+		display: flex;
+		flex-flow: column nowrap;
+		background: rgba(20, 20, 20, 0.9);
+		border-radius: 0 0.4rem 0.4rem 0;
+  }
+
+  .btn {
+    &.collection-cancel {
+      background-color:darkred;
+    }
+  }
+
+  .popover {
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    .arrow {
+      &:after {
+        border-left-color: rgba(24, 31, 34, 0.8);
+        z-index: 1;
+      }
+    }
+    .popover-content {
+      padding: 0;
+    }
+    .card {
+      margin: 0;
+      margin-left: 2.8rem;
+      overflow: visible;
+      .name {
+        color: #fff;
+      }
+      .inventory-count, .deck-count {
+        display: none;
+      }
+      .sidebar {
+        width: 18.0rem;
+        top: 1.5rem;
+        right: 100%;
+        left: auto;
+        z-index: -1;
+      }
+      .keyword-descriptions {
+        display: block;
+        background: rgba(20,20,20,0.95);
+        box-shadow: 0 0 1.0rem rgba(0, 0, 0, 0.5);
+      }
+    }
+  }
+
+	// when you have duplicates this popover appears for a moment
+	.disenchant-duplicates-popover {
+		margin-right:-1.0rem;
+		background-color: #46637f;
+		border: none;
+		.arrow {
+			background: transparent;
+			border-right-color: transparent;
+			&:after {
+				background: transparent;
+				border-right-color: #46637f;
+			}
+		}
+		.popover-content {
+			padding:0.5rem 1.0rem !important;
+		}
+	}
+
+  .collection-controls-main {
+		padding: 1.0rem;
+    display: flex;
+    flex-flow: row nowrap;
+		justify-content: center;
+    align-items: center;
+
+    .input-group {
+      margin-bottom: 0;
+    }
+    .btn-group, .input-group {
+      margin-left: 1.0rem;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+	.collection-faction-tabs {
+			margin-left: 3.0rem;
+			.btn {
+					position: relative;
+					outline: none;
+					font-size: 1.2rem;
+					font-weight: bold;
+					text-transform: uppercase;
+					color: $off-white;
+					background: none;
+					border: 0;
+					border: none;
+					line-height: 2.0rem;
+					border-radius: 2.6rem;
+					margin-right: 1.5rem;
+					padding: 1.0rem 0.5rem 0.5rem 0.5rem;
+					overflow: visible;
+					&:hover {
+							color: #fff;
+							z-index: 1;
+					}
+					&.active {
+							color: #fff;
+							background: rgba(0,0,0,0.75);
+							text-shadow: 0 0 1.0rem $light-blue, 0 0 2.0rem $light-blue;
+							z-index: 2;
+					}
+					&.disabled {
+							color: #999;
+					}
+				.badges {
+					position: absolute;
+					right: -20%;
+					top: -0.5rem;
+					z-index: 1;
+					display: flex;
+					flex-flow: row nowrap;
+
+					.badge {
+						display: none;
+						position: relative;
+						color: #ffffff;
+						background-color: $light-red;
+						box-shadow: 0 0 1.0rem rgba(0,0,0,0.5);
+						font-weight: normal;
+						min-width: 2.0rem;
+						height: 2.0rem;
+						text-align: center;
+						font-size: 1.2rem;
+						line-height: 2.0rem;
+						border-radius: 1.0rem;
+						padding: 0 0.5rem;
+						margin: 0.25rem;
+						text-shadow: none;
+						&:after {
+							content: " ";
+							position: absolute;
+							width: 1.0rem;
+							height: 1.0rem;
+							bottom: 0.05rem;
+							left: 0.05rem;
+							z-index: -1;
+						}
+						&.active {
+							display: inline-block;
+						}
+					}
+					.badge-unread-cards {
+						z-index: 1;
+					}
+					.badge-unread-lore {
+						z-index: -1;
+					}
+					.badge-unread-cards.active + .badge-unread-lore.active {
+						color: $light-off-white;
+						background-color: darken($light-red, 0.1);
+						margin-left: -1.0rem;
+					}
+				}
+			}
+	}
+		.search {
+			position: relative;
+			width: 20.0rem;
+			height: 3.4rem;
+			margin-right: 0.0rem;
+			margin-left: 1.0rem;
+			.form-control,
+			.input-group-addon {
+				height: 3.4rem;
+				background-color: rgba(0, 0, 0, 0.75);
+				border-color: transparent;
+			}
+			.form-control {
+				width: 10.0rem;
+				border-radius: 2.4rem;
+				border-bottom-right-radius: 0;
+				border-top-right-radius: 0;
+				padding-right: 0.5rem;
+				// transition: width 0.2s;
+				&:focus {
+					// width: 20.0rem;
+					outline: 0;
+					box-shadow: none;
+				}
+			}
+			.input-group-addon {
+				border-radius: 2.4rem;
+				border-bottom-left-radius: 0;
+				border-top-left-radius: 0;
+				display: flex;
+				flex-flow: column nowrap;
+				align-items: center;
+				align-content: center;
+				justify-content: center;
+			}
+			.search-submit {
+				@extend .mouse-select;
+				display: none;
+				pointer-events: auto;
+				z-index: 9999;
+				&.active {
+					display: flex;
+				}
+			}
+			.search-clear {
+				@extend .mouse-select;
+				display: none;
+				pointer-events: auto;
+				z-index: 9999;
+				&.active {
+					display: flex;
+				}
+			}
+		}
+  }
+
+  .collection-controls-alt {
+		position: relative;
+    padding: 0 1.0rem;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    .browsing-mode, .crafting-mode {
+
+    }
+
+		.next-page, .previous-page {
+			@extend .mouse-select;
+			position: absolute;
+			width: 8.7rem;
+			height: 8.7rem;
+			top: -2.2rem;
+			display: flex;
+			flex-flow: column nowrap;
+			justify-content: center;
+			align-content: center;
+			align-items: center;
+			padding: 0;
+			pointer-events: none;
+			z-index: 1;
+			.btn {
+				width: 100%;
+				height: 100%;
+				padding: 0;
+				transition: transform 0.25s 0.15s;
+				background-position: 50%;
+				background-size: contain;
+				background-repeat: no-repeat;
+				@include backgroundImage("resources/ui/sliding_panel/sliding_panel_paging_button.png");
+				&:after {
+					position: absolute;
+					content: "";
+					width: 40%;
+					height: 40%;
+					top: 30%;
+					left: 30%;
+					background-size: contain;
+					background-position: 50%;
+					background-repeat: no-repeat;
+					@include backgroundImage("resources/ui/sliding_panel/sliding_panel_paging_button_text.png");
+				}
+			}
+		}
+		.previous-page {
+			left: 10%;
+		}
+		.next-page {
+			right: 10%;
+			.btn {
+				&:after {
+					transform: scaleX(-1.0);
+				}
+			}
+		}
+  }
+
+	.collection-settings {
+		position: relative;
+		z-index: 9999;
+
+		.dropdown-toggle {
+			width: 3.4rem;
+			height: 3.4rem;
+			border-radius: 1.0rem;
+			background: rgba(0,0,0,0.75);
+			padding: 0;
+			margin: 0;
+			font-size: 1.6rem;
+			line-height: 3.0rem;
+			color: #cccccc;
+		}
+		.dropdown-menu {
+			min-width: 30.0rem;
+			margin-top: 1.2rem;
+			background: #000;
+			box-shadow: 0 0 20px rgba(0,0,0,1);
+			border: none;
+			padding: 1rem;
+
+			&:before {
+				content: " ";
+				position: absolute;
+				background: transparent;
+				bottom: 100%;
+				right: 0.85rem;
+				width: 0;
+				height: 0;
+				border-left: 0.8rem solid transparent;
+				border-right: 0.8rem solid transparent;
+				border-bottom: 0.8rem solid #000;
+			}
+
+			li {
+				position: relative;
+				font-size:1.5rem;
+				text-transform:uppercase;
+				color: $off-white;
+				padding: 0.5rem 1.0rem;
+				margin: 0;
+				display: flex;
+				flex-flow: row nowrap;
+				justify-content: flex-start;
+				align-items: center;
+				align-content: center;
+
+				.fa {
+					margin-right: 0.8rem;
+				}
+
+				&:hover, &:active, &:active:focus {
+					background: rgba(0,0,0,0.25);
+					color: #ffffff;
+				}
+
+				&.dismiss-new {
+					.fa-exclamation-circle {
+						display: inline-block;
+					}
+					.fa-ban {
+						display: none;
+					}
+					&.disabled {
+						.fa-ban {
+							display: inline-block;
+						}
+						.fa-exclamation-circle {
+							display: none;
+						}
+					}
+				}
+
+				&.toggle {
+					.fa-ban {
+						display: inline-block;
+						color: $light-red;
+					}
+					.fa-check {
+						display: none;
+						color: $light-green;
+					}
+
+					&.active {
+						.fa-ban {
+							display: none;
+						}
+						.fa-check {
+							display: inline-block;
+						}
+					}
+				}
+
+				&.toggle-card-set {
+					border-radius: 20rem;
+					&.active {
+						background-color: darken($off-white,50%);
+					}
+					img {
+						width:3rem;
+						margin-left:-0.9rem;
+					}
+				}
+
+				&.divider {
+					display: block;
+					width: 100%;
+					height: 0.1rem;
+					padding: 0;
+					margin: 1rem 0;
+					background-color: transparent;
+					background-image: linear-gradient(left, transparent, rgba(255, 255, 255, 0.25) 20%, rgba(255, 255, 255, 0.25) 80%, transparent);
+					pointer-events: none;
+				}
+			}
+		}
+
+		&.open, &:hover, &:focus, &:active, &:active:focus {
+			.dropdown-toggle {
+				color: #ffffff;
+			}
+		}
+	}
+
+  .decks-collection {
+    height: 100%;
+    flex: 1;
+    display: flex;
+    flex-flow: column nowrap;
+    .deck-preview {
+			.deck-type {
+				display: none;
+			}
+			.deck-delete {
+				display: block;
+			}
+    }
+  }
+
+  .decks {
+    margin-bottom: 1.0rem;
+    overflow: auto;
+		flex: 1;
+  }
+}
+
+/* ---------- CARDS COLLECTION ---------- */
+
+#app-cards-collection {
+	height: 100%;
+  flex: 1;
+  display: flex;
+  flex-flow: column nowrap;
+  .cards-collection-list {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1;
+    margin-bottom: 1.0rem;
+	position: relative;
+	.loading-indicator {
+		content:' ';
+		transition: 0.2s all;
+		animation: rotateGlow 2s linear;
+		animation-iteration-count: infinite;
+		position: absolute;
+		opacity: 1.0;
+		z-index: 1;
+		width:10.0rem;
+		height:10.0rem;
+		top:50%;
+		left:50%;
+		margin-left:-5.0rem;
+		margin-top:-5.0rem;
+		@include backgroundImage("resources/tutorial/lesson_ring_glow_part.png");
+		background-size: cover;
+		background-position: center;
+	}
+  }
+}
+
+/* ---------- SELECTED CARD ---------- */
+
+$selectedCardAnimateDelay: 0.0s;
+$selectedCardAnimateDuration: 0.5s;
+$selectedInfoAnimateDelay: $selectedCardAnimateDelay + 0.2s;
+$selectedInfoAnimateDuration: 0.2s;
+$selectedLoreAnimateDelay: $selectedInfoAnimateDelay + 0.2s;
+$selectedLoreAnimateDuration: 0.2s;
+
+$selectedCardBackgroundColor: black;
+$selectedCardTextColor: white;
+$selectedCardTextColorAlt: #b5b5b5;
+
+.collection-selected-card-region {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	pointer-events: none;
+}
+
+#app-selected-card {
+	position:absolute;
+	width:100%;
+	height:100%;
+	background:rgba(30,30,30,0.65);
+	pointer-events: auto;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: flex-start;
+	align-content: center;
+	justify-content: center;
+	padding: 7.0rem 10.0rem 10.0rem 10.0rem;
+	.card-region {
+		position: relative;
+		padding: 0;
+		.card {
+			margin: 0.5rem 0;
+			animation-name: flashBrightness;
+			animation-duration: $selectedCardAnimateDuration;
+			animation-delay: $selectedCardAnimateDelay;
+			animation-iteration-count: 1;
+			.glow {
+				background-image: url("resources/card_backgrounds/card_shadow_map.png");
+				width: 29rem;
+				height: 37rem;
+				top: -4.0rem;
+				left: -3.25rem;
+				z-index: -1;
+				opacity: 1.0;
+				transition: opacity $selectedCardAnimateDuration;
+			}
+			.sidebar,
+			.is-unread-block {
+				display: none;
+			}
+		}
+	}
+
+	.shine {
+		width: 100%;
+		min-height: 0.1rem;
+		height: 0.1rem;
+		background: transparentize($selectedCardTextColor, 0.5);
+		margin: 2.0rem 0;
+	}
+
+	.card-information {
+		position: relative;
+		background: $selectedCardBackgroundColor;
+		width: 40.0rem;
+		height: calc(100% - 0.5rem);
+		padding: 2.0rem;
+		margin: 0.5rem 0 0 4.0rem;
+		display: flex;
+		flex-flow: column nowrap;
+		pointer-events: auto;
+		border-radius: 2.0rem;
+		box-shadow: 0 0 3.0rem 1.0rem rgba(0,0,0,1.0);
+
+		opacity: 0;
+		animation-name: slideInFromBottom;
+		animation-duration: $selectedInfoAnimateDuration;
+		animation-delay: $selectedInfoAnimateDelay;
+		animation-fill-mode: forwards;
+
+		.card-name {
+			@include headerFont();
+			max-width: 90%;
+			font-weight: bold;
+			font-size: 3.0rem;
+			line-height: 3.4rem;
+			text-align: left;
+			text-transform: uppercase;
+			color: $selectedCardTextColor;
+		}
+		.card-attribute {
+			margin-top: 5px;
+			> * {
+				display:inline;
+				color: $selectedCardTextColorAlt;
+				font-size: 1.6rem;
+				line-height: 2.0rem;
+			}
+			p {
+				font-weight: bold;
+			}
+		}
+		.card-rarity {
+			p {
+				text-transform:uppercase;
+			}
+		}
+		.card-count {
+		}
+		.card-type {
+			.card-type-description {
+				display: block;
+				font-weight: normal;
+				font-size: 1.4rem;
+				line-height: 1.8rem;
+			}
+		}
+		.horizontal-separator {
+			margin-top: 2.0rem;
+			background: transparentize($selectedCardTextColor, 0.5);
+		}
+		.keyword-description {
+			margin-top: 1.0rem;
+			.keyword-name {
+				font-weight: bold;
+				text-transform: uppercase;
+				line-height: 1.8rem;
+				color: $selectedCardTextColor;
+			}
+			.keyword-definition {
+				font-size: 1.6rem;
+				color: $selectedCardTextColorAlt;
+				margin-top: 0;
+			}
+		}
+	}
+
+	.card-lore {
+		@include scrollbars(rgba(255,255,255, 1));
+		position: relative;
+		background: $selectedCardBackgroundColor;
+		width: 40.0rem;
+		height: calc(100% - 0.5rem);
+		padding: 2.0rem;
+		margin: 0.5rem 0 0 4.0rem;
+		display: flex;
+		flex-flow: column nowrap;
+		pointer-events: auto;
+		border-radius: 2.0rem;
+		box-shadow: 0 0 3.0rem 1.0rem rgba(0,0,0,1.0);
+
+		opacity: 0;
+		animation-name: slideInFromBottom;
+		animation-duration: $selectedLoreAnimateDuration;
+		animation-delay: $selectedLoreAnimateDelay;
+		animation-fill-mode: forwards;
+
+		.card-lore-name {
+			@include headerFont();
+			max-width: 90%;
+			font-weight: bold;
+			font-size: 3.0rem;
+			line-height: 3.4rem;
+			text-align: left;
+			text-transform: uppercase;
+			color: $selectedCardTextColor;
+		}
+		.card-lore-description {
+			@include headerFont();
+			font-weight: normal;
+			font-size: 1.8rem;
+			line-height: 2.2rem;
+			text-align: left;
+			color: $selectedCardTextColorAlt;
+		}
+		.card-lore-text {
+			@include bodyFont();
+			font-size: 1.5rem;
+			line-height: 2.2rem;
+			text-align: left;
+			color: $selectedCardTextColor;
+			overflow-wrap: break-word;
+			flex: 1;
+		}
+
+		.shine-above {
+			margin-bottom: 0.5rem;
+		}
+		.shine-below {
+			margin-bottom: 0;
+			margin-top: 0.5rem;
+		}
+	}
+}

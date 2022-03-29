@@ -1,0 +1,129 @@
+.tutorial-support {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.dialog-background {
+		background:rgba(0,0,0,0);
+		pointer-events: auto;
+	}
+
+	.dialog-content {
+		display: block;
+		width: 27.0rem;
+		height: 37.6rem;
+		background:rgba(21,28,55,1.0);
+
+		.dialog-header {
+			top: -4.5rem;
+
+			div.image {
+				margin: 0 auto;
+				margin-bottom:1em;
+				width: 12.8rem;
+				height: 12.8rem;
+				position: relative;
+
+				img {
+					position: relative;
+					width: 10.0rem;
+					border-radius: 50%;
+					z-index: 2;
+					border:solid 0.1rem #000;
+					box-shadow: inset 0 0.2rem 0.2rem #fff;
+					margin:1.4rem;
+				}
+				&:before {
+					content:' ';
+					position: absolute;
+					z-index: 1;
+					left:0;
+					top:0;
+					width: 12.8rem;
+					height: 12.8rem;
+					@include backgroundImage("resources/tutorial/lesson_ring.png");
+					background-size: 12.8rem 12.8rem;
+					background-position: center;
+				}
+				&:after {
+					content:' ';
+					position: absolute;
+					z-index: 3;
+					left:1.4rem;
+					top:1.4rem;
+					border:solid 0.1rem #000;
+					border-radius: 12.8rem;
+					width: 10.0rem;
+					height: 10.0rem;
+					box-shadow: inset 0 0.2rem 0.2rem #fff;
+
+				}
+			}
+		}
+
+		.dialog-body {
+			height: 66%;
+			top: -4.5rem;
+			.challenge-name {
+				text-shadow: 0 0 1.0rem rgba(0,255,255,0.9);
+				text-transform: uppercase;
+				color: #ffffff;
+				font-weight: bold;
+				font-size: 1.6rem;
+				line-height: 2.0rem;
+			}
+			.challenge-difficulty {
+				color: rgba(127, 156, 190, 1.0);
+				font-size: 1.2rem;
+				line-height: normal;
+			}
+			.challenge-description {
+				font-size: 1.3rem;
+				line-height: 2.0rem;
+				color: #ffffff;
+				margin-top: 1.5rem;
+				margin-bottom: 2.0rem;
+				margin-left: 4.0rem;
+				margin-right: 4.0rem;
+			}
+			.challenge-reward {
+				width: 8.0rem;
+				margin: 0 auto;
+				text-align:center;
+				.challenge-reward-name {
+					margin: 0.5rem 0 -0.5rem 0;
+					color: #7f9cbe;
+					font-size: 1.2rem;
+					line-height: 1.4rem;
+				}
+				.icon-gold {
+					width:6.0rem;
+					height:6.0rem;
+					margin: 0 0.5rem 0.5rem 1.0rem;
+				}
+			}
+			.btn {
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				transform: translate(-50%, 0);
+				min-width: 16.0rem;
+				font-size: 1.6rem;
+				line-height: 2.0rem;
+			}
+		}
+
+		.dialog-footer {
+			content: ' ';
+			position: absolute;
+			width: 101%;
+			height: 5.8rem;
+			bottom: -3.8rem;
+			left: -0.5%;
+			@include backgroundImage("resources/ui/sliding_panel/panel_trim_plate.png");
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100% auto;
+		}
+	}
+}

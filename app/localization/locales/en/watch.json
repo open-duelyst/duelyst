@@ -1,0 +1,10 @@
+{
+	"live_streams_label": "Live Streams",
+	"replays_label": "Replays",
+	"empty_division_replays_message": "No games to watch in this division yet. Check back soon!",
+
+	"watch_on_twitch_message": "Watch on Twitch",
+	"stream_live_message": "LIVE",
+	"stream_offline_message": "OFFLINE",
+	"opens_in_browser_tooltip": "Opens in Browser"
+}

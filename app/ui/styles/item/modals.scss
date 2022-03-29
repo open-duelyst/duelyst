@@ -1,0 +1,416 @@
+/* ---------- MODAL REGION ----------- */
+
+#app-modal-region {
+	@include fillParent();
+	// z-index: 1;
+}
+
+/* ---------- MODAL ----------- */
+
+.modal {
+	pointer-events: auto;
+	z-index: 0;
+}
+
+.prompt-modal {
+	$prompt-form-width: 35.0rem;
+	$prompt-form-min-height: 22.5rem;
+	@include fillParent();
+
+	padding: 3.0rem;
+	background: rgba(0,0,0,0.6);
+
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+	align-content: center;
+
+	overflow: hidden;
+	overflow-y: auto;
+
+	animation:reverseZoomIn 0.5s;
+
+	.modal-title {
+		position: relative;
+		font-size: 2.4rem;
+	}
+
+	.modal-dialog {
+		width: 60.0rem;
+		margin: auto;
+		.btn-cancel-primary {
+			position: absolute;
+			top: -0.4rem;
+			right: -8.0rem;
+		}
+		.modal-content {
+			background:rgba(23,33,42,0.9);
+			border:solid 0.2rem #000;
+			> * {
+				padding:2.0rem 3.0rem;
+			}
+			.modal-header {
+				padding-bottom:1.0rem;
+				border-bottom:none;
+				text-align:center;
+				button.close {
+					font-size:2.6rem;
+					color:#fff;
+					text-shadow:#00b9fd 0 0 1.0rem,#00b9fd 0 0 2.0rem;
+					overflow:visible;
+					opacity:1.0;
+				}
+			}
+			.modal-body {
+				border-bottom:none;
+				color:#fff;
+				min-height: 30.0rem;
+				display: flex;
+				flex-flow: column nowrap;
+				justify-content: center;
+				align-items: center;
+				.modal-title {
+					text-align: center;
+				}
+				.modal-message {
+					text-align: center;
+					color: #ccc;
+					font-size: 1.6rem;
+					padding: 0;
+				}
+			}
+			.modal-footer {
+				text-align:center;
+				border-top:none;
+			}
+		}
+	}
+
+	.prompt-form {
+		position: relative;
+		width: $prompt-form-width;
+		min-height: $prompt-form-min-height;
+		margin: 0 auto;
+		opacity: 0.0;
+		display: none;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+		.form-group {
+			position: relative;
+			&.has-error {
+				.form-control {
+					border-color: #c10000;
+					background: rgba(127,0,0,0.5);
+				}
+				.tooltip {
+					.tooltip-inner {
+						color: #FFF;
+						text-shadow: none;
+						background-color: rgba(255,0,60,1);
+						border: none;
+					}
+					&.left {
+						.tooltip-arrow {
+							border-left-color: rgba(255,0,60,1);
+						}
+					}
+					&.right {
+						.tooltip-arrow {
+							border-right-color: rgba(255,0,60,1);
+						}
+					}
+				}
+			}
+		}
+		.form-control {
+			width: $prompt-form-width;
+		}
+		.form-control-buttons {
+			display: flex;
+			flex-flow: row nowrap;
+			justify-content: center;
+		}
+		&.active {
+			display:flex;
+			animation: slideInFromBottom 0.2s ease-out forwards;
+		}
+	}
+
+	.prompt-submitted, .prompt-success, .prompt-error, .prompt-alert {
+		position: relative;
+		display:none;
+		flex-flow:column nowrap;
+		justify-content: center;
+		align-content: center;
+		align-items:center;
+		text-align:center;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		margin: auto;
+		.icon-container {
+			display:flex;
+			flex-direction:column;
+			justify-content:space-around;
+			align-items:center;
+			text-align:center;
+			border:solid 0.1rem #96fb04;
+			border-radius:20.0rem;
+			width:10.0rem;
+			height:10.0rem;
+			opacity:0;
+			i {
+				font-size:6.0rem;
+				color: #96fb04;
+				opacity:0;
+			}
+		}
+		.prompt-title, .prompt-message {
+			opacity:0;
+		}
+		&.active {
+			display:flex;
+			.icon-container {
+				animation:scaleIn 0.5s forwards;
+				i {
+					animation:scaleIn 0.5s 0.2s forwards;
+				}
+			}
+			.prompt-title {
+				animation:scaleIn 0.5s 0.4s forwards;
+			}
+			.prompt-message {
+				animation:scaleIn 0.5s 0.5s forwards;
+			}
+		}
+	}
+
+	.prompt-submitted {
+		.prompt-title {
+			font-weight: 300;
+			opacity: 1.0;
+		}
+		&.active {
+			display: flex;
+			animation: slideInFromBottom 0.2s ease-out forwards;
+			.prompt-title {
+				animation: none;
+			}
+		}
+	}
+
+	.prompt-error {
+		.icon-container {
+			border-color: #d22846;
+			i {
+				color: #d22846;
+			}
+		}
+		.error-message {
+			opacity: 0;
+		}
+	}
+
+	.prompt-alert {
+		.icon-container {
+			border-color: #ffd802;
+			i {
+				color: #ffd802;
+			}
+		}
+	}
+}
+
+.duelyst-modal {
+    @include fillParent();
+    pointer-events: auto;
+    background-color: rgba(0,0,0,0.4);
+    @include backgroundImage("resources/ui/frame_modal.png");
+    background-repeat: no-repeat;
+    background-position: 50%;
+		background-size: 118.4rem;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    .modal-dialog {
+			width: 90.0rem;
+			height: 60.0rem;
+			margin: 0;
+			z-index:0;
+			.btn-cancel-primary {
+				position: absolute;
+				top: 0.4rem;
+				right: -10.9rem;
+			}
+	    .modal-content {
+	        background-color: rgba(0,0,0,0.0);
+	        border: none;
+	        box-shadow: none;
+	        height: 100%;
+	        display: flex;
+	        flex-flow: column nowrap;
+	        justify-content: space-between;
+	        align-content: center;
+	    }
+	    .modal-header {
+	        padding: 0;
+	        margin-bottom: 3.6rem;
+	        border: none;
+	        min-height: 0;
+	        text-align: center;
+	    }
+	    .modal-body {
+	        max-height: 48.0rem;
+	        padding: 0;
+	        overflow: visible;
+	        .form-control {
+	            width: 100%;
+	        }
+	    }
+	    .modal-footer {
+	        padding: 0;
+	        margin-top: 2.0rem;
+	        border: none;
+	        text-align: center;
+			button.btn-clean-secondary {
+				min-width: 16rem;
+				font-size: 1.7rem;
+			}
+	    }
+	    .modal-title {
+				position: relative;
+	    }
+	    .modal-subtitle {
+				color: #bbb;
+				font-size: 2.0rem;
+				line-height: 2.8rem;
+	    }
+	    .tooltip {
+	        .tooltip-inner {
+	            background: $tooltip-alt-color;
+	            color: #000;
+	        }
+	        &.top .tooltip-arrow {
+	            border-top-color: $tooltip-alt-color;
+	        }
+	        &.bottom {
+	            margin-top: 0.8rem;
+	            .tooltip-arrow {
+	                border-bottom-color: $tooltip-alt-color;
+	            }
+	        }
+	        &.left .tooltip-arrow {
+	            border-left-color: $tooltip-alt-color;
+	        }
+	        &.right .tooltip-arrow {
+	            border-right-color: $tooltip-alt-color;
+	        }
+	    }
+    }
+}
+
+.announcement {
+  .modal-body {
+    width:60.0rem;
+    max-height:80.0rem;
+    overflow:auto;
+    margin:0 auto;
+    text-align:left;
+	a {
+		color:$light-blue;
+		&:hover { color:#fff; }
+	}
+    p {
+      margin:1em 0;
+	  color:$off-white;
+	  strong { color:#fff; }
+    }
+    h1 {
+      font-size:1.5em;
+      margin:1em 0;
+    }
+    h2 {
+      font-size:1.25em;
+      margin:1em 0;
+    }
+    h3,h4,h5 {
+      font-weight:bold;
+    }
+    ul {
+      margin:1.5em 0;
+      list-style-type: none;
+      li {
+		  border-left: solid $light-red 0.3rem;
+		  padding: 0;
+		  padding-left: 1rem;
+          margin:1.2em 1em;
+      }
+    }
+    strong {
+      font-weight:bold;
+    }
+    em {
+      font-style:italic;
+    }
+  }
+}
+
+/* ---------- GAME INVITE ----------- */
+
+#app-game-invite {
+	.invite {
+		position: absolute;
+		width: 61.8rem;
+		height: 17.1rem;
+		top: 50%;
+		left: 50%;
+		margin-left: -30.9rem;
+		margin-top: -8.5rem;
+		padding: 3.0rem;
+		@include backgroundImage("resources/ui/notification_challenge.png");
+		background-repeat: no-repeat;
+		background-size: 100%;
+		background-position: 50%;
+		text-align: center;
+	}
+	.btn-group {
+		position: relative;
+		margin-top: 3.1rem;
+		width: 36.5rem;
+		.btn-clean-confirm {
+			position: absolute;
+			left: 0;
+		}
+		.btn-clean-cancel {
+			position: absolute;
+			right: 0;
+		}
+	}
+	.invite-message {
+		color: #ccc;
+		font-size: 1.6rem;
+		padding: 0;
+	}
+	.player-name {
+		@include headerFullStyle();
+		color: #fff;
+		font-size: 2.4rem;
+		text-shadow: 0 0 1.0rem rgba(255, 255, 255, 0.75);
+		margin: 0 auto;
+		max-width: 36.0rem;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+	}
+	.btn-clean-confirm {
+	}
+	.btn-clean-cancel {
+	}
+}

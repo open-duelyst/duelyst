@@ -1,0 +1,20 @@
+<div class="quest-content">
+	<div class="description">
+		<h2 class="title">{{localize 'daily_challenge_title'}}</h2>
+		{{#if is_rewardable}}
+			{{#if gold}}
+				<div class="gold-reward">{{gold}}</div>
+			{{/if}}
+			{{#if spirit_orbs}}
+				<div class="spirit-orbs-reward">{{spirit_orbs}}</div>
+			{{/if}}
+		{{else}}
+			<div class="fa fa-check complete-icon"></div>
+		{{/if}}
+		<div class="instructions">{{localize 'daily_challenge_instructions'}}</div>
+	</div>
+	<div class="progress">{{progress}} / 1</div>
+	<button class="btn btn-clean btn-clean-secondary play-challenge">
+		{{localize 'quests.daily_challenge_play_button_label'}}
+	</button>
+</div>

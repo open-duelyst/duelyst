@@ -1,0 +1,316 @@
+
+
+/* ---------- UTILITY ----------- */
+
+.well{
+  padding:1.0rem 1.5rem;
+}
+
+.mouse-blocking {
+  pointer-events: auto !important;
+}
+
+.mouse-ignoring {
+  pointer-events: none !important;
+}
+
+.pixelated {
+  &, & * {
+    image-rendering:optimize-speed;             /* Legal fallback */
+    image-rendering:-moz-crisp-edges;          /* Firefox        */
+    image-rendering:-o-crisp-edges;            /* Opera          */
+    image-rendering:-webkit-optimize-contrast; /* Safari         */
+    image-rendering:optimize-contrast;         /* CSS3 Proposed  */
+    image-rendering:crisp-edges;               /* CSS4 Proposed  */
+    image-rendering:pixelated;                 /* CSS4 Proposed  */
+    -ms-interpolation-mode:nearest-neighbor;   /* IE  */
+  }
+}
+
+.sprite {
+	@extend .pixelated;
+	position: absolute;
+	transform-style: preserve-3d;
+	backface-visibility: hidden;
+	width: 20.0rem;
+	height: 20.0rem;
+	max-width: none;
+	margin-left: -10.0rem;
+	margin-top: -10.0rem;
+	top: 50%;
+	left: 50%;
+	z-index: 1;
+}
+
+.clean-round {
+  border:solid 0.1rem $key-color;
+  border-radius:2.0rem;
+}
+
+.disabled {
+  opacity: 0.65;
+  &, * {
+    @extend .mouse-ignoring;
+  }
+}
+
+.bracketed-text {
+  position: relative;
+  margin: 0 auto;
+  text-align: center;
+  background-position: 50%;
+  background-repeat: no-repeat;
+
+  .bracketed-text-content {
+    display: inline-block;
+    position: relative;
+		font-size: 3.4rem;
+    line-height: 6.0rem;
+    z-index: 1;
+
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 91.8rem;
+    height: 20.0rem;
+    left: 50%;
+    top: 50%;
+    margin-left: -45.9rem;
+    margin-top: -10.0rem;
+    @include backgroundImage("resources/ui/highlight_blue.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: 50%;
+  }
+
+  &.friendly {
+  }
+
+  &.enemy {
+    &:after {
+      @include backgroundImage("resources/ui/highlight_red.png");
+    }
+
+    .bracketed-text-content {
+      &:before {
+        @include backgroundImage("resources/ui/bracket_enemy.png");
+      }
+      &:after {
+        @include backgroundImage("resources/ui/bracket_enemy.png");
+      }
+    }
+  }
+}
+
+.vertical-separator {
+	display: block;
+	height: 100%;
+	width: 0.1rem;
+	background-image: linear-gradient(bottom, transparent, rgba(0, 0, 0, 0.25) 20%, rgba(0, 0, 0, 0.25) 80%, transparent);
+}
+
+.horizontal-separator {
+	display: block;
+	width: 100%;
+	height: 0.1rem;
+	background-image: linear-gradient(left, transparent, rgba(0, 0, 0, 0.25) 20%, rgba(0, 0, 0, 0.25) 80%, transparent);
+}
+
+.menu-separator {
+	@extend .horizontal-separator;
+  position: absolute;
+  margin-bottom: 2.0rem;
+}
+
+.menu-separator-text {
+  position: relative;
+  display: block;
+  margin-bottom: 2.0rem;
+  text-align: center;
+  color: #000;
+  font-style: italic;
+
+  &:before, &:after {
+    content: " ";
+    position: absolute;
+    width: 7.5rem;
+    height: 0.1rem;
+    margin-top: 0.7em;
+  }
+
+  &:before{
+		right: 140%;
+    background-image: linear-gradient(left, rgba(0,0,0,0), rgba(0,0,0,0.5));
+  }
+  &:after {
+		left: 140%;
+    background-image: linear-gradient(left, rgba(0,0,0,0.5), rgba(0,0,0,0));
+  }
+}
+
+.floating-separator-text {
+  @extend .menu-separator-text;
+  position: absolute;
+
+  &:before, &:after {
+    width: 3.5rem;
+  }
+
+  &:before{
+    left: auto;
+    right: 100%;
+    margin-right: 0.5rem;
+  }
+  &:after {
+    left: 100%;
+    right: auto;
+    margin-left: 0.5rem;
+  }
+}
+
+.transition-fly {
+  position: absolute;
+  opacity: 0.0;
+  transition: opacity 0.3s ease-in, transform 0.5s ease-out;
+  &.active {
+    z-index: 1;
+    opacity: 1.0;
+    transition: opacity 0.3s ease-in 0.2s, transform 0.5s ease-out;
+  }
+}
+
+.transition-fly-down {
+  @extend .transition-fly;
+  transform: translateY(-50%);
+  &.active {
+    transform: translateY(0);
+  }
+}
+
+hr.shine {
+  padding:0; margin:0;
+  height:0.1rem;
+  border:none;
+  @include shineLineBackground();
+  opacity: 0.5;
+}
+
+.header-dashed-text {
+	@include headerFullStyle();
+	display: inline-block;
+	position: relative;
+	letter-spacing: 0;
+	word-spacing: 0.5rem;
+	font-size: 3.4rem;
+	line-height: 3.4rem;
+	font-weight: 300;
+	color: #fff;
+	text-shadow: 0 0 1.0rem fade-out($blue-glow-color, 0.25);
+	&:before {
+		content: " ";
+		position: absolute;
+		right: 100%;
+		top: -1.2rem;
+		width: 6.4rem;
+		height: 6.4rem;
+		@include backgroundImage("resources/ui/icon_header_dashes.png");
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: 50%;
+	}
+}
+
+.header-dashed-text-small {
+	@extend .header-dashed-text;
+	font-size: 2.4rem;
+	line-height: 2.4rem;
+	&:before {
+		top: -0.9rem;
+		width: 4.8rem;
+		height: 4.8rem;
+	}
+}
+
+.activity-animation {
+	position: relative;
+	width: 10.0rem;
+	height: 10.0rem;
+	overflow: hidden;
+
+	.activity-animation-image {
+		width: 10.0rem;
+		height: 80.0rem;
+		@include backgroundImage("resources/ui/activity_animation.png");
+		background-repeat: no-repeat;
+		background-size: 10.0rem 80.0rem;
+		animation: activity-animation 0.6s steps(7) infinite;
+	}
+
+	@keyframes activity-animation {
+		0% { transform: translateY(0); }
+		100% { transform: translateY(-70.0rem); }
+	}
+}
+
+.audio {
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	.audio-play, .audio-pause, .audio-stop, .audio-volume, .audio-seek {
+		padding: 1.0rem;
+	}
+	.audio-play, .audio-pause, .audio-stop {
+		width: 4.0rem;
+	}
+	.audio-controls, .audio-volume, .audio-seek {
+		display: flex;
+		flex-flow: row nowrap;
+		justify-content: center;
+		align-items: center;
+		align-content: center;
+	}
+	.audio-volume {
+		.fa {
+			margin-right: 1.0rem;
+			position: relative;
+			top: 0.1rem;
+		}
+		.audio-volume-range {
+			width: 5.0rem;
+		}
+	}
+	.audio-play {
+		display: block;
+	}
+	.audio-pause {
+		display: none;
+	}
+	&:not(.paused):not(.playing) {
+		.audio-stop {
+			@extend .disabled;
+		}
+	}
+	&.playing {
+		.audio-play {
+			display: none;
+		}
+		.audio-pause {
+			display: block;
+		}
+	}
+}
+
+.color-code-none { background-color: transparent; }
+.color-code-blank { background-color: #ffffff; }
+.color-code-blue { background-color: $blue; }
+.color-code-cyan { background-color: $cyan; }
+.color-code-green { background-color: $green; }
+.color-code-magenta { background-color: $light-pink; }
+.color-code-purple { background-color: $light-purple; }
+.color-code-red { background-color: $red; }
+.color-code-orange { background-color: $orange; }
+.color-code-yellow { background-color: $yellow; }

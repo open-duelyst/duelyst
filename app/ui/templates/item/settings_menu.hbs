@@ -1,0 +1,190 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="header-dashed-text modal-title">{{localize 'main_menu.menu_item_settings'}}</h4>
+		</div>
+		<div class="modal-body settings">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6 col-md-offset-1">
+						<div class="settings-category">
+							<h1 class="modal-title"><i class="fa fa-image"></i> {{localize 'settings.category_visual_label'}}</h1>
+							<div class="setting setting-single-line">
+								<label for="resolution">Viewport</label>
+								{{#if _resolutionsThatFit}}
+									<select id="resolution">
+										{{#if _resolutionsThatDontFit}}
+											<optgroup label="Supported by your window size">
+												{{#_resolutionsThatFit}}
+													<option value="{{value}}" {{#if selected}} selected {{/if}}>{{localize description}}</option>
+												{{/_resolutionsThatFit}}
+											</optgroup>
+											<optgroup label="Bigger than your window size">
+												{{#_resolutionsThatDontFit}}
+													<option value="{{value}}" {{#if selected}} selected {{/if}}>{{localize description}}</option>
+												{{/_resolutionsThatDontFit}}
+											</optgroup>
+										{{else}}
+											{{#_resolutionsThatFit}}
+												<option value="{{value}}" {{#if selected}} selected {{/if}}>{{localize description}}</option>
+											{{/_resolutionsThatFit}}
+										{{/if}}
+									</select>
+								{{else}}
+									<small class="disabled">{{localize 'settings.viewport_not_supported'}}</small>
+								{{/if}}
+							</div>
+							<div class="setting setting-single-line">
+								<label for="language">Language</label>
+									<select id="language">
+                      <option value="en" {{#if selected}} selected {{/if}}>English</option>
+                      <option value="de" {{#if selected}} selected {{/if}}>Deutsch (Beta)</option>
+									</select>
+							</div>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="left" title="{{localize 'settings.hiDPI_tooltip'}}">
+								<label for="checkbox-hi-dpi-enabled">{{localize 'settings.hiDPI_name'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-hi-dpi-enabled" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<label for="lighting-quality">{{localize 'settings.lighting_quality'}}</label>
+								<div id="lighting-quality" class="btn-group" role="group">
+									<button type="button" id="lighting-quality-low" class="btn btn-primary">{{localize 'settings.settings_button_low'}}</button>
+									<button type="button" id="lighting-quality-medium" class="btn btn-primary">{{localize 'settings.settings_button_medium'}}</button>
+									<button type="button" id="lighting-quality-high" class="btn btn-primary">{{localize 'settings.settings_button_high'}}</button>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<label for="shadow-quality">{{localize 'settings.shadow_quality'}}</label>
+								<div id="shadow-quality" class="btn-group" role="group">
+									<button type="button" id="shadow-quality-low" class="btn btn-primary">{{localize 'settings.settings_button_low'}}</button>
+									<button type="button" id="shadow-quality-medium" class="btn btn-primary">{{localize 'settings.settings_button_medium'}}</button>
+									<button type="button" id="shadow-quality-high" class="btn btn-primary">{{localize 'settings.settings_button_high'}}</button>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<label for="board-quality">{{localize 'settings.board_quality'}}</label>
+								<div id="board-quality" class="btn-group" role="group">
+									<button type="button" id="board-quality-low" class="btn btn-primary">{{localize 'settings.settings_button_low'}}</button>
+									<button type="button" id="board-quality-high" class="btn btn-primary">{{localize 'settings.settings_button_high'}}</button>
+								</div>
+							</div>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="left" title="{{localize 'settings.bloom_tooltip'}}">
+								<label for=bloom class="setting-label range">{{localize 'settings.bloom_label'}}</label>
+								<input type=range id=bloom class="range" min=0.0 max=1.0 step=0.1 />
+							</div>
+						</div>
+						<div class="settings-category">
+							<h1 class="modal-title"><i class="fa fa-volume-up"></i> {{localize 'settings.category_audio_label'}}</h1>
+							<div class="setting setting-single-line">
+								<label for=master-volume class="setting-label range">{{localize 'settings.master_volume_label'}}</label>
+								<input type=range id=master-volume class="range" min=0 max=1 step=0.01 />
+							</div>
+							<div class="setting setting-single-line">
+								<label for=music-volume class="setting-label range">{{localize 'settings.music_volume_label'}}</label>
+								<input type=range id=music-volume class="range" min=0 max=1 step=0.01 />
+							</div>
+							<div class="setting setting-single-line">
+								<label for=voice-volume class="setting-label range">{{localize 'settings.voice_volume_label'}}</label>
+								<input type=range id=voice-volume class="range" min=0 max=1 step=0.01 />
+							</div>
+							<div class="setting setting-single-line">
+								<label for=effects-volume class="setting-labeli range">{{localize 'settings.effects_volume_label'}}</label>
+								<input type=range id=effects-volume class="range" min=0 max=1 step=0.01 />
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="settings-category">
+							<h1 class="modal-title"><i class="fa fa-gamepad"></i> {{localize 'settings.category_game_label'}}</h1>
+							<div class="setting setting-single-line">
+								<label for="checkbox-always-show-stats">{{localize 'settings.always_show_stats'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-always-show-stats" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<label for="checkbox-show-in-game-tips">{{localize 'settings.show_tips_during_gameplay'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-show-in-game-tips" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<label for="checkbox-show-battlelog">{{localize 'settings.battle_log'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-show-battlelog" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="right" title="{{localize 'settings.player_details_tooltip'}}">
+								<label for="checkbox-player-details">{{localize 'settings.player_details'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-player-details" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="right" title="{{localize 'settings.sticky_targeting_tooltip'}}">
+								<label for="checkbox-sticky-targeting">{{localize 'settings.sticky_targeting'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-sticky-targeting" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line" id="razer-chroma-setting">
+								<label for="checkbox-razer-chroma">{{localize 'settings.razer_chroma'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-razer-chroma-enabled" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+						</div>
+						<div class="settings-category">
+							<h1 class="modal-title"><i class="fa fa-user"></i> {{localize 'settings.category_account_label'}}</h1>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="right" title="{{localize 'settings.do_not_disturb_tooltip'}}">
+								<label for="checkbox-do-not-disturb">{{localize 'settings.do_not_disturb'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-do-not-disturb" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="right" title="{{localize 'settings.block_spectators_tooltip'}}">
+								<label for="checkbox-do-not-disturb">{{localize 'settings.block_spectators'}}</label>
+								<div class="switch">
+									<input type="checkbox" id="checkbox-block-spectators" value="">
+									<label><i></i></label>
+								</div>
+							</div>
+							<div class="setting setting-single-line">
+								<button class="btn-clean relink-accounts">{{localize 'settings.relink_accounts'}}</button>
+							</div>
+							<div class="setting setting-single-line">
+								<button class="btn-clean kongregate-convert">{{localize 'settings.create_account'}}</button>
+							</div>
+							<div class="setting setting-single-line">
+								<button class="btn-clean change-username">{{localize 'settings.change_username'}}</button>
+							</div>
+							<div class="setting setting-single-line">
+								<button class="btn-clean manage-data">{{localize 'settings.manage_data'}}</button>
+							</div>
+							<div class="setting setting-single-line">
+								<button class="btn-clean redeem-gift-code"><i class="fa fa-gift"></i>{{localize 'settings.redeem_code'}}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-clean btn-clean-primary logout">{{localize 'settings.logout'}}<i class="fa fa-sign-out"></i></button>
+			<button class="btn btn-clean btn-clean-primary desktop-quit">{{localize 'settings.quit'}}<i class="fa fa-times-circle"></i></button>
+			<div id='version-tag'></div>
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

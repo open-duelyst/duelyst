@@ -1,0 +1,32 @@
+<div class="buddy-controls">
+		<div class="buddy-controls-header">
+        <button class="btn-borderless add-buddy lowercase"><i class="fa fa-plus-circle"></i> {{localize 'buddy_list.action_add_buddy'}}</button>
+        <button class="btn-borderless do-not-disturb lowercase"><i class="fa fa-bell"></i><i class="fa fa-bell-slash"></i> {{localize 'buddy_list.action_do_not_disturb'}}</button>
+		</div>
+    <div class="search">
+        <input type="search" class="form-control" placeholder="{{localize 'common.search_input_label'}}">
+        <span class="fa fa-search"></span>
+    </div>
+</div>
+<div class="buddy-list-container">
+  <div class="last-played">
+      <span class="label lowercase">{{localize 'buddy_list.last_opponent'}}:</span>
+      <span class="username">{{lastOpponentName}}</span>
+      <button class="btn btn-add-last-played"><i class="fa fa-plus-circle"></i></button>
+      <span class="sent"><i class="fa fa-check"></i></span>
+  </div>
+	<div class="buddy-list-items">
+	</div>
+</div>
+
+<div class="add-buddy-prompt">
+	<div>
+		<div class="btn-group buddies-controls">
+			<input type="text" class="add-buddy-input" placeholder="{{localize 'buddy_list.add_buddy_instructions'}}">
+		</div>
+		<div class="btn-group buddies-controls">
+			<button class="btn btn-clean btn-clean-cancel add-buddy-cancel uppercase" type="button">{{localize 'common.default_confirm_dialog_button_cancel_label'}}</button>
+			<button class="btn btn-clean btn-clean-secondary add-buddy-submit uppercase" type="button" data-progress-text="Finding friend..." data-done-text="Friend request sent!" data-fail-text="User not found!">{{localize 'buddy_list.action_add_buddy'}} <i class="fa fa-plus-circle"></i></button>
+		</div>
+	</div>
+</div>

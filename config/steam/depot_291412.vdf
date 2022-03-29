@@ -1,0 +1,15 @@
+// osx depot
+
+"DepotBuildConfig"
+{
+	"DepotID" "291412"
+  "ContentRoot"	"..\..\dist\desktop\Duelyst-darwin-x64-steam"
+	"InstallScript" ".\Duelyst.app\installscript_osx.vdf"
+  "FileMapping"
+  {
+    "LocalPath" "*"
+    "DepotPath" "."
+    "recursive" "1"
+  }
+  "FileExclusion" "*.pdb"
+}

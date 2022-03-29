@@ -1,0 +1,16 @@
+<ul class="messages-list"></ul>
+<div class="current-message">
+	<input type="text" class="form-control chat-input" placeholder="{{localize 'buddy_list.message_input_instructions'}}">
+	<!-- <button class="btn btn-panel emote" type="button"><i class="fa fa-smile-o"></i></button> -->
+	<div class="btn-group dropup">
+		<button class="btn btn-panel send" type="button">{{localize 'buddy_list.action_send_message'}}</button>
+		<button type="button" class="btn btn-panel dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<span class="caret"></span>
+			<span class="sr-only">Toggle Dropdown</span>
+		</button>
+		<ul class="dropdown-menu">
+			<li><a id="share_replay" href="javascript:void(0)">{{localize 'buddy_list.action_share_replay'}}</a></li>
+		</ul>
+	</div>
+	<!-- <button class="btn btn-panel send" type="button">Send</button> -->
+</div>

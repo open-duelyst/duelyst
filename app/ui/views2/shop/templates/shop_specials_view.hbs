@@ -1,0 +1,17 @@
+<ul class="sub-category-menu nav nav-tabs hide">
+	<li role="select" data-value="specials" class="specials"><a>all</a></li>
+</ul>
+
+<div class="tab-body">
+	<div class="shop-specials">
+		<ul class="shop-specials-list">
+			{{#specials}}
+			<li class="sku {{sku}}">
+				<h2>{{localizedShopKey description}}</h2>
+				<button data-product-sku="{{sku}}" data-price="{{price}}" type="button" class="btn btn-clean btn-clean-secondary btn-buy">{{{formatPremiumCurrency price}}}</button>
+			</li>
+			{{/specials}}
+		</ul>
+		<h1>{{localize 'shop.specials_category_instructions'}}</h1>
+	</div>
+</div>

@@ -1,0 +1,18 @@
+<div class="dialog-background" {{#if background}}style="background: {{background}}"{{/if}}></div>
+
+<div class="modal-dialog">
+    <button type="button" class="btn btn-clean btn-cancel-primary cancel-dialog"></button>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">{{{title}}}</h4>
+        </div>
+        <div class="modal-body">
+					{{#if message}}
+              <div class="modal-message">{{{message}}}</div>
+					{{/if}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-clean btn-clean-primary cancel-dialog">{{localize 'common.default_error_dialog_button_label'}}</button>
+        </div>
+    </div>
+</div>

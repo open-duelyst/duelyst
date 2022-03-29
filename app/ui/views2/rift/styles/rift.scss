@@ -1,0 +1,359 @@
+/* ---------- DECK SELECT ---------- */
+.rift-runs {
+	background: none;
+	@extend .panel;
+	.sliding-panel-select-header {
+		h1 {
+			font-size: 4rem;
+			text-transform: uppercase;
+			font-weight: 300;
+			letter-spacing: 0.5rem;
+			margin-top:3rem;
+		}
+	}
+	.popover {
+		text-align: center;
+		&.top {
+			margin-top: -0.5rem;
+		}
+	}
+	.search {
+		position: relative;
+		width: auto;
+		height: 4.0rem;
+		margin: 0 1.5rem;
+		.form-control, .input-group-addon {
+			height: 4.0rem;
+			font-size: 1.6rem;
+			background-color: rgba(0, 0, 0, 0.6);
+			border-color: transparent;
+		}
+		.form-control {
+			width: 18.5rem;
+			border-radius: 2.0rem;
+			border-bottom-right-radius:0;
+			border-top-right-radius:0;
+			padding: 0 1.5rem;
+			&:focus {
+				outline: 0;
+				box-shadow: none;
+			}
+		}
+		.input-group-addon {
+			border-radius: 2.0rem;
+			border-bottom-left-radius:0;
+			border-top-left-radius:0;
+			padding: 0 1.5rem;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			align-content: center;
+			justify-content: center;
+		}
+		.search-submit {
+			@extend .mouse-select;
+			display: none;
+			pointer-events: auto;
+			z-index: 9999;
+			&.active {
+				display: flex;
+			}
+		}
+		.search-clear {
+			@extend .mouse-select;
+			display: none;
+			pointer-events: auto;
+			z-index: 9999;
+			&.active {
+				display: flex;
+			}
+		}
+	}
+	.sliding-panel-select-footer {
+		margin-bottom: 10rem;
+		.btn-group {
+			display: flex;
+			flex-flow: row nowrap;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			padding-bottom: 2.0rem;
+		}
+		button {
+			width:17.0rem;
+			overflow:visible;
+			span.icon-gold {
+				text-indent:0;
+				position:absolute;
+				left:1.0rem; top:-1.0rem;
+			}
+			&.product-for-gold {
+				padding-left:5.5rem
+			}
+		}
+		.vertical-separator {
+			background-image: -webkit-linear-gradient(bottom, transparent, rgba(255,255,255, 0.25) 20%, rgba(255,255,255, 0.25) 80%, transparent);
+		}
+	}
+	.nav-tabs {
+		display: flex;
+		flex-flow: row nowrap;
+		align-content: center;
+		align-items: center;
+		justify-content: center;
+		li > a {
+			font-size: 1.6rem;
+			padding: 0.6rem;
+			margin: 0 0.8rem;
+		}
+	}
+	.battlemap-select {
+		position: absolute;
+		right: 100%;
+		width: 14.0rem;
+		height: 5rem;
+		display: flex;
+		padding: 0;
+		margin: 0 1rem;
+		flex-flow: row;
+		justify-content: center;
+		align-items: center;
+		font-size: 1.4rem;
+		text-transform: uppercase;
+
+		span.icon {
+			position: absolute;
+			top: 50%;
+			right: 100%;
+			transform: translate(0, -50%);
+			height:5rem;
+			width:5rem;
+			background-size: cover;
+			border-radius: 5rem;
+			display: block;
+			margin-right: 1.0rem;
+			background-color: #404040;
+			font-size: 2.0rem;
+			border: 0.1rem solid white;
+			i {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			&:before {
+				position: absolute;
+				content: " ";
+				width: 0;
+				height: 0;
+				top: 50%;
+				left: 100%;
+				transform: translate(0, -50%);
+				z-index: -1;
+				border-style: solid;
+				border-width: 0.75rem 0 0.75rem 0.75rem;
+				border-color: transparent transparent transparent white;
+			}
+		}
+	}
+	$deckPreviewScale: 0.5;
+	.rift-run-deck {
+		@include bodyFont();
+		width: 46.5rem * $deckPreviewScale;
+		height: 60.5rem * $deckPreviewScale;
+		margin: 2.2rem * $deckPreviewScale;
+		overflow: visible;
+		&:before {
+			display: none;
+		}
+		.background {
+			width: 46.5rem * $deckPreviewScale;
+			height: 46.0rem * $deckPreviewScale;
+			top: 14.5rem * $deckPreviewScale;
+			background: rgba(0,0,0,0.75);
+			clip-path: none;
+			// box-shadow: 0 0.3rem * $deckPreviewScale 1.2rem * $deckPreviewScale rgba(0,0,0,0.5);
+		}
+		.run-content {
+			position: relative;
+			top: 0;
+			padding: 0;
+			border: none;
+			overflow: visible;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			justify-content: flex-start;
+			background: transparent;
+			clip-path: none;
+			&:after {
+				display: none;
+			}
+		}
+
+		.faction-crest {
+			filter:saturate(0) contrast(0.8) brightness(0.8);
+			position: absolute;
+			width: 46.5rem * $deckPreviewScale;
+			height: 60.5rem * $deckPreviewScale;
+			top: 0;
+			left: 0;
+			right: 0;
+			opacity: 1;
+			background-size: 100%;
+			background-position: 50%;
+			background-repeat: no-repeat;
+		}
+
+		.faction-portrait {
+			position: absolute;
+			z-index: 3;
+			width: 46rem * $deckPreviewScale;
+			height: 46rem * $deckPreviewScale;
+			top: -5.375rem * $deckPreviewScale;
+			left: 0;
+			background-size: 100%;
+			background-position: 50% 70%;
+			background-repeat: no-repeat;
+		}
+
+		.deck-caption {
+			position: absolute;
+			width: 100%;
+			bottom: 1.2rem * $deckPreviewScale;
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			align-content: center;
+			justify-content: center;
+		}
+		.level {
+			font-weight: bold;
+			font-size: 4.0rem * $deckPreviewScale;
+		}
+		.rating {
+			font-size: 3.0rem * $deckPreviewScale;
+		}
+		.deck-name {
+			@include headerFullStyle();
+			font-size: 4.0rem * $deckPreviewScale;
+			line-height: 4.8rem * $deckPreviewScale;
+			color: #bbbbbb;
+			max-width: 41.2rem * $deckPreviewScale;
+			left: -0.8rem * $deckPreviewScale;
+		}
+		.progress-data {
+			font-size: 2.8rem * $deckPreviewScale;
+			line-height: 3.6rem * $deckPreviewScale;
+//			margin-top: 1rem;
+			color: #999;
+			strong {
+				color: #bbb;
+			}
+		}
+		.progress {
+			height:0.5rem;
+			margin: 1rem 0;
+			background: rgba(255,255,255,0.2);
+			width:80%;
+			position: relative;
+			.complete {
+				position: absolute;
+				left:0; top:0;
+				height: 100%;
+				background: #fff;
+			}
+		}
+
+		&.invalid {
+			pointer-events: none;
+			.deck-card-backs, .faction-portrait {
+				filter: saturate(0);
+			}
+			.deck-invalid-icon {
+				display: none;
+			}
+			&:after {
+				position: absolute;
+				content: "";
+				height: 8.0rem;
+				width: 8.0rem;
+				margin: auto;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				@include backgroundImage("resources/ui/mulligan_x.png");
+				background-size: cover;
+				background-repeat: no-repeat;
+				background-position: 50%;
+				pointer-events: none;
+				z-index: 5;
+			}
+		}
+
+		&:hover {
+			.sliding-panel-content {
+				background: transparent;
+				border: none;
+			}
+			.background {
+				background: #000;
+			}
+		}
+
+		&.active {
+			z-index: 1;
+			.background {
+				width:10rem;
+				height:10rem;
+				left:50%;
+				margin-left: -5rem;
+				box-shadow: 0 0 10rem rgba(255, 255, 255, 1.0), 0 0 10rem rgba(255, 255, 255, 1.0);
+				border-radius: 100%;
+			}
+			.faction-portrait {
+				animation: choose_deck_portrait 0.5s forwards;
+			}
+		}
+	}
+	.rift-runs-empty-view{
+		display:flex;
+		justify-content: center;
+		flex-flow: column;
+		text-align: center;
+		h1 {
+			font-size: 2.4rem;
+			text-transform: uppercase;
+			margin:2.0rem 0;
+		}
+		p {
+			color:rgba(255,255,255,0.75);
+		}
+	}
+}
+
+@keyframes choose_deck_background {
+	0% {
+		filter:brightness(3);
+	}
+	100% {
+		filter:brightness(1.5);
+	}
+}
+@keyframes choose_deck_crest {
+	0% {
+		filter:brightness(3);
+	}
+	100% {
+		filter:brightness(1.5);
+	}
+}
+@keyframes choose_deck_portrait {
+	0% {
+		filter:brightness(3);
+	}
+	100% {
+		filter:brightness(1);
+	}
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@counterplay/exception-reporter",
+  "version": "1.0.0",
+  "main": "server.js",
+  "browser": "client.js",
+  "dependencies": {
+    "bugsnag": "^1.8.0",
+    "bugsnag-js": "^3.0.4"
+  }
+}

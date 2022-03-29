@@ -1,0 +1,302 @@
+/* ---------- NOTIFICATION REGIONS ---------- */
+
+#app-notifications-region {
+  @include fillParent();
+  z-index: 9999;
+}
+
+/* ---------- MAIN NOTIFICATIONS ---------- */
+
+$notification-flavor-color: #00fbff;
+
+#app-main-notifications-region {
+	@include fillParent();
+	#app-main-notifications {
+		@include fillParent();
+		.notifications {
+			position:absolute;
+			left: 1.5rem;
+			top: 1.5rem;
+			.notification {
+				//
+				@include overlayPanel();
+				background:transparent;
+				// font-weight:bold;
+				display:block;
+				padding: 1.0rem 2.0rem;
+				margin: 0 0 1.0rem 0;
+				min-width: 20.0rem;
+				position:relative;
+
+				> div {
+					opacity:0;
+					animation: showTopRightNotificationContent 0.2s;
+	    			animation-delay: 0.8s;
+	    			animation-fill-mode: forwards;
+					position:relative;
+					z-index:1060;
+					text-shadow:0 0 0.7rem $notification-flavor-color;
+				}
+
+				* {
+					height:2.4rem;
+					line-height:2.4rem;
+				}
+
+				.btn {
+					border:solid 0.1rem $key-color;
+					border-radius:2.0rem;
+					padding:0 1.2rem;
+					margin-left:1.0rem;
+					text-transform:uppercase;
+					font-size:1.2rem;
+					color:$key-color !important;
+					&:hover {
+						color:#fff !important;
+						border-color:#fff;
+					}
+				}
+				a.dismiss {
+					margin-left:1.0rem;
+					font-size:1.6rem;
+					width:2.4rem;
+					color:rgba(255,100,100,1);
+					text-shadow:0 0 1.0rem #ff0000,0 0 1.0rem #ff0000;
+					text-align:center;
+					vertical-align:baseline;
+					&:hover {
+						color:#fff;
+					}
+				}
+			}
+			.notification::before {
+				//
+				transform-origin:left;
+				transform:scaleX(0);
+				animation:showTopRightNotificationBackground 0.4s;
+				animation-delay: 0.2s;
+    			animation-fill-mode: forwards;
+    			//
+				display:block;
+				content:" ";
+				position:absolute;
+				width:100%;
+				height:100%;
+				left:0;
+				top:0;
+				background-color:#000;
+			}
+			.notification::after {
+				//
+				transform:scaleY(0);
+				animation: showTopRightNotificationBar 0.1s;
+    			animation-fill-mode: forwards;
+    			//
+				display:block;
+				content:" ";
+				background-color:$notification-flavor-color;
+				position:absolute;
+				width:0.2rem;
+				height:100%;
+				left:-0.2rem;
+				top:0;
+				z-index:1050;
+				box-shadow:0 0 1.0rem $notification-flavor-color,0 0 1.0rem $notification-flavor-color,0 0 0.5rem $notification-flavor-color;
+			}
+		}
+	}
+}
+
+/* ---------- MESSAGE NOTIFICATIONS ---------- */
+
+#app-message-notifications-region {
+	@include fillParent();
+	#app-message-notifications {
+		@include fillParent();
+		.notifications {
+			position:absolute;
+			right: 4.5rem;
+			bottom: 14.0rem;
+			margin: 0;
+			display: flex;
+			flex-flow: column-reverse nowrap;
+			align-content: flex-end;
+			align-items: flex-end;
+
+			.message {
+				pointer-events: auto;
+				position: relative;
+				background: #eee;
+				padding: 1.0rem;
+				border-radius: 2.0rem;
+				display: flex;
+				flex-flow: column nowrap;
+				margin-bottom: 2.0rem;
+
+				.arrow {
+					position: absolute;
+					width: 0;
+					height: 0;
+					bottom: 0;
+					right: 2.5rem;
+					margin-bottom: -1.0rem;
+					border-width: 1.0rem 1.0rem 0 1.0rem;
+					border-style: solid;
+					border-color: transparent;
+					border-top-color: #eee;
+				}
+
+				.from-username {
+					color: rgb(0, 188, 191);
+					font-size: 1.3rem;
+					margin-top: -0.5rem;
+				}
+
+				.message-content {
+					max-width: 20.0rem;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					overflow: hidden;
+				}
+
+				&:hover {
+					background:#fff;
+					.arrow {
+						border-top-color: #fff;
+					}
+					.from-username {
+						color: rgb(1, 219, 222);
+					}
+				}
+
+				&:first-child {
+					margin-top: 0;
+				}
+			}
+		}
+	}
+}
+
+
+@keyframes showTopRightNotificationBar {
+  from { transform:scaleY(0); }
+  to { transform:scaleY(1); }
+}
+@keyframes showTopRightNotificationBackground {
+  0% { transform:scaleX(0); background-color:$notification-flavor-color; box-shadow:0 0 1.0rem $notification-flavor-color,0 0 1.0rem $notification-flavor-color,0 0 0.5rem $notification-flavor-color; }
+  50% { transform:scaleX(1); background-color:$notification-flavor-color; box-shadow:0 0 1.0rem $notification-flavor-color,0 0 1.0rem $notification-flavor-color,0 0 0.5rem $notification-flavor-color; }
+  100% { transform:scaleX(1); background-color:#000; box-shadow:none; }
+}
+@keyframes showTopRightNotificationContent {
+  0% { opacity:0; color:$notification-flavor-color; }
+  50% { color:$notification-flavor-color; }
+  100% { opacity:1; color:#fff; }
+}
+
+/* ---------- QUEST NOTIFICATIONS ---------- */
+
+#app-quest-notifications-region {
+	@include fillParent();
+	#app-quest-notifications {
+		@include fillParent();
+		.notifications {
+			@include fillParent();
+			display: flex;
+			flex-flow: column nowrap;
+			align-items: center;
+			justify-content: center;
+			.notification {
+				position: relative;
+				width: 60.0rem;
+				height: 18.0rem;
+				margin-top: -1.5rem;
+				margin-bottom: -1.5rem;
+				padding: 3.0rem 1.0rem 3.0rem 5.0rem;
+				@include backgroundImage("resources/ui/notification_quest_small.png");
+				background-repeat: no-repeat;
+				background-size: 100%;
+				background-position: 50%;
+				text-align: center;
+				.title {
+					@include headerFullStyle();
+					display: block;
+					color: #fff;
+					font-size: 2.0rem;
+					line-height: 3.0rem;
+					margin-top: 1.0rem;
+					text-shadow: 0 0 1.0rem rgba(255, 255, 255, 0.75);
+				}
+				.instructions {
+					color: #ddd;
+					font-size: 1.4rem;
+				}
+				.progress {
+					@include headerFullStyle();
+					height: 2.0rem;
+					color: $gold-color;
+					background: transparent;
+					margin: 0;
+					margin-top: 1.5rem;
+					font-size: 1.7rem;
+					text-shadow: 0 0 1.5rem $gold-dark-color;
+					box-shadow: none;
+					border-radius: 0;
+					overflow: hidden;
+				}
+				.dismiss {
+					position: absolute;
+					top: 4.5rem;
+					right: 5.5rem;
+					width: 3.4rem;
+					height: 3.4rem;
+					padding: 0;
+					@include backgroundImage("resources/ui/button_close.png");
+					background-size: 100%;
+					background-repeat: no-repeat;
+					background-position: 50%;
+					transition: transform 0.1s ease-in;
+					&:hover, &:focus, &:active, &:active:focus {
+						transform: scale(1.2);
+					}
+				}
+			}
+		}
+	}
+}
+
+/* ---------- GAME BATTLE NOTIFICATIONS ---------- */
+
+#app-game-battle-notifications-region {
+  .notification {
+    position: absolute;
+    width: 20.0rem;
+    height: 10.0rem;
+    margin-left: -10.0rem;
+    margin-top: 5.0rem;
+    text-align:center;
+  }
+
+  .notification-message {
+    @include headerFullStyle();
+    position: relative;
+    display: inline-block;
+    color:#fff;
+    box-shadow: 0 0 1.5rem 0.5rem rgba(1, 0, 37, .75);
+    background: rgba(1, 0, 37, 0.6);
+    border-radius: 1.8rem;
+    line-height: 0.8rem;
+    padding: 0.1rem;
+    text-shadow: 0 0.1rem 0 rgba(0,0,0,0.75);
+    top: 6.5rem;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+    animation-timing-function: ease-in;
+    animation-name: fly-top-center;
+    &.buff {
+      color: #28f046;
+    }
+    &.nerf {
+      color: #d22846;
+    }
+  }
+}

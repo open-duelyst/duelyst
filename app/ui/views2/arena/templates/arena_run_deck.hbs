@@ -1,0 +1,18 @@
+<div class="background"></div>
+
+<div class="sliding-panel-content run-content">
+	{{#if faction_id}}
+		<div class="faction-crest"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-hover"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player2"></div>
+		<div class="faction-crest-bubble faction-crest-bubble-player1"></div>
+		<div class="faction-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId general_id)}})"></div>
+	{{/if}}
+	<div class="deck-caption">
+		<h4 class="deck-name">
+			{{name}}
+		</h4>
+		<div class="win-count">WINS: {{win_count}}</div>
+		{{#if status_text}}<div class="status-text">({{status_text}})</div>{{/if}}
+	</div>
+</div>

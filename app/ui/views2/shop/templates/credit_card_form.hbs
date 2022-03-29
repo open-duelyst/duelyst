@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group hide">
+			<label>Cardholder's Name</label>
+			<input id="cardholder_name" type="text" class="form-control">
+		</div>
+		<div class="form-group">
+			<div>
+				<label>Card Number</label>
+				<span class="credit-card-icons pull-right"><i class="fa fa-cc-visa"></i> <i class="fa fa-cc-amex"></i> <i class="fa fa-cc-mastercard"></i></span>
+			</div>
+			<input id="card_number" type="text" class="form-control">
+		</div>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Exp Month</label>
+					<input id="card_expiration_month" type="text" class="form-control" placeholder="MM">
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>Exp Year</label>
+					<input id="card_expiration_year" type="text" class="form-control" placeholder="YYYY">
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="form-group">
+					<label>CVC</label>
+					<input id="card_cvc" type="text" class="form-control" placeholder="Ex. 331">
+				</div>
+			</div>
+		</div>
+		{{#if shouldShowStoreCardOption}}
+		<div>
+			<input id="save_card" type="checkbox">
+			<label class="quiet small" for="save_card"> Save credit card info securely to <i class="fa fa-cc-stripe"></i> Stripe for future purchases.</label>
+		</div>
+		{{/if}}
+		<div class="form-control-buttons">
+			<button class="btn btn-clean btn-cancel-credit-card-form">Cancel</button>
+			<button class="btn btn-primary">Save</button>
+		</div>
+	</div>
+</div>

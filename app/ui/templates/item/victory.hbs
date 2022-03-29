@@ -1,0 +1,95 @@
+<div class="status-content">
+	<div class="status-header">
+		<div class="bracketed-text result">
+			<h1 class="bracketed-text-content result-content uppercase"></h1>
+		</div>
+	</div>
+	<div class="status-body">
+		{{#unless is_spectate_or_replay}}
+			{{#if is_network_game}}
+				{{#unless is_scored}}
+					<h5>{{localize 'battle.zero_xp_earned'}}</h5>
+					<p>{{localize 'battle.unscored_game_xp_notice'}}</p>
+				{{else}}
+					{{#if shouldShowFactionLevel}}
+						<h6 class="faction-level">{{faction_name}} - <span class="uppercase">{{localize 'common.xp_level'}}</span> {{faction_level}}</h6>
+						{{#if shouldShowFactionXP}}
+							<div class="progress level-progress">
+								<div id="progressBarComplete" class="progress-bar level-progress-bar" style="width: 0%">
+									<span class="sr-only"></span>
+								</div>
+								<div id="progressBarEarned" class="progress-bar level-progress-bar earned" style="width: 0%">
+									<span class="sr-only"></span>
+								</div>
+							</div>
+						{{/if}}
+					{{/if}}
+					{{#if hasMaxedSinglePlayerXp}}
+						<h6 class="faction-level">{{faction_name}} - <span class="uppercase">{{localize 'common.xp_level'}}</span> 10</h6>
+						<div>{{localize 'battle.max_practice_xp_reached_notice'}}</div>
+					{{/if}}
+				{{/unless}}
+			{{/if}}
+		{{/unless}}
+		<!-- <div class="stats hide">
+			<h5 id="app-game-rounds" class="game-rounds stat">turns: <strong>{{game_turn_count}}</strong></h5>
+			<h5 id="app-game-duration" class="game-duration stat">time: <strong>{{game_duration}}</strong></h5>
+		</div> -->
+		{{#if opponent_id}}
+			<div class="opponent-info">
+				<span class="opponent-label lowercase">{{localize 'battle.opponent_name_default_label'}}:</span> <span class="opponent-name">{{opponent_username}}</span>
+				{{#if show_add_buddy}}<button class="btn btn-add-opponent-to-buddies uppercase"><i class="fa fa-plus"></i> ADD</button>{{/if}}
+				{{#if show_tip}}<button class="btn btn-tip-opponent uppercase" data-toggle="tooltip" data-placement="top" title="{{localize 'battle.gold_tip_button_tooltip'}}"><i class="fa fa-circle"></i> {{localize 'battle.gold_tip_button_label'}}</button>{{/if}}
+				{{#if show_report}}<button class="btn btn-report-opponent uppercase"><i class="fa fa-exclamation-triangle"></i> {{localize 'battle.report_opponent_button_label'}}</button>{{/if}}
+				<span class="sent hide">invite sent</span>
+			</div>
+		{{/if}}
+	</div>
+	{{#if is_scored}}
+	<div class="progression-reward-counter">
+		{{#if shouldShowGameCounterRewards}}
+			{{#if haveWinRewardsBeenMaxed}}
+				<div>{{localize 'battle.max_daily_win_rewards_reached'}}</div>
+			{{else}}
+				<div>
+					{{#fromTo 0 winsToReward}}<i class="fa fa-circle"></i>{{/fromTo}}{{#fromTo winsToReward 3}}<i class="fa fa-circle-o"></i>{{/fromTo}}
+				</div>
+				<div>{{winsToReward}}{{localize 'battle.progress_towards_next_win_counter_reward'}}</div>
+
+			{{/if}}
+			<!-- {{#if havePlayRewardsBeenMaxed}}
+				<div>Max Daily Play Rewards reached.</div>
+			{{else}}
+				<div>
+					{{#fromTo 0 gamesToReward}}<i class="fa fa-circle"></i>{{/fromTo}}{{#fromTo gamesToReward 4}}<i class="fa fa-circle-o"></i>{{/fromTo}}
+				</div>
+				<div>{{gamesToReward}}/4 games towards next Reward.</div>
+			{{/if}} -->
+		{{/if}}
+	</div>
+	{{/if}}
+	<div class="status-footer">
+	</div>
+</div>
+
+<div id="confirm_report_dialog" class="modal fade prompt-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title">Report Player</h4>
+		</div>
+		<div class="modal-body">
+			<p id="confirm_purchase_message">What did the player do to warrant a report?</p>
+			<div id="report_form_error" class="alert alert-danger hide" role="alert"></div>
+			<textarea id="report_text" class="form-control"></textarea>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-clean cancel btn-clean-secondary" id="cancel_confirm_report_button" data-dismiss="modal">CANCEL</button>
+			<button type="button" class="btn btn-clean btn-clean-secondary" id="confirm_report_button">REPORT</button>
+		</div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="level-up-notice">{{localize 'battle.level_up_notice'}}</div>

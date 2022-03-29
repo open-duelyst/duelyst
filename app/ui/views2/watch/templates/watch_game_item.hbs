@@ -1,0 +1,35 @@
+<div class="matchup-details clearfix">
+	<div class="player p1">
+		<div class="player-avatar">
+			<img class="profile-icon" src="{{imageForResourceScale (profilePortraitImgForId player_1_profile_picture_id)}}" />
+			<span class="username">{{player_1_username}}</span>
+			<span class="division {{division}}"><span class="colored">{{division}}</span> division</span>
+		</div>
+		<div class="general-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId player_1_general_id)}})"></div>
+		<ul class="key-units">
+			{{#each player_1_key_cards}}
+				<li data-card-id="{{this}}"><div class="sprite"></div></li>
+			{{/each}}
+		</ul>
+		<div class="deck-spirit-cost">Deck Spirit Value: 1023</div>
+	</div>
+	<div class="player p2">
+		<div class="player-avatar">
+			<img class="profile-icon" src="{{imageForResourceScale (profilePortraitImgForId player_2_profile_picture_id)}}" />
+			<span class="username">{{player_2_username}}</span>
+			<span class="division {{division}}"><span class="colored">{{division}}</span> division</span>
+		</div>
+		<div class="general-portrait" style="background-image: url({{imageForResourceScale (generalPortraitHexImageForGeneralId player_2_general_id)}})"></div>
+		<ul class="key-units">
+			{{#each player_2_key_cards}}
+				<li data-card-id="{{this}}"><div class="sprite"></div></li>
+			{{/each}}
+		</ul>
+		<div class="deck-spirit-cost">Deck Spirit Value: 1023</div>
+	</div>
+	<button type="button" class="btn btn-clean btn-clean-secondary watch player-1" data-player-id="{{player_1_id}}">WATCH</button>
+	<button type="button" class="btn btn-clean btn-clean-secondary watch player-2" data-player-id="{{player_2_id}}">WATCH</button>
+</div>
+<div class="game-stats">
+	<div class="duration">7:32</div>
+</div>

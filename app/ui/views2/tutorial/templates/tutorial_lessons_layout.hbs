@@ -1,0 +1,26 @@
+<!-- -->
+<div class="header">
+	<h1>{{localize 'tutorial.welcome_title'}}</h1>
+	<hr />
+	<p>{{localize 'tutorial.welcome_instructions'}}</p>
+</div>
+<div class="lessons">
+	{{#lessons}}
+      <div id="{{type}}" class="lesson {{#if isComplete}}complete{{/if}}">
+          <div class="image" data-lesson-id="{{type}}">
+              <img src="{{imageForResourceScale iconUrl}}" />
+              <div class="glow"></div>
+              <div class="slash"></div>
+          </div>
+          <h2>{{name}}</h2>
+          <div class="time">{{localize 'tutorial.lesson_default_duration'}}</div>
+          <p>{{description}}</p>
+      </div>
+	{{/lessons}}
+	<div class="line"></div>
+</div>
+<!-- -->
+<div class="action-bar footer">
+	<button id="button_continue" class="btn btn-clean btn-clean-secondary">{{localize 'tutorial.continue_button_label'}}</button>
+	<button id="button_skip" class="btn btn-clean btn-clean-round">{{localize 'tutorial.skip_button_label'}}</button>
+</div>

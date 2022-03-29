@@ -1,0 +1,15 @@
+<div class="profile-summary {{division_class}} {{#if isOpponent}}opponent{{/if}}">
+	<img class="portrait" src="{{imageForResourceScale (profilePortraitImgForId portrait_id)}}" />
+	<div class="user-details">
+		<div class="username">{{username}}</div>
+		{{#if division_name}}
+			<div class="division">
+				{{localize key='rank.current_division_message' division=division_name}}
+				{{#if ladder_position}}<span class="badge ladder-position">{{ladder_position}}</span>{{/if}}
+			</div>
+		{{/if}}
+	</div>
+</div>
+<ul class="ribbons">
+	<!-- ribbon item views go here -->
+</ul>

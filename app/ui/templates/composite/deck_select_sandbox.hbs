@@ -1,0 +1,60 @@
+<div class="sliding-panel-select-content">
+    <div class="sliding-panel-select-header">
+        <ul class="nav nav-tabs deck-groups">
+            <li role="select" data-value="custom"><a>Custom Decks</a></li>
+            <li role="select" data-value="starter"><a>Starter Decks</a></li>
+        </ul>
+        <div class="input-group search">
+            <input type="search" class="form-control" placeholder="Search">
+            <span class="input-group-addon search-submit"><span class="fa fa-search"></span></span>
+            <span class="input-group-addon search-clear"><span class="fa fa-times"></span></span>
+        </div>
+        <div class="btn-group deck-settings">
+          <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cog"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <button class="toggle toggle-faction" data-faction="0">
+              <i class="fa fa-asterisk"></i>
+            </button>
+            <button class="toggle toggle-faction" data-faction="1">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f1.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="2">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f2.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="3">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f3.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="4">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f4.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="5">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f5.png'}}"/>
+            </button>
+            <button class="toggle toggle-faction" data-faction="6">
+              <img src="{{imageForResourceScale 'resources/crests/crest_f6.png'}}"/>
+            </button>
+            <li role="separator" class="divider"></li>
+            <div class="deck-color-code-select-list">
+              {{#getColorCodes}}
+                <button class="toggle deck-color-code {{cssClass}}" data-code="{{code}}"></button>
+              {{/getColorCodes}}
+            </div>
+          </ul>
+        </div>
+    </div>
+		<div class="sliding-panel-select-body">
+        <div class="sliding-panel-select-choices">
+            <ul class="choices"></ul>
+            <div class="previous-page"><div class="btn btn-clean"></div></div>
+            <div class="next-page"><div class="btn btn-clean"></div></div>
+        </div>
+		</div>
+    <div class="sliding-panel-select-footer">
+        <div class="btn-group btn-group-centered">
+					{{#if hasAnyBattleMapCosmetics}}<button class="battlemap-select"><span class="icon"><i class="fa fa-question" /></span> Select Battle Map</button>{{/if}}
+            <button class="btn btn-clean deck-select-confirm">Play Sandbox</button>
+        </div>
+    </div>
+</div>

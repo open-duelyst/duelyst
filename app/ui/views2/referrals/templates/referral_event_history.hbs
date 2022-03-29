@@ -1,0 +1,36 @@
+<div class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header"><h1>Referrals</h1></div>
+		<div class="modal-body clearfix">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12">
+						<table id="referral_history_list">
+							<thead>
+								<tr>
+									<th>{{localize 'buddy_list.referral_player'}}</th>
+									<th>{{localize 'buddy_list.referral_level_reached'}}</th>
+									<th>{{localize 'buddy_list.referral_time_ago'}}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{#each eventHistory}}
+									<tr class="event">
+										<td>{{username}}</td>
+										<td>{{level_reached}}</td>
+										<td>{{timeAgo updated_at}}</td>
+									</tr>
+								{{/each}}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+		</div>
+	</div>
+	<!-- /.modal-content -->
+</div>
+<!-- /.modal-dialog -->

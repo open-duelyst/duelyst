@@ -1,0 +1,13 @@
+<div class="quest-content">
+	<div class="description">
+		<h2 class="title">{{localize 'quests.daily_free_card_label'}}</h2>
+		{{#if is_available}}
+			<div class="card-reward"><img src="{{imageForResourceScale 'resources/free_card_of_the_day/random_core_gem.png'}}" /></div>
+		{{else}}
+			<div class="fa fa-check complete-icon"></div>
+		{{/if}}
+		<div class="instructions">{{localize 'quests.claim_your_free_card_label'}}</div>
+	</div>
+	<!-- <div class="progress">{{progress}} / 1</div> -->
+	<button {{#unless is_available}}disabled{{/unless}} class="btn btn-clean btn-clean-secondary claim-card">{{localize 'common.claim_label'}}</button>
+</div>

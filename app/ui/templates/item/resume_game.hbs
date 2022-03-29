@@ -1,0 +1,30 @@
+<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary btn-nav-back"></button>
+
+<div class="status-content">
+	<div class="players">
+		<div class="player player1">
+			<h3 class="user-name"></h3>
+			<div class="player-general"></div>
+			<div class="player-general-platform"></div>
+		</div>
+		<div class="player player2">
+			<h3 class="user-name"></h3>
+			<div class="player-general"></div>
+			<div class="player-general-platform"></div>
+		</div>
+	</div>
+
+	<div class="resume-mode">
+		<div class="bracketed-text friendly">
+			<h1 class="bracketed-text-content status-header">{{localize 'battle.existing_battle_in_progress'}}</h1>
+		</div>
+
+		<button class="btn continue btn-clean btn-clean-primary uppercase">{{localize 'battle.continue_battle_button_label'}}</button>
+		<p class="game-created-at"></p>
+	</div>
+
+	<div class="continue-mode">
+		<div class="ring"></div>
+		<p class="status-body">{{localize 'battle.loading_battle'}}</p>
+	</div>
+</div>

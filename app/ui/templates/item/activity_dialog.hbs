@@ -1,0 +1,16 @@
+<div class="dialog-background" {{#if background}}style="background: {{background}}"{{/if}}></div>
+
+<div class="dialog-content">
+    <div class="dialog-header">
+
+    </div>
+    <div class="dialog-body">
+        <div class="activity-animation"><div class="activity-animation-image"></div></div>
+        <div class="dialog-message">{{title}}</div>
+    </div>
+    <div class="dialog-footer">
+			{{#if allowCancel}}
+          <button class="cancel-dialog btn btn-clean btn-clean-primary">cancel</button>
+			{{/if}}
+    </div>
+</div>

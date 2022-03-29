@@ -1,0 +1,70 @@
+<div id="referral_dialog" class="modal-dialog">
+	<button type="button" class="btn btn-clean btn-user-cancel btn-cancel-primary"></button>
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4>{{localize 'buddy_list.your_referral_code_msg'}} <textarea id="referral_code" rows="1">{{username}}</textarea> &larr; {{localize 'buddy_list.click_to_copy'}}</h4>
+			<p>{{localize 'buddy_list.your_friends_referral_instructions'}} <a href="https://news.duelyst.com/duelyst-referral-program/" target="_blank">{{localize 'buddy_list.referral_learn_more'}}</a></p>
+			<!-- <button id="create_code_button" class="btn btn-clean-round">create your referral code</button> -->
+		</div>
+		<div class="modal-body">
+			<div id="referral_stats">
+				<!-- <canvas id="referral_stats_bg_canvas" /> -->
+				<div id="stat_signups" class="signups">
+					<div class="referral-pie-chart-container">
+						<canvas width="220" height="220" data-percent-complete="100" class="pie-chart-canvas" />
+						<div class="label">
+							<strong>{{#if stats.signups}}{{stats.signups}}{{else}}0{{/if}}</strong>
+							<span>{{localize 'buddy_list.referrals'}}</span>
+						</div>
+					</div>
+					<div class="description">{{localize 'buddy_list.referral_beginner_instructions'}}</div>
+				</div>
+
+				<div id="stat_signups" class="silver-division">
+					<div class="referral-pie-chart-container">
+						<canvas width="220" height="220" data-percent-complete="{{percent_silver}}" data-color="#8bd7ff" data-shadow-color="#c2ffff" class="pie-chart-canvas" />
+						<div class="label">
+							<strong>{{#if stats.silver}}{{stats.silver}}{{else}}0{{/if}}</strong>
+							<span>{{localize 'buddy_list.silver'}}</span>
+						</div>
+					</div>
+					<div class="description">{{localize 'buddy_list.referral_silver_instructions'}}</div>
+				</div>
+
+				<div id="stat_signups" class="gold-division">
+					<div class="referral-pie-chart-container">
+						<canvas width="220" height="220" data-percent-complete="{{percent_gold}}" data-color="#ffd52b" data-shadow-color="#ffff5c" class="pie-chart-canvas" />
+						<div class="label">
+							<strong>{{#if stats.gold}}{{stats.gold}}{{else}}0{{/if}}</strong>
+							<span>{{localize 'buddy_list.gold'}}</span>
+						</div>
+					</div>
+					<div class="description">{{localize 'buddy_list.referral_gold_instructions'}}</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="modal-footer">
+			{{#if rewards_available}}
+				<div id="claim_rewards_region">
+					<div class="referral-rewards">
+						<div class="rewards-label">{{localize 'buddy_list.rewards_label'}}</div>
+						{{#if unclaimed_rewards.gold }}<div class="gold-reward"><strong>{{unclaimed_rewards.gold}}</strong> {{localize 'common.currency_gold'}}</div>{{/if}}
+						{{#if unclaimed_rewards.spirit_orbs }}<div class="spirit-orb-reward"><strong>{{unclaimed_rewards.spirit_orbs}}</strong> {{localize 'common.spirit_orb_plural'}}</div>{{/if}}
+					</div>
+					<button id="claim_rewards_button" class="btn btn-clean btn-clean-primary">{{localize 'buddy_list.rewards_claim_all'}}</button>
+				</div>
+				<div id="claim_rewards_success" class="hide">
+					<span><i class="fa fa-check"></i> {{localize 'buddy_list.rewards_claimed_success'}}</span>
+				</div>
+			{{else}}
+				<div id="claim_rewards_region">
+					<div class="referral-rewards">
+						<div class="rewards-label"></div>
+					</div>
+				</div>
+			{{/if}}
+			<div><button id="event_history_button">{{localize 'buddy_list.details'}} &rarr;</button></div>
+		</div>
+	</div>
+</div>

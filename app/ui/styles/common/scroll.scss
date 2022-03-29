@@ -1,0 +1,54 @@
+/* ---------- SCROLL ----------- */
+
+$scrollbarSize: 1.2rem;
+@include scrollbars(rgba(255, 255, 255, 1), $scrollbarSize);
+
+.scrollable {
+	position: relative;
+	overflow: hidden;
+}
+
+.scrollable-inner {
+	position: absolute;
+	overflow: hidden;
+	left: 0;
+	top: 0;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.scrollable-bar-vertical {
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 100%;
+	width: $scrollbarSize;
+	right: 0;
+	top: 0;
+	z-index: 9999;
+}
+
+.scrollable-bar-vertical-inner {
+	position: relative;
+	width: $scrollbarSize;
+	height: 100%;
+}
+
+.scrollable-bar-horizontal {
+	position: absolute;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	width: 100%;
+	height: $scrollbarSize;
+	bottom: 0;
+	left: 0;
+	z-index: 9999;
+}
+
+.scrollable-bar-horizontal-inner {
+	position: relative;
+	width: 100%;
+	height: $scrollbarSize;
+}

@@ -1,0 +1,21 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<h4 class="modal-title">{{localize 'shop.new_product_available_title'}}</h4>
+		</div>
+		<div class="modal-body">
+			<div class="modal-message">
+				<div class="product">
+					<img src="{{image_url}}" />
+					<h2 class="name">{{localizedShopKey description}}</h2>
+					<h3 class="price">{{{formatPremiumCurrency price}}}</h3>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<div class="btn-group btn-group-centered">
+				<button class="btn btn-clean btn-clean-primary confirm-dialog">{{localize 'common.acknowledge_dismiss_button_label'}}</button>
+			</div>
+		</div>
+	</div>
+</div>
