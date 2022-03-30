@@ -12,7 +12,7 @@ export class ChromaInstance extends DeviceContainer {
     public destroyed: boolean = false;
 
     private url: string;
-    private interval: number;
+    private interval: ReturnType<typeof setTimeout>;
     private activeAnimation: Animation = null;
 
     constructor(url: string) {
