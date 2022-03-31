@@ -20,7 +20,7 @@ var config = convict({
 	port: {
 		doc: "The api port to bind.",
 		format: "port",
-		default: 5000,
+		default: 3000,
 		env: "PORT"
 	},
 	game_port: {
@@ -31,7 +31,7 @@ var config = convict({
 	},
 	api: {
 		doc: "API URL.",
-		default: "http://127.0.0.1:5000",
+		default: "http://localhost:3000",
 		env: "API_URL"
 	},
 	firebase: {
@@ -328,18 +328,6 @@ var config = convict({
 		format: Number,
 		default:1000
 	},
-	librato: {
-		email: {
-			doc: "Librato.io email",
-			default: "",
-			env: "LIBRATO_EMAIL"
-		},
-		token: {
-			doc: "Librato.io token",
-			default: "",
-			env: "LIBRATO_TOKEN"
-		}
-	},
 	inviteCodesActive: {
 		doc: "Are invite codes required for this environment?",
 		format: Boolean,
@@ -360,18 +348,6 @@ var config = convict({
 		allowMatchWithLastOpponent: {
 			doc: "Should matchmaking allow matching with the same opponent twice in a row?",
 			default: false
-		}
-	},
-	discourse: {
-		forumUrl: {
-			doc: "Discourse SSO Endpoint URL",
-			default: "",
-			env: "DISCOURSE_SSO_ENDPOINT_URL"
-		},
-		ssoSecret: {
-			doc: "Discourse SSO Secret",
-			default: "",
-			env: "DISCOURSE_SSO_SECRET"
 		}
 	},
 	steam: {
@@ -395,117 +371,6 @@ var config = convict({
 			format: Boolean,
 			default: true,
 			env: "STEAM_SANDBOX_ENABLED"
-		}
-	},
-	facebook: {
-		appId: {
-			doc: "Facebook App ID",
-			default: "",
-			env: "FB_APP_ID"
-		},
-		appSecret: {
-			doc: "Facebook App Secret",
-			default: "",
-			env: "FB_APP_SECRET"
-		},
-		redirectUri: {
-			doc: "Facebook Redirect URI",
-			default: "",
-			env: "FB_REDIRECT_URI"
-		}
-	},
-	bnea: {
-		enabled: {
-			doc: "Enable BNEA API integration",
-			format: Boolean,
-			default: true,
-			env: "BNEA_ENABLED"
-		},
-		apiUrl: {
-			doc: "BNEA App ID",
-			default: "",
-			// format: "url",
-			env: "BNEA_API_URL"
-		},
-		clientAppId: {
-			doc: "BNEA Client App ID",
-			default: "",
-			env: "BNEA_CLIENT_APP_ID"
-		},
-		clientAppSecret: {
-			doc: "BNEA Client App Secret",
-			default: "",
-			env: "BNEA_CLIENT_APP_SECRET"
-		},
-		serverAppId: {
-			doc: "BNEA Server App ID",
-			default: "",
-			env: "BNEA_SERVER_APP_ID"
-		},
-		serverAppSecret: {
-			doc: "BNEA Server App Secret",
-			default: "",
-			env: "BNEA_SERVER_APP_SECRET"
-		},
-		serverToServerSecret: {
-			doc: "Secret used to secure our API for BNEA requests (server to server)",
-			default: '',
-			env: "BNEA_SERVER_TO_SERVER_SECRET"
-		},
-		overrideEmailsForLink: {
-			doc: "If we override existing email in DB when we link a BNEA account",
-			format: Boolean,
-			default: true,
-			env: "BNEA_OVERRIDE_EMAILS_FOR_LINK"
-		},
-		subscriptionId: {
-			doc: "ID for email subscription",
-			format: Number,
-			default: 1,
-			env: "BNEA_SUBSCRIPTION_ID"
-		},
-		subscriptionName: {
-			doc: "Name or email subscription",
-			default: 'BNEA Monthly Newsletter',
-			env: "BNEA_SUBSCRIPTION_NAME"
-		},
-		duelystSubscriptionId: {
-			doc: "ID for email subscription",
-			format: Number,
-			default: 76,
-			env: "BNEA_DUELYST_SUBSCRIPTION_ID"
-		},
-		duelystSubscriptionName: {
-			doc: "Name or email subscription",
-			default: 'Duelyst',
-			env: "BNEA_DUELYST_SUBSCRIPTION_NAME"
-		},
-		registrationSource: {
-			doc: "Registration source parameter",
-			default: "",
-			env: "BNEA_REGISTRATION_SOURCE"
-		},
-		landingPageUrl: {
-			doc: "Landing page to redirect new users to",
-			// format: "url",
-			default: "",
-			env: "BNEA_LANDING_PAGE_URL"
-		},
-		referrerPageUrls: {
-			doc: "Urls of possible referrers for ad traffic",
-			format: Array,
-			default: [
-				'https://staging.duelyst.com/landing',
-				'https://www.duelyst.com/landing',
-				'https://duelyst.com/landing'
-			],
-			env: "BNEA_REFERRER_PAGE_URLS"
-		},
-		trackingPixelsEnabled: {
-			doc: "Enable tracking pixels provided by BNEA",
-			format: Boolean,
-			default: false,
-			env: "BNEA_TRACKING_PIXELS_ENABLED"
 		}
 	},
 	fastly: {

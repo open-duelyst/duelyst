@@ -21,7 +21,6 @@ Logger = require '../app/common/logger.coffee'
 EVENTS = require '../app/common/event_types'
 UtilsGameSession = require '../app/common/utils/utils_game_session.coffee'
 exceptionReporter = require '@counterplay/exception-reporter'
-librato = require './lib/librato'
 
 # lib Modules
 Consul = require './lib/consul'
@@ -130,9 +129,6 @@ d.run () ->
 		Logger.module("IO").debug "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
 
 		savePlayerCount(++playerCount)
-
-		# measure number of players connected
-		librato.measure('players in game', playerCount, {source: "#{config.get('env')}"})
 
 		# Send message to user that connection is succesful
 		socket.emit "connected",
@@ -585,9 +581,6 @@ onGameDisconnect = () ->
 		savePlayerCount(--playerCount)
 		Logger.module("IO").debug "[G:#{@.gameId}]", "disconnect -> #{@.playerId}".red
 
-		# report players in game count
-		librato.measure('players in game', playerCount, {source: "#{config.get('env')}"})
-
 		# if a client is already in another game, leave it
 		playerLeaveGameIfNeeded(@)
 
@@ -701,8 +694,6 @@ destroyGameSessionIfNoConnectionsLeft = (gameId,persist=false)->
 
 		delete games[gameId]
 		saveGameCount(--gameCount)
-
-		librato.measure('active games', gameCount, {source: "#{config.get('env')}"})
 
 	else
 
@@ -1141,8 +1132,6 @@ initGameSession = (gameId,onComplete) ->
 		games[gameId].mouseAndUIEvents = mouseData
 
 		saveGameCount(++gameCount)
-
-		librato.measure('active games', gameCount, {source: "#{config.get('env')}"})
 
  		# in case the server restarted or loading data for first time, set the last action at timestamp for both players to now
  		# this timestamp is used to shorten turn timer if player has not made any moves for a long time

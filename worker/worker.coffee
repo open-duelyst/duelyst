@@ -3,7 +3,6 @@ os = require 'os'
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
 exceptionReporter = require '@counterplay/exception-reporter'
-librato = require '../server/lib/librato'
 Promise = require 'bluebird'
 
 if config.isDevelopment()

@@ -8,8 +8,6 @@ _ = require 'underscore'
 Logger = require '../../app/common/logger.coffee'
 Errors = require '../lib/custom_errors'
 knex = require '../lib/data_access/knex'
-payalIPN = require 'paypal-ipn'
-PaypalModule = require '../lib/data_access/paypal'
 Promise = require 'bluebird'
 {Redis,SRankManager,RiftManager} = require '../redis'
 mail = require '../mailer.coffee'
@@ -176,42 +174,5 @@ router.get "/replay", (req, res, next) ->
 			throw new Errors.NotFoundError("Replay #{replayId} not found")
 	.catch (e)->
 		next(e)
-
-# The paypal-ipn route lives outside of the normal api routes
-# It needs to be publically accessible by PayPal without a JWT
-router.post '/paypal-ipn', (req, res, next) ->
-
-	# only allow sandbox if explicitly configured to use sandbox url
-	allowSandbox = (config.get('paypalEnvironmentUrl').indexOf('sandbox') > 0)
-
-	Logger.module("PAYPAL").time "done verifying tx: #{req.body?.txn_id} for user: #{req.body?.custom}"
-
-	payalIPN.verify req.body, {'allow_sandbox': allowSandbox}, (err, mes)->
-
-		Logger.module("PAYPAL").timeEnd "done verifying tx: #{req.body?.txn_id} for user: #{req.body?.custom}"
-
-		if err
-
-			mail.sendTeamPurchaseErrorNotificationAsync("Paypal IPN Verification Failed (TX:#{req.body?.txn_id})", "#{err?.message} ...... REQUEST_DATA: <pre>#{prettyjson.render(req.body)}</pre>")
-			Logger.module("PAYPAL").error "IPN verification failed for transaction #{req.body?.txn_id} for user #{req.body?.custom} with message #{err?.message}"
-			res.status(200).end()
-
-			knex("paypal_ipn_errors").insert(
-				transaction_id: req.body.txn_id
-				error_message: err?.message
-				body_json: req.body
-			).then ()->
-				res.status(200).end()
-			.catch (e)->
-				Logger.module("PAYPAL").error "ERROR saving record of IPN verification failure for tx:#{req.body?.txn_id} for user:#{req.body?.custom}. error: #{e?.message}"
-				res.status(200).end()
-
-		else
-
-			PaypalModule.processVerifiedPaypalInstantPaymentNotificationData(req.body)
-			.then ()->
-				res.status(200).end()
-			.catch Errors.AlreadyExistsError, (e)->
-				res.status(200).end()
 
 module.exports = router

@@ -1,11 +1,11 @@
 {
 	"env": "development",
-	"api": "",
-	"postgres_connection_string": "",
+	"api": "http://localhost:3000",
+	"postgres_connection_string": "pg://postgres:duelyst@localhost:5432/postgres",
 	"firebase": "",
-	"firebaseToken": "",
+	"firebaseToken": "secret",
 	"redis": {
-		"ip": "",
+		"ip": "localhost",
 		"port": 6379,
 		"ttl": 60000,
 		"password": ""
@@ -14,5 +14,11 @@
 	"datGuiEditorEnabled":true,
 	"aiToolsEnabled":true,
 	"allCardsAvailable":true,
-	"watchSectionMinCurrentVersionGameCount":1
+	"watchSectionMinCurrentVersionGameCount":1,
+	"recaptcha": {
+		"enabled":false
+	},
+	"matchmakingDefaults": {
+		"allowMatchWithLastOpponent":true
+	}
 }

@@ -9,7 +9,6 @@ Promise = require 'bluebird'
 moment = require 'moment'
 CustomError = require '../lib/custom_errors.coffee'
 isSignedIn = require '../middleware/signed_in'
-librato = require 'librato-node'
 t = require 'tcomb-validation'
 validators = require '../validators'
 
@@ -368,8 +367,6 @@ router.post "/matchmaking", (req, res, next) ->
 
 					return Promise.all(matchmakingPromises)
 					.then (results) -> # TODO: We should spread and validate results
-
-						librato.increment('player entered matchmaking', 1, {source: "#{config.get('env')}:#{gameType}"})
 
 						if gameType == GameType.Friendly and inviteId
 							Logger.module("MATCHMAKING").debug "#{gameType.yellow} invite set up for user #{userId}, sending 200 with #{token.id}".green

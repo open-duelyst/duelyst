@@ -26,18 +26,12 @@ Wire up /MATCHMAKER routes
 ###
 app.use(middleware.basic)
 app.use(routes.public)
-app.use(routes.bnea)
 app.use(routes.session)
 app.use(routes.api)
 app.use(routes.forgot)
 app.use(routes.verify)
 app.use(routes.utility)
 app.use(routes.matchmaker)
-app.use(routes.steam)
-
-# Debug route for testing account creation
-if config.isDevelopment() || config.isStaging()
-	app.use(routes['debug-register'])
 
 ###
 Error handling middleware, must be defined last to catch any errors

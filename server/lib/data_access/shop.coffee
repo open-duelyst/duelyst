@@ -26,12 +26,6 @@ SyncModule = require './sync'
 RiftModule = require './rift'
 GiftCrateModule = require './gift_crate'
 
-bnea = require('../../../server/lib/bnea')({
-	apiUrl: config.get('bnea.apiUrl'),
-	appId: config.get('bnea.serverAppId'),
-	appSecret: config.get('bnea.serverAppSecret')
-})
-
 # redis
 {Redis, Jobs, GameManager} = require '../../redis/'
 
@@ -667,7 +661,7 @@ class ShopModule
 				@.userRow = userRow
 
 				# verify balance
-				return bnea.accountBalance(bToken)
+				return {}
 			.then (platinumBalance) ->
 
 				if (platinumBalance < amount)
@@ -683,7 +677,7 @@ class ShopModule
 					"item_qty": 1,
 					"item_type": 1
 				}
-				return bnea.deductCurrencyForItemPurchase(bToken,@.bnProductData)
+				return {}
 
 			.then (responseData) ->
 

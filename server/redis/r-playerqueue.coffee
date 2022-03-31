@@ -5,7 +5,6 @@ ts = require './r-timeseries'
 Logger = require '../../app/common/logger.coffee'
 config = require '../../config/config.js'
 env = config.get("env")
-librato = require "librato-node"
 
 # Helper returns the Redis key prefix
 keyPrefix = () ->
@@ -139,8 +138,6 @@ module.exports = class RedisPlayerQueue
 	###
 	matchMade: (division, waitTime) ->
 		Logger.module("REDIS-QUEUE").debug("matchMade(#{division},#{waitTime})")
-
-		librato.measure('matchmaking wait time', waitTime, {source: "#{config.get('env')}:#{division}"})
 
 		switch division
 			when "bronze" then ts = @ts_bronze

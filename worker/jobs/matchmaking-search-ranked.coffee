@@ -11,7 +11,6 @@ config = require '../../config/config.js'
 Consul = require '../../server/lib/consul'
 env = config.get('env')
 kue = require 'kue'
-librato = require "librato-node"
 
 # SDK
 GameType = require '../../app/sdk/gameType'
@@ -118,9 +117,6 @@ logMatchMade = (token1, token2) ->
 	deckValueDelta = Math.abs((deckValue1-deckValue2))
 	deckValueDelta = Math.min(deckValueDelta,5)
 	matchQuality = 1 - (rankDelta+deckValueDelta)/10
-
-	# record match quality to metrics
-	librato.measure('matchmaking quality', matchQuality, {source: "#{config.get('env')}:#{division1}"})
 
 
 ###*

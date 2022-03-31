@@ -10,7 +10,6 @@ Promise = require 'bluebird'
 Logger = require '../app/common/logger'
 exceptionReporter = require '@counterplay/exception-reporter'
 shutdown = require './shutdown'
-librato = require './lib/librato'
 mail = require './mailer'
 Promise.promisifyAll(mail)
 
@@ -91,19 +90,10 @@ setupProduction = () ->
 							server.connected = true
 							Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
 
-###
-Setup a domain to catch any errors
-###
-d = require('domain').create()
+process.on 'uncaughtException', (err) ->
+	shutdown.errorShutdown(err)
 
-# Unhandled Error Catch All aka 'crash'
-# Will notify exceptionReporter, send email alert, then shutdown
-d.on 'error', shutdown.errorShutdown
-
-# Any unhandled sync/async error in the following code *execution* will be handled by domain
-d.run () ->
-	# Start up server in development/production mode
-	if config.isDevelopment()
-		setupDevelopment()
-	if config.isProduction()
-		setupProduction()
+if config.isDevelopment()
+	setupDevelopment()
+if config.isProduction()
+	setupProduction()

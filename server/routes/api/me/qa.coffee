@@ -51,7 +51,7 @@ AWS.config.update
 	accessKeyId: config.get("s3_archive.key")
 	secretAccessKey: config.get("s3_archive.secret")
 s3 = new AWS.S3()
-Promise.promisifyAll(s3)
+# Promise.promisifyAll(s3)
 
 rankedQueue = new Redis.PlayerQueue(Redis.Redis, {name:'ranked'})
 router = express.Router()

@@ -29,7 +29,7 @@ AWS.config.update
 
 # create a S3 API client
 s3 = new AWS.S3()
-Promise.promisifyAll(s3)
+#Promise.promisifyAll(s3)
 
 # async promise to get client template
 loadClientLogsHandlebarsTemplateAsync = new Promise (resolve,reject) ->
