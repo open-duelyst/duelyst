@@ -90,21 +90,8 @@ UtilityGameMenuItemView = require 'app/ui/views/item/utility_game_menu'
 EscGameMenuItemView = require 'app/ui/views/item/esc_game_menu'
 EscMainMenuItemView = require 'app/ui/views/item/esc_main_menu'
 
-# Note both views will still get bundled via Browserify
-# This does not work as expected and evaluates at runtime
-if process.env.BNEA_ENABLED
-	LoginMenuItemView = require 'app/ui/views2/bnea/bnea_login_menu'
-else
-	LoginMenuItemView = require 'app/ui/views/item/login_menu'
+LoginMenuItemView = require 'app/ui/views/item/login_menu'
 
-if process.env.BNEA_ENABLED
-	BneaWelcomeItemView = require 'app/ui/views2/bnea/bnea_welcome'
-	BneaLinkingItemView = require 'app/ui/views2/bnea/bnea_linking'
-	BneaRelinkingItemView = require 'app/ui/views2/bnea/bnea_relinking'
-	BneaDoneItemView = require 'app/ui/views2/bnea/bnea_done'
-	BneaSteamLinkingItemView = require 'app/ui/views2/bnea/bnea_steam_linking'
-	BneaTermsItemView = require 'app/ui/views2/bnea/bnea_terms'
-	Storage.set('bneaLinked', true)
 
 Discord = if window.isDesktop then require('app/common/discord') else null
 

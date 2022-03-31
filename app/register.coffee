@@ -64,15 +64,6 @@ EscMainMenuItemView = require 'app/ui/views/item/esc_main_menu'
 # LoginMenuItemView = require 'app/ui/views2/bnea/bnea_login_menu'
 LoginMenuItemView = require 'app/ui/views/item/login_menu'
 
-if process.env.BNEA_ENABLED
-	BneaWelcomeItemView = require 'app/ui/views2/bnea/bnea_welcome'
-	BneaLinkingItemView = require 'app/ui/views2/bnea/bnea_linking'
-	BneaRelinkingItemView = require 'app/ui/views2/bnea/bnea_relinking'
-	BneaDoneItemView = require 'app/ui/views2/bnea/bnea_done'
-	BneaSteamLinkingItemView = require 'app/ui/views2/bnea/bnea_steam_linking'
-	BneaTermsItemView = require 'app/ui/views2/bnea/bnea_terms'
-	Storage.set('bneaLinked', true)
-
 SelectUsernameItemView = require 'app/ui/views/item/select_username'
 
 Scene = require 'app/view/Scene'

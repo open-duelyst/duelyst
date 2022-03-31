@@ -76,15 +76,15 @@ bundler.transform(envify({
 	RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),
 	BUGSNAG_WEB: config.get('bugsnag.web_key'),
 	BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
-	BNEA_ENABLED: config.get('bnea.enabled'),
-	BNEA_API_URL: config.get('bnea.apiUrl'),
-	BNEA_APP_ID: config.get('bnea.clientAppId'),
-	BNEA_APP_SECRET: config.get('bnea.clientAppSecret'),
-	BNEA_REGISTRATION_SOURCE: config.get('bnea.registrationSource'),
-	BNEA_LANDING_PAGE_URL: config.get('bnea.landingPageUrl'),
-	BNEA_REFERRER_PAGE_URLS: config.get('bnea.referrerPageUrls'),
-	BNEA_TRACKING_PIXELS_ENABLED: config.get('bnea.trackingPixelsEnabled'),
-	STEAM_APP_ID: config.get('steam.appId')
+	BNEA_ENABLED: false,
+	BNEA_API_URL: '',
+	BNEA_APP_ID: '',
+	BNEA_APP_SECRET: '',
+	BNEA_REGISTRATION_SOURCE: '',
+	BNEA_LANDING_PAGE_URL: '',
+	BNEA_REFERRER_PAGE_URLS: '',
+	BNEA_TRACKING_PIXELS_ENABLED: '',
+	STEAM_APP_ID: ''
 }))
 // bundler.transform(babelify, {
 // 	compact: false

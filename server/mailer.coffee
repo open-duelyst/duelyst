@@ -17,9 +17,9 @@ env = config.get('env')
 if env is 'development'
 	base_url = "http://localhost:#{config.get('port')}"
 else if env is 'staging'
-	base_url = "https://830f78e090fe8aec00891405dfc14.duelyst.com"
+	base_url = ""
 else if env is 'production'
-	base_url = "https://play.duelyst.com"
+	base_url = ""
 
 class Email
 
@@ -30,8 +30,8 @@ class Email
 			host: 'smtp.mandrillapp.com'
 			port: 587
 			auth:
-				user: 'servers@counterplay.co'
-				pass: 'Ou7944rhlD_LokLeF8KPRw'
+				user: ''
+				pass: ''
 
 	loadTemplates: () ->
 		try

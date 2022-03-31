@@ -27,9 +27,6 @@ whenLocalizationReady.then ()->
 	GameDataManager = require("app/ui/managers/game_data_manager")
 	CrateManager = require("app/ui/managers/crate_manager")
 
-	# BNEA library and config
-	bnea = require('server/lib/bnea')()
-
 	Storage = require('app/common/storage')
 
 	i18next = require('i18next')
@@ -1285,124 +1282,9 @@ whenLocalizationReady.then ()->
 			);
 
 		qaMiscButtons['Fake Twitch Drop'] = () ->
-			bnea.accountInfo(Session.bneaToken)
-			.then (data) ->
-				bneaId = data.body.data.id
 
-				request = $.ajax(
-					url: process.env.API_URL + "/api/me/qa/bnea/fake_item_inject",
-					data: JSON.stringify({
-						bnea_id: bneaId,
-						items: [
-#							{
-#								"item_id": "epic_key",
-#								"quantity": 1,
-#								"description": "from twitch drop 2"
-#							},
-#							{
-#								"item_id": "rare_key",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "core_orb",
-#								"quantity": 3,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "expansion_orb",
-#								"quantity": 3,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "core_orb",
-#								"quantity": 2,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "expansion_orb",
-#								"quantity": 2,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "common_key",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "core_orb",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "expansion_orb",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "gold_box",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "spirit_box",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-#							{
-#								"item_id": "emote",
-#								"quantity": 1,
-#								"description": "from twitch drop"
-#							},
-							{
-								"item_id": "rare_key",
-								"quantity": 1 #,
-								"source": "TWITCH_DROP"
-							}
-						]
-					}),
-					type: 'POST',
-					contentType: 'application/json',
-					dataType: 'json'
-				)
-
-				request.done((data)->
-					alert("Success: Reenter main menu to see reward")
-				)
-				request.fail((response) ->
-					console.dir(response)
-					alert("Failed: Could enter reward:\n#{response.responseJSON.message}")
-				);
 
 		qaMiscButtons['Fake Twitch Commerce'] = () ->
-			bnea.accountInfo(Session.bneaToken)
-			.then (data) ->
-				bneaId = data.body.data.id
-
-				request = $.ajax(
-					url: process.env.API_URL + "/api/me/qa/bnea/fake_item_inject",
-					data: JSON.stringify({
-						bnea_id: bneaId,
-						items: [
-							{
-								"item_id": "core_orb",
-								"quantity": 3,
-								"source": "TWITCH_COMMERCE"
-							}
-						]
-					}),
-					type: 'POST',
-					contentType: 'application/json',
-					dataType: 'json'
-				)
-
-				request.done((data)->
-					alert("Success: Reenter main menu to see reward")
-				)
-				request.fail((response) ->
-					console.dir(response)
-					alert("Failed: Could enter reward:\n#{response.responseJSON.message}")
-				);
 
 		qaMiscButtons['Change Language'] = () ->
 			languageKey = prompt("Language key to change to:\n",'en')
@@ -1495,34 +1377,6 @@ whenLocalizationReady.then ()->
 			);
 
 		qaMiscButtons['Simulate BN Wallet Update'] = () ->
-
-			bnea.accountInfo(Session.bneaToken)
-			.then (data) ->
-				bneaId = data.body.data.id
-
-				request = $.ajax(
-					url: process.env.API_URL + "/api/me/qa/bnea/wallet_update",
-					type: 'post',
-					data: JSON.stringify({
-						bnea_id:bneaId,
-						type: "fulfillment",
-						transaction_id: 't1499279061',
-						data: {
-							currency_type: "usd",
-							currency_amount: 10,
-							total_platinum_amount: 100
-						}
-					}),
-					contentType: 'application/json',
-					dataType: 'json'
-				)
-
-				request.done((data)->
-					alert(JSON.stringify(data,null,2))
-				)
-				request.fail((response) ->
-					alert("Failed: Could not retrieve user charge log:\n#{JSON.stringify(response,null,2)}")
-				);
 
 		# User qa buttons
 		qaQuestFolder.add(qaQuestButtons,"Reset Daily Quests")
