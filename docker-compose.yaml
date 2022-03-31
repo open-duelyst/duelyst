@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  redis:
+    image: "redis"
+    ports:
+      - "6379:6379"
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: duelyst
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
