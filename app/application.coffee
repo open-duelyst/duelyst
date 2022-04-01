@@ -563,20 +563,9 @@ App.main = ->
 					})
 					return Promise.resolve()
 				)
-			else if !Session.isBneaLinked()
-				# Show welcome screen
-				return App._showBneaWelcome()
 			else
 				if !App.getIsLoggedIn()
-					# special case of partial login if steam is logged in and duelyst<>bnea link exists, show steam linking menu
-					if window.isSteam && Storage.get('token')
-						return App._showBneaSteamLinking()
-					# kongregate silently logs in so we should never see a login screen
-					# we instead do nothing, this only occurs if our API fails during silent login
-					else if window.isKongregate
-						return Promise.resolve()
-					else
-						return App._showLoginMenu()
+					return App._showLoginMenu()
 				else
 					# all good, show main menu
 					return App.managersReadyDeferred.promise.then(() ->

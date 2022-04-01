@@ -21,10 +21,6 @@ class Session extends EventEmitter
 		@username = null
 		@analyticsData = null
 		@justRegistered = null
-		@steamTicket = null
-		@bneaToken = null
-		@bneaRefresh = null
-		@bneaJustLinked = null
 		@_cachedPremiumBalance = null
 		return
 
@@ -107,7 +103,6 @@ class Session extends EventEmitter
 		.then (res) =>
 			@analyticsData = res.analytics_data
 			@token = res.token
-			@bneaAssociatedAt = res.bnea_associated_at
 			return @_authFirebase(@token)
 		.then (res) =>
 			debug(res)
@@ -115,7 +110,7 @@ class Session extends EventEmitter
 			@username = res.auth.username
 			@expires = res.expires
 
-			data = {token: @token, userId: @userId,analyticsData:@analyticsData, bneaAssociated: @bneaAssociatedAt}
+			data = {token: @token, userId: @userId, analyticsData:@analyticsData}
 			if !silent
 				@emit 'login', data
 			return data
@@ -298,9 +293,6 @@ class Session extends EventEmitter
 				throw new Error('Please try again')
 
 	isAuthenticated: (token) ->
-		if window.isSteam
-			return @isAuthenticatedSteamBnea()
-
 		if not token? then return Promise.resolve(false)
 
 		# decode with Firebase
@@ -364,7 +356,7 @@ class Session extends EventEmitter
 			@expires = decodedToken.expires
 			# emit login event with whatever data we currently have
 			if !silent
-				@emit 'login', {@token, @analyticsData, @userId, @steamTicket, @bneaToken, @bneaRefresh}
+				@emit 'login', {@token, @analyticsData, @userId}
 			return true
 		.catch (e) ->
 			debug("refreshToken:failed #{e.message}")
@@ -389,17 +381,9 @@ class Session extends EventEmitter
 	saveToStorage: () ->
 		if @token
 			Storage.set('token', @token)
-		if window.isSteam && @steamTicket
-			Storage.set('steam_ticket', @steamTicket)
-		if process.env.BNEA_ENABLED && @bneaToken && @bneaRefresh
-			Storage.set('bneaToken', @bneaToken)
-			Storage.set('bneaRefresh', @bneaRefresh)
 
 	clearStorage: () ->
 		Storage.remove('token')
-		Storage.remove('steam_ticket')
-		Storage.remove('bneaToken')
-		Storage.remove('bneaRefresh')
 
 module.exports = new Session()
 
