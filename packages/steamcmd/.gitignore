@@ -1,0 +1,5 @@
+node_modules
+dist
+test/fixtures/dest
+test/fixtures/Electron.app
+test/fixtures/output

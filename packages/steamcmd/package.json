@@ -1,0 +1,22 @@
+{
+  "name": "@counterplay/steamcmd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "standard index.js",
+    "test": "blue-tape test/index.js | faucet"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "fs-extra": "^0.30.0",
+    "lodash.merge": "^4.4.0"
+  },
+  "devDependencies": {
+    "blue-tape": "^0.2.0",
+    "faucet": "0.0.1",
+    "standard": "^7.1.2"
+  }
+}
