@@ -83,7 +83,7 @@ logUserIn = (id) ->
 			v: 0
 			iat: Math.floor(new Date().getTime() / 1000)
 		options =
-			expiresInMinutes: config.get('tokenExpiration')
+			expiresIn: config.get('tokenExpiration')
 			algorithm: 'HS256'
 
 		@token = jwt.sign(payload, firebaseToken, options)
@@ -169,7 +169,7 @@ router.post "/session/", (req, res, next) ->
 			# subject
 			# issuer
 			options =
-				expiresInMinutes: config.get('tokenExpiration')
+				expiresIn: config.get('tokenExpiration')
 				algorithm: 'HS256'
 
 			# We are encoding the payload inside the token

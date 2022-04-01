@@ -34,7 +34,7 @@ router = express.Router()
 # 			iat: Math.floor(new Date().getTime() / 1000)
 #
 # 		options =
-# 			expiresInMinutes: 30
+# 			expiresIn: 30
 # 			algorithm: 'HS256'
 #
 # 		# We are encoding the payload inside the token
@@ -100,7 +100,7 @@ router.get "/:player_id", (req, res, next) ->
 			iat: Math.floor(new Date().getTime() / 1000)
 
 		options =
-			expiresInMinutes: 30
+			expiresIn: 30
 			algorithm: 'HS256'
 
 		# We are encoding the payload inside the token
