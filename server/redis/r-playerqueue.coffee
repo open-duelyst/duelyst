@@ -156,7 +156,7 @@ module.exports = class RedisPlayerQueue
 		if waitTime > 600000 # 10 minutes in ms
 			waitTime = 600000
 
-		# TODO: want to validate the timestamp as bad data will fuck up calculations
+		# TODO: want to validate the timestamp as bad data will mess up calculations
 		# recording a hit with the timestamp as the value
 		ts.hit(waitTime)
 		return

@@ -124,7 +124,7 @@ function parseCFCPart (part) {
 	}
 	part = part.replace(/[\s]*card\.addFXTemplate\(FXFactory\.fxTemplateFromIdentifiers\(\{[\s\S]*\}\)\)/g, "");
 
-	// replace some old shit
+	// replace some old stuff
 	part = part.replace(/[\s]*card\.attackDamageZone[\s]*=[\s]*null/g, "");
 	part = part.replace(/[\s]*card\.attackWeakDamageZone[\s]*=[\s]*null/g, "");
 
