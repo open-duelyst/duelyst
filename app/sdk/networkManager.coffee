@@ -69,9 +69,9 @@ class NetworkManager
 			# if no game server address was provided, connect to the current host
 			if !gameServerAddress?
 				Logger.module("SDK").debug "NetworkManager:connecting to dev server #{gameServerAddress}"
-				@socketManager = io.Manager("#{window.location.hostname}:8000", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
+				@socketManager = new io.Manager("#{window.location.hostname}:8000", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
 			else
-				@socketManager = io.Manager("wss://#{gameServerAddress}", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
+				@socketManager = new io.Manager("wss://#{gameServerAddress}", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
 			# Connect to a specific socket on the host, currently /
 			@socket = @socketManager.socket('/', {forceNew: true})
 
