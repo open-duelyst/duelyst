@@ -170,7 +170,7 @@ App._userNavLockId = "AppUserNavLockId"
 App._queryStringParams = querystring.parse(location.search) # query string params
 
 App.getIsLoggedIn = ->
-	return Storage.get('token') && Storage.get('bneaToken')
+	return Storage.get('token')# && Storage.get('bneaToken')
 
 # region AI DEV ROUTES #
 
@@ -594,9 +594,9 @@ App.main = ->
 						# user has accepted, check if they have sent notification
 						else
 							if !ProfileManager.getInstance().get(storageSentAcceptedEulaNotify)
-								bnea.sendAcceptances(Session.bneaToken, window.isSteam)
-								.then (res) ->
-									ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
+								# bnea.sendAcceptances(Session.bneaToken, window.isSteam)
+								# .then (res) ->
+								ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
 
 
 						# check for an active game
@@ -754,26 +754,27 @@ App._showBneaTerms = (options = {}) ->
 			# show main scene
 			viewPromise = Scene.getInstance().showMain()
 
-			bneaTermsItemView = new BneaTermsItemView(options)
-			bneaTermsItemView.listenToOnce(bneaTermsItemView, "success", () =>
-				if App.getIsLoggedIn()
-					if window.isSteam
-						ProfileManager.getInstance().set('hasAcceptedSteamEula', true)
-					else
-						ProfileManager.getInstance().set('hasAcceptedEula', true)
-					App.main()
+			# bneaTermsItemView = new BneaTermsItemView(options)
+			# bneaTermsItemView.listenToOnce(bneaTermsItemView, "success", () =>
+			if App.getIsLoggedIn()
+				if window.isSteam
+					ProfileManager.getInstance().set('hasAcceptedSteamEula', true)
 				else
-					if window.isSteam
-						window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedSteamEula', true)
-					else
-						window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
-					App._showLoginMenu({type: 'register'})
-			)
-			contentPromise = NavigationManager.getInstance().showContentView(bneaTermsItemView)
+					ProfileManager.getInstance().set('hasAcceptedEula', true)
+				mainPromise = App.main()
+			else
+				if window.isSteam
+					window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedSteamEula', true)
+				else
+					window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
+				mainPromise = App._showLoginMenu({type: 'register'})
+			# )
+			# contentPromise = NavigationManager.getInstance().showContentView(bneaTermsItemView)
 
 			return Promise.all([
 				viewPromise,
-				contentPromise
+				# contentPromise
+				mainPromise
 			])
 		)
 	)
