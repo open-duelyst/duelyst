@@ -178,7 +178,8 @@
   },
   "scripts": {
     "api": "node ./bin/api",
-    "server": "node ./bin/server",
+    "game": "node ./bin/game",
+    "sp": "node ./bin/single_player",
     "worker": "node ./bin/worker",
     "migrate:rollback": "cd ./server && knex migrate:rollback",
     "migrate:latest": "cd ./server && knex migrate:latest",
