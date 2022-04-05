@@ -382,6 +382,8 @@ class Session extends EventEmitter
 		if @token
 			Storage.set('token', @token)
 
+	getCachedBneaAccountBalance: () -> 0
+
 	clearStorage: () ->
 		Storage.remove('token')
 

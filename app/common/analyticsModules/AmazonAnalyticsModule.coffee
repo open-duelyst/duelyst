@@ -21,10 +21,12 @@ class AmazonAnalyticsModule
 
 
 	@isActive: () ->
-		if !@_deactivate && AWS? && AMA?
-			return true
-		else
-			return false
+
+    return false
+		# if !@_deactivate && AWS? && AMA?
+		# 	return true
+		# else
+		# 	return false
 
 	@initialize: () ->
 		@initialized = true
@@ -41,11 +43,11 @@ class AmazonAnalyticsModule
 	@_initializeAMAManager: () ->
 		if @_mobileAnalyticsManager?
 			console.error("Attempted to initialize AMA Manager when it already exists")
-			return;
+			return
 
 		if not @_identifyAttributes?.playerId?
 			console.error("Attempted to initialize AMA Manager before a player id was set")
-			return;
+			return
 
 		appPackageName = "com.counterplay.duelyst"
 		if window.isSteam
@@ -242,4 +244,4 @@ class AmazonAnalyticsModule
 
 
 
-module.exports = AmazonAnalyticsModule;
+module.exports = AmazonAnalyticsModule

@@ -139,7 +139,7 @@ function ajaxHandler (event, jqxhr, settings, thrownError) {
 }
 
 function notify () {
-  bugsnag.notifyException.apply(null, arguments)
+  // bugsnag.notifyException.apply(null, arguments)
 }
 
 function leaveBreadcrumb () {

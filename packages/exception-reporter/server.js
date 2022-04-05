@@ -27,7 +27,7 @@ function onBeforeNotify (payload) {
 }
 
 function notify () {
-  bugsnag.notify.apply(null, arguments)
+  // bugsnag.notify.apply(null, arguments)
 }
 
 function catchHandler (err) {
