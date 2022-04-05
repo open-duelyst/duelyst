@@ -75,7 +75,7 @@ server = http.createServer (req, res) ->
 		res.end()
 
 # io server setup, binds to http server
-io = require('socket.io').listen(server)
+io = require('socket.io')().listen(server)
 module.exports = io
 server.listen config.get('game_port'), () ->
 	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
