@@ -30,9 +30,6 @@ config = require '../config/config.js'
 env = config.get('env')
 firebaseToken = config.get('firebaseToken')
 
-# use this function as a temporary measure to archive game to S3 in case of active games never finishing
-uploadGameToS3 = require("../worker/upload_game_to_s3")
-
 # Boots up a basic HTTP server on port 8080
 # Responds to /health endpoint with status 200
 # Otherwise responds with status 404
@@ -685,7 +682,6 @@ destroyGameSessionIfNoConnectionsLeft = (gameId,persist=false)->
 			Promise.all([
 				GameManager.saveGameSession(gameId,data),
 				GameManager.saveGameMouseUIData(gameId,mouseAndUIEventsData),
-				uploadGameToS3(gameId,data,mouseAndUIEventsData)
 			])
 			.then (results) ->
 				Logger.module("...").debug "[G:#{gameId}]", "destroyGameSessionIfNoConnectionsLeft -> unfinished Game Archived to S3: #{results[1]}".green
