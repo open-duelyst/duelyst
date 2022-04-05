@@ -72,7 +72,17 @@ server = http.createServer (req, res) ->
 		res.end()
 
 # io server setup, binds to http server
-io = require('socket.io')().listen(server)
+io = require('socket.io')().listen(server, {
+  cors: {
+    origin: "*"
+  }
+})
+io.use(
+  ioJwt.authorize(
+    secret:firebaseToken
+    timeout: 15000
+  )
+)
 module.exports = io
 server.listen config.get('game_port'), () ->
 	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
@@ -115,10 +125,7 @@ healthPing = io
 
 # run main io.sockets inside of the domain
 d.run () ->
-	io.sockets.on("connection", ioJwt.authorize(
-		secret:firebaseToken
-		timeout: 15000
-	)).on "authenticated", (socket) ->
+	io.sockets.on "authenticated", (socket) ->
 
 		# add the socket to the error domain
 		d.add(socket)
