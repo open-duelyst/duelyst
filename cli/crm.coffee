@@ -3266,6 +3266,7 @@ program
 		console.log prettyError.render(e)
 		callback(e)
 
+"""
 program
 .command 'announcements:migrate_announcement'
 .description 'Migrates an in-game announcement to the current environment from the staging environment'
@@ -3353,6 +3354,7 @@ program
 
 		console.log prettyError.render(e)
 		callback(e)
+"""
 
 program
 	.command 'users:gift_crates <username_or_email>'
