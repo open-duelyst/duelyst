@@ -181,6 +181,7 @@
     "game": "node ./bin/game",
     "sp": "node ./bin/single_player",
     "worker": "node ./bin/worker",
+    "worker-ui": "node ./bin/workerui",
     "migrate:rollback": "cd ./server && knex migrate:rollback",
     "migrate:latest": "cd ./server && knex migrate:latest",
     "build": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build --watch=false",

@@ -1255,6 +1255,12 @@ div.shop-product-collection-region {
 		&[data-purchase-type="gold"] {
 			text-align: center;
 		}
+
+		&[data-purchase-type="premium"] {
+			.purchase-controls > .refill {
+				min-height: 5.8rem;
+			}
+		}
 	}
 	.payment-content {
 		width: 100%;

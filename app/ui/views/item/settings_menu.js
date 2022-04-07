@@ -25,8 +25,6 @@ var ProfileManager = require("app/ui/managers/profile_manager");
 var moment = require('moment')
 var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
 var openUrl = require('app/common/openUrl');
-// var BneaKongregateConvertModalView = require('app/ui/views2/bnea/bnea_kongregate_convert');
-var openUrl = require('app/common/openUrl');
 
 var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 
@@ -65,6 +63,7 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 		"$voiceVolume": "#voice-volume",
 		"$effectsVolume": "#effects-volume",
 		"$resetInventorySection": "#reset_inventory_section"
+		// "click .manage-data" : "onManageDataPressed"
   },
 
 	/* Ui events hash */
@@ -96,11 +95,8 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 		"change #voice-volume": "changeVoiceVolume",
 		"change #effects-volume": "changeEffectsVolume",
 		"click .change-username" : "onChangeUsernameClicked",
-		"click .relink-accounts" : "onAccountRelinkingClicked",
-		"click .kongregate-convert" : "onKongregateConvertClicked",
 		"click .reset-inventory" : "onResetAccountInventoryPressed",
 		"click .redeem-gift-code" : "onRedeemGiftCodePressed",
-		"click .manage-data" : "onManageDataPressed"
 	},
 
 	animateIn: Animations.fadeIn,
@@ -179,16 +175,6 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 			this.$el.find(".logout").remove()
 		}
 
-		if (window.isKongregate) {
-			this.$el.find(".logout").remove()
-			this.$el.find(".relink-accounts").parent().remove();
-			if (ProfileManager.getInstance().profile.get("bneaKongregateConverted")) {
-				this.$el.find(".kongregate-convert").parent().remove();
-			}
-		} else {
-			this.$el.find(".kongregate-convert").parent().remove();
-		}
-
 		if (!window.isDesktop) {
 			this.$el.find(".desktop-quit").remove();
 			this.$el.find("#razer-chroma-setting").remove();
@@ -241,26 +227,12 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
 		NavigationManager.getInstance().showDialogView(new ChangeUsernameItemView({model:ProfileManager.getInstance().profile}));
 	},
 
-	onAccountRelinkingClicked: function (e) {
-		EventBus.getInstance().trigger(EVENTS.show_bnea_relinking)
-	},
-
-	onKongregateConvertClicked: function (e) {
-		// NavigationManager.getInstance().showModalView(new BneaKongregateConvertModalView({}));
-	},
-
 	onResetAccountInventoryPressed: function() {
 		NavigationManager.getInstance().showModalView(new AccountInventoryResetModalView());
 	},
 
 	onRedeemGiftCodePressed: function() {
 		NavigationManager.getInstance().showModalView(new RedeemGiftCodeModalView());
-	},
-
-	onManageDataPressed: function() {
-		var url = "https://www.bandainamcoent.com/account/data/";
-
-		openUrl(url);
 	},
 
 	onLogoutClicked: function() {

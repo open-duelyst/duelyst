@@ -94,7 +94,7 @@ var UtilityMainMenuItemView = UtilityMenuItemView.extend({
 
 		this.listenTo(InventoryManager.getInstance().walletModel, "change:gold_amount", this.onUpdateGoldCount);
 		this.listenTo(InventoryManager.getInstance().boosterPacksCollection, "add remove", this.onUpdateBoosters);
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onPremiumCurrencyChange);
+		this.listenTo(InventoryManager.getInstance().walletModel, "change:premium_amount", this.onPremiumCurrencyChange);
 
 		// show new player UI after short delay
 		this._showNewPlayerUITimeoutId = setTimeout(function () {
@@ -112,7 +112,7 @@ var UtilityMainMenuItemView = UtilityMenuItemView.extend({
 
 		this.stopListening(InventoryManager.getInstance().walletModel, "change:gold_amount", this.onUpdateGoldCount);
 		this.stopListening(InventoryManager.getInstance().boosterPacksCollection, "add remove", this.onUpdateBoosters);
-		this.stopListening(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onPremiumCurrencyChange);
+		this.stopListening(InventoryManager.getInstance().walletModel, "change:premium_amount", this.onPremiumCurrencyChange);
 	},
 
 	onLoggedInRender: function () {
@@ -246,7 +246,7 @@ var UtilityMainMenuItemView = UtilityMenuItemView.extend({
 	},
 
 	onPremiumCurrencyChange: function () {
-		this.ui.$diamondCount.text(Session.getCachedBneaAccountBalance())
+		this.ui.$diamondCount.text(InventoryManager.getInstance().getWalletModelPremiumAmount())
 	},
 
 	onUpdateBoosters: function() {
@@ -328,22 +328,22 @@ var UtilityMainMenuItemView = UtilityMenuItemView.extend({
 	},
 
 	onDiamondClicked: _.throttle(function(e) {
-		if (!window.isSteam && !window.isKongregate) {
-			Session.initPremiumPurchase()
-			.then(function (url) {
-				if (window.isDesktop) {
-					window.ipcRenderer.send('create-window', {
-						url: url,
-						width: 920,
-						height: 660
-					})
-				} else {
-					openUrl(url)
-				}
-			})
-		} else {
-			NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
-		}
+		// if (!window.isSteam) {
+		// 	Session.initPremiumPurchase()
+		// 	.then(function (url) {
+		// 		if (window.isDesktop) {
+		// 			window.ipcRenderer.send('create-window', {
+		// 				url: url,
+		// 				width: 920,
+		// 				height: 660
+		// 			})
+		// 		} else {
+		// 			openUrl(url)
+		// 		}
+		// 	})
+		// } else {
+		// 	NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
+		// }
 	},1500, {trailing:false}),
 
 	onClickBoosterPackCollection: function () {

@@ -10,21 +10,6 @@ const Password = t.subtype(t.Str, s => s.length >= 6, 'Password')
 
 const NewPassword = t.subtype(t.Str, s => s.length >= 8, 'New Password')
 
-const BneaPassword = t.subtype(t.Str, s => s.length >= 8, 'BNEA Password')
-
-const BneaRegisterType = t.subtype(t.Str,
-	s => s === 'login' || s === 'register',
-	'BNEA Register Type')
-
-const BneaSourceType = t.subtype(t.Str,
-	s =>
-	s === 'CLIENT-DUEL-PC' ||
-	s === 'STEAM-DUEL-PC' ||
-	s === 'play.duelyst.com' ||
-	s === '830f78e090fe8aec00891405dfc14.duelyst.com' ||
-	s === 'test.duelyst.com',
-	'BNEA Source Type')
-
 const UserId = t.subtype(t.Str, s => {
 	return s.length === 20 && s.match(/^[A-Za-z0-9\-\_]+$/) !== null
 }, 'UserId')
@@ -100,9 +85,6 @@ module.exports = {
 	UserId,
 	Password,
 	NewPassword,
-	BneaPassword,
-	BneaRegisterType,
-	BneaSourceType,
 	Username,
 	ReferralCode,
 	UUID,

@@ -78,6 +78,12 @@ class Session extends EventEmitter
 		@username = token.auth.username
 		@expires = token.expires
 
+	###
+		Show url for purchasing premium currency on external site
+	###
+	initPremiumPurchase: () ->
+		return Promise.resolve("")
+
 	login: (usernameOrEmail, password, silent = false) ->
 		debug("login: #{usernameOrEmail}")
 
@@ -381,8 +387,6 @@ class Session extends EventEmitter
 	saveToStorage: () ->
 		if @token
 			Storage.set('token', @token)
-
-	getCachedBneaAccountBalance: () -> 0
 
 	clearStorage: () ->
 		Storage.remove('token')

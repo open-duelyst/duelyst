@@ -20,7 +20,7 @@ var EscMainMenuItemView = UtilityMenuItemView.extend({
 	onRender: function() {
 		UtilityMenuItemView.prototype.onRender.apply(this, arguments);
 
-		if (window.isSteam || window.isKongregate) {
+		if (window.isSteam) {
 			this.$el.find(".logout").remove();
 		}
 		if (window.isDesktop) {

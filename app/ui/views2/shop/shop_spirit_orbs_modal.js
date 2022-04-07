@@ -56,7 +56,6 @@ var ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
 
 		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
 		this.listenTo(InventoryManager.getInstance().boosterPacksCollection,"add remove",this.onWalletChange);
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onWalletChange);
 
 		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
 
@@ -72,7 +71,7 @@ var ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
 	onWalletChange: function() {
 		this.ui.gold_amount.text(InventoryManager.getInstance().walletModel.get("gold_amount"));
 		this.ui.spirit_orb_count.text(InventoryManager.getInstance().boosterPacksCollection.length);
-		this.ui.premium_amount.text(Session.getCachedBneaAccountBalance());
+		this.ui.premium_amount.text(InventoryManager.getInstance().getWalletModelPremiumAmount());
 	}
 
 	/* endregion EVENTS */

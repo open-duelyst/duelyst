@@ -18,11 +18,6 @@ const loginSteamInput = t.struct({
 	steam_friends: t.maybe(t.Array)
 })
 
-const loginFacebookInput = t.struct({
-	fb_access_token: t.Str,
-	fb_signed_request: t.maybe(t.Str)
-})
-
 const loginGooglePlayInput = t.struct({
 	google_play_id: t.Str,
 	google_auth_token: t.Str
@@ -51,46 +46,12 @@ const signupInput = t.struct({
 	is_desktop: t.maybe(t.Bool)
 })
 
-const bneaSignupInput = t.struct({
-	password: types.BneaPassword,
-	email: types.Email,
-	birthdate_year: t.Num,
-	birthdate_month: t.Num,
-	birthdate_day: t.Num,
-	username: t.maybe(types.Username),
-	keycode: t.maybe(t.Str),
-	referral_code: t.maybe(types.ReferralCode),
-	friend_referral_code: t.maybe(types.Username),
-	campaign_data: t.maybe(types.CampaignData),
-	captcha: t.maybe(t.Str),
-	is_desktop: t.maybe(t.Bool),
-	subscriptions: t.maybe(t.Array),
-	source: t.maybe(t.Str)
-})
-
 const associateSteamInput = t.struct({
 	password: types.Password,
 	email: t.maybe(types.Email),
 	username: t.maybe(types.Username),
 	steam_ticket: t.Str,
 	steam_friends: t.maybe(t.Array)
-})
-
-const associateBneaInput = t.struct({
-	password: types.Password,
-	email: t.maybe(types.Email),
-	username: t.maybe(types.Username),
-	bnea: t.maybe(t.Object)
-})
-
-const linkBneaInput = t.struct({
-	password: t.Str,
-	email: types.Email,
-	type: t.Str,
-	birthdate_year: t.maybe(t.Num),
-	birthdate_month: t.maybe(t.Num),
-	birthdate_day: t.maybe(t.Num),
-	source: t.maybe(types.BneaSourceType)
 })
 
 const associateGooglePlayInput = t.struct({
@@ -118,18 +79,6 @@ const signupSteamInput = t.struct({
 	campaign_data: t.maybe(types.CampaignData),
 	captcha: t.maybe(t.Str),
 	steam_friends: t.maybe(t.Array)
-})
-
-const signupFacebookInput = t.struct({
-	email: types.Email,
-	username: types.Username,
-	fb_access_token: t.Str,
-	fb_signed_request: t.maybe(t.Str),
-	keycode: t.maybe(t.Str),
-	referral_code: t.maybe(types.ReferralCode),
-	friend_referral_code: t.maybe(types.Username),
-	campaign_data: t.maybe(types.CampaignData),
-	captcha: t.maybe(t.Str)
 })
 
 const signupGooglePlayInput = t.struct({
@@ -227,7 +176,6 @@ const purchaseInput = t.struct({
 const premiumPurchaseInput = t.struct({
 	card_token: t.maybe(t.Str),
 	product_sku: t.maybe(types.ProductSku),
-	bn_token: t.maybe(t.Str),
 	sale_id: t.maybe(t.Str)
 })
 
@@ -240,18 +188,13 @@ module.exports = {
 	token,
 	loginInput,
 	loginSteamInput,
-	loginFacebookInput,
 	loginGooglePlayInput,
 	loginGameCenterInput,
 	signupInput,
-	bneaSignupInput,
 	associateSteamInput,
-	associateBneaInput,
 	associateGooglePlayInput,
 	associateGameCenterInput,
-	linkBneaInput,
 	signupSteamInput,
-	signupFacebookInput,
 	signupGooglePlayInput,
 	signupGameCenterInput,
 	signupKeychainInput,

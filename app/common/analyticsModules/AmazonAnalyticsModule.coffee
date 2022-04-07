@@ -54,8 +54,6 @@ class AmazonAnalyticsModule
 			appPackageName = "com.counterplay.duelyst_steam"
 		else if window.isDesktop
 			appPackageName = "com.counterplay.duelyst_client"
-		else if window.isKongregate
-			appPackageName = "com.counterplay.duelyst_kongregate"
 
 		options = {
 			appId : process.env.AMI_ID

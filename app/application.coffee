@@ -8,10 +8,6 @@ exceptionReporter.init({
 	isElectron: window.isDesktop
 })
 
-# Temporary runtime override to setup Facebook integration
-# we only enable when loaded from Facebook portal
-window.isFacebook = if window.location.host == 'apps.facebook.com' then true
-
 # User Agent Parsing
 UAParser = require 'ua-parser-js'
 uaparser = new UAParser()
@@ -170,7 +166,7 @@ App._userNavLockId = "AppUserNavLockId"
 App._queryStringParams = querystring.parse(location.search) # query string params
 
 App.getIsLoggedIn = ->
-	return Storage.get('token')# && Storage.get('bneaToken')
+	return Storage.get('token')
 
 # region AI DEV ROUTES #
 
@@ -573,7 +569,7 @@ App.main = ->
 						ChatManager.getInstance().setStatus(ChatManager.STATUS_LOADING)
 
 						# EULA ACCEPTANCE CHECK HERE SO IT FIRES FOR ALREADY LOGGED IN PLAYERS
-						
+
 						# strings used for session storage and profile storage
 						sessionAcceptedEula = Storage.namespace() + '.hasAcceptedEula'
 						storageAcceptedEula = 'hasAcceptedEula'
@@ -590,12 +586,11 @@ App.main = ->
 
 						# check in profile storage if the user has accepted terms
 						if !ProfileManager.getInstance().get(storageAcceptedEula)
-							return App._showBneaTerms()
+							# TODO - This is not actually good, but we need to make a new terms and conditions page to replace BNEA one
+							return App._showTerms()
 						# user has accepted, check if they have sent notification
 						else
 							if !ProfileManager.getInstance().get(storageSentAcceptedEulaNotify)
-								# bnea.sendAcceptances(Session.bneaToken, window.isSteam)
-								# .then (res) ->
 								ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
 
 
@@ -677,26 +672,6 @@ App._showLoginMenu = (options) ->
 		)
 	)
 
-App._showBneaSteamLinking = (options) ->
-	Logger.module("APPLICATION").log("App:_showBneaSteamLinking")
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Steam Linking",{ path: "/#bnea_steam_linking" })
-
-			# show main scene
-			viewPromise = Scene.getInstance().showMain()
-
-			# show BNEA steam linking
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaSteamLinkingItemView(options))
-
-			return Promise.all([
-				viewPromise,
-				contentPromise
-			])
-		)
-	)
-
 App._showSelectUsername = (data) ->
 	Logger.module("APPLICATION").log("App:_showSelectUsername")
 	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
@@ -726,36 +701,13 @@ App._showSelectUsername = (data) ->
 		)
 	)
 
-App._showBneaWelcome = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaWelcome")
-	# in this case, mark that there is a legacy duelyst log in token to show appropriate screen and skip any duelyst legacy login
-	options.isLegacyLoggedIn = Storage.get('token')
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Welcome",{ path: "/#bnea_welcome" })
-
-			# show main scene
-			viewPromise = Scene.getInstance().showMain()
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaWelcomeItemView(options))
-
-			return Promise.all([
-				viewPromise,
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaTerms = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaTerms")
+App._showTerms = (options = {}) ->
+	Logger.module("APPLICATION").log("App:_showTerms")
 	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
 		(() ->
 			# show main scene
 			viewPromise = Scene.getInstance().showMain()
 
-			# bneaTermsItemView = new BneaTermsItemView(options)
-			# bneaTermsItemView.listenToOnce(bneaTermsItemView, "success", () =>
 			if App.getIsLoggedIn()
 				if window.isSteam
 					ProfileManager.getInstance().set('hasAcceptedSteamEula', true)
@@ -768,8 +720,6 @@ App._showBneaTerms = (options = {}) ->
 				else
 					window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
 				mainPromise = App._showLoginMenu({type: 'register'})
-			# )
-			# contentPromise = NavigationManager.getInstance().showContentView(bneaTermsItemView)
 
 			return Promise.all([
 				viewPromise,
@@ -778,48 +728,6 @@ App._showBneaTerms = (options = {}) ->
 			])
 		)
 	)
-
-App._showBneaLinking = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaLinking")
-	# in this case, mark that there is a legacy duelyst log in token to show appropriate screen and skip any duelyst legacy login
-	options.isLegacyLoggedIn = Storage.get('token')
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Linking",{ path: "/#bnea_linking" })
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaLinkingItemView(options))
-
-			return Promise.all([
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaRelinking = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaRelinking")
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Relinking",{ path: "/#bnea_relinking" })
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaRelinkingItemView(options))
-
-			return Promise.all([
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaDone = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaDone")
-	# analytics call
-	Analytics.page("BNEA Done",{ path: "/#bnea_done" })
-	# show dialog
-	contentPromise = NavigationManager.getInstance().showContentView(new BneaDoneItemView(options))
-	return Promise.all([
-		contentPromise
-	])
 
 App._showTutorialLessons = (lastCompletedChallenge) ->
 	Logger.module("APPLICATION").log("App:_showTutorialChallenges")
@@ -1093,18 +1001,6 @@ App.onLogin = (data) ->
 	# save token to localStorage
 	Storage.set('token', data.token)
 
-	# if bnea enabled, save token and refresh
-	if process.env.BNEA_ENABLED
-		# we need to determine if we have a regular login or a bnea login here
-		# as they will both fire the login event. in regular login, we set bneaLinked to false
-		# otherwise we set params on localStorage and continue
-		if data.bneaToken && data.bneaRefresh
-			Storage.set('bneaLinked', true)
-			Storage.set('bneaToken', data.bneaToken)
-			Storage.set('bneaRefresh', data.bneaRefresh)
-		else
-			Storage.get('bneaLinked', false)
-
 	# if steam,  save steam ticket to localStorage
 	if window.isSteam
 		Storage.set('steam_ticket', data.steamTicket)
@@ -1174,10 +1070,6 @@ App.onLogin = (data) ->
 
 		# we're all done loading managers
 		App.managersReadyDeferred.resolve()
-
-		# send signal to Kongregate that loading / login is complete
-		if window.isKongregate
-			kongregate.stats.submit("loaded", 1)
 
 		# setup analytics
 		App.onLoginAnalyticsSetup(data)
@@ -1319,11 +1211,6 @@ App.onLogout = () ->
 
 	# remove token
 	Storage.remove('token')
-
-	# remove bnea tokens
-	if process.env.BNEA_ENABLED
-		Storage.remove('bneaToken')
-		Storage.remove('bneaRefresh')
 
 	# remove ajax headers with new call to ajaxSetup
 	$.ajaxSetup
@@ -3420,23 +3307,6 @@ App.showFreeCardOfTheDayReward = (opts)->
 				})
 				return Promise.resolve()
 
-App._onPremiumCurrencyDirty = (opts)->
-	Session.getBneaAccountBalance()
-	.then (premiumCurrencyAmount)->
-		ProfileManager.getInstance().set("premiumCurrencyDirty",false)
-		EventBus.getInstance().trigger(EVENTS.premium_currency_amount_change, {type: EVENTS.premium_currency_amount_change, amount:premiumCurrencyAmount})
-
-App.onFinalizeBneaSteamTxn = (opts)->
-	bnea.steamFinalizeTxn(Session.bneaToken, {
-		order_id: opts.order_id
-	})
-	.then (res) ->
-		ProfileManager.getInstance().set("finalizeSteamBneaTxn",null)
-		Logger.module("STEAM").log "App:onFinalizeBneaSteamTxn success"
-	.catch (e) ->
-		ProfileManager.getInstance().set("finalizeSteamBneaTxn",null)
-		Logger.module("STEAM").log "App:onFinalizeBneaSteamTxn failed #{e.message}"
-
 #
 # ---- User Triggered Navigation ---- #
 #
@@ -3560,11 +3430,7 @@ App.bindEvents = () ->
 	Session.on('error', App.onSessionError)
 
 	EventBus.getInstance().on(EVENTS.show_login, App._showLoginMenu, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_welcome, App._showBneaWelcome, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_linking, App._showBneaLinking, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_relinking, App._showBneaRelinking, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_done, App._showBneaDone, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_terms, App._showBneaTerms, App)
+	EventBus.getInstance().on(EVENTS.show_terms, App._showTerms, App)
 
 	EventBus.getInstance().on(EVENTS.show_play, App.showPlay, App)
 	EventBus.getInstance().on(EVENTS.show_watch, App.showWatch, App)
@@ -3578,8 +3444,6 @@ App.bindEvents = () ->
 	EventBus.getInstance().on(EVENTS.start_boss_battle, App._startBossBattleGame, App)
 	EventBus.getInstance().on(EVENTS.start_replay, App._startGameForReplay, App)
 	EventBus.getInstance().on(EVENTS.show_free_card_of_the_day, App.showFreeCardOfTheDayReward, App)
-	EventBus.getInstance().on(EVENTS.premium_currency_dirty_change, App._onPremiumCurrencyDirty, App)
-	EventBus.getInstance().on(EVENTS.finalize_bnea_steam_txn, App.onFinalizeBneaSteamTxn, App)
 	EventBus.getInstance().on(EVENTS.discord_spectate, App.onDiscordSpectate, App)
 
 	GamesManager.getInstance().on(EVENTS.matchmaking_start, App._matchmakingStart, App)
@@ -3881,32 +3745,7 @@ App.on "start", (options) ->
 	# clear the token in the event it is stale / isAuthed fails
 	# the App._authenticationPromise below does not fire if there's no loading
 	App._authenticationPromise = () ->
-		if window.isKongregate
-			# we pass the Kongregate ID and token
-			kongregateId = kongregate.services.getUserId()
-			kongregateToken = kongregate.services.getGameAuthToken()
-			return Session.isAuthenticatedKongregate(kongregateId, kongregateToken)
-			.then (isAuthed) ->
-				if !isAuthed
-					Storage.remove('token')
-					Storage.remove('bneaToken')
-					Storage.remove('bneaRefresh')
-				return isAuthed
-		else if process.env.BNEA_ENABLED
-			# if on steam, the internals of this method will always request a fresh token
-			return Session.isAuthenticatedBnea(
-				Storage.get('token'),
-				Storage.get('bneaToken'),
-				Storage.get('bneaRefresh'),
-			)
-			.then (isAuthed) ->
-				if !isAuthed
-					Storage.remove('token')
-					Storage.remove('bneaToken')
-					Storage.remove('bneaRefresh')
-				return isAuthed
-		else
-			return Session.isAuthenticated(Storage.get('token'))
+		return Session.isAuthenticated(Storage.get('token'))
 			.then (isAuthed) ->
 				if !isAuthed
 					Storage.remove('token')
@@ -3995,10 +3834,7 @@ App.on "start", (options) ->
 App.getMinBrowserVersions = () ->
 	if Storage.get("skipBrowserCheck") then return Promise.resolve()
 	return new Promise (resolve, reject) ->
-		if window.isKongregate
-			minBrowserVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('kongregate_browsers')
-		else
-			minBrowserVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('browsers')
+		minBrowserVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('browsers')
 
 		defaults = {
 			"Chrome": 50,
@@ -4126,36 +3962,6 @@ App.versionTestFailed = () ->
 	$("#reload-link").click (e) ->
 		if window.isDesktop then window.quitDesktop() else location.reload()
 
-# show some HTML for Kongregate Guest Login
-App.kongregateGuest = () ->
-	html = """
-		<div id="kongregate" style="margin:auto; position:absolute; height:50%;  width:100%; top: 0px; bottom: 0px; font-size: 20px; color: white; text-align: center; pointer-events:auto;">
-			<p style="margin-bottom: 10px;">Duelyst is a multiplayer game and requires a Kongregate account.</p>
-			<img id="kongregate-button" src="data:image/png;base64,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">
-		</div>
-	"""
-	$("#app-preloading").css({display:"none"})
-	$("#app-content-region").css({margin:"auto", height:"50%", width: "50%"})
-	$("#app-content-region").html(html)
-
-	kongregate.services.addEventListener "login", () ->
-		$("#app-content-region").removeAttr('style')
-		$("#app-content-region").empty()
-		App.start()
-
-	document.getElementById("kongregate").addEventListener "click", (e) ->
-		kongregate.services.showRegistrationBox()
-	, false
-
-# initialize Kongregate API before starting
-App.kongregateSetup = () ->
-	kongregateAPI.loadAPI () ->
-		window.kongregate =  kongregateAPI.getAPI()
-		if kongregate.services.isGuest()
-			App.kongregateGuest()
-		else
-			App.start()
-
 # compare if process.env.VERSION is gte >= than provided minimum version
 # if minimumVersion is undefined or null, we set to '0.0.0'
 App.isVersionValid = (minimumVersion) ->
@@ -4176,15 +3982,11 @@ App.setup = () ->
 		headers:
 			"Client-Version": process.env.VERSION
 
-	# Kongregate requires special setup function and we can skip checks for landing page redirect
-	if window.isKongregate
-		App.kongregateSetup()
-	else
 	# check if it is a new user and we should redirect otherwise start as normal
-		if Landing.isNewUser() && Landing.shouldRedirect()
-			Landing.redirect()
-		else
-			App.start()
+	if Landing.isNewUser() && Landing.shouldRedirect()
+		Landing.redirect()
+	else
+		App.start()
 
 #
 # ---- Application Start Sequence ---- #

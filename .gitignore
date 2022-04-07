@@ -37,3 +37,4 @@ Procfile
 /scripts/localization/node_modules/
 /cli/*Snapshots/
 yarn-error.log
+.pgdata

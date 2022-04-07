@@ -139,7 +139,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
 		this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onConfirmPurchase.bind(this));
 		this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancelConfirmPurchase.bind(this));
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onWalletChange);
 
 		// show product
 		if (this.productData != null) {
@@ -494,7 +493,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 	onWalletChange: function() {
 		this.ui.card_ending_digits.text(InventoryManager.getInstance().walletModel.get("card_last_four_digits"));
 		this._bindProductPrice();
-		this.ui.premium_amount.text(Session.getCachedBneaAccountBalance());
+		this.ui.premium_amount.text(InventoryManager.getInstance().getWalletModelPremiumAmount());
 	},
 
 	/* endregion EVENTS */

@@ -15,9 +15,6 @@ module.exports = _ShopManager
 var _ = require('underscore')
 var Promise = require('bluebird')
 var Firebase = require('firebase')
-var ShopData = require('app/data/shop.json')
-var EventBus = require('app/common/eventbus')
-var EVENTS = require('app/common/event_types')
 var Logger = require('app/common/logger')
 var Manager = require("./manager")
 var ProfileManager = require('./profile_manager')
@@ -25,7 +22,6 @@ var ProgressionManager = require('./progression_manager')
 var GamesManager = require('./games_manager')
 var DuelystFirebase = require('app/ui/extensions/duelyst_firebase')
 var DuelystBackbone = require('app/ui/extensions/duelyst_backbone')
-var Session = require('app/common/session2');
 var moment = require('moment');
 var Analytics = require('app/common/analytics');
 var CosmeticsFactory = require('app/sdk/cosmetics/cosmeticsFactory');
@@ -35,8 +31,8 @@ var ShopManager = Manager.extend({
 	isNewSpecialAvailable: false,
 	availableSpecials: null,
 	productPurchaseCountsModel: null,
-	// productPurchaseAttemptsModel: null,
-	_premiumProductsData: null,
+	_shopProductsModel: null,
+	_premiumProductsModel: null,
 	_userPremiumReceiptsRef: null,
 	_shopSalesCollection: null,
 	_shopSalesLastUpdatedAtModel: null,
@@ -63,11 +59,24 @@ var ShopManager = Manager.extend({
 			this._shopSalesCollection.url = process.env.API_URL + '/api/me/shop/sales';
 			this._shopSalesCollection.fetch();
 
+			this._shopProductsModel = new DuelystBackbone.Model();
+			this._shopProductsModel.url = process.env.API_URL + '/api/me/shop/products';
+			this._shopProductsModel.fetch();
+
+			this._premiumProductsModel = new DuelystBackbone.Model();
+			this._premiumProductsModel.url = process.env.API_URL + '/api/me/shop/premium_pack_products';
+			this._premiumProductsModel.fetch();
+
 			this._shopSalesLastUpdatedAtModel = new DuelystFirebase.Model(null, {
 				firebase: new Firebase(process.env.FIREBASE_URL).child("shop-sales")
 			})
 
-			this._markAsReadyWhenModelsAndCollectionsSynced([this.productPurchaseCountsModel,this._shopSalesCollection,this._shopSalesLastUpdatedAtModel])
+			this._markAsReadyWhenModelsAndCollectionsSynced([
+				this.productPurchaseCountsModel,
+				this._shopProductsModel,
+				this._shopSalesLastUpdatedAtModel,
+				this._premiumProductsModel
+			])
 		})
 
 		// what to do when we're ready
@@ -85,59 +94,33 @@ var ShopManager = Manager.extend({
 			this.listenTo(this._shopSalesLastUpdatedAtModel,"change",this.onSalesUpdatedChanged.bind(this));
 			this.listenTo(this.availableSpecials,"add",this.onNewSpecialHasBecomeAvailable)
 			this.isNewSpecialAvailable = false
-
-			//return this._retrievePremiumProductsData();
 		})
 	},
 
 	_retrievePremiumProductsData: function () {
-		if (!window.isSteam && !window.isKongregate) {
-			return
-		}
-
-		function getSkus(){
-			if (window.isSteam) {
-				return bnea.getSteamSkus(Session.bneaToken)
-			} else if (window.isKongregate) {
-				return bnea.getKongregateSkus(Session.bneaToken)
+		return this._premiumProductsModel.fetch().then(function (data) {
+			// If we didn't get anything back, reject
+			if (data == null) {
+				return Promise.reject(new Error("Invalid Premium Product Steam Data"))
 			}
-		}
-
-		return getSkus()
-		.then(function (response) {
-			if (response != null && response.body != null && response.body.data != null && response.body.data.items != null) {
-				this._premiumProductsData = response.body.data.items;
-
+			// Sort the premium products
+			data = _.sortBy(data, function (d) {return d.premium_currency});
+			// Attach display data based on pack size
+			var packKeys = ["small","medium","large","massive","ultimate"];
+			_.each(data, function (d,index) {
+				var key = packKeys[Math.min(index,packKeys.length-1)];
+				d.icon_image_resource_name = "shop_premium_pack_" + key;
+				d.name = key[0].toUpperCase() + key.slice(1) + " Premium Pack";
 				// Map bn keys to consistent duelyst keys
-				_.each(this._premiumProductsData, function (data) {
-					data.price = data.pay_amount;
-					data.premium_currency = data.platinum;
-				})
-
-				// Sort based on reward
-				this._premiumProductsData = _.sortBy(this._premiumProductsData, function (data) {return data.premium_currency});
-
-				// Attach display data based on pack size
-				var packKeys = ["small","medium","large","massive","ultimate"];
-				_.each(this._premiumProductsData, function (data,index) {
-					var key = packKeys[Math.min(index,packKeys.length-1)];
-					data.icon_image_resource_name = "shop_premium_pack_" + key;
-					data.name = key[0].toUpperCase() + key.slice(1) + " Premium Pack";
-				});
-
-				return Promise.resolve(this._premiumProductsData)
-			}
-
-			return Promise.reject(new Error("Invalid Premium Product Steam Data"))
+				d.price = d.premium_currency;
+				d.gold = d.currency_price;
+			});
+			return Promise.resolve(data)
 		}.bind(this))
 	},
 
-	//getPremiumProductsData: function () {
-	//	return this._premiumProductsData
-	//},
-
 	onPurchaseCountsChanged: function(m) {
-		var changedSkus = _.keys(m.changed)
+		// Check if specials are still valid
 		var toRemove = []
 		this.availableSpecials.each(function(special) {
 			if (special.get("purchase_limit") <= this.getPurchaseCount(special.get("sku"))) {
@@ -145,6 +128,7 @@ var ShopManager = Manager.extend({
 			}
 		}.bind(this))
 		this.availableSpecials.remove(toRemove)
+		// TODO - Check if premium purchases are still valid
 	},
 
 	onSalesUpdatedChanged: function() {
@@ -153,7 +137,7 @@ var ShopManager = Manager.extend({
 	},
 
 	_onUserReceiptAdded: function(userReceipt) {
-
+		// FIXME - Why is this here?
 		if (userReceipt != null) {
 			var userReceiptData = userReceipt.val()
 			if (userReceiptData.sku != null && userReceiptData.price != null) {
@@ -192,8 +176,8 @@ var ShopManager = Manager.extend({
 			win_count: ProgressionManager.getInstance().gameCounterModel.get("win_count")
 		}
 
-		_.chain(ShopData["earned_specials"]).keys().each(function(productKey) {
-			var special = ShopData["earned_specials"][productKey]
+		_.chain(this._shopProductsModel.get("earned_specials")).keys().each(function(productKey) {
+			var special = this._shopProductsModel.get("earned_specials")[productKey]
 
 			// var specialModel = new DuelystBackbone.Model(special)
 			// specialModel.id = special.sku
@@ -343,9 +327,9 @@ var ShopManager = Manager.extend({
 	},
 
 	_allProducts: function() {
-		var categories = _.keys(ShopData)
+		var categories = _.keys(this._shopProductsModel).concat(_.keys(this._premiumProductsModel))
 		var categoryProducts = _.map(categories, function(category) {
-			return _.values(ShopData[category])
+			return _.values(this._shopProductsModel.get(category) || []).concat(_.values(this._premiumProductsModel.get(category) || []))
 		})
 		var allProducts = _.flatten(categoryProducts)
 		return allProducts

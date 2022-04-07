@@ -114,9 +114,9 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 		hasSufficientPremiumCurrency: function () {
 			if (this.productData != null) {
 				if (this.saleData != null) {
-					return Session.getCachedBneaAccountBalance() > this.saleData.salePrice;
+					return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.saleData.salePrice;
 				} else {
-					return Session.getCachedBneaAccountBalance() > this.productData.price;
+					return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.productData.price;
 				}
 			} else {
 				// Shouldn't happen
@@ -147,7 +147,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 		});
 		this._showCurrentPurchaseType();
 		this.onWalletChange();
-		this.onPremiumCurrencyChange();
 		if (this._animationSpriteData != null) {
 			this._animationGLData = UtilsUI.showCocosSprite(this.ui.product_animation_sprite, this._animationGLData, this._animationSpriteData, null, true, null, this._animationStartSpriteData);
 		}
@@ -161,7 +160,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
 		this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onConfirmPurchase.bind(this));
 		this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancelConfirmPurchase.bind(this));
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onPremiumCurrencyChange.bind(this));
 
 		// show product
 		if (this.productData != null) {
@@ -505,6 +503,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 	onWalletChange: function() {
 		this.ui.card_ending_digits.text(InventoryManager.getInstance().walletModel.get("card_last_four_digits"));
 		this._bindProductPrice();
+		this.onPremiumCurrencyChange();
 	},
 
 	onPremiumCurrencyChange: function() {
@@ -513,13 +512,13 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 			if (this.saleData && this.saleData.salePrice) {
 				price = this.saleData.salePrice;
 			}
-			if (price > Session.getCachedBneaAccountBalance()) {
+			if (price > InventoryManager.getInstance().getWalletModelPremiumAmount()) {
 				this.ui.confirm_purchase_button.addClass('hide')
 				this.ui.refill_premium_button.removeClass('hide');
 				this.ui.refill_premium_msg.removeClass('hide');
 				this.ui.balance_change_container.addClass('hide');
 
-				var premiumCurrencyNeededToPurchase = price - Session.getCachedBneaAccountBalance();
+				var premiumCurrencyNeededToPurchase = price - InventoryManager.getInstance().getWalletModelPremiumAmount();
 				this.ui.refill_premium_msg.text(i18next.t("shop.premium_refill_needed_msg",{premium_needed:premiumCurrencyNeededToPurchase}));
 			} else {
 				this.ui.confirm_purchase_button.removeClass('hide');
@@ -527,9 +526,9 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 				this.ui.refill_premium_msg.addClass('hide');
 				this.ui.balance_change_container.removeClass('hide');
 
-				this.ui.balance_change_balance_label.text("" + Session.getCachedBneaAccountBalance())
+				this.ui.balance_change_balance_label.text("" + InventoryManager.getInstance().getWalletModelPremiumAmount())
 				this.ui.balance_change_price_label.text("-" + price)
-				this.ui.balance_change_remaining_label.text("" + (Session.getCachedBneaAccountBalance() - price))
+				this.ui.balance_change_remaining_label.text("" + (InventoryManager.getInstance().getWalletModelPremiumAmount() - price))
 			}
 		}
 	},
@@ -539,23 +538,23 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 	/* region PURCHASE */
 
 	onRefillPressed: _.throttle(function(e) {
-		if (!window.isSteam && !window.isKongregate) {
-			Session.initPremiumPurchase()
-			.then(function (url) {
-				if (window.isDesktop) {
-					window.ipcRenderer.send('create-window', {
-						url: url,
-						width: 920,
-						height: 660
-					})
-				} else {
-					openUrl(url)
-				}
-			})
-		} else {
-			this.trigger("cancel");
-			NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
-		}
+		// if (!window.isSteam) {
+		// 	Session.initPremiumPurchase()
+		// 	.then(function (url) {
+		// 		if (window.isDesktop) {
+		// 			window.ipcRenderer.send('create-window', {
+		// 				url: url,
+		// 				width: 920,
+		// 				height: 660
+		// 			})
+		// 		} else {
+		// 			openUrl(url)
+		// 		}
+		// 	})
+		// } else {
+		// 	this.trigger("cancel");
+		// 	NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
+		// }
 	},1500, {trailing:false}),
 
 	onConfirmPurchase: function(e,skipPurchaseLimitCheck) {

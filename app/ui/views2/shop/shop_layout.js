@@ -100,7 +100,6 @@ var ShopLayout = Backbone.Marionette.LayoutView.extend({
 		this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
 		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
 		this.listenTo(InventoryManager.getInstance().boosterPacksCollection,"add remove",this.onWalletChange);
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onWalletChange);
 	},
 
 	onPrepareForDestroy: function () {
@@ -127,7 +126,7 @@ var ShopLayout = Backbone.Marionette.LayoutView.extend({
 		this.ui.gold_amount.text(InventoryManager.getInstance().walletModel.get("gold_amount") || 0);
 		this.ui.spirit_amount.text(InventoryManager.getInstance().walletModel.get("spirit_amount") || 0);
 		this.ui.spirit_orb_count.text(InventoryManager.getInstance().boosterPacksCollection.length);
-		this.ui.premium_amount.text(Session.getCachedBneaAccountBalance());
+		this.ui.premium_amount.text(InventoryManager.getInstance().getWalletModelPremiumAmount());
 	},
 
 	/* endregion EVENTS */
@@ -240,22 +239,22 @@ var ShopLayout = Backbone.Marionette.LayoutView.extend({
 	},
 
 	onPremiumCurrencyPressed: _.throttle(function(e) {
-		if (!window.isSteam && !window.isKongregate) {
-			Session.initPremiumPurchase()
-			.then(function (url) {
-				if (window.isDesktop) {
-					window.ipcRenderer.send('create-window', {
-						url: url,
-						width: 920,
-						height: 660
-					})
-				} else {
-					openUrl(url)
-				}
-			})
-		} else {
-			NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
-		}
+		// if (!window.isSteam) {
+		// 	Session.initPremiumPurchase()
+		// 	.then(function (url) {
+		// 		if (window.isDesktop) {
+		// 			window.ipcRenderer.send('create-window', {
+		// 				url: url,
+		// 				width: 920,
+		// 				height: 660
+		// 			})
+		// 		} else {
+		// 			openUrl(url)
+		// 		}
+		// 	})
+		// } else {
+		// 	NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
+		// }
 	},1500, {trailing:false}),
 
 })

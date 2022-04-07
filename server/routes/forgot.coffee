@@ -58,35 +58,23 @@ router.post "/forgot", (req, res, next) ->
 				'application/json': () ->
 					return res.status(404).json({})
 			})
-		else 
-			if userData.bnea_id
-				res.format({
+		else
+			@userId = userData.id
+			@username = userData['username']
+			@resetToken = uuid.v4()
+			return knex("password_reset_tokens").insert({ reset_token:@resetToken, user_id:@userId, created_at:moment().utc().toDate() })
+			.bind @
+			.then () =>
+				mail.sendForgotPasswordAsync(@username, email, @resetToken)
+				Logger.module("SESSION").debug "Forgot password mail sent"
+				return res.format({
 					'text/html': () ->
-						return res.render(__dirname + "/../templates/forgot-password.hbs",{
-							title: "Forgot Password",
-							error: "Account migrated to BNEA. Please use BNEA system to reset password."
+						return res.render(__dirname + "/../templates/sent-reset.hbs",{
+							title: "Email Sent"
 						})
 					'application/json': () ->
-						# 302 moved temporarily so we can detect this condition on client easily
-						return res.status(302).json({message: 'Account migrated to BNEA. Please use BNEA system to reset password.'})
+						return res.status(200).json({})
 				})
-			else
-				@userId = userData.id
-				@username = userData['username']
-				@resetToken = uuid.v4()
-				return knex("password_reset_tokens").insert({ reset_token:@resetToken, user_id:@userId, created_at:moment().utc().toDate() })
-				.bind @
-				.then () =>
-					mail.sendForgotPasswordAsync(@username, email, @resetToken)
-					Logger.module("SESSION").debug "Forgot password mail sent"
-					return res.format({
-						'text/html': () ->
-							return res.render(__dirname + "/../templates/sent-reset.hbs",{
-								title: "Email Sent"
-							})
-						'application/json': () ->
-							return res.status(200).json({})
-					})
 	.catch (e) -> next(e)
 
 router.get "/forgot/:reset_token", (req, res, next) ->

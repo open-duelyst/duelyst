@@ -519,7 +519,7 @@ class ShopModule
 	# @param	{String|null}	shopSaleId				Sale Id to use for transaction or null if none used
 	# @return	{Promise}							Promise that will resolve when done.
 	###
-	@purchaseProductWithPremiumCurrency: (userId,sku,bToken,shopSaleId)->
+	@purchaseProductWithPremiumCurrency: (userId,sku,shopSaleId)->
 
 		Logger.module("ShopModule").debug "purchaseProductWithPremiumCurrency() -> user #{userId} buying #{sku}"
 
@@ -602,9 +602,12 @@ class ShopModule
 							@.premCurrencyPrice = shopSaleRow.sale_price
 							return Promise.resolve()
 
-
 			.then ()->
-				ShopModule.chargeUserBNCurrency(userId,@.premCurrencyPrice,sku,productData,"DUELYST Armory Purchase",bToken,shopSaleId)
+				# txPromise,trx,userId,amount,memo
+				return InventoryModule.debitPremiumFromUser(txPromise, tx, userId, @.premCurrencyPrice)
+			.then ()->
+				# txPromise, tx, userId, userRow, sku, price, shopSaleId, systemTime
+				return ShopModule._addPremiumChargeToUser(txPromise, tx, userId, @.userRow, sku, @.premCurrencyPrice, shopSaleId, NOW_UTC_MOMENT)
 			.then ()->
 				return ShopModule._awardProductDataContents(txPromise, tx, userId, generatePushId(), productData, NOW_UTC_MOMENT)
 			.then (value)->
@@ -628,77 +631,6 @@ class ShopModule
 		return txPromise
 		.then ()->
 			return DuelystFirebase.connect().getRootRef()
-		.then (fbRootRef) ->
-			return FirebasePromises.set(fbRootRef.child('users').child(userId).child('premiumCurrencyDirty'),true)
-
-	###*
-	# Charges a user's BN Premium currency for making a purchase
-	# @public
-  # @param	{String}	userId							User ID.
-  # @param	{int}		amount								Amount of premium currency to charge the user
-  # @param	{String}	sku									sku of product purchased
-  # @param	{String}	chargeDescription		Description to appear on customer statement.
-  # @return	{Promise}							Promise that will return when charge is completed on BN's servers
-  ###
-	@chargeUserBNCurrency: (userId,amount, sku, productData,chargeDescription, bToken, shopSaleId) ->
-
-		# userId must be defined
-		unless userId
-			return Promise.reject(new Error("Can not charge user's premium currency: invalid user ID - #{userId}"))
-
-		NOW_UTC_MOMENT = moment.utc()
-		thisObj = {}
-
-		txPromise = knex.transaction (tx)->
-
-			tx("users").where("id",userId).first().forUpdate()
-			.bind thisObj
-			.then (userRow)->
-
-				if not userRow
-					return Promise.reject(new Errors.NotFoundError("user not found"));
-
-				@.userRow = userRow
-
-				# verify balance
-				return {}
-			.then (platinumBalance) ->
-
-				if (platinumBalance < amount)
-					return Promise.reject(new Errors.InsufficientFundsError("Insufficient Diamonds to make purchase of sku #{sku} for user #{userId}"))
-
-				productName = productData.name || productData.sku
-				productId = productData.steam_id
-
-				@.bnProductData = {
-					"deduct_platinum": amount,
-					"item_id": "" + productId,
-					"item_name": productName,
-					"item_qty": 1,
-					"item_type": 1
-				}
-				return {}
-
-			.then (responseData) ->
-
-				chargeId = generatePushId()
-				chargeData = @.bnProductData # TODO: BN Currently returns nothing but success or fail, awaiting if they have a charge id they can send us to track
-				Logger.module("ShopModule").debug "chargeUserBNCurrency() -> CHARGED user #{userId.blue} #{amount} BN premium currency. Charge ID:#{chargeId}".green
-				return ShopModule._addPremiumChargeToUser(txPromise,tx,userId,@.userRow,sku,amount,shopSaleId,NOW_UTC_MOMENT)
-
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-		.bind thisObj
-		.then ()->
-			return @.charge
-		.catch (error) -> # If above chain fails for any reason
-			Logger.module("ShopModule").debug "chargeUserBNCurrency() -> FAILED to charge user premium currency: #{userId.blue}".red, error.message
-			throw error
-
-		return txPromise
-
 
 	###*
 	# Execute a Steam purchase
@@ -811,25 +743,6 @@ class ShopModule
 			for i in [1..productData.qty]
 				allPromises.push(GiftCrateModule.addGiftCrateToUser(txPromise, tx, userId, productData["crate_type"], chargeId))
 
-			# NOTE: starter bundle bonus cards will be awarded via a hidden achievement
-
-			# for cardData in productData.cards
-			# 	cardId = null
-			# 	if cardData.cardId
-			# 		cardData = cardData.cardId
-			# 	else
-			# 		factionId = _.sample(cardData.faction_id)
-			# 		cardSet = cardData.card_set || 1
-			# 		cardsForFaction = SDK.GameSession.getCardCaches().getCardSet(cardSet).getFaction(factionId).getRarity(rarityId).getIsUnlockable(false).getIsCollectible(true).getIsPrismatic(false).getIsGeneral(false).getCards()
-			# 		cardId = _.sample(cardsForFaction).id
-			# 	# give user X copies of the card
-			# 	count = cardData.count
-			# 	cardIds = []
-			# 	for [1..count]
-			# 		cardIds.push(cardId)
-			# 	allPromises.push(InventoryModule.giveUserCards(txPromise,tx,userId,cardIds,"hard",chargeId))
-
-
 		# when we're all done with the entire promise chain, set the battlemap if one was purchased
 		txPromise.then ()->
 			if productData.type == "cosmetic" and CosmeticsFactory.cosmeticForIdentifier(productData.id)?.typeId == CosmeticsTypeLookup.BattleMap
@@ -879,122 +792,101 @@ class ShopModule
 
 		return sku
 
-#	@creditUserPremiumCurrency: (txPromise, tx, userId, amount, sourceId, sourceType, memo, systemTime) ->
-#		MOMENT_NOW_UTC = systemTime || moment.utc()
-#
-#		# userId must be defined
-#		if not userId?
-#			return Promise.reject(new Error("giveUserPremiumCurrency: invalid user ID - #{userId}"))
-#
-#		amount = parseInt(amount)
-#		if not amount? or amount <= 0 or _.isNaN(amount)
-#			return Promise.reject(new Error("giveUserPremiumCurrency: invalid amount - #{amount}"))
-#
-#		this_obj = {}
-#
-#		trxPromise = knex.transaction (tx)->
-#
-#			return tx("users").where('id',userId).first('id').forUpdate()
-#			.bind this_obj
-#			.then (userRow)->
-#				@.userRow = userRow
-#
-#				return tx("user_premium_currency").where("user_id",userId).first('amount')
-#			.then (userPremCurrencyRow) ->
-#				allPromises = []
-#
-#				needsInsert = false
-#				if (not userPremCurrencyRow?)
-#					needsInsert = true
-#					userPremCurrencyRow =
-#						user_id: userId
-#				@.userPremCurrencyRow = userPremCurrencyRow
-#				@.userPremCurrencyRow.amount ?= 0
-#				@.userPremCurrencyRow.amount += amount
-#
-#				if needsInsert
-#					allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').insert(@.userPremCurrencyRow)
-#				else
-#					allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').update(
-#						amount: @.userPremCurrencyRow.amount
-#					)
-#
-#				allPromises.push tx("user_premium_currency_log").insert(
-#					id: generatePushId()
-#					user_id: userId
-#					amount: amount
-#					source_id: sourceId
-#					source_type: sourceType
-#					memo: memo
-#					created_at: MOMENT_NOW_UTC.toDate()
-#				)
-#
-#				return Promise.all(allPromises)
-#
-#		.bind this_obj
-#		.then () ->
-#			return @.userPremCurrencyRow
-#
-#		return trxPromise
-#
-#	# Amount is negative value
-#	@debitUserPremiumCurrency: (txPromise, tx, userId, amount, sourceId, sourceType, memo, systemTime) ->
-#		MOMENT_NOW_UTC = systemTime || moment.utc()
-#
-#		# userId must be defined
-#		if not userId?
-#			return Promise.reject(new Error("debitUserPremiumCurrency: invalid user ID - #{userId}"))
-#
-#		amount = parseInt(amount)
-#		if not amount? or amount >= 0 or _.isNaN(amount)
-#			return Promise.reject(new Error("debitUserPremiumCurrency: invalid amount - #{amount}"))
-#
-#		this_obj = {}
-#
-#		trxPromise = knex.transaction (tx)->
-#
-#			return tx("users").where('id',userId).first('id').forUpdate()
-#			.bind this_obj
-#			.then (userRow)->
-#				@.userRow = userRow
-#
-#				return tx("user_premium_currency").where("user_id",userId).first('amount')
-#			.then (userPremCurrencyRow) ->
-#				allPromises = []
-#
-#				if (not userPremCurrencyRow?)
-#					throw new Errors.InsufficientFundsError("Insufficient currency to debit")
-#
-#				@.userPremCurrencyRow = userPremCurrencyRow
-#				@.userPremCurrencyRow.amount ?= 0
-#
-#				if (@.userPremCurrencyRow.amount < amount)
-#					throw new Errors.InsufficientFundsError("Insufficient currency to debit")
-#
-#				@.userPremCurrencyRow.amount += amount
-#
-#				allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').update(
-#					amount: @.userPremCurrencyRow.amount
-#				)
-#
-#				@.purchaseId = generatePushId()
-#				allPromises.push tx("user_premium_currency_log").insert(
-#					id: @.purchaseId
-#					user_id: userId
-#					amount: amount
-#					source_id: sourceId
-#					source_type: sourceType
-#					memo: memo
-#					created_at: MOMENT_NOW_UTC.toDate()
-#				)
-#
-#				return Promise.all(allPromises)
-#
-#		.bind this_obj
-#		.then () ->
-#			return @.purchaseId
-#
-#		return trxPromise
+	@creditUserPremiumCurrency: (txPromise, tx, userId, amount) ->
+		# userId must be defined
+		if not userId?
+			return Promise.reject(new Error("giveUserPremiumCurrency: invalid user ID - #{userId}"))
+
+		amount = parseInt(amount)
+		if not amount? or amount <= 0 or _.isNaN(amount)
+			return Promise.reject(new Error("giveUserPremiumCurrency: invalid amount - #{amount}"))
+
+		this_obj = {}
+
+		trxPromise = knex.transaction (tx)->
+
+			return tx("users").where('id',userId).first('id').forUpdate()
+			.bind this_obj
+			.then (userRow)->
+				@.userRow = userRow
+
+				return tx("user_premium_currency").where("user_id",userId).first('amount')
+			.then (userPremCurrencyRow) ->
+				allPromises = []
+
+				needsInsert = false
+				if (not userPremCurrencyRow?)
+					needsInsert = true
+					userPremCurrencyRow =
+						user_id: userId
+				@.userPremCurrencyRow = userPremCurrencyRow
+				@.userPremCurrencyRow.amount ?= 0
+				@.userPremCurrencyRow.amount += amount
+
+				if needsInsert
+					allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').insert(@.userPremCurrencyRow)
+				else
+					allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').update(
+						amount: @.userPremCurrencyRow.amount
+					)
+
+
+
+				return Promise.all(allPromises)
+
+		.bind this_obj
+		.then () ->
+			return @.userPremCurrencyRow
+
+		return trxPromise
+
+	# Amount is negative value
+	@debitUserPremiumCurrency: (txPromise, tx, userId, amount) ->
+		# userId must be defined
+		if not userId?
+			return Promise.reject(new Error("debitUserPremiumCurrency: invalid user ID - #{userId}"))
+
+		amount = parseInt(amount)
+		if not amount? or amount >= 0 or _.isNaN(amount)
+			return Promise.reject(new Error("debitUserPremiumCurrency: invalid amount - #{amount}"))
+
+		this_obj = {}
+
+		trxPromise = knex.transaction (tx)->
+
+			return tx("users").where('id',userId).first('id').forUpdate()
+			.bind this_obj
+			.then (userRow)->
+				@.userRow = userRow
+
+				return tx("user_premium_currency").where("user_id",userId).first('amount')
+			.then (userPremCurrencyRow) ->
+				allPromises = []
+
+				if (not userPremCurrencyRow?)
+					throw new Errors.InsufficientFundsError("Insufficient currency to debit")
+
+				@.userPremCurrencyRow = userPremCurrencyRow
+				@.userPremCurrencyRow.amount ?= 0
+
+				if (@.userPremCurrencyRow.amount < amount)
+					throw new Errors.InsufficientFundsError("Insufficient currency to debit")
+
+				@.userPremCurrencyRow.amount += amount
+
+				allPromises.push tx("user_premium_currency").where("user_id",userId).first('amount').update(
+					amount: @.userPremCurrencyRow.amount
+				)
+
+				# txPromise,tx,userRow,userId,sku,price,currencyCode,chargeId,chargeJson,paymentType,createdAt
+
+				return Promise.all(allPromises)
+
+		.bind this_obj
+		.then () ->
+			return @.purchaseId
+
+		return trxPromise
 
 
 

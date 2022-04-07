@@ -10,7 +10,7 @@ Errors = require '../../../lib/custom_errors'
 t = require 'tcomb-validation'
 validators = require '../../../validators'
 
-# TODO: remove these 2
+# TODO: replace this with info in database?
 PremiumShopData = require 'app/data/premium_shop.json'
 ShopData = require('app/data/shop.json')
 
@@ -23,10 +23,9 @@ router.post "/premium_purchase", (req, res, next) ->
 
 	user_id = req.user.d.id
 	product_sku = result.value.product_sku
-	bn_token = result.value.bn_token
 	sale_id = result.value.sale_id
 
-	ShopModule.purchaseProductWithPremiumCurrency(user_id,product_sku,bn_token,sale_id)
+	ShopModule.purchaseProductWithPremiumCurrency(user_id,product_sku,sale_id)
 	.then ()->
 		Logger.module("API").debug "User #{user_id.blue} purchased #{product_sku}".cyan
 		res.status(200).json({})
@@ -74,7 +73,15 @@ router.delete "/customer", (req, res, next) ->
 		else
 			next(error)
 
-# TODO: Remove
+router.get "/products", (req, res, next) ->
+	user_id = req.user.d.id
+
+	return Promise.resolve(ShopData)
+	.then (shopData) ->
+		res.status(200).json(shopData)
+	.catch (error) ->
+		res.status(500).json({error: error.message})
+
 router.get "/premium_pack_products", (req, res, next) ->
 	user_id = req.user.d.id
 

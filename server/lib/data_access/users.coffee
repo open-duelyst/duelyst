@@ -260,157 +260,6 @@ class UsersModule
 				return Promise.resolve(userId)
 
 	###*
-	# Create a user record for the specified parameters.
-	# @public
-	# @return	{Promise}					Promise that will return the userId on completion.
-	###
-	@createBneaUser: (email = null,username = null,password = null,inviteCode = 'kumite14',referralCode,campaignData,registrationSource = null)->
-
-		# validate referral code and force it to lower case
-		referralCode = referralCode?.toLowerCase().trim()
-		if referralCode? and not validator.isLength(referralCode,3)
-			return Promise.reject(new Errors.InvalidReferralCodeError("invalid referral code"))
-
-		if email then email = email.toLowerCase()
-		if username then username = username.toLowerCase()
-		if not password then password = crypto.randomBytes(Math.ceil(4)).toString('hex').slice(0,8)
-		userId = generatePushId()
-		inviteCode ?= null
-
-		MOMENT_NOW_UTC = moment().utc()
-		this_obj = {}
-
-		return knex("invite_codes").where('code',inviteCode).first()
-		.bind this_obj
-		.then (inviteCodeRow)->
-
-			if config.get("inviteCodesActive") and !inviteCodeRow and inviteCode != "kumite14"
-				throw new Errors.InvalidInviteCodeError("Invite code not found")
-
-			referralCodePromise = Promise.resolve(null)
-			# we check if the referral code is a UUID so that anyone accidentally using invite codes doesn't error out
-			if referralCode? and not validator.isUUID(referralCode)
-				referralCodePromise = UsersModule.getValidReferralCode(referralCode)
-
-			# username may not be provided
-			usernamePromise = Promise.resolve(null)
-			if username?
-				usernamePromise = UsersModule.userIdForUsername(username)
-
-			return Promise.all([
-				UsersModule.userIdForEmail(email),
-				usernamePromise,
-				referralCodePromise
-			])
-		.spread (idForEmail,idForUsername,referralCodeRow)->
-			if idForEmail
-				throw new Errors.AlreadyExistsError("Email already registered with Duelyst. Please use account linking.")
-			if idForUsername
-				throw new Errors.AlreadyExistsError("Username not available")
-
-			@.referralCodeRow = referralCodeRow
-
-			return hashHelpers.generateHash(password)
-
-		.then (passwordHash)->
-
-			return knex.transaction (tx) =>
-
-				userRecord =
-					id:userId
-					email:email # email maybe equals null here
-					username:username # username maybe equals null here
-					password:passwordHash
-					created_at:MOMENT_NOW_UTC.toDate()
-
-				if registrationSource
-					userRecord.registration_source = registrationSource
-
-				if config.get("inviteCodesActive")
-					userRecord.invite_code = inviteCode
-
-				# Add campaign data to userRecord
-				if campaignData?
-					userRecord.campaign_source ?= campaignData.campaign_source
-					userRecord.campaign_medium ?= campaignData.campaign_medium
-					userRecord.campaign_term ?= campaignData.campaign_term
-					userRecord.campaign_content ?= campaignData.campaign_content
-					userRecord.campaign_name ?= campaignData.campaign_name
-					userRecord.referrer ?= campaignData.referrer
-
-				updateReferralCodePromise = Promise.resolve()
-				if @.referralCodeRow?
-					Logger.module("USERS").debug "createNewUser() -> using referral code #{referralCode.yellow} for user #{userId.blue} ", @.referralCodeRow.params
-					userRecord.referral_code = referralCode
-					updateReferralCodePromise = knex("referral_codes").where('code',referralCode).increment('signup_count',1).transacting(tx)
-					if @.referralCodeRow.params?.gold
-						userRecord.wallet_gold ?= 0
-						userRecord.wallet_gold += @.referralCodeRow.params?.gold
-					if @.referralCodeRow.params?.spirit
-						userRecord.wallet_spirit ?= 0
-						userRecord.wallet_spirit += @.referralCodeRow.params?.spirit
-
-				Promise.all([
-					# user record
-					knex('users').insert(userRecord).transacting(tx),
-					# update referal code table
-					updateReferralCodePromise
-				])
-				.bind this_obj
-				.then ()-> return DuelystFirebase.connect().getRootRef()
-				.then (rootRef)->
-
-					# collect all the firebase update promises here
-					allPromises = []
-
-					userData = {
-						id: userId
-						username: username # username maybe equals null here
-						created_at: MOMENT_NOW_UTC.valueOf()
-						presence: {
-							rank: 30
-							username: username # username maybe equals null here
-							status: "offline"
-						}
-						tx_counter: {
-							count:0
-						}
-						# all new users have accepted EULA before signing up
-						hasAcceptedEula: false
-						hasAcceptedSteamEula: false
-					}
-
-					starting_gold = @.referralCodeRow?.params?.gold || 0
-					starting_spirit = @.referralCodeRow?.params?.spirit || 0
-
-					allPromises.push(FirebasePromises.set(rootRef.child('users').child(userId),userData))
-					if username then allPromises.push(FirebasePromises.set(rootRef.child('username-index').child(username),userId))
-					allPromises.push(FirebasePromises.set(rootRef.child('user-inventory').child(userId).child('wallet'),{
-						gold_amount:starting_gold
-						spirit_amount:starting_spirit
-					}))
-
-					return Promise.all(allPromises)
-				.then tx.commit
-				.catch tx.rollback
-				return
-
-			.bind this_obj
-			.then ()->
-
-				if config.get("inviteCodesActive")
-					return knex("invite_codes").where('code',inviteCode).delete()
-
-			.then ()->
-
-				# if email then mail.sendSignupAsync(username, email, verifyToken)
-
-				# NOTE: don't send registration notifications at large volume, and also since they contain PID
-				# mail.sendNotificationAsync("New Registration", "#{email} has registered with #{username}.")
-
-				return Promise.resolve(userId)
-
-	###*
 	# Delete a newly created user record in the event of partial registration.
 	# @public
 	# @param	{String}	userId			User's ID
@@ -639,57 +488,6 @@ class UsersModule
 			return
 
 	###*
-	# Associate a Facebook ID to a User
-	# @public
-	# @param	{String}	userId User ID
-	# @param	{String}	facebookId User's Facebook ID
-	# @return	{Promise}	Promise that will return on completion
-	###
-	@associateFacebookId: (userId, facebookId) ->
-
-		MOMENT_NOW_UTC = moment().utc()
-
-		return knex.transaction (tx) ->
-			knex("users").where('id',userId).first().forUpdate().transacting(tx)
-			.bind {}
-			.then (userRow)->
-				if !userRow
-					throw new Errors.NotFoundError()
-				else
-					knex("users").where('id',userId).update({
-						facebook_id: facebookId
-						facebook_associated_at: MOMENT_NOW_UTC.toDate()
-					}).transacting(tx)
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-	###*
-	# Disassociate a Facebook ID to a User
-	# Currently only used for testing
-	# @public
-	# @param	{String}	userId User ID
-	# @param	{String}	facebookId User's Facebook ID
-	# @return	{Promise}	Promise that will return on completion.
-	###
-	@disassociateFacebookId: (userId, facebookId) ->
-
-		return knex.transaction (tx) ->
-			knex("users").where('id',userId).first().forUpdate().transacting(tx)
-			.bind {}
-			.then (userRow)->
-				if !userRow
-					throw new Errors.NotFoundError()
-				else
-					knex("users").where('id',userId).update({
-						facebook_id: null
-						facebook_associated_at: null
-					}).transacting(tx)
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-	###*
 	# Associate a Google Play ID to a User
 	# @public
 	# @param	{String}	userId User ID
@@ -840,88 +638,6 @@ class UsersModule
 			return
 
 	###*
-	# Associate a Kongregate ID to a User
-	# @public
-	# @param	{String}	userId				User ID
-	# @param	{String}	kongregateId		User's Kongregate ID
-	# @return	{Promise}						Promise that will return on completion.
-	###
-	@associateKongregateId: ({userId, kongregateId}) ->
-
-		MOMENT_NOW_UTC = moment().utc()
-
-		return knex.transaction (tx) ->
-			knex("users").where('id',userId).first().forUpdate().transacting(tx)
-			.bind {}
-			.then (userRow)->
-				if !userRow
-					throw new Errors.NotFoundError()
-				else
-					return knex("users").where('id',userId).update({
-						kongregate_id: kongregateId
-						kongregate_associated_at: MOMENT_NOW_UTC.toDate()
-					}).transacting(tx)
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-	###*
-	# Associate a BNEA ID to a User
-	# @public
-	# @param	{String}	userId				User ID
-	# @param	{String}	bneaId				User's BNEA ID
-	# @return	{Promise}						Promise that will return on completion.
-	###
-	@associateBneaId: ({userId, bneaId, bneaEmail}) ->
-
-		MOMENT_NOW_UTC = moment().utc()
-
-		return knex.transaction (tx) ->
-			knex("users").where('id',userId).first().forUpdate().transacting(tx)
-			.bind {}
-			.then (userRow)->
-				if !userRow
-					throw new Errors.NotFoundError()
-				else
-					if config.get('bnea.overrideEmailsForLink') && bneaEmail
-						return knex("users").where('id',userId).update({
-							email: bneaEmail
-							bnea_id: bneaId
-							bnea_associated_at: MOMENT_NOW_UTC.toDate()
-						}).transacting(tx)
-					else
-						return knex("users").where('id',userId).update({
-							bnea_id: bneaId
-							bnea_associated_at: MOMENT_NOW_UTC.toDate()
-						}).transacting(tx)
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-	###*
-	# Disassociate a BNEA ID to a User
-	# @public
-	# @param	{String}	userId				User ID
-	# @return	{Promise}						Promise that will return on completion.
-	###
-	@disassociateBneaId: (userId) ->
-
-		return knex.transaction (tx) ->
-			knex("users").where('id',userId).first().forUpdate().transacting(tx)
-			.bind {}
-			.then (userRow)->
-				if !userRow
-					throw new Errors.NotFoundError()
-				else
-					knex("users").where('id',userId).update({
-						bnea_id: null
-						bnea_associated_at: null
-					}).transacting(tx)
-			.then tx.commit
-			.catch tx.rollback
-			return
-
-	###*
 	# Get user data for id.
 	# @public
 	# @param	{String}	userId			User ID
@@ -929,22 +645,6 @@ class UsersModule
 	###
 	@userDataForId: (userId)->
 		return knex("users").first().where('id',userId)
-
-	###*
-	# Get user data for BNEA id.
-	# @public
-	# @param	{String}	bneaId			BNEA ID
-	# @return	{Promise}					Promise that will return the user data on completion.
-	###
-	@userDataForBneaId: (bneaId, callback) ->
-		return knex.first().from('users').where('bnea_id',bneaId)
-		.then (userRow) ->
-			return new Promise( (resolve, reject) ->
-				if userRow
-					return resolve(userRow)
-				else
-					return resolve(null)
-			).nodeify(callback)
 
 	###*
 	# Get user data for email.
@@ -1179,41 +879,6 @@ class UsersModule
 	@userIdForSteamId: (steamId, callback) ->
 
 		return knex.first('id').from('users').where('steam_id',steamId)
-		.then (userRow) ->
-			return new Promise( (resolve, reject) ->
-				if userRow
-					return resolve(userRow.id)
-				else
-					return resolve(null)
-			).nodeify(callback)
-
-	###*
-	# Get the user ID for the specified BNEA ID.
-	# @public
-	# @param	{String}	bneaId		User's BNEA ID
-	# @return	{Promise}				Promise that will return the userId data on completion.
-	###
-	@userIdForBneaId: (bneaId, callback) ->
-
-		return knex.first('id').from('users').where('bnea_id',bneaId)
-		.then (userRow) ->
-			return new Promise( (resolve, reject) ->
-				if userRow
-					return resolve(userRow.id)
-				else
-					return resolve(null)
-			).nodeify(callback)
-
-
-	###*
-	# Get the user ID for the specified Facebook ID.
-	# @public
-	# @param	{String}	facebookId	User's Facebook ID
-	# @return	{Promise}	Promise that will return the userId data on completion.
-	###
-	@userIdForFacebookId: (facebookId, callback) ->
-
-		return knex.first('id').from('users').where('facebook_id',facebookId)
 		.then (userRow) ->
 			return new Promise( (resolve, reject) ->
 				if userRow
@@ -3678,7 +3343,6 @@ class UsersModule
 				throw new Errors.NotFoundError()
 			return Promise.all([
 				UsersModule.disassociateSteamId(userId),
-				UsersModule.disassociateBneaId(userId),
 				UsersModule.changeEmail(userId, randomEmail),
 				UsersModule.changeUsername(userId, randomUser, true)
 			])
