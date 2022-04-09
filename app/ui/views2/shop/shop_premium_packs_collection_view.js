@@ -54,7 +54,6 @@ var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
 
 	onShow:function() {
 		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
-		this.listenTo(EventBus.getInstance(), EVENTS.premium_currency_amount_change, this.onWalletChange);
 		this.onWalletChange();
 	},
 
@@ -71,45 +70,24 @@ var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
 		if (window.isSteam) {
 			return this.onSelectProductSteam(e)
 		}
-		if (window.isKongregate) {
-			return this.onSelectProductKongregate(e)
-		}
 	},
 
 	onSelectProductSteam: function(e) {
 		var productSkuId = $(e.currentTarget).data("productSkuId");
-
-		return InventoryManager.getInstance().initBneaSteamTxn([{sku_id: productSkuId, qty: 1}])
-		.then(function(steamUrl){
-			// open [steam] browser then flash success
-			// check platform here to determine if to use steam browser
-			if (window.steamworksOverlayEnabled) {
-				window.steamworks.activateGameOverlayToWebPage(steamUrl)
-			} else {
-				openUrl(steamUrl)
-			}
-		})
-		.catch(function(e){
-			Logger.module('STEAM').error("Initializing Steam transaction failed: #{e.message}")
-		})
-	},
-
-	onSelectProductKongregate: function(e) {
-		var productSkuId = $(e.currentTarget).data("productSkuId");
-
-		function onPurchaseResult(result) {
-			// console.log("kongregate purchase success:" + result.success + ", id: " + result.item_order_id);
-		}
-
-		return InventoryManager.getInstance().initKongregateTxn([{sku_id: productSkuId, qty: 1}])
-		.then(function(orderId){
-			// open Kongregate window for transaction
-			// console.log(`kongregate order id ${orderId}`)
-			kongregate.mtx.purchaseItemsRemote(orderId, onPurchaseResult)
-		})
-		.catch(function(e){
-			Logger.module('KONGREGATE').error("Initializing Kongregate transaction failed: #{e.message}")
-		})
+		// TODO - Use InventoryManager.getInstance().purchaseProductSkuOnSteam
+		// return InventoryManager.getInstance().initBneaSteamTxn([{sku_id: productSkuId, qty: 1}])
+		// .then(function(steamUrl){
+		// 	// open [steam] browser then flash success
+		// 	// check platform here to determine if to use steam browser
+		// 	if (window.steamworksOverlayEnabled) {
+		// 		window.steamworks.activateGameOverlayToWebPage(steamUrl)
+		// 	} else {
+		// 		openUrl(steamUrl)
+		// 	}
+		// })
+		// .catch(function(e){
+		// 	Logger.module('STEAM').error("Initializing Steam transaction failed: #{e.message}")
+		// })
 	},
 
 	onPurchaseComplete: function(purchaseData) {

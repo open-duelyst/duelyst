@@ -11,5 +11,3 @@ module.exports = require('require-dir')('./unit/sdk')
 module.exports = require('require-dir')('./unit/misc')
 module.exports = require('require-dir')('./unit/data_access')
 module.exports = require('require-dir')('./unit/achievements')
-
-// module.exports = require('./rest/bnea-api')

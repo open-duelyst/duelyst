@@ -306,6 +306,18 @@ router.post '/inventory/gold', (req, res, next) ->
 	.then ()->
 		res.status(200).json({})
 
+router.post '/inventory/premium', (req, res, next) ->
+	user_id = req.user.d.id
+	amount = req.body.amount
+
+	txPromise = knex.transaction (tx)->
+		if (amount > 0)
+			InventoryModule.giveUserPremium(txPromise,tx,user_id,amount,'QA gift')
+		else
+			InventoryModule.debitPremiumFromUser(txPromise,tx,user_id,-amount,'QA charge')
+	.then ()->
+		res.status(200).json({})
+
 router.post '/inventory/rift_ticket', (req, res, next) ->
 	user_id = req.user.d.id
 
@@ -1210,19 +1222,19 @@ router.put '/rift/duplicates', (req, res, next) ->
 	.then ()->
 		res.status(200).json({})
 
-router.put '/premium_currency/amount', (req, res, next) ->
-	user_id = req.user.d.id
-	amount = parseInt(req.body.amount)
+# router.put '/premium_currency/amount', (req, res, next) ->
+# 	user_id = req.user.d.id
+# 	amount = parseInt(req.body.amount)
 
-	amountPromise = null
+# 	amountPromise = null
 
-	txPromise = knex.transaction (tx)->
-		if (amount < 0)
-			return ShopModule.debitUserPremiumCurrency(txPromise,tx,user_id,amount,generatePushId(),"qa tool gift")
-		else
-			return ShopModule.creditUserPremiumCurrency(txPromise,tx,user_id,amount,generatePushId(),"qa tool gift")
-	.then ()->
-		res.status(200).json({})
+# 	txPromise = knex.transaction (tx)->
+# 		if (amount < 0)
+# 			return ShopModule.debitUserPremiumCurrency(txPromise,tx,user_id,amount,generatePushId(),"qa tool gift")
+# 		else
+# 			return ShopModule.creditUserPremiumCurrency(txPromise,tx,user_id,amount,generatePushId(),"qa tool gift")
+# 	.then ()->
+# 		res.status(200).json({})
 
 router.get '/shop/charge_log', (req, res, next) ->
 	user_id = req.user.d.id
@@ -1231,96 +1243,5 @@ router.get '/shop/charge_log', (req, res, next) ->
 	.then (userChargeRows)->
 		res.status(200).json({userChargeRows:userChargeRows})
 
-# Called when wallet balance is updated
-router.post "/bnea/wallet_update", (req, res, next) ->
-
-	Logger.module("API").debug("/bnea/wallet_update -> Received wallet update for bnea id: " + req.body.bnea_id)
-
-	if !req.body.bnea_id
-		Logger.module("API").debug("/bnea/wallet_update -> no bnea id")
-		return res.status(400).end()
-
-	transactionType = req.body.type
-
-	Logger.module("API").debug("/bnea/wallet_update -> Received wallet update for bnea body: " + JSON.stringify(req.body))
-
-	this_obj = {
-		bnea_id: req.body.bnea_id
-	}
-
-	return UsersModule.userIdForBneaId(req.body.bnea_id)
-	.bind this_obj
-	.then (idForBneaId) ->
-		# no id found, throw 404
-		if !idForBneaId
-			Logger.module("API").debug("/bnea/wallet_update -> no id for bnea id: " + @.bnea_id)
-			return res.status(404).end()
-
-		@.idForBneaId = idForBneaId
-		Logger.module("API").debug("/bnea/wallet_update -> Received wallet update for user id: " + @.idForBneaId)
-
-		if transactionType == "fulfillment"
-			if !req.body.data?
-				Logger.module("API").error "/bnea/wallet_update -> ERROR, fulfillment transaction for u:#{@.idForBneaId} has no fulfillment data"
-
-			fullfillmentData = 	req.body.data
-			currencyAmount = req.body.data?.currency_amount
-			totalPlatinumAmount = req.body.data?.total_platinum_amount
-
-			if currencyAmount? and totalPlatinumAmount?
-				# Fire off a job to track the purchase
-				Jobs.create("update-user-charge-log",
-					name: "Update User Charge Log"
-					title: util.format("User %s :: Update Charge Log", @.idForBneaId)
-					userId: @.idForBneaId
-					fullfillmentData: fullfillmentData
-				).removeOnComplete(true).ttl(15000).save()
-			else
-				Logger.module("API").error "/bnea/wallet_update -> ERROR, fulfillment transaction for u:#{@.idForBneaId} missing fulfillment data currency_amount:#{currencyAmount} total_platinum_amount:#{totalPlatinumAmount}"
-
-		return DuelystFirebase.connect().getRootRef()
-	.then (fbRootRef) ->
-
-		# fire signal to update wallet, notify the user of update, then 200
-		return Promise.all([
-			FirebasePromises.set(fbRootRef.child('users').child(@.idForBneaId).child('premiumCurrencyDirty'),true),
-			UsersModule.inGameNotify(@.idForBneaId,"Your Diamond balance has been updated","wallet_update")
-		])
-
-	.then () ->
-		Logger.module("API").debug("/bnea/wallet_update -> Success")
-		return res.status(200).end()
-	.catch (e) ->
-		Logger.module("API").debug("/bnea/wallet_update -> Caught error: " + JSON.stringify(e,null,2))
-		return res.status(500).end()
-
-router.post "/bnea/fake_item_inject", (req, res, next) ->
-	if !req.body.bnea_id
-		Logger.module("API").log("/bnea/item_inject -> no bnea id")
-		return res.status(400).end()
-
-	Logger.module("API").log("/bnea/item_inject -> for bnea id: " + req.body.bnea_id)
-	Logger.module("API").log("/bnea/item_inject -> req.body: " + JSON.stringify(req.body))
-
-	bneaId = req.body.bnea_id
-	items = req.body.items
-
-	return UsersModule.userIdForBneaId(bneaId)
-	.bind {}
-	.then (idForBneaId) ->
-		# no id found, throw 404
-		if !idForBneaId
-			Logger.module("API").log("/bnea/item_inject -> no id for bnea id: " + bneaId)
-			return res.status(404).end()
-
-		txPromise = knex.transaction (tx)->
-			return TwitchModule.giveUserTwitchRewards(txPromise,tx,idForBneaId,items)
-
-		return txPromise
-	.then ()->
-		res.status(200).json({})
-	.catch (e) ->
-		Logger.module("API").log("/bnea/item_inject -> Caught error: " + JSON.stringify(e,null,2))
-		return res.status(500).end()
 
 module.exports = router

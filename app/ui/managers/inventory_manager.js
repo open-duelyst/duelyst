@@ -451,7 +451,6 @@ var InventoryManager = Manager.extend({
 				var request = $.ajax({
 					data: JSON.stringify({
 						product_sku:sku,
-						bn_token:Session.bneaToken,
 						sale_id: saleId
 					}),
 					url: process.env.API_URL + '/api/me/shop/premium_purchase',
@@ -465,9 +464,6 @@ var InventoryManager = Manager.extend({
 				});
 
 				request.fail(function(response){
-					//On failure, set the players premium currency balance as dirty
-					ProfileManager.getInstance().profile.set("premiumCurrencyDirty",true)
-
 					var errorMessage = response.responseJSON && response.responseJSON.message || "Purchase failed. Please try again.";
 					reject(errorMessage);
 				});
@@ -525,47 +521,6 @@ var InventoryManager = Manager.extend({
 		} else {
 			return Promise.reject("No steam ticket provided.");
 		}
-	},
-
-	initBneaSteamTxn: function(skus) {
-		return bnea.steamInitTxn(Session.bneaToken, {
-			steam_appid: parseInt(process.env.STEAM_APP_ID),
-			steam_id: steamworks.getSteamId().steamId,
-			steam_session_ticket: Session.steamTicket,
-			steam_session_type: 'web',
-			skus: skus
-		})
-		.then(function(res){
-			const data = res.body.data
-			if (!data.order_id) {
-				throw new Error('Initializing Steam transaction failed, no order id returned.')
-			}
-			const baseUrl = data.url || "https://store.steampowered.com/checkout/approvetxn/" + data.order_id + "/"
-			const returnUrl = "?returnurl=" + process.env.API_URL + "/steam/bnea_finalize_txn?order_id=" + data.order_id
-			const fullUrl = baseUrl + returnUrl
-			return fullUrl
-		})
-		.catch(function(e){
-			throw e
-		})
-	},
-
-	initKongregateTxn: function(skus) {
-		return bnea.kongregateInitTxn(Session.bneaToken, {
-			game_auth_token: kongregate.services.getGameAuthToken(),
-			user_id:  kongregate.services.getUserId(),
-			skus: skus
-		})
-		.then(function(res){
-			const data = res.body.data
-			if (!data.order_id) {
-				throw new Error('Initializing Kongregate transaction failed, no order id returned.')
-			}
-			return data.order_id
-		})
-		.catch(function(e){
-			throw e
-		})
 	},
 
 	craftCosmetic: function(cosmeticId) {
@@ -774,6 +729,15 @@ var InventoryManager = Manager.extend({
 		var walletModel = this.getWalletModel();
 		if (walletModel != null && walletModel.get("spirit_amount") != null) {
 			return walletModel.get("spirit_amount");
+		} else {
+			return 0;
+		}
+	},
+
+	getWalletModelPremiumAmount: function () {
+		var walletModel = this.getWalletModel();
+		if (walletModel != null && walletModel.get("premium_amount") != null) {
+			return walletModel.get("premium_amount");
 		} else {
 			return 0;
 		}

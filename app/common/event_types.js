@@ -89,9 +89,6 @@ var EVENTS = {
 	orb_count_collection_change: "orb_count_collection_change",
 	gift_crate_collection_change: "gift_crate_collection_change",
 	wallet_change: "wallet_change",
-	premium_currency_dirty_change: "premium_currency_dirty_change",
-	premium_currency_amount_change: "premium_currency_amount_change",
-	finalize_bnea_steam_txn: "finalize_bnea_steam_txn",
 
 	// start game type
 	start_challenge: "start_challenge",
@@ -101,11 +98,7 @@ var EVENTS = {
 
 	// show ui
 	show_login: 'show_login',
-	show_bnea_welcome: 'show_bnea_welcome',
-	show_bnea_linking: 'show_bnea_linking',
-	show_bnea_relinking: 'show_bnea_relinking',
-	show_bnea_done: 'show_bnea_done',
-	show_bnea_terms: 'show_bnea_terms',
+	show_terms: 'show_terms',
 	show_play: "show_play",
 	show_watch: "show_watch",
 	show_shop: "show_shop",

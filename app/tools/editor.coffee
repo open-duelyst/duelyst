@@ -889,6 +889,27 @@ whenLocalizationReady.then ()->
 				alert("FAILED: Adding Spirit\n" + response.responseJSON.message)
 			);
 
+		qaInventoryButtons["Add X Diamond"] = () ->
+			amount = prompt("Diamond amount to add:", 450) || 450
+			amount = parseInt(amount)
+			request = $.ajax(
+				url: process.env.API_URL + "/api/me/qa/inventory/premium",
+				data: JSON.stringify({
+					amount:amount
+				}),
+				type: 'POST',
+				contentType: 'application/json',
+				dataType: 'json'
+			)
+
+
+			request.done((data)->
+				alert("Added #{amount} Diamond!")
+			)
+			request.fail((response) ->
+				alert("FAILED: Adding Diamond\n" + response.responseJSON.message)
+			);
+
 		qaInventoryButtons["Add Rift Ticket"] = () ->
 			request = $.ajax(
 				url: process.env.API_URL + "/api/me/qa/inventory/rift_ticket",
@@ -1376,8 +1397,6 @@ whenLocalizationReady.then ()->
 				alert("Failed: Could not retrieve user charge log:\n#{response.responseJSON.message}")
 			);
 
-		qaMiscButtons['Simulate BN Wallet Update'] = () ->
-
 		# User qa buttons
 		qaQuestFolder.add(qaQuestButtons,"Reset Daily Quests")
 		qaQuestFolder.add(qaQuestButtons,"Set Daily Quests")
@@ -1420,6 +1439,7 @@ whenLocalizationReady.then ()->
 		qaInventoryFolder.add(qaInventoryButtons,"Fill Collection")
 		qaInventoryFolder.add(qaInventoryButtons,"Add X Gold")
 		qaInventoryFolder.add(qaInventoryButtons,"Add X Spirit")
+		qaInventoryFolder.add(qaInventoryButtons,"Add X Diamond")
 		qaInventoryFolder.add(qaInventoryButtons,"Add 3x Rare")
 		qaInventoryFolder.add(qaInventoryButtons,"Delete unused cards in inventory")
 		qaInventoryFolder.add(qaInventoryButtons,"Add Rift Ticket")
@@ -1462,7 +1482,6 @@ whenLocalizationReady.then ()->
 		qaMiscFolder.add(qaMiscButtons, "Reset account and reload")
 		qaMiscFolder.add(qaMiscButtons, "Convert rift run to have duplicate card choices")
 		qaMiscFolder.add(qaMiscButtons, "Retrieve Charge Log")
-		qaMiscFolder.add(qaMiscButtons, "Simulate BN Wallet Update")
 		qaMiscFolder.add(qaMiscButtons, "Change Language")
 
 		# game tools

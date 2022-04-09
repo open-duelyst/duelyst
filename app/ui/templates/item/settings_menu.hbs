@@ -39,7 +39,7 @@
 								<label for="language">Language</label>
 									<select id="language">
                       <option value="en" {{#if selected}} selected {{/if}}>English</option>
-                      <option value="de" {{#if selected}} selected {{/if}}>Deutsch (Beta)</option>
+											{{!-- <option value="de" {{#if selected}} selected {{/if}}>Deutsch (Beta)</option> --}}
 									</select>
 							</div>
 							<div class="setting setting-single-line" data-toggle="tooltip" data-placement="left" title="{{localize 'settings.hiDPI_tooltip'}}">
@@ -160,17 +160,11 @@
 								</div>
 							</div>
 							<div class="setting setting-single-line">
-								<button class="btn-clean relink-accounts">{{localize 'settings.relink_accounts'}}</button>
-							</div>
-							<div class="setting setting-single-line">
-								<button class="btn-clean kongregate-convert">{{localize 'settings.create_account'}}</button>
-							</div>
-							<div class="setting setting-single-line">
 								<button class="btn-clean change-username">{{localize 'settings.change_username'}}</button>
 							</div>
-							<div class="setting setting-single-line">
+							{{!-- <div class="setting setting-single-line">
 								<button class="btn-clean manage-data">{{localize 'settings.manage_data'}}</button>
-							</div>
+							</div> --}}
 							<div class="setting setting-single-line">
 								<button class="btn-clean redeem-gift-code"><i class="fa fa-gift"></i>{{localize 'settings.redeem_code'}}</button>
 							</div>

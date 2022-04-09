@@ -1,5 +1,20 @@
 version: "3.9"
 
+x-base-service: &base
+  image: node:latest
+  environment:
+    DEBUG: "*"
+    REDIS_IP: redis
+    POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+  depends_on:
+    - db
+    - redis
+  entrypoint: bash
+  working_dir: /app
+  volumes:
+    - .:/app
+    - /app/node_modules
+
 services:
   redis:
     image: "redis"
@@ -14,8 +29,47 @@ services:
       POSTGRES_DB: duelyst
     ports:
       - 5431:5432
+    volumes:
+      - ./.pgdata:/var/lib/postgresql/data
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
+  api:
+    <<: *base
+    ports:
+      - 3000:3000
+    command: docker/start api
+
+  game:
+    <<: *base
+    ports:
+      - 8000:8000
+    command: docker/start game
+
+  worker:
+    <<: *base
+    ports:
+      - 3002:8080
+    command: docker/start worker
+
+  worker-ui:
+    <<: *base
+    ports:
+      - 3001:3000
+    command: docker/start worker-ui
+
+  migrate:
+    image: node:latest
+    environment:
+      DEBUG: "*"
+      NODE_ENV: development
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+    depends_on:
+      - db
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: yarn migrate:latest

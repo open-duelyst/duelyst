@@ -40,11 +40,6 @@ var SelectUsernameItemView = FormPromptDialogItemView.extend({
 
 	onShow: function() {
 		FormPromptDialogItemView.prototype.onShow.apply(this, arguments)
-
-		if (window.isKongregate) {
-			this.ui.$username.val(kongregate.services.getUsername())
-			this._hasModifiedUsername = true
-		}
 	},
 
 	onSubmit: function(e) {

@@ -1,3 +1,8 @@
+###
+THIS FILE IS FOR BUILDING A STANDALONE REGISTRATION PAGE
+IT IS NOT PART OF THE GAME CLIENT
+###
+
 # Exception Reporter Setup
 exceptionReporter = require('@counterplay/exception-reporter')
 exceptionReporter.init({

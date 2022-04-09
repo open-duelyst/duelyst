@@ -284,11 +284,7 @@ Handlebars.registerHelper('ifNotNull', function(n, block) {
 });
 
 Handlebars.registerHelper('formatCurrency', function(value) {
-	if (window.isKongregate) {
-		return "<strong>" + Math.round(value / 10) + "</strong> Kreds"
-	} else {
-		return "$<strong>" + (value/100).toFixed(2) + "</strong> USD"
-	}
+	return "$<strong>" + (value/100).toFixed(2) + "</strong> USD"
 });
 
 Handlebars.registerHelper('formatPremiumCurrency', function(value) {

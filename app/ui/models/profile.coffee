@@ -33,8 +33,6 @@ Profile = DuelystFirebase.Model.extend
 		@on("change:musicVolume", @onMusicVolumeChange, @)
 		@on("change:voiceVolume", @onVoiceVolumeChange, @)
 		@on("change:effectsVolume", @onEffectsVolumeChange, @)
-		@on("change:premiumCurrencyDirty", @onPremiumCurrencyDirtyChange, @)
-		@on("change:finalizeSteamBneaTxn", @onFinalizeSteamBneaTxn, @)
 
 		@.onSyncOrReady().then ()=>
 			# certain event handlers should only happen after first sync
@@ -137,14 +135,6 @@ Profile = DuelystFirebase.Model.extend
 
 	onEffectsVolumeChange: () ->
 		@setEffectsVolume(@get('effectsVolume'))
-
-	onPremiumCurrencyDirtyChange: () ->
-		if (@get('premiumCurrencyDirty') == true)
-			EventBus.getInstance().trigger(EVENTS.premium_currency_dirty_change, {type: EVENTS.premium_currency_dirty_change})
-
-	onFinalizeSteamBneaTxn: () ->
-		if @get('finalizeSteamBneaTxn')
-			EventBus.getInstance().trigger(EVENTS.finalize_bnea_steam_txn, {order_id: @get('finalizeSteamBneaTxn')})
 
 	onDoNotDisturbChange: () ->
 		@setDoNotDisturb(@get('doNotDisturb'))

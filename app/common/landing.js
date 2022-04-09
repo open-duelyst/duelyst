@@ -7,7 +7,7 @@ const debug = require('debug')('landing')
 
 // search for any traces of previous login / session to determine if this is a first time user
 function isNewUser() {
-	const searchKeys = ['token', 'bneaToken', 'bneaRefresh', 'AWSMobileAnalyticsStorage', 'redirected']
+	const searchKeys = ['token', 'AWSMobileAnalyticsStorage', 'redirected']
 	let itemFound = false
 	for (let key of searchKeys) {
 		debug(`found key ${key}: ${Storage.get(key)}`)
@@ -32,7 +32,7 @@ function isNewSignup() {
 // look at current environment and parse current URL to determine if we should redirect to a landing page
 function shouldRedirect() {
 	// check environnent
-	if (window.isKongregate || window.isSteam || window.isDesktop) {
+	if (window.isSteam || window.isDesktop) {
 		debug('no redirect environment')
 		return false
 	}
@@ -45,9 +45,9 @@ function shouldRedirect() {
 	return true
 }
 
-// redirect to the BNEA landing page, URL set via process.env.config
+// redirect to the landing page, URL set via process.env.config
 function redirect() {
-	const redirectUrl = process.env.BNEA_LANDING_PAGE_URL
+	const redirectUrl = process.env.LANDING_PAGE_URL
 	debug(`redirect to ${redirectUrl}`)
 	Storage.set('redirected', true)
 	return window.location.replace(redirectUrl)
@@ -57,7 +57,7 @@ function redirect() {
 function redirectToGame(options) {
 	options = options || {}
 	let redirectUrl = window.location.origin + '/game'
-	const allowedReferrerUrls = process.env.BNEA_REFERRER_PAGE_URLS
+	const allowedReferrerUrls = process.env.REFERRER_PAGE_URLS
 	if (options.isNewSignUp) {
 		// check referrer first, we only want to flag ad traffic as 'new' signups from allowed reffers
 		// reconstruct the url from parts to safely strip the query parameters
@@ -74,7 +74,7 @@ function redirectToGame(options) {
 
 // async add tracking pixel(s) to current page (after registration)
 function firePixels() {
-	if (window.isKongregate || window.isSteam || window.isDesktop || !process.env.BNEA_TRACKING_PIXELS_ENABLED) {
+	if (window.isSteam || window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
 		debug('tracking pixels disabled')
 		return Promise.resolve()
 	}
@@ -95,7 +95,7 @@ function firePixels() {
 
 // add tracking pixel(s) to document head (on page load)
 function addPixelsToHead() {
-	if (window.isKongregate || window.isSteam || window.isDesktop || !process.env.BNEA_TRACKING_PIXELS_ENABLED) {
+	if (window.isSteam || window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
 		debug('tracking pixels disabled')
 		return
 	}

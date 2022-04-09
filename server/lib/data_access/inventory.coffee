@@ -185,12 +185,12 @@ class InventoryModule
 
 		# userId must be defined
 		unless userId
-			Logger.module("InventoryModule").debug "modifyWalletGoldByAmount() -> invalid user ID - #{userId}.".red
+			Logger.module("InventoryModule").debug "modifyWalletSpiritByAmount() -> invalid user ID - #{userId}.".red
 			return Promise.reject(new Error("Can not modify spirit in wallet : invalid user ID - #{userId}"))
 
 		# spiritAmount must be defined
 		unless spiritAmount?
-			Logger.module("InventoryModule").debug "modifyWalletGoldByAmount() -> invalid spirit amount - #{spiritAmount}.".red
+			Logger.module("InventoryModule").debug "modifyWalletSpiritByAmount() -> invalid spirit amount - #{spiritAmount}.".red
 			return Promise.reject(new Error("Can not modify spirit in wallet : invalid spirit amount - #{spiritAmount}"))
 
 		NOW_UTC_MOMENT = moment.utc()
@@ -240,6 +240,131 @@ class InventoryModule
 		.then ()->
 
 			Logger.module("InventoryModule").timeEnd "giveUserSpirit() -> User #{userId.blue}".green + " received #{spiritAmount} spirit.".green
+
+
+	###*
+	# Give a user premium currency.
+	# @public
+	# @param	{Promise}		trxPromise				Transaction promise that resolves if transaction succeeds.
+	# @param	{Transaction}	trx						KNEX transaction to attach this operation to.
+	# @param	{String}		userId					User ID for which add.
+	# @param	{String}		amount				Amount of +premium currency to add to user.
+	# @param	{String}		memo					Why did we change the wallet?
+	# @return	{Promise}								Promise that will resolve on completion.
+	###
+	@giveUserPremium: (trxPromise,trx,userId,amount,memo)->
+
+		# userId must be defined
+		unless userId
+			Logger.module("InventoryModule").debug "modifyWalletPremiumByAmount() -> invalid user ID - #{userId}.".red
+			return Promise.reject(new Error("Can not modify premium currency in wallet : invalid user ID - #{userId}"))
+
+		# amount must be defined
+		unless amount
+			Logger.module("InventoryModule").debug "modifyWalletPremiumByAmount() -> invalid amount - #{amount}.".red
+			return Promise.reject(new Error("Can not modify premium currency in wallet : invalid amount - #{amount}"))
+
+		NOW_UTC_MOMENT = moment.utc()
+
+		if amount <= 0
+			return Promise.resolve()
+
+		Logger.module("InventoryModule").time "giveUserPremium() -> User #{userId.blue}".green + " received #{amount}.".green
+
+		userCurrencyLogItem =
+			id:								generatePushId()
+			user_id:					userId
+			premium_currency:	amount
+			memo:							memo
+			created_at:				NOW_UTC_MOMENT.toDate()
+
+		allPromises = [
+			knex("users").where('id',userId).increment('wallet_premium',amount).transacting(trx),
+			knex("users").where('id',userId).increment('total_premium_earned',amount).transacting(trx),
+			knex("users").where('id',userId).update('wallet_updated_at',NOW_UTC_MOMENT.toDate()).transacting(trx)
+		]
+		if memo
+			knex("user_currency_log").insert(userCurrencyLogItem).transacting(trx)
+
+		return Promise.all(allPromises)
+		.then ()-> return DuelystFirebase.connect().getRootRef()
+		.then (fbRootRef) ->
+			updateWalletData = (walletData)->
+				walletData ?= {}
+				walletData.premium_amount ?= 0
+				walletData.premium_amount += amount
+				walletData.updated_at = NOW_UTC_MOMENT.valueOf()
+				return walletData
+
+			return FirebasePromises.safeTransaction(fbRootRef.child("user-inventory").child(userId).child("wallet"),updateWalletData)
+
+		.then ()->
+			Logger.module("InventoryModule").timeEnd "giveUserPremium() -> User #{userId.blue}".green + " received #{amount}.".green
+
+	###*
+	# Debit a user gold.
+	# @public
+	# @param	{Promise}		trxPromise				Transaction promise that resolves if transaction succeeds.
+	# @param	{Transaction}	trx						KNEX transaction to attach this operation to.
+	# @param	{String}		userId					User ID for which add.
+	# @param	{String}		amount				Amount of +premium currency to subtract from the user.
+	# @param	{String}		memo					Why did we change the wallet?
+	# @return	{Promise}								Promise that will resolve on completion.
+	###
+	@debitPremiumFromUser: (trxPromise,trx,userId,amount,memo)->
+
+		# userId must be defined
+		unless userId
+			Logger.module("InventoryModule").debug "debitPremiumFromUser() -> invalid user ID - #{userId}.".red
+			return Promise.reject(new Error("Can not modify premium currency in wallet : invalid user ID - #{userId}"))
+
+		# amount must be defined
+		unless amount
+			Logger.module("InventoryModule").debug "debitPremiumFromUser() -> invalid amount - #{amount}.".red
+			return Promise.reject(new Error("Can not modify premium currency in wallet : invalid amount - #{amount}"))
+
+		NOW_UTC_MOMENT = moment.utc()
+
+		if amount <= 0
+			return Promise.resolve()
+
+		Logger.module("InventoryModule").time "debitPremiumFromUser() -> User #{userId.blue}".green + " received #{amount}.".green
+
+		userCurrencyLogItem =
+			id:								generatePushId()
+			user_id:					userId
+			premium_currency:	amount
+			memo:							memo
+			created_at:				NOW_UTC_MOMENT.toDate()
+
+		knex("users").where('id',userId).first('wallet_premium').transacting(trx)
+		.then (userRow)->
+
+			if userRow?.wallet_premium < amount
+				throw new Errors.InsufficientFundsError()
+
+			allPromises = [
+				knex("users").where('id',userId).increment('wallet_premium',-amount).transacting(trx),
+				knex("users").where('id',userId).update('wallet_updated_at',NOW_UTC_MOMENT.toDate()).transacting(trx)
+			]
+			if memo
+				allPromises.push knex("user_currency_log").insert(userCurrencyLogItem).transacting(trx)
+			return Promise.all(allPromises)
+
+		.then ()-> return DuelystFirebase.connect().getRootRef()
+		.then (fbRootRef) ->
+			updateWalletData = (walletData)->
+				walletData ?= {}
+				walletData.premium_amount ?= 0
+				walletData.premium_amount -= amount
+				walletData.updated_at = NOW_UTC_MOMENT.valueOf()
+				return walletData
+
+			return FirebasePromises.safeTransaction(fbRootRef.child("user-inventory").child(userId).child("wallet"),updateWalletData)
+
+		.then ()->
+
+			Logger.module("InventoryModule").timeEnd "debitPremiumFromUser() -> User #{userId.blue}".green + " received #{amount}.".green
 
 	###*
     # Attempts to give a user a cosmetic they don't own (considering optional rarity filter and type filter), if they own all gives them a random one (which will get converted to spirit)

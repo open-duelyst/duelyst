@@ -34,9 +34,6 @@
 	"steam": {
 		"sandbox": false
 	},
-	"bnea": {
-		"enabled": false
-	},
 	"fastly": {
 		"token": "",
 		"serviceId": ""

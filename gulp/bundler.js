@@ -76,14 +76,10 @@ bundler.transform(envify({
 	RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),
 	BUGSNAG_WEB: config.get('bugsnag.web_key'),
 	BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
-	BNEA_ENABLED: false,
-	BNEA_API_URL: '',
-	BNEA_APP_ID: '',
-	BNEA_APP_SECRET: '',
-	BNEA_REGISTRATION_SOURCE: '',
-	BNEA_LANDING_PAGE_URL: '',
-	BNEA_REFERRER_PAGE_URLS: '',
-	BNEA_TRACKING_PIXELS_ENABLED: '',
+	REGISTRATION_SOURCE: '',
+	LANDING_PAGE_URL: '',
+	REFERRER_PAGE_URLS: '',
+	TRACKING_PIXELS_ENABLED: '',
 	STEAM_APP_ID: ''
 }))
 // bundler.transform(babelify, {
