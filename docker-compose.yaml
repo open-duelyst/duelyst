@@ -72,4 +72,5 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    command: yarn migrate:latest
+    entrypoint: "bash -c"
+    command: "yarn install --dev && yarn migrate:latest"
