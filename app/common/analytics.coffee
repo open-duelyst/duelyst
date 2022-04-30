@@ -1,9 +1,6 @@
 _ = require 'underscore'
-GoogleAnalyticsModule = require  'app/common/analyticsModules/GoogleAnalyticsModule'
 LoggerAnalyticsModule = require  'app/common/analyticsModules/loggerAnalyticsModule'
 AnalyticsEventPriority = require 'app/common/analyticsModules/analyticsEventPriority'
-AmazonAnalyticsModule = require 'app/common/analyticsModules/AmazonAnalyticsModule'
-BugsnagMetadataModule = require 'app/common/analyticsModules/BugsnagMetadataModule'
 AnalyticsEventCategory = require 'app/common/analyticsModules/analyticsEventCategory'
 
 ###
@@ -30,18 +27,6 @@ class Analytics
 
 		if LoggerAnalyticsModule.isActive()
 			analyticsModules.push(LoggerAnalyticsModule)
-
-		if GoogleAnalyticsModule.isActive()
-			analyticsModules.push(GoogleAnalyticsModule)
-
-		if AmazonAnalyticsModule.isActive()
-			if !AmazonAnalyticsModule.initialized
-				AmazonAnalyticsModule.initialize()
-
-			analyticsModules.push(AmazonAnalyticsModule)
-
-		if BugsnagMetadataModule.isActive()
-			analyticsModules.push(BugsnagMetadataModule)
 
 		return analyticsModules
 

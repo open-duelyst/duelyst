@@ -8,7 +8,6 @@ _ = require 'underscore'
 colors = require 'colors' # used for console message coloring
 jwt = require 'jsonwebtoken'
 io = require 'socket.io'
-ioJwt = require 'socketio-jwt'
 Promise = require 'bluebird'
 kue = require 'kue'
 moment = require 'moment'
@@ -21,7 +20,6 @@ SDK = require '../app/sdk.coffee'
 Logger = require '../app/common/logger.coffee'
 EVENTS = require '../app/common/event_types'
 UtilsGameSession = require '../app/common/utils/utils_game_session.coffee'
-exceptionReporter = require '@counterplay/exception-reporter'
 
 # lib Modules
 Consul = require './lib/consul'
@@ -77,12 +75,12 @@ io = require('socket.io')().listen(server, {
     origin: "*"
   }
 })
-io.use(
-  ioJwt.authorize(
-    secret:firebaseToken
-    timeout: 15000
-  )
-)
+# io.use(
+#   ioJwt.authorize(
+#     secret:firebaseToken
+#     timeout: 15000
+#   )
+# )
 module.exports = io
 server.listen config.get('game_port'), () ->
 	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
@@ -110,11 +108,6 @@ savePlayerCount = (playerCount) ->
 saveGameCount = (gameCount) ->
 	Redis.hsetAsync("servers:#{serverId}", "games", gameCount)
 
-# error 'domain' to deal with io.sockets uncaught errors
-d = require('domain').create()
-d.on 'error', shutdown.errorShutdown
-d.add(io.sockets)
-
 # health ping on socket namespace /health
 healthPing = io
 	.of '/health'
@@ -123,28 +116,23 @@ healthPing = io
 			Logger.module("GAME SERVER").debug "socket.io Health Ping"
 			socket.emit 'pong'
 
-# run main io.sockets inside of the domain
-d.run () ->
-	io.sockets.on "authenticated", (socket) ->
+io.sockets.on "connection", (socket) ->
+	# Socket is now autheticated, continue to bind other handlers
+	# Logger.module("IO").log "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
+	Logger.module("IO").log "TOKEN ID: #{socket.id.blue}"
 
-		# add the socket to the error domain
-		d.add(socket)
+	savePlayerCount(++playerCount)
 
-		# Socket is now autheticated, continue to bind other handlers
-		Logger.module("IO").log "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
+	# Send message to user that connection is succesful
+	socket.emit "connected",
+		message: "Successfully connected to server"
 
-		savePlayerCount(++playerCount)
-
-		# Send message to user that connection is succesful
-		socket.emit "connected",
-			message: "Successfully connected to server"
-
-		# Bind socket event handlers
-		socket.on EVENTS.join_game, onGamePlayerJoin
-		socket.on EVENTS.spectate_game, onGameSpectatorJoin
-		socket.on EVENTS.leave_game, onGameLeave
-		socket.on EVENTS.network_game_event, onGameEvent
-		socket.on "disconnect", onGameDisconnect
+	# Bind socket event handlers
+	socket.on EVENTS.join_game, onGamePlayerJoin
+	socket.on EVENTS.spectate_game, onGameSpectatorJoin
+	socket.on EVENTS.leave_game, onGameLeave
+	socket.on EVENTS.network_game_event, onGameEvent
+	socket.on "disconnect", onGameDisconnect
 
 getConnectedSpectatorsDataForGamePlayer = (gameId,playerId)->
 	spectators = []
@@ -186,11 +174,11 @@ onGamePlayerJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	if @.decoded_token.d.id != playerId
-		Logger.module("IO").log "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
-		@emit "join_game_response",
-			error:"Your player id does not match the one you requested to join a game with. Are you sure you're joining the right game?"
-		return
+	# if @.decoded_token.d.id != playerId
+	# 	Logger.module("IO").log "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+	# 	@emit "join_game_response",
+	# 		error:"Your player id does not match the one you requested to join a game with. Are you sure you're joining the right game?"
+	# 	return
 
 	# if a client is already in another game, leave it
 	playerLeaveGameIfNeeded(this)
@@ -237,17 +225,6 @@ onGamePlayerJoin = (requestData) ->
 			# let the socket know we had an error
 			@emit "join_game_response",
 				error:"could not join game because the opponent could not be found"
-
-			# issue a warning to our exceptionReporter error tracker
-			exceptionReporter.notify(new Error("Error joining game: could not find opponent"), {
-				severity: "warning"
-				user:
-					id: playerId
-				game:
-					id: gameId
-					player1Id: gameSession?.players[0].playerId
-					player2Id: gameSession?.players[1].playerId
-			})
 
 			# destroy the game data loaded so far if the opponent can't be defined and no one else is connected
 			Logger.module("IO").log "[G:#{gameId}]", "onGameJoin -> DESTROYING local game cache due to join error".red
@@ -367,11 +344,11 @@ onGameSpectatorJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	if @.decoded_token.d.id != spectatorId
-		Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
-		@emit "spectate_game_response",
-			error:"Your login ID does not match the one you requested to spectate the game with."
-		return
+	# if @.decoded_token.d.id != spectatorId
+	# 	Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+	# 	@emit "spectate_game_response",
+	# 		error:"Your login ID does not match the one you requested to spectate the game with."
+	# 	return
 
 	Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> spectator:#{spectatorId} is joining game:#{gameId}".cyan
 
@@ -520,14 +497,6 @@ onGameEvent = (eventData) ->
 		catch error
 			Logger.module("IO").log "[G:#{@.gameId}]", "onGameStep:: error: #{JSON.stringify(error.message)}".red
 			Logger.module("IO").log "[G:#{@.gameId}]", "onGameStep:: error stack: #{error.stack}".red
-			# Report error to exceptionReporter with gameId + eventData
-			exceptionReporter.notify(error, {
-				errorName: "onGameStep Error",
-				game: {
-					gameId: @gameId
-					eventData: eventData
-				}
-			})
 
 			# delete but don't destroy game
 			destroyGameSessionIfNoConnectionsLeft(@gameId,true)
@@ -551,8 +520,6 @@ onGameDisconnect = () ->
 
 		# make spectator leave game room
 		spectatorLeaveGameIfNeeded(@)
-		# remove the socket from the error domain, this = socket
-		d.remove(@)
 
 	else
 
@@ -583,8 +550,6 @@ onGameDisconnect = () ->
 			rollBackAction = gs.actionRollbackSnapshot()
 			gs.executeAction(rollBackAction)
 
-		# remove the socket from the error domain, this = socket
-		d.remove(@)
 		savePlayerCount(--playerCount)
 		Logger.module("IO").log "[G:#{@.gameId}]", "disconnect -> #{@.playerId}".red
 
@@ -1168,15 +1133,6 @@ initGameSession = (gameId,onComplete) ->
 		Logger.module("IO").log "[G:#{gameId}]", "initGameSession:: error: #{JSON.stringify(error.message)}".red
 		Logger.module("IO").log "[G:#{gameId}]", "initGameSession:: error stack: #{error.stack}".red
 
-		# Report error to exceptionReporter with gameId
-		exceptionReporter.notify(error, {
-			errorName: "initGameSession Error",
-			severity: "error",
-			game: {
-				id: gameId
-			}
-		})
-
 		throw error
 
 ###
@@ -1479,19 +1435,6 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 	.catch (error) ->
 		Logger.module("GAME-OVER").error "[G:#{gameId}]", "ERROR: afterGameOver failed #{error}".red
 
-		# issue a warning to our exceptionReporter error tracker
-		exceptionReporter.notify(error, {
-			errorName: "afterGameOver failed",
-			severity: "error"
-			game:
-				id: gameId
-				gameType: gameSession.gameType
-				player1Id: player1Id
-				player2Id: player2Id
-				winnerId: winnerId
-				loserId: loserId
-		})
-
 ### Shutdown Handler ###
 shutdown = () ->
 	Logger.module("SERVER").log "Shutting down game server."
@@ -1693,16 +1636,6 @@ ai_progressTurn = (gameId) ->
 
 			# retain player id
 			playerId = games[gameId].ai.getOpponentPlayerId()
-
-			# Report error to exceptionReporter with gameId + eventData
-			exceptionReporter.notify(error, {
-				errorName: "ai_progressTurn Error",
-				game: {
-					gameId: gameId
-					turnIndex: games[gameId].session.getTurns().length
-					stepIndex: games[gameId].session.getCurrentTurn().getSteps().length
-				}
-			})
 
 			# delete but don't destroy game
 			destroyGameSessionIfNoConnectionsLeft(gameId,true)

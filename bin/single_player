@@ -14,14 +14,6 @@ if (config.get('winston')) {
 	winston.setup('ai')
 }
 
-// Setup exceptionReporter
-const exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: config.get('bugsnag.ai_key'),
-	releaseStage: config.get('env'),
-	appVersion: config.version,
-	isDevelopment: config.isDevelopment(),
-	quitOnError: false
-})
+process.on('uncaughtException', (err) => console.log(err))
 
 module.exports = require('server/single_player')

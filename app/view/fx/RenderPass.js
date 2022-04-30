@@ -1,7 +1,6 @@
 /****************************************************************************
 Render Pass
 ****************************************************************************/
-var exceptionReporter = require('@counterplay/exception-reporter')
 var RenderPass = cc.Class.extend({
 	width: 0,
 	height: 0,
@@ -39,19 +38,16 @@ var RenderPass = cc.Class.extend({
 		if (format == null) {
 			var errorMsg = "RenderPass: initialized with invalid FORMAT of " + format + ", using default cc.Texture2D.PIXEL_FORMAT_RGBA8888";
 			console.warn(errorMsg);
-			exceptionReporter(new Error(errorMsg), 'RenderPass FormatError')
 			format = cc.Texture2D.PIXEL_FORMAT_RGBA8888;
 		}
 		if (width == null || width <= 0) {
 			var errorMsg = "RenderPass: initialized with invalid WIDTH dimension of " + width + ", using default 100";
 			console.warn(errorMsg);
-			exceptionReporter.notify(new Error(errorMsg), 'RenderPass DimensionsError');
 			width = 100;
 		}
 		if (height == null || height <= 0) {
 			var errorMsg = "RenderPass: initialized with invalid HEIGHT dimension of " + height + ", using default 100";
 			console.warn(errorMsg);
-			exceptionReporter.notify(errorMsg, 'RenderPass DimensionsError');
 			height = 100;
 		}
 		if (scale == null || scale <= 0) {

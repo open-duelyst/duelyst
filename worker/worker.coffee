@@ -2,7 +2,6 @@ fs = require 'fs'
 os = require 'os'
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
-exceptionReporter = require '@counterplay/exception-reporter'
 Promise = require 'bluebird'
 
 if config.isDevelopment()
@@ -26,12 +25,6 @@ worker.on "job failed", (id, errorMessage) ->
   Logger.module("WORKER").error "[J:#{id}] has failed: #{errorMessage}".red
   kue.Job.get id, (err, job) ->
     if err then return
-
-    # Notify exceptionReporter + include the job.data
-    exceptionReporter.notify(new Error(errorMessage),
-      errorName: "Failed Job: #{job.data.name}"
-      job: job.data
-    )
 
 ###
 Kue Shutdown Event

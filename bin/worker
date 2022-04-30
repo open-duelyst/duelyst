@@ -14,15 +14,5 @@ if (config.get('winston')) {
 	winston.setup('worker')
 }
 
-// Setup exceptionReporter
-const exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: config.get('bugsnag.worker_key'),
-	releaseStage: config.get('env'),
-	appVersion: config.version,
-	isDevelopment: config.isDevelopment(),
-	quitOnError: true
-})
-
 require('worker/worker')
 require('worker/http_healthcheck')()

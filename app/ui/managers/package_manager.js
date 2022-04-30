@@ -1655,8 +1655,9 @@ cc.textureCache.addImage = function (url, cb, target) {
 
 	// added image is not yet loaded, and cocos tries to load on the fly
 	// this should never be the case for us, so we'll throw an error
-	throw new Error("cc.textureCache.addImage -> images must be loaded before adding to cache: " + url);
-	/*
+	// TODO: appears loader is not loading correctly
+	// throw new Error("cc.textureCache.addImage -> images must be loaded before adding to cache: " + url);
+	
 	tex = locTexs[url] = new cc.Texture2D();
 	tex.url = url;
 	var loadFunc = cc.loader._checkIsImageURL(url) ? cc.loader.load : cc.loader.loadImg;
@@ -1670,7 +1671,6 @@ cc.textureCache.addImage = function (url, cb, target) {
 	});
 
 	return tex;
-	*/
 };
 
 // modify texture to allow for passing in texture options

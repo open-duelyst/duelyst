@@ -3,16 +3,6 @@ THIS FILE IS FOR BUILDING A STANDALONE REGISTRATION PAGE
 IT IS NOT PART OF THE GAME CLIENT
 ###
 
-# Exception Reporter Setup
-exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: if window.isDesktop then process.env.BUGSNAG_DESKTOP else process.env.BUGSNAG_WEB
-	releaseStage: process.env.NODE_ENV,
-	appVersion:  process.env.VERSION,
-	isDevelopment: process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging',
-	isElectron: window.isDesktop
-})
-
 # User Agent Parsing
 UAParser = require 'ua-parser-js'
 uaparser = new UAParser()
@@ -779,9 +769,6 @@ App._cancelReload = () ->
 App.on "before:start", (options) ->
 	Logger.module("APPLICATION").log "----BEFORE START----"
 	App.$el = $("#app")
-
-	# Have exceptionReporter catch ajaxErrors
-	$(document).ajaxError = exceptionReporter.ajaxHandler
 
 App.on "start", (options) ->
 	Logger.module("APPLICATION").log "----START----"

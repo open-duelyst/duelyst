@@ -1,6 +1,5 @@
 os = require 'os'
 Logger = require '../app/common/logger'
-exceptionReporter = require '@counterplay/exception-reporter'
 Promise = require 'bluebird'
 mail = require './mailer'
 Promise.promisifyAll(mail)
@@ -21,7 +20,6 @@ config = require '../config/config.js'
 ###
 module.exports.errorShutdown = (err) ->
 	Logger.module("SHUTDOWN").error pe.render(err)
-	exceptionReporter.notify(err, { severity: "error" })
 
 	if config.isDevelopment()
 		process.exit(1)

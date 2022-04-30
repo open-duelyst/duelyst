@@ -4,7 +4,6 @@ AnalyticsTracker - Parses through events passed to it to track analytics
   - these events should be called from other UI managers to reduce listener spaghetti
 ###
 
-exceptionReporter = require('@counterplay/exception-reporter')
 Analytics = require('app/common/analytics')
 SDK = 			require('app/sdk')
 Logger = 		require('app/common/logger')
@@ -21,13 +20,6 @@ class AnalyticsTracker
 		myPlayerId = gameSession.getMyPlayerId()
 
 		if (!gameSession.isOver())
-			exceptionReporter.notify(new Error("Attempt to submit gameOverAnalytics for game not yet over"), {
-				game:
-					id: NetworkManager.getInstance().gameId
-					myPlayerId: myPlayerId
-					opponentId: @getOpponentPlayerId()
-					status: gameSession.getStatus()
-			})
 			return
 
 		# general analytics data

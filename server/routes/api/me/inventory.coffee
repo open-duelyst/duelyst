@@ -16,7 +16,6 @@ zlib = require 'zlib'
 Promise = require 'bluebird'
 moment = require 'moment'
 AWS = require "aws-sdk"
-exceptionReporter = require '@counterplay/exception-reporter'
 
 # promisify
 Promise.promisifyAll(zlib)
@@ -254,11 +253,6 @@ router.post '/card_collection/soft_wipe', (req, res, next) ->
 		.then ()->
 			Logger.module("API").debug "Back up SUCCESS for #{user_id} inventory before wipe."
 		.catch (e)->
-			exceptionReporter.notify(e, {
-				severity: "warning"
-				user:
-					id: user_id
-			})
 			Logger.module("API").error "ERROR backing up #{user_id} before inventory soft wipe: #{e.message}"
 
 		# respond and return

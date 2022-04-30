@@ -20,7 +20,6 @@ SDK = require '../app/sdk.coffee'
 Logger = require '../app/common/logger.coffee'
 EVENTS = require '../app/common/event_types'
 UtilsGameSession = require '../app/common/utils/utils_game_session.coffee'
-exceptionReporter = require '@counterplay/exception-reporter'
 
 # lib Modules
 Consul = require './lib/consul'
@@ -235,17 +234,6 @@ onGamePlayerJoin = (requestData) ->
 			# let the socket know we had an error
 			@emit "join_game_response",
 				error:"could not join game because the opponent could not be found"
-
-			# issue a warning to our exceptionReporter error tracker
-			exceptionReporter.notify(new Error("Error joining game: could not find opponent"), {
-				severity: "warning"
-				user:
-					id: playerId
-				game:
-					id: gameId
-					player1Id: gameSession?.players[0].playerId
-					player2Id: gameSession?.players[1].playerId
-			})
 
 			# destroy the game data loaded so far if the opponent can't be defined and no one else is connected
 			Logger.module("IO").error "[G:#{gameId}]", "onGameJoin -> DESTROYING local game cache due to join error".red
@@ -515,14 +503,6 @@ onGameEvent = (eventData) ->
 		catch error
 			Logger.module("IO").error "[G:#{@.gameId}]", "onGameStep:: error: #{JSON.stringify(error.message)}".red
 			Logger.module("IO").error "[G:#{@.gameId}]", "onGameStep:: error stack: #{error.stack}".red
-			# Report error to exceptionReporter with gameId + eventData
-			exceptionReporter.notify(error, {
-				errorName: "onGameStep Error",
-				game: {
-					gameId: @gameId
-					eventData: eventData
-				}
-			})
 
 			# delete but don't destroy game
 			destroyGameSessionIfNoConnectionsLeft(@gameId,true)
@@ -1156,15 +1136,6 @@ initGameSession = (gameId,onComplete) ->
 		Logger.module("IO").log "[G:#{gameId}]", "initGameSession:: error: #{JSON.stringify(error.message)}".red
 		Logger.module("IO").log "[G:#{gameId}]", "initGameSession:: error stack: #{error.stack}".red
 
-		# Report error to exceptionReporter with gameId
-		exceptionReporter.notify(error, {
-			errorName: "initGameSession Error",
-			severity: "error",
-			game: {
-				id: gameId
-			}
-		})
-
 		throw error
 
 ###
@@ -1476,19 +1447,6 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 		.catch (error) ->
 			Logger.module("GAME-OVER").error "[G:#{gameId}]", "ERROR: afterGameOver update player job failed #{error}".red
 
-			# issue a warning to our exceptionReporter error tracker
-			exceptionReporter.notify(error, {
-				errorName: "afterGameOver update player job failed",
-				severity: "error"
-				game:
-					id: gameId
-					gameType: gameSession.gameType
-					player1Id: player1Id
-					player2Id: player2Id
-					winnerId: winnerId
-					loserId: loserId
-			})
-
 	# gamesession player data
 	player1Id = gameSession.getPlayer1Id()
 	player2Id = gameSession.getPlayer2Id()
@@ -1523,19 +1481,6 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 		Logger.module("GAME-OVER").debug "[G:#{gameId}]", "afterGameOver done, game is being archived".green
 	.catch (error) ->
 		Logger.module("GAME-OVER").error "[G:#{gameId}]", "ERROR: afterGameOver failed #{error}".red
-
-		# issue a warning to exceptionReporter
-		exceptionReporter.notify(error, {
-			errorName: "afterGameOver failed",
-			severity: "error"
-			game:
-				id: gameId
-				gameType: gameSession.getGameType()
-				player1Id: player1Id
-				player2Id: player2Id
-				winnerId: winnerId
-				loserId: loserId
-		})
 
 ### Shutdown Handler ###
 shutdown = () ->

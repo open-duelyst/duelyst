@@ -41,7 +41,6 @@ Error handling middleware, must be defined last to catch any errors
 ###
 app.use(middleware.not_found)
 app.use(middleware.errors.logError)
-app.use(middleware.errors.exceptionReporter)
 
 if config.isDevelopment()
 	app.use(middleware.errors.development)

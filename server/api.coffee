@@ -8,7 +8,6 @@ mkdirp = require 'mkdirp'
 request = require 'request'
 Promise = require 'bluebird'
 Logger = require '../app/common/logger'
-exceptionReporter = require '@counterplay/exception-reporter'
 shutdown = require './shutdown'
 mail = require './mailer'
 Promise.promisifyAll(mail)
@@ -72,19 +71,16 @@ setupProduction = () ->
 	makeDirectory (err) ->
 		if err?
 			Logger.module("SERVER").log "setupDirectory() failed: " + err
-			exceptionReporter.notify(err, { severity: "error" })
 			process.exit(1)
 		else
 			getIndexHtml config.get('s3_url'), (err) ->
 				if err?
 					Logger.module("SERVER").log "getIndexHtml() failed: " + err
-					exceptionReporter.notify(err, { severity: "error" })
 					process.exit(1)
 				else
 					getRegisterHtml config.get('s3_url'), (err) ->
 						if err?
 							Logger.module("SERVER").log "getIndexHtml() failed: " + err
-							exceptionReporter.notify(err, { severity: "error" })
 							process.exit(1)
 						server.listen config.get('port'), () ->
 							server.connected = true

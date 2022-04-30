@@ -14,16 +14,6 @@ if (config.get('winston')) {
 	winston.setup('server')
 }
 
-// Setup exceptionReporter
-const exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: config.get('bugsnag.api_key'),
-	releaseStage: config.get('env'),
-	appVersion: config.version,
-	isDevelopment: config.isDevelopment(),
-	quitOnError: false
-})
-
 const Promise = global.Promise = require('bluebird')
 
 module.exports = require('server/api')

@@ -1,13 +1,3 @@
-# Exception Reporter Setup
-exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: if window.isDesktop then process.env.BUGSNAG_DESKTOP else process.env.BUGSNAG_WEB
-	releaseStage: process.env.NODE_ENV,
-	appVersion:  process.env.VERSION,
-	isDevelopment: process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging',
-	isElectron: window.isDesktop
-})
-
 # User Agent Parsing
 UAParser = require 'ua-parser-js'
 uaparser = new UAParser()
@@ -155,7 +145,6 @@ AnalyticsTracker = require 'app/common/analyticsTracker'
 require 'app/ui/extensions/handlebars_template_helpers'
 
 localStorage.debug = 'session:*'
-
 
 #
 # --- Utility ---- #
@@ -568,30 +557,25 @@ App.main = ->
 						# set user as loading
 						ChatManager.getInstance().setStatus(ChatManager.STATUS_LOADING)
 
-						# EULA ACCEPTANCE CHECK HERE SO IT FIRES FOR ALREADY LOGGED IN PLAYERS
+						# # EULA ACCEPTANCE CHECK HERE SO IT FIRES FOR ALREADY LOGGED IN PLAYERS
 
-						# strings used for session storage and profile storage
-						sessionAcceptedEula = Storage.namespace() + '.hasAcceptedEula'
-						storageAcceptedEula = 'hasAcceptedEula'
-						storageSentAcceptedEulaNotify = 'hasSentAcceptedEulaNotify'
+						# # strings used for session storage and profile storage
+						# sessionAcceptedEula = Storage.namespace() + '.hasAcceptedEula'
+						# storageAcceptedEula = 'hasAcceptedEula'
+						# storageSentAcceptedEulaNotify = 'hasSentAcceptedEulaNotify'
 
-						if window.isSteam
-							sessionAcceptedEula = Storage.namespace() + '.hasAcceptedSteamEula'
-							storageAcceptedEula = 'hasAcceptedSteamEula'
-							storageSentAcceptedEulaNotify = 'hasSentAcceptedSteamEulaNotify'
+						# # the user has accepted terms in the local session, ensure we are set in profile storage
+						# if window.sessionStorage.getItem(sessionAcceptedEula)
+						# 	ProfileManager.getInstance().set(storageAcceptedEula, true)
 
-						# the user has accepted terms in the local session, ensure we are set in profile storage
-						if window.sessionStorage.getItem(sessionAcceptedEula)
-							ProfileManager.getInstance().set(storageAcceptedEula, true)
-
-						# check in profile storage if the user has accepted terms
-						if !ProfileManager.getInstance().get(storageAcceptedEula)
-							# TODO - This is not actually good, but we need to make a new terms and conditions page to replace BNEA one
-							return App._showTerms()
-						# user has accepted, check if they have sent notification
-						else
-							if !ProfileManager.getInstance().get(storageSentAcceptedEulaNotify)
-								ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
+						# # check in profile storage if the user has accepted terms
+						# if !ProfileManager.getInstance().get(storageAcceptedEula)
+						# 	# TODO - This is not actually good, but we need to make a new terms and conditions page to replace BNEA one
+						# 	return App._showTerms()
+						# # user has accepted, check if they have sent notification
+						# else
+						# 	if !ProfileManager.getInstance().get(storageSentAcceptedEulaNotify)
+						# 		ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
 
 
 						# check for an active game
@@ -732,10 +716,6 @@ App._showTerms = (options = {}) ->
 App._showTutorialLessons = (lastCompletedChallenge) ->
 	Logger.module("APPLICATION").log("App:_showTutorialChallenges")
 
-	# hide Zendesk Widget on tutorial screen
-	if zE? and zE.hide?
-		zE.hide()
-
 	return PackageManager.getInstance().loadAndActivateMajorPackage "nongame", null, null, () ->
 		# analytics call
 		Analytics.page("Tutorial Lessons",{ path: "/#tutorial_lessons" })
@@ -763,10 +743,6 @@ App._showTutorialLessons = (lastCompletedChallenge) ->
 
 App._showMainMenu = () ->
 	Logger.module("APPLICATION").log("App:_showMainMenu")
-
-	# Hide ZENDESK Widget
-	if zE? and zE.hide?
-		zE.hide()
 
 	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null, () ->
 		# analytics call
@@ -1001,10 +977,6 @@ App.onLogin = (data) ->
 	# save token to localStorage
 	Storage.set('token', data.token)
 
-	# if steam,  save steam ticket to localStorage
-	if window.isSteam
-		Storage.set('steam_ticket', data.steamTicket)
-
 	# setup ajax headers for jquery/backbone requests
 	$.ajaxSetup
 		headers: {
@@ -1120,26 +1092,6 @@ App.onLoginAnalyticsSetup = (loginData) ->
 
 	# endregion analytics data
 
-	# configure exceptionReporter for this user
-	exceptionReporter.setUserData({
-		id: ProfileManager.getInstance().get('id'),
-		username: ProfileManager.getInstance().get('username')
-	})
-
-	# append steam specific info to exception reporter
-	if window.isSteam
-		steamUserData = window.steamworks.getSteamId()
-		filter = ['accountId', 'steamId', 'staticAccountId', 'screenName']
-		exceptionReporter.setMetaData({
-			steam: _.pick(steamUserData, filter)
-		})
-
-	# configure ZENDESK widget
-	if zE? and zE.identify?
-		zE.identify({
-			name: Session.username
-		})
-
 	# region analytics data
 	# identify the user with their current rank
 	gamesManager = GamesManager.getInstance()
@@ -1199,10 +1151,6 @@ App.onLogout = () ->
 
 	# stop playing any music
 	audio_engine.current().stop_music()
-
-	# clear exceptionReporter / analytics
-	exceptionReporter.setUserData({})
-	exceptionReporter.setMetaData({steam: {}})
 
 	Analytics.reset()
 
@@ -2780,7 +2728,6 @@ App.showUnlockedFaction = (factionId) ->
 		if Scene.getInstance().getOverlay() == unlockFactionLayer
 			unlockFactionLayer.animateReward()
 	.catch (error) ->
-		exceptionReporter.notify(error, "App.showUnlockedFaction error")
 		App._error(error)
 
 ###*
@@ -2812,7 +2759,6 @@ App.showNextRibbonReward = (rewardModels) ->
 	else
 
 		Logger.module("APPLICATION").log "ERROR: ribbonId is undefined for reward #{nextReward.get("id")}"
-		#TODO: report the ribbonId undefined error to exceptionReporter?
 
 ###*
 # Show progression reward screen.
@@ -2961,9 +2907,6 @@ App.showEndOfSeasonRewards = () ->
 					if Scene.getInstance().getOverlay() == endOfSeasonLayer
 						return endOfSeasonLayer.animateReward()
 				.catch (error) ->
-					# If there's an error we don't want to prevent a player from being able to enter duelyst
-					exceptionReporter.notify(error, "App.showEndOfSeasonRewards error")
-
 					Logger.module("APPLICATION").log("App.showEndOfSeasonRewards error: ", error)
 
 					locResolve()
@@ -3005,7 +2948,6 @@ App.showLadderProgress = (userGameModel,rewardModels) ->
 		if Scene.getInstance().getOverlay() == ladderProgressLayer
 			return ladderProgressLayer.showLadderProgress(userGameModel)
 	.catch (error) ->
-		exceptionReporter.notify(error, "App.showLadderProgress error")
 		App._error("App.showLadderProgress error: ", error)
 
 App.showRiftProgress = (userGameModel,rewardModels) ->
@@ -3024,7 +2966,6 @@ App.showRiftProgress = (userGameModel,rewardModels) ->
 		if Scene.getInstance().getOverlay() == riftProgressLayer
 			return riftProgressLayer.showRiftProgress(userGameModel)
 	.catch (error) ->
-		exceptionReporter.notify(error, "App.showRiftProgress error")
 		App._error("App.showRiftProgress error: ", error)
 
 
@@ -3696,8 +3637,6 @@ App.on "before:start", (options) ->
 	Logger.module("APPLICATION").log "----BEFORE START----"
 	App.$el = $("#app")
 
-	# Have exceptionReporter catch ajaxErrors
-	$(document).ajaxError = exceptionReporter.ajaxHandler
 
 # Start Event
 App.on "start", (options) ->

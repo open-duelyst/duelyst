@@ -1,10 +1,10 @@
-exceptionReporter = require '@counterplay/exception-reporter'
 _ = require 'underscore'
 io = require 'socket.io-client'
 EventBus = require 'app/common/eventbus'
 EVENTS = require 'app/common/event_types'
 Logger = require 'app/common/logger'
 CONFIG = require 'app/common/config'
+Storage = require 'app/common/storage'
 GameSession = require './gameSession'
 ApplyCardToBoardAction = require './actions/applyCardToBoardAction'
 
@@ -47,13 +47,6 @@ class NetworkManager
 				Logger.module("SDK").warn "NetworkManager already connected."
 				return
 
-			exceptionReporter.setMetaData({
-				server: {
-					gameId: gameId,
-					gameServer: gameServerAddress
-				}
-			})
-
 			Logger.module("SDK").debug "NetworkManager:connect -> gameId: " + gameId
 			@gameId = gameId
 			@playerId = playerId + ""
@@ -69,19 +62,17 @@ class NetworkManager
 			# if no game server address was provided, connect to the current host
 			if !gameServerAddress?
 				Logger.module("SDK").debug "NetworkManager:connecting to dev server #{gameServerAddress}"
-				@socketManager = new io.Manager("#{window.location.hostname}:8000", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
+				@socketManager = new io.Manager("#{window.location.hostname}:8000", { auth: {token: "Bearer #{Storage.get('token')}"}, timeout: 20000, reconnection: false, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
 			else
-				@socketManager = new io.Manager("wss://#{gameServerAddress}", { timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
+				@socketManager = new io.Manager("wss://#{gameServerAddress}", { auth: {token: "Bearer #{Storage.get('token')}"}, timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
 			# Connect to a specific socket on the host, currently /
 			@socket = @socketManager.socket('/', {forceNew: true})
 
 			# When the socket opens, send the token for authetication
 			@socket.on 'connect', (socket) ->
-				# TODO: should remove this dependency
-				# Session = require 'app/common/session'
-				Storage = require 'app/common/storage'
-				token = Storage.get('token')
-				@emit('authenticate', {token: token})
+				# Storage = require 'app/common/storage'
+				# token = Storage.get('token')
+				# @emit('authenticate', {token: token})
 
 			# when you receive a message that the connection is ready (happens after authentication)
 			@socket.on 'connected', (response) => # fat arrow to bind this
@@ -96,7 +87,6 @@ class NetworkManager
 
 			@socket.on 'connect_error', (error)->
 				Logger.module("IO").error "NetworkManager::IO:connect_error",error
-				exceptionReporter.notify(new Error("NetworkManager connect_error"), error)
 
 			@socket.on 'reconnecting', (attempts)->
 				Logger.module("IO").log "NetworkManager::IO:reconnecting attempt number " + attempts
@@ -176,14 +166,11 @@ class NetworkManager
 				Logger.module("IO").warn "NetworkManager::IO:network_game_error -> #{errorData}"
 				NetworkManager.getInstance().disconnect()
 				NetworkManager.getInstance().getEventBus().trigger(EVENTS.network_game_error, errorData)
-				exceptionReporter.notify(new Error("NetworkManager network_game_error"), errorData)
 
 			# when a game server error is received
 			@socket.on 'game_server_shutdown', (errorData,callback)->
 				Logger.module("IO").warn "NetworkManager::IO:game_server_shutdown -> #{errorData.msg}"
 				NetworkManager.getInstance().getEventBus().trigger(EVENTS.game_server_shutdown, errorData)
-				if !errorData.ip
-					exceptionReporter.notify(new Error("NetworkManager game_server_shutdown"), errorData)
 
 			# when a game close event is received, usually after an error
 			@socket.on 'close_game', (callback)->
@@ -191,7 +178,8 @@ class NetworkManager
 				NetworkManager.getInstance().disconnect()
 
 			# when the socket disconnects
-			@socket.on 'disconnect', () ->
+			@socket.on 'disconnect', (err) ->
+				console.log(err)
 				Logger.module("IO").warn "NetworkManager::IO:disconnect -> DISCONNECT"
 				NetworkManager.getInstance().connected = false
 				NetworkManager.getInstance().disconnected = true
@@ -229,8 +217,6 @@ class NetworkManager
 		disconnect:() ->
 			Logger.module("SDK").debug "NetworkManager:disconnect"
 			if @connected
-				# If we are explicity calling disconnect, clear exceptionReporter game metadata
-				exceptionReporter.setMetaData({game: {}})
 				@gameId = null
 
 			if @socket

@@ -14,14 +14,4 @@ if (config.get('winston')) {
 	winston.setup('game')
 }
 
-// Setup exceptionReporter
-const exceptionReporter = require('@counterplay/exception-reporter')
-exceptionReporter.init({
-	apiKey: config.get('bugsnag.game_key'),
-	releaseStage: config.get('env'),
-	appVersion: config.version,
-	isDevelopment: config.isDevelopment(),
-	quitOnError: false
-})
-
 module.exports = require('server/game')

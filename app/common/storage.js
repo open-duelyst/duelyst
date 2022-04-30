@@ -1,11 +1,7 @@
 const store = require('store2')
 
 function createNamespace() {
-	if (window.isSteam) {
-		return 'duelyst-steam-' + process.env.NODE_ENV
-	} else {
-		return 'duelyst-' + process.env.NODE_ENV
-	}
+	return 'duelyst-' + process.env.NODE_ENV
 }
 
 const namespace = createNamespace()

@@ -6,7 +6,6 @@ Logger 		= require '../app/common/logger.coffee'
 _ 			= require 'underscore'
 request 	= require 'superagent'
 config 		= require '../config/config.js'
-exceptionReporter 	= require '@counterplay/exception-reporter'
 Promise 	= require 'bluebird'
 moment 		= require 'moment'
 GamesModule = require '../server/lib/data_access/games'
@@ -40,14 +39,6 @@ createGame = (gameType, player1Data, player2Data, gameServer, callback) ->
 		Logger.module("GAME CREATE").error "ERROR Creating a game for #{player1Id} and #{player2Id}. Invalid data.".red
 
 		error = new Error("Could not create a game because one or both the player IDs are invalid")
-
-		# issue a warning to exceptionReporter
-		exceptionReporter.notify(error, {
-			severity: "warning"
-			matchmaker:
-				player1Id: player1Id
-				player2Id: player2Id
-		})
 
 		# send the error along to the callback
 		return Promise.reject(error).nodeify()

@@ -3,9 +3,8 @@
 # Should be included in app.use last
 ###
 os = require 'os'
-Logger = require '../../app/common/logger.coffee'
-config = require '../../config/config.js'
-exceptionReporter = require '@counterplay/exception-reporter'
+Logger = require '../../app/common/logger'
+config = require '../../config/config'
 Errors = require '../lib/custom_errors'
 Promise = require 'bluebird'
 mail = require '../mailer'
@@ -30,19 +29,6 @@ module.exports.logError = (err, req, res, next) ->
 
 	# fancy log other errors
 	Logger.module("EXPRESS").log pe.render(err)
-	return next(err)
-
-# second error middleware: exceptionReporter
-module.exports.exceptionReporter = (err, req, res, next) ->
-	# guard to ignore 401,404 for reporting
-	if (err.status == 401 || err.status == 404)
-		return next(err)
-	
-	exceptionReporter.notify(err, {
-		req: req,
-		severity: 'error'
-	})
-
 	return next(err)
 
 # last error middleware: either development or production
