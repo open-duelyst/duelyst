@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
 yarn install --dev
-# NODE_ENV=development yarn migrate:latest
-DEBUG=* yarn $1
+
+# To enable socket debug logs, prepend this command with DEBUG=*
+yarn $1
