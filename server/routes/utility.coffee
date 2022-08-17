@@ -20,7 +20,6 @@ Errors = require '../lib/custom_errors'
 
 # Configuration object
 config = require '../../config/config.js'
-firebaseToken = config.get('firebaseToken')
 
 # set up AWS
 AWS.config.update

@@ -2,12 +2,6 @@ version: "3.9"
 
 x-base-service: &base
   image: node:lts
-  environment:
-    REDIS_IP: redis
-    POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
-  depends_on:
-    - db
-    - redis
   entrypoint: bash
   working_dir: /app
   volumes:
@@ -19,6 +13,7 @@ services:
     image: "redis"
     ports:
       - "6379:6379"
+
   db:
     image: postgres
     restart: always
@@ -30,6 +25,7 @@ services:
       - 5431:5432
     volumes:
       - ./.pgdata:/var/lib/postgresql/data
+
   adminer:
     image: adminer
     profiles:
@@ -37,12 +33,23 @@ services:
     restart: always
     ports:
       - 8080:8080
+    environment:
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+    depends_on:
+      - db
 
   api:
     <<: *base
     ports:
       - 3000:3000
+    environment:
+      REDIS_IP: redis
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+      FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start api
+    depends_on:
+      - db
+      - redis
 
   game:
     <<: *base
@@ -50,19 +57,36 @@ services:
       - donotstart
     ports:
       - 8000:8000
+    environment:
+      REDIS_IP: redis
+      FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start game
+    depends_on:
+      - redis
 
   sp:
     <<: *base
     ports:
       - 8000:8000
+    environment:
+      REDIS_IP: redis
+      FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start sp
+    depends_on:
+      - redis
 
   worker:
     <<: *base
     ports:
       - 3002:8080
+    environment:
+      REDIS_IP: redis
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+      FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start worker
+    depends_on:
+      - db
+      - redis
 
   worker-ui:
     <<: *base
@@ -71,6 +95,8 @@ services:
     ports:
       - 3001:3000
     command: docker/start worker-ui
+    depends_on:
+      - worker
 
   migrate:
     image: node:lts
@@ -85,5 +111,30 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    entrypoint: "bash -c"
-    command: "yarn install --dev && yarn migrate:latest"
+    command: docker/start migrate:latest
+
+  test-unit:
+    <<: *base
+    profiles:
+      - donotstart
+    environment:
+      REDIS_IP: redis
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+      FIREBASE_URL: ${FIREBASE_URL}
+    command: docker/start test:unit
+    depends_on:
+      - db
+      - redis
+
+  test-integration:
+    <<: *base
+    profiles:
+      - donotstart
+    environment:
+      REDIS_IP: redis
+      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+      FIREBASE_URL: ${FIREBASE_URL}
+    command: docker/start test:integration
+    depends_on:
+      - db
+      - redis

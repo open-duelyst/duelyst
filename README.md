@@ -40,6 +40,10 @@ Worker:
 
 #### Other Dependencies
 
+Firebase:
+
+- Client code can be found in `app` (see `new Firebase()` calls) and `server/lib/duelyst_firebase_module.coffee`, and configuration can be found in `config/`
+
 Postgres:
 
 - Client code can be found in `server/lib/data_access/knex.coffee` and `server/knexfile.js`, and configuration can be found in `config/`
@@ -64,9 +68,9 @@ Consul:
 
 #### Building the code
 
-Install NPM tools:
+Install some NPM tools (can use `sudo` on Mac/Linux):
 ```
-npm install -g typescript yarn gulpjs/gulp-cli
+npm install -g typescript yarn
 ```
 
 Compile TypeScript dependencies:
@@ -97,11 +101,13 @@ When working in the `server` or `worker` directories, no rebuilds are needed. Se
 
 #### Starting a test environment in Docker
 
-- Modify `development.json` with:
-  - Firebase Realtime endpoint and secret
-  - Redis connection string
-  - Postgres connection string
-- Optionally enable debug logging for sockets by prepending `yarn $1` with `DEBUG=*` in `docker/start`
+- Create a Firebase Realtime Database
+  - This is a Google Cloud product, and they offer a no-cost "Spark" plan
+  - Set the `FIREBASE_URL` environment variable in an `.env` file in the repo root
+    - For example, `FIREBASE_URL=https://my-example-project.firebaseio.com/`
+  - Create a new service account with r/w access to your realtime DB
+    - Create a new JSON key for the service account, and store it in a `serviceAccountKey.json` file in the repo root
+- Optionally enable debug logging for WebSockets by prepending `yarn $1` with `DEBUG=*` in `docker/start`
 - Use `docker compose up` to start required services locally, or start individual services:
   - `redis`
   - `db` (Postgres)
@@ -117,7 +123,7 @@ When working in the `server` or `worker` directories, no rebuilds are needed. Se
   - In another terminal window, use `NODE_ENV=development yarn migrate:latest` to run database migrations
     - On Windows: `$env:NODE_ENV = 'development'; yarn migrate:latest`
   - Only need to run this once (unless you change Postgres schema)
-- Open http://localhost:3000 in a browser to load the game client
+- Once you see `Duelyst 'development' started on port 3000` in the logs, open http://localhost:3000 in a browser to load the game client
 
 #### Starting individual components
 

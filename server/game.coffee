@@ -27,7 +27,6 @@ Consul = require './lib/consul'
 # Configuration object
 config = require '../config/config.js'
 env = config.get('env')
-firebaseToken = config.get('firebaseToken')
 
 # Boots up a basic HTTP server on port 8080
 # Responds to /health endpoint with status 200
@@ -77,7 +76,7 @@ io = require('socket.io')().listen(server, {
 })
 io.use(
   ioJwt.authorize(
-    secret:firebaseToken
+    secret: config.get('jwt.signingSecret'),
     timeout: 15000
   )
 )
@@ -309,7 +308,7 @@ onGameSpectatorJoin = (requestData) ->
 
 	# verify - synchronous
 	try
-		spectateToken = jwt.verify(requestData.spectateToken, firebaseToken)
+		spectateToken = jwt.verify(requestData.spectateToken, config.get('jwt.signingSecret'))
 	catch error
 		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> ERROR decoding spectate token: #{error?.message}".red
 

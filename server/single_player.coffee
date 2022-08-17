@@ -8,6 +8,7 @@ _ = require 'underscore'
 colors = require 'colors' # used for console message coloring
 jwt = require 'jsonwebtoken'
 io = require 'socket.io'
+ioJwt = require 'socketio-jwt'
 Promise = require 'bluebird'
 kue = require 'kue'
 moment = require 'moment'
@@ -27,7 +28,6 @@ Consul = require './lib/consul'
 # Configuration object
 config = require '../config/config.js'
 env = config.get('env')
-firebaseToken = config.get('firebaseToken')
 
 # Boots up a basic HTTP server on port 8080
 # Responds to /health endpoint with status 200
@@ -75,12 +75,12 @@ io = require('socket.io')().listen(server, {
     origin: "*"
   }
 })
-# io.use(
-#   ioJwt.authorize(
-#     secret:firebaseToken
-#     timeout: 15000
-#   )
-# )
+io.use(
+  ioJwt.authorize(
+    secret: config.get('jwt.signingSecret')
+    timeout: 15000
+  )
+)
 module.exports = io
 server.listen config.get('game_port'), () ->
 	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
@@ -303,7 +303,7 @@ onGameSpectatorJoin = (requestData) ->
 
 	# verify - synchronous
 	try
-		spectateToken = jwt.verify(requestData.spectateToken, firebaseToken)
+		spectateToken = jwt.verify(requestData.spectateToken, config.get('jwt.signingSecret'))
 	catch error
 		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> ERROR decoding spectate token: #{error?.message}".red
 

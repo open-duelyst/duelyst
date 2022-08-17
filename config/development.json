@@ -2,8 +2,6 @@
 	"env": "development",
 	"api": "http://localhost:3000",
 	"postgres_connection_string": "postgres://duelyst:duelyst@0.0.0.0:5431/duelyst",
-	"firebase": "https://duelyst-development.firebaseio.com/",
-	"firebaseToken": "K4EkQWIT9UrTATVW9h0dHhf8t1nvGVjWMi8rPHb2",
 	"redis": {
 		"ip": "localhost",
 		"port": 6379,

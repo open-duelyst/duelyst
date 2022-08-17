@@ -1,65 +1,70 @@
 Promise = require 'bluebird'
-Firebase = require 'firebase'
-Logger = require '../../app/common/logger.coffee'
+firebaseAdmin = require 'firebase-admin'
 colors = require 'colors'
 moment = require 'moment'
 util = require 'util'
 _ = require 'underscore'
 url = require 'url'
 
-# Configuration object
+Logger = require '../../app/common/logger.coffee'
 config = require '../../config/config.js'
-
-if config.get('firebaseLoggingEnabled')
-	Firebase.enableLogging(true)
+defaultFirebaseUrl = config.get('firebase.url')
+firebaseLoggingEnabled = config.get('firebase.loggingEnabled')
+firebaseServiceAccount = require('../../serviceAccountKey.json')
 
 class DuelystFirebaseModule
-
-	# Connection objects keyed by URL
-	@connections: {}
+	# App objects keyed by URL
+	@apps: {}
 
 	# Connect to a Firebase URL, returns connection if already exists
-	@connect: (firebaseUrl = config.get('firebase'), firebaseToken = config.get('firebaseToken')) ->
-		parsed = url.parse(firebaseUrl)
-		key = url.format(parsed)
+	@connect: (firebaseUrl = defaultFirebaseUrl) ->
+		# Check for an existing connection on this URL.
+		# TODO: check token expiration, new tokens from callers, etc.
+		key = url.format(url.parse(firebaseUrl))
+		if @apps[key]?
+			return @apps[key]
 
-		# Logger.module("DuelystFirebaseModule").debug "connect() -> connecting to #{key}".magenta
-
-		# TODO: check token expiration!
-		# TODO: check for a new token being passed in for same key
-		if @connections[key]?
-			# Logger.module("DuelystFirebaseModule").debug "connect() -> existing connection for #{key}".green
-			return @connections[key]
-
-		@connections[key] = new DuelystFirebaseModule(
-			key: key
-			firebaseUrl: firebaseUrl
-			firebaseToken: firebaseToken
+		# Create a new connection.
+		@apps[key] = new DuelystFirebaseModule(
+			key: key,
+			firebaseUrl: firebaseUrl,
 		)
 
 	# Count current number of connections
 	@getNumConnections: ->
-		_.size(@connections)
+		_.size(@apps)
 
 	# Opens new connections
-	constructor: ({@key, @firebaseUrl, @firebaseToken}) ->
-		Logger.module("DuelystFirebaseModule").debug "connect() -> new connection to #{@key}".magenta
+	constructor: ({@key, @firebaseUrl}) ->
+		Logger.module('Firebase').log "connect() -> new app connection with db #{@key}"
 		@promise = new Promise (resolve, reject) =>
-			connection = new Firebase(@firebaseUrl)
-			connection.authWithCustomToken @firebaseToken, (error, result) =>
-				if error?
-					Logger.module("DuelystFirebaseModule").debug "auth() -> authentication FAILED.".red
-					return reject(error)
-				else
-					Logger.module("DuelystFirebaseModule").debug "auth() -> authentication SUCCESS.".green
-					@authData = result
-					@tokenExpires = result.expires
-					return resolve(connection)
+			# Validate configuration before attempting to connect.
+			if @firebaseUrl == ''
+				return reject(new Error('firebase.url must be set'))
+
+			if firebaseLoggingEnabled
+				firebaseAdmin.database.enableLogging(true)
+
+			try
+				app = firebaseAdmin.initializeApp({
+					credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
+					databaseURL: @firebaseUrl
+				}, @firebaseUrl)
+				resolve(app)
+			catch e
+				return reject(new Error('failed to initialize firebase app: ' + e))
+
 		@promise.catch (error) =>
-			delete DuelystFirebaseModule.connections[@key]
+			delete DuelystFirebaseModule.apps[@key]
 
 	# Returns a Promise with the Firebase root reference
 	getRootRef: ->
 		@promise
+		.then (app) ->
+			try
+				db = app.database()
+				return db.ref()
+			catch e
+				Logger.module('Firebase').error "getRootRef: #{e.toString()}"
 
 module.exports = DuelystFirebaseModule
