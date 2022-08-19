@@ -29,7 +29,7 @@ import * as git from './gulp/git'
 import * as docker from './gulp/docker'
 import * as shop from './gulp/shop'
 import * as localization from './gulp/localization'
-import * as cdn from './gulp/cdn'
+//import * as cdn from './gulp/cdn'
 import {opts,config,env,version,production,staging,development} from './gulp/shared'
 
 gutil.log(`${gutil.colors.red(`GULP :: env: ${env} :: version: ${version}`)}`)
@@ -38,6 +38,9 @@ gutil.log(`${gutil.colors.yellow(`GULP :: minification = ${opts.minify}`)}`)
 
 // Define main tasks
 gulp.task('clean:all', clean.all)
+gulp.task('clean:app', clean.app)
+gulp.task('clean:web', clean.web)
+gulp.task('clean:locales', clean.locales)
 gulp.task('clean:desktop', clean.desktop)
 gulp.task('clean:git', clean.git)
 gulp.task('css', css)
@@ -49,7 +52,7 @@ gulp.task('vendor', vendor)
 gulp.task('rsx:imagemin', rsx.imageMin)
 gulp.task('rsx:imagemin:lossy', rsx.imageMinLossy)
 gulp.task('rsx:copy', rsx.copy)
-gulp.task('rsx:copy:cdn', rsx.copyCdn)
+//gulp.task('rsx:copy:cdn', rsx.copyCdn)
 gulp.task('rsx:copy:all', rsx.copyAll)
 gulp.task('rsx:packages', rsx.packages)
 gulp.task('rsx', gulp.series(rsx.packages,rsx.copy))
@@ -69,8 +72,8 @@ gulp.task('docker:push', docker.push)
 gulp.task('shop:paypal:buttons:SYNC:danger', shop.syncPaypalButtons)
 gulp.task('shop:paypal:buttons:add', shop.addPaypalButtons)
 gulp.task('localization:copy', localization.copy)
-gulp.task('cdn:purgeAll', cdn.purgeAll)
-gulp.task('cdn:purgeLocalization', cdn.purgeLocalization)
+//gulp.task('cdn:purgeAll', cdn.purgeAll)
+//gulp.task('cdn:purgeLocalization', cdn.purgeLocalization)
 
 // Define git helper tasks (master,staging,production)
 const branches = ['master', 'staging', 'production']
@@ -162,23 +165,36 @@ gulp.task('build', gulp.series(
 	'clean:all',
 	'source',
 	'rsx:copy',
-	'rsx:copy:cdn',
+	//'rsx:copy:cdn',
 	'autowatch'
 ))
+gulp.task('build:app', gulp.series(
+	'clean:app',
+	'js'
+))
+gulp.task('build:web', gulp.series(
+	'clean:web',
+	'clean:locales',
+	'html',
+	'css',
+	'vendor',
+	'localization:copy'
+))
+
 // register standalone page
 gulp.task('source:register', gulp.series(gulp.parallel('vendor','css','html:register'), 'localization:copy','rsx:packages', 'js:register'))
 gulp.task('build:register', gulp.series(
 	'clean:all',
 	'source:register',
 	'rsx:copy',
-	'rsx:copy:cdn',
+	//'rsx:copy:cdn',
 	'autowatch'
 ))
 gulp.task('default', gulp.series('build'))
 
 // Release Builds (CI ready tasks)
 const ciTargets = ['staging','production']
-const cdnUrl = config.get('cdn')
+//const cdnUrl = config.get('cdn')
 
 function validateConfig(cb) {
 	// Ensure running build:release:${target} matches running config environemnt
@@ -199,7 +215,9 @@ function validateConfigForDesktop(cb) {
 	}
 	cb()
 }
-function overideCdnUrl(cb) {
+
+/*
+function overrideCdnUrl(cb) {
 	// We override the CDN url here
 	// to prevent the CSS task from using for desktop app
 	config.set('cdn', '')
@@ -216,6 +234,7 @@ function versionedCdnUrl(cb) {
 	config.set('cdn', cdnUrl)
 	cb()
 }
+*/
 
 gulp.task('build:release', gulp.series(
 	validateConfig,
@@ -229,14 +248,14 @@ gulp.task('build:release', gulp.series(
 ))
 gulp.task('upload:release', gulp.series(
 	'rsx:copy',
-	'rsx:copy:cdn',
+	//'rsx:copy:cdn',
 	'upload:main',
 	'upload:audio'
 ))
 gulp.task('build:release:versioned', gulp.series(
 	validateConfig,
 	'clean:all',
-	versionedCdnUrl,
+	//versionedCdnUrl,
 	'source',
 	'source:register',
 	'rsx:build_urls',
@@ -246,16 +265,16 @@ gulp.task('build:release:versioned', gulp.series(
 ))
 gulp.task('upload:release:versioned', gulp.series(
 	'rsx:copy',
-	'rsx:copy:cdn',
+	//'rsx:copy:cdn',
 	'upload:main:versioned',
 	'upload:audio:versioned'
 ))
 gulp.task('desktop:build',	gulp.series(
 	validateConfigForDesktop,
 	'clean:all',
-	overideCdnUrl,
+	//overrideCdnUrl,
 	'source',
-	restoreCdnUrl,
+	//restoreCdnUrl,
 	'rsx:codex_urls',
 	'rsx:copy',
 	'desktop:setup',
@@ -267,9 +286,9 @@ gulp.task('desktop:build',	gulp.series(
 gulp.task('desktop:build:steam',	gulp.series(
 	validateConfigForDesktop,
 	'clean:all',
-	overideCdnUrl,
+	//overrideCdnUrl,
 	'source',
-	restoreCdnUrl,
+	//restoreCdnUrl,
 	'rsx:codex_urls',
 	'rsx:copy',
 	'desktop:setup',

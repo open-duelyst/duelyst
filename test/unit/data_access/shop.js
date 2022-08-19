@@ -1,3 +1,5 @@
+/* Shop unit tests are currently disabled.
+
 var path = require('path')
 require('app-module-path').addPath(path.join(__dirname, '../../../'))
 require('coffee-script/register')
@@ -809,3 +811,4 @@ describe("shop module", function() {
 	})
 
 });
+*/

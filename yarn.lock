@@ -8437,8 +8437,10 @@ isurl@^1.0.0-alpha5:
     has-to-string-tag-x "^1.2.0"
     is-object "^1.0.1"
 
-j2j@./packages/node-j2j:
-  version "0.2.0"
+j2j@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/j2j/-/j2j-0.1.2.tgz#20ece0ef06d905ee2ce32cb3468da363c2938968"
+  integrity sha512-qfVEQYpdAR3dhSGaISJqv9JKhiLhrO0Tx4w5U9kdo5uHiRHRWTrY7g6Rba0rb3wng5LmblVZpMJCJpW8ZXBv6Q==
   dependencies:
     cardinal "^0.4.4"
     chalk "^0.5.1"

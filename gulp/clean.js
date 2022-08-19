@@ -9,7 +9,25 @@ export function all() {
 		'desktop/src',
 		'desktop/node_modules'
 	])
-	return del('dist')
+}
+
+// Cleans out app code only
+export function app() {
+	return del('dist/src/duelyst.js')
+}
+
+// Cleans out HTML/CSS only
+export function web() {
+	return del([
+		'dist/src/duelyst.css',
+		'dist/src/index.html',
+		'dist/src/vendor.js'
+	])
+}
+
+// Cleans out localization files only
+export function locales() {
+	return del('dist/src/resources/locales')
 }
 
 // Cleans out desktop specific parts output folders
