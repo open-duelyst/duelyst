@@ -4,6 +4,7 @@ var path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../../'));
 require('coffee-script/register')
 var Logger = require("app/common/logger");
+Logger.module('AI').info('Initializing AI...');
 var UtilsJavascript = require("app/common/utils/utils_javascript");
 var UtilsPosition = require("app/common/utils/utils_position");
 var SDK = require("app/sdk.coffee");
