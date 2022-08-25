@@ -8,4 +8,5 @@ git config --global url."https://".insteadOf git://
 yarn install --dev
 
 # To enable socket debug logs, prepend this command with DEBUG=*
-yarn $1
+# Use exec to take over the PID from the shell, enabling signal handling
+exec yarn $1
