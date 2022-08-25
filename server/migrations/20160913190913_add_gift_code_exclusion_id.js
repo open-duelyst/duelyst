@@ -1,13 +1,8 @@
-
-//
-
 exports.up = function(knex, Promise) {
 	return Promise.all([
-		knex.schema.table('gift_codes', function (table) {
-			table.string('exclusion_id',36)
-		}),
+		knex.raw('ALTER TABLE gift_codes ADD COLUMN IF NOT EXISTS exclusion_id varchar;'),
 		// partial index since it will only be queried when a gift_code has a user and created concurrently for performance reasons
-		knex.raw("CREATE INDEX CONCURRENTLY gift_codes_claimed_by_user_id_index ON gift_codes (claimed_by_user_id) WHERE claimed_by_user_id IS NOT NULL")
+		knex.raw("CREATE INDEX CONCURRENTLY IF NOT EXISTS gift_codes_claimed_by_user_id_index ON gift_codes (claimed_by_user_id) WHERE claimed_by_user_id IS NOT NULL")
 	])
 }
 

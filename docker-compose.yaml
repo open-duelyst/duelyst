@@ -15,14 +15,14 @@ services:
       - "6379:6379"
 
   db:
-    image: postgres
+    image: postgres:14
     restart: always
     environment:
       POSTGRES_USER: duelyst
       POSTGRES_PASSWORD: duelyst
       POSTGRES_DB: duelyst
     ports:
-      - 5431:5432
+      - 5432:5432
     volumes:
       - ./.pgdata:/var/lib/postgresql/data
 
@@ -106,6 +106,7 @@ services:
       DEBUG: "*"
       NODE_ENV: development
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+      FIREBASE_URL: ${FIREBASE_URL}
     depends_on:
       - db
     working_dir: /app
