@@ -118,14 +118,7 @@ services:
     <<: *base
     profiles:
       - donotstart
-    environment:
-      REDIS_IP: redis
-      POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
-      FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start test:unit
-    depends_on:
-      - db
-      - redis
 
   test-integration:
     <<: *base
