@@ -160,7 +160,7 @@
     "j2j": "0.1.2",
     "mailchimp": "1.1.0",
     "minimist": "^1.2.0",
-    "mocha": "^2.4.5",
+    "mocha": "^10.0.0",
     "ncp": "^2.0.0",
     "power-assert": "^1.4.1",
     "progress": "1.1.8",
