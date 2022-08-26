@@ -30,6 +30,17 @@ class DuelystFirebaseModule
 			firebaseUrl: firebaseUrl,
 		)
 
+	# Gracefully disconnect from Firebase.
+	@disconnect: (url) ->
+		if @apps[url]?
+			Logger.module('Firebase').log "disconnecting from #{url}"
+			@apps[url].promise.then (deletable) ->
+				deletable.delete().then (error) ->
+					Logger.module('Firebase').error "failed to delete: #{error.toString()}"
+			delete DuelystFirebaseModule.apps[url]
+		else
+			Logger.module('Firebase').log "already disconnected from #{url}"
+
 	# Count current number of connections
 	@getNumConnections: ->
 		_.size(@apps)
@@ -50,6 +61,10 @@ class DuelystFirebaseModule
 					credential: firebaseAdmin.credential.cert(firebaseServiceAccount),
 					databaseURL: @firebaseUrl
 				}, @firebaseUrl)
+
+				# Initialize the database before resolving.
+				db = app.database()
+				ref = db.ref()
 				resolve(app)
 			catch e
 				return reject(new Error('failed to initialize firebase app: ' + e))
@@ -65,6 +80,6 @@ class DuelystFirebaseModule
 				db = app.database()
 				return db.ref()
 			catch e
-				Logger.module('Firebase').error "getRootRef: #{e.toString()}"
+				Logger.module('Firebase').error "failed to get ref: #{e.toString()}"
 
 module.exports = DuelystFirebaseModule
