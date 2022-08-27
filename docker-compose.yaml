@@ -10,9 +10,9 @@ x-base-service: &base
 
 services:
   redis:
-    image: "redis"
+    image: redis:6
     ports:
-      - "6379:6379"
+      - 6379:6379
 
   db:
     image: postgres:14
@@ -103,7 +103,6 @@ services:
     profiles:
       - donotstart
     environment:
-      DEBUG: "*"
       NODE_ENV: development
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
