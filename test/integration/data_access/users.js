@@ -30,11 +30,9 @@ Logger.enabled = Logger.enabled && false;
 describe("users module", function() {
 
 	var userId = null;
-	this.timeout(25000);
 
 	// before cleanup to check if user already exists and delete
 	before(function(){
-		this.timeout(25000);
 		Logger.module("UNITTEST").log("creating user");
 		return UsersModule.createNewUser('unit-test@counterplay.co','unittest','hash','kumite14')
 		.then(function(userIdCreated){
@@ -57,7 +55,6 @@ describe("users module", function() {
 
 	// // after cleanup
 	// after(function(){
-	// 	this.timeout(25000);
 	// 	return DuelystFirebase.connect().getRootRef()
 	// 	.bind({})
 	// 	.then(function(fbRootRef){
@@ -735,7 +732,6 @@ describe("users module", function() {
 
 		// // after cleanup
 		// after(function(){
-		// 	this.timeout(25000);
 		// 	return UsersModule.changeUsername(userId,'unittest')
 		// });
 
@@ -820,7 +816,6 @@ describe("users module", function() {
 
 		// after cleanup
 		after(function(){
-			this.timeout(25000);
 			return UsersModule.changePassword(userId,'newpass','hash')
 		})
 
@@ -1664,7 +1659,6 @@ describe("users module", function() {
 
 		//it('expect win counter rewards to give 15 gold for first 14 wins and 5 gold after', function() {
         //
-		//	this.timeout(50000);
         //
 		//	var systemTime = moment().utc().startOf("day").add(48,'hours').add(2,'second');
 		//	var queryTime = moment().utc().startOf("day").add(48,'hours').add(1,'second');
@@ -1788,7 +1782,6 @@ describe("users module", function() {
 	});
 
 	describe("updateUserProgressionWithGameOutcome() - codex reward", function() {
-		this.timeout(50000);
 		before(function(){
 
 			return DuelystFirebase.connect().getRootRef()
@@ -2081,7 +2074,6 @@ describe("users module", function() {
 		var xp_cap = SDK.FactionProgression.totalXPForLevel(SDK.FactionProgression.maxLevel);
 		it('expect max level ' + SDK.FactionProgression.maxLevel + ' to cap at '+xp_cap+ ' XP', function() {
 
-			this.timeout(500000);
 
 			return SyncModule.wipeUserData(userId)
 			.bind({})
@@ -2108,9 +2100,6 @@ describe("users module", function() {
 		});
 
 		it('expect level 12 and 220 XP after 22 SONGHAI wins', function() {
-
-			this.timeout(100000);
-
 			var allPromises = []
 			for (var i=0; i<22; i++)
 				allPromises.push( UsersModule.updateUserFactionProgressionWithGameOutcome(userId, SDK.Factions.Songhai, true, generatePushId(), 'ranked', false) )
@@ -2245,9 +2234,6 @@ describe("users module", function() {
 		})
 
 		it('expect to earn Vanar Faction XP up to level 10 with SINGLE PLAYER games', function() {
-
-				this.timeout(50000)
-
 				var allPromises = [];
 				// levels are indexed from 0 so we check 9 here instead of 10
 				var xpToLevel10 = SDK.FactionProgression.totalXPForLevel(9);
@@ -2372,9 +2358,6 @@ describe("users module", function() {
 		});
 
 		it('expect to earn faction XP only up to level 10 with FRIENDLY games', function() {
-
-			this.timeout(50000)
-
 			// levels are indexed from 0 so we check 9 here instead of 10
 			var xpToLevel10 = SDK.FactionProgression.totalXPForLevel(9);
 			var numGamesToLevel10 = xpToLevel10 / SDK.FactionProgression.winXP;
@@ -2429,9 +2412,6 @@ describe("users module", function() {
 		})
 
 		it('expect to earn a prismatic faction basic card at level 13', function () {
-
-			this.timeout(250000);
-
 			return SyncModule.wipeUserData(userId)
 				.bind({})
 				.then(function () {
@@ -2479,9 +2459,6 @@ describe("users module", function() {
 		});
 
 		it('expect to earn a prismatic neutral basic card at level 17', function () {
-
-			this.timeout(250000);
-
 			return SyncModule.wipeUserData(userId)
 				.bind({})
 				.then(function () {
@@ -2533,9 +2510,6 @@ describe("users module", function() {
 		});
 
 		it('expect to earn a prismatic general card at max level', function () {
-
-			this.timeout(500000);
-
 			return SyncModule.wipeUserData(userId)
 				.bind({})
 				.then(function () {
@@ -2589,7 +2563,6 @@ describe("users module", function() {
 	describe("isAllowedToUseDeck()", function() {
 
 		before(function(){
-			this.timeout(5000);
 			// clear any existing data
 			return DuelystFirebase.connect().getRootRef()
 			.then(function(rootRef){
@@ -2597,6 +2570,7 @@ describe("users module", function() {
 			});
 		});
 
+		/* Slow test
 		it('expect player to be allowed to use a SONGHAI starter level 0 deck in RANKED play', function() {
 			var deck = SDK.FactionFactory.starterDeckForFactionLevel(SDK.Factions.Faction2,0);
 			return UsersModule.isAllowedToUseDeck(userId,deck,'ranked',null,true)
@@ -2605,10 +2579,10 @@ describe("users module", function() {
 				expect(skinsAreValid).to.equal(true);
 			})
 		});
+		*/
 
 		it('expect a player to NOT be able to use a full SONGHAI starter deck at level 0', function() {
 
-			this.timeout(25000);
 			return SyncModule.wipeUserData(userId)
 			.bind({})
 			.then(function () {
@@ -2626,7 +2600,6 @@ describe("users module", function() {
 
 		it('expect a player to NOT be able to use a full LYONAR starter deck with 10 xp', function() {
 
-			this.timeout(25000);
 			return SyncModule.wipeUserData(userId)
 			.bind({})
 			.then(function () {
@@ -3117,7 +3090,6 @@ describe("users module", function() {
 
 	// 	// before cleanup to check if user already exists and delete
 	// 	before(function(){
-	// 		this.timeout(25000);
 	// 		Logger.module("UNITTEST").log("creating user");
 	// 		return UsersModule.createNewUser('unit-test-opponent@counterplay.co','unittestopponent','hash','kumite14')
 	// 		.then(function(userIdCreated){
@@ -3151,7 +3123,6 @@ describe("users module", function() {
 	describe("setNewPlayerFeatureProgression()", function() {
 
 		before(function(){
-			this.timeout(5000);
 			// clear any existing data
 			return DuelystFirebase.connect().getRootRef()
 				.then(function(rootRef){
@@ -3159,6 +3130,7 @@ describe("users module", function() {
 				});
 		});
 
+		/* Slow test
 		it('expect to not be able to set core module to a junk stage value', function() {
 			return UsersModule.setNewPlayerFeatureProgression(userId,"core","this_is_a_non_existant_core_stage_value")
 				.then(function(response){
@@ -3171,6 +3143,7 @@ describe("users module", function() {
 					expect(e).to.not.exist
 				})
 		});
+		*/
 
 		it('expect to not be able to set core module to lower stage value', function() {
 			return UsersModule.setNewPlayerFeatureProgression(userId,"core",NewPlayerProgressionStageEnum.TutorialDone)
@@ -3232,5 +3205,4 @@ describe("users module", function() {
 	});
 
 	// endregion ftue tests
-
 });
