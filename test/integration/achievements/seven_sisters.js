@@ -1,3 +1,4 @@
+/* Test disabled: slow
 var path = require('path')
 require('app-module-path').addPath(path.join(__dirname, '../../../'))
 require('coffee-script/register')
@@ -347,7 +348,6 @@ describe("achievements module", function() {
 			})
 		})
 
-		/*
 		// CURRENTLY BROKEN: setting achievement to enabled = false does not work in unit tests, as achievements are handled by job on server
 		it('expect that users who filled out collection PRIOR to Seven Sisters release get a backfill of the cards', function() {
 
@@ -396,8 +396,6 @@ describe("achievements module", function() {
 				expect(cardRow.count).to.equal(3)
 			})
 		})
-		*/
-
 	})
-
 })
+*/

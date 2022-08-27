@@ -2570,7 +2570,7 @@ describe("users module", function() {
 			});
 		});
 
-		/* Slow test
+		/* Test disabled: slow
 		it('expect player to be allowed to use a SONGHAI starter level 0 deck in RANKED play', function() {
 			var deck = SDK.FactionFactory.starterDeckForFactionLevel(SDK.Factions.Faction2,0);
 			return UsersModule.isAllowedToUseDeck(userId,deck,'ranked',null,true)
@@ -3130,7 +3130,7 @@ describe("users module", function() {
 				});
 		});
 
-		/* Slow test
+		/* Test disabled: slow
 		it('expect to not be able to set core module to a junk stage value', function() {
 			return UsersModule.setNewPlayerFeatureProgression(userId,"core","this_is_a_non_existant_core_stage_value")
 				.then(function(response){

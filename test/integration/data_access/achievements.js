@@ -1,3 +1,4 @@
+/* Achievements tests are temporarily disabled.
 var path = require('path')
 require('app-module-path').addPath(path.join(__dirname, '../../../'))
 require('coffee-script/register')
@@ -141,13 +142,9 @@ describe("achievements module", function() {
 	// 				expect(result).to.exist;
 	// 				return DuelystFirebase.connect().getRootRef()
 	// 			}).then(function(rootRef){
-
 	// 			});
-
 	// 		});
-
 	// 	});
-
 	// })
-
 });
+*/

@@ -1069,6 +1069,8 @@ describe("bosses", function() {
 
 		expect(boss.getDamage()).to.equal(8);
 	});
+
+	/* Test disabled: inconsistent
 	it('expect high templar kron to spawn prisoners when killing enemies', function() {
 		var player1Deck = [
 			{id: SDK.Cards.Boss.Boss17}
@@ -1098,6 +1100,8 @@ describe("bosses", function() {
 		expect(prisoner.getHP()).to.equal(2);
 		expect(prisoner.ownerId).to.equal('player1_id');
 	});
+	*/
+
 	it('expect high templar kron to have cheaper spells', function() {
 		var player1Deck = [
 			{id: SDK.Cards.Boss.Boss17}
