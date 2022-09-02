@@ -10,7 +10,13 @@ Logger = require '../../app/common/logger.coffee'
 config = require '../../config/config.js'
 defaultFirebaseUrl = config.get('firebase.url')
 firebaseLoggingEnabled = config.get('firebase.loggingEnabled')
-firebaseServiceAccount = require('../../serviceAccountKey.json')
+
+# Read service account credentials.
+try
+	firebaseServiceAccount = require('../../serviceAccountKey.json')
+catch error
+	Logger.module('Firebase').error 'Failed to read serviceAccountKey.json; will not authenticate to Firebase'
+	firebaseServiceAccount = {}
 
 class DuelystFirebaseModule
 	# App objects keyed by URL
