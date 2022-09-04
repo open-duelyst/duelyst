@@ -1,16 +1,16 @@
 {
-  "indentation" : {
-    "level" : "error",
-    "value" : 1
+  "indentation": {
+    "level": "error",
+    "value": 1
   },
-  "line_endings" : {
-    "value" : "unix",
-    "level" : "error"
+  "line_endings": {
+    "value": "unix",
+    "level": "error"
   },
-	"no_tabs" : {
-		"level" : "ignore"
-	},
-	"max_line_length": {
-		"level" : "ignore"
-	}
+  "no_tabs": {
+    "level": "ignore"
+  },
+  "max_line_length": {
+    "level": "ignore"
+  }
 }
