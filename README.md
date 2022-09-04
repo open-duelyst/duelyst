@@ -20,15 +20,14 @@ We should consider moving to TypeScript where possible.
 
 #### Building the code
 
-Install some NPM tools (can use `sudo` on Mac/Linux):
+Install Yarn (can use `sudo` on Mac/Linux):
 ```
-npm install -g typescript yarn
+npm install -g yarn
 ```
 
 Compile TypeScript dependencies:
 ```
-cd packages/chroma-js
-tsc
+yarn tsc:chroma-js
 ```
 
 Build the game:

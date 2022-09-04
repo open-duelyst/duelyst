@@ -170,6 +170,7 @@
     "sass": "^1.49.9",
     "sinon": "^1.10.3",
     "supertest": "^0.14.0",
+		"typescript": "^4.8.2",
     "uglify-es": "^3.0.27",
     "uglifyify": "^4.0.3",
     "vinyl-buffer": "^1.0.1",
@@ -206,6 +207,8 @@
     "test:unit": "mocha -t 1000 --recursive test/unit",
     "test:integration": "mocha -t 1000 --recursive test/integration",
     "test": "mocha -t 1000",
+		"tsc": "tsc",
+		"tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
     "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
   },
   "xo": {
