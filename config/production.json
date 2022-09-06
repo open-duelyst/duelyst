@@ -1,8 +1,6 @@
 {
 	"env": "production",
 	"api": "",
-	"firebase": "",
-	"firebaseToken": "",
 	"cdn": "",
 	"s3_url":"",
 	"consul": {

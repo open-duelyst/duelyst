@@ -135,7 +135,7 @@ module.exports.safeTransaction = (ref,updateFn) ->
 		# generate a lexically increasing transaction id
 		tx_id = generatePushId()
 		innerError = null
-		Logger.module("FB").time("Firebase transaction for /#{ref.key()} (#{tx_id})")
+		Logger.module("FB").time("Firebase transaction for /#{ref} (#{tx_id})")
 
 		txUpdateData = (data)->
 
@@ -161,7 +161,7 @@ module.exports.safeTransaction = (ref,updateFn) ->
 			return data
 
 		onTxUpdateComplete = (error,committed,snapshot)->
-			Logger.module("FB").timeEnd("Firebase transaction for /#{ref.key()} (#{tx_id})")
+			Logger.module("FB").timeEnd("Firebase transaction for /#{ref} (#{tx_id})")
 			if error
 				reject(error)
 			else if committed and snapshot.val()?.tx_id == tx_id

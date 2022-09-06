@@ -55,7 +55,7 @@ bundler.transform(envify({
 	NODE_ENV: env,
 	VERSION: version,
 	API_URL: config.get('api'),
-	FIREBASE_URL: config.get('firebase'),
+	FIREBASE_URL: config.get('firebase.url'),
 	AMI_ID: config.get('amaId'),
 	MARKETING_AMA_ID: config.get('marketingAmaId'),
 	STRIPE_CLIENT_KEY: config.get('stripeClientKey'),

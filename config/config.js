@@ -35,37 +35,36 @@ var config = convict({
 		env: "API_URL"
 	},
 	firebase: {
-		doc: "Firebase URL.",
-		// format: "url",
-		default: "https://duelyst-local.firebaseio.com/",
-		env: "FIREBASE_URL"
+		url: {
+			doc: "Firebase URL, e.g. https://my-duelyst-project-12345.firebaseio.com/",
+			// format: "url",
+			default: "",
+			env: "FIREBASE_URL"
+		},
+		authServiceUrl: {
+			doc: "Firebase URL for auth service",
+			// format: "url",
+			default: "",
+			env: "FIREBASE_AUTH_URL"
+		},
+		loggingEnabled: {
+			doc: "Enable logging in the Firebase Admin SDK.",
+			default: false,
+			env: "FIREBASE_LOGGING_ENABLED"
+		}
 	},
-	firebaseToken: {
-		doc: "Firebase security token.",
-		default: "",
-		env: "FIREBASE_TOKEN"
-	},
-	firebaseLoggingEnabled: {
-		doc: "Firebase logging enabled flag.",
-		default: false,
-		env: "FIREBASE_LOGGING"
-	},
-	auth: {
-		doc: "Firebase URL for auth service",
-		// format: "url",
-		default: "", // "https://duelyst-dev-auth.firebaseio.com/"
-		env: "AUTH_URL"
-	},
-	authToken: {
-		doc: "Firebase auth token.",
-		default: "", // ""
-		env: "AUTH_TOKEN"
-	},
-	tokenExpiration: {
-		doc: "Time (in minutes) before tokens expire.",
-		format: "int",
-		default: 60 * 24 * 14, // 14 days in minutes
-		env: "TOKEN_EXPIRES"
+	jwt: {
+		signingSecret: {
+			doc: "The secret used when signing JSON Web Tokens",
+			default: "duelyst", // Set in .env
+			env: "JWT_SECRET"
+		},
+		tokenExpiration: {
+			doc: "Time (in minutes) before tokens expire.",
+			format: "int",
+			default: 60 * 24 * 14, // 14 days in minutes
+			env: "TOKEN_EXPIRES"
+		},
 	},
 	cdn: {
 		doc: "CDN / S3 url. Default is blank.",
@@ -431,7 +430,7 @@ config.version = require('../version').version
 var pgUrl = url.parse(config.get('postgres_connection_string'));
 console.log("CONFIG: version:"+config.version)
 console.log("CONFIG: env:"+config.get('env'))
-console.log("CONFIG: firebase:"+url.parse(config.get('firebase')).host)
+console.log("CONFIG: firebase:"+url.parse(config.get('firebase.url')).host)
 console.log("CONFIG: postgres:"+pgUrl.host+pgUrl.pathname)
 console.log("CONFIG: redis:"+config.get('redis.ip'))
 // console.log("CONFIG: paypal_buttons:",config.get('paypalButtons'))

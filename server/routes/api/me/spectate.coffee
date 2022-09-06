@@ -38,7 +38,7 @@ router = express.Router()
 # 			algorithm: 'HS256'
 #
 # 		# We are encoding the payload inside the token
-# 		token = jwt.sign(payload, config.get('firebaseToken'), options)
+# 		token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
 # 		res.status(200).json(token)
 #
 # 	.catch (error) -> next(error)
@@ -104,7 +104,7 @@ router.get "/:player_id", (req, res, next) ->
 			algorithm: 'HS256'
 
 		# We are encoding the payload inside the token
-		@.token = jwt.sign(payload, config.get('firebaseToken'), options)
+		@.token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
 	.then ()->
 		responseData =
 			gameData: DataAccessHelpers.restifyData(@.gameRow)

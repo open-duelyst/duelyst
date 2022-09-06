@@ -1,3 +1,8 @@
+# Secrets
+.env
+.env_for_alpha
+serviceAccountKey.json
+
 # Build artifacts
 /app/data/packages.js
 /app/localization/locales/en/index.json
@@ -8,8 +13,6 @@ node_modules
 *.log
 *.log.txt
 dump.rdb
-.env
-.env_for_alpha
 .foreman
 .idea/
 .node-version

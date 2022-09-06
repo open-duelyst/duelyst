@@ -34,7 +34,6 @@ AnalyticsUtil = require '../../app/common/analyticsUtil'
 
 # Configuration object
 config = require '../../config/config'
-firebaseToken = config.get('firebaseToken')
 {version} = require '../../version'
 
 ###
@@ -83,10 +82,10 @@ logUserIn = (id) ->
 			v: 0
 			iat: Math.floor(new Date().getTime() / 1000)
 		options =
-			expiresIn: config.get('tokenExpiration')
+			expiresIn: config.get('jwt.tokenExpiration')
 			algorithm: 'HS256'
 
-		@token = jwt.sign(payload, firebaseToken, options)
+		@token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
 		@analyticsData = analyticsDataFromUserData(data)
 		return UsersModule.bumpSessionCountAndSyncDataIfNeeded(id, data)
 	.then (synced) ->
@@ -169,11 +168,11 @@ router.post "/session/", (req, res, next) ->
 			# subject
 			# issuer
 			options =
-				expiresIn: config.get('tokenExpiration')
+				expiresIn: config.get('jwt.tokenExpiration')
 				algorithm: 'HS256'
 
 			# We are encoding the payload inside the token
-			@.token = jwt.sign(payload, firebaseToken, options)
+			@.token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
 
 			# make a db transaction/ledger event for the login
 			# UsersModule.logEvent(@id,"session","login")

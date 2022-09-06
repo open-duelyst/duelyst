@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
+
+# Work around git vs https issue for old packages.
+git config --global url."https://github.com/".insteadOf git@github.com:
+git config --global url."https://".insteadOf git://
+
+# Install dependencies
 yarn install --dev
 
 # To enable socket debug logs, prepend this command with DEBUG=*

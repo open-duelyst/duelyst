@@ -4,7 +4,6 @@ compose = require('compose-middleware').compose
 t = require 'tcomb-validation'
 validators = require '../validators'
 config = require '../../config/config'
-firebaseToken = config.get('firebaseToken')
 
 ###
 Any route that requires authentication can use this middleware
@@ -13,7 +12,7 @@ Then ensure both an ID and maybe(EMAIL) are present in the JWT payload
 We can add additional checks to the JWT payload here
 ###
 module.exports = compose([
-	expressJwt({secret: firebaseToken}),
+	expressJwt({secret: config.get('jwt.signingSecret')}),
 	(req, res, next) ->
 		result = t.validate(req.user.d, validators.token)
 		if not result.isValid()
