@@ -28,6 +28,8 @@ describe("bosses", function() {
 	afterEach(function () {
 		SDK.GameSession.reset();
 	});
+
+	/* Test disabled: slow
 	it('expect bosses to not be dispellable', function() {
 		var bosses = SDK.GameSession.getCardCaches().getFaction(SDK.Factions.Boss).getIsGeneral(true).getCards();
 		//console.log(bosses[0].id);
@@ -64,6 +66,7 @@ describe("bosses", function() {
 			expect(startingModifiers + 1).to.equal(endingModifiers);
 		}
 	});
+	*/
 
 	it('expect boreal juggernaut to only be able to move 1 space at a time', function() {
 		var player1Deck = [

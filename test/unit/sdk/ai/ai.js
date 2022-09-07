@@ -1027,6 +1027,7 @@ describe("starter ai", function() {
 		});
 		*/
 
+		/* Test disabled: slow
 		it('expect a randomized deck at 0% difficulty to contain nothing more than basics and commons', function() {
 			var numRandomCards = CONFIG.MAX_DECK_SIZE;
 			var tempGameSession = SDK.GameSession.create();
@@ -1054,6 +1055,7 @@ describe("starter ai", function() {
 				expect(tooRare).to.equal(false);
 			}
 		});
+		*/
 
 		/* Test disabled: slow
 		it('expect a randomized deck at 20% difficulty to contain nothing more than basics, commons, and rares', function() {

@@ -29,6 +29,7 @@ describe("shimzar", function() {
 			SDK.GameSession.reset();
 		});
 
+		/* Test disabled: slow
 		it('expect xho to add 1 random songhai spell to your hand when killed', function() {
 			for(var i = 0; i < 100; i++){
 				var player1Deck = [
@@ -62,6 +63,7 @@ describe("shimzar", function() {
 				SDK.GameSession.reset();
 			}
 		});
+		*/
 
 		/* Test disabled: failing
 		it('expect xho to add 1 random songhai spell to your hand when killed due to crimson coil activation', function() {
