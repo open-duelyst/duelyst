@@ -1,7 +1,6 @@
 .git
 .vagrant
 .bowerrc
-.eslintrc
 .gitignore
 bower.json
 circle.yml

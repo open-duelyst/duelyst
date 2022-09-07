@@ -317,6 +317,8 @@ describe("shimzar", function() {
 				SDK.GameSession.reset();
 			}
 		});
+
+		/*
 		it('expect wind slicer to lower the cost of all structures in your action bar by 1', function() {
 			var gameSession = SDK.GameSession.getInstance();
 			var board = gameSession.getBoard();
@@ -339,6 +341,8 @@ describe("shimzar", function() {
 			expect(hand[4].getManaCost()).to.equal(2);
 			expect(hand[5].getManaCost()).to.equal(2);
 		});
+		*/
+
 		it('expect pax to summon to 2/2 iron dervishes upon death', function() {
 			var gameSession = SDK.GameSession.getInstance();
 			var board = gameSession.getBoard();

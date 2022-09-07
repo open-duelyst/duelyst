@@ -81,6 +81,7 @@
     "winston-papertrail": "1.0.1"
   },
   "devDependencies": {
+    "@coffeelint/cli": "^5.2.9",
     "@counterplay/git-latest-semver-tag": "./packages/git-latest-semver-tag",
     "@counterplay/steamcmd": "./packages/steamcmd",
     "async": "^1.5.2",
@@ -106,7 +107,6 @@
     "electron-packager": "^9.0.1",
     "electron-rebuild": "^1.6.0",
     "envify": "^3.4.0",
-    "eslint": "*",
     "fast-stats": "0.0.3",
     "fastly-promises": "^0.4.0",
     "faucet": "0.0.1",
@@ -160,7 +160,7 @@
     "j2j": "0.1.2",
     "mailchimp": "1.1.0",
     "minimist": "^1.2.0",
-    "mocha": "^2.4.5",
+    "mocha": "^10.0.0",
     "ncp": "^2.0.0",
     "power-assert": "^1.4.1",
     "progress": "1.1.8",
@@ -170,13 +170,14 @@
     "sass": "^1.49.9",
     "sinon": "^1.10.3",
     "supertest": "^0.14.0",
+    "typescript": "^4.8.2",
     "uglify-es": "^3.0.27",
     "uglifyify": "^4.0.3",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "vorpal": "^1.11.4",
     "watchify": "^3.2.2",
-    "xo": "^0.12.1"
+    "xo": "^0.52.3"
   },
   "scripts": {
     "api": "node ./bin/api",
@@ -191,7 +192,12 @@
     "build:web": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build:web --watch=false",
     "build": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build --watch=false",
     "deploy:staging": "npm run push:master && npm run push:staging",
-    "lint": "xo",
+    "lint:coffee": "coffeelint -f coffeelint.json app server worker",
+    "lint:coffee:app": "coffeelint -f coffeelint.json app",
+    "lint:coffee:backend": "coffeelint -f coffeelint.json server worker",
+    "lint:js": "xo --esnext --space app config desktop gulp gulpfile.babel.js server test",
+    "lint:js:app": "xo --esnext --space app",
+    "lint:js:backend": "xo --esnext --space server worker",
     "migrate:latest": "cd ./server && knex migrate:latest",
     "migrate:rollback": "cd ./server && knex migrate:rollback",
     "minify": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build --watch=false --minify=true",
@@ -199,18 +205,15 @@
     "push:master": "gulp git:master:patch",
     "push:staging": "gulp git:staging",
     "rsx:copy": "gulp rsx:copy",
-    "test:achievements": "mocha -t 100000 --recursive test/unit/achievements",
-    "test:data": "mocha -t 15000 --recursive test/unit/data_access",
+    "test:data": "mocha -t 1000 --recursive test/unit/data_access",
     "test:firebase": "mocha -t 1000 test/unit/firebase test/integration/firebase",
-    "test:misc": "mocha -t 5000 --recursive test/unit/misc",
-    "test:sdk": "mocha -t 5000 --recursive test/unit/sdk",
-    "test:unit": "mocha -t 10000 --recursive test/unit",
-    "test:integration": "mocha -t 10000 --recursive test/integration",
-    "test": "mocha -t 10000",
+    "test:misc": "mocha -t 1000 --recursive test/unit/misc",
+    "test:sdk": "mocha -t 1000 --recursive test/unit/sdk",
+    "test:unit": "mocha -t 1000 --recursive test/unit",
+    "test:integration": "mocha -t 1000 --recursive test/integration",
+    "test": "mocha -t 1000 --recursive test",
+    "tsc": "tsc",
+    "tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
     "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
-  },
-  "xo": {
-    "esnext": true,
-    "semicolon": false
   }
 }

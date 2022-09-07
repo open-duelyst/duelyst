@@ -951,6 +951,7 @@ describe("inventory module", function() {
 			});
 		});
 
+		/* Test disabled: slow
 		it('expect that no unlockable cards are rewarded by unlocking ~100 boosters', function() {
 			this.timeout(100000);
 
@@ -1067,7 +1068,7 @@ describe("inventory module", function() {
 						});
 				});
 		});
-
+		*/
 	});
 
 	describe("giveUserCosmeticId()", function() {

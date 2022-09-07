@@ -1,4 +1,5 @@
 _ = require 'underscore'
+moment = require 'moment'
 
 # if process.env.RECORD_CLIENT_LOGS
 # 	['log', 'debug', 'warn', 'error', 'info'].forEach((f)=>
@@ -95,7 +96,7 @@ class Logger
 			logfn = console.log.bind(console, modulePrefix)
 			['log', 'debug', 'warn', 'error', 'info'].forEach (f)->
 				logFunction = console[f] || console['log']
-				logfn[f] = logFunction.bind(console, modulePrefix)
+				logfn[f] = logFunction.bind(console, modulePrefix, moment().unix())
 
 		['group', 'groupEnd'].forEach (f)->
 			if (console[f])

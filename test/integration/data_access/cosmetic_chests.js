@@ -432,6 +432,7 @@ describe("cosmetic chests module", function() {
 			return txPromise;
 		})
 
+		/* Test disabled: slow
 		it('expect that no unlockable cards are rewarded by unlocking ~50 chests', function() {
 			this.timeout(300000);
 
@@ -478,7 +479,7 @@ describe("cosmetic chests module", function() {
 				}
 			});
 		});
-
+		*/
 	});
 
 	describe("updateUserChestRewardWithGameOutcome()", function() {

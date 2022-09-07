@@ -50,6 +50,8 @@ describe("monthlies", function() {
       var totalDamage = brightmossGolem.getDamage() + gameSession.getGeneralForPlayer2().getDamage();
       expect(totalDamage).to.equal(4);
     });
+
+		/*
     it('expect astral crusader to gain +1/+1 and cost 1 less each time you replace him', function() {
       var gameSession = SDK.GameSession.getInstance();
       var board = gameSession.getBoard();
@@ -79,6 +81,8 @@ describe("monthlies", function() {
       expect(cardDraw.getATK()).to.equal(8);
       expect(cardDraw.getHP()).to.equal(7);
     });
+		*/
+
     it('expect wings of paradise to gain +2 attack until end of turn when you replace a card', function() {
       var gameSession = SDK.GameSession.getInstance();
       var board = gameSession.getBoard();

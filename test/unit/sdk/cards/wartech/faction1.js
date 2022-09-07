@@ -8,7 +8,7 @@ var SDK = require('app/sdk');
 var UtilsSDK = require('test/utils/utils_sdk');
 var _ = require('underscore');
 var ModifierForcefield = require('app/sdk/modifiers/modifierForcefield');
-var ModifierProvoke = require('app/sdk/modifiers/ModifierProvoke');
+var ModifierProvoke = require('app/sdk/modifiers/modifierProvoke');
 
 // disable the logger for cleaner test output
 Logger.enabled = false;
