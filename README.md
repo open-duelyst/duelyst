@@ -52,28 +52,12 @@ When working in the `server` or `worker` directories, no rebuilds are needed. Se
 
 #### Starting a test environment in Docker
 
-- Create a Firebase Realtime Database
-  - This is a Google Cloud product, and they offer a no-cost "Spark" plan
-  - Set the `FIREBASE_URL` environment variable in an `.env` file in the repo root
-    - For example, `FIREBASE_URL=https://my-example-project.firebaseio.com/`
-  - Create a new service account with r/w access to your realtime DB
-    - Create a new JSON key for the service account, and store it in a `serviceAccountKey.json` file in the repo root
-- Optionally enable debug logging for WebSockets by prepending `yarn $1` with `DEBUG=*` in `docker/start`
-- Use `docker compose up` to start required services locally, or start individual services:
-  - `redis`
-  - `db` (Postgres)
-  - `adminer` (Postgres admin UI)
-  - `api` (HTTP server)
-  - `game` (Multi-player server)
-  - `sp` (Single-player server)
-  - `worker` (Game workers)
-  - `worker-ui` (Game worker UI)
-  - `migrate` (Postgres migrations)
-- Run database migrations
-  - Use `npm install -g knex` to install the Postgres client
-  - In another terminal window, use `NODE_ENV=development yarn migrate:latest` to run database migrations
-    - On Windows: `$env:NODE_ENV = 'development'; yarn migrate:latest`
-  - Only need to run this once (unless you change Postgres schema)
+- Create a [Firebase Realtime Database](https://firebase.google.com/docs/database/) in Google Cloud
+  - Set `FIREBASE_URL` in a `.env` file in the repo root, e.g. `FIREBASE_URL=https://my-example-project.firebaseio.com/`
+  - Create a new service account with read+write access to your realtime database
+  - Create a new JSON key for the service account, and store it in a `serviceAccountKey.json` file in the repo root
+- Run database migrations with `docker compose up migrate`
+- Start the game's backend services with `docker compose up`
 - Once you see `Duelyst 'development' started on port 3000` in the logs, open http://localhost:3000 in a browser to load the game client
 
 #### Contributing
