@@ -1085,6 +1085,7 @@ describe("starter ai", function() {
 		});
 		*/
 
+		/* Test disabled: slow
 		it('expect a randomized deck at 50% difficulty to contain nothing more than basics, commons, rares, and epics', function() {
 			var numRandomCards = CONFIG.MAX_DECK_SIZE;
 			var tempGameSession = SDK.GameSession.create();
@@ -1112,5 +1113,6 @@ describe("starter ai", function() {
 				expect(tooRare).to.equal(false);
 			}
 		});
+		*/
 	});
 });
