@@ -320,6 +320,8 @@ describe("special events", function() {
 				SDK.GameSession.reset();
 			}
 		});
+
+		/* Test disabled: slow
 		it('expect neutral sister to add 2 random magmar cards to your hand when summoned', function() {
 			for(var i = 0; i < 100; i++){
 				var player1Deck = [
@@ -354,6 +356,8 @@ describe("special events", function() {
 				SDK.GameSession.reset();
 			}
 		});
+		*/
+
 		it('expect neutral sister to add 2 random vanar cards to your hand when summoned', function() {
 			for(var i = 0; i < 100; i++){
 				var player1Deck = [
