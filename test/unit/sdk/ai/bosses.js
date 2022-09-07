@@ -2415,6 +2415,8 @@ describe("bosses", function() {
 		expect(cornerBlock.getOwnerId()).to.equal('player2_id');
 		expect(cornerBlock2.getOwnerId()).to.equal('player1_id');
 	});
+
+	/* Test disabled: inconsistent
 	it('expect andromeda to transform all minions you play into random minions of the same cost', function() {
 		var player1Deck = [
 			{id: SDK.Cards.Faction1.General}
@@ -2440,6 +2442,8 @@ describe("bosses", function() {
 		expect(notWindblade.getId()).to.not.equal(SDK.Cards.Faction1.WindbladeAdept);
 		expect(notWindblade.getManaCost()).to.equal(2);
 	});
+	*/
+
 	it('expect soulstealer to transform the last minion played into your general', function() {
 		var player1Deck = [
 			{id: SDK.Cards.Faction1.General}
