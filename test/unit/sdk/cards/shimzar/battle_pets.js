@@ -144,6 +144,8 @@ describe("battle pets", function() {
 				expect(golem1.getDamage()).to.equal(damage);
 			}
 		});
+
+		/* Test disabled: slow
 		it('expect ranged battle pets to attack the nearest enemy', function() {
 			for(var i = 0; i < 100; i++) {
 				var player1Deck = [{id: SDK.Cards.Faction1.General}];
@@ -166,6 +168,8 @@ describe("battle pets", function() {
 				expect(golem1.getDamage()).to.equal(damage);
 			}
 		});
+		*/
+
 		it('expect flying battle pets to attack the nearest enemy', function() {
 			for(var i = 0; i < 30; i++) {
 				var player1Deck = [{id: SDK.Cards.Faction1.General}];
