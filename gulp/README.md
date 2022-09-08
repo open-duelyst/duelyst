@@ -137,33 +137,33 @@ To run a task, run `gulp <taskname>`.
 [23:49:42] ├── docker:build
 [23:49:42] ├── docker:push
 [23:49:42] ├── docker:tag
-[23:49:42] ├── git:checkout:master
+[23:49:42] ├── git:checkout:main
 [23:49:42] ├── git:checkout:production
 [23:49:42] ├── git:checkout:staging
-[23:49:42] ├── git:commit:master
+[23:49:42] ├── git:commit:main
 [23:49:42] ├── git:commit:production
 [23:49:42] ├── git:commit:staging
-[23:49:42] ├─┬ git:master:major
+[23:49:42] ├─┬ git:main:major
 [23:49:42] │ └─┬ <series>
-[23:49:42] │   ├── git:checkout:master
+[23:49:42] │   ├── git:checkout:main
 [23:49:42] │   ├── bump:major
-[23:49:42] │   ├── git:commit:master
-[23:49:42] │   ├── git:push:master
-[23:49:42] │   └── git:tag:master
-[23:49:42] ├─┬ git:master:minor
+[23:49:42] │   ├── git:commit:main
+[23:49:42] │   ├── git:push:main
+[23:49:42] │   └── git:tag:main
+[23:49:42] ├─┬ git:main:minor
 [23:49:42] │ └─┬ <series>
-[23:49:42] │   ├── git:checkout:master
+[23:49:42] │   ├── git:checkout:main
 [23:49:42] │   ├── bump:minor
-[23:49:42] │   ├── git:commit:master
-[23:49:42] │   ├── git:push:master
-[23:49:42] │   └── git:tag:master
-[23:49:42] ├─┬ git:master:patch
+[23:49:42] │   ├── git:commit:main
+[23:49:42] │   ├── git:push:main
+[23:49:42] │   └── git:tag:main
+[23:49:42] ├─┬ git:main:patch
 [23:49:42] │ └─┬ <series>
-[23:49:42] │   ├── git:checkout:master
+[23:49:42] │   ├── git:checkout:main
 [23:49:42] │   ├── bump:patch
-[23:49:42] │   ├── git:commit:master
-[23:49:42] │   ├── git:push:master
-[23:49:42] │   └── git:tag:master
+[23:49:42] │   ├── git:commit:main
+[23:49:42] │   ├── git:push:main
+[23:49:42] │   └── git:tag:main
 [23:49:42] ├── git:merge:production
 [23:49:42] ├── git:merge:staging
 [23:49:42] ├─┬ git:production
@@ -172,7 +172,7 @@ To run a task, run `gulp <taskname>`.
 [23:49:42] │   ├── git:commit:production
 [23:49:42] │   ├── git:push:production
 [23:49:42] │   └── git:tag:production
-[23:49:42] ├── git:push:master
+[23:49:42] ├── git:push:main
 [23:49:42] ├── git:push:production
 [23:49:42] ├── git:push:staging
 [23:49:42] ├─┬ git:staging
@@ -181,7 +181,7 @@ To run a task, run `gulp <taskname>`.
 [23:49:42] │   ├── git:commit:staging
 [23:49:42] │   ├── git:push:staging
 [23:49:42] │   └── git:tag:staging
-[23:49:42] ├── git:tag:master
+[23:49:42] ├── git:tag:main
 [23:49:42] ├── git:tag:production
 [23:49:42] ├── git:tag:staging
 [23:49:42] ├── html
@@ -329,12 +329,12 @@ const paths = [
 - `gulp bump:major`: major bump, ie x.0.0
 
 ### Task [git.js]
-The git tasks are helpers for managing git pushes/commit. Note the git tasks will perform a `commit -am` so ensure remove unused files or commit before proceeding. To be safe, ensure you are already on latest `master` branch and that your changes are safe to commit before proceeding.
+The git tasks are helpers for managing git pushes/commit. Note the git tasks will perform a `commit -am` so ensure remove unused files or commit before proceeding. To be safe, ensure you are already on latest `main` branch and that your changes are safe to commit before proceeding.
 
 There are several subtasks here but the relevant tasks to run are:  
-- `gulp git:master:{patch,minor,major}`: these tasks will bump the version numbers, commit the changes, create a git tag, and push. The commit msg will be like `[2.1.7][patch]` and the tag will be like `master-v2.1.14`.
+- `gulp git:main:{patch,minor,major}`: these tasks will bump the version numbers, commit the changes, create a git tag, and push. The commit msg will be like `[2.1.7][patch]` and the tag will be like `main-v2.1.14`.
 
-- `gulp git:staging`: this task will merge master => staging, create a tag, and push. The commit msg will be like `[2.1.14]=>[staging]` and the tag will be like `staging-v2.1.14`.
+- `gulp git:staging`: this task will merge main => staging, create a tag, and push. The commit msg will be like `[2.1.14]=>[staging]` and the tag will be like `staging-v2.1.14`.
 
 - `gulp git:production`: this task will merge staging => production, create a tag, and push. The commit msg will be like `[2.1.14]=>[production]` and the tag will be like `v2.1.14`.
 

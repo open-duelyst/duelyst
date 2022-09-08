@@ -136,8 +136,8 @@ Can fail if tag already exists (must be unique).
 */
 export function merge(target, cb) {
   let source;
-  if (target === 'master') { return cb(); }
-  if (target === 'staging') { source = 'master'; }
+  if (target === 'main') { return cb(); }
+  if (target === 'staging') { source = 'main'; }
   if (target === 'production') { source = 'staging'; }
   return async.series([
     // Reset and fetch
@@ -159,7 +159,7 @@ export function commit(target) {
   const { version } = pkg;
   const isRelease = (semver.patch(version) === 0);
   let msg = `[${version}]=>[${target}]`;
-  if (target === 'master') {
+  if (target === 'main') {
     if (isRelease) { msg = `[${version}][release]`; } else { msg = `[${version}][patch]`; }
   }
   return gulp.src('.')
@@ -179,7 +179,7 @@ export function tag(target, cb) {
   const { version } = pkg;
   const msg = `[${target}][v${version}]`;
   let tag;
-  if (target === 'master') { tag = `master-v${version}`; }
+  if (target === 'main') { tag = `main-v${version}`; }
   if (target === 'staging') { tag = `staging-v${version}`; }
   if (target === 'production') { tag = `v${version}`; }
   async.series([
