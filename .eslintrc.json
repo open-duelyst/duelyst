@@ -1,0 +1,66 @@
+{
+  "env": {
+    "browser": true,
+    "commonjs": true,
+    "es6": true,
+    "jquery": true
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:import/errors",
+    "plugin:import/warnings",
+    "plugin:mocha/recommended"
+  ],
+  "plugins": ["import", "mocha"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".coffee", ".js"],
+        "moduleDirectory": ["node_modules"]
+      }
+    }
+  },
+  "globals": {
+    "cc": "readonly",
+    "gl": "readonly"
+  },
+  "rules": {
+    "global-require": ["warn"],
+    "implicit-arrow-linebreak": ["warn"],
+    "linebreak-style": "off",
+    "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
+    "max-len": ["warn"],
+    "new-cap": ["warn"],
+    "no-bitwise": ["warn"],
+    "no-continue": ["warn"],
+    "no-multi-assign": ["warn"],
+    "no-param-reassign": ["warn"],
+    "no-plusplus": ["warn"],
+    "no-restricted-syntax": ["warn"],
+    "no-shadow": "off",
+    "no-underscore-dangle": ["warn"],
+    "no-unused-vars": "off",
+    "no-use-before-define": ["warn"],
+    "no-useless-escape": ["warn"],
+    "prefer-destructuring": ["warn"],
+    "prefer-rest-params": ["warn"],
+    "quotes": ["error", "single"],
+    "semi": ["error", "always"],
+    "vars-on-top": ["warn"],
+    "import/extensions": ["error"],
+    "import/no-extraneous-dependencies": ["warn"],
+    "import/no-unresolved": ["error", {"commonjs": true}],
+    "mocha/no-mocha-arrows": ["warn"],
+    "mocha/no-setup-in-describe": ["warn"]
+  },
+  "overrides": [
+    {
+      "files": ["app/**/*.js"],
+      "rules": {"camelcase": ["warn"]}
+    },
+    {
+      "files": ["test/**/*.js"],
+      "rules": {"no-unused-expressions": ["off"]}
+    }
+  ]
+}
