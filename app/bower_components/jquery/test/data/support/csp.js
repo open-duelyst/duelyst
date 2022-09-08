@@ -1,3 +1,3 @@
 jQuery(function() {
-	parent.iframeCallback( jQuery.support );
+  parent.iframeCallback( jQuery.support );
 });

@@ -1,13 +1,11 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForUnitDispel = require("./../base/unit_dispel");
-const willUnitSurviveCard = require('./../utils/utils_willUnitSurviveCard');
-const BOUNTY = require("./../bounty");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForUnitDispel = require('../base/unit_dispel');
+const willUnitSurviveCard = require('../utils/utils_willUnitSurviveCard');
+const BOUNTY = require('../bounty');
 
 /**
  * Returns the score for dispelling a target card by a card.
@@ -18,20 +16,19 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForDispelFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-
-		//console.log(card, intent, targetCard);
-		if (!card.getIsSameTeamAs(targetCard)) {
-			// add score for dispeling enemy card
-			score += ScoreForUnitDispel(targetCard);
-		} else {
-			// subtract score for dispeling friendly card
-			score -= ScoreForUnitDispel(targetCard);
-		}
-	}
-	return score;
+const getScoreForDispelFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    // console.log(card, intent, targetCard);
+    if (!card.getIsSameTeamAs(targetCard)) {
+      // add score for dispeling enemy card
+      score += ScoreForUnitDispel(targetCard);
+    } else {
+      // subtract score for dispeling friendly card
+      score -= ScoreForUnitDispel(targetCard);
+    }
+  }
+  return score;
 };
 
 /**
@@ -43,25 +40,25 @@ let getScoreForDispelFromCardWithIntentToCard = function (card, intent, targetCa
  * @static
  * @public
  */
-let ScoreForIntentDispel = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Dispel) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Dispel);
+const ScoreForIntentDispel = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Dispel) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Dispel);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-		    if (willUnitSurviveCard(cards[i], card)) {
-		      score += getScoreForDispelFromCardWithIntentToCard(card, intent, cards[i]);
-		    }
-		}
-	  //score still zero? Wasted valid intent. penalize
-		if (score == 0) {
-		  score += BOUNTY.DISPEL_WASTED; //-5
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      if (willUnitSurviveCard(cards[i], card)) {
+        score += getScoreForDispelFromCardWithIntentToCard(card, intent, cards[i]);
+      }
+    }
+    // score still zero? Wasted valid intent. penalize
+    if (score == 0) {
+      score += BOUNTY.DISPEL_WASTED; // -5
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentDispel;

@@ -1,30 +1,32 @@
-var redis = require('redis')
-var client = redis.createClient({host:'127.0.0.1', port: 6379, detect_buffers: true})
-var json = JSON.stringify({data: 'this is a game'})
-var zlib = require('zlib')
-var gzip = zlib.gzipSync(json)
+const redis = require('redis');
 
-console.log('------------------------')
-console.log(`plain out => ${json}`)
-console.log(`gzip out => 0x${gzip.toString('hex')}`)
-console.log('------------------------')
+const client = redis.createClient({ host: '127.0.0.1', port: 6379, detect_buffers: true });
+const json = JSON.stringify({ data: 'this is a game' });
+const zlib = require('zlib');
+
+const gzip = zlib.gzipSync(json);
+
+console.log('------------------------');
+console.log(`plain out => ${json}`);
+console.log(`gzip out => 0x${gzip.toString('hex')}`);
+console.log('------------------------');
 
 // store the regular json
-client.set('plain', json)
-client.get('plain', function(err, reply) {
-	var response = JSON.parse(reply)
-	console.log('------------------------')
-	console.log(`plain in => ${reply}`)
-	console.log(`plain in decoded => ${response.data}`)
-	console.log('------------------------')
-})
+client.set('plain', json);
+client.get('plain', (err, reply) => {
+  const response = JSON.parse(reply);
+  console.log('------------------------');
+  console.log(`plain in => ${reply}`);
+  console.log(`plain in decoded => ${response.data}`);
+  console.log('------------------------');
+});
 
 // store the raw buffer
-client.set('gzip', gzip)
-client.get(new Buffer('gzip'), function (err, reply) {
-	var response = JSON.parse(zlib.gunzipSync(reply))
-	console.log('------------------------')
-	console.log(`gzip in => 0x${reply.toString('hex')}`)
-	console.log(`gzip in decoded => ${response.data}`)
-	console.log('------------------------')
-})
+client.set('gzip', gzip);
+client.get(new Buffer('gzip'), (err, reply) => {
+  const response = JSON.parse(zlib.gunzipSync(reply));
+  console.log('------------------------');
+  console.log(`gzip in => 0x${reply.toString('hex')}`);
+  console.log(`gzip in decoded => ${response.data}`);
+  console.log('------------------------');
+});

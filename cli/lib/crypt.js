@@ -1,50 +1,48 @@
 // this decrypt a file into memory
 // assumes an encrypted file called file.txt.encrypted containing json
 
-var crypto = require('crypto')
-var fs = require('fs')
-var Promise = require('bluebird')
-var Readable = require('stream').Readable
+const crypto = require('crypto');
+const fs = require('fs');
+const Promise = require('bluebird');
+const { Readable } = require('stream');
 
-var cryptor = {}
+const cryptor = {};
 
-cryptor.decryptFileToData = function(fileName,passkey,onComplete) {
+cryptor.decryptFileToData = function (fileName, passkey, onComplete) {
+  // create a read stream and a decrypt stream
+  const read = fs.createReadStream(fileName);
+  const decrypt = crypto.createDecipher('aes-256-ctr', passkey);
 
-	// create a read stream and a decrypt stream
-	var read = fs.createReadStream(fileName)
-	var decrypt = crypto.createDecipher('aes-256-ctr', passkey)
+  // on 'data' event, add the data to a buffer (because data arrives in chunks)
+  const buffer = [];
+  decrypt.on('data', (data) => {
+    buffer.push(data);
+  });
+  // on 'end' event, concat the buffer into a single output and convert toString
+  // the data is now a serialized JSON string (ie same thing as if you just fs.readFile JSON file)
+  // JSON parse it
+  decrypt.on('end', () => {
+    const output = Buffer.concat(buffer).toString();
+    onComplete(null, output);
+  });
 
-	// on 'data' event, add the data to a buffer (because data arrives in chunks)
-	var buffer = []
-	decrypt.on('data', function(data) {
-	  buffer.push(data)
-	})
-	// on 'end' event, concat the buffer into a single output and convert toString
-	// the data is now a serialized JSON string (ie same thing as if you just fs.readFile JSON file)
-	// JSON parse it
-	decrypt.on('end', function() {
-	  var output = Buffer.concat(buffer).toString()
-	  onComplete(null,output)
-	})
+  // actually call the pipe here, ie start streaming
+  read.pipe(decrypt);
+};
 
-	// actually call the pipe here, ie start streaming
-	read.pipe(decrypt)
-}
+cryptor.encryptDataToFile = function (data, fileName, passkey, onComplete) {
+  const encrypt = crypto.createCipher('aes-256-ctr', passkey);
+  const write = fs.createWriteStream(fileName);
 
-cryptor.encryptDataToFile = function(data,fileName,passkey,onComplete) {
+  const read = new Readable();
+  read.push(data);
+  read.push(null); // indicates end-of-file basically - the end of the stream
 
-	var encrypt = crypto.createCipher('aes-256-ctr',passkey)
-	var write = fs.createWriteStream(fileName)
+  read.pipe(encrypt).pipe(write);
 
-	var read = new Readable();
-	read.push(data)
-	read.push(null) // indicates end-of-file basically - the end of the stream
+  write.on('end', () => {
+    onComplete();
+  });
+};
 
-	read.pipe(encrypt).pipe(write)
-
-	write.on('end',function(){
-		onComplete()
-	})
-}
-
-module.exports = cryptor
+module.exports = cryptor;

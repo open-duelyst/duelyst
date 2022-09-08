@@ -1,18 +1,16 @@
-'use strict';
-
-var NotificationItemView = require('app/ui/views/item/notification');
-var NotificationsViewTemplate = require('app/ui/templates/composite/notifications.hbs');
+const NotificationItemView = require('app/ui/views/item/notification');
+const NotificationsViewTemplate = require('app/ui/templates/composite/notifications.hbs');
 
 /**
  * Base notifications composite view used to show notification items.
  */
 
-var NotificationsCompositeView = Backbone.Marionette.CompositeView.extend({
+const NotificationsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-	childView: NotificationItemView,
-	childViewContainer: ".notifications",
+  childView: NotificationItemView,
+  childViewContainer: '.notifications',
 
-	template: NotificationsViewTemplate
+  template: NotificationsViewTemplate,
 
 });
 

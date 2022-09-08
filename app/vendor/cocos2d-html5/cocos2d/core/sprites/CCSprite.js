@@ -84,8 +84,8 @@
  * @property {cc.V3F_C4B_T2F_Quad}  quad                - <@readonly> The quad (tex coords, vertex coords and color) information.
  */
 cc.Sprite = cc.Node.extend(/** @lends cc.Sprite# */{
-	dirty:false,
-	atlasIndex:0,
+  dirty:false,
+  atlasIndex:0,
     textureAtlas:null,
 
     _batchNode:null,
@@ -223,12 +223,12 @@ cc.Sprite = cc.Node.extend(/** @lends cc.Sprite# */{
         return cc.p(this._offsetPosition);
     },
 
-	_getOffsetX: function () {
-		return this._offsetPosition.x;
-	},
-	_getOffsetY: function () {
-		return this._offsetPosition.y;
-	},
+  _getOffsetX: function () {
+    return this._offsetPosition.x;
+  },
+  _getOffsetY: function () {
+    return this._offsetPosition.y;
+  },
 
     /**
      * Returns the blend function
@@ -550,35 +550,35 @@ cc.Sprite = cc.Node.extend(/** @lends cc.Sprite# */{
         return this._texture;
     },
 
-	_softInit: function (fileName, rect, rotated) {
-		if (fileName === undefined)
-			cc.Sprite.prototype.init.call(this);
-		else if (cc.isString(fileName)) {
-			if (fileName[0] === "#") {
-				// Init with a sprite frame name
-				var frameName = fileName.substr(1, fileName.length - 1);
-				var spriteFrame = cc.spriteFrameCache.getSpriteFrame(frameName);
-				this.initWithSpriteFrame(spriteFrame);
-			} else {
-				// Init  with filename and rect
-				cc.Sprite.prototype.init.call(this, fileName, rect);
-			}
-		} else if (cc.isObject(fileName)) {
-			if (fileName instanceof cc.Texture2D) {
-				// Init  with texture and rect
-				this.initWithTexture(fileName, rect, rotated);
-			} else if (fileName instanceof cc.SpriteFrame) {
-				// Init with a sprite frame
-				this.initWithSpriteFrame(fileName);
-			} else if ((fileName instanceof HTMLImageElement) || (fileName instanceof HTMLCanvasElement)) {
-				// Init with a canvas or image element
-				var texture2d = new cc.Texture2D();
-				texture2d.initWithElement(fileName);
-				texture2d.handleLoadedTexture();
-				this.initWithTexture(texture2d);
-			}
-		}
-	},
+  _softInit: function (fileName, rect, rotated) {
+    if (fileName === undefined)
+      cc.Sprite.prototype.init.call(this);
+    else if (cc.isString(fileName)) {
+      if (fileName[0] === "#") {
+        // Init with a sprite frame name
+        var frameName = fileName.substr(1, fileName.length - 1);
+        var spriteFrame = cc.spriteFrameCache.getSpriteFrame(frameName);
+        this.initWithSpriteFrame(spriteFrame);
+      } else {
+        // Init  with filename and rect
+        cc.Sprite.prototype.init.call(this, fileName, rect);
+      }
+    } else if (cc.isObject(fileName)) {
+      if (fileName instanceof cc.Texture2D) {
+        // Init  with texture and rect
+        this.initWithTexture(fileName, rect, rotated);
+      } else if (fileName instanceof cc.SpriteFrame) {
+        // Init with a sprite frame
+        this.initWithSpriteFrame(fileName);
+      } else if ((fileName instanceof HTMLImageElement) || (fileName instanceof HTMLCanvasElement)) {
+        // Init with a canvas or image element
+        var texture2d = new cc.Texture2D();
+        texture2d.initWithElement(fileName);
+        texture2d.handleLoadedTexture();
+        this.initWithTexture(texture2d);
+      }
+    }
+  },
 
     /**
      * Returns the quad (tex coords, vertex coords and color) information.

@@ -1,26 +1,26 @@
-//pragma PKGS: game
-var _ = require('underscore');
-var RSX = require('app/data/resources');
-var TileMapScaledSprite = require('./TileMapScaledSprite');
+// pragma PKGS: game
+const _ = require('underscore');
+const RSX = require('app/data/resources');
+const TileMapScaledSprite = require('./TileMapScaledSprite');
 
-/****************************************************************************
+/** **************************************************************************
 TileMapPathMoveStartSprite
 var TileMapPathMoveStartSprite = TileMapScaledSprite
 TileMapPathMoveStartSprite.create()
- ****************************************************************************/
+ *************************************************************************** */
 
-var TileMapPathMoveStartSprite = TileMapScaledSprite.extend({
+const TileMapPathMoveStartSprite = TileMapScaledSprite.extend({
 
-	ctor: function () {
-		this._super(RSX.tile_path_move_start.frame);
-	}
+  ctor() {
+    this._super(RSX.tile_path_move_start.frame);
+  },
 });
 
 TileMapPathMoveStartSprite.create = function (sprite) {
-	if (sprite == null) {
-		sprite = cc.pool.getFromPool(TileMapPathMoveStartSprite) || TileMapScaledSprite.create(new TileMapPathMoveStartSprite());
-	}
-	return sprite;
+  if (sprite == null) {
+    sprite = cc.pool.getFromPool(TileMapPathMoveStartSprite) || TileMapScaledSprite.create(new TileMapPathMoveStartSprite());
+  }
+  return sprite;
 };
 
 module.exports = TileMapPathMoveStartSprite;

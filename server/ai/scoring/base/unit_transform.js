@@ -1,7 +1,5 @@
-"use strict";
-
-const BOUNTY = require("./../bounty");
-const ScoreForUnit = require("./unit");
+const BOUNTY = require('../bounty');
+const ScoreForUnit = require('./unit');
 
 /**
  * Returns the score for removing a unit.
@@ -11,14 +9,14 @@ const ScoreForUnit = require("./unit");
  * @public
  */
 const ScoreForUnitTransform = function (unit, transformCard) {
-	let score = 0;
+  let score = 0;
 
-	const scoreForUnit = ScoreForUnit(unit);
-	const scoreForTransform = ScoreForUnit(transformCard);
+  const scoreForUnit = ScoreForUnit(unit);
+  const scoreForTransform = ScoreForUnit(transformCard);
 
-	score += (scoreForTransform - scoreForUnit) * BOUNTY.UNIT_TRANSFORM; //the difference between what you're transforming it into vs what it is
+  score += (scoreForTransform - scoreForUnit) * BOUNTY.UNIT_TRANSFORM; // the difference between what you're transforming it into vs what it is
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForUnitTransform;

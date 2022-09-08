@@ -1,35 +1,33 @@
-'use strict';
+const EventBus = require('app/common/eventbus');
+const ReconnectToGameTemplate = require('app/ui/templates/item/reconnect_to_game.hbs');
 
-var EventBus = require('app/common/eventbus');
-var ReconnectToGameTemplate = require('app/ui/templates/item/reconnect_to_game.hbs');
+const ReconnectToGameItemView = Backbone.Marionette.ItemView.extend({
 
-var ReconnectToGameItemView = Backbone.Marionette.ItemView.extend({
+  id: 'app-reconnect-to-game',
+  className: 'status',
 
-	id: "app-reconnect-to-game",
-	className: "status",
+  template: ReconnectToGameTemplate,
 
-	template: ReconnectToGameTemplate,
+  /* ui selector cache */
+  ui: {
+    exit: '.exit',
+  },
 
-	/* ui selector cache */
-	ui: {
-		"exit": ".exit"
-	},
+  /* ui events hash */
+  events: {
+    'click .exit': 'onClickExit',
+  },
 
-	/* ui events hash */
-	events: {
-		"click .exit": "onClickExit"
-	},
+  initialize() {
+  },
 
-	initialize: function() {
-	},
+  /* on render callback */
+  onRender() {
+  },
 
-	/* on render callback */
-	onRender: function() {
-	},
-
-	onClickExit: function () {
-		EventBus.getInstance().trigger("APP:cancelConnection");
-	}
+  onClickExit() {
+    EventBus.getInstance().trigger('APP:cancelConnection');
+  },
 });
 
 // Expose the class either via CommonJS or the global object

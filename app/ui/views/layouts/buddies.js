@@ -1,90 +1,90 @@
-//pragma PKGS: alwaysloaded
-'use strict';
+// pragma PKGS: alwaysloaded
 
-var Logger = require('app/common/logger');
-var CONFIG = require('app/common/config');
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var SDK = require('app/sdk');
-var ChatManager = require('app/ui/managers/chat_manager');
-var Animations = require("app/ui/views/animations");
-var BuddiesTemplate = require('app/ui/templates/layouts/buddies.hbs');
-var BuddyListView = require('app/ui/views/item/buddy_list');
-var BuddySelectionLayout = require('./buddy_selection');
-var BuddySelectionEmptyView = require('app/ui/views/item/buddy_selection_empty')
-var BuddiesLayout = Backbone.Marionette.LayoutView.extend({
+const Logger = require('app/common/logger');
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const SDK = require('app/sdk');
+const ChatManager = require('app/ui/managers/chat_manager');
+const Animations = require('app/ui/views/animations');
+const BuddiesTemplate = require('app/ui/templates/layouts/buddies.hbs');
+const BuddyListView = require('app/ui/views/item/buddy_list');
+const BuddySelectionEmptyView = require('app/ui/views/item/buddy_selection_empty');
+const BuddySelectionLayout = require('./buddy_selection');
 
-	id: "app-buddies",
-	className: "modal duelyst-modal",
+const BuddiesLayout = Backbone.Marionette.LayoutView.extend({
 
-	template: BuddiesTemplate,
+  id: 'app-buddies',
+  className: 'modal duelyst-modal',
 
-	regions: {
-		buddyListRegion: ".buddy-list-region",
-		buddySelectionRegion: ".buddy-selection-region"
-	},
+  template: BuddiesTemplate,
 
-	ui: {
-		$buddiesControls: ".buddies-controls"
-	},
+  regions: {
+    buddyListRegion: '.buddy-list-region',
+    buddySelectionRegion: '.buddy-selection-region',
+  },
 
-	events: {
-		// "click .buddy-preview": "onSelectBuddy",
-		"focus .buddies-controls": "onFocusBuddiesControls",
-		"blur .buddies-controls": "onBlurBuddiesControls"
-	},
+  ui: {
+    $buddiesControls: '.buddies-controls',
+  },
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  events: {
+    // "click .buddy-preview": "onSelectBuddy",
+    'focus .buddies-controls': 'onFocusBuddiesControls',
+    'blur .buddies-controls': 'onBlurBuddiesControls',
+  },
 
-	onFocusBuddiesControls: function () {
-		this.ui.$buddiesControls.css("opacity", "");
-	},
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	onBlurBuddiesControls: function () {
-		this.ui.$buddiesControls.css("opacity", 0.5);
-	},
+  onFocusBuddiesControls() {
+    this.ui.$buddiesControls.css('opacity', '');
+  },
 
-	onShow: function() {
-		// show the buddy list
-		this.buddyList = new BuddyListView({model: new Backbone.Model({}), collection: new Backbone.Collection()});
-		this.listenTo(this.buddyList, "buddy_selected", this.onSelectBuddy);
-		this.buddySelectionRegion.show(new BuddySelectionEmptyView());
-		this.buddyListRegion.show(this.buddyList);
+  onBlurBuddiesControls() {
+    this.ui.$buddiesControls.css('opacity', 0.5);
+  },
 
-		this.listenTo(ChatManager.getInstance().getBuddiesCollection().getPresenceCollection(), "remove", this.onRemoveBuddy);
+  onShow() {
+    // show the buddy list
+    this.buddyList = new BuddyListView({ model: new Backbone.Model({}), collection: new Backbone.Collection() });
+    this.listenTo(this.buddyList, 'buddy_selected', this.onSelectBuddy);
+    this.buddySelectionRegion.show(new BuddySelectionEmptyView());
+    this.buddyListRegion.show(this.buddyList);
 
-		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
-	},
+    this.listenTo(ChatManager.getInstance().getBuddiesCollection().getPresenceCollection(), 'remove', this.onRemoveBuddy);
 
-	selectBuddy: function(buddyId) {
-		var model = ChatManager.getInstance().getBuddiesCollection().getPresenceCollection().find(function(model) { return model.userId == buddyId });
-		if (model) {
-			model.set("_active",true);
-			if (this.buddyList) {
-				this.buddyList.selectBuddy(model);
-			}
-			this.onSelectBuddy(model);
-		}
-	},
+    audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
+  },
 
-	onSelectBuddy: function(presenceModel) {
-		if (this.presenceModelSelected !== presenceModel) {
-			this.presenceModelSelected = presenceModel;
-			if (this.presenceModelSelected) {
-				this.ui.$buddiesControls.css("opacity", 0.5);
-				// show buddy details and conversation
-				this.buddySelectionRegion.show(new BuddySelectionLayout({model: presenceModel}));
-			} else {
-				this.ui.$buddiesControls.css("opacity", "");
-				this.buddySelectionRegion.empty();
-			}
-		}
-	},
+  selectBuddy(buddyId) {
+    const model = ChatManager.getInstance().getBuddiesCollection().getPresenceCollection().find((model) => model.userId == buddyId);
+    if (model) {
+      model.set('_active', true);
+      if (this.buddyList) {
+        this.buddyList.selectBuddy(model);
+      }
+      this.onSelectBuddy(model);
+    }
+  },
 
-	onRemoveBuddy: function() {
-		this.onSelectBuddy(null);
-	}
+  onSelectBuddy(presenceModel) {
+    if (this.presenceModelSelected !== presenceModel) {
+      this.presenceModelSelected = presenceModel;
+      if (this.presenceModelSelected) {
+        this.ui.$buddiesControls.css('opacity', 0.5);
+        // show buddy details and conversation
+        this.buddySelectionRegion.show(new BuddySelectionLayout({ model: presenceModel }));
+      } else {
+        this.ui.$buddiesControls.css('opacity', '');
+        this.buddySelectionRegion.empty();
+      }
+    }
+  },
+
+  onRemoveBuddy() {
+    this.onSelectBuddy(null);
+  },
 
 });
 

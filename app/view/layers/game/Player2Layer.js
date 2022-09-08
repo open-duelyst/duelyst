@@ -1,51 +1,50 @@
-//pragma PKGS: game
-var CONFIG = require('app/common/config');
-var UtilsEngine = require('app/common/utils/utils_engine');
-var PlayerLayer = require('./PlayerLayer');
+// pragma PKGS: game
+const CONFIG = require('app/common/config');
+const UtilsEngine = require('app/common/utils/utils_engine');
+const PlayerLayer = require('./PlayerLayer');
 
-/****************************************************************************
+/** **************************************************************************
  Player2Layer
- ****************************************************************************/
+ *************************************************************************** */
 
-var Player2Layer = PlayerLayer.extend({
+const Player2Layer = PlayerLayer.extend({
 
-	/* region INITIALIZE */
+  /* region INITIALIZE */
 
-	ctor: function (playerId) {
-		this._super(playerId);
+  ctor(playerId) {
+    this._super(playerId);
 
-		// artifacts should show durability on left
-		for (var i = 0, il = this._artifactNodes.length; i < il; i++) {
-			var artifactNode = this._artifactNodes[i];
-			artifactNode.setDurabilityOnLeft(true);
-		}
-	},
+    // artifacts should show durability on left
+    for (let i = 0, il = this._artifactNodes.length; i < il; i++) {
+      const artifactNode = this._artifactNodes[i];
+      artifactNode.setDurabilityOnLeft(true);
+    }
+  },
 
-	/* endregion INITIALIZE */
+  /* endregion INITIALIZE */
 
-	/* region LAYOUT */
+  /* region LAYOUT */
 
-	_updateArtifactNodesLayout: function () {
-		this._super();
+  _updateArtifactNodesLayout() {
+    this._super();
 
-		// reposition artifact nodes
-		var player2ArtifactsPositions = UtilsEngine.getPlayer2ArtifactsPositions();
-		for (var i = 0, il = this._artifactNodes.length; i < il; i++) {
-			this._artifactNodes[i].setPosition(player2ArtifactsPositions[i]);
-		}
-	},
+    // reposition artifact nodes
+    const player2ArtifactsPositions = UtilsEngine.getPlayer2ArtifactsPositions();
+    for (let i = 0, il = this._artifactNodes.length; i < il; i++) {
+      this._artifactNodes[i].setPosition(player2ArtifactsPositions[i]);
+    }
+  },
 
-	_updateSignatureCardNodeLayout: function () {
-		this._signatureCardNode.setPosition(UtilsEngine.getPlayer2SignatureCardPosition());
-	}
+  _updateSignatureCardNodeLayout() {
+    this._signatureCardNode.setPosition(UtilsEngine.getPlayer2SignatureCardPosition());
+  },
 
-	/* endregion LAYOUT */
+  /* endregion LAYOUT */
 
 });
 
-Player2Layer.create = function(playerId, layer) {
-	return PlayerLayer.create(playerId, layer || new Player2Layer(playerId));
+Player2Layer.create = function (playerId, layer) {
+  return PlayerLayer.create(playerId, layer || new Player2Layer(playerId));
 };
-
 
 module.exports = Player2Layer;

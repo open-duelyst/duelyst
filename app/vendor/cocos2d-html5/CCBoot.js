@@ -766,51 +766,51 @@ cc.loader = /** @lends cc.loader# */{
      * @returns {Image}
      */
     loadImg: function (url, option, callback, no_retry) {
-			var self = this;
-			if (callback == null && option != null)
-				callback = option;
+      var self = this;
+      if (callback == null && option != null)
+        callback = option;
 
-			var img = this.getRes(url);
-			if (img) {
-				callback && callback(null, img);
-				return img;
-			}
+      var img = this.getRes(url);
+      if (img) {
+        callback && callback(null, img);
+        return img;
+      }
 
-			// create new image
-			img = new Image();
-			// always make images cross origin anonymous
-			img.crossOrigin = "Anonymous";
+      // create new image
+      img = new Image();
+      // always make images cross origin anonymous
+      img.crossOrigin = "Anonymous";
 
-			var loadCallback = function () {
-				this.removeEventListener('load', loadCallback, false);
-				this.removeEventListener('error', errorCallback, false);
+      var loadCallback = function () {
+        this.removeEventListener('load', loadCallback, false);
+        this.removeEventListener('error', errorCallback, false);
 
-				cc.loader.cache[url] = img;
-				if (callback)
-					callback(null, img);
-			};
+        cc.loader.cache[url] = img;
+        if (callback)
+          callback(null, img);
+      };
 
-			var errorCallback = function () {
-				this.removeEventListener('load', loadCallback, false);
-				this.removeEventListener('error', errorCallback, false);
+      var errorCallback = function () {
+        this.removeEventListener('load', loadCallback, false);
+        this.removeEventListener('error', errorCallback, false);
 
-				if(!no_retry){
-					// in the case of errors
-					// retry image load once after a short delay
-					_.delay(function () {
-						self.release(url);
-						cc.loader.loadImg(url, option, callback, true);
-					}, 60.0);
-				} else {
-					typeof callback == "function" && callback("load image failed");
-				}
-			};
+        if(!no_retry){
+          // in the case of errors
+          // retry image load once after a short delay
+          _.delay(function () {
+            self.release(url);
+            cc.loader.loadImg(url, option, callback, true);
+          }, 60.0);
+        } else {
+          typeof callback == "function" && callback("load image failed");
+        }
+      };
 
-			cc._addEventListener(img, "load", loadCallback);
-			cc._addEventListener(img, "error", errorCallback);
-			img.src = url;
+      cc._addEventListener(img, "load", loadCallback);
+      cc._addEventListener(img, "error", errorCallback);
+      img.src = url;
 
-			return img;
+      return img;
     },
 
     /**

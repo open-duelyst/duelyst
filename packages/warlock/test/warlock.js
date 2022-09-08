@@ -98,60 +98,60 @@ describe('unlocking with id', function() {
 describe('locking', function() {
   it('sets lock', function (done) {
     warlockThen.lockAsync('testLockAsync', 1000)
-		.then(unlock => {
-			(typeof unlock).should.equal('function');
-			done();
-		})
-		.catch(err => {
-			should.not.exist(err);
-			done();
-		})
+    .then(unlock => {
+      (typeof unlock).should.equal('function');
+      done();
+    })
+    .catch(err => {
+      should.not.exist(err);
+      done();
+    })
   });
 
   it('returns true if key is locked', function(done) {
-		warlockThen.isLockedAsync('testLockAsync')
-		.then(isLocked => {
-			isLocked.should.equal(true);
+    warlockThen.isLockedAsync('testLockAsync')
+    .then(isLocked => {
+      isLocked.should.equal(true);
       done();
-		})
-		.catch(err => {
-			should.not.exist(err);
-			done();
-		})
+    })
+    .catch(err => {
+      should.not.exist(err);
+      done();
+    })
   });
 
   it('does not set lock if it already exists', function(done) {
-		warlockThen.lockAsync('testLockAsync', 1000)
-		.then(unlock => {
-			unlock.should.equal(false);
-			done();
-		})
-		.catch(err => {
-			should.not.exist(err);
-			done();
-		})
+    warlockThen.lockAsync('testLockAsync', 1000)
+    .then(unlock => {
+      unlock.should.equal(false);
+      done();
+    })
+    .catch(err => {
+      should.not.exist(err);
+      done();
+    })
   });
 
   it('unlocks', function(done) {
-		warlockThen.lockAsync('unlockAsync', 1000)
-		.then(unlock => {
-			unlock(done);
-		})
-		.catch(err => {
-			should.not.exist(err);
-			done();
-		})
+    warlockThen.lockAsync('unlockAsync', 1000)
+    .then(unlock => {
+      unlock(done);
+    })
+    .catch(err => {
+      should.not.exist(err);
+      done();
+    })
   });
 
   it('returns false if key is unlocked', function(done) {
-		warlockThen.isLockedAsync('unlockAsync')
-		.then(isLocked => {
-			isLocked.should.equal(false);
-			done();
-		})
-		.catch(err => {
-			should.not.exist(err);
-			done();
-		})
+    warlockThen.isLockedAsync('unlockAsync')
+    .then(isLocked => {
+      isLocked.should.equal(false);
+      done();
+    })
+    .catch(err => {
+      should.not.exist(err);
+      done();
+    })
   });
 });

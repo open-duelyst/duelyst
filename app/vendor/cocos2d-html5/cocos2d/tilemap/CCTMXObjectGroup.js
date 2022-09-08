@@ -33,7 +33,7 @@
  * @property {String}   groupName   - Name of the group
  */
 cc.TMXObjectGroup = cc.Class.extend(/** @lends cc.TMXObjectGroup# */{
-	properties: null,
+  properties: null,
     groupName: "",
 
     _positionOffset: null,

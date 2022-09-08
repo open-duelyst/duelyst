@@ -1,29 +1,29 @@
-//pragma PKGS: game
-var _ = require('underscore');
-var RSX = require('app/data/resources');
-var BaseSprite = require('./../BaseSprite');
+// pragma PKGS: game
+const _ = require('underscore');
+const RSX = require('app/data/resources');
+const BaseSprite = require('../BaseSprite');
 
-/****************************************************************************
+/** **************************************************************************
 TileSpawnSprite
 var TileSpawnSprite = BaseSprite
 TileSpawnSprite.create()
- ****************************************************************************/
+ *************************************************************************** */
 
-var TileSpawnSprite = BaseSprite.extend({
-	ctor: function () {
-		this._super(RSX.tile_spawn.frame);
-	},
-	onExit: function () {
-		this._super();
-		cc.pool.putInPool(this);
-	}
+const TileSpawnSprite = BaseSprite.extend({
+  ctor() {
+    this._super(RSX.tile_spawn.frame);
+  },
+  onExit() {
+    this._super();
+    cc.pool.putInPool(this);
+  },
 });
 
 TileSpawnSprite.create = function (sprite) {
-	if (sprite == null) {
-		sprite = cc.pool.getFromPool(TileSpawnSprite) || BaseSprite.create(null, new TileSpawnSprite());
-	}
-	return sprite;
+  if (sprite == null) {
+    sprite = cc.pool.getFromPool(TileSpawnSprite) || BaseSprite.create(null, new TileSpawnSprite());
+  }
+  return sprite;
 };
 
 module.exports = TileSpawnSprite;

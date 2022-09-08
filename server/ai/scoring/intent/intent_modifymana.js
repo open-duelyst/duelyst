@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForModifyMana = require("./../base/modifymana");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForModifyMana = require('../base/modifymana');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,19 +14,19 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForModifyManaFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-		const amount = intent.amount || 0;
-		if (card.getIsSameTeamAs(targetCard)) {
-			// add score for modifying mana of friendly cards.
-			score += ScoreForModifyMana(card, targetCard, amount);
-		} else {
-			// subtract score for modifying mana of enemy cards
-			score -= ScoreForModifyMana(card, targetCard, amount);
-		}
-	}
-	return score;
+const getScoreForModifyManaFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    const amount = intent.amount || 0;
+    if (card.getIsSameTeamAs(targetCard)) {
+      // add score for modifying mana of friendly cards.
+      score += ScoreForModifyMana(card, targetCard, amount);
+    } else {
+      // subtract score for modifying mana of enemy cards
+      score -= ScoreForModifyMana(card, targetCard, amount);
+    }
+  }
+  return score;
 };
 
 /**
@@ -40,19 +38,19 @@ let getScoreForModifyManaFromCardWithIntentToCard = function (card, intent, targ
  * @static
  * @public
  */
-let ScoreForIntentModifyMana = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.ManaCost) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.ManaCost);
+const ScoreForIntentModifyMana = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.ManaCost) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.ManaCost);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForModifyManaFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForModifyManaFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentModifyMana;

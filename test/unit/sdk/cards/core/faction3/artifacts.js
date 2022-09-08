@@ -1,87 +1,82 @@
-var path = require('path')
-require('app-module-path').addPath(path.join(__dirname, '../../../../../../'))
-require('coffee-script/register')
-var expect = require('chai').expect;
-var CONFIG = require('app/common/config');
-var Logger = require('app/common/logger');
-var SDK = require('app/sdk');
-var UtilsSDK = require('test/utils/utils_sdk');
-var _ = require('underscore');
+const path = require('path');
+require('app-module-path').addPath(path.join(__dirname, '../../../../../../'));
+require('coffee-script/register');
+const expect = require('chai').expect;
+const CONFIG = require('app/common/config');
+const Logger = require('app/common/logger');
+const SDK = require('app/sdk');
+const UtilsSDK = require('test/utils/utils_sdk');
+const _ = require('underscore');
 
 // disable the logger for cleaner test output
 Logger.enabled = false;
 
-describe("faction3", function() {
-	describe("artifacts", function(){
+describe('faction3', () => {
+  describe('artifacts', () => {
+    beforeEach(() => {
+      // define test decks.  Spells do not work.  Only add minions and generals this way
+      const player1Deck = [
+        { id: SDK.Cards.Faction3.General },
+      ];
 
-		beforeEach(function () {
-			// define test decks.  Spells do not work.  Only add minions and generals this way
-			var player1Deck = [
-				{id: SDK.Cards.Faction3.General},
-			];
+      const player2Deck = [
+        { id: SDK.Cards.Faction1.General },
+      ];
 
-			var player2Deck = [
-				{id: SDK.Cards.Faction1.General},
-			];
+      // setup test session
+      UtilsSDK.setupSession(player1Deck, player2Deck, true, true);
+    });
 
-			// setup test session
-			UtilsSDK.setupSession(player1Deck, player2Deck, true, true);
+    afterEach(() => {
+      SDK.GameSession.reset();
+    });
 
-		});
+    it('expect staff of ykir to give general +2 attack', () => {
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const player1 = gameSession.getPlayer1();
 
-		afterEach(function () {
-			SDK.GameSession.reset();
-		});
+      UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Artifact.StaffOfYKir }));
+      UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
 
+      expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
+    });
+    it('expect wildfire ankh to give general blast', () => {
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const player1 = gameSession.getPlayer1();
 
-		it('expect staff of ykir to give general +2 attack', function() {
-			var gameSession = SDK.GameSession.getInstance();
-			var board = gameSession.getBoard();
-			var player1 = gameSession.getPlayer1();
+      UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Artifact.AnkhFireNova }));
+      UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
 
-			UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), {id: SDK.Cards.Artifact.StaffOfYKir}));
-			UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
+      expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierBlastAttack)).to.equal(true);
+    });
+    it('expect hexblade to give general +3 attack', () => {
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const player1 = gameSession.getPlayer1();
 
-			expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
-		});
-		it('expect wildfire ankh to give general blast', function() {
-			var gameSession = SDK.GameSession.getInstance();
-			var board = gameSession.getBoard();
-			var player1 = gameSession.getPlayer1();
+      UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Artifact.PoisonHexblade }));
+      UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
 
-			UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), {id: SDK.Cards.Artifact.AnkhFireNova}));
-			UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
+      expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
+    });
+    it('expect hexblade to make enemy minion attack to 1 before getting countered', () => {
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const player1 = gameSession.getPlayer1();
 
-			expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierBlastAttack)).to.equal(true);
-		});
-    it('expect hexblade to give general +3 attack', function() {
-			var gameSession = SDK.GameSession.getInstance();
-			var board = gameSession.getBoard();
-			var player1 = gameSession.getPlayer1();
+      UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Artifact.PoisonHexblade }));
+      UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
 
-			UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), {id: SDK.Cards.Artifact.PoisonHexblade}));
-			UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
+      const brightmossGolem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.BrightmossGolem }, 0, 1, gameSession.getPlayer2Id());
 
-			expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
-		});
-    it('expect hexblade to make enemy minion attack to 1 before getting countered', function() {
-			var gameSession = SDK.GameSession.getInstance();
-			var board = gameSession.getBoard();
-			var player1 = gameSession.getPlayer1();
+      const action = gameSession.getGeneralForPlayer1().actionAttack(brightmossGolem);
+      gameSession.executeAction(action);
 
-			UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), {id: SDK.Cards.Artifact.PoisonHexblade}));
-			UtilsSDK.executeActionWithoutValidation(player1.actionPlayCardFromHand(0, 1, 1));
-
-			var brightmossGolem = UtilsSDK.applyCardToBoard({id: SDK.Cards.Neutral.BrightmossGolem}, 0, 1, gameSession.getPlayer2Id());
-
-			var action = gameSession.getGeneralForPlayer1().actionAttack(brightmossGolem);
-			gameSession.executeAction(action);
-
-			expect(brightmossGolem.getATK()).to.equal(1);
-			expect(brightmossGolem.getHP()).to.equal(4);
-			expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(24);
-		});
-
-	});  //end Spells describe
-
+      expect(brightmossGolem.getATK()).to.equal(1);
+      expect(brightmossGolem.getHP()).to.equal(4);
+      expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(24);
+    });
+  }); // end Spells describe
 });

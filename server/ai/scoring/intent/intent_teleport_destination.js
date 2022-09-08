@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForUnitTeleportDestination = require("./../base/unit_teleport_destination");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForUnitTeleportDestination = require('../base/unit_teleport_destination');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,13 +14,13 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForTeleportDestinationFromCardWithIntentToCard = function (card, intent, targetPosition) {
-	let score = 0;
-	const teleportDestinationCard = intent.cardId || null;
-	if (targetPosition != null && teleportDestinationCard != null) {
-		score += ScoreForUnitTeleportDestination(targetPosition, teleportDestinationCard);
-	}
-	return score;
+const getScoreForTeleportDestinationFromCardWithIntentToCard = function (card, intent, targetPosition) {
+  let score = 0;
+  const teleportDestinationCard = intent.cardId || null;
+  if (targetPosition != null && teleportDestinationCard != null) {
+    score += ScoreForUnitTeleportDestination(targetPosition, teleportDestinationCard);
+  }
+  return score;
 };
 
 /**
@@ -34,19 +32,19 @@ let getScoreForTeleportDestinationFromCardWithIntentToCard = function (card, int
  * @static
  * @public
  */
-let ScoreForIntentTeleportDestination = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.TeleportDestination) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.TeleportDestination);
+const ScoreForIntentTeleportDestination = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.TeleportDestination) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.TeleportDestination);
 
-	_.each(validIntents, function (intent) {
-		//let cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		//for (var i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForTeleportDestinationFromCardWithIntentToCard(card, intent, targetPosition);
-		//}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    // let cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    // for (var i = 0, il = cards.length; i < il; i++) {
+    score += getScoreForTeleportDestinationFromCardWithIntentToCard(card, intent, targetPosition);
+    // }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentTeleportDestination;

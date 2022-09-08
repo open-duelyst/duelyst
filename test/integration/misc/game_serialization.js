@@ -1,44 +1,36 @@
-var path = require('path')
-require('app-module-path').addPath(path.join(__dirname, '../../../'))
-require('coffee-script/register')
-var expect = require('chai').expect;
-var SDK = require('../../../app/sdk')
-var util = require('util');
+const path = require('path');
+require('app-module-path').addPath(path.join(__dirname, '../../../'));
+require('coffee-script/register');
+const { expect } = require('chai');
+const util = require('util');
+const SDK = require('../../../app/sdk.coffee');
 
-describe("game serialization", function() {
+describe('game serialization', () => {
+  describe('action serialization', () => {
+    describe('actions with subactions', () => {
+      it('expect a deep copy with sub-actions when serialized', (done) => {
+        function replacer(key, value) {
+          if (key[0] === '_') return undefined;
+          return value;
+        }
 
-	describe("action serialization", function() {
+        const action = SDK.GameSession.current().actionEndTurn();
+        const startTurnAction = SDK.GameSession.current().createActionForType(SDK.StartTurnAction.type);
+        startTurnAction.ownerId = SDK.GameSession.current().getNonCurrentPlayerId();
+        action.addSubAction(startTurnAction);
 
-		describe("actions with subactions", function() {
-			it('expect a deep copy with sub-actions when serialized', function(done) {
+        const json = JSON.stringify(action, replacer);
+        expect(json).to.exist;
+        // Logger.module("UNITTEST").log(json);
 
-				function replacer(key,value) {
-					if (key[0] == "_")
-						return undefined
-					else
-						return value
-				}
+        const json3 = SDK.GameSession.current().serializeToJSON(action);
+        expect(json3).to.exist;
+        // Logger.module("UNITTEST").log(json3);
 
-				var action = SDK.GameSession.current().actionEndTurn();
-				startTurnAction = SDK.GameSession.current().createActionForType(SDK.StartTurnAction.type)
-				startTurnAction.ownerId = SDK.GameSession.current().getNonCurrentPlayerId()
-				action.addSubAction(startTurnAction)
+        expect(json3).to.equal(json);
 
-				var json = JSON.stringify(action,replacer);
-				expect(json).to.exist;
-				// Logger.module("UNITTEST").log(json);
-
-				var json3 = SDK.GameSession.current().serializeToJSON(action);
-				expect(json3).to.exist;
-				// Logger.module("UNITTEST").log(json3);
-
-				expect(json3).to.equal(json);
-
-				done();
-
-			});
-		});
-
-	});
-
+        done();
+      });
+    });
+  });
 });

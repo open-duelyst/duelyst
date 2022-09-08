@@ -1,6 +1,4 @@
-"use strict";
-
-const BOUNTY = require("./../bounty");
+const BOUNTY = require('../bounty');
 
 /**
  * Returns the score for an artifact.
@@ -9,9 +7,9 @@ const BOUNTY = require("./../bounty");
  * @static
  * @public
  */
-let ScoreForArtifact = function (artifact) {
-	// generic card score by mana cost
-	return artifact.getManaCost() * BOUNTY.MANA_COST;
+const ScoreForArtifact = function (artifact) {
+  // generic card score by mana cost
+  return artifact.getManaCost() * BOUNTY.MANA_COST;
 };
 
 module.exports = ScoreForArtifact;

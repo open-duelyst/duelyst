@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForUnitRefresh = require("./../base/unit_refresh");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForUnitRefresh = require('../base/unit_refresh');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,12 +14,12 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForRefreshFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-			score += ScoreForUnitRefresh(targetCard);
-	}
-	return score;
+const getScoreForRefreshFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    score += ScoreForUnitRefresh(targetCard);
+  }
+  return score;
 };
 
 /**
@@ -33,19 +31,19 @@ let getScoreForRefreshFromCardWithIntentToCard = function (card, intent, targetC
  * @static
  * @public
  */
-let ScoreForIntentRefresh = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Refresh) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Refresh);
+const ScoreForIntentRefresh = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Refresh) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Refresh);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForRefreshFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForRefreshFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentRefresh;

@@ -4,15 +4,16 @@
   "version": "1.96.17",
   "main": "desktop.js",
   "dependencies": {
-    "@counterplay/discord-rpc-nodejs": "1.0.15",
+    "electron": "^20.1.2",
     "electron-debug": "1.0.0",
     "electron-localshortcut": "^0.6.1",
-    "electron-window": "0.8.1",
+    "electron-window": "^0.8.1",
     "lodash.debounce": "^4.0.6",
     "minimist": "^1.1.2",
     "node-uuid": "*",
-    "open": "0.0.5",
-    "os-name": "^2.0.1"
+    "open": "^8.4.0",
+    "os-name": "^2.0.1",
+    "shell": "^0.9.4"
   },
   "devDependencies": {
     "devtron": "^1.1.2"

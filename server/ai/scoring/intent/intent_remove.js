@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForUnitRemove = require("./../base/unit_remove");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForUnitRemove = require('../base/unit_remove');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,19 +14,19 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForRemoveFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-		if (!card.getIsSameTeamAs(targetCard)) {
-			// add score for removed enemy card
-			score += ScoreForUnitRemove(targetCard);
-		} else {
-			// subtract score for removed friendly card
-			// removing own units isn't as significant and removing enemy units <- possibly wrong.
-			score -= ScoreForUnitRemove(targetCard);// * 0.75;
-		}
-	}
-	return score;
+const getScoreForRemoveFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    if (!card.getIsSameTeamAs(targetCard)) {
+      // add score for removed enemy card
+      score += ScoreForUnitRemove(targetCard);
+    } else {
+      // subtract score for removed friendly card
+      // removing own units isn't as significant and removing enemy units <- possibly wrong.
+      score -= ScoreForUnitRemove(targetCard);// * 0.75;
+    }
+  }
+  return score;
 };
 
 /**
@@ -40,19 +38,19 @@ let getScoreForRemoveFromCardWithIntentToCard = function (card, intent, targetCa
  * @static
  * @public
  */
-let ScoreForIntentRemove = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Remove) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Remove);
+const ScoreForIntentRemove = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Remove) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Remove);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForRemoveFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForRemoveFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentRemove;

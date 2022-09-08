@@ -1,9 +1,9 @@
-const store = require('store2')
+const store = require('store2');
 
 function createNamespace() {
-	return 'duelyst-' + process.env.NODE_ENV
+  return `duelyst-${process.env.NODE_ENV}`;
 }
 
-const namespace = createNamespace()
-const storage = store.namespace(namespace)
-module.exports = storage
+const namespace = createNamespace();
+const storage = store.namespace(namespace);
+module.exports = storage;

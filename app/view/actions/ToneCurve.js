@@ -9,36 +9,36 @@
  */
 var ToneCurve = cc.ActionInterval.extend({
 
-	_toneCurveAmountTo: 0.0,
-	_toneCurveAmountFrom: 0.0,
+  _toneCurveAmountTo: 0.0,
+  _toneCurveAmountFrom: 0.0,
 
-	ctor: function (duration, toneCurveAmountFrom, toneCurveAmountTo) {
-		cc.ActionInterval.prototype.ctor.call(this);
-		this.initWithDuration(duration, toneCurveAmountFrom, toneCurveAmountTo);
-	},
+  ctor(duration, toneCurveAmountFrom, toneCurveAmountTo) {
+    cc.ActionInterval.prototype.ctor.call(this);
+    this.initWithDuration(duration, toneCurveAmountFrom, toneCurveAmountTo);
+  },
 
-	initWithDuration:function (duration, toneCurveAmountFrom, toneCurveAmountTo) {
-		if (cc.ActionInterval.prototype.initWithDuration.call(this, duration)) {
-			this._toneCurveAmountFrom = toneCurveAmountFrom == null ? this._toneCurveAmountFrom : toneCurveAmountFrom;
-			this._toneCurveAmountTo = toneCurveAmountTo == null ? this._toneCurveAmountTo : toneCurveAmountTo;
-			return true;
-		}
-		return false;
-	},
+  initWithDuration(duration, toneCurveAmountFrom, toneCurveAmountTo) {
+    if (cc.ActionInterval.prototype.initWithDuration.call(this, duration)) {
+      this._toneCurveAmountFrom = toneCurveAmountFrom == null ? this._toneCurveAmountFrom : toneCurveAmountFrom;
+      this._toneCurveAmountTo = toneCurveAmountTo == null ? this._toneCurveAmountTo : toneCurveAmountTo;
+      return true;
+    }
+    return false;
+  },
 
-	update:function (timePct) {
-		this.getFX().setToneCurveAmount(this._toneCurveAmountFrom * (1.0 - timePct) + this._toneCurveAmountTo * timePct);
-	},
+  update(timePct) {
+    this.getFX().setToneCurveAmount(this._toneCurveAmountFrom * (1.0 - timePct) + this._toneCurveAmountTo * timePct);
+  },
 
-	reverse:function () {
-		return ToneCurve.create(this._duration, this._toneCurveAmountTo, this._toneCurveAmountFrom);
-	},
+  reverse() {
+    return ToneCurve.create(this._duration, this._toneCurveAmountTo, this._toneCurveAmountFrom);
+  },
 
-	clone:function () {
-		var action = new ToneCurve();
-		action.initWithDuration(this._duration, this._toneCurveAmountFrom, this._toneCurveAmountTo);
-		return action;
-	}
+  clone() {
+    const action = new ToneCurve();
+    action.initWithDuration(this._duration, this._toneCurveAmountFrom, this._toneCurveAmountTo);
+    return action;
+  },
 });
 
 /**
@@ -51,7 +51,7 @@ var ToneCurve = cc.ActionInterval.extend({
  * @return {ToneCurve}
  */
 ToneCurve.create = function (duration, toneCurveAmountFrom, toneCurveAmountTo) {
-	return new ToneCurve(duration, toneCurveAmountFrom, toneCurveAmountTo);
+  return new ToneCurve(duration, toneCurveAmountFrom, toneCurveAmountTo);
 };
 
 module.exports = ToneCurve;

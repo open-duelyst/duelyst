@@ -1,26 +1,26 @@
-//pragma PKGS: nongame
-'use strict'
-var WatchGameItemView = require('./watch_game_item')
-var WatchGamesEmptyView = require('./watch_games_empty')
-var Template = require('./templates/watch_games_composite.hbs')
+// pragma PKGS: nongame
 
-var WatchGamesCompositeView = Backbone.Marionette.CompositeView.extend({
+const WatchGameItemView = require('./watch_game_item');
+const WatchGamesEmptyView = require('./watch_games_empty');
+const Template = require('./templates/watch_games_composite.hbs');
 
-	id: "watch_games_collection",
-	template: Template,
+const WatchGamesCompositeView = Backbone.Marionette.CompositeView.extend({
 
-	childView: WatchGameItemView,
-	childViewContainer: ".watch-game-list",
-	emptyView: WatchGamesEmptyView,
+  id: 'watch_games_collection',
+  template: Template,
 
-	onShow: function() {
-		var delay = 0;
-		this.children.each(function (childView) {
-			childView.animateReveal(200.0, delay);
-			delay += 100.0;
-		}.bind(this));
-	}
+  childView: WatchGameItemView,
+  childViewContainer: '.watch-game-list',
+  emptyView: WatchGamesEmptyView,
+
+  onShow() {
+    let delay = 0;
+    this.children.each((childView) => {
+      childView.animateReveal(200.0, delay);
+      delay += 100.0;
+    });
+  },
 
 });
 
-module.exports = WatchGamesCompositeView
+module.exports = WatchGamesCompositeView;

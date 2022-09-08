@@ -1,36 +1,36 @@
-var _index = 0;
+let _index = 0;
 
 /**
  * BaseSpriteComponent - abstract component used to modify a BaseSprite.
  * @param node
  */
-var BaseSpriteComponent = cc.Class.extend({
-	// unique id used to map this composited effect
-	_id: 0,
-	// node this component is targetting
-	_node: null,
+const BaseSpriteComponent = cc.Class.extend({
+  // unique id used to map this composited effect
+  _id: 0,
+  // node this component is targetting
+  _node: null,
 
-	ctor: function (node) {
-		this._id = _index++;
-		this.setNode(node);
-	},
+  ctor(node) {
+    this._id = _index++;
+    this.setNode(node);
+  },
 
-	/* region GETTERS / SETTERS */
+  /* region GETTERS / SETTERS */
 
-	setId: function (val) {
-		this._id = val;
-	},
-	getId: function () {
-		return this._id;
-	},
-	setNode: function (val) {
-		this._node = val;
-	},
-	getNode: function () {
-		return this._node;
-	}
+  setId(val) {
+    this._id = val;
+  },
+  getId() {
+    return this._id;
+  },
+  setNode(val) {
+    this._node = val;
+  },
+  getNode() {
+    return this._node;
+  },
 
-	/* endregion GETTERS / SETTERS */
+  /* endregion GETTERS / SETTERS */
 
 });
 

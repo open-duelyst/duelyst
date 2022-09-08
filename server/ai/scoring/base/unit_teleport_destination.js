@@ -1,8 +1,6 @@
-"use strict";
-
-const BOUNTY = require("./../bounty");
-const ScoreForUnit = require("./unit");
-const ScoreForCardAtTargetPosition = require("./../position/position_ScoreForCardAtTargetPosition");
+const BOUNTY = require('../bounty');
+const ScoreForUnit = require('./unit');
+const ScoreForCardAtTargetPosition = require('../position/position_ScoreForCardAtTargetPosition');
 
 /**
  * Returns the score for TeleportDestinationing a unit.
@@ -12,12 +10,12 @@ const ScoreForCardAtTargetPosition = require("./../position/position_ScoreForCar
  * @public
  */
 const ScoreForUnitTeleportDestination = function (targetPosition, teleportDestinationCard) {
-	let score = 0;
+  let score = 0;
 
   score += ScoreForUnit(teleportDestinationCard);
   score += ScoreForCardAtTargetPosition(teleportDestinationCard, targetPosition, teleportDestinationCard);
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForUnitTeleportDestination;

@@ -71,7 +71,7 @@ cc.PARTICLE_DEFAULT_CAPACITY = 500;
  * var particleBatchNode = new cc.ParticleBatchNode(texture, 30);
  */
 cc.ParticleBatchNode = cc.Node.extend(/** @lends cc.ParticleBatchNode# */{
-	textureAtlas:null,
+  textureAtlas:null,
     //the blend function used for drawing the quads
     _blendFunc:null,
     _className:"ParticleBatchNode",

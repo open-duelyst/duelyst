@@ -1,5 +1,3 @@
-"use strict";
-
 const ScoreForIntentBurn = require('./intent_burn');
 const ScoreForIntentHeal = require('./intent_heal');
 const ScoreForIntentStun = require('./intent_stun');
@@ -16,8 +14,8 @@ const ScoreForIntentTransform = require('./intent_transform');
 const ScoreForIntentTeleportTarget = require('./intent_teleport_target');
 const ScoreForIntentTeleportDestination = require('./intent_teleport_destination');
 const ScoreForIntentApplyModifiers = require('./intent_apply_modifiers');
-const ScoreForPhaseSpell = require('./../phase/phase_spell');
-const ScoreForPhaseDeath = require('./../phase/phase_death');
+const ScoreForPhaseSpell = require('../phase/phase_spell');
+const ScoreForPhaseDeath = require('../phase/phase_death');
 
 /**
  * Returns the total intent score for a card at a target position.
@@ -31,44 +29,44 @@ const ScoreForPhaseDeath = require('./../phase/phase_death');
 module.exports = function (card, targetPosition, cardIntents) {
   let score = 0;
 
-	// score intents
+  // score intents
   score += ScoreForIntentBurn(card, targetPosition, cardIntents);
-  //console.log("score for burn: ", score);
+  // console.log("score for burn: ", score);
   score += ScoreForIntentHeal(card, targetPosition, cardIntents);
-  //console.log("score for heal: ", score);
+  // console.log("score for heal: ", score);
   score += ScoreForIntentDispel(card, targetPosition, cardIntents);
-  //console.log("score for dispel: ", score);
+  // console.log("score for dispel: ", score);
   score += ScoreForIntentStun(card, targetPosition, cardIntents);
-  //console.log("score for stun: ", score);
+  // console.log("score for stun: ", score);
   score += ScoreForIntentRemove(card, targetPosition, cardIntents);
-  //console.log("score for remove: ", score);
+  // console.log("score for remove: ", score);
   score += ScoreForIntentModifyMana(card, targetPosition, cardIntents);
-  //console.log("score for modify mana: ", score);
+  // console.log("score for modify mana: ", score);
   score += ScoreForIntentDraw(card, targetPosition, cardIntents);
-  //console.log("score for draw: ", score);
+  // console.log("score for draw: ", score);
   score += ScoreForIntentModifyHP(card, targetPosition, cardIntents);
-  //console.log("score for modifyHP: ", score);
+  // console.log("score for modifyHP: ", score);
   score += ScoreForIntentModifyATK(card, targetPosition, cardIntents);
-  //console.log("score for modifyATK: ", score);
+  // console.log("score for modifyATK: ", score);
   score += ScoreForIntentRefresh(card, targetPosition, cardIntents);
-  //console.log("score for refresh: ", score);
+  // console.log("score for refresh: ", score);
   score += ScoreForIntentTransform(card, targetPosition, cardIntents);
-  //console.log("score for transform: ", score);
+  // console.log("score for transform: ", score);
   score += ScoreForIntentSummon(card, targetPosition, cardIntents);
-  //console.log("score for summon: ", score);
+  // console.log("score for summon: ", score);
   score += ScoreForIntentImmunity(card, targetPosition, cardIntents);
-  //console.log("score for immunity: ", score);
+  // console.log("score for immunity: ", score);
   score += ScoreForIntentTeleportTarget(card, targetPosition, cardIntents);
-  //console.log("score for teleport target: ", score);
+  // console.log("score for teleport target: ", score);
   score += ScoreForIntentTeleportDestination(card, targetPosition, cardIntents);
-  //console.log("score for teleport destination: ", score);
+  // console.log("score for teleport destination: ", score);
   score += ScoreForIntentApplyModifiers(card, targetPosition, cardIntents);
 
-	// score phases
-	score += ScoreForPhaseSpell(card, targetPosition, cardIntents);
-	//console.log("score for phase spell: ", score);
+  // score phases
+  score += ScoreForPhaseSpell(card, targetPosition, cardIntents);
+  // console.log("score for phase spell: ", score);
   score += ScoreForPhaseDeath(card, targetPosition, cardIntents);
-  //console.log("score for phase death: ", score);
+  // console.log("score for phase death: ", score);
 
   return score;
 };

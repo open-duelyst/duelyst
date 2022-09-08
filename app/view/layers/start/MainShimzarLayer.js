@@ -1,370 +1,367 @@
-//pragma PKGS: ShimzarMainMenu
+// pragma PKGS: ShimzarMainMenu
 
-var RSX = require('app/data/resources');
-var PKGS = require('app/data/packages');
-var Logger = require('app/common/logger');
-var UtilsEngine = require("app/common/utils/utils_engine");
-var audio_engine = require("app/audio/audio_engine");
-var FXCompositeLayer = require("./../FXCompositeLayer");
-var ParallaxLayer = require("./../ParallaxLayer");
-var BaseSprite = require("./../../nodes/BaseSprite");
-var BaseParticleSystem = require("./../../nodes/BaseParticleSystem");
-var FXFlockSprite = require("./../../nodes/fx/FXFlockSprite");
+const RSX = require('app/data/resources');
+const PKGS = require('app/data/packages');
+const Logger = require('app/common/logger');
+const UtilsEngine = require('app/common/utils/utils_engine');
+const audio_engine = require('app/audio/audio_engine');
+const _ = require('underscore');
+const FXCompositeLayer = require('../FXCompositeLayer');
+const ParallaxLayer = require('../ParallaxLayer');
+const BaseSprite = require('../../nodes/BaseSprite');
+const BaseParticleSystem = require('../../nodes/BaseParticleSystem');
+const FXFlockSprite = require('../../nodes/fx/FXFlockSprite');
 
-var _ = require("underscore");
-
-/****************************************************************************
+/** **************************************************************************
  MainShimzarLayer
- ****************************************************************************/
+ *************************************************************************** */
 
-var MainShimzarLayer = FXCompositeLayer.extend({
+const MainShimzarLayer = FXCompositeLayer.extend({
 
-	/* region INITIALIZE */
+  /* region INITIALIZE */
 
-	ctor:function () {
-		// initialize properties that may be required in init
-		this.parallaxLayer = ParallaxLayer.create();
+  ctor() {
+    // initialize properties that may be required in init
+    this.parallaxLayer = ParallaxLayer.create();
 
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-			// scene elements
-			this.bg = BaseSprite.create(RSX.scene_shimzar_background.img);
-			this.midground = BaseSprite.create(RSX.scene_shimzar_midground.img);
-			this.trees1 = BaseSprite.create(RSX.scene_shimzar_trees_1.img);
-			this.trees2 = BaseSprite.create(RSX.scene_shimzar_trees_2.img);
-			this.fg = BaseSprite.create(RSX.scene_shimzar_foreground.img);
-			this.ray1 = BaseSprite.create(RSX.scene_shimzar_ray.img);
-			this.vignette = BaseSprite.create(RSX.scene_shimzar_vignette.img);
-			this.vignette.setAnchorPoint(0.0, 0.5);
-			this.vignette.setOpacity(125)
-			this.vignette.setScaleX(0.7)
+      // scene elements
+      this.bg = BaseSprite.create(RSX.scene_shimzar_background.img);
+      this.midground = BaseSprite.create(RSX.scene_shimzar_midground.img);
+      this.trees1 = BaseSprite.create(RSX.scene_shimzar_trees_1.img);
+      this.trees2 = BaseSprite.create(RSX.scene_shimzar_trees_2.img);
+      this.fg = BaseSprite.create(RSX.scene_shimzar_foreground.img);
+      this.ray1 = BaseSprite.create(RSX.scene_shimzar_ray.img);
+      this.vignette = BaseSprite.create(RSX.scene_shimzar_vignette.img);
+      this.vignette.setAnchorPoint(0.0, 0.5);
+      this.vignette.setOpacity(125);
+      this.vignette.setScaleX(0.7);
 
-			this.lights = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_lights_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90,
-				staticPositionsToSample: leftLightPositions
-			})
-			this.lights.setAnchorPoint(cc.p(0,0))
-			this.lights.setPosition(cc.p(0,0))
-			this.lights.setMaxParticles(250)
+      this.lights = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_lights_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+        staticPositionsToSample: leftLightPositions,
+      });
+      this.lights.setAnchorPoint(cc.p(0, 0));
+      this.lights.setPosition(cc.p(0, 0));
+      this.lights.setMaxParticles(250);
 
-			this.lights2 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_lights_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90,
-				staticPositionsToSample: rightLightsPositions
-			})
-			this.lights2.setAnchorPoint(cc.p(0,0))
-			this.lights2.setPosition(cc.p(0,0))
-			this.lights2.setMaxParticles(150)
+      this.lights2 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_lights_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+        staticPositionsToSample: rightLightsPositions,
+      });
+      this.lights2.setAnchorPoint(cc.p(0, 0));
+      this.lights2.setPosition(cc.p(0, 0));
+      this.lights2.setMaxParticles(150);
 
-			//
-			this.waterfallMid1 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallMid1.setAnchorPoint(cc.p(0,0))
-			this.waterfallMid1.setPosition(cc.p(730 + 30,425))
-			this.waterfallMid1.setPosVar(cc.p(30,4))
+      //
+      this.waterfallMid1 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallMid1.setAnchorPoint(cc.p(0, 0));
+      this.waterfallMid1.setPosition(cc.p(730 + 30, 425));
+      this.waterfallMid1.setPosVar(cc.p(30, 4));
 
-			//
-			this.waterfallMid2 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallMid2.setAnchorPoint(cc.p(0,0))
-			this.waterfallMid2.setPosition(cc.p(993 + 20,420))
-			this.waterfallMid2.setPosVar(cc.p(20,4))
+      //
+      this.waterfallMid2 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallMid2.setAnchorPoint(cc.p(0, 0));
+      this.waterfallMid2.setPosition(cc.p(993 + 20, 420));
+      this.waterfallMid2.setPosVar(cc.p(20, 4));
 
-			//
-			this.waterfallMid3 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallMid3.setAnchorPoint(cc.p(0,0))
-			this.waterfallMid3.setPosition(cc.p(738 + 30,481))
-			this.waterfallMid3.setPosVar(cc.p(30,1))
-			this.waterfallMid3.setMaxParticles(20)
-			this.waterfallMid3.setLife(1)
-			this.waterfallMid3.setLifeVar(0.5)
+      //
+      this.waterfallMid3 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallMid3.setAnchorPoint(cc.p(0, 0));
+      this.waterfallMid3.setPosition(cc.p(738 + 30, 481));
+      this.waterfallMid3.setPosVar(cc.p(30, 1));
+      this.waterfallMid3.setMaxParticles(20);
+      this.waterfallMid3.setLife(1);
+      this.waterfallMid3.setLifeVar(0.5);
 
-			//
-			this.waterfallMid4 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallMid4.setAnchorPoint(cc.p(0,0))
-			this.waterfallMid4.setPosition(cc.p(958 + 25,490))
-			this.waterfallMid4.setPosVar(cc.p(25,1))
-			this.waterfallMid4.setMaxParticles(20)
-			this.waterfallMid4.setLife(1)
-			this.waterfallMid4.setLifeVar(0.5)
+      //
+      this.waterfallMid4 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallMid4.setAnchorPoint(cc.p(0, 0));
+      this.waterfallMid4.setPosition(cc.p(958 + 25, 490));
+      this.waterfallMid4.setPosVar(cc.p(25, 1));
+      this.waterfallMid4.setMaxParticles(20);
+      this.waterfallMid4.setLife(1);
+      this.waterfallMid4.setLifeVar(0.5);
 
+      // bg waterfals
 
-			// bg waterfals
+      //
+      this.waterfallBg1 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallBg1.setAnchorPoint(cc.p(0, 0));
+      this.waterfallBg1.setPosition(cc.p(1189 + 10, 577));
+      this.waterfallBg1.setPosVar(cc.p(10, 4));
+      this.waterfallBg1.setGravity(cc.p(0, -18));
+      this.waterfallBg1.setMaxParticles(20);
 
-			//
-			this.waterfallBg1 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallBg1.setAnchorPoint(cc.p(0,0))
-			this.waterfallBg1.setPosition(cc.p(1189 + 10,577))
-			this.waterfallBg1.setPosVar(cc.p(10,4))
-			this.waterfallBg1.setGravity(cc.p(0,-18))
-			this.waterfallBg1.setMaxParticles(20)
+      //
+      this.waterfallBg2 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallBg2.setAnchorPoint(cc.p(0, 0));
+      this.waterfallBg2.setPosition(cc.p(1291 + 20, 577));
+      this.waterfallBg2.setPosVar(cc.p(20, 4));
+      this.waterfallBg2.setGravity(cc.p(0, -18));
+      this.waterfallBg2.setMaxParticles(30);
 
-			//
-			this.waterfallBg2 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallBg2.setAnchorPoint(cc.p(0,0))
-			this.waterfallBg2.setPosition(cc.p(1291 + 20,577))
-			this.waterfallBg2.setPosVar(cc.p(20,4))
-			this.waterfallBg2.setGravity(cc.p(0,-18))
-			this.waterfallBg2.setMaxParticles(30)
+      //
+      this.waterfallBg3 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallBg3.setAnchorPoint(cc.p(0, 0));
+      this.waterfallBg3.setPosition(cc.p(1465 + 20, 577));
+      this.waterfallBg3.setPosVar(cc.p(20, 4));
+      this.waterfallBg3.setGravity(cc.p(0, -18));
+      this.waterfallBg3.setMaxParticles(30);
 
-			//
-			this.waterfallBg3 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallBg3.setAnchorPoint(cc.p(0,0))
-			this.waterfallBg3.setPosition(cc.p(1465 + 20,577))
-			this.waterfallBg3.setPosVar(cc.p(20,4))
-			this.waterfallBg3.setGravity(cc.p(0,-18))
-			this.waterfallBg3.setMaxParticles(30)
+      //
+      this.waterfallBg4 = new BaseParticleSystem({
+        plistFile: RSX.scene_shimzar_waterfall_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
+      this.waterfallBg4.setAnchorPoint(cc.p(0, 0));
+      this.waterfallBg4.setPosition(cc.p(1746 + 5, 945));
+      this.waterfallBg4.setPosVar(cc.p(5, 4));
+      this.waterfallBg4.setGravity(cc.p(0, -18));
+      this.waterfallBg4.setMaxParticles(10);
 
-			//
-			this.waterfallBg4 = new BaseParticleSystem({
-				plistFile: RSX.scene_shimzar_waterfall_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
-			this.waterfallBg4.setAnchorPoint(cc.p(0,0))
-			this.waterfallBg4.setPosition(cc.p(1746 + 5,945))
-			this.waterfallBg4.setPosVar(cc.p(5,4))
-			this.waterfallBg4.setGravity(cc.p(0,-18))
-			this.waterfallBg4.setMaxParticles(10)
+      // cloud elements
+      const cloudOptions = {
+        angled: true,
+        liveForDistance: true,
+        parallaxMode: true,
+        fadeInAtLifePct: 0.05,
+      };
 
-			// cloud elements
-			var cloudOptions = {
-				angled: true,
-				liveForDistance: true,
-				parallaxMode: true,
-				fadeInAtLifePct:0.05
-			};
+      const cloudColor = cc.color(105, 236, 213);
+      const cloudEndColor = cc.color(68, 87, 115);
 
-			var cloudColor = cc.color(105,236,213)
-			var cloudEndColor = cc.color(68,87,115)
+      cloudOptions.plistFile = RSX.ptcl_cloud_001.plist;
+      this.clouds1 = BaseParticleSystem.create(cloudOptions);
+      this.clouds1.setStartColor(cloudColor);
+      this.clouds1.setEndColor(cloudColor);
+      this.clouds1.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_001.plist;
-			this.clouds1 = BaseParticleSystem.create(cloudOptions);
-			this.clouds1.setStartColor(cloudColor)
-			this.clouds1.setEndColor(cloudColor)
-			this.clouds1.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_002.plist;
+      this.clouds2 = BaseParticleSystem.create(cloudOptions);
+      this.clouds2.setStartColor(cloudColor);
+      this.clouds2.setEndColor(cloudColor);
+      this.clouds2.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_002.plist;
-			this.clouds2 = BaseParticleSystem.create(cloudOptions);
-			this.clouds2.setStartColor(cloudColor)
-			this.clouds2.setEndColor(cloudColor)
-			this.clouds2.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_004.plist;
+      this.clouds3 = BaseParticleSystem.create(cloudOptions);
+      this.clouds3.setStartColor(cloudColor);
+      this.clouds3.setEndColor(cloudColor);
+      this.clouds3.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_004.plist;
-			this.clouds3 = BaseParticleSystem.create(cloudOptions);
-			this.clouds3.setStartColor(cloudColor)
-			this.clouds3.setEndColor(cloudColor)
-			this.clouds3.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_007.plist;
+      this.clouds4 = BaseParticleSystem.create(cloudOptions);
+      this.clouds4.setStartColor(cloudColor);
+      this.clouds4.setEndColor(cloudColor);
+      this.clouds4.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_007.plist;
-			this.clouds4 = BaseParticleSystem.create(cloudOptions);
-			this.clouds4.setStartColor(cloudColor)
-			this.clouds4.setEndColor(cloudColor)
-			this.clouds4.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      this.getFXLayer().addChild(this.vignette, 2);
+      this.midground.addChild(this.lights);
+      this.midground.addChild(this.waterfallMid1);
+      this.midground.addChild(this.waterfallMid2);
+      this.midground.addChild(this.waterfallMid3);
+      this.midground.addChild(this.waterfallMid4);
+      this.midground.addChild(this.ray1);
 
-			this.getFXLayer().addChild(this.vignette, 2)
-			this.midground.addChild(this.lights)
-			this.midground.addChild(this.waterfallMid1)
-			this.midground.addChild(this.waterfallMid2)
-			this.midground.addChild(this.waterfallMid3)
-			this.midground.addChild(this.waterfallMid4)
-			this.midground.addChild(this.ray1)
+      this.bg.addChild(this.lights2);
+      this.bg.addChild(this.waterfallBg1);
+      this.bg.addChild(this.waterfallBg2);
+      this.bg.addChild(this.waterfallBg3);
+      this.bg.addChild(this.waterfallBg4);
 
-			this.bg.addChild(this.lights2)
-			this.bg.addChild(this.waterfallBg1)
-			this.bg.addChild(this.waterfallBg2)
-			this.bg.addChild(this.waterfallBg3)
-			this.bg.addChild(this.waterfallBg4)
+      this.ray1.setAnchorPoint(cc.p(0, 0));
+      this.ray1.setPosition(cc.p(360, 140));
+      this.ray1.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
+      this.ray1.runAction(cc.repeatForever(
+        cc.sequence(
+          cc.fadeOut(5.0),
+          cc.delayTime(3.0),
+          cc.fadeIn(5.0),
+        ),
+      ));
+    });
 
-			this.ray1.setAnchorPoint(cc.p(0,0))
-			this.ray1.setPosition(cc.p(360,140))
-			this.ray1.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
-			this.ray1.runAction(cc.repeatForever(
-				cc.sequence(
-					cc.fadeOut(5.0),
-					cc.delayTime(3.0),
-					cc.fadeIn(5.0)
-				)
-			))
+    // do super ctor
+    this._super();
 
-		}.bind(this));
+    // setup scene
+    this.getFXLayer().addChild(this.parallaxLayer, 0);
+  },
 
-		// do super ctor
-		this._super();
+  /* endregion INITIALIZE */
 
-		// setup scene
-		this.getFXLayer().addChild(this.parallaxLayer, 0);
-	},
+  /* region RESOURCES */
 
-	/* endregion INITIALIZE */
+  getRequiredResources() {
+    return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier('ShimzarMainMenu'));
+  },
 
-	/* region RESOURCES */
+  /* endregion RESOURCES */
 
-	getRequiredResources: function () {
-		return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier("ShimzarMainMenu"));
-	},
+  /* region SCENE */
 
-	/* endregion RESOURCES */
+  onEnter() {
+    this._super();
 
-	/* region SCENE */
+    // set bloom
+    const fx = this.getFX();
+    this._lastBloomThreshold = fx.getBloomThreshold();
+    this._bloomThreshold = 0.65;
+    fx.setBloomThreshold(this._bloomThreshold);
+    this._lastBloomIntensity = fx.getBloomIntensity();
+    this._bloomIntensity = 1.25;
+    fx.setBloomIntensity(this._bloomIntensity);
+  },
 
-	onEnter: function () {
-		this._super();
+  onExit() {
+    this._super();
 
-		// set bloom
-		var fx = this.getFX();
-		this._lastBloomThreshold = fx.getBloomThreshold();
-		this._bloomThreshold = 0.65;
-		fx.setBloomThreshold(this._bloomThreshold);
-		this._lastBloomIntensity = fx.getBloomIntensity();
-		this._bloomIntensity = 1.25;
-		fx.setBloomIntensity(this._bloomIntensity);
-	},
+    // restore bloom
+    const fx = this.getFX();
+    if (this._lastBloomThreshold != null && fx.getBloomThreshold() === this._bloomThreshold) {
+      fx.setBloomThreshold(this._lastBloomThreshold);
+    }
+    if (this._lastBloomIntensity != null && fx.getBloomThreshold() === this._bloomIntensity) {
+      fx.setBloomThreshold(this._lastBloomIntensity);
+    }
+  },
 
-	onExit: function () {
-		this._super();
+  /* endregion SCENE */
 
-		// restore bloom
-		var fx = this.getFX();
-		if (this._lastBloomThreshold != null && fx.getBloomThreshold() === this._bloomThreshold) {
-			fx.setBloomThreshold(this._lastBloomThreshold);
-		}
-		if (this._lastBloomIntensity != null && fx.getBloomThreshold() === this._bloomIntensity) {
-			fx.setBloomThreshold(this._lastBloomIntensity);
-		}
-	},
+  /* region LAYOUT */
 
-	/* endregion SCENE */
+  onResize() {
+    this._super();
 
-	/* region LAYOUT */
+    // set self to middle of screen
+    this.setPosition(UtilsEngine.getGSIWinCenterPosition());
 
-	onResize: function () {
-		this._super();
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-		// set self to middle of screen
-		this.setPosition(UtilsEngine.getGSIWinCenterPosition());
+      const winWidth = UtilsEngine.getGSIWinWidth();
+      const winHeight = UtilsEngine.getGSIWinHeight();
+      let ratio;
+      let offset;
+      let shiftX;
 
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+      // vignette sizing
+      this.vignette.setScaleX(0.8 * winWidth / this.vignette.getContentSize().width);
+      this.vignette.setScaleY(winHeight / this.vignette.getContentSize().height);
+      this.vignette.setPosition(-winWidth * 0.6, 0);
 
-			var winWidth = UtilsEngine.getGSIWinWidth();
-			var winHeight = UtilsEngine.getGSIWinHeight();
-			var ratio;
-			var offset;
-			var shiftX;
+      // background
+      this.parallaxLayer.setParallaxScale(UtilsEngine.getWindowSizeRelativeNodeScale(this.bg));
+      const parallaxScale = this.parallaxLayer.getParallaxScale();
+      const contentSize = this.bg.getContentSize();
+      shiftX = (winWidth - contentSize.width * parallaxScale) * 0.5;
 
-			// vignette sizing
-			this.vignette.setScaleX(0.8 * winWidth / this.vignette.getContentSize().width);
-			this.vignette.setScaleY(winHeight / this.vignette.getContentSize().height);
-			this.vignette.setPosition(-winWidth * 0.6,0)
+      // bg
+      this.bg.setScale(parallaxScale);
+      ratio = cc.p(0.001, 0.0);
+      offset = cc.p(0.0, 0.0);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.bg, 0, ratio, offset);
 
-			// background
-			this.parallaxLayer.setParallaxScale(UtilsEngine.getWindowSizeRelativeNodeScale(this.bg));
-			var parallaxScale = this.parallaxLayer.getParallaxScale();
-			var contentSize = this.bg.getContentSize();
-			shiftX = (winWidth - contentSize.width * parallaxScale) * 0.5;
+      // middleground 1
+      this.midground.setScale(parallaxScale);
+      this.midground.setAnchorPoint(0.5, 0.5);
+      ratio = cc.p(0.003, 0.0);
+      offset = cc.p(0.0, 0.0);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.midground, 2, ratio, offset);
 
-			// bg
-			this.bg.setScale(parallaxScale);
-			ratio = cc.p(0.001, 0.0);
-			offset = cc.p(0.0, 0.0);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.bg, 0, ratio, offset);
+      // clouds
+      this.clouds1.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      this.clouds1.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds1, 3, cc.p(), this.clouds1.getSourceScreenOffsetPosition());
 
-			// middleground 1
-			this.midground.setScale(parallaxScale);
-			this.midground.setAnchorPoint(0.5,0.5)
-			ratio = cc.p(0.003, 0.0);
-			offset = cc.p(0.0, 0.0);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.midground, 2, ratio, offset);
+      this.clouds2.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      this.clouds2.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds2, 3, cc.p(), this.clouds2.getSourceScreenOffsetPosition());
 
-			// clouds
-			this.clouds1.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			this.clouds1.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds1, 3, cc.p(), this.clouds1.getSourceScreenOffsetPosition());
+      //
+      // this.clouds3.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      // this.clouds3.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      // this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds3, 3, cc.p(), this.clouds3.getSourceScreenOffsetPosition());
+      //
+      // this.clouds4.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      // this.clouds4.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      // this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds4, 3, cc.p(), this.clouds4.getSourceScreenOffsetPosition());
 
-			this.clouds2.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			this.clouds2.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds2, 3, cc.p(), this.clouds2.getSourceScreenOffsetPosition());
+      // trees 1
+      this.trees1.setScale(parallaxScale);
+      ratio = cc.p(0.0175, 0.0100);
+      offset = cc.p(winWidth / 2 * 0.75, -winHeight * 0.4 + this.trees1.getContentSize().height * (0.475 - ratio.y) * this.trees1.getScale());
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.trees1, 3, ratio, offset);
 
-			//
-			// this.clouds3.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			// this.clouds3.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			// this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds3, 3, cc.p(), this.clouds3.getSourceScreenOffsetPosition());
-			//
-			// this.clouds4.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			// this.clouds4.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			// this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds4, 3, cc.p(), this.clouds4.getSourceScreenOffsetPosition());
+      // trees 2
+      this.trees2.setScale(parallaxScale);
+      this.trees2.setAnchorPoint(0.5, 0.0);
+      ratio = cc.p(0.00150, 0.00250);
+      offset = cc.p(-winWidth / 4, -winHeight * 0.6);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.trees2, 3, ratio, offset);
 
-			// trees 1
-			this.trees1.setScale(parallaxScale);
-			ratio = cc.p(0.0175, 0.0100);
-			offset = cc.p(winWidth / 2 * 0.75, -winHeight * 0.4 + this.trees1.getContentSize().height * (0.475 - ratio.y) * this.trees1.getScale());
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.trees1, 3, ratio, offset);
+      // foreground
+      this.fg.setScale(parallaxScale);
+      this.fg.setAnchorPoint(1.0, 0.5);
+      ratio = cc.p(0.0200, 0.0100);
+      offset = cc.p(winWidth * 0.55, -winHeight * 0.5 + this.fg.getContentSize().height * (0.5 - ratio.y) * this.fg.getScale() - 1);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.fg, 4, ratio, offset);
 
-			// trees 2
-			this.trees2.setScale(parallaxScale);
-			this.trees2.setAnchorPoint(0.5,0.0)
-			ratio = cc.p(0.00150, 0.00250);
-			offset = cc.p(-winWidth / 4, -winHeight * 0.6);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.trees2, 3, ratio, offset);
+      // reset parallax
+      this.parallaxLayer.resetParallax();
+    });
+  },
 
-			// foreground
-			this.fg.setScale(parallaxScale);
-			this.fg.setAnchorPoint(1.0,0.5)
-			ratio = cc.p(0.0200, 0.0100);
-			offset = cc.p(winWidth * 0.55, -winHeight * 0.5 + this.fg.getContentSize().height * (0.5 - ratio.y) * this.fg.getScale() - 1);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.fg, 4, ratio, offset);
+  /* endregion LAYOUT */
 
-			// reset parallax
-			this.parallaxLayer.resetParallax();
-		}.bind(this));
-	},
+  playMusic() {
+    audio_engine.current().play_music(RSX.music_ageofdisjunction.audio);
+  },
 
-	/* endregion LAYOUT */
+});
 
-	playMusic: function () {
-		audio_engine.current().play_music(RSX.music_ageofdisjunction.audio);
-	}
+MainShimzarLayer.create = function (layer) {
+  return FXCompositeLayer.create(layer || new MainShimzarLayer());
+};
 
-})
+module.exports = MainShimzarLayer;
 
-MainShimzarLayer.create = function(layer) {
-	return FXCompositeLayer.create(layer || new MainShimzarLayer());
-}
-
-module.exports = MainShimzarLayer
-
-const rightLightsPositions = [ { x: 1082, y: 617 },
+const rightLightsPositions = [{ x: 1082, y: 617 },
   { x: 1083, y: 627 },
   { x: 1083, y: 617 },
   { x: 1084, y: 627 },
@@ -3819,9 +3816,9 @@ const rightLightsPositions = [ { x: 1082, y: 617 },
   { x: 1938, y: 700 },
   { x: 1939, y: 701 },
   { x: 1939, y: 700 },
-  { x: 1940, y: 700 } ];
+  { x: 1940, y: 700 }];
 
-const leftLightPositions = [ { x: 575, y: 586 },
+const leftLightPositions = [{ x: 575, y: 586 },
   { x: 575, y: 585 },
   { x: 576, y: 587 },
   { x: 576, y: 586 },
@@ -6926,4 +6923,4 @@ const leftLightPositions = [ { x: 575, y: 586 },
   { x: 1225, y: 495 },
   { x: 1225, y: 494 },
   { x: 1227, y: 505 },
-  { x: 1228, y: 505 } ];
+  { x: 1228, y: 505 }];

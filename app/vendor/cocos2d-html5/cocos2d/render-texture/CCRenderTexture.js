@@ -77,18 +77,18 @@ cc.NextPOT = function (x) {
  * @property {cc.Color}     clearColorVal   - Clear color value, valid only when "autoDraw" is true.
  */
 cc.RenderTexture = cc.Node.extend(/** @lends cc.RenderTexture# */{
-	sprite:null,
+  sprite:null,
 
-	//
-	// <p>Code for "auto" update<br/>
-	// Valid flags: GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_STENCIL_BUFFER_BIT.<br/>
-	// They can be OR'ed. Valid when "autoDraw is YES.</p>
-	// @public
-	//
-	clearFlags:0,
+  //
+  // <p>Code for "auto" update<br/>
+  // Valid flags: GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_STENCIL_BUFFER_BIT.<br/>
+  // They can be OR'ed. Valid when "autoDraw is YES.</p>
+  // @public
+  //
+  clearFlags:0,
 
-	clearDepthVal:0,
-	autoDraw:false,
+  clearDepthVal:0,
+  autoDraw:false,
 
     _texture:null,
     _pixelFormat:cc.Texture2D.PIXEL_FORMAT_RGBA8888,
@@ -276,11 +276,11 @@ cc.RenderTexture = cc.Node.extend(/** @lends cc.RenderTexture# */{
         return this._clearColor;
     },
 
-	/**
-	 * Set the clear color value. Valid only when "autoDraw" is true.
-	 * @function
-	 * @param {cc.Color} clearColor The clear color
-	 */
+  /**
+   * Set the clear color value. Valid only when "autoDraw" is true.
+   * @function
+   * @param {cc.Color} clearColor The clear color
+   */
     setClearColor: function(clearColor){
         var locClearColor = this._clearColor;
         locClearColor.r = clearColor.r;

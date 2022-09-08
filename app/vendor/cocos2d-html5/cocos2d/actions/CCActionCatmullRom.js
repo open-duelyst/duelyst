@@ -150,18 +150,18 @@ cc.CardinalSplineTo = cc.ActionInterval.extend(/** @lends cc.CardinalSplineTo# *
     _previousPosition:null,
     _accumulatedDiff:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates an action with a Cardinal Spline array of points and tension.
-	 * @param {Number} duration
-	 * @param {Array} points array of control points
-	 * @param {Number} tension
-	 */
+   * Creates an action with a Cardinal Spline array of points and tension.
+   * @param {Number} duration
+   * @param {Array} points array of control points
+   * @param {Number} tension
+   */
     ctor: function (duration, points, tension) {
         cc.ActionInterval.prototype.ctor.call(this);
 
         this._points = [];
-		tension !== undefined && this.initWithDuration(duration, points, tension);
+    tension !== undefined && this.initWithDuration(duration, points, tension);
     },
 
     /**
@@ -343,18 +343,18 @@ cc.CardinalSplineTo.create = cc.cardinalSplineTo;
 cc.CardinalSplineBy = cc.CardinalSplineTo.extend(/** @lends cc.CardinalSplineBy# */{
     _startPosition:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates an action with a Cardinal Spline array of points and tension.
-	 * @param {Number} duration
-	 * @param {Array} points
-	 * @param {Number} tension
-	 */
+   * creates an action with a Cardinal Spline array of points and tension.
+   * @param {Number} duration
+   * @param {Array} points
+   * @param {Number} tension
+   */
     ctor:function (duration, points, tension) {
         cc.CardinalSplineTo.prototype.ctor.call(this);
         this._startPosition = cc.p(0, 0);
 
-		tension !== undefined && this.initWithDuration(duration, points, tension);
+    tension !== undefined && this.initWithDuration(duration, points, tension);
     },
 
     /**
@@ -418,9 +418,9 @@ cc.CardinalSplineBy = cc.CardinalSplineTo.extend(/** @lends cc.CardinalSplineBy#
         var pos = this._startPosition;
         var posX = newPos.x + pos.x;
         var posY = newPos.y + pos.y;
-	    this._previousPosition.x = posX;
-	    this._previousPosition.y = posY;
-	    this.target.setPosition(posX, posY);
+      this._previousPosition.x = posX;
+      this._previousPosition.y = posY;
+      this.target.setPosition(posX, posY);
     },
 
     /**
@@ -478,15 +478,15 @@ cc.CardinalSplineBy.create = cc.cardinalSplineBy;
  */
 cc.CatmullRomTo = cc.CardinalSplineTo.extend(/** @lends cc.CatmullRomTo# */{
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates an action with a Cardinal Spline array of points and tension.
-	 * @param {Number} dt
-	 * @param {Array} points
-	 */
-	ctor: function(dt, points) {
-		points && this.initWithDuration(dt, points);
-	},
+   * creates an action with a Cardinal Spline array of points and tension.
+   * @param {Number} dt
+   * @param {Array} points
+   */
+  ctor: function(dt, points) {
+    points && this.initWithDuration(dt, points);
+  },
 
     /**
      * Initializes the action with a duration and an array of points
@@ -551,16 +551,16 @@ cc.CatmullRomTo.create = cc.catmullRomTo;
  */
 cc.CatmullRomBy = cc.CardinalSplineBy.extend({
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates an action with a Cardinal Spline array of points and tension.
-	 * @param {Number} dt
-	 * @param {Array} points
-	 */
-	ctor: function(dt, points) {
-		cc.CardinalSplineBy.prototype.ctor.call(this);
-		points && this.initWithDuration(dt, points);
-	},
+   * Creates an action with a Cardinal Spline array of points and tension.
+   * @param {Number} dt
+   * @param {Array} points
+   */
+  ctor: function(dt, points) {
+    cc.CardinalSplineBy.prototype.ctor.call(this);
+    points && this.initWithDuration(dt, points);
+  },
 
     /**
      * initializes the action with a duration and an array of points

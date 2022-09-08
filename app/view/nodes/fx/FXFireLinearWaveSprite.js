@@ -1,95 +1,93 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
 
-var RSX = require('app/data/resources');
-var CONFIG = require('app/common/config');
-var FXSprite = require('./FXSprite');
+const RSX = require('app/data/resources');
+const CONFIG = require('app/common/config');
+const FXSprite = require('./FXSprite');
 
-/****************************************************************************
+/** **************************************************************************
 FXFireLinearWaveSprite
  - use sprite.setTextureRect(cc.rect(x, y, w, h)) to define the size of the sprite
- ****************************************************************************/
+ *************************************************************************** */
 
 var FXFireLinearWaveSprite = FXSprite.extend({
-	shaderKey: "FireLinearWave",
+  shaderKey: 'FireLinearWave',
 
-	antiAlias: true,
-	autoZOrder: false,
-	removeOnEnd: false,
+  antiAlias: true,
+  autoZOrder: false,
+  removeOnEnd: false,
 
-	// uniforms
-	phase: 0.0, // between 0.0 and 1.0
+  // uniforms
+  phase: 0.0, // between 0.0 and 1.0
 
-	// default to using noise
-	spriteIdentifier: RSX.noise.img,
+  // default to using noise
+  spriteIdentifier: RSX.noise.img,
 
-	_createRenderCmd: function(){
-		if(cc._renderType === cc._RENDER_TYPE_CANVAS) {
-			return this._super();
-		} else {
-			return new FXFireLinearWaveSprite.WebGLRenderCmd(this);
-		}
-	},
+  _createRenderCmd() {
+    if (cc._renderType === cc._RENDER_TYPE_CANVAS) {
+      return this._super();
+    }
+    return new FXFireLinearWaveSprite.WebGLRenderCmd(this);
+  },
 
-	setOptions: function (options) {
-		this._super(options);
-		if (options.phase != null) { this.setPhase(options.phase); }
-	},
+  setOptions(options) {
+    this._super(options);
+    if (options.phase != null) { this.setPhase(options.phase); }
+  },
 
-	setPhase: function (phase) {
-		this.phase = phase;
-	},
+  setPhase(phase) {
+    this.phase = phase;
+  },
 
-	updateTweenAction:function(value, key){
-		switch (key) {
-			case "phase":
-				this.phase = value;
-				break;
-			default:
-				FXSprite.prototype.updateTweenAction.call(this, value, key);
-				break;
-		}
-	}
+  updateTweenAction(value, key) {
+    switch (key) {
+      case 'phase':
+        this.phase = value;
+        break;
+      default:
+        FXSprite.prototype.updateTweenAction.call(this, value, key);
+        break;
+    }
+  },
 });
 
-FXFireLinearWaveSprite.WebGLRenderCmd = function(renderable){
-	FXSprite.WebGLRenderCmd.call(this, renderable);
+FXFireLinearWaveSprite.WebGLRenderCmd = function (renderable) {
+  FXSprite.WebGLRenderCmd.call(this, renderable);
 };
-var proto = FXFireLinearWaveSprite.WebGLRenderCmd.prototype = Object.create(FXSprite.WebGLRenderCmd.prototype);
+const proto = FXFireLinearWaveSprite.WebGLRenderCmd.prototype = Object.create(FXSprite.WebGLRenderCmd.prototype);
 proto.constructor = FXFireLinearWaveSprite.WebGLRenderCmd;
 
 proto.rendering = function () {
-	var node = this._node;
-	if (!node._texture)
-		return;
+  const node = this._node;
+  if (!node._texture) return;
 
-	this.updateMatricesForRender();
+  this.updateMatricesForRender();
 
-	var gl = cc._renderContext;
-	var shaderProgram = this._shaderProgram;
-	shaderProgram.use();
-	shaderProgram._setUniformForMVPMatrixWithMat4(this._stackMatrix);
-	shaderProgram.setUniformLocationWith1f(shaderProgram.loc_time, node.getFX().getTime());
-	shaderProgram.setUniformLocationWith1f(shaderProgram.loc_phase, node.phase); // node.getFX().getTime()
-	cc.glBindTexture2DN(0, node._texture);
-	cc.glBlendFunc(node._blendFunc.src, node._blendFunc.dst);
+  const gl = cc._renderContext;
+  const shaderProgram = this._shaderProgram;
+  shaderProgram.use();
+  shaderProgram._setUniformForMVPMatrixWithMat4(this._stackMatrix);
+  shaderProgram.setUniformLocationWith1f(shaderProgram.loc_time, node.getFX().getTime());
+  shaderProgram.setUniformLocationWith1f(shaderProgram.loc_phase, node.phase); // node.getFX().getTime()
+  cc.glBindTexture2DN(0, node._texture);
+  cc.glBlendFunc(node._blendFunc.src, node._blendFunc.dst);
 
-	cc.glEnableVertexAttribs(cc.VERTEX_ATTRIB_FLAG_POS_COLOR_TEX);
-	gl.bindBuffer(gl.ARRAY_BUFFER, this._quadWebBuffer);
-	if(this._quadDirty) {
-		this._quadDirty = false;
-		gl.bufferData(gl.ARRAY_BUFFER, this._quad.arrayBuffer, gl.DYNAMIC_DRAW);
-	}
-	gl.vertexAttribPointer(cc.VERTEX_ATTRIB_POSITION, 3, gl.FLOAT, false, 24, 0);
-	gl.vertexAttribPointer(cc.VERTEX_ATTRIB_COLOR, 4, gl.UNSIGNED_BYTE, true, 24, 12);
-	gl.vertexAttribPointer(cc.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, 24, 16);
+  cc.glEnableVertexAttribs(cc.VERTEX_ATTRIB_FLAG_POS_COLOR_TEX);
+  gl.bindBuffer(gl.ARRAY_BUFFER, this._quadWebBuffer);
+  if (this._quadDirty) {
+    this._quadDirty = false;
+    gl.bufferData(gl.ARRAY_BUFFER, this._quad.arrayBuffer, gl.DYNAMIC_DRAW);
+  }
+  gl.vertexAttribPointer(cc.VERTEX_ATTRIB_POSITION, 3, gl.FLOAT, false, 24, 0);
+  gl.vertexAttribPointer(cc.VERTEX_ATTRIB_COLOR, 4, gl.UNSIGNED_BYTE, true, 24, 12);
+  gl.vertexAttribPointer(cc.VERTEX_ATTRIB_TEX_COORDS, 2, gl.FLOAT, false, 24, 16);
 
-	gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-	this.updateMatricesAfterRender();
+  this.updateMatricesAfterRender();
 };
 
-FXFireLinearWaveSprite.create = function(options, sprite) {
-	return FXSprite.create.call(this, options, sprite || new FXFireLinearWaveSprite(options));
+FXFireLinearWaveSprite.create = function (options, sprite) {
+  return FXSprite.create.call(this, options, sprite || new FXFireLinearWaveSprite(options));
 };
 
 module.exports = FXFireLinearWaveSprite;

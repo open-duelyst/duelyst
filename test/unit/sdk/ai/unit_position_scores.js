@@ -1,490 +1,486 @@
-var path = require('path')
-require('app-module-path').addPath(path.join(__dirname, '../../../../'))
-require('coffee-script/register')
-var expect = require('chai').expect;
-var CONFIG = require('app/common/config');
-var Logger = require('app/common/logger');
-var SDK = require('app/sdk');
-var UtilsSDK = require('test/utils/utils_sdk');
-var _ = require('underscore');
-var position_backstabAvoidance = require('server/ai/scoring/position/position_backstabAvoidance');
-var position_objective_backstab = require('server/ai/scoring/position/position_objective_backstab');
-var position_objective_distanceFromBestObjective = require('server/ai/scoring/position/position_objective_distanceFromBestObjective');
-var position_objective_frenzy = require('server/ai/scoring/position/position_objective_frenzy');
-var position_objective_provoke = require('server/ai/scoring/position/position_objective_provoke');
-var position_proximityToEnemies = require('server/ai/scoring/position/position_proximityToEnemies');
-var position_proximityToGenerals = require('server/ai/scoring/position/position_proximityToGenerals');
-var position_shadowTileAvoidance = require('server/ai/scoring/position/position_shadowTileAvoidance');
-var position_zeal = require('server/ai/scoring/position/position_zeal');
-var UtilsSDK = require('test/utils/utils_sdk');
+const path = require('path');
+require('app-module-path').addPath(path.join(__dirname, '../../../../'));
+require('coffee-script/register');
 
+const { expect } = require('chai');
+const _ = require('underscore');
 
+const positionBackstabAvoidance = require('../../../../server/ai/scoring/position/position_backstabAvoidance');
+const positionObjectiveBackstab = require('../../../../server/ai/scoring/position/position_objective_backstab');
+const positionObjectiveDistanceFromBestObjective = require('../../../../server/ai/scoring/position/position_objective_distanceFromBestObjective');
+const positionObjectiveFrenzy = require('../../../../server/ai/scoring/position/position_objective_frenzy');
+const positionObjectiveProvoke = require('../../../../server/ai/scoring/position/position_objective_provoke');
+const positionProximityToEnemies = require('../../../../server/ai/scoring/position/position_proximityToEnemies');
+const positionProximityToGenerals = require('../../../../server/ai/scoring/position/position_proximityToGenerals');
+const positionShadowTileAvoidance = require('../../../../server/ai/scoring/position/position_shadowTileAvoidance');
+const positionZeal = require('../../../../server/ai/scoring/position/position_zeal');
+const UtilsSDK = require('../../../utils/utils_sdk');
+const SDK = require('../../../../app/sdk.coffee');
+const Logger = require('../../../../app/common/logger.coffee');
+const CONFIG = require('../../../../app/common/config');
 
 // disable the logger for cleaner test output
 Logger.enabled = false;
 
-describe("unit position scoring", function() {
-	describe("positioning tests", function(){
-		beforeEach(function () {
-			var player1Deck = [
-				{id: SDK.Cards.Faction1.General},
-			];
+describe('unit position scoring', () => {
+  describe('positioning tests', () => {
+    beforeEach(() => {
+      const player1Deck = [
+        { id: SDK.Cards.Faction1.General },
+      ];
 
-			var player2Deck = [
-				{id: SDK.Cards.Faction2.General},
-			];
+      const player2Deck = [
+        { id: SDK.Cards.Faction2.General },
+      ];
 
-			UtilsSDK.setupSession(player1Deck, player2Deck, true, true);
-		});
+      UtilsSDK.setupSession(player1Deck, player2Deck, true, true);
+    });
 
-		afterEach(function () {
-			SDK.GameSession.reset();
-		});
+    afterEach(() => {
+      SDK.GameSession.reset();
+    });
 
-		it('Backstab Avoidance', function() {
-		  //TEST FOR:
-		  //  position_backstabAvoidance(gameSession, unit, position, bestObjective)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_backstabAvoidance
-      //DESCRIPTION:
-		  //  if bestObjective is a backstabber, check if position is behind, if so penalize the position.
-		  //  this should cause units who are able to attack their bestObjective from a non-behind position
-		  //  to prefer to do so, all things being equal.
-		  //  Note that this does not penalize positions that are behind ANY backstabber, only the one you're targeting
+    it('Backstab Avoidance', () => {
+      // TEST FOR:
+      //  positionBackstabAvoidance(gameSession, unit, position, bestObjective)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionBackstabAvoidance
+      // DESCRIPTION:
+      //  if bestObjective is a backstabber, check if position is behind, if so penalize the position.
+      //  this should cause units who are able to attack their bestObjective from a non-behind position
+      //  to prefer to do so, all things being equal.
+      //  Note that this does not penalize positions that are behind ANY backstabber, only the one you're targeting
 
-			var gameSession = SDK.GameSession.getInstance();
-      //add backstabber to 2,2 for opponent
-			var backstabber = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 2, 2, gameSession.getPlayer2Id());
-      //add golem unit to 0,0 for myPlayer
-			var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 0, 0, gameSession.getPlayer1Id());
+      const gameSession = SDK.GameSession.getInstance();
+      // add backstabber to 2,2 for opponent
+      const backstabber = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 2, 2, gameSession.getPlayer2Id());
+      // add golem unit to 0,0 for myPlayer
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 0, 0, gameSession.getPlayer1Id());
 
-			var bestObjective = backstabber;
-      //test 1
-			var position_behind_Backstabber = {x:3, y:2};
-			var scoreForPosition_behind_TargetedBackstabber = position_backstabAvoidance(gameSession, golem, position_behind_Backstabber, bestObjective);
-      if (scoreForPosition_behind_TargetedBackstabber != null) {
-        console.log("Score for " + golem.getName() + " at position", position_behind_Backstabber, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_behind_TargetedBackstabber );
+      const bestObjective = backstabber;
+      // test 1
+      const positionBehindBackstabber = { x: 3, y: 2 };
+      const scoreForPositionBehindTargetedBackstabber = positionBackstabAvoidance(gameSession, golem, positionBehindBackstabber, bestObjective);
+      if (scoreForPositionBehindTargetedBackstabber != null) {
+        console.log(`Score for ${golem.getName()} at position`, positionBehindBackstabber, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionBehindTargetedBackstabber);
       }
-      //test 2
-		  var position_adjacent_NOTBehind_Backstabber = {x:2, y:1};
-		  var scoreForPosition_adjacent_NOTBehind_TargetedBackstabber = position_backstabAvoidance(gameSession, golem, position_adjacent_NOTBehind_Backstabber, bestObjective);
-		  if (scoreForPosition_adjacent_NOTBehind_TargetedBackstabber != null) {
-		    console.log("Score for " + golem.getName() + " at position", position_adjacent_NOTBehind_Backstabber, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_adjacent_NOTBehind_TargetedBackstabber);
-		  }
-      //test 3
-			var position_awayFrom_Backstabber = {x:0, y:1};
-			var scoreForPosition_awayFrom_TargetedBackstabber = position_backstabAvoidance(gameSession, golem, position_awayFrom_Backstabber, bestObjective);
-			if (scoreForPosition_awayFrom_TargetedBackstabber != null) {
-			  console.log("Score for " + golem.getName() + " at position", position_awayFrom_Backstabber, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_awayFrom_TargetedBackstabber);
-			}
-      //expect
-			expect(scoreForPosition_behind_TargetedBackstabber).to.be.below(scoreForPosition_adjacent_NOTBehind_TargetedBackstabber)
-        .and.to.be.below(scoreForPosition_awayFrom_TargetedBackstabber);
+      // test 2
+      const positionAdjacentNotBehindBackstabber = { x: 2, y: 1 };
+      const scoreForPositionAdjacentNotBehindTargetedBackstabber = positionBackstabAvoidance(gameSession, golem, positionAdjacentNotBehindBackstabber, bestObjective);
+      if (scoreForPositionAdjacentNotBehindTargetedBackstabber != null) {
+        console.log(`Score for ${golem.getName()} at position`, positionAdjacentNotBehindBackstabber, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionAdjacentNotBehindTargetedBackstabber);
+      }
+      // test 3
+      const positionAwayFromBackstabber = { x: 0, y: 1 };
+      const scoreForPositionAwayFromTargetedBackstabber = positionBackstabAvoidance(gameSession, golem, positionAwayFromBackstabber, bestObjective);
+      if (scoreForPositionAwayFromTargetedBackstabber != null) {
+        console.log(`Score for ${golem.getName()} at position`, positionAwayFromBackstabber, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionAwayFromTargetedBackstabber);
+      }
+      // expect
+      expect(scoreForPositionBehindTargetedBackstabber).to.be.below(scoreForPositionAdjacentNotBehindTargetedBackstabber)
+        .and.to.be.below(scoreForPositionAwayFromTargetedBackstabber);
+    });
+    it('Objective Backstab', () => {
+      // TEST FOR:
+      //  positionObjectiveBackstab = function (gameSession, unit, position, bestObjective)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionObjectiveBackstab
+      // DESCRIPTION:
+      //  backstabbers prefer to be nearer to the backstab space of their primary objective
 
-		});
-		it('Objective Backstab', function () {
-		  //TEST FOR:
-		  //  position_objective_backstab = function (gameSession, unit, position, bestObjective)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_objective_backstab
-		  //DESCRIPTION:
-		  //  backstabbers prefer to be nearer to the backstab space of their primary objective
+      const gameSession = SDK.GameSession.getInstance();
 
-		  var gameSession = SDK.GameSession.getInstance();
+      // add backstabber to 0,0 for myPlayer
+      const backstabber = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 0, 0, gameSession.getPlayer1Id());
+      // add golem unit to 2,2 for opponent
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 2, 2, gameSession.getPlayer2Id());
 
-		  //add backstabber to 0,0 for myPlayer
-		  var backstabber = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 0, 0, gameSession.getPlayer1Id());
-		  //add golem unit to 2,2 for opponent
-		  var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 2, 2, gameSession.getPlayer2Id());
+      const bestObjective = golem;
+      // test 1
+      const positionBehindObjective = { x: 3, y: 2 };
+      const scoreForPositionBehindObjective = positionObjectiveBackstab(gameSession, backstabber, positionBehindObjective, bestObjective);
+      if (scoreForPositionBehindObjective != null) {
+        console.log(`Score for ${backstabber.getName()} at position`, positionBehindObjective, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionBehindObjective);
+      }
+      // test 2
+      const positionAdjacentNotBehindObjective = { x: 2, y: 1 };
+      const scoreForPositionAdjacentNotBehindObjective = positionObjectiveBackstab(gameSession, backstabber, positionAdjacentNotBehindObjective, bestObjective);
+      if (scoreForPositionAdjacentNotBehindObjective != null) {
+        console.log(`Score for ${backstabber.getName()} at position`, positionAdjacentNotBehindObjective, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionAdjacentNotBehindObjective);
+      }
+      // test 3
+      let positionAwayFromObjective = { x: 0, y: 1 };
+      const scoreForPositionAwayFromObjective = positionObjectiveBackstab(gameSession, backstabber, positionAwayFromObjective, bestObjective);
+      if (scoreForPositionAwayFromObjective != null) {
+        console.log(`Score for ${backstabber.getName()} at position`, positionAwayFromObjective, `with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionAwayFromObjective);
+      }
+      // test 4 - non-backstabber
+      positionAwayFromObjective = { x: 0, y: 1 };
+      const scoreForPositionNonBackstabber = positionObjectiveBackstab(gameSession, golem, positionAwayFromObjective, backstabber);
+      if (scoreForPositionNonBackstabber != null) {
+        console.log(`Score for ${golem.getName()} at position`, positionAwayFromObjective, `with bestObjective ${backstabber.getName()} at position`, backstabber.getPosition(), '=', scoreForPositionNonBackstabber);
+      }
+      // expect
+      expect(scoreForPositionBehindObjective).to.be.above(scoreForPositionAdjacentNotBehindObjective)
+        .and.to.be.above(scoreForPositionAwayFromObjective);
+      expect(scoreForPositionAdjacentNotBehindObjective).to.be.above(scoreForPositionAwayFromObjective);
+      expect(scoreForPositionNonBackstabber).to.be.equal(0);
+    });
+    it('Distance From Best Objective', () => {
+      // TEST FOR:
+      //  positionObjectiveDistanceFromBestObjective (gameSession, unit, position, bestObjective, scoringMode)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionObjectiveDistanceFromBestObjective
+      // DESCRIPTION:
+      //  evaluates a unit's distance from their best objective
+      //  called by board.js
+      //  optional {"scoringMode"} parameter compensates for evasion trigger distortion during scoring
 
-		  var bestObjective = golem;
-		  //test 1
-		  var position_behind_objective = { x: 3, y: 2 };
-		  var scoreForPosition_behind_objective = position_objective_backstab(gameSession, backstabber, position_behind_objective, bestObjective);
-		  if (scoreForPosition_behind_objective != null) {
-		    console.log("Score for " + backstabber.getName() + " at position", position_behind_objective, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_behind_objective);
-		  }
-		  //test 2
-		  var position_adjacent_NOTBehind_objective = { x: 2, y: 1 };
-		  var scoreForPosition_adjacent_NOTBehind_objective = position_objective_backstab(gameSession, backstabber, position_adjacent_NOTBehind_objective, bestObjective);
-		  if (scoreForPosition_adjacent_NOTBehind_objective != null) {
-		    console.log("Score for " + backstabber.getName() + " at position", position_adjacent_NOTBehind_objective, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_adjacent_NOTBehind_objective);
-		  }
-		  //test 3
-		  var position_awayFrom_objective = { x: 0, y: 1 };
-		  var scoreForPosition_awayFrom_objective = position_objective_backstab(gameSession, backstabber, position_awayFrom_objective, bestObjective);
-		  if (scoreForPosition_awayFrom_objective != null) {
-		    console.log("Score for " + backstabber.getName() + " at position", position_awayFrom_objective, "with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_awayFrom_objective);
-		  }
-		  //test 4 - non-backstabber
-		  var position_awayFrom_objective = { x: 0, y: 1 };
-		  var scoreForPosition_nonBackstabber = position_objective_backstab(gameSession, golem, position_awayFrom_objective, backstabber);
-		  if (scoreForPosition_nonBackstabber != null) {
-		    console.log("Score for " + golem.getName() + " at position", position_awayFrom_objective, "with bestObjective " + backstabber.getName() + " at position", backstabber.getPosition(), "=", scoreForPosition_nonBackstabber);
-		  }
-      //expect
-		  expect(scoreForPosition_behind_objective).to.be.above(scoreForPosition_adjacent_NOTBehind_objective)
-        .and.to.be.above(scoreForPosition_awayFrom_objective);
-		  expect(scoreForPosition_adjacent_NOTBehind_objective).to.be.above(scoreForPosition_awayFrom_objective);
-		  expect(scoreForPosition_nonBackstabber).to.be.equal(0);
+      const gameSession = SDK.GameSession.getInstance();
 
-		});
-		it('Distance From Best Objective', function () {
-		  //TEST FOR:
-		  //  position_objective_distanceFromBestObjective (gameSession, unit, position, bestObjective, scoringMode)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_objective_distanceFromBestObjective
-		  //DESCRIPTION:
-		  //  evaluates a unit's distance from their best objective
-		  //  called by board.js
-		  //  optional {"scoringMode"} parameter compensates for evasion trigger distortion during scoring
+      // add kaidoAssassin to 0,0 for myPlayer
+      const kaidoAssassin = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 0, 0, gameSession.getPlayer1Id());
+      // const heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 0, 0, gameSession.getPlayer1Id());
+      // add golem unit to 3,3 for opponent
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
 
-		  var gameSession = SDK.GameSession.getInstance();
+      // tests for melee unit (non-evasive)
+      console.log('melee unit (non-evasive)');
+      const bestObjective = golem;
+      // test 1 - adjacent (distance 1)
+      const positionAdjacentToObjective = { x: 3, y: 2 };
+      const scoreForPositionAdjacentToObjective = positionObjectiveDistanceFromBestObjective(gameSession, kaidoAssassin, positionAdjacentToObjective, bestObjective);
+      if (scoreForPositionAdjacentToObjective != null) {
+        console.log(`Score for ${kaidoAssassin.getName()} at position`, positionAdjacentToObjective, `(distance 1) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionAdjacentToObjective);
+      }
+      // test 2 - distance 2
+      const position2DistanceFromObjective = { x: 2, y: 1 };
+      const scoreForPosition2DistanceFromObjective = positionObjectiveDistanceFromBestObjective(gameSession, kaidoAssassin, position2DistanceFromObjective, bestObjective);
+      if (scoreForPosition2DistanceFromObjective != null) {
+        console.log(`Score for ${kaidoAssassin.getName()} at position`, position2DistanceFromObjective, `(distance 2) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPosition2DistanceFromObjective);
+      }
+      // test 3 - distance 3
+      const position3DistanceFromObjective = { x: 0, y: 4 };
+      const scoreForPosition3DistanceFromObjective = positionObjectiveDistanceFromBestObjective(gameSession, kaidoAssassin, position3DistanceFromObjective, bestObjective);
+      if (scoreForPosition3DistanceFromObjective != null) {
+        console.log(`Score for ${kaidoAssassin.getName()} at position`, position3DistanceFromObjective, `(distance 3) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPosition3DistanceFromObjective);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToObjective).to.be.above(scoreForPosition2DistanceFromObjective)
+        .and.to.be.above(scoreForPosition3DistanceFromObjective);
+      expect(scoreForPosition2DistanceFromObjective).to.be.above(scoreForPosition3DistanceFromObjective);
 
-		  //add kaidoAssassin to 0,0 for myPlayer
-		  var kaidoAssassin = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.KaidoAssassin }, 0, 0, gameSession.getPlayer1Id());
-		  //var heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 0, 0, gameSession.getPlayer1Id());
-		  //add golem unit to 3,3 for opponent
-		  var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
+      //++++++++++++++++++++++++++
 
-		  //tests for melee unit (non-evasive)
-		  console.log("melee unit (non-evasive)")
-		  var bestObjective = golem;
-		  //test 1 - adjacent (distance 1)
-		  var position_adjacentTo_objective = { x: 3, y: 2 };
-		  var scoreForPosition_adjacentTo_objective = position_objective_distanceFromBestObjective(gameSession, kaidoAssassin, position_adjacentTo_objective, bestObjective);
-		  if (scoreForPosition_adjacentTo_objective != null) {
-		    console.log("Score for " + kaidoAssassin.getName() + " at position", position_adjacentTo_objective, "(distance 1) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_adjacentTo_objective);
-		  }
-		  //test 2 - distance 2
-		  var position_2DistanceFrom_objective = { x: 2, y: 1 };
-		  var scoreForPosition_2DistanceFrom_objective = position_objective_distanceFromBestObjective(gameSession, kaidoAssassin, position_2DistanceFrom_objective, bestObjective);
-		  if (scoreForPosition_2DistanceFrom_objective != null) {
-		    console.log("Score for " + kaidoAssassin.getName() + " at position", position_2DistanceFrom_objective, "(distance 2) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_2DistanceFrom_objective);
-		  }
-		  //test 3 - distance 3
-		  var position_3DistanceFrom_objective = { x: 0, y: 4 };
-		  var scoreForPosition_3DistanceFrom_objective = position_objective_distanceFromBestObjective(gameSession, kaidoAssassin, position_3DistanceFrom_objective, bestObjective);
-		  if (scoreForPosition_3DistanceFrom_objective != null) {
-		    console.log("Score for " + kaidoAssassin.getName() + " at position", position_3DistanceFrom_objective, "(distance 3) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_3DistanceFrom_objective);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_objective).to.be.above(scoreForPosition_2DistanceFrom_objective)
-        .and.to.be.above(scoreForPosition_3DistanceFrom_objective);
-		  expect(scoreForPosition_2DistanceFrom_objective).to.be.above(scoreForPosition_3DistanceFrom_objective);
+      // tests for ranged unit (evasive)
+      const damageAction = new SDK.DamageAction(gameSession);
+      damageAction.setTarget(kaidoAssassin);
+      damageAction.setDamageAmount(kaidoAssassin.getHP());
+      UtilsSDK.executeActionWithoutValidation(damageAction);
 
-		  //++++++++++++++++++++++++++
+      const heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 0, 0, gameSession.getPlayer1Id());
 
-		  //tests for ranged unit (evasive)
-			var damageAction = new SDK.DamageAction(gameSession);
-			damageAction.setTarget(kaidoAssassin);
-			damageAction.setDamageAmount(kaidoAssassin.getHP());
-			UtilsSDK.executeActionWithoutValidation(damageAction);
+      console.log('ranged unit (evasive)');
+      // test 1 - adjacent (distance 1)
+      const scoreForPositionRangedAdjacentToObjective = positionObjectiveDistanceFromBestObjective(gameSession, heartSeeker, positionAdjacentToObjective, bestObjective);
+      if (scoreForPositionRangedAdjacentToObjective != null) {
+        console.log(`Score for ${heartSeeker.getName()} at position`, positionAdjacentToObjective, `(d=1) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionRangedAdjacentToObjective);
+      }
+      // test 2 - distance 2
+      const scoreForPositionRanged2DistanceFromObjective = positionObjectiveDistanceFromBestObjective(gameSession, heartSeeker, position2DistanceFromObjective, bestObjective);
+      if (scoreForPositionRanged2DistanceFromObjective != null) {
+        console.log(`Score for ${heartSeeker.getName()} at position`, position2DistanceFromObjective, `(d=2) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionRanged2DistanceFromObjective);
+      }
+      // test 3 - distance 3
+      const scoreForPositionRanged3DistanceFromObjective = positionObjectiveDistanceFromBestObjective(gameSession, heartSeeker, position3DistanceFromObjective, bestObjective);
+      if (scoreForPositionRanged3DistanceFromObjective != null) {
+        console.log(`Score for ${heartSeeker.getName()} at position`, position3DistanceFromObjective, `(d=3) with bestObjective ${bestObjective.getName()} at position`, bestObjective.getPosition(), '=', scoreForPositionRanged3DistanceFromObjective);
+      }
+      // expect
+      expect(scoreForPositionRangedAdjacentToObjective).to.be.below(scoreForPositionRanged2DistanceFromObjective)
+        .and.to.be.below(scoreForPositionRanged3DistanceFromObjective);
+      expect(scoreForPositionRanged2DistanceFromObjective).to.be.below(scoreForPositionRanged3DistanceFromObjective);
+    });
+    it('Objective Frenzy', () => {
+      // TEST FOR:
+      //  positionObjectiveFrenzy (gameSession, unit, position, bestObjective)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionObjectiveFrenzy
+      // DESCRIPTION:
+      //  rewards bounty for spaces adjacent to best target for each adjacent enemy unit
+      //  does not award bounty if space is not adjacent to bestObjective since we don't
+      //  want frenzy to override positioning logic for seeking best objective adjacency for attacks
 
-			var heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 0, 0, gameSession.getPlayer1Id());
+      const gameSession = SDK.GameSession.getInstance();
 
-			console.log("ranged unit (evasive)")
-		  //test 1 - adjacent (distance 1)
-		  var scoreForPosition_ranged_adjacentTo_objective = position_objective_distanceFromBestObjective(gameSession, heartSeeker, position_adjacentTo_objective, bestObjective);
-		  if (scoreForPosition_ranged_adjacentTo_objective != null) {
-		    console.log("Score for " + heartSeeker.getName() + " at position", position_adjacentTo_objective, "(d=1) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_ranged_adjacentTo_objective);
-		  }
-		  //test 2 - distance 2
-		  var scoreForPosition_ranged_2DistanceFrom_objective = position_objective_distanceFromBestObjective(gameSession, heartSeeker, position_2DistanceFrom_objective, bestObjective);
-		  if (scoreForPosition_ranged_2DistanceFrom_objective != null) {
-		    console.log("Score for " + heartSeeker.getName() + " at position", position_2DistanceFrom_objective, "(d=2) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_ranged_2DistanceFrom_objective);
-		  }
-		  //test 3 - distance 3
-		  var scoreForPosition_ranged_3DistanceFrom_objective = position_objective_distanceFromBestObjective(gameSession, heartSeeker, position_3DistanceFrom_objective, bestObjective);
-		  if (scoreForPosition_ranged_3DistanceFrom_objective != null) {
-		    console.log("Score for " + heartSeeker.getName() + " at position", position_3DistanceFrom_objective, "(d=3) with bestObjective " + bestObjective.getName() + " at position", bestObjective.getPosition(), "=", scoreForPosition_ranged_3DistanceFrom_objective);
-		  }
-		  //expect
-		  expect(scoreForPosition_ranged_adjacentTo_objective).to.be.below(scoreForPosition_ranged_2DistanceFrom_objective)
-        .and.to.be.below(scoreForPosition_ranged_3DistanceFrom_objective);
-		  expect(scoreForPosition_ranged_2DistanceFrom_objective).to.be.below(scoreForPosition_ranged_3DistanceFrom_objective);
+      // add frenzyUnit to 0,0 for myPlayer
+      const frenzyUnit = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.PiercingMantis }, 0, 0, gameSession.getPlayer1Id());
+      // add enemies
+      const heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
 
-		});
-		it('Objective Frenzy', function () {
-		  //TEST FOR:
-		  //  position_objective_frenzy (gameSession, unit, position, bestObjective)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_objective_frenzy
-		  //DESCRIPTION:
-		  //  rewards bounty for spaces adjacent to best target for each adjacent enemy unit
-		  //  does not award bounty if space is not adjacent to bestObjective since we don't
-		  //  want frenzy to override positioning logic for seeking best objective adjacency for attacks
+      const bestObjective = heartSeeker;
 
-		  var gameSession = SDK.GameSession.getInstance();
-
-		  //add frenzyUnit to 0,0 for myPlayer
-		  var frenzyUnit = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.PiercingMantis }, 0, 0, gameSession.getPlayer1Id());
-      //add enemies
-		  var heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
-		  var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
-
-		  var bestObjective = heartSeeker;
-
-		  //test 1 - adjacent to best target and 1 additional adjacent enemy
-		  var position_adjacentTo_objectiveAndEnemy = { x: 3, y: 2 };
-		  var scoreForPosition_adjacentTo_objectiveAndEnemy = position_objective_frenzy(gameSession, frenzyUnit, position_adjacentTo_objectiveAndEnemy, bestObjective);
-		  if (scoreForPosition_adjacentTo_objectiveAndEnemy != null) {
-		    console.log("Score for " + frenzyUnit.getName() + " adjacent to best objective and one other enemey unit =", scoreForPosition_adjacentTo_objectiveAndEnemy);
-		  }
-		  //test 2 - adjacent to best target only, no others
-		  var position_adjacentToObjectiveOnly = { x: 2, y: 1 };
-		  var scoreForPosition_adjacentToObjectiveOnly = position_objective_frenzy(gameSession, frenzyUnit, position_adjacentToObjectiveOnly, bestObjective);
-		  if (scoreForPosition_adjacentToObjectiveOnly != null) {
-		    console.log("Score for " + frenzyUnit.getName() + " adjacent to best objective only =", scoreForPosition_adjacentToObjectiveOnly);
-		  }
-		  //test 3 - not adjacent to objective, but adjacent to non-objective enemy
-		  var position_notAdjacentToObjective_adjacentToOther = { x: 4, y: 4 };
-		  var scoreForPosition_notAdjacentToObjective_adjacentToOther = position_objective_frenzy(gameSession, frenzyUnit, position_notAdjacentToObjective_adjacentToOther, bestObjective);
-		  if (scoreForPosition_notAdjacentToObjective_adjacentToOther != null) {
-		    console.log("Score for " + frenzyUnit.getName() + " adjacent to NON-objective enemy unit only =", scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_objectiveAndEnemy).to.be.above(scoreForPosition_adjacentToObjectiveOnly)
-        .and.to.be.above(scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  expect(scoreForPosition_notAdjacentToObjective_adjacentToOther).to.be.equal(0);
-		});
-		it('Objective Provoke', function () {
-		  //TEST FOR:
-		  //  position_objective_provoke = function (gameSession, unit, position, bestObjective)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_objective_provoke
-		  //DESCRIPTION:
-		  //  more enemy units around this position the better
-		  //  penalizes distance from best enemy target redundantly from existing distance penalty
+      // test 1 - adjacent to best target and 1 additional adjacent enemy
+      const positionAdjacentToObjectiveAndEnemy = { x: 3, y: 2 };
+      const scoreForPositionAdjacentToObjectiveAndEnemy = positionObjectiveFrenzy(gameSession, frenzyUnit, positionAdjacentToObjectiveAndEnemy, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveAndEnemy != null) {
+        console.log(`Score for ${frenzyUnit.getName()} adjacent to best objective and one other enemey unit =`, scoreForPositionAdjacentToObjectiveAndEnemy);
+      }
+      // test 2 - adjacent to best target only, no others
+      const positionAdjacentToObjectiveOnly = { x: 2, y: 1 };
+      const scoreForPositionAdjacentToObjectiveOnly = positionObjectiveFrenzy(gameSession, frenzyUnit, positionAdjacentToObjectiveOnly, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveOnly != null) {
+        console.log(`Score for ${frenzyUnit.getName()} adjacent to best objective only =`, scoreForPositionAdjacentToObjectiveOnly);
+      }
+      // test 3 - not adjacent to objective, but adjacent to non-objective enemy
+      const positionNotAdjacentToObjectiveAdjacentToOther = { x: 4, y: 4 };
+      const scoreForPositionNotAdjacentToObjectiveAdjacentToOther = positionObjectiveFrenzy(gameSession, frenzyUnit, positionNotAdjacentToObjectiveAdjacentToOther, bestObjective);
+      if (scoreForPositionNotAdjacentToObjectiveAdjacentToOther != null) {
+        console.log(`Score for ${frenzyUnit.getName()} adjacent to NON-objective enemy unit only =`, scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToObjectiveAndEnemy).to.be.above(scoreForPositionAdjacentToObjectiveOnly)
+        .and.to.be.above(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      expect(scoreForPositionNotAdjacentToObjectiveAdjacentToOther).to.be.equal(0);
+    });
+    it('Objective Provoke', () => {
+      // TEST FOR:
+      //  positionObjectiveProvoke = function (gameSession, unit, position, bestObjective)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionObjectiveProvoke
+      // DESCRIPTION:
+      //  more enemy units around this position the better
+      //  penalizes distance from best enemy target redundantly from existing distance penalty
       //  does not reward provoking general like in v1 logic...
 
-		  var gameSession = SDK.GameSession.getInstance();
+      const gameSession = SDK.GameSession.getInstance();
 
-		  //add provokeUnit to 0,0 for myPlayer
-		  var provokeUnit = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
-		  //add enemies
-		  var heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
-		  var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
+      // add provokeUnit to 0,0 for myPlayer
+      const provokeUnit = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
+      // add enemies
+      const heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
 
-		  var bestObjective = heartSeeker;
+      const bestObjective = heartSeeker;
 
-		  //test 1 - adjacent to best target and 1 additional adjacent enemy
-		  var position_adjacentTo_objectiveAndEnemy = { x: 3, y: 2 };
-		  var scoreForPosition_adjacentTo_objectiveAndEnemy = position_objective_provoke(gameSession, provokeUnit, position_adjacentTo_objectiveAndEnemy, bestObjective);
-		  if (scoreForPosition_adjacentTo_objectiveAndEnemy != null) {
-		    console.log("Score for " + provokeUnit.getName() + " adjacent to best objective and one other enemey unit =", scoreForPosition_adjacentTo_objectiveAndEnemy);
-		  }
-		  //test 2 - adjacent to best target only, no others
-		  var position_adjacentToObjectiveOnly = { x: 2, y: 1 };
-		  var scoreForPosition_adjacentToObjectiveOnly = position_objective_provoke(gameSession, provokeUnit, position_adjacentToObjectiveOnly, bestObjective);
-		  if (scoreForPosition_adjacentToObjectiveOnly != null) {
-		    console.log("Score for " + provokeUnit.getName() + " adjacent to best objective only =", scoreForPosition_adjacentToObjectiveOnly);
-		  }
-		  //test 3 - not adjacent to objective, but adjacent to non-objective enemy
-		  var position_notAdjacentToObjective_adjacentToOther = { x: 4, y: 4 };
-		  var scoreForPosition_notAdjacentToObjective_adjacentToOther = position_objective_provoke(gameSession, provokeUnit, position_notAdjacentToObjective_adjacentToOther, bestObjective);
-		  if (scoreForPosition_notAdjacentToObjective_adjacentToOther != null) {
-		    console.log("Score for " + provokeUnit.getName() + " adjacent to NON-objective enemy unit, 3 distance from objective =", scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_objectiveAndEnemy).to.be.above(scoreForPosition_adjacentToObjectiveOnly)
-        .and.to.be.above(scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		});
-		it('Proximity to Enemies', function () {
-		  //TEST FOR:
-		  //  position_proximityToEnemies = function (gameSession, unit, position)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_proximityToEnemies
-		  //DESCRIPTION:
-		  //  high hp units prefer to be near more units, low hp units do not.
+      // test 1 - adjacent to best target and 1 additional adjacent enemy
+      const positionAdjacentToObjectiveAndEnemy = { x: 3, y: 2 };
+      const scoreForPositionAdjacentToObjectiveAndEnemy = positionObjectiveProvoke(gameSession, provokeUnit, positionAdjacentToObjectiveAndEnemy, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveAndEnemy != null) {
+        console.log(`Score for ${provokeUnit.getName()} adjacent to best objective and one other enemey unit =`, scoreForPositionAdjacentToObjectiveAndEnemy);
+      }
+      // test 2 - adjacent to best target only, no others
+      const positionAdjacentToObjectiveOnly = { x: 2, y: 1 };
+      const scoreForPositionAdjacentToObjectiveOnly = positionObjectiveProvoke(gameSession, provokeUnit, positionAdjacentToObjectiveOnly, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveOnly != null) {
+        console.log(`Score for ${provokeUnit.getName()} adjacent to best objective only =`, scoreForPositionAdjacentToObjectiveOnly);
+      }
+      // test 3 - not adjacent to objective, but adjacent to non-objective enemy
+      const positionNotAdjacentToObjectiveAdjacentToOther = { x: 4, y: 4 };
+      const scoreForPositionNotAdjacentToObjectiveAdjacentToOther = positionObjectiveProvoke(gameSession, provokeUnit, positionNotAdjacentToObjectiveAdjacentToOther, bestObjective);
+      if (scoreForPositionNotAdjacentToObjectiveAdjacentToOther != null) {
+        console.log(`Score for ${provokeUnit.getName()} adjacent to NON-objective enemy unit, 3 distance from objective =`, scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToObjectiveAndEnemy).to.be.above(scoreForPositionAdjacentToObjectiveOnly)
+        .and.to.be.above(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+    });
+    it('Proximity to Enemies', () => {
+      // TEST FOR:
+      //  positionProximityToEnemies = function (gameSession, unit, position)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionProximityToEnemies
+      // DESCRIPTION:
+      //  high hp units prefer to be near more units, low hp units do not.
 
-		  var gameSession = SDK.GameSession.getInstance();
+      const gameSession = SDK.GameSession.getInstance();
 
-		  //add provokeUnit to 0,0 for myPlayer
-		  var RockPulverizer = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
-		  var RockPulverizerDamaged = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 1, gameSession.getPlayer1Id());
-		  //add enemies
-		  var heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
-		  var golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
-		  //UtilsSDK.modifyUnitStats = function (position, atk, maxHP, dmg)
-		  UtilsSDK.modifyUnitStats(RockPulverizerDamaged.getPosition(), null, null, 1); //damage rock pulverizer to 3 hp
-		  var bestObjective = heartSeeker;
-		  console.log("4 hp unit (= HIGH_HP_THRESHOLD)")
-		  //test 1 - adjacent to best target and 1 additional adjacent enemy
-		  var position_adjacentTo_objectiveAndEnemy = { x: 3, y: 2 };
-		  var scoreForPosition_adjacentTo_objectiveAndEnemy = position_proximityToEnemies(gameSession, RockPulverizer, position_adjacentTo_objectiveAndEnemy, bestObjective);
-		  if (scoreForPosition_adjacentTo_objectiveAndEnemy != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to best objective and one other enemey unit =", scoreForPosition_adjacentTo_objectiveAndEnemy);
-		  }
-		  //test 2 - adjacent to best target only, no others
-		  var position_adjacentToObjectiveOnly = { x: 2, y: 1 };
-		  var scoreForPosition_adjacentToObjectiveOnly = position_proximityToEnemies(gameSession, RockPulverizer, position_adjacentToObjectiveOnly, bestObjective);
-		  if (scoreForPosition_adjacentToObjectiveOnly != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to best objective only =", scoreForPosition_adjacentToObjectiveOnly);
-		  }
-		  //test 3 - not adjacent to anything
-		  var position_notAdjacentToObjective_adjacentToOther = { x: 0, y: 4 };
-		  var scoreForPosition_notAdjacentToObjective_adjacentToOther = position_proximityToEnemies(gameSession, RockPulverizer, position_notAdjacentToObjective_adjacentToOther, bestObjective);
-		  if (scoreForPosition_notAdjacentToObjective_adjacentToOther != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to nothing =", scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_objectiveAndEnemy).to.be.above(scoreForPosition_adjacentToObjectiveOnly);
-		  expect(scoreForPosition_notAdjacentToObjective_adjacentToOther).to.be.equal(0);
-		  //+++++++++++++++++++
-		  console.log("3 hp unit (< HIGH_HP_THRESHOLD)")
-		  //test 1 - adjacent to best target and 1 additional adjacent enemy
-		  var position_adjacentTo_objectiveAndEnemy = { x: 3, y: 2 };
-		  var scoreForPosition_adjacentTo_objectiveAndEnemy = position_proximityToEnemies(gameSession, RockPulverizerDamaged, position_adjacentTo_objectiveAndEnemy, bestObjective);
-		  if (scoreForPosition_adjacentTo_objectiveAndEnemy != null) {
-		    console.log("Score for " + RockPulverizerDamaged.getName() + " adjacent to best objective and one other enemey unit =", scoreForPosition_adjacentTo_objectiveAndEnemy);
-		  }
-		  //test 2 - adjacent to best target only, no others
-		  var position_adjacentToObjectiveOnly = { x: 2, y: 1 };
-		  var scoreForPosition_adjacentToObjectiveOnly = position_proximityToEnemies(gameSession, RockPulverizerDamaged, position_adjacentToObjectiveOnly, bestObjective);
-		  if (scoreForPosition_adjacentToObjectiveOnly != null) {
-		    console.log("Score for " + RockPulverizerDamaged.getName() + " adjacent to best objective only =", scoreForPosition_adjacentToObjectiveOnly);
-		  }
-		  //test 3 - not adjacent to objective, but adjacent to non-objective enemy
-		  var position_notAdjacentToObjective_adjacentToOther = { x: 0, y: 4 };
-		  var scoreForPosition_notAdjacentToObjective_adjacentToOther = position_proximityToEnemies(gameSession, RockPulverizerDamaged, position_notAdjacentToObjective_adjacentToOther, bestObjective);
-		  if (scoreForPosition_notAdjacentToObjective_adjacentToOther != null) {
-		    console.log("Score for " + RockPulverizerDamaged.getName() + " adjacent to NON-objective enemy unit, 3 distance from objective =", scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentToObjectiveOnly).to.be.above(scoreForPosition_adjacentTo_objectiveAndEnemy)
-        .and.to.be.below(scoreForPosition_notAdjacentToObjective_adjacentToOther);
-		  expect(scoreForPosition_notAdjacentToObjective_adjacentToOther).to.be.equal(0);
-		});
-		it('Proximity to Generals', function () {
-		  //TEST FOR:
-		  //  position_proximityToGenerals = function (gameSession, unit, position)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_proximityToGenerals
-		  //DESCRIPTION:
-		  //  units want to be near opponent general
-		  //  exponentially increasing desire to be near own general as hp declines
+      // add provokeUnit to 0,0 for myPlayer
+      const RockPulverizer = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
+      const RockPulverizerDamaged = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 1, gameSession.getPlayer1Id());
+      // add enemies
+      const heartSeeker = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction2.Heartseeker }, 2, 2, gameSession.getPlayer2Id());
+      const golem = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.SkyrockGolem }, 3, 3, gameSession.getPlayer2Id());
+      // UtilsSDK.modifyUnitStats = function (position, atk, maxHP, dmg)
+      UtilsSDK.modifyUnitStats(RockPulverizerDamaged.getPosition(), null, null, 1); // damage rock pulverizer to 3 hp
+      const bestObjective = heartSeeker;
+      console.log('4 hp unit (= HIGH_HP_THRESHOLD)');
+      // test 1 - adjacent to best target and 1 additional adjacent enemy
+      let positionAdjacentToObjectiveAndEnemy = { x: 3, y: 2 };
+      let scoreForPositionAdjacentToObjectiveAndEnemy = positionProximityToEnemies(gameSession, RockPulverizer, positionAdjacentToObjectiveAndEnemy, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveAndEnemy != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to best objective and one other enemey unit =`, scoreForPositionAdjacentToObjectiveAndEnemy);
+      }
+      // test 2 - adjacent to best target only, no others
+      let positionAdjacentToObjectiveOnly = { x: 2, y: 1 };
+      let scoreForPositionAdjacentToObjectiveOnly = positionProximityToEnemies(gameSession, RockPulverizer, positionAdjacentToObjectiveOnly, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveOnly != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to best objective only =`, scoreForPositionAdjacentToObjectiveOnly);
+      }
+      // test 3 - not adjacent to anything
+      let positionNotAdjacentToObjectiveAdjacentToOther = { x: 0, y: 4 };
+      let scoreForPositionNotAdjacentToObjectiveAdjacentToOther = positionProximityToEnemies(gameSession, RockPulverizer, positionNotAdjacentToObjectiveAdjacentToOther, bestObjective);
+      if (scoreForPositionNotAdjacentToObjectiveAdjacentToOther != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to nothing =`, scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToObjectiveAndEnemy).to.be.above(scoreForPositionAdjacentToObjectiveOnly);
+      expect(scoreForPositionNotAdjacentToObjectiveAdjacentToOther).to.be.equal(0);
+      //+++++++++++++++++++
+      console.log('3 hp unit (< HIGH_HP_THRESHOLD)');
+      // test 1 - adjacent to best target and 1 additional adjacent enemy
+      positionAdjacentToObjectiveAndEnemy = { x: 3, y: 2 };
+      scoreForPositionAdjacentToObjectiveAndEnemy = positionProximityToEnemies(gameSession, RockPulverizerDamaged, positionAdjacentToObjectiveAndEnemy, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveAndEnemy != null) {
+        console.log(`Score for ${RockPulverizerDamaged.getName()} adjacent to best objective and one other enemey unit =`, scoreForPositionAdjacentToObjectiveAndEnemy);
+      }
+      // test 2 - adjacent to best target only, no others
+      positionAdjacentToObjectiveOnly = { x: 2, y: 1 };
+      scoreForPositionAdjacentToObjectiveOnly = positionProximityToEnemies(gameSession, RockPulverizerDamaged, positionAdjacentToObjectiveOnly, bestObjective);
+      if (scoreForPositionAdjacentToObjectiveOnly != null) {
+        console.log(`Score for ${RockPulverizerDamaged.getName()} adjacent to best objective only =`, scoreForPositionAdjacentToObjectiveOnly);
+      }
+      // test 3 - not adjacent to objective, but adjacent to non-objective enemy
+      positionNotAdjacentToObjectiveAdjacentToOther = { x: 0, y: 4 };
+      scoreForPositionNotAdjacentToObjectiveAdjacentToOther = positionProximityToEnemies(gameSession, RockPulverizerDamaged, positionNotAdjacentToObjectiveAdjacentToOther, bestObjective);
+      if (scoreForPositionNotAdjacentToObjectiveAdjacentToOther != null) {
+        console.log(`Score for ${RockPulverizerDamaged.getName()} adjacent to NON-objective enemy unit, 3 distance from objective =`, scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToObjectiveOnly).to.be.above(scoreForPositionAdjacentToObjectiveAndEnemy)
+        .and.to.be.below(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
+      expect(scoreForPositionNotAdjacentToObjectiveAdjacentToOther).to.be.equal(0);
+    });
+    it('Proximity to Generals', () => {
+      // TEST FOR:
+      //  positionProximityToGenerals = function (gameSession, unit, position)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionProximityToGenerals
+      // DESCRIPTION:
+      //  units want to be near opponent general
+      //  exponentially increasing desire to be near own general as hp declines
 
-		  var gameSession = SDK.GameSession.getInstance();
+      const gameSession = SDK.GameSession.getInstance();
 
-		  //add provokeUnit to 0,0 for myPlayer
-		  var RockPulverizer = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
-		  //add enemies
-		  //UtilsSDK.modifyUnitStats = function (position, atk, maxHP, dmg)
-		  //UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 22);
+      // add provokeUnit to 0,0 for myPlayer
+      const RockPulverizer = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Neutral.RockPulverizer }, 0, 0, gameSession.getPlayer1Id());
+      // add enemies
+      // UtilsSDK.modifyUnitStats = function (position, atk, maxHP, dmg)
+      // UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 22);
 
-		  console.log("friendly general full hp")
-		  //test 1 - adjacent to enemy general, 7 from friendly general
-		  var position_adjacentTo_enemyGeneral = { x: 7, y: 2 };
-		  var scoreForPosition_adjacentTo_enemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_adjacentTo_enemyGeneral);
-		  if (scoreForPosition_adjacentTo_enemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to enemy general, 7 from friendly general =", scoreForPosition_adjacentTo_enemyGeneral);
-		  }
-		  //test 2 - distance 4 from enemy general, adjacent to friendly general
-		  var position_4AwayFromEnemyGeneral = { x: 1, y: 2 };
-		  var scoreForPosition_4AwayFromEnemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_4AwayFromEnemyGeneral);
-		  if (scoreForPosition_4AwayFromEnemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " 7 distance from enemy general, adjacent to friendly general =", scoreForPosition_4AwayFromEnemyGeneral);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_enemyGeneral).to.be.above(scoreForPosition_4AwayFromEnemyGeneral);
+      console.log('friendly general full hp');
+      // test 1 - adjacent to enemy general, 7 from friendly general
+      const positionAdjacentToEnemyGeneral = { x: 7, y: 2 };
+      let scoreForPositionAdjacentToEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, positionAdjacentToEnemyGeneral);
+      if (scoreForPositionAdjacentToEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to enemy general, 7 from friendly general =`, scoreForPositionAdjacentToEnemyGeneral);
+      }
+      // test 2 - distance 4 from enemy general, adjacent to friendly general
+      const position4AwayFromEnemyGeneral = { x: 1, y: 2 };
+      let scoreForPosition4AwayFromEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, position4AwayFromEnemyGeneral);
+      if (scoreForPosition4AwayFromEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} 7 distance from enemy general, adjacent to friendly general =`, scoreForPosition4AwayFromEnemyGeneral);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToEnemyGeneral).to.be.above(scoreForPosition4AwayFromEnemyGeneral);
 
-		  console.log("friendly general 15 hp")
-		  UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 10);
-		  //test 1 - adjacent to enemy general, 5 from friendly general
-		  scoreForPosition_adjacentTo_enemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_adjacentTo_enemyGeneral);
-		  if (scoreForPosition_adjacentTo_enemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to enemy general, 7 from friendly general =", scoreForPosition_adjacentTo_enemyGeneral);
-		  }
-		  //test 2 - distance 4 from enemy general, adjacent to friendly general
-		  scoreForPosition_4AwayFromEnemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_4AwayFromEnemyGeneral);
-		  if (scoreForPosition_4AwayFromEnemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " 7 distance from enemy general, adjacent to friendly general =", scoreForPosition_4AwayFromEnemyGeneral);
-		  }
-		  //expect
-		  //expect(scoreForPosition_adjacentTo_enemyGeneral).to.be.above(scoreForPosition_4AwayFromEnemyGeneral);
-		  console.log("friendly general 5 hp")
-		  UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 20);
-		  //test 1 - adjacent to enemy general, 5 from friendly general
-		  scoreForPosition_adjacentTo_enemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_adjacentTo_enemyGeneral);
-		  if (scoreForPosition_adjacentTo_enemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " adjacent to enemy general, 7 from friendly general =", scoreForPosition_adjacentTo_enemyGeneral);
-		  }
-		  //test 2 - distance 4 from enemy general, adjacent to friendly general
-		  scoreForPosition_4AwayFromEnemyGeneral = position_proximityToGenerals(gameSession, RockPulverizer, position_4AwayFromEnemyGeneral);
-		  if (scoreForPosition_4AwayFromEnemyGeneral != null) {
-		    console.log("Score for " + RockPulverizer.getName() + " 7 distance from enemy general, adjacent to friendly general =", scoreForPosition_4AwayFromEnemyGeneral);
-		  }
-		  //expect
-		  //expect(scoreForPosition_adjacentTo_enemyGeneral).to.be.above(scoreForPosition_4AwayFromEnemyGeneral);
-		});
-		it('Shadow Tile Avoidance', function () {
-		  //TEST FOR:
-		  //  position_shadowTileAvoidance = function (gameSession, unit, position) {
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_shadowTileAvoidance
-		  //DESCRIPTION:
-		  //  estimates score for unit damage multiplied by -2
+      console.log('friendly general 15 hp');
+      UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 10);
+      // test 1 - adjacent to enemy general, 5 from friendly general
+      scoreForPositionAdjacentToEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, positionAdjacentToEnemyGeneral);
+      if (scoreForPositionAdjacentToEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to enemy general, 7 from friendly general =`, scoreForPositionAdjacentToEnemyGeneral);
+      }
+      // test 2 - distance 4 from enemy general, adjacent to friendly general
+      scoreForPosition4AwayFromEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, position4AwayFromEnemyGeneral);
+      if (scoreForPosition4AwayFromEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} 7 distance from enemy general, adjacent to friendly general =`, scoreForPosition4AwayFromEnemyGeneral);
+      }
+      // expect
+      // expect(scoreForPositionAdjacentToEnemyGeneral).to.be.above(scoreForPosition4AwayFromEnemyGeneral);
+      console.log('friendly general 5 hp');
+      UtilsSDK.modifyUnitStats(gameSession.getGeneralForPlayer1().getPosition(), null, null, 20);
+      // test 1 - adjacent to enemy general, 5 from friendly general
+      scoreForPositionAdjacentToEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, positionAdjacentToEnemyGeneral);
+      if (scoreForPositionAdjacentToEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} adjacent to enemy general, 7 from friendly general =`, scoreForPositionAdjacentToEnemyGeneral);
+      }
+      // test 2 - distance 4 from enemy general, adjacent to friendly general
+      scoreForPosition4AwayFromEnemyGeneral = positionProximityToGenerals(gameSession, RockPulverizer, position4AwayFromEnemyGeneral);
+      if (scoreForPosition4AwayFromEnemyGeneral != null) {
+        console.log(`Score for ${RockPulverizer.getName()} 7 distance from enemy general, adjacent to friendly general =`, scoreForPosition4AwayFromEnemyGeneral);
+      }
+      // expect
+      // expect(scoreForPositionAdjacentToEnemyGeneral).to.be.above(scoreForPosition4AwayFromEnemyGeneral);
+    });
+    it('Shadow Tile Avoidance', () => {
+      // TEST FOR:
+      //  positionShadowTileAvoidance = function (gameSession, unit, position) {
+      // LOCATED @:
+      //  server/ai/scoring/position/positionShadowTileAvoidance
+      // DESCRIPTION:
+      //  estimates score for unit damage multiplied by -2
 
-		  var gameSession = SDK.GameSession.getInstance();
+      const gameSession = SDK.GameSession.getInstance();
 
-		  //add units to 0,0 for myPlayer
-		  var SilverguardKnight = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.SilverguardKnight }, 2, 2, gameSession.getPlayer2Id());
-		  var SilverguardKnightDamaged = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.SilverguardKnight }, 3, 3, gameSession.getPlayer2Id());
-		  UtilsSDK.modifyUnitStats(SilverguardKnightDamaged.getPosition(), null, null, 1);
-		  UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Spell.ShadowNova }));
-		  var player1 = gameSession.getPlayer1();
-		  player1.remainingMana = 9;
-		  //play shadow nova to 3,3
-		  //constructor: (gameSession, ownerId, x, y, handIndex) ->
-		  UtilsSDK.executeActionWithoutValidation(new SDK.PlayCardFromHandAction(gameSession, gameSession.getPlayer1Id(), 3, 3, 0));
-		  //test 1 - 4 shadow creep dmg to a 5 hp unit
-		  var position_insideShadowCreep = { x: 3, y: 3 };
-		  var position_outsideShadowCreep = { x: 7, y: 4 };
-		  var scoreForPosition_insideShadowCreep_5hp = position_shadowTileAvoidance(gameSession, SilverguardKnight, position_insideShadowCreep);
-		  if (scoreForPosition_insideShadowCreep_5hp != null) {
-		    console.log("Score for 4 shadow creep dmg to " + SilverguardKnight.getName() + " with 5 hp =", scoreForPosition_insideShadowCreep_5hp);
-		  }
-		  var scoreForPosition_outsideShadowCreep_5hp = position_shadowTileAvoidance(gameSession, SilverguardKnight, position_outsideShadowCreep);
-		  if (scoreForPosition_outsideShadowCreep_5hp != null) {
-		    console.log("Score for 0 shadow creep dmg to " + SilverguardKnight.getName() + " with 5 hp =", scoreForPosition_outsideShadowCreep_5hp);
-		  }
-		  var scoreForPosition_insideShadowCreep_4hp = position_shadowTileAvoidance(gameSession, SilverguardKnightDamaged, position_insideShadowCreep);
-		  if (scoreForPosition_insideShadowCreep_4hp != null) {
-		    console.log("Score for 4 shadow creep dmg to " + SilverguardKnightDamaged.getName() + " with 4 hp =", scoreForPosition_insideShadowCreep_4hp);
-		  }
-		  //expect
-		  //expect(scoreForPosition_insideShadowCreep_4hp).to.be.above(scoreForPosition_insideShadowCreep_5hp)
-        //.and.to.be.above(scoreForPosition_outsideShadowCreep_5hp);
-		  //expect(scoreForPosition_outsideShadowCreep_5hp).to.be.equal(0);
-		});
-		it('Zeal', function () {
-		  //TEST FOR:
-		  //  position_zeal = function (gameSession, unit, position)
-		  //LOCATED @:
-		  //  server/ai/scoring/position/position_zeal
-		  //DESCRIPTION:
-		  //  bonus for adjacency to general - either on or off, does not create desire to move into zeal range
+      // add units to 0,0 for myPlayer
+      const SilverguardKnight = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.SilverguardKnight }, 2, 2, gameSession.getPlayer2Id());
+      const SilverguardKnightDamaged = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.SilverguardKnight }, 3, 3, gameSession.getPlayer2Id());
+      UtilsSDK.modifyUnitStats(SilverguardKnightDamaged.getPosition(), null, null, 1);
+      UtilsSDK.executeActionWithoutValidation(new SDK.PutCardInHandAction(gameSession, gameSession.getPlayer1Id(), { id: SDK.Cards.Spell.ShadowNova }));
+      const player1 = gameSession.getPlayer1();
+      player1.remainingMana = 9;
+      // play shadow nova to 3,3
+      // constructor: (gameSession, ownerId, x, y, handIndex) ->
+      UtilsSDK.executeActionWithoutValidation(new SDK.PlayCardFromHandAction(gameSession, gameSession.getPlayer1Id(), 3, 3, 0));
+      // test 1 - 4 shadow creep dmg to a 5 hp unit
+      const positionInsideShadowCreep = { x: 3, y: 3 };
+      const positionOutsideShadowCreep = { x: 7, y: 4 };
+      const scoreForPositionInsideShadowCreep5hp = positionShadowTileAvoidance(gameSession, SilverguardKnight, positionInsideShadowCreep);
+      if (scoreForPositionInsideShadowCreep5hp != null) {
+        console.log(`Score for 4 shadow creep dmg to ${SilverguardKnight.getName()} with 5 hp =`, scoreForPositionInsideShadowCreep5hp);
+      }
+      const scoreForPositionOutsideShadowCreep5hp = positionShadowTileAvoidance(gameSession, SilverguardKnight, positionOutsideShadowCreep);
+      if (scoreForPositionOutsideShadowCreep5hp != null) {
+        console.log(`Score for 0 shadow creep dmg to ${SilverguardKnight.getName()} with 5 hp =`, scoreForPositionOutsideShadowCreep5hp);
+      }
+      const scoreForPositionInsideShadowCreep4hp = positionShadowTileAvoidance(gameSession, SilverguardKnightDamaged, positionInsideShadowCreep);
+      if (scoreForPositionInsideShadowCreep4hp != null) {
+        console.log(`Score for 4 shadow creep dmg to ${SilverguardKnightDamaged.getName()} with 4 hp =`, scoreForPositionInsideShadowCreep4hp);
+      }
+      // expect
+      // expect(scoreForPositionInsideShadowCreep4hp).to.be.above(scoreForPositionInsideShadowCreep5hp)
+      // .and.to.be.above(scoreForPositionOutsideShadowCreep5hp);
+      // expect(scoreForPositionOutsideShadowCreep5hp).to.be.equal(0);
+    });
+    it('Zeal', () => {
+      // TEST FOR:
+      //  positionZeal = function (gameSession, unit, position)
+      // LOCATED @:
+      //  server/ai/scoring/position/positionZeal
+      // DESCRIPTION:
+      //  bonus for adjacency to general - either on or off, does not create desire to move into zeal range
 
-		  var gameSession = SDK.GameSession.getInstance();
+      const gameSession = SDK.GameSession.getInstance();
 
-		  //add zealUnit to 0,0 for myPlayer
-		  var WindbladeAdept = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.WindbladeAdept }, 0, 0, gameSession.getPlayer1Id());
+      // add zealUnit to 0,0 for myPlayer
+      const WindbladeAdept = UtilsSDK.applyCardToBoard({ id: SDK.Cards.Faction1.WindbladeAdept }, 0, 0, gameSession.getPlayer1Id());
 
-		  //test 1 - adjacent to enemy general
-		  var position_adjacentTo_general = { x: 1, y: 2 };
-		  var scoreForPosition_adjacentTo_general = position_zeal(gameSession, WindbladeAdept, position_adjacentTo_general);
-		  if (scoreForPosition_adjacentTo_general != null) {
-		    console.log("Score for " + WindbladeAdept.getName() + " adjacent to general =", scoreForPosition_adjacentTo_general);
-		  }
-		  //test 2 - not
-		  var position_notadjacentTo_general = { x: 7, y: 2 };
-		  var scoreForPosition_notadjacentTo_general = position_zeal(gameSession, WindbladeAdept, position_notadjacentTo_general);
-		  if (scoreForPosition_notadjacentTo_general != null) {
-		    console.log("Score for " + WindbladeAdept.getName() + " not adjacent to general =", scoreForPosition_notadjacentTo_general);
-		  }
-		  //expect
-		  expect(scoreForPosition_adjacentTo_general).to.be.above(scoreForPosition_notadjacentTo_general);
-		});
-	});
+      // test 1 - adjacent to enemy general
+      const positionAdjacentToGeneral = { x: 1, y: 2 };
+      const scoreForPositionAdjacentToGeneral = positionZeal(gameSession, WindbladeAdept, positionAdjacentToGeneral);
+      if (scoreForPositionAdjacentToGeneral != null) {
+        console.log(`Score for ${WindbladeAdept.getName()} adjacent to general =`, scoreForPositionAdjacentToGeneral);
+      }
+      // test 2 - not
+      const positionNotAdjacentToGeneral = { x: 7, y: 2 };
+      const scoreForPositionNotAdjacentToGeneral = positionZeal(gameSession, WindbladeAdept, positionNotAdjacentToGeneral);
+      if (scoreForPositionNotAdjacentToGeneral != null) {
+        console.log(`Score for ${WindbladeAdept.getName()} not adjacent to general =`, scoreForPositionNotAdjacentToGeneral);
+      }
+      // expect
+      expect(scoreForPositionAdjacentToGeneral).to.be.above(scoreForPositionNotAdjacentToGeneral);
+    });
+  });
 });
