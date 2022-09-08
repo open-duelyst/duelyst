@@ -1,5 +1,5 @@
 {
-  "name": "duelyst-staging",
+  "name": "duelyst-desktop",
   "productName": "Duelyst",
   "version": "1.96.17",
   "main": "desktop.js",
