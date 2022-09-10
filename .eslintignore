@@ -5,7 +5,7 @@ app/view/
 scripts/generate_packages.js
 server/ai/
 server/redis/test/
-#test/unit/sdk/ai/card_intent_scoring.js
+test/unit/sdk/ai/card_intent_scoring.js
 test/unit/sdk/cards/
 
 # Importers of gitignored code
