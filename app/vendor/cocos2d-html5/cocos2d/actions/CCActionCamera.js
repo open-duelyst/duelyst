@@ -133,21 +133,21 @@ cc.OrbitCamera = cc.ActionCamera.extend(/** @lends cc.OrbitCamera# */{
     _radX: 0.0,
     _radDeltaX: 0.0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates a cc.OrbitCamera action with radius, delta-radius,  z, deltaZ, x, deltaX.
-	 * @param {Number} t time
-	 * @param {Number} radius
-	 * @param {Number} deltaRadius
-	 * @param {Number} angleZ
-	 * @param {Number} deltaAngleZ
-	 * @param {Number} angleX
-	 * @param {Number} deltaAngleX
-	 */
+   * creates a cc.OrbitCamera action with radius, delta-radius,  z, deltaZ, x, deltaX.
+   * @param {Number} t time
+   * @param {Number} radius
+   * @param {Number} deltaRadius
+   * @param {Number} angleZ
+   * @param {Number} deltaAngleZ
+   * @param {Number} angleX
+   * @param {Number} deltaAngleX
+   */
     ctor:function(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX){
         cc.ActionCamera.prototype.ctor.call(this);
 
-		deltaAngleX !== undefined && this.initWithDuration(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX);
+    deltaAngleX !== undefined && this.initWithDuration(t, radius, deltaRadius, angleZ, deltaAngleZ, angleX, deltaAngleX);
     },
 
     /**

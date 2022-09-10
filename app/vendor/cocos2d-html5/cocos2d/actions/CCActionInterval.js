@@ -53,10 +53,10 @@ cc.ActionInterval = cc.FiniteTimeAction.extend(/** @lends cc.ActionInterval# */{
     _speed: 1,
     _speedMethod: false,//Compatible with speed class, Discard after can be deleted
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} d duration in seconds
-	 */
+   * @param {Number} d duration in seconds
+   */
     ctor:function (d) {
         this._speed = 1;
         this._timesForRepeat = 1;
@@ -65,7 +65,7 @@ cc.ActionInterval = cc.FiniteTimeAction.extend(/** @lends cc.ActionInterval# */{
         this._repeatMethod = false;//Compatible with repeat class, Discard after can be deleted
         this._speedMethod = false;//Compatible with repeat class, Discard after can be deleted
         cc.FiniteTimeAction.prototype.ctor.call(this);
-		d !== undefined && this.initWithDuration(d);
+    d !== undefined && this.initWithDuration(d);
     },
 
     /**
@@ -343,19 +343,19 @@ cc.Sequence = cc.ActionInterval.extend(/** @lends cc.Sequence# */{
     _split:null,
     _last:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
      * Create an array of sequenceable actions.
-	 * @param {Array|cc.FiniteTimeAction} tempArray
-	 */
+   * @param {Array|cc.FiniteTimeAction} tempArray
+   */
     ctor:function (tempArray) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._actions = [];
 
-		var paramArray = (tempArray instanceof Array) ? tempArray : arguments;
-		var last = paramArray.length - 1;
-		if ((last >= 0) && (paramArray[last] == null))
-			cc.log("parameters should not be ending with null in Javascript");
+    var paramArray = (tempArray instanceof Array) ? tempArray : arguments;
+    var last = paramArray.length - 1;
+    if ((last >= 0) && (paramArray[last] == null))
+      cc.log("parameters should not be ending with null in Javascript");
 
         if (last >= 0) {
             var prev = paramArray[0], action1;
@@ -561,16 +561,16 @@ cc.Repeat = cc.ActionInterval.extend(/** @lends cc.Repeat# */{
     _actionInstant:false,
     _innerAction:null, //CCFiniteTimeAction
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates a Repeat action. Times is an unsigned integer between 1 and pow(2,30).
-	 * @param {cc.FiniteTimeAction} action
-	 * @param {Number} times
-	 */
+   * Creates a Repeat action. Times is an unsigned integer between 1 and pow(2,30).
+   * @param {cc.FiniteTimeAction} action
+   * @param {Number} times
+   */
     ctor: function (action, times) {
         cc.ActionInterval.prototype.ctor.call(this);
 
-		times !== undefined && this.initWithAction(action, times);
+    times !== undefined && this.initWithAction(action, times);
     },
 
     /**
@@ -740,16 +740,16 @@ cc.Repeat.create = cc.repeat;
 cc.RepeatForever = cc.ActionInterval.extend(/** @lends cc.RepeatForever# */{
     _innerAction:null, //CCActionInterval
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Create a acton which repeat forever.
-	 * @param {cc.FiniteTimeAction} action
-	 */
+   * Create a acton which repeat forever.
+   * @param {cc.FiniteTimeAction} action
+   */
     ctor:function (action) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._innerAction = null;
 
-		action && this.initWithAction(action);
+    action && this.initWithAction(action);
     },
 
     /**
@@ -875,19 +875,19 @@ cc.Spawn = cc.ActionInterval.extend(/** @lends cc.Spawn# */{
     _one:null,
     _two:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Array|cc.FiniteTimeAction} tempArray
-	 */
+   * @param {Array|cc.FiniteTimeAction} tempArray
+   */
     ctor:function (tempArray) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._one = null;
         this._two = null;
 
-		var paramArray = (tempArray instanceof Array) ? tempArray : arguments;
-		var last = paramArray.length - 1;
-		if ((last >= 0) && (paramArray[last] == null))
-			cc.log("parameters should not be ending with null in Javascript");
+    var paramArray = (tempArray instanceof Array) ? tempArray : arguments;
+    var last = paramArray.length - 1;
+    if ((last >= 0) && (paramArray[last] == null))
+      cc.log("parameters should not be ending with null in Javascript");
 
         if (last >= 0) {
             var prev = paramArray[0], action1;
@@ -1051,17 +1051,17 @@ cc.RotateTo = cc.ActionInterval.extend(/** @lends cc.RotateTo# */{
     _startAngleY:0,
     _diffAngleY:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates a RotateTo action with x and y rotation angles.
-	 * @param {Number} duration duration in seconds
-	 * @param {Number} deltaAngleX deltaAngleX in degrees.
-	 * @param {Number} [deltaAngleY] deltaAngleY in degrees.
-	 */
+   * Creates a RotateTo action with x and y rotation angles.
+   * @param {Number} duration duration in seconds
+   * @param {Number} deltaAngleX deltaAngleX in degrees.
+   * @param {Number} [deltaAngleY] deltaAngleY in degrees.
+   */
     ctor:function (duration, deltaAngleX, deltaAngleY) {
         cc.ActionInterval.prototype.ctor.call(this);
 
-		deltaAngleX !== undefined && this.initWithDuration(duration, deltaAngleX, deltaAngleY);
+    deltaAngleX !== undefined && this.initWithDuration(duration, deltaAngleX, deltaAngleY);
     },
 
     /**
@@ -1186,16 +1186,16 @@ cc.RotateBy = cc.ActionInterval.extend(/** @lends cc.RotateBy# */{
     _angleY:0,
     _startAngleY:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration duration in seconds
-	 * @param {Number} deltaAngleX deltaAngleX in degrees
-	 * @param {Number} [deltaAngleY] deltaAngleY in degrees
-	 */
+   * @param {Number} duration duration in seconds
+   * @param {Number} deltaAngleX deltaAngleX in degrees
+   * @param {Number} [deltaAngleY] deltaAngleY in degrees
+   */
     ctor: function (duration, deltaAngleX, deltaAngleY) {
         cc.ActionInterval.prototype.ctor.call(this);
 
-		deltaAngleX !== undefined && this.initWithDuration(duration, deltaAngleX, deltaAngleY);
+    deltaAngleX !== undefined && this.initWithDuration(duration, deltaAngleX, deltaAngleY);
     },
 
     /**
@@ -1308,12 +1308,12 @@ cc.MoveBy = cc.ActionInterval.extend(/** @lends cc.MoveBy# */{
     _startPosition:null,
     _previousPosition:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration duration in seconds
-	 * @param {cc.Point|Number} deltaPos
-	 * @param {Number} [deltaY]
-	 */
+   * @param {Number} duration duration in seconds
+   * @param {cc.Point|Number} deltaPos
+   * @param {Number} [deltaY]
+   */
     ctor:function (duration, deltaPos, deltaY) {
         cc.ActionInterval.prototype.ctor.call(this);
 
@@ -1321,7 +1321,7 @@ cc.MoveBy = cc.ActionInterval.extend(/** @lends cc.MoveBy# */{
         this._startPosition = cc.p(0, 0);
         this._previousPosition = cc.p(0, 0);
 
-		deltaPos !== undefined && this.initWithDuration(duration, deltaPos, deltaY);
+    deltaPos !== undefined && this.initWithDuration(duration, deltaPos, deltaY);
     },
 
     /**
@@ -1333,10 +1333,10 @@ cc.MoveBy = cc.ActionInterval.extend(/** @lends cc.MoveBy# */{
      */
     initWithDuration:function (duration, position, y) {
         if (cc.ActionInterval.prototype.initWithDuration.call(this, duration)) {
-	        if(position.x !== undefined) {
-		        y = position.y;
-		        position = position.x;
-	        }
+          if(position.x !== undefined) {
+            y = position.y;
+            position = position.x;
+          }
 
             this._positionDelta.x = position;
             this._positionDelta.y = y;
@@ -1389,9 +1389,9 @@ cc.MoveBy = cc.ActionInterval.extend(/** @lends cc.MoveBy# */{
                 locStartPosition.y = locStartPosition.y + targetY - locPreviousPosition.y;
                 x = x + locStartPosition.x;
                 y = y + locStartPosition.y;
-	            locPreviousPosition.x = x;
-	            locPreviousPosition.y = y;
-	            this.target.setPosition(x, y);
+              locPreviousPosition.x = x;
+              locPreviousPosition.y = y;
+              this.target.setPosition(x, y);
             } else {
                 this.target.setPosition(locStartPosition.x + x, locStartPosition.y + y);
             }
@@ -1453,17 +1453,17 @@ cc.MoveBy.create = cc.moveBy;
 cc.MoveTo = cc.MoveBy.extend(/** @lends cc.MoveTo# */{
     _endPosition:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration duration in seconds
-	 * @param {cc.Point|Number} position
-	 * @param {Number} y
-	 */
+   * @param {Number} duration duration in seconds
+   * @param {cc.Point|Number} position
+   * @param {Number} y
+   */
     ctor:function (duration, position, y) {
         cc.MoveBy.prototype.ctor.call(this);
         this._endPosition = cc.p(0, 0);
 
-		position !== undefined && this.initWithDuration(duration, position, y);
+    position !== undefined && this.initWithDuration(duration, position, y);
     },
 
     /**
@@ -1475,10 +1475,10 @@ cc.MoveTo = cc.MoveBy.extend(/** @lends cc.MoveTo# */{
      */
     initWithDuration:function (duration, position, y) {
         if (cc.MoveBy.prototype.initWithDuration.call(this, duration, position, y)) {
-	        if(position.x !== undefined) {
-		        y = position.y;
-		        position = position.x;
-	        }
+          if(position.x !== undefined) {
+            y = position.y;
+            position = position.x;
+          }
 
             this._endPosition.x = position;
             this._endPosition.y = y;
@@ -1556,16 +1556,16 @@ cc.SkewTo = cc.ActionInterval.extend(/** @lends cc.SkewTo# */{
     _deltaX:0,
     _deltaY:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} t time in seconds
-	 * @param {Number} sx
-	 * @param {Number} sy
-	 */
+   * @param {Number} t time in seconds
+   * @param {Number} sx
+   * @param {Number} sy
+   */
     ctor: function (t, sx, sy) {
         cc.ActionInterval.prototype.ctor.call(this);
 
-		sy !== undefined && this.initWithDuration(t, sx, sy);
+    sy !== undefined && this.initWithDuration(t, sx, sy);
     },
 
     /**
@@ -1668,16 +1668,16 @@ cc.SkewTo.create = cc.skewTo;
  */
 cc.SkewBy = cc.SkewTo.extend(/** @lends cc.SkewBy# */{
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} t time in seconds
-	 * @param {Number} sx  skew in degrees for X axis
-	 * @param {Number} sy  skew in degrees for Y axis
-	 */
-	ctor: function(t, sx, sy) {
-		cc.SkewTo.prototype.ctor.call(this);
-		sy !== undefined && this.initWithDuration(t, sx, sy);
-	},
+   * @param {Number} t time in seconds
+   * @param {Number} sx  skew in degrees for X axis
+   * @param {Number} sy  skew in degrees for Y axis
+   */
+  ctor: function(t, sx, sy) {
+    cc.SkewTo.prototype.ctor.call(this);
+    sy !== undefined && this.initWithDuration(t, sx, sy);
+  },
 
     /**
      * Initializes the action.
@@ -1781,21 +1781,21 @@ cc.JumpBy = cc.ActionInterval.extend(/** @lends cc.JumpBy# */{
     _jumps:0,
     _previousPosition:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration
-	 * @param {cc.Point|Number} position
-	 * @param {Number} [y]
-	 * @param {Number} height
-	 * @param {Number} jumps
-	 */
+   * @param {Number} duration
+   * @param {cc.Point|Number} position
+   * @param {Number} [y]
+   * @param {Number} height
+   * @param {Number} jumps
+   */
     ctor:function (duration, position, y, height, jumps) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._startPosition = cc.p(0, 0);
         this._previousPosition = cc.p(0, 0);
         this._delta = cc.p(0, 0);
 
-		height !== undefined && this.initWithDuration(duration, position, y, height, jumps);
+    height !== undefined && this.initWithDuration(duration, position, y, height, jumps);
     },
     /**
      * Initializes the action.
@@ -1811,12 +1811,12 @@ cc.JumpBy = cc.ActionInterval.extend(/** @lends cc.JumpBy# */{
      */
     initWithDuration:function (duration, position, y, height, jumps) {
         if (cc.ActionInterval.prototype.initWithDuration.call(this, duration)) {
-	        if (jumps === undefined) {
-		        jumps = height;
-		        height = y;
-		        y = position.y;
-		        position = position.x;
-	        }
+          if (jumps === undefined) {
+            jumps = height;
+            height = y;
+            y = position.y;
+            position = position.x;
+          }
             this._delta.x = position;
             this._delta.y = y;
             this._height = height;
@@ -1873,9 +1873,9 @@ cc.JumpBy = cc.ActionInterval.extend(/** @lends cc.JumpBy# */{
                 locStartPosition.y = locStartPosition.y + targetY - locPreviousPosition.y;
                 x = x + locStartPosition.x;
                 y = y + locStartPosition.y;
-	            locPreviousPosition.x = x;
-	            locPreviousPosition.y = y;
-	            this.target.setPosition(x, y);
+              locPreviousPosition.x = x;
+              locPreviousPosition.y = y;
+              this.target.setPosition(x, y);
             } else {
                 this.target.setPosition(locStartPosition.x + x, locStartPosition.y + y);
             }
@@ -2068,18 +2068,18 @@ cc.BezierBy = cc.ActionInterval.extend(/** @lends cc.BezierBy# */{
     _startPosition:null,
     _previousPosition:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} t time in seconds
-	 * @param {Array} c Array of points
-	 */
+   * @param {Number} t time in seconds
+   * @param {Array} c Array of points
+   */
     ctor:function (t, c) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._config = [];
         this._startPosition = cc.p(0, 0);
         this._previousPosition = cc.p(0, 0);
 
-		c && this.initWithDuration(t, c);
+    c && this.initWithDuration(t, c);
     },
 
     /**
@@ -2157,9 +2157,9 @@ cc.BezierBy = cc.ActionInterval.extend(/** @lends cc.BezierBy# */{
                 locStartPosition.y = locStartPosition.y + targetY - locPreviousPosition.y;
                 x = x + locStartPosition.x;
                 y = y + locStartPosition.y;
-	            locPreviousPosition.x = x;
-	            locPreviousPosition.y = y;
-	            this.target.setPosition(x, y);
+              locPreviousPosition.x = x;
+              locPreviousPosition.y = y;
+              this.target.setPosition(x, y);
             } else {
                 this.target.setPosition(locStartPosition.x + x, locStartPosition.y + y);
             }
@@ -2223,16 +2223,16 @@ cc.BezierBy.create = cc.bezierBy;
 cc.BezierTo = cc.BezierBy.extend(/** @lends cc.BezierTo# */{
     _toConfig:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} t
-	 * @param {Array} c array of points
-	 * var bezierTo = new cc.BezierTo(2, bezier);
-	 */
+   * @param {Number} t
+   * @param {Array} c array of points
+   * var bezierTo = new cc.BezierTo(2, bezier);
+   */
     ctor:function (t, c) {
         cc.BezierBy.prototype.ctor.call(this);
         this._toConfig = [];
-		c && this.initWithDuration(t, c);
+    c && this.initWithDuration(t, c);
     },
 
     /**
@@ -2324,15 +2324,15 @@ cc.ScaleTo = cc.ActionInterval.extend(/** @lends cc.ScaleTo# */{
     _deltaX:0,
     _deltaY:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration
-	 * @param {Number} sx  scale parameter in X
-	 * @param {Number} [sy] scale parameter in Y, if Null equal to sx
-	 */
+   * @param {Number} duration
+   * @param {Number} sx  scale parameter in X
+   * @param {Number} [sy] scale parameter in Y, if Null equal to sx
+   */
     ctor:function (duration, sx, sy) {
         cc.ActionInterval.prototype.ctor.call(this);
-		sx !== undefined && this.initWithDuration(duration, sx, sy);
+    sx !== undefined && this.initWithDuration(duration, sx, sy);
     },
 
     /**
@@ -2382,7 +2382,7 @@ cc.ScaleTo = cc.ActionInterval.extend(/** @lends cc.ScaleTo# */{
         dt = this._computeEaseTime(dt);
         if (this.target) {
             this.target.scaleX = this._startScaleX + this._deltaX * dt;
-	        this.target.scaleY = this._startScaleY + this._deltaY * dt;
+          this.target.scaleY = this._startScaleY + this._deltaY * dt;
         }
     }
 });
@@ -2498,14 +2498,14 @@ cc.Blink = cc.ActionInterval.extend(/** @lends cc.Blink# */{
     _times:0,
     _originalState:false,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
      * @param {Number} duration  duration in seconds
-	 * @param {Number} blinks  blinks in times
-	 */
+   * @param {Number} blinks  blinks in times
+   */
     ctor:function (duration, blinks) {
         cc.ActionInterval.prototype.ctor.call(this);
-		blinks !== undefined && this.initWithDuration(duration, blinks);
+    blinks !== undefined && this.initWithDuration(duration, blinks);
     },
 
     /**
@@ -2611,14 +2611,14 @@ cc.FadeTo = cc.ActionInterval.extend(/** @lends cc.FadeTo# */{
     _toOpacity:0,
     _fromOpacity:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration
-	 * @param {Number} opacity 0-255, 0 is transparent
-	 */
+   * @param {Number} duration
+   * @param {Number} opacity 0-255, 0 is transparent
+   */
     ctor:function (duration, opacity) {
         cc.ActionInterval.prototype.ctor.call(this);
-		opacity !== undefined && this.initWithDuration(duration, opacity);
+    opacity !== undefined && this.initWithDuration(duration, opacity);
     },
 
     /**
@@ -2848,19 +2848,19 @@ cc.TintTo = cc.ActionInterval.extend(/** @lends cc.TintTo# */{
     _to:null,
     _from:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration
-	 * @param {Number} red 0-255
-	 * @param {Number} green  0-255
-	 * @param {Number} blue 0-255
-	 */
+   * @param {Number} duration
+   * @param {Number} red 0-255
+   * @param {Number} green  0-255
+   * @param {Number} blue 0-255
+   */
     ctor:function (duration, red, green, blue) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._to = cc.color(0, 0, 0);
         this._from = cc.color(0, 0, 0);
 
-		blue !== undefined && this.initWithDuration(duration, red, green, blue);
+    blue !== undefined && this.initWithDuration(duration, red, green, blue);
     },
 
     /**
@@ -2911,7 +2911,7 @@ cc.TintTo = cc.ActionInterval.extend(/** @lends cc.TintTo# */{
         if (locFrom) {
             this.target.color = cc.color(locFrom.r + (locTo.r - locFrom.r) * dt,
                                         locFrom.g + (locTo.g - locFrom.g) * dt,
-	                                    locFrom.b + (locTo.b - locFrom.b) * dt);
+                                      locFrom.b + (locTo.b - locFrom.b) * dt);
         }
     }
 });
@@ -2965,16 +2965,16 @@ cc.TintBy = cc.ActionInterval.extend(/** @lends cc.TintBy# */{
     _fromG:0,
     _fromB:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {Number} duration  duration in seconds
-	 * @param {Number} deltaRed
-	 * @param {Number} deltaGreen
-	 * @param {Number} deltaBlue
-	 */
+   * @param {Number} duration  duration in seconds
+   * @param {Number} deltaRed
+   * @param {Number} deltaGreen
+   * @param {Number} deltaBlue
+   */
     ctor:function (duration, deltaRed, deltaGreen, deltaBlue) {
         cc.ActionInterval.prototype.ctor.call(this);
-		deltaBlue !== undefined && this.initWithDuration(duration, deltaRed, deltaGreen, deltaBlue);
+    deltaBlue !== undefined && this.initWithDuration(duration, deltaRed, deltaGreen, deltaBlue);
     },
 
     /**
@@ -3148,15 +3148,15 @@ cc.DelayTime.create = cc.delayTime;
 cc.ReverseTime = cc.ActionInterval.extend(/** @lends cc.ReverseTime# */{
     _other:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-	 * @param {cc.FiniteTimeAction} action
-	 */
+   * @param {cc.FiniteTimeAction} action
+   */
     ctor:function (action) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._other = null;
 
-		action && this.initWithAction(action);
+    action && this.initWithAction(action);
     },
 
     /**
@@ -3262,16 +3262,16 @@ cc.Animate = cc.ActionInterval.extend(/** @lends cc.Animate# */{
     _executedLoops:0,
     _splitTimes:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * create the animate with animation.
-	 * @param {cc.Animation} animation
-	 */
+   * create the animate with animation.
+   * @param {cc.Animation} animation
+   */
     ctor:function (animation) {
         cc.ActionInterval.prototype.ctor.call(this);
         this._splitTimes = [];
 
-		animation && this.initWithAnimation(animation);
+    animation && this.initWithAnimation(animation);
     },
 
     /**
@@ -3452,15 +3452,15 @@ cc.TargetedAction = cc.ActionInterval.extend(/** @lends cc.TargetedAction# */{
     _action:null,
     _forcedTarget:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Create an action with the specified action and forced target.
-	 * @param {cc.Node} target
-	 * @param {cc.FiniteTimeAction} action
-	 */
+   * Create an action with the specified action and forced target.
+   * @param {cc.Node} target
+   * @param {cc.FiniteTimeAction} action
+   */
     ctor: function (target, action) {
         cc.ActionInterval.prototype.ctor.call(this);
-		action && this.initWithTarget(target, action);
+    action && this.initWithTarget(target, action);
     },
 
     /**

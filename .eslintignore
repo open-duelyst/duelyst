@@ -1,0 +1,22 @@
+# Ignore heavily unlinted files
+app/tools/
+app/ui/
+app/view/
+scripts/generate_packages.js
+server/ai/
+server/redis/test/
+test/unit/sdk/ai/card_intent_scoring.js
+test/unit/sdk/cards/
+
+# Importers of gitignored code
+gulp/rsx.js
+
+# Third-party code
+app/bower_components
+app/vendor
+node_modules
+packages
+scripts/codex/CanvasText-0.4.1.js
+
+# TypeScript type declarations
+*.d.ts

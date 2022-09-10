@@ -1,7 +1,5 @@
-"use strict";
-
-const BOUNTY = require("./../bounty");
-const ScoreForModifiers = require("./modifiers");
+const BOUNTY = require('../bounty');
+const ScoreForModifiers = require('./modifiers');
 
 /**
  * Returns the score for a unit.
@@ -11,25 +9,25 @@ const ScoreForModifiers = require("./modifiers");
  * @static
  * @public
  */
-let ScoreForUnit = function (unit, onlyRemovableModifiers) {
-	let score = 0;
+const ScoreForUnit = function (unit, onlyRemovableModifiers) {
+  let score = 0;
 
-	// add stats bounties
-	if (unit.getIsGeneral()) {
-		score += (unit.getHP() * BOUNTY.GENERAL_HP) + (unit.getATK() * BOUNTY.GENERAL_ATK);
-	} else {
-		score += (unit.getHP() * BOUNTY.UNIT_HP) + Math.pow(unit.getATK() * BOUNTY.UNIT_ATK, 1.5); // test values here
-	}
+  // add stats bounties
+  if (unit.getIsGeneral()) {
+    score += (unit.getHP() * BOUNTY.GENERAL_HP) + (unit.getATK() * BOUNTY.GENERAL_ATK);
+  } else {
+    score += (unit.getHP() * BOUNTY.UNIT_HP) + (unit.getATK() * BOUNTY.UNIT_ATK) ** 1.5; // test values here
+  }
 
-	// add modifier score
-	score += ScoreForModifiers(unit, onlyRemovableModifiers);
+  // add modifier score
+  score += ScoreForModifiers(unit, onlyRemovableModifiers);
 
-	// when unit not played, add mana cost bounty
-	if (!unit.getIsPlayed()) {
-		score += unit.getManaCost() * BOUNTY.MANA_COST;
-	}
+  // when unit not played, add mana cost bounty
+  if (!unit.getIsPlayed()) {
+    score += unit.getManaCost() * BOUNTY.MANA_COST;
+  }
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForUnit;

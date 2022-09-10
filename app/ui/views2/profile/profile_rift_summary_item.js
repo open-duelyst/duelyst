@@ -1,35 +1,33 @@
-'use strict';
+const SDK = require('app/sdk');
+const RiftHelper = require('app/sdk/rift/riftHelper');
+const moment = require('moment');
+const _ = require('underscore');
+const ProfileRiftSummaryViewTempl = require('./templates/profile_rift_summary_item.hbs');
 
-var SDK = require('app/sdk');
-var RiftHelper = require('app/sdk/rift/riftHelper');
-var ProfileRiftSummaryViewTempl = require('./templates/profile_rift_summary_item.hbs');
-var moment = require('moment');
-var _ = require("underscore");
+const ProfileRiftSummaryView = Backbone.Marionette.ItemView.extend({
 
-var ProfileRiftSummaryView = Backbone.Marionette.ItemView.extend({
+  className: 'profile-rift-summary',
 
-	className: "profile-rift-summary",
+  template: ProfileRiftSummaryViewTempl,
 
-	template: ProfileRiftSummaryViewTempl,
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
 
-	serializeModel: function(model){
-		var data =  model.toJSON.apply(model, _.rest(arguments));
+    if (data.highest_rated_run != null) {
+      if (data.highest_rated_run.rift_level != null && data.highest_rated_run.rift_points != null) {
+        const currentLevelPointsNeeded = RiftHelper.pointsRequiredForLevel(data.highest_rated_run.rift_level + 1);
+        const currentLevelPointsProgress = data.highest_rated_run.rift_points - RiftHelper.totalPointsForLevel(data.highest_rated_run.rift_level);
+        data.highest_rated_run.rift_level_percent = currentLevelPointsProgress / currentLevelPointsNeeded * 100.0;
+      }
+    }
 
-		if (data.highest_rated_run != null) {
-			if (data.highest_rated_run.rift_level != null && data.highest_rated_run.rift_points != null) {
-				var currentLevelPointsNeeded = RiftHelper.pointsRequiredForLevel(data.highest_rated_run.rift_level+1);
-				var currentLevelPointsProgress = data.highest_rated_run.rift_points - RiftHelper.totalPointsForLevel(data.highest_rated_run.rift_level);
-				data.highest_rated_run.rift_level_percent = currentLevelPointsProgress / currentLevelPointsNeeded * 100.0;
-			}
-		}
+    return data;
+  },
 
-		return data
-	},
-
-	onShow: function() {
-		// model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
-		this.listenTo(this.model,"change sync",this.render);
-	}
+  onShow() {
+    // model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
+    this.listenTo(this.model, 'change sync', this.render);
+  },
 
 });
 

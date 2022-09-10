@@ -1,7 +1,9 @@
-/****************************************************************************
+/** **************************************************************************
   UtilsResources - resource utility methods
- ****************************************************************************/
-var UtilsResources = {};
+ *************************************************************************** */
+const _ = require('underscore');
+
+const UtilsResources = {};
 
 /**
  * Return extension from a resource path.
@@ -9,8 +11,8 @@ var UtilsResources = {};
  * @return {String}
  */
 UtilsResources.getExt = function (resourcePath) {
-	// fast ext: http://stackoverflow.com/questions/190852/how-can-i-get-file-extensions-with-javascript
-	return resourcePath.substr((~-resourcePath.lastIndexOf(".") >>> 0) + 2).toLowerCase();
+  // fast ext: http://stackoverflow.com/questions/190852/how-can-i-get-file-extensions-with-javascript
+  return resourcePath.substr((~-resourcePath.lastIndexOf('.') >>> 0) + 2).toLowerCase();
 };
 
 /**
@@ -19,7 +21,7 @@ UtilsResources.getExt = function (resourcePath) {
  * @return {Boolean}
  */
 UtilsResources.getPathIsForImage = function (resourcePath) {
-	return UtilsResources.getExtIsForImage(UtilsResources.getExt(resourcePath));
+  return UtilsResources.getExtIsForImage(UtilsResources.getExt(resourcePath));
 };
 
 /**
@@ -28,7 +30,7 @@ UtilsResources.getPathIsForImage = function (resourcePath) {
  * @return {Boolean}
  */
 UtilsResources.getExtIsForImage = function (ext) {
-	return ext === "png" || ext === "jpg" || ext === "jpeg" || ext === "bmp" || ext === "gif";
+  return ext === 'png' || ext === 'jpg' || ext === 'jpeg' || ext === 'bmp' || ext === 'gif';
 };
 
 /**
@@ -37,7 +39,7 @@ UtilsResources.getExtIsForImage = function (ext) {
  * @return {Boolean}
  */
 UtilsResources.getPathIsForAudio = function (resourcePath) {
-	return UtilsResources.getExtIsForAudio(UtilsResources.getExt(resourcePath));
+  return UtilsResources.getExtIsForAudio(UtilsResources.getExt(resourcePath));
 };
 
 /**
@@ -46,7 +48,7 @@ UtilsResources.getPathIsForAudio = function (resourcePath) {
  * @return {Boolean}
  */
 UtilsResources.getExtIsForAudio = function (ext) {
-	return ext === "ogg" || ext === "wav" || ext === "mp3" || ext === "mp4" || ext === "m4a";
+  return ext === 'ogg' || ext === 'wav' || ext === 'mp3' || ext === 'mp4' || ext === 'm4a';
 };
 
 /**
@@ -55,7 +57,7 @@ UtilsResources.getExtIsForAudio = function (ext) {
  * @return {Boolean}
  */
 UtilsResources.getPathIsForPlist = function (resourcePath) {
-	return UtilsResources.getExtIsForPlist(UtilsResources.getExt(resourcePath));
+  return UtilsResources.getExtIsForPlist(UtilsResources.getExt(resourcePath));
 };
 
 /**
@@ -64,7 +66,7 @@ UtilsResources.getPathIsForPlist = function (resourcePath) {
  * @return {Boolean}
  */
 UtilsResources.getExtIsForPlist = function (ext) {
-	return ext === "plist";
+  return ext === 'plist';
 };
 
 /**
@@ -73,7 +75,7 @@ UtilsResources.getExtIsForPlist = function (ext) {
  * @return {Boolean}
  */
 UtilsResources.getPathIsForFont = function (resourcePath) {
-	return UtilsResources.getExtIsForFont(UtilsResources.getExt(resourcePath));
+  return UtilsResources.getExtIsForFont(UtilsResources.getExt(resourcePath));
 };
 
 /**
@@ -82,7 +84,7 @@ UtilsResources.getPathIsForFont = function (resourcePath) {
  * @return {Boolean}
  */
 UtilsResources.getExtIsForFont = function (ext) {
-	return ext === "ttf" || ext === "fnt" || ext === "font" || ext === "eot" || ext === "woff" || ext === "svg";
+  return ext === 'ttf' || ext === 'fnt' || ext === 'font' || ext === 'eot' || ext === 'woff' || ext === 'svg';
 };
 
 /**
@@ -91,7 +93,7 @@ UtilsResources.getExtIsForFont = function (ext) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForAnimation = function (resourceData) {
-	return resourceData.frameDelay != null && resourceData.img != null && resourceData.plist != null;
+  return resourceData.frameDelay != null && resourceData.img != null && resourceData.plist != null;
 };
 
 /**
@@ -100,7 +102,7 @@ UtilsResources.getIsResourceForAnimation = function (resourceData) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForSpriteFrame = function (resourceData) {
-	return resourceData.plist != null && resourceData.frame != null;
+  return resourceData.plist != null && resourceData.frame != null;
 };
 
 /**
@@ -109,7 +111,7 @@ UtilsResources.getIsResourceForSpriteFrame = function (resourceData) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForTexture = function (resourceData) {
-	return resourceData.img != null;
+  return resourceData.img != null;
 };
 
 /**
@@ -118,7 +120,7 @@ UtilsResources.getIsResourceForTexture = function (resourceData) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForCubemap = function (resourceData) {
-	return resourceData.imgPosX != null;
+  return resourceData.imgPosX != null;
 };
 
 /**
@@ -127,7 +129,7 @@ UtilsResources.getIsResourceForCubemap = function (resourceData) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForFont = function (resourceData) {
-	return resourceData.font != null;
+  return resourceData.font != null;
 };
 
 /**
@@ -136,7 +138,7 @@ UtilsResources.getIsResourceForFont = function (resourceData) {
  * @return {Boolean}
  */
 UtilsResources.getIsResourceForAudio = function (resourceData) {
-	return resourceData.audio != null;
+  return resourceData.audio != null;
 };
 
 /**
@@ -147,37 +149,37 @@ UtilsResources.getIsResourceForAudio = function (resourceData) {
  * @return {Array}
  */
 UtilsResources.getFrameKeys = function (plist, framePrefix, exactMatch) {
-	var frameKeys = [];
+  const frameKeys = [];
 
-	// find all frame keys from the frame cache
-	var frameConfigCache = cc.spriteFrameCache._frameConfigCache;
-	var frameData = frameConfigCache[plist];
-	if (frameData != null) {
-		var frameRegExp;
-		if (exactMatch) {
-			frameRegExp = new RegExp("^" + framePrefix + "\(\?\=\\b\)");
-		} else {
-			frameRegExp = new RegExp("^" + framePrefix + "\(\?\=\[0\-9\\.\\b\]\)");
-		}
-		var frames = frameData.frames;
-		var framesKeys = Object.keys(frames);
-		for (var i = 0, il = framesKeys.length; i < il; i++) {
-			var frameKey = framesKeys[i];
-			if (frameRegExp.test(frameKey)) {
-				frameKeys.push(frameKey);
-			}
-		}
-	}
+  // find all frame keys from the frame cache
+  const frameConfigCache = cc.spriteFrameCache._frameConfigCache;
+  const frameData = frameConfigCache[plist];
+  if (frameData != null) {
+    let frameRegExp;
+    if (exactMatch) {
+      frameRegExp = new RegExp(`^${framePrefix}\(\?\=\\b\)`);
+    } else {
+      frameRegExp = new RegExp(`^${framePrefix}\(\?\=\[0\-9\\.\\b\]\)`);
+    }
+    const { frames } = frameData;
+    const framesKeys = Object.keys(frames);
+    for (let i = 0, il = framesKeys.length; i < il; i++) {
+      const frameKey = framesKeys[i];
+      if (frameRegExp.test(frameKey)) {
+        frameKeys.push(frameKey);
+      }
+    }
+  }
 
-	// sort keys in ascending order
-	frameKeys.sort(function (a, b) {
-		var aNums = a.match(/\d+/g);
-		var bNums = b.match(/\d+/g);
-		var aNum = parseInt(aNums && aNums[aNums.length - 1]);
-		var bNum = parseInt(bNums && bNums[bNums.length - 1]);
-		return !isNaN(aNum) && !isNaN(bNum) ? aNum - bNum : 0;
-	});
-	return frameKeys;
+  // sort keys in ascending order
+  frameKeys.sort((a, b) => {
+    const aNums = a.match(/\d+/g);
+    const bNums = b.match(/\d+/g);
+    const aNum = parseInt(aNums && aNums[aNums.length - 1], 10);
+    const bNum = parseInt(bNums && bNums[bNums.length - 1], 10);
+    return !Number.isNaN(aNum) && !Number.isNaN(bNum) ? aNum - bNum : 0;
+  });
+  return frameKeys;
 };
 
 /**
@@ -186,16 +188,16 @@ UtilsResources.getFrameKeys = function (plist, framePrefix, exactMatch) {
  * @return {Array}
  */
 UtilsResources.getResourcePathsFromResources = function (resources) {
-	var resourcePaths = [];
-	for (var i = 0, il = resources.length; i < il; i++) {
-		var resource = resources[i];
-		if (resource.img != null) { resourcePaths.push(resource.img); }
-		if (resource.plist != null) { resourcePaths.push(resource.plist); }
-		if (resource.audio != null) { resourcePaths.push(resource.audio); }
-		if (resource.font != null) { resourcePaths.push(resource.font); }
-	}
-	resourcePaths = _.uniq(resourcePaths);
-	return resourcePaths;
+  let resourcePaths = [];
+  for (let i = 0, il = resources.length; i < il; i++) {
+    const resource = resources[i];
+    if (resource.img != null) { resourcePaths.push(resource.img); }
+    if (resource.plist != null) { resourcePaths.push(resource.plist); }
+    if (resource.audio != null) { resourcePaths.push(resource.audio); }
+    if (resource.font != null) { resourcePaths.push(resource.font); }
+  }
+  resourcePaths = _.uniq(resourcePaths);
+  return resourcePaths;
 };
 
 /**
@@ -204,23 +206,23 @@ UtilsResources.getResourcePathsFromResources = function (resources) {
  * @returns {Array}
  */
 UtilsResources.getSpriteFramesUsingTexture = function (texture) {
-	var spriteFramesUsingTexture = [];
+  const spriteFramesUsingTexture = [];
 
-	if (texture != null) {
-		// search sprite frames for texture
-		var spriteFrames = cc.spriteFrameCache._spriteFrames;
-		var spriteFramesKeys = Object.keys(spriteFrames);
-		for (var i = 0, il = spriteFramesKeys.length; i < il; i++) {
-			var spriteFrameKey = spriteFramesKeys[i];
-			var spriteFrame = spriteFrames[spriteFrameKey];
-			// matching spriteFrame
-			if (spriteFrame && (spriteFrame.getTexture() === texture)) {
-				spriteFramesUsingTexture.push(spriteFrame);
-			}
-		}
-	}
+  if (texture != null) {
+    // search sprite frames for texture
+    const spriteFrames = cc.spriteFrameCache._spriteFrames;
+    const spriteFramesKeys = Object.keys(spriteFrames);
+    for (let i = 0, il = spriteFramesKeys.length; i < il; i++) {
+      const spriteFrameKey = spriteFramesKeys[i];
+      const spriteFrame = spriteFrames[spriteFrameKey];
+      // matching spriteFrame
+      if (spriteFrame && (spriteFrame.getTexture() === texture)) {
+        spriteFramesUsingTexture.push(spriteFrame);
+      }
+    }
+  }
 
-	return spriteFramesUsingTexture;
+  return spriteFramesUsingTexture;
 };
 
 /**
@@ -229,30 +231,30 @@ UtilsResources.getSpriteFramesUsingTexture = function (texture) {
  * @returns {Array}
  */
 UtilsResources.getAnimationsUsingSpriteFrame = function (spriteFrame) {
-	var animationsUsingSpriteFrame = [];
+  const animationsUsingSpriteFrame = [];
 
-	if (spriteFrame != null) {
-		// search animations for sprite frame
-		var animations = cc.animationCache._animations;
-		var animationsKeys = Object.keys(animations);
-		for (var i = 0, il = animationsKeys.length; i < il; i++) {
-			var animationKey = animationsKeys[i];
-			var animation = animations[animationKey];
-			if (animation) {
-				var animationFrames = animation.getFrames();
-				for (var j = 0, jl = animationFrames.length; j < jl; j++) {
-					var animationFrame = animationFrames[j];
-					var animationSpriteFrame = animationFrame.getSpriteFrame();
-					if (animationSpriteFrame === spriteFrame) {
-						animationsUsingSpriteFrame.push(animation);
-						break;
-					}
-				}
-			}
-		}
-	}
+  if (spriteFrame != null) {
+    // search animations for sprite frame
+    const animations = cc.animationCache._animations;
+    const animationsKeys = Object.keys(animations);
+    for (let i = 0, il = animationsKeys.length; i < il; i++) {
+      const animationKey = animationsKeys[i];
+      const animation = animations[animationKey];
+      if (animation) {
+        const animationFrames = animation.getFrames();
+        for (let j = 0, jl = animationFrames.length; j < jl; j++) {
+          const animationFrame = animationFrames[j];
+          const animationSpriteFrame = animationFrame.getSpriteFrame();
+          if (animationSpriteFrame === spriteFrame) {
+            animationsUsingSpriteFrame.push(animation);
+            break;
+          }
+        }
+      }
+    }
+  }
 
-	return animationsUsingSpriteFrame;
+  return animationsUsingSpriteFrame;
 };
 
 module.exports = UtilsResources;

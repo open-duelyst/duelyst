@@ -1,26 +1,26 @@
-//pragma PKGS: game
-var _ = require('underscore');
-var RSX = require('app/data/resources');
-var TileMapScaledSprite = require('./TileMapScaledSprite');
+// pragma PKGS: game
+const _ = require('underscore');
+const RSX = require('app/data/resources');
+const TileMapScaledSprite = require('./TileMapScaledSprite');
 
-/****************************************************************************
+/** **************************************************************************
 TileMapMergedLarge013Sprite
 var TileMapMergedLarge013Sprite = TileMapScaledSprite
 TileMapMergedLarge013Sprite.create()
- ****************************************************************************/
+ *************************************************************************** */
 
-var TileMapMergedLarge013Sprite = TileMapScaledSprite.extend({
+const TileMapMergedLarge013Sprite = TileMapScaledSprite.extend({
 
-	ctor: function () {
-		this._super(RSX.tile_merged_large_013.frame);
-	}
+  ctor() {
+    this._super(RSX.tile_merged_large_013.frame);
+  },
 });
 
 TileMapMergedLarge013Sprite.create = function (sprite) {
-	if (sprite == null) {
-		sprite = cc.pool.getFromPool(TileMapMergedLarge013Sprite) || TileMapScaledSprite.create(new TileMapMergedLarge013Sprite());
-	}
-	return sprite;
+  if (sprite == null) {
+    sprite = cc.pool.getFromPool(TileMapMergedLarge013Sprite) || TileMapScaledSprite.create(new TileMapMergedLarge013Sprite());
+  }
+  return sprite;
 };
 
 module.exports = TileMapMergedLarge013Sprite;

@@ -1,7 +1,5 @@
-"use strict";
-
-const Factions = require("app/sdk/cards/factionsLookup");
-const UtilsJavascript = require("app/common/utils/utils_javascript");
+const Factions = require('app/sdk/cards/factionsLookup');
+const UtilsJavascript = require('app/common/utils/utils_javascript');
 const F1 = require('./faction1');
 const F2 = require('./faction2');
 const F3 = require('./faction3');
@@ -16,10 +14,10 @@ const NU = require('./neutral_unity');
 const NF = require('./neutral_firstwatch');
 const NW = require('./neutral_wartech');
 
-let UsableCards = {
-	_cardIds: [],
-	_cardIdsByFactionId: {},
-	_usableByCardId: {}
+const UsableCards = {
+  _cardIds: [],
+  _cardIdsByFactionId: {},
+  _usableByCardId: {},
 };
 
 // all cards
@@ -27,8 +25,8 @@ UsableCards._cardIds = UsableCards._cardIds.concat(F1, F2, F3, F4, F5, F6, NC, N
 
 // usable state by cards id
 for (let i = 0, il = UsableCards._cardIds.length; i < il; i++) {
-	const cardId = UsableCards._cardIds[i];
-	UsableCards._usableByCardId[cardId] = true;
+  const cardId = UsableCards._cardIds[i];
+  UsableCards._usableByCardId[cardId] = true;
 }
 
 // cards by faction id
@@ -41,15 +39,15 @@ UsableCards._cardIdsByFactionId[Factions.Faction6] = F6;
 UsableCards._cardIdsByFactionId[Factions.Neutral] = [].concat(NC, NM, NS, NB, NU, NF, NW);
 
 UsableCards.getUsableCardIds = function () {
-	return UsableCards._cardIds || [];
+  return UsableCards._cardIds || [];
 };
 
 UsableCards.getUsableCardsForFactionId = function (factionId) {
-	return UsableCards._cardIdsByFactionId[factionId] || [];
+  return UsableCards._cardIdsByFactionId[factionId] || [];
 };
 
 UsableCards.getIsCardUsable = function (cardId) {
-	return UsableCards._usableByCardId[cardId];
+  return UsableCards._usableByCardId[cardId];
 };
 
 module.exports = UsableCards;

@@ -1,15 +1,15 @@
-/****************************************************************************
+/** **************************************************************************
   UtilsEnv - environment utility methods
  - NOTE: these methods are configured at compile time by browserify
- ****************************************************************************/
-var UtilsEnv = {};
+ *************************************************************************** */
+const UtilsEnv = {};
 
 /**
  * Return whether the current environment is in staging (i.e. development but not local).
  * @return {Boolean}
  */
 UtilsEnv.getIsInStaging = function () {
-	return process.env.NODE_ENV === 'staging';
+  return process.env.NODE_ENV === 'staging';
 };
 
 /**
@@ -17,8 +17,8 @@ UtilsEnv.getIsInStaging = function () {
  * @return {Boolean}
  */
 UtilsEnv.getIsInLocal = function () {
-	var env = process.env.NODE_ENV;
-	return !UtilsEnv.getIsInProduction() && (env.indexOf('dev') >= 0 || env === "local");
+  const env = process.env.NODE_ENV;
+  return !UtilsEnv.getIsInProduction() && (env.indexOf('dev') >= 0 || env === 'local');
 };
 
 /**
@@ -26,8 +26,8 @@ UtilsEnv.getIsInLocal = function () {
  * @return {Boolean}
  */
 UtilsEnv.getIsInProduction = function () {
-	var env = process.env.NODE_ENV;
-	return env === 'production' || UtilsEnv.getIsInStaging();
+  const env = process.env.NODE_ENV;
+  return env === 'production' || UtilsEnv.getIsInStaging();
 };
 
 /**
@@ -35,7 +35,7 @@ UtilsEnv.getIsInProduction = function () {
  * @return {Boolean}
  */
 UtilsEnv.getIsInDevelopment = function () {
-	return UtilsEnv.getIsInStaging() || UtilsEnv.getIsInLocal();
+  return UtilsEnv.getIsInStaging() || UtilsEnv.getIsInLocal();
 };
 
 module.exports = UtilsEnv;

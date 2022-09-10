@@ -121,7 +121,7 @@ cc.PointObject.create = function (ratio, offset) {
  * @property {Array}    parallaxArray   - Parallax nodes array
  */
 cc.ParallaxNode = cc.Node.extend(/** @lends cc.ParallaxNode# */{
-	parallaxArray:null,
+  parallaxArray:null,
 
     _lastPosition:null,
     _className:"ParallaxNode",
@@ -173,7 +173,7 @@ cc.ParallaxNode = cc.Node.extend(/** @lends cc.ParallaxNode# */{
         obj.setChild(child);
         this.parallaxArray.push(obj);
 
-	    child.setPosition(this._position.x * ratio.x + offset.x, this._position.y * ratio.y + offset.y);
+      child.setPosition(this._position.x * ratio.x + offset.x, this._position.y * ratio.y + offset.y);
 
         cc.Node.prototype.addChild.call(this, child, z, child.tag);
     },

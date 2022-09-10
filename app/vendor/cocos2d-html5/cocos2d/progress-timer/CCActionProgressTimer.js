@@ -38,18 +38,18 @@ cc.ProgressTo = cc.ActionInterval.extend(/** @lends cc.ProgressTo# */{
     _to:0,
     _from:0,
 
-	/**
-	 * Creates a ProgressTo action with a duration and a percent
-	 * Constructor of cc.ProgressTo
+  /**
+   * Creates a ProgressTo action with a duration and a percent
+   * Constructor of cc.ProgressTo
      * @param {Number} duration duration in seconds
      * @param {Number} percent
-	 */
+   */
     ctor: function(duration, percent){
         cc.ActionInterval.prototype.ctor.call(this);
         this._to = 0;
         this._from = 0;
 
-		percent !== undefined && this.initWithDuration(duration, percent);
+    percent !== undefined && this.initWithDuration(duration, percent);
     },
 
     /** Initializes with a duration and a percent
@@ -139,19 +139,19 @@ cc.ProgressFromTo = cc.ActionInterval.extend(/** @lends cc.ProgressFromTo# */{
     _to:0,
     _from:0,
 
-	/**
-	 * Creates and initializes the action with a duration, a "from" percentage and a "to" percentage
-	 * Constructor of cc.ProgressFromTo
+  /**
+   * Creates and initializes the action with a duration, a "from" percentage and a "to" percentage
+   * Constructor of cc.ProgressFromTo
      * @param {Number} duration duration in seconds
      * @param {Number} fromPercentage
      * @param {Number} toPercentage
-	 */
+   */
     ctor:function(duration, fromPercentage, toPercentage){
         cc.ActionInterval.prototype.ctor.call(this);
         this._to = 0;
         this._from = 0;
 
-		toPercentage !== undefined && this.initWithDuration(duration, fromPercentage, toPercentage);
+    toPercentage !== undefined && this.initWithDuration(duration, fromPercentage, toPercentage);
     },
 
     /** Initializes the action with a duration, a "from" percentage and a "to" percentage

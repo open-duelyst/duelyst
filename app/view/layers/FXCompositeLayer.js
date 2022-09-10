@@ -1,192 +1,190 @@
-var Logger = require('app/common/logger');
-var EVENTS = require('app/common/event_types');
-var BaseLayer = require('./BaseLayer');
+const Logger = require('app/common/logger');
+const EVENTS = require('app/common/event_types');
+const BaseLayer = require('./BaseLayer');
 
-/****************************************************************************
+/** **************************************************************************
  FXCompositeLayer
- ****************************************************************************/
+ *************************************************************************** */
 
 var FXCompositeLayer = BaseLayer.extend({
 
-	// layer rendered with and affected by fx
-	fxLayer: null,
+  // layer rendered with and affected by fx
+  fxLayer: null,
 
-	// layer rendered without fx
-	noFXLayer: null,
+  // layer rendered without fx
+  noFXLayer: null,
 
-	/* region INITIALIZATION */
+  /* region INITIALIZATION */
 
-	ctor: function () {
-		// layer affected by post fx
-		this.fxLayer = BaseLayer.create();
+  ctor() {
+    // layer affected by post fx
+    this.fxLayer = BaseLayer.create();
 
-		// layer rendered on top of surface and post fx
-		this.noFXLayer = BaseLayer.create();
+    // layer rendered on top of surface and post fx
+    this.noFXLayer = BaseLayer.create();
 
-		// do super ctor
-		this._super();
+    // do super ctor
+    this._super();
 
-		// add layers
-		this.addChild(this.fxLayer);
-		this.addChild(this.noFXLayer);
-	},
+    // add layers
+    this.addChild(this.fxLayer);
+    this.addChild(this.noFXLayer);
+  },
 
-	_createRenderCmd: function(){
-		if (cc._renderType === cc._RENDER_TYPE_CANVAS)
-			return this._super();
-		else {
-			return new FXCompositeLayer.WebGLRenderCmd(this);
-		}
-	},
+  _createRenderCmd() {
+    if (cc._renderType === cc._RENDER_TYPE_CANVAS) return this._super();
 
-	/* endregion INITIALIZATION */
+    return new FXCompositeLayer.WebGLRenderCmd(this);
+  },
 
-	/* region GETTERS / SETTERS */
+  /* endregion INITIALIZATION */
 
-	getFXLayer: function () {
-		return this.fxLayer;
-	},
+  /* region GETTERS / SETTERS */
 
-	getNoFXLayer: function () {
-		return this.noFXLayer;
-	},
+  getFXLayer() {
+    return this.fxLayer;
+  },
 
-	addChild: function (child, localZOrder, tag) {
-		if (child === this.fxLayer || child === this.noFXLayer) {
-			this._super(child, localZOrder, tag);
-		} else {
-			// any children added to this layer should be added to either fx or no fx layers
-			// if any attempt is made to add a child to this layer directly
-			// automatically redirect that child into no fx layer
-			this.noFXLayer.addChild(child, localZOrder, tag);
-		}
-	},
+  getNoFXLayer() {
+    return this.noFXLayer;
+  },
 
-	/* endregion GETTERS / SETTERS */
+  addChild(child, localZOrder, tag) {
+    if (child === this.fxLayer || child === this.noFXLayer) {
+      this._super(child, localZOrder, tag);
+    } else {
+      // any children added to this layer should be added to either fx or no fx layers
+      // if any attempt is made to add a child to this layer directly
+      // automatically redirect that child into no fx layer
+      this.noFXLayer.addChild(child, localZOrder, tag);
+    }
+  },
 
-	/* region EVENTS */
+  /* endregion GETTERS / SETTERS */
 
-	_startListeningToEvents: function () {
-		this._super();
+  /* region EVENTS */
 
-		// listen for events
-		var fx = this.getFX();
-		if (fx != null) {
-			fx.getEventBus().on(EVENTS.caching_screen_start, this.onCachingStart, this);
-			fx.getEventBus().on(EVENTS.caching_surface_start, this.onCachingStart, this);
-			fx.getEventBus().on(EVENTS.caching_screen_setup, this.onCachingReset, this);
-			fx.getEventBus().on(EVENTS.caching_surface_setup, this.onCachingReset, this);
-			fx.getEventBus().on(EVENTS.caching_screen_stop, this.onCachingReset, this);
-			fx.getEventBus().on(EVENTS.caching_surface_stop, this.onCachingReset, this);
-			fx.getEventBus().on(EVENTS.caching_screen_dirty, this.onCachingReset, this);
-			fx.getEventBus().on(EVENTS.caching_surface_dirty, this.onCachingReset, this);
+  _startListeningToEvents() {
+    this._super();
 
-			fx.getEventBus().on(EVENTS.blur_screen_start, this.onBlurChange, this);
-			fx.getEventBus().on(EVENTS.blur_screen_stop, this.onBlurChange, this);
-			fx.getEventBus().on(EVENTS.blur_surface_start, this.onBlurChange, this);
-			fx.getEventBus().on(EVENTS.blur_surface_stop, this.onBlurChange, this);
-		}
-	},
+    // listen for events
+    const fx = this.getFX();
+    if (fx != null) {
+      fx.getEventBus().on(EVENTS.caching_screen_start, this.onCachingStart, this);
+      fx.getEventBus().on(EVENTS.caching_surface_start, this.onCachingStart, this);
+      fx.getEventBus().on(EVENTS.caching_screen_setup, this.onCachingReset, this);
+      fx.getEventBus().on(EVENTS.caching_surface_setup, this.onCachingReset, this);
+      fx.getEventBus().on(EVENTS.caching_screen_stop, this.onCachingReset, this);
+      fx.getEventBus().on(EVENTS.caching_surface_stop, this.onCachingReset, this);
+      fx.getEventBus().on(EVENTS.caching_screen_dirty, this.onCachingReset, this);
+      fx.getEventBus().on(EVENTS.caching_surface_dirty, this.onCachingReset, this);
 
-	_stopListeningToEvents: function () {
-		this._super();
+      fx.getEventBus().on(EVENTS.blur_screen_start, this.onBlurChange, this);
+      fx.getEventBus().on(EVENTS.blur_screen_stop, this.onBlurChange, this);
+      fx.getEventBus().on(EVENTS.blur_surface_start, this.onBlurChange, this);
+      fx.getEventBus().on(EVENTS.blur_surface_stop, this.onBlurChange, this);
+    }
+  },
 
-		// listen for events
-		var fx = this.getFX();
-		if (fx != null) {
-			fx.getEventBus().off(EVENTS.caching_screen_start, this.onCachingStart, this);
-			fx.getEventBus().off(EVENTS.caching_surface_start, this.onCachingStart, this);
-			fx.getEventBus().off(EVENTS.caching_screen_setup, this.onCachingReset, this);
-			fx.getEventBus().off(EVENTS.caching_surface_setup, this.onCachingReset, this);
-			fx.getEventBus().off(EVENTS.caching_screen_stop, this.onCachingReset, this);
-			fx.getEventBus().off(EVENTS.caching_surface_stop, this.onCachingReset, this);
-			fx.getEventBus().off(EVENTS.caching_screen_dirty, this.onCachingReset, this);
-			fx.getEventBus().off(EVENTS.caching_surface_dirty, this.onCachingReset, this);
+  _stopListeningToEvents() {
+    this._super();
 
-			fx.getEventBus().off(EVENTS.blur_screen_start, this.onBlurChange, this);
-			fx.getEventBus().off(EVENTS.blur_screen_stop, this.onBlurChange, this);
-			fx.getEventBus().off(EVENTS.blur_surface_start, this.onBlurChange, this);
-			fx.getEventBus().off(EVENTS.blur_surface_stop, this.onBlurChange, this);
-		}
-	},
+    // listen for events
+    const fx = this.getFX();
+    if (fx != null) {
+      fx.getEventBus().off(EVENTS.caching_screen_start, this.onCachingStart, this);
+      fx.getEventBus().off(EVENTS.caching_surface_start, this.onCachingStart, this);
+      fx.getEventBus().off(EVENTS.caching_screen_setup, this.onCachingReset, this);
+      fx.getEventBus().off(EVENTS.caching_surface_setup, this.onCachingReset, this);
+      fx.getEventBus().off(EVENTS.caching_screen_stop, this.onCachingReset, this);
+      fx.getEventBus().off(EVENTS.caching_surface_stop, this.onCachingReset, this);
+      fx.getEventBus().off(EVENTS.caching_screen_dirty, this.onCachingReset, this);
+      fx.getEventBus().off(EVENTS.caching_surface_dirty, this.onCachingReset, this);
 
-	onSetupTransitionIn: function () {
-		this.getFX().reset();
-		BaseLayer.prototype.onSetupTransitionIn.call(this);
-	},
+      fx.getEventBus().off(EVENTS.blur_screen_start, this.onBlurChange, this);
+      fx.getEventBus().off(EVENTS.blur_screen_stop, this.onBlurChange, this);
+      fx.getEventBus().off(EVENTS.blur_surface_start, this.onBlurChange, this);
+      fx.getEventBus().off(EVENTS.blur_surface_stop, this.onBlurChange, this);
+    }
+  },
 
-	onBlurChange: function () {
-		var blurringSurface = this.getFX().getIsBlurringSurface();
-		var blurringScreen = this.getFX().getIsBlurringScreen();
-		var blurring = blurringSurface || blurringScreen;
-		this.getNoFXLayer().setVisible(!blurring);
-	},
+  onSetupTransitionIn() {
+    this.getFX().reset();
+    BaseLayer.prototype.onSetupTransitionIn.call(this);
+  },
 
-	onCachingStart: function () {
-		this.setVisible(false);
-	},
+  onBlurChange() {
+    const blurringSurface = this.getFX().getIsBlurringSurface();
+    const blurringScreen = this.getFX().getIsBlurringScreen();
+    const blurring = blurringSurface || blurringScreen;
+    this.getNoFXLayer().setVisible(!blurring);
+  },
 
-	onCachingReset: function () {
-		this.setVisible(true);
-	}
+  onCachingStart() {
+    this.setVisible(false);
+  },
 
-	/* endregion EVENTS */
+  onCachingReset() {
+    this.setVisible(true);
+  },
+
+  /* endregion EVENTS */
 
 });
 
-FXCompositeLayer.WebGLRenderCmd = function(renderable){
-	cc.Layer.WebGLRenderCmd.call(this, renderable);
+FXCompositeLayer.WebGLRenderCmd = function (renderable) {
+  cc.Layer.WebGLRenderCmd.call(this, renderable);
 };
-var proto = FXCompositeLayer.WebGLRenderCmd.prototype = Object.create(cc.Layer.WebGLRenderCmd.prototype);
+const proto = FXCompositeLayer.WebGLRenderCmd.prototype = Object.create(cc.Layer.WebGLRenderCmd.prototype);
 proto.constructor = FXCompositeLayer.WebGLRenderCmd;
 
 proto.visit = function (parentCmd) {
-	var node = this._node;
-	var fx = node.getFX();
+  const node = this._node;
+  const fx = node.getFX();
 
-	if (!node._visible) {
-		// just push surface render cmds when not visible
-		cc.renderer.pushRenderCommand(fx.getBeginSurfaceCompositeRenderCmd());
-		cc.renderer.pushRenderCommand(fx.getEndSurfaceCompositeRenderCmd());
-	} else {
-		parentCmd = parentCmd || this.getParentRenderCmd();
-		if (node._parent && node._parent._renderCmd) {
-			this._curLevel = node._parent._renderCmd._curLevel + 1;
-		}
-		var currentStack = cc.current_stack;
+  if (!node._visible) {
+    // just push surface render cmds when not visible
+    cc.renderer.pushRenderCommand(fx.getBeginSurfaceCompositeRenderCmd());
+    cc.renderer.pushRenderCommand(fx.getEndSurfaceCompositeRenderCmd());
+  } else {
+    parentCmd = parentCmd || this.getParentRenderCmd();
+    if (node._parent && node._parent._renderCmd) {
+      this._curLevel = node._parent._renderCmd._curLevel + 1;
+    }
+    const currentStack = cc.current_stack;
 
-		//optimize performance for javascript
-		currentStack.stack.push(currentStack.top);
-		this._syncStatus(parentCmd);
-		currentStack.top = this._stackMatrix;
+    // optimize performance for javascript
+    currentStack.stack.push(currentStack.top);
+    this._syncStatus(parentCmd);
+    currentStack.top = this._stackMatrix;
 
-		node.sortAllChildren();
+    node.sortAllChildren();
 
-		// push own layer render command
-		cc.renderer.pushRenderCommand(this);
+    // push own layer render command
+    cc.renderer.pushRenderCommand(this);
 
-		// push render command to start surface compositing
-		cc.renderer.pushRenderCommand(fx.getBeginSurfaceCompositeRenderCmd());
+    // push render command to start surface compositing
+    cc.renderer.pushRenderCommand(fx.getBeginSurfaceCompositeRenderCmd());
 
-		// visit fx layer
-		node.fxLayer._renderCmd.visit(this);
+    // visit fx layer
+    node.fxLayer._renderCmd.visit(this);
 
-		// push render command to stop surface compositing
-		cc.renderer.pushRenderCommand(fx.getEndSurfaceCompositeRenderCmd());
+    // push render command to stop surface compositing
+    cc.renderer.pushRenderCommand(fx.getEndSurfaceCompositeRenderCmd());
 
-		// visit no fx layer
-		node.noFXLayer._renderCmd.visit(this);
+    // visit no fx layer
+    node.noFXLayer._renderCmd.visit(this);
 
-		// no longer dirty
-		this._dirtyFlag = 0;
+    // no longer dirty
+    this._dirtyFlag = 0;
 
-		//optimize performance for javascript
-		currentStack.top = currentStack.stack.pop();
-	}
+    // optimize performance for javascript
+    currentStack.top = currentStack.stack.pop();
+  }
 };
 
-FXCompositeLayer.create = function(layer) {
-	return BaseLayer.create(layer || new FXCompositeLayer());
+FXCompositeLayer.create = function (layer) {
+  return BaseLayer.create(layer || new FXCompositeLayer());
 };
 
 module.exports = FXCompositeLayer;

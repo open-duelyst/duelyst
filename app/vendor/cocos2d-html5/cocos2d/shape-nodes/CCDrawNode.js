@@ -107,7 +107,7 @@ cc.DrawNodeCanvas = cc.Node.extend(/** @lends cc.DrawNode# */{                  
         locCmd._drawColor = this._drawColor = cc.color(255, 255, 255, 255);
         locCmd._blendFunc = this._blendFunc = new cc.BlendFunc(cc.BLEND_SRC, cc.BLEND_DST);
 
-		this.init();
+    this.init();
     },
 
     // ----common function start ----
@@ -519,7 +519,7 @@ cc.DrawNodeWebGL = cc.Node.extend({
         this._blendFunc = new cc.BlendFunc(cc.BLEND_SRC, cc.BLEND_DST);
         this._drawColor = cc.color(255,255,255,255);
 
-	    this.init();
+      this.init();
     },
 
     init:function () {

@@ -205,7 +205,7 @@ ccs.ProcessBase = ccs.Class.extend(/** @lends ccs.ProcessBase# */{
             this._currentPercent = locCurrentFrame / locNextFrameIndex;
 
             /*
-             *	if currentFrame is bigger or equal than this._nextFrameIndex, then reduce it util currentFrame is
+             *  if currentFrame is bigger or equal than this._nextFrameIndex, then reduce it util currentFrame is
              *  smaller than this._nextFrameIndex
              */
             locCurrentFrame = ccs.fmodf(locCurrentFrame, locNextFrameIndex);

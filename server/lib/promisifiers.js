@@ -1,13 +1,12 @@
 // For functions that don't provide an error in their callback signature
-module.exports.noErrorPromsifier = function(originalMethod) {
-  var promisified;
-  return promisified = function() {
-    var args, self;
-    args = [].slice.call(arguments);
-    self = this;
-    return new Promise(function(resolve, reject) {
+module.exports.noErrorPromsifier = function (originalMethod) {
+  const promisified = function () {
+    const args = [].slice.call(...args);
+    const self = this;
+    return new Promise((resolve, reject) => {
       args.push(resolve);
       originalMethod.apply(self, args);
     });
   };
+  return promisified;
 };

@@ -1,15 +1,13 @@
-'use strict';
+const ProfileErrorViewTempl = require('./templates/profile_error_item.hbs');
 
-var ProfileErrorViewTempl = require('./templates/profile_error_item.hbs');
+const ProfileErrorView = Backbone.Marionette.ItemView.extend({
 
-var ProfileErrorView = Backbone.Marionette.ItemView.extend({
+  className: 'loading-region',
 
-	className: "loading-region",
+  template: ProfileErrorViewTempl,
 
-	template: ProfileErrorViewTempl,
-
-	onShow: function() {
-	}
+  onShow() {
+  },
 
 });
 

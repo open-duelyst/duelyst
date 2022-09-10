@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForUnitTransform = require("./../base/unit_transform");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForUnitTransform = require('../base/unit_transform');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,29 +14,29 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForTransformFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	let transformCard = null;
-	if(intent.cardId != null){
-		transformCard = card.getGameSession().getExistingCardFromIndexOrCreateCardFromData({id:intent.cardId});
-	}
+const getScoreForTransformFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  let transformCard = null;
+  if (intent.cardId != null) {
+    transformCard = card.getGameSession().getExistingCardFromIndexOrCreateCardFromData({ id: intent.cardId });
+  }
 
-	if (transformCard != null){
-		// the transformed card belongs to the owner the target card
-		transformCard.setOwnerId(targetCard.getOwnerId());
-	}
+  if (transformCard != null) {
+    // the transformed card belongs to the owner the target card
+    transformCard.setOwnerId(targetCard.getOwnerId());
+  }
 
-	if (targetCard != null && transformCard != null) {
-		if (card.getIsSameTeamAs(targetCard)) {
-			// casting a transform on a friendly target adds score
-			score += ScoreForUnitTransform(targetCard, transformCard);
-		} else {
-			// subtract score for transforming enemy cards
-			score -= ScoreForUnitTransform(targetCard, transformCard);
-		}
-	}
+  if (targetCard != null && transformCard != null) {
+    if (card.getIsSameTeamAs(targetCard)) {
+      // casting a transform on a friendly target adds score
+      score += ScoreForUnitTransform(targetCard, transformCard);
+    } else {
+      // subtract score for transforming enemy cards
+      score -= ScoreForUnitTransform(targetCard, transformCard);
+    }
+  }
 
-	return score;
+  return score;
 };
 
 /**
@@ -50,19 +48,19 @@ let getScoreForTransformFromCardWithIntentToCard = function (card, intent, targe
  * @static
  * @public
  */
-let ScoreForIntentTransform = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Transform) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Transform);
+const ScoreForIntentTransform = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Transform) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Transform);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForTransformFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForTransformFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentTransform;

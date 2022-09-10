@@ -1,12 +1,12 @@
-var GameUIModule = cc.Class.extend({
+const GameUIModule = cc.Class.extend({
 
-	start: function() {
-		// override in subclass to do setup behavior
-	},
+  start() {
+    // override in subclass to do setup behavior
+  },
 
-	terminate: function() {
-		// override in subclass to do termination behavior
-	}
+  terminate() {
+    // override in subclass to do termination behavior
+  },
 
 });
 

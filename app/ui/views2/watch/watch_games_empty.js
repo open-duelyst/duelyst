@@ -1,16 +1,15 @@
-'use strict'
-var Animations = require('app/ui/views/animations')
-var Template = require('./templates/watch_games_empty.hbs')
+const Animations = require('app/ui/views/animations');
+const Template = require('./templates/watch_games_empty.hbs');
 
-var WatchGamesEmptyView = Backbone.Marionette.ItemView.extend({
+const WatchGamesEmptyView = Backbone.Marionette.ItemView.extend({
 
-	className: "watch-games-empty",
-	template: Template,
+  className: 'watch-games-empty',
+  template: Template,
 
-	animateReveal: function(duration, delay) {
-		Animations.fadeZoomUpIn.call(this, duration, delay, 0, 0, 0.9);
-	}
+  animateReveal(duration, delay) {
+    Animations.fadeZoomUpIn.call(this, duration, delay, 0, 0, 0.9);
+  },
 
-})
+});
 
-module.exports = WatchGamesEmptyView
+module.exports = WatchGamesEmptyView;

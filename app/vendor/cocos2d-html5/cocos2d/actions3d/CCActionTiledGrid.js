@@ -38,17 +38,17 @@ cc.ShakyTiles3D = cc.TiledGrid3DAction.extend(/** @lends cc.ShakyTiles3D# */{
     _randRange:0,
     _shakeZ:false,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates the action with a range, whether or not to shake Z vertices, a grid size, and duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number} range
-	 * @param {Boolean} shakeZ
-	 */
+   * Creates the action with a range, whether or not to shake Z vertices, a grid size, and duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number} range
+   * @param {Boolean} shakeZ
+   */
     ctor:function (duration, gridSize, range, shakeZ) {
         cc.GridAction.prototype.ctor.call(this);
-		shakeZ !== undefined && this.initWithDuration(duration, gridSize, range, shakeZ);
+    shakeZ !== undefined && this.initWithDuration(duration, gridSize, range, shakeZ);
     },
 
     /**
@@ -149,17 +149,17 @@ cc.ShatteredTiles3D = cc.TiledGrid3DAction.extend(/** @lends cc.ShatteredTiles3D
     _once:false,
     _shatterZ:false,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates the action with a range, whether of not to shatter Z vertices, a grid size and duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number} range
-	 * @param {Boolean} shatterZ
-	 */
+   * Creates the action with a range, whether of not to shatter Z vertices, a grid size and duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number} range
+   * @param {Boolean} shatterZ
+   */
     ctor:function (duration, gridSize, range, shatterZ) {
         cc.GridAction.prototype.ctor.call(this);
-		shatterZ !== undefined && this.initWithDuration(duration, gridSize, range, shatterZ);
+    shatterZ !== undefined && this.initWithDuration(duration, gridSize, range, shatterZ);
     },
 
     /**
@@ -277,19 +277,19 @@ cc.ShuffleTiles = cc.TiledGrid3DAction.extend(/** @lends cc.ShuffleTiles# */{
     _tilesOrder:null,
     _tiles:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates the action with a random seed, the grid size and the duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number} seed
-	 */
+   * Creates the action with a random seed, the grid size and the duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number} seed
+   */
     ctor:function (duration, gridSize, seed) {
         cc.GridAction.prototype.ctor.call(this);
         this._tilesOrder = [];
         this._tiles = [];
 
-		seed !== undefined && this.initWithDuration(duration, gridSize, seed);
+    seed !== undefined && this.initWithDuration(duration, gridSize, seed);
     },
 
     /**
@@ -707,18 +707,18 @@ cc.TurnOffTiles = cc.TiledGrid3DAction.extend(/** @lends cc.TurnOffTiles# */{
     _tilesCount:0,
     _tilesOrder:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates the action with a random seed, the grid size and the duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number|Null} [seed=0]
-	 */
+   * Creates the action with a random seed, the grid size and the duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number|Null} [seed=0]
+   */
     ctor:function (duration, gridSize, seed) {
         cc.GridAction.prototype.ctor.call(this);
         this._tilesOrder = [];
 
-		gridSize !== undefined && this.initWithDuration(duration, gridSize, seed);
+    gridSize !== undefined && this.initWithDuration(duration, gridSize, seed);
     },
 
     /**
@@ -848,17 +848,17 @@ cc.WavesTiles3D = cc.TiledGrid3DAction.extend(/** @lends cc.WavesTiles3D# */{
     _amplitude:0,
     _amplitudeRate:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates the action with a number of waves, the waves amplitude, the grid size and the duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number} waves
-	 * @param {Number} amplitude
-	 */
+   * creates the action with a number of waves, the waves amplitude, the grid size and the duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number} waves
+   * @param {Number} amplitude
+   */
     ctor:function (duration, gridSize, waves, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
-		amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
+    amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
     },
 
     /**
@@ -976,17 +976,17 @@ cc.JumpTiles3D = cc.TiledGrid3DAction.extend(/** @lends cc.JumpTiles3D# */{
     _amplitude:0,
     _amplitudeRate:0,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates the action with the number of jumps, the sin amplitude, the grid size and the duration.
-	 * @param {Number} duration
-	 * @param {cc.Size} gridSize
-	 * @param {Number} numberOfJumps
-	 * @param {Number} amplitude
-	 */
+   * creates the action with the number of jumps, the sin amplitude, the grid size and the duration.
+   * @param {Number} duration
+   * @param {cc.Size} gridSize
+   * @param {Number} numberOfJumps
+   * @param {Number} amplitude
+   */
     ctor:function (duration, gridSize, numberOfJumps, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
-		amplitude !== undefined && this.initWithDuration(duration, gridSize, numberOfJumps, amplitude);
+    amplitude !== undefined && this.initWithDuration(duration, gridSize, numberOfJumps, amplitude);
     },
 
     /**
@@ -1116,15 +1116,15 @@ cc.SplitRows = cc.TiledGrid3DAction.extend(/** @lends cc.SplitRows# */{
     _rows:0,
     _winSize:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * creates the action with the number of rows to split and the duration.
-	 * @param {Number} duration
-	 * @param {Number} rows
-	 */
+   * creates the action with the number of rows to split and the duration.
+   * @param {Number} duration
+   * @param {Number} rows
+   */
     ctor:function (duration, rows) {
         cc.GridAction.prototype.ctor.call(this);
-		rows !== undefined && this.initWithDuration(duration, rows);
+    rows !== undefined && this.initWithDuration(duration, rows);
     },
 
     /**
@@ -1208,15 +1208,15 @@ cc.SplitCols = cc.TiledGrid3DAction.extend(/** @lends cc.SplitCols# */{
     _cols:0,
     _winSize:null,
 
-	/**
+  /**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-	 * Creates the action with the number of columns to split and the duration.
-	 * @param {Number} duration
-	 * @param {Number} cols
-	 */
+   * Creates the action with the number of columns to split and the duration.
+   * @param {Number} duration
+   * @param {Number} cols
+   */
     ctor:function (duration, cols) {
         cc.GridAction.prototype.ctor.call(this);
-		cols !== undefined && this.initWithDuration(duration, cols);
+    cols !== undefined && this.initWithDuration(duration, cols);
     },
     /**
      * initializes the action with the number of columns to split and the duration

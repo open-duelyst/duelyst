@@ -1,100 +1,99 @@
-//pragma PKGS: shop
-'use strict'
-var _ = require('underscore')
-var moment = require('moment')
-var CONFIG = require('app/common/config')
-var RSX = require('app/data/resources')
-var ShopData = require('app/data/shop.json')
-var Logger = require('app/common/logger')
-//var PremiumShopData = require('app/data/premium_shop.json')
-var audio_engine = require('app/audio/audio_engine')
-var SDK = require('app/sdk')
-var NavigationManager = require('app/ui/managers/navigation_manager')
-var ProfileManager = require('app/ui/managers/profile_manager')
-var ShopManager = require('app/ui/managers/shop_manager')
-var InventoryManager = require('app/ui/managers/inventory_manager')
-var Template = require('./templates/shop_premium_packs_collection_view.hbs')
-var EventBus = require('app/common/eventbus')
-var EVENTS = require('app/common/event_types')
-var openUrl = require('app/common/openUrl')
+// pragma PKGS: shop
 
-var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
+const _ = require('underscore');
+const moment = require('moment');
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const ShopData = require('app/data/shop.json');
+const Logger = require('app/common/logger');
+// var PremiumShopData = require('app/data/premium_shop.json')
+const audio_engine = require('app/audio/audio_engine');
+const SDK = require('app/sdk');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const ProfileManager = require('app/ui/managers/profile_manager');
+const ShopManager = require('app/ui/managers/shop_manager');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const openUrl = require('app/common/openUrl');
+const Template = require('./templates/shop_premium_packs_collection_view.hbs');
 
-	className: "shop-premium-packs-container",
-	selectedSubCategory: null,
-	initialSubCategory: null,
-	template: Template,
-	tooltipElement: null,
-	events: {
-		"click button": "onSelectProduct"
-	},
+const ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
 
-	_premiumProductsData: null,
+  className: 'shop-premium-packs-container',
+  selectedSubCategory: null,
+  initialSubCategory: null,
+  template: Template,
+  tooltipElement: null,
+  events: {
+    'click button': 'onSelectProduct',
+  },
 
-	/* ui selector cache */
-	ui: {
-		"productForGoldButtons": ".product-for-gold .btn-buy",
-		"premiumPackProducts": ".shop-premium-packs",
-		"tabs": ".nav-tabs",
-		"tabBody": ".tab-body"
-	},
+  _premiumProductsData: null,
 
-	serializeModel:function(model) {
-		var data =  model.toJSON.apply(model, _.rest(arguments));
+  /* ui selector cache */
+  ui: {
+    productForGoldButtons: '.product-for-gold .btn-buy',
+    premiumPackProducts: '.shop-premium-packs',
+    tabs: '.nav-tabs',
+    tabBody: '.tab-body',
+  },
 
-		return data;
-	},
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
 
-	initialize:function(opts) {
-	},
+    return data;
+  },
 
-	onRender:function() {
-		this.onWalletChange();
-	},
+  initialize(opts) {
+  },
 
-	onShow:function() {
-		this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
-		this.onWalletChange();
-	},
+  onRender() {
+    this.onWalletChange();
+  },
 
-	onPrepareForDestroy: function () {
-	},
+  onShow() {
+    this.listenTo(InventoryManager.getInstance().walletModel, 'change', this.onWalletChange);
+    this.onWalletChange();
+  },
 
-	onWalletChange: function () {
-	},
+  onPrepareForDestroy() {
+  },
 
+  onWalletChange() {
+  },
 
-	/* region PURCHASE */
+  /* region PURCHASE */
 
-	onSelectProduct: function(e){
-		if (window.isSteam) {
-			return this.onSelectProductSteam(e)
-		}
-	},
+  onSelectProduct(e) {
+    if (window.isSteam) {
+      return this.onSelectProductSteam(e);
+    }
+  },
 
-	onSelectProductSteam: function(e) {
-		var productSkuId = $(e.currentTarget).data("productSkuId");
-		// TODO - Use InventoryManager.getInstance().purchaseProductSkuOnSteam
-		// return InventoryManager.getInstance().initBneaSteamTxn([{sku_id: productSkuId, qty: 1}])
-		// .then(function(steamUrl){
-		// 	// open [steam] browser then flash success
-		// 	// check platform here to determine if to use steam browser
-		// 	if (window.steamworksOverlayEnabled) {
-		// 		window.steamworks.activateGameOverlayToWebPage(steamUrl)
-		// 	} else {
-		// 		openUrl(steamUrl)
-		// 	}
-		// })
-		// .catch(function(e){
-		// 	Logger.module('STEAM').error("Initializing Steam transaction failed: #{e.message}")
-		// })
-	},
+  onSelectProductSteam(e) {
+    const productSkuId = $(e.currentTarget).data('productSkuId');
+    // TODO - Use InventoryManager.getInstance().purchaseProductSkuOnSteam
+    // return InventoryManager.getInstance().initBneaSteamTxn([{sku_id: productSkuId, qty: 1}])
+    // .then(function(steamUrl){
+    //   // open [steam] browser then flash success
+    //   // check platform here to determine if to use steam browser
+    //   if (window.steamworksOverlayEnabled) {
+    //     window.steamworks.activateGameOverlayToWebPage(steamUrl)
+    //   } else {
+    //     openUrl(steamUrl)
+    //   }
+    // })
+    // .catch(function(e){
+    //   Logger.module('STEAM').error("Initializing Steam transaction failed: #{e.message}")
+    // })
+  },
 
-	onPurchaseComplete: function(purchaseData) {
-	}
+  onPurchaseComplete(purchaseData) {
+  },
 
-	/* endregion PURCHASE */
+  /* endregion PURCHASE */
 
-})
+});
 
-module.exports = ShopPremiumPacksCollectionView
+module.exports = ShopPremiumPacksCollectionView;

@@ -54,21 +54,21 @@ cc.Touch = cc.Class.extend(/** @lends cc.Touch# */{
         return {x: this._point.x, y: this._point.y};
     },
 
-	/**
-	 * Returns X axis location value
-	 * @returns {number}
-	 */
-	getLocationX: function () {
-		return this._point.x;
-	},
+  /**
+   * Returns X axis location value
+   * @returns {number}
+   */
+  getLocationX: function () {
+    return this._point.x;
+  },
 
-	/**
+  /**
      * Returns Y axis location value
-	 * @returns {number}
-	 */
-	getLocationY: function () {
-		return this._point.y;
-	},
+   * @returns {number}
+   */
+  getLocationY: function () {
+    return this._point.y;
+  },
 
     /**
      * Returns the previous touch location in OpenGL coordinates

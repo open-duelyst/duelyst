@@ -1,246 +1,241 @@
-'use strict';
+const _ = require('underscore');
+const Promise = require('bluebird');
+const Analytics = require('app/common/analytics');
+const validator = require('validator');
+const Session = require('app/common/session2');
+const RegistrationItemViewTempl = require('app/ui/templates/item/registration.hbs');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const i18next = require('i18next');
+const FormPromptModalItemView = require('./form_prompt_modal');
 
-var _ = require('underscore');
-var Promise = require("bluebird");
-var Analytics = require('app/common/analytics');
-var validator = require('validator');
-var Session = require('app/common/session2');
-var FormPromptModalItemView = require('./form_prompt_modal');
-var RegistrationItemViewTempl = require('app/ui/templates/item/registration.hbs');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var i18next = require('i18next')
+const RegistrationItemView = FormPromptModalItemView.extend({
 
-var RegistrationItemView = FormPromptModalItemView.extend({
+  id: 'app-registration',
+  template: RegistrationItemViewTempl,
 
-	id: "app-registration",
-	template: RegistrationItemViewTempl,
+  ui: {
+    $form: '.prompt-form',
+    $email: '.email',
+    $username: '.username',
+    $password: '.password',
+    $passwordConfirm: '.password-confirm',
+    $inviteCode: '.invite-code',
+    $friendReferralCode: '.friend-referral-code',
+    $submit: '.prompt-submit',
+    $submitted: '.prompt-submitted',
+    $error: '.prompt-error',
+    $errorMessage: '.error-message',
+    $success: '.prompt-success',
+    $formGroupFriendReferralButton: '#formGroupFriendReferralButton',
+    $formGroupFriendReferralInput: '#formGroupFriendReferralInput',
+  },
 
-	ui: {
-		$form: ".prompt-form",
-		$email: ".email",
-		$username: ".username",
-		$password: ".password",
-		$passwordConfirm: ".password-confirm",
-		$inviteCode: ".invite-code",
-		$friendReferralCode: ".friend-referral-code",
-		$submit: ".prompt-submit",
-		$submitted: ".prompt-submitted",
-		$error: ".prompt-error",
-		$errorMessage: ".error-message",
-		$success: ".prompt-success",
-		$formGroupFriendReferralButton: "#formGroupFriendReferralButton",
-		$formGroupFriendReferralInput: "#formGroupFriendReferralInput"
-	},
+  events: {
+    'click .prompt-submit': 'onClickSubmit',
+    'click .prompt-cancel': 'onCancel',
+    'input .form-control': 'onFormControlChangeContent',
+    'blur .form-control': 'onFormControlBlur',
+    'click #show_friend_referral_code_button': 'onFriendReferralButtonPressed',
+  },
 
-	events: {
-		"click .prompt-submit": "onClickSubmit",
-		"click .prompt-cancel"  : "onCancel",
-		'input .form-control' : 'onFormControlChangeContent',
-		'blur .form-control' : 'onFormControlBlur',
-		"click #show_friend_referral_code_button": "onFriendReferralButtonPressed"
-	},
+  templateHelpers: {
+    areInviteCodesActive() { return process.env.INVITE_CODES_ACTIVE; },
+    isRecaptchaActive() { return process.env.RECAPTCHA_ACTIVE; },
+  },
 
-	templateHelpers: {
-		areInviteCodesActive: function() { return process.env.INVITE_CODES_ACTIVE },
-		isRecaptchaActive: function() { return process.env.RECAPTCHA_ACTIVE }
-	},
+  isValid: false,
+  _hasModifiedEmail: false,
+  _hasModifiedUsername: false,
+  _hasModifiedPassword: false,
+  _hasModifiedPasswordConfirm: false,
+  _hasModifiedInviteCode: false,
+  _emailUnavailable: false,
+  _usernameUnavailable: false,
+  _userNavLockId: 'RegistrationUserNavLockId',
 
-	isValid: false,
-	_hasModifiedEmail: false,
-	_hasModifiedUsername: false,
-	_hasModifiedPassword: false,
-	_hasModifiedPasswordConfirm: false,
-	_hasModifiedInviteCode: false,
-	_emailUnavailable: false,
-	_usernameUnavailable: false,
-	_userNavLockId: "RegistrationUserNavLockId",
+  /* region EVENTS */
 
-	/* region EVENTS */
+  onRender() {
+    FormPromptModalItemView.prototype.onRender.apply(this, arguments);
+    if (process.env.RECAPTCHA_ACTIVE) {
+      $.getScript('https://www.google.com/recaptcha/api.js?onload=onRecaptchaReady&render=explicit');
+      window.onRecaptchaReady = function () {
+        grecaptcha.render('recaptcha', {
+          sitekey: '6LcjUh8TAAAAAMmemLtr2dVXLeqNrHXaVp4_grDx',
+          theme: 'dark',
+        });
+      };
+    }
+  },
 
-	onRender: function() {
-		FormPromptModalItemView.prototype.onRender.apply(this, arguments);
-		if (process.env.RECAPTCHA_ACTIVE) {
-			$.getScript('https://www.google.com/recaptcha/api.js?onload=onRecaptchaReady&render=explicit');
-			window.onRecaptchaReady = function() {
-				grecaptcha.render('recaptcha', {
-					'sitekey': '6LcjUh8TAAAAAMmemLtr2dVXLeqNrHXaVp4_grDx',
-					'theme': 'dark'
-				})
-			}
-		}
-	},
+  onShow() {
+    FormPromptModalItemView.prototype.onShow.apply(this, arguments);
+    Analytics.page('Registration', { path: '/#registration' });
+  },
 
-	onShow: function() {
-		FormPromptModalItemView.prototype.onShow.apply(this, arguments);
-		Analytics.page("Registration",{ path: "/#registration" });
-	},
+  onFormControlChangeContent(event) {
+    // update modified state
+    const $target = $(event.target);
+    if (this.ui.$email.is($target)) {
+      this._hasModifiedEmail = true;
+      this._emailUnavailable = false;
+    } else if (this.ui.$username.is($target)) {
+      this._hasModifiedUsername = true;
+      this._usernameUnavailable = false;
+    } else if (this.ui.$password.is($target)) {
+      this._hasModifiedPassword = true;
+    } else if (this.ui.$passwordConfirm.is($target)) {
+      this._hasModifiedPasswordConfirm = true;
+    } else if (this.ui.$inviteCode.is($target)) {
+      this._hasModifiedInviteCode = true;
+    }
 
-	onFormControlChangeContent: function (event) {
+    FormPromptModalItemView.prototype.onFormControlChangeContent.apply(this, arguments);
+  },
 
-		// update modified state
-		var $target = $(event.target);
-		if (this.ui.$email.is($target)) {
-			this._hasModifiedEmail = true;
-			this._emailUnavailable = false;
-		} else if (this.ui.$username.is($target)) {
-			this._hasModifiedUsername = true;
-			this._usernameUnavailable = false;
-		} else if (this.ui.$password.is($target)) {
-			this._hasModifiedPassword = true;
-		} else if (this.ui.$passwordConfirm.is($target)) {
-			this._hasModifiedPasswordConfirm = true;
-		} else if (this.ui.$inviteCode.is($target)) {
-			this._hasModifiedInviteCode = true;
-		}
+  updateValidState() {
+    FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
 
-		FormPromptModalItemView.prototype.onFormControlChangeContent.apply(this, arguments);
-	},
+    const email = this.ui.$email.val();
+    const username = this.ui.$username.val();
+    const password = this.ui.$password.val();
+    const passwordConfirm = this.ui.$passwordConfirm.val();
+    const inviteCode = this.ui.$inviteCode.val();
+    let isValid = true;
 
-	updateValidState: function () {
-		FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
+    // check email
+    if (this._hasModifiedEmail && !this._emailUnavailable) {
+      if (!validator.isEmail(email)) {
+        this.showInvalidFormControl(this.ui.$email, i18next.t('registration.registration_validation_invalid_email'));
+        isValid = false;
+      } else {
+        this.showValidFormControl(this.ui.$email);
 
-		var email = this.ui.$email.val();
-		var username = this.ui.$username.val();
-		var password = this.ui.$password.val();
-		var passwordConfirm = this.ui.$passwordConfirm.val();
-		var inviteCode = this.ui.$inviteCode.val();
-		var isValid = true;
+        // attempt to check whether email is available, but don't block registration for it
+        Session.isEmailAvailable(email)
+          .then((available) => {
+            if (!available) {
+              this._emailUnavailable = true;
+              this.showInvalidFormControl(this.ui.$email, i18next.t('registration.registration_validation_email_exists'));
+            }
+          });
+      }
+    }
 
-		// check email
-		if (this._hasModifiedEmail && !this._emailUnavailable) {
-			if (!validator.isEmail(email)) {
-				this.showInvalidFormControl(this.ui.$email, i18next.t("registration.registration_validation_invalid_email"));
-				isValid = false;
-			} else {
-				this.showValidFormControl(this.ui.$email);
+    // check username
+    if (isValid && this._hasModifiedUsername && !this._usernameUnavailable) {
+      if (!validator.isLength(username, 3, 18) || !validator.isAlphanumeric(username)) {
+        this.showInvalidFormControl(this.ui.$username, i18next.t('registration.registration_validation_username_instructions'));
+        isValid = false;
+      } else {
+        this.showValidFormControl(this.ui.$username);
 
-				// attempt to check whether email is available, but don't block registration for it
-				Session.isEmailAvailable(email)
-				.then(function (available) {
-					if (!available) {
-						this._emailUnavailable = true;
-						this.showInvalidFormControl(this.ui.$email, i18next.t("registration.registration_validation_email_exists"));
-					}
-				}.bind(this));
-			}
-		}
+        // attempt to check whether username is available, but don't block registration for it
+        Session.isUsernameAvailable(username)
+          .then((available) => {
+            if (!available) {
+              this._usernameUnavailable = true;
+              this.showInvalidFormControl(this.ui.$username, i18next.t('registration.registration_validation_username_exists'));
+            }
+          });
+      }
+    }
 
-		// check username
-		if (isValid && this._hasModifiedUsername && !this._usernameUnavailable) {
-			if (!validator.isLength(username,3, 18) || !validator.isAlphanumeric(username)) {
-				this.showInvalidFormControl(this.ui.$username, i18next.t("registration.registration_validation_username_instructions"));
-				isValid = false;
-			} else {
-				this.showValidFormControl(this.ui.$username);
+    // check password
+    if (isValid && this._hasModifiedPassword && !validator.isLength(password, 8)) {
+      // password is not long enough
+      this.showInvalidFormControl(this.ui.$password, i18next.t('registration.registration_validation_password_instructions'));
+      isValid = false;
+    } else if (isValid && this._hasModifiedPasswordConfirm && !validator.equals(password, passwordConfirm)) {
+      // passwords don't match
+      this.showInvalidFormControl(this.ui.$passwordConfirm, i18next.t('registration.registration_validation_passwords_dont_match'));
+      isValid = false;
+    } else {
+      this.showValidFormControl(this.ui.$password);
+      this.showValidFormControl(this.ui.$passwordConfirm);
+    }
 
-				// attempt to check whether username is available, but don't block registration for it
-				Session.isUsernameAvailable(username)
-				.then(function (available) {
-					if (!available) {
-						this._usernameUnavailable = true;
-						this.showInvalidFormControl(this.ui.$username, i18next.t("registration.registration_validation_username_exists"));
-					}
-				}.bind(this));
-			}
-		}
+    // check invite code
+    if (isValid && this._hasModifiedInviteCode && !validator.isLength(inviteCode, 8)) {
+      this.showInvalidFormControl(this.ui.$inviteCode, i18next.t('registration.registration_validation_invite_code_invalid'));
+      isValid = false;
+    } else {
+      this.showValidFormControl(this.ui.$inviteCode);
+    }
 
-		// check password
-		if (isValid && this._hasModifiedPassword && !validator.isLength(password,8)) {
-			// password is not long enough
-			this.showInvalidFormControl(this.ui.$password, i18next.t("registration.registration_validation_password_instructions"));
-			isValid = false;
-		} else if (isValid && this._hasModifiedPasswordConfirm && !validator.equals(password, passwordConfirm)) {
-			// passwords don't match
-			this.showInvalidFormControl(this.ui.$passwordConfirm, i18next.t("registration.registration_validation_passwords_dont_match"));
-			isValid = false;
-		} else {
-			this.showValidFormControl(this.ui.$password);
-			this.showValidFormControl(this.ui.$passwordConfirm);
-		}
+    // ...
+    isValid = isValid && this._hasModifiedEmail && this._hasModifiedUsername && this._hasModifiedPassword && this._hasModifiedPasswordConfirm;
 
-		// check invite code
-		if (isValid && this._hasModifiedInviteCode && !validator.isLength(inviteCode,8)) {
-			this.showInvalidFormControl(this.ui.$inviteCode, i18next.t("registration.registration_validation_invite_code_invalid"));
-			isValid = false;
-		} else {
-			this.showValidFormControl(this.ui.$inviteCode);
-		}
+    if (process.env.INVITE_CODES_ACTIVE) isValid = isValid && this._hasModifiedInviteCode;
 
-		// ...
-		isValid = isValid && this._hasModifiedEmail && this._hasModifiedUsername && this._hasModifiedPassword && this._hasModifiedPasswordConfirm
+    // set final valid state
+    this.isValid = isValid;
+  },
 
-		if (process.env.INVITE_CODES_ACTIVE)
-			isValid = isValid && this._hasModifiedInviteCode
+  onSubmit() {
+    FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
 
-		// set final valid state
-		this.isValid = isValid
-	},
+    // register
+    const email = this.ui.$email.val().trim();
+    const username = this.ui.$username.val().trim();
+    const password = this.ui.$password.val().trim();
+    const inviteCode = this.ui.$inviteCode.val().trim();
+    const friendReferralCode = this.ui.$friendReferralCode.val().trim();
+    const captcha = $('#g-recaptcha-response').val();
 
-	onSubmit: function(){
-		FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
+    Session.register({
+      email,
+      username,
+      password,
+      keycode: inviteCode.length > 0 ? inviteCode : undefined,
+      friend_referral_code: friendReferralCode.length > 0 ? friendReferralCode : undefined,
+      captcha,
+    })
+      .bind(this)
+      .then(function (res) {
+        this.onSuccess(res);
+      })
+      .catch(function (e) {
+        // onError expects a string not an actual error
+        this.onError(e.innerMessage || e.message);
+      });
+  },
 
-		// register
-		var email = this.ui.$email.val().trim();
-		var username = this.ui.$username.val().trim();
-		var password = this.ui.$password.val().trim();
-		var inviteCode = this.ui.$inviteCode.val().trim();
-		var friendReferralCode = this.ui.$friendReferralCode.val().trim();
-		var captcha = $("#g-recaptcha-response").val()
+  onSuccessComplete(registration) {
+    FormPromptModalItemView.prototype.onSuccessComplete.apply(this, arguments);
 
-		Session.register({
-			email: email,
-			username: username,
-			password: password,
-			keycode: inviteCode.length > 0 ? inviteCode : undefined ,
-			friend_referral_code: friendReferralCode.length > 0 ? friendReferralCode : undefined,
-			captcha: captcha
-		})
-		.bind(this)
-		.then(function (res) {
-			this.onSuccess(res)
-		})
-		.catch(function (e) {
-			// onError expects a string not an actual error
-			this.onError(e.innerMessage || e.message)
-		})
-	},
+    // lockdown user triggered navigation while we login
+    NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
 
-	onSuccessComplete: function (registration) {
-		FormPromptModalItemView.prototype.onSuccessComplete.apply(this, arguments);
+    // log user in
+    Session.login(registration.email, registration.password)
+      .finally(() => {
+        // unlock user triggered navigation
+        NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
+      });
+  },
 
-		// lockdown user triggered navigation while we login
-		NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
+  onErrorComplete(errorMessage) {
+    FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
 
-		// log user in
-		Session.login(registration.email, registration.password)
-		.finally(function () {
-			// unlock user triggered navigation
-			NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
+    // try to force showing invalid input
+    if (/email/i.test(errorMessage)) {
+      this.showInvalidFormControl(this.ui.$email, errorMessage);
+    } else if (/username/i.test(errorMessage)) {
+      this.showInvalidFormControl(this.ui.$username, errorMessage);
+    } else if (/password/i.test(errorMessage)) {
+      this.showInvalidFormControl(this.ui.$password, errorMessage);
+    } else if (/invite/i.test(errorMessage)) {
+      this.showInvalidFormControl(this.ui.$inviteCode, errorMessage);
+    }
+  },
 
-		}.bind(this));
-	},
+  onFriendReferralButtonPressed() {
+    this.ui.$formGroupFriendReferralButton.addClass('hide');
+    this.ui.$formGroupFriendReferralInput.removeClass('hide');
+  },
 
-	onErrorComplete: function (errorMessage) {
-		FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
-
-		// try to force showing invalid input
-		if (/email/i.test(errorMessage)) {
-			this.showInvalidFormControl(this.ui.$email, errorMessage);
-		} else if (/username/i.test(errorMessage)) {
-			this.showInvalidFormControl(this.ui.$username, errorMessage);
-		} else if (/password/i.test(errorMessage)) {
-			this.showInvalidFormControl(this.ui.$password, errorMessage);
-		} else if (/invite/i.test(errorMessage)) {
-			this.showInvalidFormControl(this.ui.$inviteCode, errorMessage);
-		}
-	},
-
-	onFriendReferralButtonPressed: function() {
-		this.ui.$formGroupFriendReferralButton.addClass('hide')
-		this.ui.$formGroupFriendReferralInput.removeClass('hide')
-	}
-
-	/* endregion EVENTS */
+  /* endregion EVENTS */
 
 });
 

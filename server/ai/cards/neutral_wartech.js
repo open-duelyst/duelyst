@@ -1,18 +1,16 @@
-"use strict";
+const Cards = require('app/sdk/cards/cardsLookupComplete');
 
-const Cards = require("app/sdk/cards/cardsLookupComplete");
-
-let NW = [
-	Cards.Neutral.Replicant,
-	Cards.Neutral.Metaltooth,
-	Cards.Neutral.RescueRX,
-	Cards.Neutral.RedsteelMinos,
-	Cards.Neutral.CapriciousMarauder,
-	Cards.Neutral.ImperviousGiago,
-	Cards.Neutral.Artificer,
-	Cards.Neutral.ArchitectT2K5,
-	Cards.Neutral.Deceptibot,
-	Cards.Neutral.Silver
+const NW = [
+  Cards.Neutral.Replicant,
+  Cards.Neutral.Metaltooth,
+  Cards.Neutral.RescueRX,
+  Cards.Neutral.RedsteelMinos,
+  Cards.Neutral.CapriciousMarauder,
+  Cards.Neutral.ImperviousGiago,
+  Cards.Neutral.Artificer,
+  Cards.Neutral.ArchitectT2K5,
+  Cards.Neutral.Deceptibot,
+  Cards.Neutral.Silver,
 ];
 
 module.exports = NW;

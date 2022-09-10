@@ -1,10 +1,10 @@
-/****************************************************************************
+/** **************************************************************************
   UtilsAudio - audio utility methods
- ****************************************************************************/
-var UtilsAudio = {};
+ *************************************************************************** */
+const UtilsAudio = {};
 module.exports = UtilsAudio;
 
-var _ = require("underscore");
+const _ = require('underscore');
 
 /**
  * Returns a valid volume value from any input value.
@@ -12,10 +12,10 @@ var _ = require("underscore");
  * @returns {Number}
  */
 UtilsAudio.getValidVolume = function (val) {
-	val = parseFloat(val);
-	if (isNaN(val) || !_.isNumber(val)) {
-		return 1.0; }
-	else {
-		return Math.max(Math.min(val, 1.0), 0.0);
-	}
+  val = parseFloat(val);
+  if (Number.isNaN(val) || !_.isNumber(val)) {
+    return 1.0;
+  }
+
+  return Math.max(Math.min(val, 1.0), 0.0);
 };

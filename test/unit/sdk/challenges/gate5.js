@@ -1,251 +1,252 @@
-var path = require('path')
-require('app-module-path').addPath(path.join(__dirname, '../../../../'))
-require('coffee-script/register')
-var expect = require('chai').expect;
-var CONFIG = require('app/common/config');
-var Logger = require('app/common/logger');
-var SDK = require('app/sdk');
-var UtilsSDK = require('./../../../utils/utils_sdk');
-var _ = require('underscore');
-var Promise = require('bluebird');
-var BeginnerAbyssianChallenge3 = require('app/sdk/challenges/abyssian/BeginnerAbyssianChallenge3');
-var BeginnerSonghaiChallenge1 = require('app/sdk/challenges/songhai/BeginnerSonghaiChallenge1');
-var BeginnerMagmarChallenge4 = require('app/sdk/challenges/magmar/BeginnerMagmarChallenge4');
-var BeginnerVetruvianChallenge2 = require('app/sdk/challenges/vetruvian/BeginnerVetruvianChallenge2');
-var BeginnerRangedChallenge1 = require('app/sdk/challenges/tutorial/BeginnerRangedChallenge1');
-var BeginnerVanarChallenge2 = require('app/sdk/challenges/vanar/BeginnerVanarChallenge2');
-var MediumVetruvianChallenge2 = require('app/sdk/challenges/vetruvian/MediumVetruvianChallenge2');
+const path = require('path');
+require('app-module-path').addPath(path.join(__dirname, '../../../../'));
+require('coffee-script/register');
+
+const { expect } = require('chai');
+const _ = require('underscore');
+const Promise = require('bluebird');
+
+const CONFIG = require('../../../../app/common/config');
+const Logger = require('../../../../app/common/logger.coffee');
+const SDK = require('../../../../app/sdk.coffee');
+const BeginnerAbyssianChallenge3 = require('../../../../app/sdk/challenges/abyssian/BeginnerAbyssianChallenge3.coffee');
+const BeginnerSonghaiChallenge1 = require('../../../../app/sdk/challenges/songhai/BeginnerSonghaiChallenge1.coffee');
+const BeginnerMagmarChallenge4 = require('../../../../app/sdk/challenges/magmar/BeginnerMagmarChallenge4.coffee');
+const BeginnerVetruvianChallenge2 = require('../../../../app/sdk/challenges/vetruvian/BeginnerVetruvianChallenge2.coffee');
+const BeginnerRangedChallenge1 = require('../../../../app/sdk/challenges/tutorial/BeginnerRangedChallenge1.coffee');
+const BeginnerVanarChallenge2 = require('../../../../app/sdk/challenges/vanar/BeginnerVanarChallenge2.coffee');
+const MediumVetruvianChallenge2 = require('../../../../app/sdk/challenges/vetruvian/MediumVetruvianChallenge2.coffee');
+const UtilsSDK = require('../../../utils/utils_sdk');
 
 // disable the logger for cleaner test output
 Logger.enabled = false;
 
-describe("challenges", function() {
-  describe("gate 5", function() {
-    afterEach(function () {
+describe('challenges', () => {
+  describe('gate 5', () => {
+    afterEach(() => {
       SDK.GameSession.reset();
     });
 
-    it('expect gate 5: challenge 1 to be completable', function() {
+    it('expect gate 5: challenge 1 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerVanarChallenge2());
 
-      var gameSession = SDK.GameSession.getInstance();
-      var board = gameSession.getBoard();
-      var myPlayer = gameSession.getMyPlayer();
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const myPlayer = gameSession.getMyPlayer();
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 4, 2);
-			gameSession.executeAction(playCardFromHandAction);
-
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 1, 1);
+      let playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 4, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 1, 2);
+
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 1, 1);
+      gameSession.executeAction(playCardFromHandAction);
+      const followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      const followupAction = myPlayer.actionPlayFollowup(followupCard, 1, 2);
       gameSession.executeAction(followupAction);
-      var followupCard2 = followupAction.getCard().getCurrentFollowupCard();
-      var followupAction2 = myPlayer.actionPlayFollowup(followupCard2, 1, 3);
+      const followupCard2 = followupAction.getCard().getCurrentFollowupCard();
+      const followupAction2 = myPlayer.actionPlayFollowup(followupCard2, 1, 3);
       gameSession.executeAction(followupAction2);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 3, 1);
-			gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 1);
-			gameSession.executeAction(playCardFromHandAction);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 3, 1);
+      gameSession.executeAction(playCardFromHandAction);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 1);
+      gameSession.executeAction(playCardFromHandAction);
 
-      var bear = board.getUnitAtPosition({x:3,y:3});
-      var cloaker = board.getUnitAtPosition({x:3,y:1});
+      const bear = board.getUnitAtPosition({ x: 3, y: 3 });
+      const cloaker = board.getUnitAtPosition({ x: 3, y: 1 });
 
-      var action = bear.actionMove({ x: 4, y: 2 });
+      let action = bear.actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = bear.actionAttack(board.getUnitAtPosition({x:5,y:1}));
-      gameSession.executeAction(action);
-
-      var action = gameSession.getGeneralForPlayer1().actionMove({ x: 4, y: 2 });
-      gameSession.executeAction(action);
-      var action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({x:5,y:1}));
+      action = bear.actionAttack(board.getUnitAtPosition({ x: 5, y: 1 }));
       gameSession.executeAction(action);
 
-      var action = cloaker.actionMove({ x: 5, y: 1 });
+      action = gameSession.getGeneralForPlayer1().actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = cloaker.actionAttack(gameSession.getGeneralForPlayer2());
+      action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({ x: 5, y: 1 }));
+      gameSession.executeAction(action);
+
+      action = cloaker.actionMove({ x: 5, y: 1 });
+      gameSession.executeAction(action);
+      action = cloaker.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
-    it('expect gate 5: challenge 2 to be completable', function() {
+    it('expect gate 5: challenge 2 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new MediumVetruvianChallenge2());
 
-      var gameSession = SDK.GameSession.getInstance();
-      var board = gameSession.getBoard();
-      var myPlayer = gameSession.getMyPlayer();
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const myPlayer = gameSession.getMyPlayer();
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 0, 2);
+      let playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 0, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 0, 2);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 0, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 4, 2);
+      let followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      let followupAction = myPlayer.actionPlayFollowup(followupCard, 4, 2);
       gameSession.executeAction(followupAction);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 0);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 0);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 3, 1);
+      followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      followupAction = myPlayer.actionPlayFollowup(followupCard, 3, 1);
       gameSession.executeAction(followupAction);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 2, 0);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 2, 0);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 2, 2);
+      followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      followupAction = myPlayer.actionPlayFollowup(followupCard, 2, 2);
       gameSession.executeAction(followupAction);
 
-      var dervish = board.getUnitAtPosition({x:4, y:2});
-      var action = dervish.actionAttack(board.getUnitAtPosition({x:3,y:2}));
+      const dervish = board.getUnitAtPosition({ x: 4, y: 2 });
+      let action = dervish.actionAttack(board.getUnitAtPosition({ x: 3, y: 2 }));
       gameSession.executeAction(action);
 
-      var action = gameSession.getGeneralForPlayer1().actionMove({ x: 2, y: 1});
+      action = gameSession.getGeneralForPlayer1().actionMove({ x: 2, y: 1 });
       gameSession.executeAction(action);
-      var action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({x:3,y:2}));
+      action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({ x: 3, y: 2 }));
       gameSession.executeAction(action);
 
-      var orb1 = board.getUnitAtPosition({x:3, y:1});
-      var orb2 = board.getUnitAtPosition({x:3, y:3});
-      var sandHowler = board.getUnitAtPosition({x:2, y:2});
+      const orb1 = board.getUnitAtPosition({ x: 3, y: 1 });
+      const orb2 = board.getUnitAtPosition({ x: 3, y: 3 });
+      const sandHowler = board.getUnitAtPosition({ x: 2, y: 2 });
 
-      var action = orb1.actionMove({ x: 4, y: 2});
+      action = orb1.actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = orb1.actionAttack(gameSession.getGeneralForPlayer2());
+      action = orb1.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
-      var action = orb2.actionMove({ x: 4, y: 2});
+      action = orb2.actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = orb2.actionAttack(gameSession.getGeneralForPlayer2());
+      action = orb2.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
-      var action = sandHowler.actionMove({ x: 4, y: 2});
+      action = sandHowler.actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = sandHowler.actionAttack(gameSession.getGeneralForPlayer2());
+      action = sandHowler.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
-    it('expect gate 5: challenge 3 to be completable', function() {
+    it('expect gate 5: challenge 3 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerRangedChallenge1());
 
-      var gameSession = SDK.GameSession.getInstance();
-      var board = gameSession.getBoard();
-      var myPlayer = gameSession.getMyPlayer();
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const myPlayer = gameSession.getMyPlayer();
 
-      var archer = board.getUnitAtPosition({x:0, y:2});
-      var templar = board.getUnitAtPosition({x:2, y:2});
+      const archer = board.getUnitAtPosition({ x: 0, y: 2 });
+      const templar = board.getUnitAtPosition({ x: 2, y: 2 });
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 3, 2);
+      let playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 3, 2);
       gameSession.executeAction(playCardFromHandAction);
 
-      var action = gameSession.getGeneralForPlayer1().actionMove({ x: 3, y: 2 });
+      let action = gameSession.getGeneralForPlayer1().actionMove({ x: 3, y: 2 });
       gameSession.executeAction(action);
-      var action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({x:4,y:2}));
-      gameSession.executeAction(action);
-
-      var action = templar.actionMove({ x: 4, y: 2 });
-      gameSession.executeAction(action);
-      var action = templar.actionAttack(board.getUnitAtPosition({x:5,y:2}));
+      action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({ x: 4, y: 2 }));
       gameSession.executeAction(action);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 1, 1);
+      action = templar.actionMove({ x: 4, y: 2 });
+      gameSession.executeAction(action);
+      action = templar.actionAttack(board.getUnitAtPosition({ x: 5, y: 2 }));
+      gameSession.executeAction(action);
+
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 1, 1);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 0, 2);
+      const followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      const followupAction = myPlayer.actionPlayFollowup(followupCard, 0, 2);
       gameSession.executeAction(followupAction);
 
-      var action = archer.actionAttack(gameSession.getGeneralForPlayer2());
+      action = archer.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
-    it('expect gate 5: challenge 4 to be completable', function() {
+    it('expect gate 5: challenge 4 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerAbyssianChallenge3());
 
-      var gameSession = SDK.GameSession.getInstance();
-      var board = gameSession.getBoard();
-      var myPlayer = gameSession.getMyPlayer();
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const myPlayer = gameSession.getMyPlayer();
 
-      var wraithling = board.getUnitAtPosition({x:2, y:3});
-      var gloomchaser = board.getUnitAtPosition({x:2, y:1});
-      var solus = board.getUnitAtPosition({x:4, y:2});
+      const wraithling = board.getUnitAtPosition({ x: 2, y: 3 });
+      const gloomchaser = board.getUnitAtPosition({ x: 2, y: 1 });
+      const solus = board.getUnitAtPosition({ x: 4, y: 2 });
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 2);
+      let playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 3, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 6, 2);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 6, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 1, 1);
+      let followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      let followupAction = myPlayer.actionPlayFollowup(followupCard, 1, 1);
       gameSession.executeAction(followupAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 2, 3);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 2, 3);
       gameSession.executeAction(playCardFromHandAction);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 0, 1);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 0, 1);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 0, 2);
+      followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      followupAction = myPlayer.actionPlayFollowup(followupCard, 0, 2);
       gameSession.executeAction(followupAction);
-      var followupCard2 = followupAction.getCard().getCurrentFollowupCard();
-      var followupAction2 = myPlayer.actionPlayFollowup(followupCard2, 0, 3);
+      const followupCard2 = followupAction.getCard().getCurrentFollowupCard();
+      const followupAction2 = myPlayer.actionPlayFollowup(followupCard2, 0, 3);
       gameSession.executeAction(followupAction2);
 
-      var action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({x:1,y:1}));
+      let action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({ x: 1, y: 1 }));
       gameSession.executeAction(action);
 
-      var action = wraithling.actionMove({ x: 4, y: 3 });
+      action = wraithling.actionMove({ x: 4, y: 3 });
       gameSession.executeAction(action);
-      var action = wraithling.actionAttack(board.getUnitAtPosition({x:5,y:2}));
+      action = wraithling.actionAttack(board.getUnitAtPosition({ x: 5, y: 2 }));
       gameSession.executeAction(action);
-      var action = gloomchaser.actionMove({ x: 4, y: 1 });
+      action = gloomchaser.actionMove({ x: 4, y: 1 });
       gameSession.executeAction(action);
-      var action = gloomchaser.actionAttack(board.getUnitAtPosition({x:5,y:2}));
+      action = gloomchaser.actionAttack(board.getUnitAtPosition({ x: 5, y: 2 }));
       gameSession.executeAction(action);
-      var action = solus.actionMove({ x: 6, y: 2 });
+      action = solus.actionMove({ x: 6, y: 2 });
       gameSession.executeAction(action);
-      var action = solus.actionAttack(gameSession.getGeneralForPlayer2());
+      action = solus.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
-    it('expect gate 5: challenge 5 to be completable', function() {
+    it('expect gate 5: challenge 5 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerSonghaiChallenge1());
 
-      var gameSession = SDK.GameSession.getInstance();
-      var board = gameSession.getBoard();
-      var myPlayer = gameSession.getMyPlayer();
+      const gameSession = SDK.GameSession.getInstance();
+      const board = gameSession.getBoard();
+      const myPlayer = gameSession.getMyPlayer();
 
-      var chakri = board.getUnitAtPosition({x:3, y:1});
-      var fourWinds = board.getUnitAtPosition({x:3, y:3});
+      const chakri = board.getUnitAtPosition({ x: 3, y: 1 });
+      const fourWinds = board.getUnitAtPosition({ x: 3, y: 3 });
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 3, 1);
+      let playCardFromHandAction = myPlayer.actionPlayCardFromHand(2, 3, 1);
       gameSession.executeAction(playCardFromHandAction);
-      var followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
-      var followupAction = myPlayer.actionPlayFollowup(followupCard, 7, 2);
+      const followupCard = playCardFromHandAction.getCard().getCurrentFollowupCard();
+      const followupAction = myPlayer.actionPlayFollowup(followupCard, 7, 2);
       gameSession.executeAction(followupAction);
 
-      var action = chakri.actionAttack(gameSession.getGeneralForPlayer2());
+      let action = chakri.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 7, 2);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(3, 7, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 2, 3);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(1, 2, 3);
       gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(4, 6, 2);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(4, 6, 2);
       gameSession.executeAction(playCardFromHandAction);
-      var playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 7, 2);
+      playCardFromHandAction = myPlayer.actionPlayCardFromHand(0, 7, 2);
       gameSession.executeAction(playCardFromHandAction);
 
-      var action = chakri.actionAttack(gameSession.getGeneralForPlayer2());
+      action = chakri.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
-      var action = gameSession.getGeneralForPlayer1().actionMove({ x: 4, y: 2 });
+      action = gameSession.getGeneralForPlayer1().actionMove({ x: 4, y: 2 });
       gameSession.executeAction(action);
-      var action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({x:5,y:3}));
+      action = gameSession.getGeneralForPlayer1().actionAttack(board.getUnitAtPosition({ x: 5, y: 3 }));
       gameSession.executeAction(action);
 
-
-      var action = fourWinds.actionMove({ x: 5, y: 3 });
+      action = fourWinds.actionMove({ x: 5, y: 3 });
       gameSession.executeAction(action);
-      var action = fourWinds.actionAttack(gameSession.getGeneralForPlayer2());
+      action = fourWinds.actionAttack(gameSession.getGeneralForPlayer2());
       gameSession.executeAction(action);
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);

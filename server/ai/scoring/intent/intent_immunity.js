@@ -1,12 +1,10 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const CardImmunity = require("../../card_intent/card_immunity");
-const ScoreForImmunity = require("./../base/unit_immunity");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const CardImmunity = require('../../card_intent/card_immunity');
+const ScoreForImmunity = require('../base/unit_immunity');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -17,19 +15,19 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForImmunityFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-		const immunity = intent.immunity || 0;
-		if (card.getIsSameTeamAs(targetCard)) {
-			// add score for own units gaining immunity
-			score += ScoreForImmunity(card, targetCard, immunity);
-		} else {
-			// subtract score for enemy gaining immunity
-			score -= ScoreForImmunity(card, targetCard, immunity);
-		}
-	}
-	return score;
+const getScoreForImmunityFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    const immunity = intent.immunity || 0;
+    if (card.getIsSameTeamAs(targetCard)) {
+      // add score for own units gaining immunity
+      score += ScoreForImmunity(card, targetCard, immunity);
+    } else {
+      // subtract score for enemy gaining immunity
+      score -= ScoreForImmunity(card, targetCard, immunity);
+    }
+  }
+  return score;
 };
 
 /**
@@ -41,19 +39,19 @@ let getScoreForImmunityFromCardWithIntentToCard = function (card, intent, target
  * @static
  * @public
  */
-let ScoreForIntentImmunity = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Immunity) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Immunity);
+const ScoreForIntentImmunity = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.Immunity) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.Immunity);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForImmunityFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForImmunityFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentImmunity;

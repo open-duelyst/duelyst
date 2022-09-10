@@ -152,9 +152,9 @@ cc.ControlStepper = cc.Control.extend(/** @lends cc.ControlStepper# */{
         this.setValue(this._value);
     },
 
-	getWraps: function () {
-		return this._wraps;
-	},
+  getWraps: function () {
+    return this._wraps;
+  },
 
     setMinimumValue:function (minimumValue) {
         if (minimumValue >= this._maximumValue)
@@ -163,9 +163,9 @@ cc.ControlStepper = cc.Control.extend(/** @lends cc.ControlStepper# */{
         this._minimumValue = minimumValue;
         this.setValue(this._value);
     },
-	getMinimumValue: function () {
-		return this._minimumValue;
-	},
+  getMinimumValue: function () {
+    return this._minimumValue;
+  },
 
     setMaximumValue:function (maximumValue) {
         if (maximumValue <= this._minimumValue)
@@ -174,9 +174,9 @@ cc.ControlStepper = cc.Control.extend(/** @lends cc.ControlStepper# */{
         this._maximumValue = maximumValue;
         this.setValue(this._value);
     },
-	getMaximumValue: function () {
-		return this._maximumValue;
-	},
+  getMaximumValue: function () {
+    return this._maximumValue;
+  },
 
     setValue:function (value) {
         this.setValueWithSendingEvent(value, true);
@@ -192,9 +192,9 @@ cc.ControlStepper = cc.Control.extend(/** @lends cc.ControlStepper# */{
         this._stepValue = stepValue;
     },
 
-	getStepValue:function () {
-		return this._stepValue;
-	},
+  getStepValue:function () {
+    return this._stepValue;
+  },
 
     isContinuous:function () {
         return this._continuous;

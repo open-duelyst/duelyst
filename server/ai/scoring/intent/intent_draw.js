@@ -1,11 +1,9 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForDraw = require("./../base/draw_card");
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForDraw = require('../base/draw_card');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -16,19 +14,19 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForDrawFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-		const amount = intent.amount || 0;
-		if (card.getIsSameTeamAs(targetCard)) {
-			// add score for drawing cards
-			score += ScoreForDraw(card, targetCard, amount);
-		} else {
-			// subtract score for enemy drawing cards
-			score -= ScoreForDraw(card, targetCard, amount);
-		}
-	}
-	return score;
+const getScoreForDrawFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    const amount = intent.amount || 0;
+    if (card.getIsSameTeamAs(targetCard)) {
+      // add score for drawing cards
+      score += ScoreForDraw(card, targetCard, amount);
+    } else {
+      // subtract score for enemy drawing cards
+      score -= ScoreForDraw(card, targetCard, amount);
+    }
+  }
+  return score;
 };
 
 /**
@@ -40,19 +38,19 @@ let getScoreForDrawFromCardWithIntentToCard = function (card, intent, targetCard
  * @static
  * @public
  */
-let ScoreForIntentDraw = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.DrawCard) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.DrawCard);
+const ScoreForIntentDraw = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.DrawCard) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.DrawCard);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-			score += getScoreForDrawFromCardWithIntentToCard(card, intent, cards[i]);
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      score += getScoreForDrawFromCardWithIntentToCard(card, intent, cards[i]);
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentDraw;

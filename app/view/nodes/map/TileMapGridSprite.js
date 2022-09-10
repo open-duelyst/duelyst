@@ -1,26 +1,26 @@
-//pragma PKGS: game
-var _ = require('underscore');
-var RSX = require('app/data/resources');
-var TileMapScaledSprite = require('./TileMapScaledSprite');
+// pragma PKGS: game
+const _ = require('underscore');
+const RSX = require('app/data/resources');
+const TileMapScaledSprite = require('./TileMapScaledSprite');
 
-/****************************************************************************
+/** **************************************************************************
 TileMapGridSprite
 var TileMapGridSprite = TileMapScaledSprite
 TileMapGridSprite.create()
- ****************************************************************************/
+ *************************************************************************** */
 
-var TileMapGridSprite = TileMapScaledSprite.extend({
+const TileMapGridSprite = TileMapScaledSprite.extend({
 
-	ctor: function () {
-		this._super(RSX.tile_grid.frame);
-	}
+  ctor() {
+    this._super(RSX.tile_grid.frame);
+  },
 });
 
 TileMapGridSprite.create = function (sprite) {
-	if (sprite == null) {
-		sprite = cc.pool.getFromPool(TileMapGridSprite) || TileMapScaledSprite.create(new TileMapGridSprite());
-	}
-	return sprite;
+  if (sprite == null) {
+    sprite = cc.pool.getFromPool(TileMapGridSprite) || TileMapScaledSprite.create(new TileMapGridSprite());
+  }
+  return sprite;
 };
 
 module.exports = TileMapGridSprite;

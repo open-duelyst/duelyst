@@ -1,12 +1,10 @@
-"use strict";
-
-const CardIntent = require("../../card_intent/card_intent");
-const CardIntentType = require("../../card_intent/card_intent_type");
-const CardPhaseType = require("../../card_intent/card_phase_type");
-const CardTargetType = require("../../card_intent/card_target_type");
-const ScoreForModifyHP = require("./../base/modify_hp");
-const willUnitSurviveCard = require('./../utils/utils_willUnitSurviveCard');
-const _ = require("underscore");
+const _ = require('underscore');
+const CardIntent = require('../../card_intent/card_intent');
+const CardIntentType = require('../../card_intent/card_intent_type');
+const CardPhaseType = require('../../card_intent/card_phase_type');
+const CardTargetType = require('../../card_intent/card_target_type');
+const ScoreForModifyHP = require('../base/modify_hp');
+const willUnitSurviveCard = require('../utils/utils_willUnitSurviveCard');
 
 /**
  * Returns the score for the damage dealt to a target card by a card.
@@ -17,20 +15,20 @@ const _ = require("underscore");
  * @static
  * @public
  */
-let getScoreForModifyHPFromCardWithIntentToCard = function (card, intent, targetCard) {
-	let score = 0;
-	if (targetCard != null) {
-		const amount = intent.amount || 0;
-		const rebase = intent.amountIsRebase || false;
-		if (card.getIsSameTeamAs(targetCard)) {
-			// add score for ModifyHPing cards
-			score += ScoreForModifyHP(card, targetCard, amount, rebase);
-		} else {
-			// subtract score for enemy ModifyHPing cards
-			score -= ScoreForModifyHP(card, targetCard, amount, rebase);
-		}
-	}
-	return score;
+const getScoreForModifyHPFromCardWithIntentToCard = function (card, intent, targetCard) {
+  let score = 0;
+  if (targetCard != null) {
+    const amount = intent.amount || 0;
+    const rebase = intent.amountIsRebase || false;
+    if (card.getIsSameTeamAs(targetCard)) {
+      // add score for ModifyHPing cards
+      score += ScoreForModifyHP(card, targetCard, amount, rebase);
+    } else {
+      // subtract score for enemy ModifyHPing cards
+      score -= ScoreForModifyHP(card, targetCard, amount, rebase);
+    }
+  }
+  return score;
 };
 
 /**
@@ -42,21 +40,21 @@ let getScoreForModifyHPFromCardWithIntentToCard = function (card, intent, target
  * @static
  * @public
  */
-let ScoreForIntentModifyHP = function (card, targetPosition, cardIntents) {
-	let score = 0;
-	const cardId = card.getBaseCardId();
-	const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.ModifyHP) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.ModifyHP);
+const ScoreForIntentModifyHP = function (card, targetPosition, cardIntents) {
+  let score = 0;
+  const cardId = card.getBaseCardId();
+  const validIntents = cardIntents != null ? CardIntent.filterIntentsByIntentType(cardIntents, CardIntentType.ModifyHP) : CardIntent.getIntentsByIntentType(cardId, CardIntentType.ModifyHP);
 
-	_.each(validIntents, function (intent) {
-		const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
-		for (let i = 0, il = cards.length; i < il; i++) {
-		  if (willUnitSurviveCard(cards[i], card)) {
-		      score += getScoreForModifyHPFromCardWithIntentToCard(card, intent, cards[i]);
-		    }
-		}
-	}.bind(this));
+  _.each(validIntents, (intent) => {
+    const cards = CardIntent.getCardsTargetedByCardWithIntent(card, intent, targetPosition);
+    for (let i = 0, il = cards.length; i < il; i++) {
+      if (willUnitSurviveCard(cards[i], card)) {
+        score += getScoreForModifyHPFromCardWithIntentToCard(card, intent, cards[i]);
+      }
+    }
+  });
 
-	return score;
+  return score;
 };
 
 module.exports = ScoreForIntentModifyHP;

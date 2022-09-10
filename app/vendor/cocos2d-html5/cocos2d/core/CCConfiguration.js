@@ -32,46 +32,46 @@
  * var textureSize = cc.configuration.getMaxTextureSize();
  */
 cc.configuration = /** @lends cc.configuration# */{
-	// Type constants
-	/*
-	 * ERROR type
-	 * @public
-	 * @const
-	 * @type {Number}
-	 */
-	ERROR:0,
+  // Type constants
+  /*
+   * ERROR type
+   * @public
+   * @const
+   * @type {Number}
+   */
+  ERROR:0,
 
-	/*
-	 * STRING type
-	 * @public
-	 * @const
-	 * @type {Number}
-	 */
-	STRING:1,
+  /*
+   * STRING type
+   * @public
+   * @const
+   * @type {Number}
+   */
+  STRING:1,
 
-	/*
-	 * INT type
-	 * @public
-	 * @const
-	 * @type {Number}
-	 */
-	INT:2,
+  /*
+   * INT type
+   * @public
+   * @const
+   * @type {Number}
+   */
+  INT:2,
 
-	/*
-	 * DOUBLE type
-	 * @public
-	 * @const
-	 * @type {Number}
-	 */
-	DOUBLE:3,
+  /*
+   * DOUBLE type
+   * @public
+   * @const
+   * @type {Number}
+   */
+  DOUBLE:3,
 
-	/*
-	 * BOOLEAN type
-	 * @public
-	 * @const
-	 * @type {Number}
-	 */
-	BOOLEAN:4,
+  /*
+   * BOOLEAN type
+   * @public
+   * @const
+   * @type {Number}
+   */
+  BOOLEAN:4,
 
     _maxTextureSize:0,
     _maxModelviewStackDepth:0,
@@ -85,15 +85,15 @@ cc.configuration = /** @lends cc.configuration# */{
     _GlExtensions:"",
     _valueDict:{},
 
-	_inited: false,
+  _inited: false,
 
-	_init:function () {
-		var locValueDict = this._valueDict;
-		locValueDict["cocos2d.x.version"] = cc.ENGINE_VERSION;
-		locValueDict["cocos2d.x.compiled_with_profiler"] = false;
-		locValueDict["cocos2d.x.compiled_with_gl_state_cache"] = cc.ENABLE_GL_STATE_CACHE;
-		this._inited = true;
-	},
+  _init:function () {
+    var locValueDict = this._valueDict;
+    locValueDict["cocos2d.x.version"] = cc.ENGINE_VERSION;
+    locValueDict["cocos2d.x.compiled_with_profiler"] = false;
+    locValueDict["cocos2d.x.compiled_with_gl_state_cache"] = cc.ENABLE_GL_STATE_CACHE;
+    this._inited = true;
+  },
 
     /**
      * OpenGL Max texture size.
@@ -136,29 +136,29 @@ cc.configuration = /** @lends cc.configuration# */{
         return this._supportsPVRTC;
     },
 
-	/**
-	 * Whether or not ETC Texture Compressed is supported
-	 * @return {Boolean}
-	 */
-	supportsETC: function() {
-		return false;
-	},
+  /**
+   * Whether or not ETC Texture Compressed is supported
+   * @return {Boolean}
+   */
+  supportsETC: function() {
+    return false;
+  },
 
-	/**
-	 * Whether or not S3TC Texture Compressed is supported
-	 * @return {Boolean}
-	 */
-	supportsS3TC: function() {
-		return false;
-	},
+  /**
+   * Whether or not S3TC Texture Compressed is supported
+   * @return {Boolean}
+   */
+  supportsS3TC: function() {
+    return false;
+  },
 
-	/**
-	 * Whether or not ATITC Texture Compressed is supported
-	 * @return {Boolean}
-	 */
-	supportsATITC: function() {
-		return false;
-	},
+  /**
+   * Whether or not ATITC Texture Compressed is supported
+   * @return {Boolean}
+   */
+  supportsATITC: function() {
+    return false;
+  },
 
     /**
      * Whether or not BGRA8888 textures are supported.
@@ -199,8 +199,8 @@ cc.configuration = /** @lends cc.configuration# */{
      * @returns {String|Bool|Number|Object}
      */
     getValue: function(key, default_value){
-	    if(!this._inited)
-		    this._init();
+      if(!this._inited)
+        this._init();
         var locValueDict = this._valueDict;
         if(locValueDict[key])
             return locValueDict[key];
@@ -234,8 +234,8 @@ cc.configuration = /** @lends cc.configuration# */{
         if(cc._renderType === cc._RENDER_TYPE_CANVAS)
             return;
 
-	    if(!this._inited)
-		    this._init();
+      if(!this._inited)
+        this._init();
         var gl = cc._renderContext;
         var locValueDict = this._valueDict;
         locValueDict["gl.vendor"] = gl.getParameter(gl.VENDOR);
@@ -275,8 +275,8 @@ cc.configuration = /** @lends cc.configuration# */{
      * @param {string} url
      */
     loadConfigFile: function( url){
-	    if(!this._inited)
-		    this._init();
+      if(!this._inited)
+        this._init();
         var dict = cc.loader.getRes(url);
         if(!dict) throw "Please load the resource first : " + url;
         cc.assert(dict, cc._LogInfos.configuration_loadConfigFile_2, url);

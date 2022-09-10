@@ -1,22 +1,22 @@
-/****************************************************************************
+/** **************************************************************************
   UtilsJavascript - javascript utility methods
- ****************************************************************************/
-var UtilsJavascript = {};
+ *************************************************************************** */
+const UtilsJavascript = {};
 module.exports = UtilsJavascript;
-var _ = require('underscore');
-var i18next = require('i18next')
+const _ = require('underscore');
+const i18next = require('i18next');
 
 UtilsJavascript.defaultToValue = function (optionalValue, defaultValue) {
-	return (typeof optionalValue === "undefined") ? defaultValue : optionalValue;
+  return (typeof optionalValue === 'undefined') ? defaultValue : optionalValue;
 };
 
-var incrementalId = 0;
+let incrementalId = 0;
 /**
  * Returns a unique incrementing integer id.
  * @returns {Number}
  */
 UtilsJavascript.generateIncrementalId = function () {
-	return incrementalId++;
+  return incrementalId++;
 };
 
 /**
@@ -25,7 +25,7 @@ UtilsJavascript.generateIncrementalId = function () {
  * @returns {String}
  */
 UtilsJavascript.escapeStringForRegexSearch = function (str) {
-	return str ? str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") : "";
+  return str ? str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&') : '';
 };
 
 /**
@@ -35,14 +35,14 @@ UtilsJavascript.escapeStringForRegexSearch = function (str) {
  * @returns {Object}
  */
 UtilsJavascript.fastExtend = function (target, source) {
-	if (target != null && source != null) {
-		var keys = Object.keys(source);
-		for (var i = 0, il = keys.length; i < il; i++) {
-			var key = keys[i];
-			target[key] = source[key];
-		}
-	}
-	return target;
+  if (target != null && source != null) {
+    const keys = Object.keys(source);
+    for (let i = 0, il = keys.length; i < il; i++) {
+      const key = keys[i];
+      target[key] = source[key];
+    }
+  }
+  return target;
 };
 
 /**
@@ -51,57 +51,54 @@ UtilsJavascript.fastExtend = function (target, source) {
  * @returns {String}
  */
 UtilsJavascript.serializeObject = function (input) {
-	var keys = Object.keys(input);
-	var il = keys.length;
-	if (il === 0) {
-		return '{}';
-	} else if (il === 1) {
-		var key = keys[0];
-		var value = input[key];
-		var type = typeof value;
-		if (type === "object") {
-			if (value === null) {
-				return '{"' + key + '":null}';
-			} else if (Array.isArray(value)) {
-				return '{"' + key + '":' + UtilsJavascript.serializeArray(value) + '}';
-			} else {
-				return '{"' + key + '":' + UtilsJavascript.serializeObject(value) + '}';
-			}
-		} else if (type === "string") {
-			return '{"' + key + '":"' + value + '"}';
-		} else if (type === "undefined") {
-			return '{"' + key + '":null}';
-		} else {
-			return '{"' + key + '":' + value + '}';
-		}
-	} else {
-		var output = '{';
-		var cl = il - 1;
-		for (var i = 0; i < il; i++) {
-			var key = keys[i];
-			var value = input[key];
-			var type = typeof value;
-			if (type === "object") {
-				if (value === null) {
-					output += '"' + key + '":null';
-				} else if (Array.isArray(value)) {
-					output += '"' + key + '":' + UtilsJavascript.serializeArray(value);
-				} else {
-					output += '"' + key + '":' + UtilsJavascript.serializeObject(value);
-				}
-			} else if (type === "string") {
-				output += '"' + key + '":"' + value + '"';
-			} else if (type === "undefined") {
-				output += '"' + key + '":null';
-			} else {
-				output += '"' + key + '":' + value;
-			}
-			if (i < cl) {
-				output += ',';
-			}
-		}
-		return output + '}';
-	}
+  const keys = Object.keys(input);
+  const il = keys.length;
+  if (il === 0) {
+    return '{}';
+  } if (il === 1) {
+    const key = keys[0];
+    const value = input[key];
+    const type = typeof value;
+    if (type === 'object') {
+      if (value === null) {
+        return `{"${key}":null}`;
+      } if (Array.isArray(value)) {
+        return `{"${key}":${UtilsJavascript.serializeArray(value)}}`;
+      }
+      return `{"${key}":${UtilsJavascript.serializeObject(value)}}`;
+    } if (type === 'string') {
+      return `{"${key}":"${value}"}`;
+    } if (type === 'undefined') {
+      return `{"${key}":null}`;
+    }
+    return `{"${key}":${value}}`;
+  }
+  let output = '{';
+  const cl = il - 1;
+  for (let i = 0; i < il; i++) {
+    const key = keys[i];
+    const value = input[key];
+    const type = typeof value;
+    if (type === 'object') {
+      if (value === null) {
+        output += `"${key}":null`;
+      } else if (Array.isArray(value)) {
+        output += `"${key}":${UtilsJavascript.serializeArray(value)}`;
+      } else {
+        output += `"${key}":${UtilsJavascript.serializeObject(value)}`;
+      }
+    } else if (type === 'string') {
+      output += `"${key}":"${value}"`;
+    } else if (type === 'undefined') {
+      output += `"${key}":null`;
+    } else {
+      output += `"${key}":${value}`;
+    }
+    if (i < cl) {
+      output += ',';
+    }
+  }
+  return `${output}}`;
 };
 
 /**
@@ -110,54 +107,51 @@ UtilsJavascript.serializeObject = function (input) {
  * @returns {String}
  */
 UtilsJavascript.serializeArray = function (input) {
-	var il = input.length;
-	if (il === 0) {
-		return '[]';
-	} else if (il === 1) {
-		var value = input[0];
-		var type = typeof value;
-		if (type === "object") {
-			if (value === null) {
-				return '[null]';
-			} else if (Array.isArray(value)) {
-				return '[' + UtilsJavascript.serializeArray(value) + ']';
-			} else {
-				return '[' + UtilsJavascript.serializeObject(value) + ']';
-			}
-		} else if (type === "string") {
-			return '["' + value + '"]';
-		} else if (type === "undefined") {
-			return '[null]';
-		} else {
-			return '[' + value + ']';
-		}
-	} else {
-		var output = '[';
-		var cl = il - 1;
-		for (var i = 0; i < il; i++) {
-			var value = input[i];
-			var type = typeof value;
-			if (type === "object") {
-				if (value === null) {
-					output += 'null';
-				} else if (Array.isArray(value)) {
-					output += UtilsJavascript.serializeArray(value);
-				} else {
-					output += UtilsJavascript.serializeObject(value);
-				}
-			} else if (type === "string") {
-				output += '"' + value + '"';
-			} else if (type === "undefined") {
-				output += 'null';
-			} else {
-				output += value;
-			}
-			if (i < cl) {
-				output += ',';
-			}
-		}
-		return output + ']';
-	}
+  const il = input.length;
+  if (il === 0) {
+    return '[]';
+  } if (il === 1) {
+    const value = input[0];
+    const type = typeof value;
+    if (type === 'object') {
+      if (value === null) {
+        return '[null]';
+      } if (Array.isArray(value)) {
+        return `[${UtilsJavascript.serializeArray(value)}]`;
+      }
+      return `[${UtilsJavascript.serializeObject(value)}]`;
+    } if (type === 'string') {
+      return `["${value}"]`;
+    } if (type === 'undefined') {
+      return '[null]';
+    }
+    return `[${value}]`;
+  }
+  let output = '[';
+  const cl = il - 1;
+  for (let i = 0; i < il; i++) {
+    const value = input[i];
+    const type = typeof value;
+    if (type === 'object') {
+      if (value === null) {
+        output += 'null';
+      } else if (Array.isArray(value)) {
+        output += UtilsJavascript.serializeArray(value);
+      } else {
+        output += UtilsJavascript.serializeObject(value);
+      }
+    } else if (type === 'string') {
+      output += `"${value}"`;
+    } else if (type === 'undefined') {
+      output += 'null';
+    } else {
+      output += value;
+    }
+    if (i < cl) {
+      output += ',';
+    }
+  }
+  return `${output}]`;
 };
 
 /**
@@ -168,43 +162,45 @@ UtilsJavascript.serializeArray = function (input) {
  * @returns {Object|Array}
  */
 UtilsJavascript.deepCopy = function (source, filter, post) {
-	var copy = _.isArray(source) ? [] : {};
+  const copy = _.isArray(source) ? [] : {};
 
-	var walk = function(value, dst, visited, reference) {
-		if (_.isObject(value) && !_.isFunction(value)) {
-			var proto = Object.getPrototypeOf(value);
-			var keys = Object.keys(value);
-			for (var i = 0, il = keys.length; i < il; i++) {
-				var key = keys[i];
-				var property = value[key];
-				if (!_.isFunction(property) && proto[key] !== property && (filter == null || filter(key, property))) {
-					var index = _.indexOf(visited, property);
-					if (index !== -1) {
-						dst[key] = reference[index];
-					} else {
-						var next;
-						if (_.isArray(property)) {
-							next = dst[key] = [];
-						} else if (_.isObject(property)) {
-							next = dst[key] = {};
-						} else {
-							next = dst[key] = property;
-						}
-						visited.push(property);
-						reference.push(next);
-						if (_.isObject(property)) {
-							walk(property, next, visited, reference);
-						}
-					}
-				}
-			}
+  const walk = function (value, dst, visited, reference) {
+    if (_.isObject(value) && !_.isFunction(value)) {
+      const proto = Object.getPrototypeOf(value);
+      const keys = Object.keys(value);
+      for (let i = 0, il = keys.length; i < il; i++) {
+        const key = keys[i];
+        const property = value[key];
+        if (!_.isFunction(property) && proto[key] !== property && (filter == null || filter(key, property))) {
+          const index = _.indexOf(visited, property);
+          if (index !== -1) {
+            dst[key] = reference[index];
+          } else {
+            let next;
+            if (_.isArray(property)) {
+              next = dst[key] = [];
+            } else if (_.isObject(property)) {
+              next = dst[key] = {};
+            } else {
+              next = dst[key] = property;
+            }
+            visited.push(property);
+            reference.push(next);
+            if (_.isObject(property)) {
+              walk(property, next, visited, reference);
+            }
+          }
+        }
+      }
 
-			post && post(value, dst);
-		}
-	};
-	walk(source, copy, [source], [copy]);
+      if (post != null) {
+        post(value, dst);
+      }
+    }
+  };
+  walk(source, copy, [source], [copy]);
 
-	return copy;
+  return copy;
 };
 
 /**
@@ -212,13 +208,13 @@ UtilsJavascript.deepCopy = function (source, filter, post) {
  * @param {Array} array Array to search
  * @param {*} value value to match
  * @returns {Number} -1 if added, >= 0 if not
- **/
-UtilsJavascript.arrayCautiousAdd = function (array,value) {
-	var index = _.indexOf(array, value);
-	if( index === -1 ) {
-		array.push(value);
-	}
-	return index;
+ * */
+UtilsJavascript.arrayCautiousAdd = function (array, value) {
+  const index = _.indexOf(array, value);
+  if (index === -1) {
+    array.push(value);
+  }
+  return index;
 };
 
 /**
@@ -226,13 +222,13 @@ UtilsJavascript.arrayCautiousAdd = function (array,value) {
  * @param {Array} array Array to search
  * @param {*} value value to match
  * @returns {Number} >= 0 if removed, -1 if not
- **/
-UtilsJavascript.arrayCautiousRemove = function (array,value) {
-	var index = _.indexOf(array, value);
-	if( index !== -1 ) {
-		array.splice(index, 1);
-	}
-	return index;
+ * */
+UtilsJavascript.arrayCautiousRemove = function (array, value) {
+  const index = _.indexOf(array, value);
+  if (index !== -1) {
+    array.splice(index, 1);
+  }
+  return index;
 };
 
 /**
@@ -241,22 +237,21 @@ UtilsJavascript.arrayCautiousRemove = function (array,value) {
  * @param {Array} array Array to add to
  * @param {*} value value to insert
  * @returns {Number} index where value was inserted
- **/
-UtilsJavascript.arraySortedInsert = function (array,value) {
-	if (array.length === 0 || value >= array[0]) {
-		array.unshift(value);
-		return 0;
-	} else {
-		for (var i = array.length - 1; i >= 1; i--) {
-			if (value <= array[i]) {
-				array.splice(i + 1, 0, value);
-				return i + 1;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+ * */
+UtilsJavascript.arraySortedInsert = function (array, value) {
+  if (array.length === 0 || value >= array[0]) {
+    array.unshift(value);
+    return 0;
+  }
+  for (let i = array.length - 1; i >= 1; i--) {
+    if (value <= array[i]) {
+      array.splice(i + 1, 0, value);
+      return i + 1;
+    }
+  }
+  // add to end
+  array.push(value);
+  return array.length - 1;
 };
 
 /**
@@ -266,23 +261,22 @@ UtilsJavascript.arraySortedInsert = function (array,value) {
  * @param {Object} obj object to insert
  * @param {String} key key for property value to sort by
  * @returns {Number} index where object was inserted
- **/
+ * */
 UtilsJavascript.arraySortedInsertByProperty = function (array, obj, key) {
-	var value = obj[key];
-	if (array.length === 0 || value >= array[0][key]) {
-		array.unshift(obj);
-		return 0;
-	} else {
-		for (var i = array.length - 1; i >= 1; i--) {
-			if (value <= array[i][key]) {
-				array.splice(i + 1, 0, obj);
-				return i + 1;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+  const value = obj[key];
+  if (array.length === 0 || value >= array[0][key]) {
+    array.unshift(obj);
+    return 0;
+  }
+  for (let i = array.length - 1; i >= 1; i--) {
+    if (value <= array[i][key]) {
+      array.splice(i + 1, 0, obj);
+      return i + 1;
+    }
+  }
+  // add to end
+  array.push(obj);
+  return array.length - 1;
 };
 
 /**
@@ -292,22 +286,21 @@ UtilsJavascript.arraySortedInsertByProperty = function (array, obj, key) {
  * @param {Object} obj object to insert
  * @param {Function} comparator comparator function returning a value to sort by, where <= 0 will insert element
  * @returns {Number} index where object was inserted
- **/
+ * */
 UtilsJavascript.arraySortedInsertByComparator = function (array, obj, comparator) {
-	if (array.length === 0 || comparator(obj, array[0]) >= 0) {
-		array.unshift(obj);
-		return 0;
-	} else {
-		for (var i = array.length - 1; i >= 1; i--) {
-			if (comparator(obj, array[i]) <= 0) {
-				array.splice(i + 1, 0, obj);
-				return i + 1;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+  if (array.length === 0 || comparator(obj, array[0]) >= 0) {
+    array.unshift(obj);
+    return 0;
+  }
+  for (let i = array.length - 1; i >= 1; i--) {
+    if (comparator(obj, array[i]) <= 0) {
+      array.splice(i + 1, 0, obj);
+      return i + 1;
+    }
+  }
+  // add to end
+  array.push(obj);
+  return array.length - 1;
 };
 
 /**
@@ -317,22 +310,21 @@ UtilsJavascript.arraySortedInsertByComparator = function (array, obj, comparator
  * @param {Object} obj object to insert
  * @param {Function} comparator comparator function returning a value to sort by, where >= 0 will insert element
  * @returns {Number} index where object was inserted
- **/
+ * */
 UtilsJavascript.arraySortedInsertAscendingByComparator = function (array, obj, comparator) {
-	if (array.length === 0 || comparator(obj, array[0]) <= 0) {
-		array.unshift(obj);
-		return 0;
-	} else {
-		for (var i = 1, il = array.length; i < il; i++) {
-			if (comparator(obj, array[i]) <= 0) {
-				array.splice(i, 0, obj);
-				return i;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+  if (array.length === 0 || comparator(obj, array[0]) <= 0) {
+    array.unshift(obj);
+    return 0;
+  }
+  for (let i = 1, il = array.length; i < il; i++) {
+    if (comparator(obj, array[i]) <= 0) {
+      array.splice(i, 0, obj);
+      return i;
+    }
+  }
+  // add to end
+  array.push(obj);
+  return array.length - 1;
 };
 
 /**
@@ -342,22 +334,21 @@ UtilsJavascript.arraySortedInsertAscendingByComparator = function (array, obj, c
  * @param {Object} obj object to insert
  * @param {Function} scoringMethod scoring function returning a value when given a single object
  * @returns {Number} index where object was inserted
- **/
+ * */
 UtilsJavascript.arraySortedInsertByScore = function (array, obj, scoringMethod) {
-	if (array.length === 0 || scoringMethod(obj) >= scoringMethod(array[0])) {
-		array.unshift(obj);
-		return 0;
-	} else {
-		for (var i = array.length - 1; i >= 1; i--) {
-			if (scoringMethod(obj) >= scoringMethod(array[i])) {
-				array.splice(i + 1, 0, obj);
-				return i + 1;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+  if (array.length === 0 || scoringMethod(obj) >= scoringMethod(array[0])) {
+    array.unshift(obj);
+    return 0;
+  }
+  for (let i = array.length - 1; i >= 1; i--) {
+    if (scoringMethod(obj) >= scoringMethod(array[i])) {
+      array.splice(i + 1, 0, obj);
+      return i + 1;
+    }
+  }
+  // add to end
+  array.push(obj);
+  return array.length - 1;
 };
 
 /**
@@ -367,48 +358,46 @@ UtilsJavascript.arraySortedInsertByScore = function (array, obj, scoringMethod) 
  * @param {Object} obj object to insert
  * @param {Function} scoringMethod scoring function returning a value when given a single object
  * @returns {Number} index where object was inserted
- **/
+ * */
 UtilsJavascript.arraySortedInsertAscendingByScore = function (array, obj, scoringMethod) {
-	if (array.length === 0 || scoringMethod(obj) <= scoringMethod(array[0])) {
-		array.unshift(obj);
-		return 0;
-	} else {
-		for (var i = 1, il = array.length; i < il; i++) {
-			if (scoringMethod(obj) <= scoringMethod(array[i])) {
-				array.splice(i, 0, obj);
-				return i;
-			}
-		}
-		// add to end
-		array.push(obj);
-		return array.length - 1;
-	}
+  if (array.length === 0 || scoringMethod(obj) <= scoringMethod(array[0])) {
+    array.unshift(obj);
+    return 0;
+  }
+  for (let i = 1, il = array.length; i < il; i++) {
+    if (scoringMethod(obj) <= scoringMethod(array[i])) {
+      array.splice(i, 0, obj);
+      return i;
+    }
+  }
+  // add to end
+  array.push(obj);
+  return array.length - 1;
 };
-
 
 // Creates a representation of an amount of time given hours, minutes, seconds, leaving off 0 values
 // Returns "Now" if all params are 0
-//TODO: replace stringifiers.coffee with stringifiers.js, put this method there, and place it in common directory
+// TODO: replace stringifiers.coffee with stringifiers.js, put this method there, and place it in common directory
 UtilsJavascript.stringifyHoursMinutesSeconds = function (hours, minutes, seconds) {
-	var retString = "";
-	if (hours) {
-		retString += hours + " " + i18next.t("common.time_hour",{count:hours})
-	}
-	if (minutes) {
-		if (retString !== "") {
-			retString += " ";
-		}
-		retString += minutes + " " + i18next.t("common.time_minute",{count:minutes})
-	}
-	if (seconds) {
-		if (retString !== "") {
-			retString += " ";
-		}
-		retString += seconds + " " + i18next.t("common.time_second",{count:seconds})
-	}
-	if (retString === "") {
-		retString = "...";
-	}
+  let retString = '';
+  if (hours) {
+    retString += `${hours} ${i18next.t('common.time_hour', { count: hours })}`;
+  }
+  if (minutes) {
+    if (retString !== '') {
+      retString += ' ';
+    }
+    retString += `${minutes} ${i18next.t('common.time_minute', { count: minutes })}`;
+  }
+  if (seconds) {
+    if (retString !== '') {
+      retString += ' ';
+    }
+    retString += `${seconds} ${i18next.t('common.time_second', { count: seconds })}`;
+  }
+  if (retString === '') {
+    retString = '...';
+  }
 
-	return retString;
+  return retString;
 };

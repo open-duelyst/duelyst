@@ -1,65 +1,65 @@
-//pragma PKGS: codex
-var RSX = require('app/data/resources');
-var PKGS = require('app/data/packages');
-var UtilsEngine = require("./../../../common/utils/utils_engine");
-var FXCompositeLayer = require("./../FXCompositeLayer");
-var BaseSprite = require("./../../nodes/BaseSprite");
+// pragma PKGS: codex
+const RSX = require('app/data/resources');
+const PKGS = require('app/data/packages');
+const UtilsEngine = require('../../../common/utils/utils_engine');
+const FXCompositeLayer = require('../FXCompositeLayer');
+const BaseSprite = require('../../nodes/BaseSprite');
 
-/****************************************************************************
+/** **************************************************************************
  CodexLayer
- ****************************************************************************/
+ *************************************************************************** */
 
-var CodexLayer = FXCompositeLayer.extend({
+const CodexLayer = FXCompositeLayer.extend({
 
-	_bg: null,
+  _bg: null,
 
-	/* region INITIALIZE */
+  /* region INITIALIZE */
 
-	ctor:function () {
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+  ctor() {
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-			// scene elements
-			this._bg = BaseSprite.create(RSX.codex_background.img);
+      // scene elements
+      this._bg = BaseSprite.create(RSX.codex_background.img);
 
-			// setup scene
-			this.getFXLayer().addChild(this._bg);
-		}.bind(this));
+      // setup scene
+      this.getFXLayer().addChild(this._bg);
+    });
 
-		// do super ctor
-		this._super();
-	},
+    // do super ctor
+    this._super();
+  },
 
-	getRequiredResources: function () {
-		return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier("codex"));
-	},
+  getRequiredResources() {
+    return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier('codex'));
+  },
 
-	/* endregion INITIALIZE */
+  /* endregion INITIALIZE */
 
-	/* region LAYOUT */
+  /* region LAYOUT */
 
-	onResize: function () {
-		this._super();
+  onResize() {
+    this._super();
 
-		var winCenterPosition = UtilsEngine.getGSIWinCenterPosition();
+    const winCenterPosition = UtilsEngine.getGSIWinCenterPosition();
 
-		// set self to middle of screen
-		this.setPosition(winCenterPosition);
+    // set self to middle of screen
+    this.setPosition(winCenterPosition);
 
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-			// background
-			this._bg.setScale(UtilsEngine.getWindowSizeRelativeNodeScale(this._bg));
-		}.bind(this));
-	}
+      // background
+      this._bg.setScale(UtilsEngine.getWindowSizeRelativeNodeScale(this._bg));
+    });
+  },
 
-	/* endregion LAYOUT */
+  /* endregion LAYOUT */
 
 });
 
-CodexLayer.create = function(layer) {
-	return FXCompositeLayer.create(layer || new CodexLayer());
+CodexLayer.create = function (layer) {
+  return FXCompositeLayer.create(layer || new CodexLayer());
 };
 
 module.exports = CodexLayer;

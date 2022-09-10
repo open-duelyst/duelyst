@@ -1,277 +1,274 @@
-//pragma PKGS: VetruvianMainMenu
+// pragma PKGS: VetruvianMainMenu
 
-var RSX = require('app/data/resources');
-var PKGS = require('app/data/packages');
-var Logger = require('app/common/logger');
-var UtilsEngine = require("app/common/utils/utils_engine");
-var audio_engine = require("app/audio/audio_engine");
-var FXCompositeLayer = require("./../FXCompositeLayer");
-var ParallaxLayer = require("./../ParallaxLayer");
-var BaseSprite = require("./../../nodes/BaseSprite");
-var BaseParticleSystem = require("./../../nodes/BaseParticleSystem");
-var FXFlockSprite = require("./../../nodes/fx/FXFlockSprite");
+const RSX = require('app/data/resources');
+const PKGS = require('app/data/packages');
+const Logger = require('app/common/logger');
+const UtilsEngine = require('app/common/utils/utils_engine');
+const audio_engine = require('app/audio/audio_engine');
+const _ = require('underscore');
+const FXCompositeLayer = require('../FXCompositeLayer');
+const ParallaxLayer = require('../ParallaxLayer');
+const BaseSprite = require('../../nodes/BaseSprite');
+const BaseParticleSystem = require('../../nodes/BaseParticleSystem');
+const FXFlockSprite = require('../../nodes/fx/FXFlockSprite');
 
-var _ = require("underscore");
-
-/****************************************************************************
+/** **************************************************************************
  MainVetruvianLayer
- ****************************************************************************/
+ *************************************************************************** */
 
-var MainVetruvianLayer = FXCompositeLayer.extend({
+const MainVetruvianLayer = FXCompositeLayer.extend({
 
-	/* region INITIALIZE */
+  /* region INITIALIZE */
 
-	ctor:function () {
-		// initialize properties that may be required in init
-		this.parallaxLayer = ParallaxLayer.create();
+  ctor() {
+    // initialize properties that may be required in init
+    this.parallaxLayer = ParallaxLayer.create();
 
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-			// scene elements
-			this.bg = BaseSprite.create(RSX.scene_vetruvian_background.img);
-			this.midground = BaseSprite.create(RSX.scene_vetruvian_midground.img);
-			this.fg = BaseSprite.create(RSX.scene_vetruvian_foreground.img);
-			this.ray1 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
-			this.ray2 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
-			this.ray3 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
-			this.vignette = BaseSprite.create(RSX.scene_vetruvian_vignette.img);
-			this.vignette.setAnchorPoint(0.0, 0.5);
-			this.vignette.setOpacity(125)
-			this.vignette.setScaleX(0.7)
+      // scene elements
+      this.bg = BaseSprite.create(RSX.scene_vetruvian_background.img);
+      this.midground = BaseSprite.create(RSX.scene_vetruvian_midground.img);
+      this.fg = BaseSprite.create(RSX.scene_vetruvian_foreground.img);
+      this.ray1 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
+      this.ray2 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
+      this.ray3 = BaseSprite.create(RSX.scene_vetruvian_ray.img);
+      this.vignette = BaseSprite.create(RSX.scene_vetruvian_vignette.img);
+      this.vignette.setAnchorPoint(0.0, 0.5);
+      this.vignette.setOpacity(125);
+      this.vignette.setScaleX(0.7);
 
-			this.stars = new BaseParticleSystem({
-				plistFile: RSX.scene_vetruvian_stars_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90
-			})
+      this.stars = new BaseParticleSystem({
+        plistFile: RSX.scene_vetruvian_stars_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+      });
 
-			this.lights = new BaseParticleSystem({
-				plistFile: RSX.scene_vetruvian_stars_particles.plist,
-				fadeInAtLifePct:0.10,
-				fadeOutAtLifePct:0.90,
-				staticPositionsToSample: validParticlePositions
-			})
-			this.lights.setAnchorPoint(cc.p(0,0))
-			this.lights.setPosition(cc.p(0,0))
-			// this.lights.setMaxParticles(2000)
+      this.lights = new BaseParticleSystem({
+        plistFile: RSX.scene_vetruvian_stars_particles.plist,
+        fadeInAtLifePct: 0.10,
+        fadeOutAtLifePct: 0.90,
+        staticPositionsToSample: validParticlePositions,
+      });
+      this.lights.setAnchorPoint(cc.p(0, 0));
+      this.lights.setPosition(cc.p(0, 0));
+      // this.lights.setMaxParticles(2000)
 
-			// cloud elements
-			var cloudOptions = {
-				angled: true,
-				liveForDistance: true,
-				parallaxMode: true,
-				fadeInAtLifePct:0.05
-			};
+      // cloud elements
+      const cloudOptions = {
+        angled: true,
+        liveForDistance: true,
+        parallaxMode: true,
+        fadeInAtLifePct: 0.05,
+      };
 
-			var cloudColor = cc.color(69,119,214)
-			var cloudEndColor = cc.color(51,125,195)
+      const cloudColor = cc.color(69, 119, 214);
+      const cloudEndColor = cc.color(51, 125, 195);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_001.plist;
-			this.clouds1 = BaseParticleSystem.create(cloudOptions);
-			this.clouds1.setStartColor(cloudColor)
-			this.clouds1.setEndColor(cloudColor)
-			this.clouds1.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_001.plist;
+      this.clouds1 = BaseParticleSystem.create(cloudOptions);
+      this.clouds1.setStartColor(cloudColor);
+      this.clouds1.setEndColor(cloudColor);
+      this.clouds1.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_002.plist;
-			this.clouds2 = BaseParticleSystem.create(cloudOptions);
-			this.clouds2.setStartColor(cloudColor)
-			this.clouds2.setEndColor(cloudColor)
-			this.clouds2.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_002.plist;
+      this.clouds2 = BaseParticleSystem.create(cloudOptions);
+      this.clouds2.setStartColor(cloudColor);
+      this.clouds2.setEndColor(cloudColor);
+      this.clouds2.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_004.plist;
-			this.clouds3 = BaseParticleSystem.create(cloudOptions);
-			this.clouds3.setStartColor(cloudColor)
-			this.clouds3.setEndColor(cloudColor)
-			this.clouds3.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_004.plist;
+      this.clouds3 = BaseParticleSystem.create(cloudOptions);
+      this.clouds3.setStartColor(cloudColor);
+      this.clouds3.setEndColor(cloudColor);
+      this.clouds3.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			cloudOptions.plistFile = RSX.ptcl_cloud_007.plist;
-			this.clouds4 = BaseParticleSystem.create(cloudOptions);
-			this.clouds4.setStartColor(cloudColor)
-			this.clouds4.setEndColor(cloudColor)
-			this.clouds4.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA)
+      cloudOptions.plistFile = RSX.ptcl_cloud_007.plist;
+      this.clouds4 = BaseParticleSystem.create(cloudOptions);
+      this.clouds4.setStartColor(cloudColor);
+      this.clouds4.setEndColor(cloudColor);
+      this.clouds4.setBlendFunc(cc.SRC_ALPHA, cc.ONE_MINUS_SRC_ALPHA);
 
-			this.getFXLayer().addChild(this.vignette, 2)
-			this.midground.addChild(this.lights)
-			this.midground.addChild(this.ray1)
-			this.midground.addChild(this.ray2)
-			this.midground.addChild(this.ray3)
+      this.getFXLayer().addChild(this.vignette, 2);
+      this.midground.addChild(this.lights);
+      this.midground.addChild(this.ray1);
+      this.midground.addChild(this.ray2);
+      this.midground.addChild(this.ray3);
 
-			this.ray1.setAnchorPoint(cc.p(0.5,0))
-			this.ray2.setAnchorPoint(cc.p(0.5,0))
-			this.ray3.setAnchorPoint(cc.p(0.5,0))
+      this.ray1.setAnchorPoint(cc.p(0.5, 0));
+      this.ray2.setAnchorPoint(cc.p(0.5, 0));
+      this.ray3.setAnchorPoint(cc.p(0.5, 0));
 
-			this.ray1.setPosition(cc.p(983,492))
-			this.ray2.setPosition(cc.p(1080,634))
-			this.ray3.setPosition(cc.p(1183,483))
+      this.ray1.setPosition(cc.p(983, 492));
+      this.ray2.setPosition(cc.p(1080, 634));
+      this.ray3.setPosition(cc.p(1183, 483));
 
-			this.ray1.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
-			this.ray2.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
-			this.ray3.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
+      this.ray1.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
+      this.ray2.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
+      this.ray3.setBlendFunc(cc.SRC_ALPHA, cc.ONE);
 
-			this.ray1.runAction(cc.repeatForever(
-				cc.sequence(
-					cc.fadeOut(5.0),
-					cc.delayTime(3.0),
-					cc.fadeIn(5.0)
-				)
-			))
-			this.ray2.runAction(cc.repeatForever(
-				cc.sequence(
-					cc.fadeOut(5.0),
-					cc.delayTime(6.0),
-					cc.fadeIn(5.0)
-				)
-			))
-			this.ray3.runAction(cc.repeatForever(
-				cc.sequence(
-					cc.fadeOut(5.0),
-					cc.delayTime(1.0),
-					cc.fadeIn(5.0)
-				)
-			))
+      this.ray1.runAction(cc.repeatForever(
+        cc.sequence(
+          cc.fadeOut(5.0),
+          cc.delayTime(3.0),
+          cc.fadeIn(5.0),
+        ),
+      ));
+      this.ray2.runAction(cc.repeatForever(
+        cc.sequence(
+          cc.fadeOut(5.0),
+          cc.delayTime(6.0),
+          cc.fadeIn(5.0),
+        ),
+      ));
+      this.ray3.runAction(cc.repeatForever(
+        cc.sequence(
+          cc.fadeOut(5.0),
+          cc.delayTime(1.0),
+          cc.fadeIn(5.0),
+        ),
+      ));
+    });
 
-		}.bind(this));
+    // do super ctor
+    this._super();
 
-		// do super ctor
-		this._super();
+    // setup scene
+    this.getFXLayer().addChild(this.parallaxLayer, 0);
+  },
 
-		// setup scene
-		this.getFXLayer().addChild(this.parallaxLayer, 0);
-	},
+  /* endregion INITIALIZE */
 
-	/* endregion INITIALIZE */
+  /* region RESOURCES */
 
-	/* region RESOURCES */
+  getRequiredResources() {
+    return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier('VetruvianMainMenu'));
+  },
 
-	getRequiredResources: function () {
-		return FXCompositeLayer.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier("VetruvianMainMenu"));
-	},
+  /* endregion RESOURCES */
 
-	/* endregion RESOURCES */
+  /* region SCENE */
 
-	/* region SCENE */
+  onEnter() {
+    this._super();
 
-	onEnter: function () {
-		this._super();
+    // set bloom
+    const fx = this.getFX();
+    this._lastBloomThreshold = fx.getBloomThreshold();
+    this._bloomThreshold = 0.65;
+    fx.setBloomThreshold(this._bloomThreshold);
+    this._lastBloomIntensity = fx.getBloomIntensity();
+    this._bloomIntensity = 1.25;
+    fx.setBloomIntensity(this._bloomIntensity);
+  },
 
-		// set bloom
-		var fx = this.getFX();
-		this._lastBloomThreshold = fx.getBloomThreshold();
-		this._bloomThreshold = 0.65;
-		fx.setBloomThreshold(this._bloomThreshold);
-		this._lastBloomIntensity = fx.getBloomIntensity();
-		this._bloomIntensity = 1.25;
-		fx.setBloomIntensity(this._bloomIntensity);
-	},
+  onExit() {
+    this._super();
 
-	onExit: function () {
-		this._super();
+    // restore bloom
+    const fx = this.getFX();
+    if (this._lastBloomThreshold != null && fx.getBloomThreshold() === this._bloomThreshold) {
+      fx.setBloomThreshold(this._lastBloomThreshold);
+    }
+    if (this._lastBloomIntensity != null && fx.getBloomThreshold() === this._bloomIntensity) {
+      fx.setBloomThreshold(this._lastBloomIntensity);
+    }
+  },
 
-		// restore bloom
-		var fx = this.getFX();
-		if (this._lastBloomThreshold != null && fx.getBloomThreshold() === this._bloomThreshold) {
-			fx.setBloomThreshold(this._lastBloomThreshold);
-		}
-		if (this._lastBloomIntensity != null && fx.getBloomThreshold() === this._bloomIntensity) {
-			fx.setBloomThreshold(this._lastBloomIntensity);
-		}
-	},
+  /* endregion SCENE */
 
-	/* endregion SCENE */
+  /* region LAYOUT */
 
-	/* region LAYOUT */
+  onResize() {
+    this._super();
 
-	onResize: function () {
-		this._super();
+    // set self to middle of screen
+    this.setPosition(UtilsEngine.getGSIWinCenterPosition());
 
-		// set self to middle of screen
-		this.setPosition(UtilsEngine.getGSIWinCenterPosition());
+    this.whenRequiredResourcesReady().then((requestId) => {
+      if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
 
-		this.whenRequiredResourcesReady().then(function (requestId) {
-			if (!this.getAreResourcesValid(requestId)) return; // load invalidated or resources changed
+      const winWidth = UtilsEngine.getGSIWinWidth();
+      const winHeight = UtilsEngine.getGSIWinHeight();
+      let ratio;
+      let offset;
+      let shiftX;
 
-			var winWidth = UtilsEngine.getGSIWinWidth();
-			var winHeight = UtilsEngine.getGSIWinHeight();
-			var ratio;
-			var offset;
-			var shiftX;
+      // vignette sizing
+      this.vignette.setScaleX(winWidth / this.vignette.getContentSize().width);
+      this.vignette.setScaleY(winHeight / this.vignette.getContentSize().height);
+      this.vignette.setPosition(-winWidth * 0.6, 0);
 
-			// vignette sizing
-			this.vignette.setScaleX(winWidth / this.vignette.getContentSize().width);
-			this.vignette.setScaleY(winHeight / this.vignette.getContentSize().height);
-			this.vignette.setPosition(-winWidth * 0.6,0)
+      // background
+      this.parallaxLayer.setParallaxScale(UtilsEngine.getWindowSizeRelativeNodeScale(this.bg));
+      const parallaxScale = this.parallaxLayer.getParallaxScale();
+      const contentSize = this.bg.getContentSize();
+      shiftX = (winWidth - contentSize.width * parallaxScale) * 0.5;
 
-			// background
-			this.parallaxLayer.setParallaxScale(UtilsEngine.getWindowSizeRelativeNodeScale(this.bg));
-			var parallaxScale = this.parallaxLayer.getParallaxScale();
-			var contentSize = this.bg.getContentSize();
-			shiftX = (winWidth - contentSize.width * parallaxScale) * 0.5;
+      // bg
+      this.bg.setScale(parallaxScale);
+      ratio = cc.p(0.005, 0.0);
+      offset = cc.p(0.0, 0.0);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.bg, 0, ratio, offset);
 
-			// bg
-			this.bg.setScale(parallaxScale);
-			ratio = cc.p(0.005, 0.0);
-			offset = cc.p(0.0, 0.0);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.bg, 0, ratio, offset);
+      // middleground 1
+      this.midground.setScale(parallaxScale);
+      this.midground.setAnchorPoint(0.5, 0.5);
+      ratio = cc.p(0.0, 0.0);
+      offset = cc.p(0.0, 0.0);
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.midground, 2, ratio, offset);
 
-			// middleground 1
-			this.midground.setScale(parallaxScale);
-			this.midground.setAnchorPoint(0.5,0.5)
-			ratio = cc.p(0.0, 0.0);
-			offset = cc.p(0.0, 0.0);
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.midground, 2, ratio, offset);
+      // lights
+      // this.lights.setAnchorPoint(0.5,0.5)
 
-			// lights
-			// this.lights.setAnchorPoint(0.5,0.5)
+      //
+      // this.parallaxLayer.addOrUpdateParallaxedNode(this.stars, 0, cc.p(), cc.p(winWidth/3, winHeight * 0.3))
 
-			//
-			// this.parallaxLayer.addOrUpdateParallaxedNode(this.stars, 0, cc.p(), cc.p(winWidth/3, winHeight * 0.3))
+      // clouds
+      this.clouds1.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      this.clouds1.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds1, 3, cc.p(), this.clouds1.getSourceScreenOffsetPosition());
 
-			// clouds
-			this.clouds1.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			this.clouds1.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds1, 3, cc.p(), this.clouds1.getSourceScreenOffsetPosition());
+      this.clouds2.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      this.clouds2.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds2, 3, cc.p(), this.clouds2.getSourceScreenOffsetPosition());
+      //
+      // this.clouds3.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      // this.clouds3.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      // this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds3, 3, cc.p(), this.clouds3.getSourceScreenOffsetPosition());
+      //
+      // this.clouds4.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
+      // this.clouds4.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
+      // this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds4, 3, cc.p(), this.clouds4.getSourceScreenOffsetPosition());
 
-			this.clouds2.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			this.clouds2.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds2, 3, cc.p(), this.clouds2.getSourceScreenOffsetPosition());
-			//
-			// this.clouds3.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			// this.clouds3.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			// this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds3, 3, cc.p(), this.clouds3.getSourceScreenOffsetPosition());
-			//
-			// this.clouds4.setSourceScreenPosition(cc.p(winWidth * 0.1, -winHeight * 0.4));
-			// this.clouds4.setTargetScreenPosition(cc.p(-winWidth * 0.5, -winHeight * 0.45));
-			// this.parallaxLayer.addOrUpdateParallaxedNode(this.clouds4, 3, cc.p(), this.clouds4.getSourceScreenOffsetPosition());
+      // foreground
+      this.fg.setScale(parallaxScale);
+      this.fg.setAnchorPoint(1.0, 0.5);
+      ratio = cc.p(0.02, 0.01);
+      offset = cc.p(winWidth * 0.55, -winHeight * 0.5 + this.fg.getContentSize().height * (0.5 - ratio.y) * this.fg.getScale());
+      this.parallaxLayer.addOrUpdateParallaxedNode(this.fg, 4, ratio, offset);
 
-			// foreground
-			this.fg.setScale(parallaxScale);
-			this.fg.setAnchorPoint(1.0,0.5)
-			ratio = cc.p(0.02, 0.01);
-			offset = cc.p(winWidth * 0.55, -winHeight * 0.5 + this.fg.getContentSize().height * (0.5 - ratio.y) * this.fg.getScale());
-			this.parallaxLayer.addOrUpdateParallaxedNode(this.fg, 4, ratio, offset);
+      // reset parallax
+      this.parallaxLayer.resetParallax();
+    });
+  },
 
-			// reset parallax
-			this.parallaxLayer.resetParallax();
-		}.bind(this));
-	},
+  /* endregion LAYOUT */
 
-	/* endregion LAYOUT */
+  playMusic() {
+    audio_engine.current().play_music(RSX.music_ageofdisjunction.audio);
+  },
 
-	playMusic: function () {
-		audio_engine.current().play_music(RSX.music_ageofdisjunction.audio);
-	}
+});
 
-})
+MainVetruvianLayer.create = function (layer) {
+  return FXCompositeLayer.create(layer || new MainVetruvianLayer());
+};
 
-MainVetruvianLayer.create = function(layer) {
-	return FXCompositeLayer.create(layer || new MainVetruvianLayer());
-}
+module.exports = MainVetruvianLayer;
 
-module.exports = MainVetruvianLayer
-
-const validParticlePositions =
-[ { x: 0, y: 742 },
+const validParticlePositions = [{ x: 0, y: 742 },
   { x: 0, y: 741 },
   { x: 0, y: 726 },
   { x: 0, y: 725 },
@@ -12229,4 +12226,4 @@ const validParticlePositions =
   { x: 1920, y: 727 },
   { x: 1920, y: 726 },
   { x: 1920, y: 719 },
-  { x: 1920, y: 718 } ]
+  { x: 1920, y: 718 }];

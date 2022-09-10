@@ -238,9 +238,9 @@ ccs.triggerManager = /** @lends ccs.triggerManager# */{
      * Returns the version of ccs.triggerManager
      * @returns {string}
      */
-	version: function () {
-		return "1.2.0.0";
-	}
+  version: function () {
+    return "1.2.0.0";
+  }
 };
 
 /**

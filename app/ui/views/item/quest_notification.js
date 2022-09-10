@@ -1,18 +1,15 @@
-'use strict';
+const Logger = require('app/common/logger');
+const Animations = require('app/ui/views/animations');
+const QuestNotificationItemTmpl = require('app/ui/templates/item/quest_notification.hbs');
+const NotificationItemView = require('./notification');
 
-var Logger = require('app/common/logger');
-var NotificationItemView = require('./notification');
-var Animations = require("app/ui/views/animations");
-var QuestNotificationItemTmpl = require('app/ui/templates/item/quest_notification.hbs');
+const QuestNotificationItemView = NotificationItemView.extend({
 
-var QuestNotificationItemView = NotificationItemView.extend({
+  className: 'notification quest-notification',
+  template: QuestNotificationItemTmpl,
 
-
-	className: "notification quest-notification",
-	template: QuestNotificationItemTmpl,
-
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
 });
 

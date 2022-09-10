@@ -1,34 +1,32 @@
-'use strict';
+const Logger = require('app/common/logger');
+const Conversation = require('app/ui/models/conversation');
 
-var Logger = require('app/common/logger')
-var Conversation = require("app/ui/models/conversation");
+const Conversations = Backbone.Collection.extend({
 
-var Conversations = Backbone.Collection.extend({
+  model: Conversation,
 
-	model:Conversation,
+  initialize() {
+    Logger.module('UI').log('initialize a Conversations collection');
+    this.on('add', this.onItemAdded, this);
+  },
 
-	initialize: function() {
-		Logger.module("UI").log("initialize a Conversations collection");
-		this.on("add",this.onItemAdded,this);
-	},
+  onDestroy() {
+    this.off('add', this.onItemAdded, this);
+  },
 
-	onDestroy: function () {
-		this.off("add",this.onItemAdded,this);
-	},
+  onItemAdded(conversation) {
+    Logger.module('UI').debug('New Conversation added to collection');
+  },
 
-	onItemAdded: function(conversation) {
-		Logger.module("UI").debug("New Conversation added to collection");
-	},
-
-	getUnreadConversationCount: function() {
-		var count = 0;
-		this.each(function (conversationModel) {
-			if (conversationModel.get("unread")) {
-				count++;
-			}
-		}.bind(this));
-		return count;
-	}
+  getUnreadConversationCount() {
+    let count = 0;
+    this.each((conversationModel) => {
+      if (conversationModel.get('unread')) {
+        count++;
+      }
+    });
+    return count;
+  },
 
 });
 

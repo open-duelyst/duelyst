@@ -1,28 +1,27 @@
-//pragma PKGS: alwaysloaded
-'use strict';
+// pragma PKGS: alwaysloaded
 
-var RSX = require('app/data/resources');
-var GAME_TIPS = require('app/data/game_tips');
-var Animations = require('app/ui/views/animations');
-var LoadingDialogViewTempl = require('app/ui/templates/item/loading_dialog.hbs');
-var NavigationManager = require('app/ui/managers/navigation_manager');
+const RSX = require('app/data/resources');
+const GAME_TIPS = require('app/data/game_tips');
+const Animations = require('app/ui/views/animations');
+const LoadingDialogViewTempl = require('app/ui/templates/item/loading_dialog.hbs');
+const NavigationManager = require('app/ui/managers/navigation_manager');
 
-var LoadingDialogItemView = Backbone.Marionette.ItemView.extend({
+const LoadingDialogItemView = Backbone.Marionette.ItemView.extend({
 
-	id: "app-loading-dialog",
-	className: "dialog",
+  id: 'app-loading-dialog',
+  className: 'dialog',
 
-	template: LoadingDialogViewTempl,
+  template: LoadingDialogViewTempl,
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	initialize: function() {
-		this.model = new Backbone.Model({
-			tip: this.options.tip || GAME_TIPS.random_tip(),
-			background: this.options.background
-		});
-	}
+  initialize() {
+    this.model = new Backbone.Model({
+      tip: this.options.tip || GAME_TIPS.random_tip(),
+      background: this.options.background,
+    });
+  },
 
 });
 

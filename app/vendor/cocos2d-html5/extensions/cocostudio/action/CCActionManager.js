@@ -103,10 +103,10 @@ ccs.actionManager = /** @lends ccs.actionManager# */{
         this._actionDic = {};
     },
 
-	/**
-	 * Clear data: Release all actions.
-	 */
-	clear: function() {
-		this._actionDic = {};
-	}
+  /**
+   * Clear data: Release all actions.
+   */
+  clear: function() {
+    this._actionDic = {};
+  }
 };

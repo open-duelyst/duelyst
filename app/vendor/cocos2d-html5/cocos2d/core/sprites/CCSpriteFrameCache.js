@@ -333,9 +333,9 @@ cc.spriteFrameCache = /** @lends cc.spriteFrameCache# */{
         return frame;
     },
 
-	_clear: function () {
-		this._spriteFrames = {};
-		this._spriteFramesAliases = {};
-		this._frameConfigCache = {};
-	}
+  _clear: function () {
+    this._spriteFrames = {};
+    this._spriteFramesAliases = {};
+    this._frameConfigCache = {};
+  }
 };
