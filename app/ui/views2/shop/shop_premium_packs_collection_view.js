@@ -73,8 +73,7 @@ const ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
 
   onSelectProductSteam(e) {
     const productSkuId = $(e.currentTarget).data('productSkuId');
-    // TODO - Use InventoryManager.getInstance().purchaseProductSkuOnSteam
-    // return InventoryManager.getInstance().initBneaSteamTxn([{sku_id: productSkuId, qty: 1}])
+    // return InventoryManager.getInstance().purchaseProductSkuOnSteam([{sku_id: productSkuId, qty: 1}])
     // .then(function(steamUrl){
     //   // open [steam] browser then flash success
     //   // check platform here to determine if to use steam browser

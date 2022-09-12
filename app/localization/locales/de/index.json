@@ -3410,7 +3410,6 @@
     "dont_have_duelyst_account": "Du hast kein DUELYST-Konto? <a href=\"javascript:void(0)\" class=\"signup-link\">Registriere dich <i class=\"fa fa-arrow-circle-o-right\"></i></a>.",
     "account_linked_success": "Konto verknüpft!",
     "relink_duelyst_account": "Melde dich mit einem bereits vorhandenen Duelyst-Konto an, um es mit deinem aktuellen BANDAI NAMCO-Konto zu verknüpfen.",
-    "bnea_account_created_desc": "Mit deinem BNEA-Konto kannst du jedes Spiel auf bandainamcoent.com spielen!",
     "select_username": "Benutzername auswählen",
     "username": "Benutzername",
     "play_duelyst_btn": "Duelyst spielen",
