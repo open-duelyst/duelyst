@@ -229,8 +229,7 @@
     "test": "mocha -t 1000 --recursive test",
     "tsc": "tsc",
     "tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
-    "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build",
-    "postinstall": "node -e \"try { require('fs').symlinkSync(require('path').resolve('node_modules/@bower_components'), 'app/bower_components', 'junction') } catch (e) { }\""
+    "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
   },
   "engines": {
     "yarn": ">= 1.0.0"

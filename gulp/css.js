@@ -18,7 +18,7 @@ const sass = gsass(Sass);
 export default function css() {
   return gulp.src('./app/ui/styles/application.scss')
     .pipe(sass({
-      includePaths: ['./app/vendor', './app/bower_components'],
+      includePaths: ['./app/vendor', './node_modules/@bower_components'],
     }))
     .pipe(autoprefixer('last 1 version', '> 1%', 'ie 8', 'ie 7'))
     .pipe(rename((p) => {
