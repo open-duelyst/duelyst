@@ -6,7 +6,7 @@ const path = require('path')
 
 function appPrep (opts) {
   const defaults = {
-    appId: process.env.STEAM_APPID,
+    appId: process.env.STEAM_APP_ID,
     verbose: false,
     bin: './bin/contentprep/contentprep.py',
     destination: './dest',
