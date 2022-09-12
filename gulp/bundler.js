@@ -76,7 +76,6 @@ bundler.transform(envify({
   RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),
   BUGSNAG_WEB: config.get('bugsnag.web_key'),
   BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
-  REGISTRATION_SOURCE: '',
   LANDING_PAGE_URL: '',
   REFERRER_PAGE_URLS: '',
   TRACKING_PIXELS_ENABLED: '',
