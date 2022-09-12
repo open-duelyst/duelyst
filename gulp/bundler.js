@@ -70,7 +70,6 @@ bundler.transform(envify({
   ALL_CARDS_AVAILABLE: config.get('allCardsAvailable'),
   AI_TOOLS_ENABLED: config.get('aiToolsEnabled'),
   PAYPAL_URL: config.get('paypalEnvironmentUrl'),
-  PAYPAL_BUTTONS: config.get('paypalButtons'),
   RECORD_CLIENT_LOGS: config.get('recordClientLogs'),
   INVITE_CODES_ACTIVE: config.get('inviteCodesActive'),
   RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),

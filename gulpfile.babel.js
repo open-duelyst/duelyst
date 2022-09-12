@@ -70,8 +70,6 @@ gulp.task('changelog', git.changelog);
 gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
 gulp.task('docker:push', docker.push);
-gulp.task('shop:paypal:buttons:SYNC:danger', shop.syncPaypalButtons);
-gulp.task('shop:paypal:buttons:add', shop.addPaypalButtons);
 gulp.task('localization:copy', localization.copy);
 // gulp.task('cdn:purgeAll', cdn.purgeAll)
 // gulp.task('cdn:purgeLocalization', cdn.purgeLocalization)

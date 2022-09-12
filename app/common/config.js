@@ -1251,8 +1251,6 @@ CONFIG.HIDE_SFX_PRIORITY = 6;
 CONFIG.ERROR_SFX_PRIORITY = 7;
 CONFIG.MAX_SFX_PRIORITY = 9999;
 
-CONFIG.paypalButtons = process.env.PAYPAL_BUTTONS;
-
 // global scale - scale of game relative to resolution
 // set dynamically on resize
 CONFIG.globalScale = 1.0;
