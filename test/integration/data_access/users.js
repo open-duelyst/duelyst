@@ -77,10 +77,10 @@ describe('users module', () => {
 
   describe('createNewUser()', () => {
     before(() =>
-      // destroy referal codes
+      // destroy referral codes
       Promise.all([
-        knex('referral_codes').where('code', 'test-referal-20-gold').delete(),
-        knex('referral_codes').where('code', 'test-referal-10-gold-friend').delete(),
+        knex('referral_codes').where('code', 'test-referral-20-gold').delete(),
+        knex('referral_codes').where('code', 'test-referral-10-gold-friend').delete(),
         knex('referral_codes').where('code', 'expired-gold-code').delete(),
         knex('referral_codes').where('code', 'maxed-gold-code').delete(),
         knex('referral_codes').where('code', 'inactive-gold-code').delete(),
@@ -166,22 +166,22 @@ describe('users module', () => {
     });
 
     describe('registration - with referral codes', () => {
-      it('expect a referal code with 20 bonus signup GOLD to work', () => {
+      it('expect a referral code with 20 bonus signup GOLD to work', () => {
         const rando = generatePushId();
         const code = `test-invite-${rando}`;
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
-        const referalCode = 'test-referal-20-gold';
+        const referralCode = 'test-referral-20-gold';
         return Promise.all([
           knex('invite_codes').insert({ code }),
           knex('referral_codes').insert({
-            code: referalCode,
+            code: referralCode,
             params: {
               gold: 20,
             },
           }),
         ])
-          .then(() => UsersModule.createNewUser(email, username, 'testpassword', code, referalCode))
+          .then(() => UsersModule.createNewUser(email, username, 'testpassword', code, referralCode))
           .then(function (newUserId) {
             this.newUserId = newUserId;
             expect(newUserId).to.exist;
@@ -189,7 +189,7 @@ describe('users module', () => {
           }).then(function (rootRef) {
             return Promise.all([
               knex('users').where('id', this.newUserId).first(),
-              knex('referral_codes').where('code', referalCode).first(),
+              knex('referral_codes').where('code', referralCode).first(),
               FirebasePromises.once(rootRef.child('users').child(this.newUserId), 'value'),
               FirebasePromises.once(rootRef.child('user-inventory').child(this.newUserId).child('wallet'), 'value'),
             ]);
@@ -203,12 +203,12 @@ describe('users module', () => {
           });
       });
 
-      it('expect a referal code to be CaSE insensitive', () => {
+      it('expect a referral code to be CaSE insensitive', () => {
         const rando = generatePushId();
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
-        const referalCode = 'TEST-referal-20-Gold';
-        return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referalCode)
+        const referralCode = 'TEST-referral-20-Gold';
+        return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referralCode)
           .then(function (newUserId) {
             this.newUserId = newUserId;
             expect(newUserId).to.exist;
@@ -216,7 +216,7 @@ describe('users module', () => {
           }).then(function (rootRef) {
             return Promise.all([
               knex('users').where('id', this.newUserId).first(),
-              knex('referral_codes').where('code', referalCode.toLowerCase()).first(),
+              knex('referral_codes').where('code', referralCode.toLowerCase()).first(),
               FirebasePromises.once(rootRef.child('users').child(this.newUserId), 'value'),
               FirebasePromises.once(rootRef.child('user-inventory').child(this.newUserId).child('wallet'), 'value'),
             ]);
@@ -229,12 +229,12 @@ describe('users module', () => {
           });
       });
 
-      it('expect a referal code to trim whitespace', () => {
+      it('expect a referral code to trim whitespace', () => {
         const rando = generatePushId();
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
-        const referalCode = ' TEST-referal-20-Gold ';
-        return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referalCode)
+        const referralCode = ' TEST-referral-20-Gold ';
+        return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referralCode)
           .then(function (newUserId) {
             this.newUserId = newUserId;
             expect(newUserId).to.exist;
@@ -242,7 +242,7 @@ describe('users module', () => {
           }).then(function (rootRef) {
             return Promise.all([
               knex('users').where('id', this.newUserId).first(),
-              knex('referral_codes').where('code', referalCode.toLowerCase().trim()).first(),
+              knex('referral_codes').where('code', referralCode.toLowerCase().trim()).first(),
               FirebasePromises.once(rootRef.child('users').child(this.newUserId), 'value'),
               FirebasePromises.once(rootRef.child('user-inventory').child(this.newUserId).child('wallet'), 'value'),
             ]);
@@ -255,21 +255,21 @@ describe('users module', () => {
           });
       });
 
-      // it('expect a referal code with auto friending to work', function() {
+      // it('expect a referral code with auto friending to work', function() {
       //   const rando1 = generatePushId()
       //   const email1 = rando1+'-unit-test@counterplay.co'
       //   const username1 = rando1.toLowerCase()+'-unit-test'
       //   const rando2 = generatePushId()
       //   const email2 = rando2+'-unit-test@counterplay.co'
       //   const username2 = rando2.toLowerCase()+'-unit-test'
-      //   const referalCode = "test-referal-10-gold-friend"
+      //   const referralCode = "test-referral-10-gold-friend"
       //   const friendId = null
       //   return UsersModule.createNewUser(email1,username1,'testpassword',"kumite14")
       //   .then(function(newUserId){
       //     friendId = this.friendId = newUserId
       //     return Promise.all([
       //       knex("referral_codes").insert({
-      //         code:referalCode,
+      //         code:referralCode,
       //         user_id:friendId,
       //         params:{
       //           autoFriend:true,
@@ -278,7 +278,7 @@ describe('users module', () => {
       //       })
       //     ])
       //   }).then(function(){
-      //     return UsersModule.createNewUser(email2,username2,'testpassword',"kumite14",referalCode)
+      //     return UsersModule.createNewUser(email2,username2,'testpassword',"kumite14",referralCode)
       //   })
       //   .then(function(newUserId){
       //     this.newUserId = newUserId
@@ -287,7 +287,7 @@ describe('users module', () => {
       //   }).then(function(rootRef){
       //     return Promise.all([
       //       knex("users").where('id',this.newUserId).first(),
-      //       knex("referral_codes").where('code',referalCode).first(),
+      //       knex("referral_codes").where('code',referralCode).first(),
       //       FirebasePromises.once(rootRef.child("users").child(this.newUserId),"value"),
       //       FirebasePromises.once(rootRef.child("users").child(friendId),"value"),
       //     ])
@@ -351,7 +351,7 @@ describe('users module', () => {
         // })
       });
 
-      it('expect using an expired referal code to error out', () => {
+      it('expect using an expired referral code to error out', () => {
         const rando = generatePushId();
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
@@ -389,7 +389,7 @@ describe('users module', () => {
         // })
       });
 
-      it('expect using an inactive referal code to error out', () => {
+      it('expect using an inactive referral code to error out', () => {
         const rando = generatePushId();
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
@@ -433,7 +433,7 @@ describe('users module', () => {
         const code = `test-invite-${rando}`;
         const email = `${rando}-unit-test@counterplay.co`;
         const username = `${rando.toLowerCase()}-unit-test`;
-        const referalCode = 'test-referal-20-gold';
+        const referralCode = 'test-referral-20-gold';
         const campaignData = {
           campaign_source: 'test_campaign_source',
           campaign_medium: 'test_campaign_medium',

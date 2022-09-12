@@ -61,7 +61,7 @@ const RegistrationItemView = FormPromptModalItemView.extend({
       $.getScript('https://www.google.com/recaptcha/api.js?onload=onRecaptchaReady&render=explicit');
       window.onRecaptchaReady = function () {
         grecaptcha.render('recaptcha', {
-          sitekey: '6LcjUh8TAAAAAMmemLtr2dVXLeqNrHXaVp4_grDx',
+          sitekey: 'not-a-valid-site-key',
           theme: 'dark',
         });
       };

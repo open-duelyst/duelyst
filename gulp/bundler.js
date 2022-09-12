@@ -78,7 +78,7 @@ bundler.transform(envify({
   BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
   LANDING_PAGE_URL: '',
   REFERRER_PAGE_URLS: '',
-  TRACKING_PIXELS_ENABLED: '',
+  TRACKING_PIXELS_ENABLED: false,
   STEAM_APP_ID: '',
 }));
 // bundler.transform(babelify, {
