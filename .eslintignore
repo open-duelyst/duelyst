@@ -12,7 +12,6 @@ test/unit/sdk/cards/
 gulp/rsx.js
 
 # Third-party code
-app/bower_components
 app/vendor
 node_modules
 packages

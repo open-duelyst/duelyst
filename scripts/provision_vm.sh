@@ -65,7 +65,7 @@ echo 'Redis install completed."'
 echo "Install npm packages (global depends)"
 sudo npm install -g coffee-script 
 sudo npm install -g grunt-cli 
-sudo npm install -g bower 
+sudo npm install -g yarn 
 sudo npm install -g forever
 sudo npm install -g browserify
 

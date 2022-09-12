@@ -1,8 +1,6 @@
 .git
 .vagrant
-.bowerrc
 .gitignore
-bower.json
 circle.yml
 Procfile
 README.md
@@ -10,7 +8,6 @@ rules.json
 Vagrantfile
 desktop
 app/audio
-app/bower_components
 app/replay
 app/resources
 app/original_resources

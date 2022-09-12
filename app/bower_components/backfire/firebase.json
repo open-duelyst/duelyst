@@ -1,9 +1,0 @@
-{
-  "firebase": "backbonefire",
-  "public": "examples/todos",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
-}

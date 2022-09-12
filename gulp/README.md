@@ -263,13 +263,13 @@ data: {
 The vendor task concats our external javascript files (outside the main bundle) into a single vendor.js file which is included prior to the main bundle. This includes `cocos` and other external dependencies which are not Browserified. Note that ordering matters and they are concatenated in order specified.
 ```
 const vendorFiles = [
-	'./app/bower_components/jquery/jquery.js',
-	'./app/bower_components/velocity/velocity.js',
-	'./app/bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
-	'./app/bower_components/underscore/underscore.js',
-	'./app/bower_components/backbone/backbone.js',
-	'./app/bower_components/backfire/dist/backfire.js',
-	'./app/bower_components/backbone.marionette/lib/backbone.marionette.js',
+	'./node_modules/@bower_components/jquery/jquery.js',
+	'./node_modules/@bower_components/velocity/velocity.js',
+	'./node_modules/@bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js',
+	'./node_modules/@bower_components/underscore/underscore.js',
+	'./node_modules/@bower_components/backbone/backbone.js',
+	'./node_modules/@bower_components/backfire/dist/backfire.js',
+	'./node_modules/@bower_components/backbone.marionette/lib/backbone.marionette.js',
 	'./app/vendor/jquery_ui/jquery-ui.min.js',
 	'./app/vendor/ccConfig.js',
 	'./app/vendor/cocos2d-html5/lib/cocos2d-js-v3.3-beta0.js',

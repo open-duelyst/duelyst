@@ -78,7 +78,18 @@
     "validator": "^3.18.0",
     "web-animations-js": "2.1.3",
     "winston": "2.1.1",
-    "winston-papertrail": "1.0.1"
+    "winston-papertrail": "1.0.1",
+    "@bower_components/backbone": "jashkenas/backbone#1.1.2",
+    "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
+    "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
+    "@bower_components/backbone.wreqr": "marionettejs/backbone.wreqr#^1.0.0",
+    "@bower_components/backfire": "firebase/backfire#~0.4.0",
+    "@bower_components/bootstrap-sass-official": "twbs/bootstrap-sass#~3.2.0+1",
+    "@bower_components/firebase": "firebase/firebase-bower#2.0.x",
+    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#~4.2",
+    "@bower_components/jquery": "components/jquery#~2.0.3",
+    "@bower_components/underscore": "jashkenas/underscore#1.6.0",
+    "@bower_components/velocity": "julianshapiro/velocity#~1.2.0"
   },
   "devDependencies": {
     "@coffeelint/cli": "^5.2.9",
@@ -219,5 +230,8 @@
     "tsc": "tsc",
     "tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
     "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
+  },
+  "engines": {
+    "yarn": ">= 1.0.0"
   }
 }
