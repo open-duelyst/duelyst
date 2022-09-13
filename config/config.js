@@ -311,6 +311,7 @@ const config = convict({
     doc: 'Should the AI tools be enabled?',
     format: Boolean,
     default: false,
+    env: 'AI_TOOLS_ENABLED',
   },
   watchSectionCacheTTL: {
     doc: 'How long should watch cache live (seconds)',
