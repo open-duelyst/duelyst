@@ -730,67 +730,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 
 	/* endregion GOLD CHECKOUT */
 
-	/* region PAYPAL CHECKOUT */
-
-	_paypalCheckout: function(productData) {
-		var sku = productData.sku;
-
-		if (this.paypalReceiptRef) {
-			this.paypalReceiptRef.off("child_added");
-		}
-
-		// if (sku === "STARTERBUNDLE_201604") {
-		// 	ProfileManager.getInstance().set("has_tried_purchase_starter_bundle",true);
-		// }
-		ShopManager.getInstance().markAttemptedPurchase(sku)
-
-		var now = moment().utc().subtract(1,'minute');
-		this.paypalReceiptRef = new Firebase(process.env.FIREBASE_URL +
-			"/user-charges/" + ProfileManager.getInstance().get("id"))
-			.orderByPriority()
-			.startAt(now.valueOf())
-			.limit(1)
-		this.paypalReceiptRef.on("child_added",function(snapshot,error){
-			if (snapshot.val()) {
-				var receipt = snapshot.val();
-				Logger.module("PAYPAL").log("payment status: "+receipt.payment_status)
-				if (receipt.payment_status == 'Completed') {
-					this.paypalReceiptRef.off("child_added");
-
-					this.trigger("complete",{
-						sku: sku,
-						paymentType: 'paypal'
-					});
-
-					this.flashSuccessInDialog("SUCCESS!");
-				}
-			} else if (error) {
-				var errorMessage = error.message || "Purchase failed. Please try again.";
-				this.showError(errorMessage);
-			}
-		}.bind(this));
-
-		this.trigger("processing",{
-			sku: sku,
-			paymentType: 'paypal'
-		});
-
-		var url = process.env.PAYPAL_URL +
-			'cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=' +
-			CONFIG.paypalButtons[sku] +
-			'&custom=' + ProfileManager.getInstance().get("id");
-
-		if (window.isDesktop) {
-			window.ipcRenderer.send('paypal-create-window', url)
-		}
-		else {
-			// open link in new window
-			window.open(url, 'PayPal', 'height=700,width=1000')
-		}
-	},
-
-	/* endregion PAYPAL CHECKOUT */
-
 	/* region STEAM CHECKOUT */
 
 	_steamCheckout:function(productData) {
