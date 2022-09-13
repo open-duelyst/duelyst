@@ -11,13 +11,10 @@ var InventoryManager = require('app/ui/managers/inventory_manager');
 var ActivityDialogItemView = require('app/ui/views/item/activity_dialog');
 var ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 var Promise = require("bluebird");
-
 var Template = require('./templates/credit_card_form.hbs');
 
 var CreditCardFormView = Backbone.Marionette.ItemView.extend({
-
-	initialize: function() {
-	},
+	initialize: function() {},
 
 	template: Template,
 
@@ -51,7 +48,6 @@ var CreditCardFormView = Backbone.Marionette.ItemView.extend({
 
 	onSubmit: function() {
 		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
-
 		NavigationManager.getInstance().showDialogView(new ActivityDialogItemView());
 
 		this.submit()
@@ -68,20 +64,19 @@ var CreditCardFormView = Backbone.Marionette.ItemView.extend({
 	submit: function() {
 		this.trigger("submit");
 		return new Promise(function(resolve,reject){
-		  var errorMessage = 'Failed to save credit card data.';
-		  reject(errorMessage);
+			var errorMessage = 'Failed to save credit card data.';
+			reject(errorMessage);
 		}.bind(this));
 	},
 
-    isFocused: function() {
-    	return $("input",this.el).is(":focus");
-    },
+  isFocused: function() {
+    return $("input",this.el).is(":focus");
+  },
 
 	onCancelCreditCard: function() {
 		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
 		this.trigger("cancel");
 	}
-
 });
 
 // Expose the class either via CommonJS or the global object

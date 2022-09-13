@@ -34,9 +34,9 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 
 	events: {
 		"click .prompt-submit": "onClickSubmit",
-		"click .prompt-cancel"  : "onCancel",
-		'input .form-control' : 'onFormControlChangeContent',
-		'blur .form-control' : 'onFormControlBlur',
+		"click .prompt-cancel": "onCancel",
+		'input .form-control': 'onFormControlChangeContent',
+		'blur .form-control': 'onFormControlBlur',
 		"click #show_friend_referral_code_button": "onFriendReferralButtonPressed"
 	},
 
