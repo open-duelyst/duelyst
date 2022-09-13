@@ -18,7 +18,6 @@ import * as upload from './gulp/upload';
 import * as desktop from './gulp/desktop';
 import * as git from './gulp/git';
 import * as docker from './gulp/docker';
-import * as shop from './gulp/shop';
 import * as localization from './gulp/localization';
 // import * as cdn from './gulp/cdn'
 import {
