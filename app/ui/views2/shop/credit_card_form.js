@@ -66,61 +66,10 @@ var CreditCardFormView = Backbone.Marionette.ItemView.extend({
 	},
 
 	submit: function() {
-
 		this.trigger("submit");
-
 		return new Promise(function(resolve,reject){
-
-			if (typeof Stripe != 'undefined') {
-
-				Stripe.setPublishableKey(process.env.STRIPE_CLIENT_KEY);
-				Stripe.card.createToken({
-					number: this.ui.number.val(),
-					cvc: this.ui.cvc.val(),
-					exp_month: this.ui.expiration_month.val(),
-					exp_year: this.ui.expiration_year.val()
-				}, function(status, response) {
-
-					if (response.error) {
-						// Show the errors on the form
-						var errorMessage = response.error.message || 'Failed to save credit card data.';
-						reject(errorMessage);
-					} else {
-						// response contains id and card, which contains additional card details
-						var token = response.id;
-						var last_four_digits = this.ui.number.val().substr(this.ui.number.val().length-4);
-
-						if (this.ui.save_card.is(':checked') || InventoryManager.getInstance().walletModel.get("card_last_four_digits")) {
-
-							var request = $.ajax({
-								data: JSON.stringify({
-									card_token:token,
-									last_four_digits:last_four_digits
-								}),
-								url: process.env.API_URL + '/api/me/shop/customer',
-								type: 'POST',
-								contentType: 'application/json',
-								dataType: 'json'
-							});
-
-							request.done(function(response){
-								resolve({token:token,stored:true});
-							}.bind(this));
-
-							request.fail(function(response){
-								reject(response && response.responseJSON && (response.responseJSON.error || response.responseJSON.message) || 'Failed to save credit card data. Please retry.');
-							}.bind(this));
-
-						} else {
-							resolve({token:token,stored:false});
-						}
-					}
-				}.bind(this));
-			} else {
-				var errorMessage = 'Failed to save credit card data.';
-				reject(errorMessage);
-			}
-
+		  var errorMessage = 'Failed to save credit card data.';
+		  reject(errorMessage);
 		}.bind(this));
 	},
 
