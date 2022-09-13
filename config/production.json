@@ -15,7 +15,6 @@
 		"region": "us-west-2"
 	},
 	"analyticsEnabled": true,
-	"amaId":"",
 	"gaId":"",
 	"zendeskEnabled": true,
 	"bugsnag": {

@@ -166,11 +166,6 @@ const config = convict({
     default: false,
     env: 'ANALYTICS_ENABLED',
   },
-  amaId: {
-    doc: 'AMA api key',
-    default: '',
-    env: 'AMA_ID',
-  },
   gaId: {
     doc: 'Google Analytics Id',
     default: '', // by default points to STAGING analytics

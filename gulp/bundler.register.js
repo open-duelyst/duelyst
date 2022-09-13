@@ -57,7 +57,6 @@ bundler.transform(envify({
   VERSION: version,
   API_URL: config.get('api'),
   FIREBASE_URL: config.get('firebase.url'),
-  AMI_ID: config.get('amaId'),
   ALL_CARDS_AVAILABLE: config.get('allCardsAvailable'),
   AI_TOOLS_ENABLED: config.get('aiToolsEnabled'),
   RECORD_CLIENT_LOGS: config.get('recordClientLogs'),
