@@ -1,10 +1,12 @@
-const RankStarTmpl = require('app/ui/templates/item/rank_star.hbs');
+'use strict';
 
-const RankStarView = Backbone.Marionette.ItemView.extend({
+var RankStarTmpl = require('app/ui/templates/item/rank_star.hbs');
 
-  tagName: 'li',
-  className: 'star',
-  template: RankStarTmpl,
+var RankStarView = Backbone.Marionette.ItemView.extend({
+
+	tagName: "li",
+	className: "star",
+	template: RankStarTmpl
 
 });
 

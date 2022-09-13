@@ -122,9 +122,9 @@ cc.TMX_ORIENTATION_ISO = 2;
  * var tmxTiledMap = new cc.TMXTiledMap(xmlStr, resources);
  */
 cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
-  properties: null,
-  mapOrientation: null,
-  objectGroups: null,
+	properties: null,
+	mapOrientation: null,
+	objectGroups: null,
 
     //the map's size property measured in tiles
     _mapSize: null,
@@ -168,18 +168,18 @@ cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
         this._mapSize.height = Var.height;
     },
 
-  _getMapWidth: function () {
-    return this._mapSize.width;
-  },
-  _setMapWidth: function (width) {
-    this._mapSize.width = width;
-  },
-  _getMapHeight: function () {
-    return this._mapSize.height;
-  },
-  _setMapHeight: function (height) {
-    this._mapSize.height = height;
-  },
+	_getMapWidth: function () {
+		return this._mapSize.width;
+	},
+	_setMapWidth: function (width) {
+		this._mapSize.width = width;
+	},
+	_getMapHeight: function () {
+		return this._mapSize.height;
+	},
+	_setMapHeight: function (height) {
+		this._mapSize.height = height;
+	},
 
     /**
      * Gets the tile size.
@@ -198,18 +198,18 @@ cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
         this._tileSize.height = Var.height;
     },
 
-  _getTileWidth: function () {
-    return this._tileSize.width;
-  },
-  _setTileWidth: function (width) {
-    this._tileSize.width = width;
-  },
-  _getTileHeight: function () {
-    return this._tileSize.height;
-  },
-  _setTileHeight: function (height) {
-    this._tileSize.height = height;
-  },
+	_getTileWidth: function () {
+		return this._tileSize.width;
+	},
+	_setTileWidth: function (width) {
+		this._tileSize.width = width;
+	},
+	_getTileHeight: function () {
+		return this._tileSize.height;
+	},
+	_setTileHeight: function (height) {
+		this._tileSize.height = height;
+	},
 
     /**
      * map orientation
@@ -271,8 +271,8 @@ cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
     initWithTMXFile:function (tmxFile) {
         if(!tmxFile || tmxFile.length == 0)
             throw "cc.TMXTiledMap.initWithTMXFile(): tmxFile should be non-null or non-empty string.";
-      this.width = 0;
-      this.height = 0;
+	    this.width = 0;
+	    this.height = 0;
         var mapInfo = new cc.TMXMapInfo(tmxFile);
         if (!mapInfo)
             return false;
@@ -292,7 +292,7 @@ cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
      */
     initWithXML:function(tmxString, resourcePath){
         this.width = 0;
-      this.height = 0;
+	    this.height = 0;
 
         var mapInfo = new cc.TMXMapInfo(tmxString, resourcePath);
         var locTilesets = mapInfo.getTilesets();
@@ -320,8 +320,8 @@ cc.TMXTiledMap = cc.Node.extend(/** @lends cc.TMXTiledMap# */{
                     var child = this._parseLayer(layerInfo, mapInfo);
                     this.addChild(child, idx, idx);
                     // update content size with the max size
-                  this.width = Math.max(this.width, child.width);
-                  this.height = Math.max(this.height, child.height);
+	                this.width = Math.max(this.width, child.width);
+	                this.height = Math.max(this.height, child.height);
                     idx++;
                 }
             }

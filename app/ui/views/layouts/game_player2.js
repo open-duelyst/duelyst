@@ -1,15 +1,17 @@
-const SDK = require('app/sdk');
-const GamePlayerLayout = require('./game_player');
+'use strict';
 
-const GamePlayer2Layout = GamePlayerLayout.extend({
+var SDK = require('app/sdk');
+var GamePlayerLayout = require('./game_player');
 
-  id: 'app-game-player2',
+var GamePlayer2Layout = GamePlayerLayout.extend({
 
-  initialize() {
-    // set player id before anything else in case it is used in initialization
-    this.model.set('playerId', SDK.GameSession.current().getPlayer2().getPlayerId());
-    GamePlayerLayout.prototype.initialize.apply(this, arguments);
-  },
+	id: "app-game-player2",
+
+	initialize: function () {
+		// set player id before anything else in case it is used in initialization
+		this.model.set("playerId", SDK.GameSession.current().getPlayer2().getPlayerId());
+		GamePlayerLayout.prototype.initialize.apply(this,arguments);
+	}
 });
 
 // Expose the class either via CommonJS or the global object

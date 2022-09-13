@@ -61,8 +61,8 @@ ccs.spriteFrameCacheHelper = /** @lends ccs.spriteFrameCacheHelper# */ {
     /**
      * Clear the sprite frame cache's data.
      */
-  clear: function () {
-    this._textureAtlasDic = {};
-    this._imagePaths = [];
-  }
+	clear: function () {
+		this._textureAtlasDic = {};
+		this._imagePaths = [];
+	}
 };

@@ -1,17 +1,19 @@
-const EmotesListTempl = require('app/ui/templates/composite/emotes-list.hbs');
-const EmoteItemView = require('app/ui/views/item/emote');
-const Animations = require('app/ui/views/animations');
+'use strict';
 
-const EmotesListCompositeView = Backbone.Marionette.CompositeView.extend({
+var EmotesListTempl = require('app/ui/templates/composite/emotes-list.hbs');
+var EmoteItemView = require('app/ui/views/item/emote');
+var Animations = require("app/ui/views/animations");
 
-  className: 'emotes-list',
+var EmotesListCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  template: EmotesListTempl,
+	className: "emotes-list",
 
-  childView: EmoteItemView,
+	template: EmotesListTempl,
 
-  // animateIn: Animations.fadeIn,
-  // animateOut: Animations.fadeOut
+	childView: EmoteItemView,
+
+	// animateIn: Animations.fadeIn,
+	// animateOut: Animations.fadeOut
 
 });
 

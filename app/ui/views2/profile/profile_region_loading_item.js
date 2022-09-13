@@ -1,13 +1,15 @@
-const ProfileRegionLoadingViewTempl = require('./templates/profile_region_loading_item.hbs');
+'use strict';
 
-const ProfileRegionLoadingView = Backbone.Marionette.ItemView.extend({
+var ProfileRegionLoadingViewTempl = require('./templates/profile_region_loading_item.hbs');
 
-  className: 'loading-region',
+var ProfileRegionLoadingView = Backbone.Marionette.ItemView.extend({
 
-  template: ProfileRegionLoadingViewTempl,
+	className: "loading-region",
 
-  onShow() {
-  },
+	template: ProfileRegionLoadingViewTempl,
+
+	onShow: function() {
+	}
 
 });
 

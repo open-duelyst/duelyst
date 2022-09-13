@@ -118,32 +118,32 @@ ClassManager.compileSuper.ClassManager = ClassManager;
         // these function properties cacheable in Carakan.
         var desc = { writable: true, enumerable: false, configurable: true };
 
-      prototype.__instanceId = null;
+	    prototype.__instanceId = null;
 
-      // The dummy Class constructor
-      function Class() {
-        this.__instanceId = ClassManager.getNewInstanceId();
-        // All construction is actually done in the init method
-        if (this.ctor)
-          this.ctor.apply(this, arguments);
-      }
+	    // The dummy Class constructor
+	    function Class() {
+		    this.__instanceId = ClassManager.getNewInstanceId();
+		    // All construction is actually done in the init method
+		    if (this.ctor)
+			    this.ctor.apply(this, arguments);
+	    }
 
-      Class.id = classId;
-      // desc = { writable: true, enumerable: false, configurable: true,
-      //          value: XXX }; Again, we make this non-enumerable.
-      desc.value = classId;
-      Object.defineProperty(prototype, '__pid', desc);
+	    Class.id = classId;
+	    // desc = { writable: true, enumerable: false, configurable: true,
+	    //          value: XXX }; Again, we make this non-enumerable.
+	    desc.value = classId;
+	    Object.defineProperty(prototype, '__pid', desc);
 
-      // Populate our constructed prototype object
-      Class.prototype = prototype;
+	    // Populate our constructed prototype object
+	    Class.prototype = prototype;
 
-      // Enforce the constructor to be what we expect
-      desc.value = Class;
-      Object.defineProperty(Class.prototype, 'constructor', desc);
+	    // Enforce the constructor to be what we expect
+	    desc.value = Class;
+	    Object.defineProperty(Class.prototype, 'constructor', desc);
 
-      // Copy getter/setter
-      this.__getters__ && (Class.__getters__ = cc.clone(this.__getters__));
-      this.__setters__ && (Class.__setters__ = cc.clone(this.__setters__));
+	    // Copy getter/setter
+	    this.__getters__ && (Class.__getters__ = cc.clone(this.__getters__));
+	    this.__setters__ && (Class.__setters__ = cc.clone(this.__setters__));
 
         for(var idx = 0, li = arguments.length; idx < li; ++idx) {
             var prop = arguments[idx];

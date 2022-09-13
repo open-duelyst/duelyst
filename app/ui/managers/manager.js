@@ -2,114 +2,115 @@
  * Abstract manager class, do not use directly.
  */
 
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
-const Logger = require('app/common/logger');
-const Promise = require('bluebird');
+var EventBus = require("app/common/eventbus");
+var EVENTS = require("app/common/event_types");
+var Logger = require('app/common/logger');
+var Promise = require("bluebird");
 
-const Manager = Backbone.Marionette.Controller.extend({
+var Manager = Backbone.Marionette.Controller.extend({
 
-  connected: null,
-  isReady: null,
+	connected:null,
+	isReady:null,
 
-  constructor() {
-    // Define instance properties off of the prototype chain
-    this.connected = null;
-    this.isReady = null;
+	constructor: function() {
+		// Define instance properties off of the prototype chain
+		this.connected = null;
+		this.isReady = null;
 
-    // Call the original constructor
-    Backbone.Marionette.Controller.apply(this, arguments);
-  },
+		// Call the original constructor
+		Backbone.Marionette.Controller.apply(this, arguments);
+	},
 
-  initialize(options) {
-    // override in sub class
-  },
+	initialize: function(options) {
+		// override in sub class
+	},
 
-  getConnected() {
-    return this.connected;
-  },
+	getConnected: function () {
+		return this.connected;
+	},
 
-  connect() {
-    if (!this.connected) {
-      this.connected = true;
-      this.listenToOnce(EventBus.getInstance(), EVENTS.session_logged_out, this.disconnect);
-      this.trigger('before_connect');
-      this.onBeforeConnect();
-      this.trigger('connect');
-    }
-  },
+	connect: function () {
+		if (!this.connected) {
+			this.connected = true;
+			this.listenToOnce(EventBus.getInstance(), EVENTS.session_logged_out, this.disconnect);
+			this.trigger("before_connect");
+			this.onBeforeConnect();
+			this.trigger("connect");
+		}
+	},
 
-  onBeforeConnect() {
-    // override in sub class to do any setup just before connect is triggered
-  },
+	onBeforeConnect: function () {
+		// override in sub class to do any setup just before connect is triggered
+	},
 
-  disconnect() {
-    if (this.connected) {
-      this.connected = false;
-      this.isReady = false;
-      this.stopListening();
-      this.trigger('before_disconnect');
-      this.onBeforeDisconnect();
-      this.trigger('disconnect');
-    }
-  },
+	disconnect: function () {
+		if (this.connected) {
+			this.connected = false;
+			this.isReady = false;
+			this.stopListening();
+			this.trigger("before_disconnect");
+			this.onBeforeDisconnect();
+			this.trigger("disconnect");
+		}
+	},
 
-  onBeforeDisconnect() {
-    // override in sub class to do any setup just before disconnect is triggered
-  },
+	onBeforeDisconnect: function () {
+		// override in sub class to do any setup just before disconnect is triggered
+	},
 
-  getIsReady() {
-    return this.isReady;
-  },
+	getIsReady: function() {
+		return this.isReady;
+	},
 
-  ready() {
-    this.isReady = true;
-    this.trigger('ready');
-  },
+	ready: function() {
+		this.isReady = true;
+		this.trigger("ready");
+	},
 
-  onConnect(callback) {
-    const p = new Promise((resolve, reject) => {
-      if (this.connected) {
-        resolve();
-      } else {
-        this.listenToOnce(this, 'connect', () => {
-          resolve();
-        });
-      }
-    });
+	onConnect: function(callback) {
 
-    p.nodeify(callback);
+		var p = new Promise(function(resolve,reject){
+			if (this.connected) {
+				resolve();
+			} else {
+				this.listenToOnce(this,"connect",function() {
+					resolve();
+				})
+			}
+		}.bind(this));
 
-    return p;
-  },
+		p.nodeify(callback);
 
-  onReady(callback) {
-    const p = new Promise((resolve, reject) => {
-      if (this.isReady) {
-        resolve();
-      } else {
-        this.listenToOnce(this, 'ready', resolve);
-      }
-    });
+		return p;
+	},
 
-    p.nodeify(callback);
+	onReady: function(callback) {
+		var p = new Promise(function(resolve,reject){
+			if (this.isReady) {
+				resolve();
+			} else {
+				this.listenToOnce(this,"ready",resolve);
+			}
+		}.bind(this));
 
-    return p;
-  },
+		p.nodeify(callback);
 
-  _markAsReadyWhenModelsAndCollectionsSynced(modelsAndCollections) {
-    const allPromises = [];
-    for (let i = 0, il = modelsAndCollections.length; i < il; i++) {
-      const modelOrCollection = modelsAndCollections[i];
-      if (modelOrCollection != null && modelOrCollection.onSyncOrReady != null) {
-        allPromises.push(modelOrCollection.onSyncOrReady());
-      }
-    }
-    Promise.all(allPromises).then(() => {
-      Logger.module('UI').log('Manager::_markAsReadyWhenModelsAndCollectionsSynced -> READY');
-      this.ready();
-    });
-  },
+		return p;
+	},
+
+	_markAsReadyWhenModelsAndCollectionsSynced: function(modelsAndCollections) {
+		var allPromises = [];
+		for (var i = 0, il = modelsAndCollections.length; i < il; i++) {
+			var modelOrCollection = modelsAndCollections[i];
+			if (modelOrCollection != null && modelOrCollection.onSyncOrReady != null) {
+				allPromises.push(modelOrCollection.onSyncOrReady());
+			}
+		}
+		Promise.all(allPromises).then(function() {
+			Logger.module("UI").log("Manager::_markAsReadyWhenModelsAndCollectionsSynced -> READY");
+			this.ready();
+		}.bind(this));
+	}
 
 });
 

@@ -65,19 +65,19 @@ cc.ActionTween = cc.ActionInterval.extend(/** @lends cc.ActionTween */{
     to:0,
     delta:0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Creates an initializes the action with the property name (key), and the from and to parameters.
-   * @param {Number} duration
-   * @param {String} key
-   * @param {Number} from
-   * @param {Number} to
-   */
+	 * Creates an initializes the action with the property name (key), and the from and to parameters.
+	 * @param {Number} duration
+	 * @param {String} key
+	 * @param {Number} from
+	 * @param {Number} to
+	 */
     ctor:function(duration, key, from, to){
         cc.ActionInterval.prototype.ctor.call(this);
         this.key = "";
 
-    to !== undefined && this.initWithDuration(duration, key, from, to);
+		to !== undefined && this.initWithDuration(duration, key, from, to);
     },
 
     /**

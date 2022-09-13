@@ -1,45 +1,47 @@
-const LoaderTmpl = require('app/ui/templates/item/loader.hbs');
+'use strict';
 
-const LoaderItemView = Backbone.Marionette.ItemView.extend({
+var LoaderTmpl = require('app/ui/templates/item/loader.hbs');
 
-  template: LoaderTmpl,
+var LoaderItemView = Backbone.Marionette.ItemView.extend({
 
-  id: 'app-loader',
+	template: LoaderTmpl,
 
-  /* ui selector cache */
-  ui: {
-    brandDynamic: '.brand-dynamic',
-  },
+	id: "app-loader",
 
-  onRender() {
-    // short timeout to ensure dom is rendered
-    const delay = 120;
-    setTimeout(() => {
-      this.ui.brandDynamic.addClass('active');
+	/* ui selector cache */
+	ui: {
+		"brandDynamic": '.brand-dynamic'
+	},
 
-      this.ui.brandDynamic.find('.draw-line').each(function () {
-        const $element = $(this);
-        let length = this.getTotalLength() / 5;
-        $element.data('length', length);
-        $element.css('stroke-dasharray', length);
-        $element.css('stroke-dashoffset', length);
+	onRender: function() {
+		// short timeout to ensure dom is rendered
+		var delay = 120;
+		setTimeout(function () {
+			this.ui.brandDynamic.addClass("active");
 
-        length = $element.data('length');
-        $element.css('transition', 'stroke-dashoffset 2.0s ease-in');
-        $element.css('stroke-dashoffset', -length);
-      });
+			this.ui.brandDynamic.find('.draw-line').each(function() {
+				var $element = $(this);
+				var length = this.getTotalLength()/5;
+				$element.data("length",length);
+				$element.css("stroke-dasharray",length);
+				$element.css("stroke-dashoffset",length);
 
-      this.ui.brandDynamic.find('.fill').each(function () {
-        const $element = $(this);
-        $element.css('transition', 'opacity 1.0s ease-out');
-        $element.css('transition-delay', '1.0s');
-        $element.css('opacity', '1');
-      });
+				length = $element.data("length");
+				$element.css("transition","stroke-dashoffset 2.0s ease-in");
+				$element.css("stroke-dashoffset",-length);
+			});
 
-      this.ui.brandDynamic.find('.ring-blue').removeClass('active');
-      this.ui.brandDynamic.find('.ring-white').addClass('active');
-    }, delay);
-  },
+			this.ui.brandDynamic.find('.fill').each(function() {
+				var $element = $(this);
+				$element.css("transition","opacity 1.0s ease-out");
+				$element.css("transition-delay","1.0s");
+				$element.css("opacity","1");
+			});
+
+			this.ui.brandDynamic.find('.ring-blue').removeClass('active');
+			this.ui.brandDynamic.find('.ring-white').addClass('active');
+		}.bind(this), delay);
+	}
 
 });
 

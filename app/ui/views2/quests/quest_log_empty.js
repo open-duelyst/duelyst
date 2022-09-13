@@ -1,13 +1,15 @@
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const Logger = require('app/common/logger');
-const Templ = require('./templates/quest_log_empty.hbs');
+'use strict';
 
-const QuestLogEmptyView = Backbone.Marionette.ItemView.extend({
+var Templ = require('./templates/quest_log_empty.hbs');
+var NavigationManager = require('app/ui/managers/navigation_manager');
+var Logger = require('app/common/logger');
 
-  template: Templ,
+var QuestLogEmptyView = Backbone.Marionette.ItemView.extend({
 
-  initialize() {
-  },
+	template: Templ,
+
+	initialize: function() {
+	}
 
 });
 

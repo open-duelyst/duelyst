@@ -38,11 +38,11 @@
 cc.ActionEase = cc.ActionInterval.extend(/** @lends cc.ActionEase# */{
     _inner:null,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * creates the action of ActionEase.
-   * @param {cc.ActionInterval} action
-   */
+	 * creates the action of ActionEase.
+	 * @param {cc.ActionInterval} action
+	 */
     ctor: function (action) {
         cc.ActionInterval.prototype.ctor.call(this);
         action && this.initWithAction(action);
@@ -169,16 +169,16 @@ cc.ActionEase.create = cc.actionEase;
 cc.EaseRateAction = cc.ActionEase.extend(/** @lends cc.EaseRateAction# */{
     _rate:0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Creates the action with the inner action and the rate parameter.
-   * @param {cc.ActionInterval} action
-   * @param {Number} rate
-   */
+	 * Creates the action with the inner action and the rate parameter.
+	 * @param {cc.ActionInterval} action
+	 * @param {Number} rate
+	 */
     ctor: function(action, rate){
         cc.ActionEase.prototype.ctor.call(this);
 
-    rate !== undefined && this.initWithAction(action, rate);
+		rate !== undefined && this.initWithAction(action, rate);
     },
 
     /**
@@ -1097,16 +1097,16 @@ cc.easeSineInOut = function(){
 cc.EaseElastic = cc.ActionEase.extend(/** @lends cc.EaseElastic# */{
     _period: 0.3,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
      * Creates the action with the inner action and the period in radians (default is 0.3).
-   * @param {cc.ActionInterval} action
-   * @param {Number} [period=0.3]
-   */
+	 * @param {cc.ActionInterval} action
+	 * @param {Number} [period=0.3]
+	 */
     ctor:function(action, period){
         cc.ActionEase.prototype.ctor.call(this);
 
-    action && this.initWithAction(action, period);
+		action && this.initWithAction(action, period);
     },
 
     /**

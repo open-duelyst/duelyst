@@ -71,10 +71,10 @@ bundler.transform(envify({
   RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),
   BUGSNAG_WEB: config.get('bugsnag.web_key'),
   BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
-  LANDING_PAGE_URL: '',
-  REFERRER_PAGE_URLS: '',
+  STEAM_APP_ID: config.get('steam.appId'),
   TRACKING_PIXELS_ENABLED: false,
-  STEAM_APP_ID: '',
+  LANDING_PAGE_URL: '/',
+  REFERRER_PAGE_URLS: '',
 }));
 // bundler.transform(babelify, {
 //   compact: false

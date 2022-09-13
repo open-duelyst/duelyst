@@ -1,42 +1,44 @@
-const SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
-const Logger = require('app/common/logger');
-const RiftHelper = require('app/sdk/rift/riftHelper');
-const Templ = require('./templates/rift_run_deck.hbs');
+'use strict'
 
-const RiftRunDeck = SlidingPanelItemView.extend({
+var Templ = require('./templates/rift_run_deck.hbs');
+var SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
+var Logger = require('app/common/logger');
+var RiftHelper = require('app/sdk/rift/riftHelper');
 
-  className: 'sliding-panel deck-preview rift-run-deck',
+var RiftRunDeck = SlidingPanelItemView.extend({
 
-  template: Templ,
+	className: "sliding-panel deck-preview rift-run-deck",
 
-  serializeModel(model) {
-    const data = model.toJSON.apply(model, _.rest(arguments));
+	template: Templ,
 
-    const levelUpRequirement = RiftHelper.pointsRequiredForLevel(data.rift_level + 1);
-    const pointsSoFar = data.rift_points - RiftHelper.totalPointsForLevel(data.rift_level);
+	serializeModel: function(model){
+		var data =  model.toJSON.apply(model, _.rest(arguments));
 
-    data.level_up_points_required = levelUpRequirement;
-    data.rift_points_so_far = pointsSoFar;
-    data.progress_percent = 100 * (pointsSoFar / levelUpRequirement);
+		var levelUpRequirement = RiftHelper.pointsRequiredForLevel(data.rift_level + 1);
+		var pointsSoFar = data.rift_points - RiftHelper.totalPointsForLevel(data.rift_level);
 
-    if (data.rift_rating == null) {
-      data.rift_rating = 400;
-    }
+		data.level_up_points_required = levelUpRequirement;
+		data.rift_points_so_far = pointsSoFar;
+		data.progress_percent = 100 * (pointsSoFar / levelUpRequirement);
 
-    return data;
-  },
+		if (data.rift_rating == null) {
+			data.rift_rating = 400;
+		}
 
-  onRender() {
-    SlidingPanelItemView.prototype.onRender.call(this);
+		return data
+	},
 
-    // add faction class
-    const factionId = this.model.get('faction_id');
-    this.$el.addClass(`f${factionId}`);
-  },
+	onRender: function() {
+		SlidingPanelItemView.prototype.onRender.call(this);
 
-  getIsEnabled() {
-    return true;
-  },
+		// add faction class
+		var factionId = this.model.get("faction_id");
+		this.$el.addClass("f" + factionId);
+	},
+
+	getIsEnabled: function () {
+		return true;
+	}
 
 });
 

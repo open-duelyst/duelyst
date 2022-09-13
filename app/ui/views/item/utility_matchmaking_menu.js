@@ -1,13 +1,15 @@
-const Logger = require('app/common/logger');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const UtilityMenuItemView = require('./utility_menu');
+'use strict';
+
+var Logger = require('app/common/logger');
+var UtilityMenuItemView = require('./utility_menu');
+var NavigationManager = require('app/ui/managers/navigation_manager');
 
 /**
  * Matchmaking utility menu that shows basic utilities.
  */
-const UtilityMatchmakingMenuItemView = UtilityMenuItemView.extend({
+var UtilityMatchmakingMenuItemView = UtilityMenuItemView.extend({
 
-  id: 'app-utility-matchmaking-menu',
+	id: "app-utility-matchmaking-menu"
 
 });
 

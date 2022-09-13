@@ -1,7 +1,9 @@
-const Logger = require('app/common/logger');
-const NotificationItemView = require('./notification');
+'use strict';
 
-const MainNotificationItemView = NotificationItemView.extend({
+var Logger = require('app/common/logger');
+var NotificationItemView = require('./notification');
+
+var MainNotificationItemView = NotificationItemView.extend({
 
 });
 

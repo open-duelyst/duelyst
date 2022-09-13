@@ -36,7 +36,7 @@
  * @name cc.animationCache
  */
 cc.animationCache = /** @lends cc.animationCache# */{
-  _animations: {},
+	_animations: {},
 
     /**
      * Adds a cc.Animation with a name.
@@ -207,7 +207,7 @@ cc.animationCache = /** @lends cc.animationCache# */{
         }
     },
 
-  _clear: function () {
-    this._animations = {};
-  }
+	_clear: function () {
+		this._animations = {};
+	}
 };

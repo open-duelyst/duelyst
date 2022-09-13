@@ -1,43 +1,45 @@
-const Logger = require('app/common/logger');
-const CONFIG = require('app/common/config');
-const UtilityGameMenuTmpl = require('app/ui/templates/item/utility_game_menu.hbs');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const UtilsEngine = require('../../../common/utils/utils_engine');
-const UtilityMenuItemView = require('./utility_menu');
-const GameMenuItemView = require('./esc_game_menu');
+'use strict';
+
+var Logger = require('app/common/logger');
+var CONFIG = require('app/common/config');
+var UtilsEngine = require("./../../../common/utils/utils_engine");
+var UtilityGameMenuTmpl = require('app/ui/templates/item/utility_game_menu.hbs');
+var UtilityMenuItemView = require('./utility_menu');
+var GameMenuItemView = require('./esc_game_menu');
+var NavigationManager = require('app/ui/managers/navigation_manager');
 
 /**
  * In game utility menu that shows basic utilities plus buttons to exit/concede.
  */
-const UtilityGameMenuItemView = UtilityMenuItemView.extend({
+var UtilityGameMenuItemView = UtilityMenuItemView.extend({
 
-  id: 'app-utility-game-menu',
+	id: "app-utility-game-menu",
 
-  template: UtilityGameMenuTmpl,
+	template: UtilityGameMenuTmpl,
 
-  events: {
-    'click button.menu': 'toggleGameMenu',
-  },
+	events: {
+		"click button.menu"  : "toggleGameMenu"
+	},
 
-  /* region LAYOUT */
+	/* region LAYOUT */
 
-  onResize() {
-    const endPosition = UtilsEngine.getCardsInHandEndPositionForCSS();
-    this.$el.css(
-      'transform',
-      `translate(${(endPosition.x - 40.0) / 10.0}rem, ${(-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.54) / 10.0}rem)`,
-    );
-  },
+	onResize: function () {
+		var endPosition = UtilsEngine.getCardsInHandEndPositionForCSS();
+		this.$el.css(
+			"transform",
+			"translate(" + (endPosition.x - 40.0) / 10.0 + "rem, " + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.54) / 10.0 + "rem)"
+		);
+	},
 
-  /* endregion LAYOUT */
+	/* endregion LAYOUT */
 
-  toggleGameMenu() {
-    NavigationManager.getInstance().toggleModalViewByClass(GameMenuItemView);
-  },
+	toggleGameMenu: function() {
+		NavigationManager.getInstance().toggleModalViewByClass(GameMenuItemView);
+	}
 
-  /* region MARIONETTE EVENTS */
+	/* region MARIONETTE EVENTS */
 
-  /* endregion MARIONETTE EVENTS */
+	/* endregion MARIONETTE EVENTS */
 
 });
 

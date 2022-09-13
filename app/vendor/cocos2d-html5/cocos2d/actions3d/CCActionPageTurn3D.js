@@ -79,7 +79,7 @@ cc.PageTurn3D = cc.Grid3DAction.extend(/** @lends cc.PageTurn3D# */{
                 // too much bigger than the screen due to perspectve transform
                 p.z = (r * ( 1 - cosBeta ) * cosTheta) / 7;// "100" didn't work for
 
-                //  Stop z coord from dropping beneath underlying page in a transition
+                //	Stop z coord from dropping beneath underlying page in a transition
                 // issue #751
                 if (p.z < 0.5)
                     p.z = 0.5;

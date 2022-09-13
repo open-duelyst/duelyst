@@ -1,34 +1,35 @@
-// pragma PKGS: tutorial_support
-const Template = require('app/ui/templates/item/tutorial/challenge_lost.hbs');
-const TutorialSupportView = require('./tutorial_support');
+'use strict';
+//pragma PKGS: tutorial_support
+var TutorialSupportView = require('./tutorial_support');
+var Template = require('app/ui/templates/item/tutorial/challenge_lost.hbs');
 
-const TutorialChallengeLostView = TutorialSupportView.extend({
+var TutorialChallengeLostView = TutorialSupportView.extend({
 
-  id: 'tutorial-challenge-lost',
+	id: "tutorial-challenge-lost",
 
-  template: Template,
+	template: Template,
 
-  events: {
-    'click .retry': 'onRetry',
-  },
+	events: {
+		"click .retry": "onRetry"
+	},
 
-  initialize() {
-    TutorialSupportView.prototype.initialize.call(this);
+	initialize: function () {
+		TutorialSupportView.prototype.initialize.call(this);
 
-    const challenge = this.model.get('challenge');
-    if (challenge != null) {
-      let challengeHint = '';
-      if (challenge.otkChallengeFailureMessages && challenge.otkChallengeFailureMessages.length) {
-        const hintIndex = Math.min(challenge.otkChallengeFailureCount - 1, challenge.otkChallengeFailureMessages.length - 1);
-        challengeHint = challenge.otkChallengeFailureMessages[hintIndex];
-      }
-      this.model.set('challenge_hint', challengeHint);
-    }
-  },
+		var challenge = this.model.get("challenge");
+		if (challenge != null) {
+			var challengeHint = "";
+			if (challenge.otkChallengeFailureMessages && challenge.otkChallengeFailureMessages.length) {
+				var hintIndex = Math.min(challenge.otkChallengeFailureCount - 1, challenge.otkChallengeFailureMessages.length - 1);
+				challengeHint = challenge.otkChallengeFailureMessages[hintIndex];
+			}
+			this.model.set("challenge_hint", challengeHint);
+		}
+	},
 
-  onRetry() {
-    this.trigger('retry_challenge');
-  },
+	onRetry: function() {
+		this.trigger("retry_challenge");
+	}
 
 });
 

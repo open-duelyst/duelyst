@@ -540,20 +540,20 @@ cc.ScrollView = cc.Layer.extend(/** @lends cc.ScrollView# */{
             this.updateInset();
         }
     },
-  _setWidth: function (value) {
-    var container = this.getContainer();
-    if (container != null) {
-      container._setWidth(value);
-      this.updateInset();
-    }
-  },
-  _setHeight: function (value) {
-    var container = this.getContainer();
-    if (container != null) {
-      container._setHeight(value);
-      this.updateInset();
-    }
-  },
+	_setWidth: function (value) {
+		var container = this.getContainer();
+		if (container != null) {
+			container._setWidth(value);
+			this.updateInset();
+		}
+	},
+	_setHeight: function (value) {
+		var container = this.getContainer();
+		if (container != null) {
+			container._setHeight(value);
+			this.updateInset();
+		}
+	},
 
     getContentSize:function () {
         return this._container.getContentSize();

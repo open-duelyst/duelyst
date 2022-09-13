@@ -1,151 +1,156 @@
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
-const Logger = require('app/common/logger');
-const CONFIG = require('app/common/config');
-const SDK = require('app/sdk');
-const InventoryManager = require('app/ui/managers/inventory_manager');
-const BoosterPacksCompositeViewTemplate = require('app/ui/templates/composite/booster_packs.hbs');
-const BoosterPackPreviewItemView = require('app/ui/views/item/booster_pack_preview');
-const i18next = require('i18next');
+'use strict';
 
-const BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
+var Logger = require('app/common/logger');
+var CONFIG = require('app/common/config');
+var SDK = require('app/sdk');
+var InventoryManager = require('app/ui/managers/inventory_manager');
+var BoosterPacksCompositeViewTemplate = require('app/ui/templates/composite/booster_packs.hbs');
+var BoosterPackPreviewItemView = require('app/ui/views/item/booster_pack_preview');
+var i18next = require('i18next')
 
-  className: 'booster-packs',
-  template: BoosterPacksCompositeViewTemplate,
-  childView: BoosterPackPreviewItemView,
-  childViewContainer: '.booster-packs-list',
+var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  _stateLocked: false,
-  _draggingEnabled: true,
+	className: "booster-packs",
+	template: BoosterPacksCompositeViewTemplate,
+	childView: BoosterPackPreviewItemView,
+	childViewContainer: ".booster-packs-list",
 
-  ui: {
-    $totalBoosterPacksCount: '.total-booster-packs-count',
-  },
+	_stateLocked: false,
+	_draggingEnabled: true,
 
-  templateHelpers: {
-    spiritOrbNameForCardSet(cardSetId) {
-      const cardSetData = SDK.CardSetFactory.cardSetForIdentifier(cardSetId);
-      if (cardSetData == null || cardSetData.id === SDK.CardSet.Core) {
-        return i18next.t('common.spirit_orb_plural');
-      }
-      return `${cardSetData.name} Orbs`;
-    },
-  },
+	ui: {
+		$totalBoosterPacksCount: ".total-booster-packs-count"
+	},
 
-  _boosterPackModels: null,
+	templateHelpers: {
+		spiritOrbNameForCardSet: function (cardSetId) {
+			var cardSetData = SDK.CardSetFactory.cardSetForIdentifier(cardSetId);
+			if (cardSetData == null || cardSetData.id === SDK.CardSet.Core) {
+				return i18next.t("common.spirit_orb_plural");
+			} else {
+				return cardSetData.name + " Orbs";
+			}
+		}
+	},
 
-  initialize() {
-    this._boosterPackModels = [];
-  },
+	_boosterPackModels: null,
 
-  /* region LAYOUT */
+	initialize: function () {
+		this._boosterPackModels = [];
+	},
 
-  onResize() {
-    if (!this._stateLocked) {
-      const cardSet = this.model.get('cardSet') || SDK.CardSet.Core;
-      this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter((p) => p.get('card_set') === cardSet || (!p.get('card_set') && cardSet === SDK.CardSet.Core));
-      this.collection.reset(this._boosterPackModels.slice(0, CONFIG.MAX_BOOSTER_PACKS_SHOWN));
+	/* region LAYOUT */
 
-      if (this.children.length > 0 && this.$childViewContainer instanceof $) {
-        // use onShow because it guarantees elements will have been added to the DOM
-        /*
-        // update booster pack margin top dynamically based on how many are shown
-        var containerHeight = this.$childViewContainer.innerHeight();
-        var maxHeight = 0;
-        this.children.each(function (childView, index) {
-          var itemHeight = childView.$el.height();
-          if (itemHeight > maxHeight) {
-            maxHeight = itemHeight;
-          }
-        });
-        var heightPerItem = containerHeight / this.collection.length;
-        var maxHeightDiff = maxHeight - heightPerItem;
-        heightPerItem = (containerHeight - maxHeightDiff) / this.collection.length;
-        this.children.each(function (childView, index) {
-          var itemHeight = childView.$el.height();
-          if (index > 1 && heightPerItem < itemHeight) {
-            childView.$el.css("margin-top", heightPerItem - itemHeight);
-          } else {
-            childView.$el.css("margin-top", 0);
-          }
-        });
-         */
-        this.children.each((childView, index) => {
-          childView.$el.draggable({
-            distance: 10,
-            revert: true,
-          });
-        });
-      }
-    }
+	onResize: function () {
+		if (!this._stateLocked) {
+			var cardSet = this.model.get("cardSet") || SDK.CardSet.Core;
+			this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter(function(p){
+				return p.get("card_set") === cardSet || (!p.get("card_set") && cardSet === SDK.CardSet.Core)
+			}.bind(this));
+			this.collection.reset(this._boosterPackModels.slice(0, CONFIG.MAX_BOOSTER_PACKS_SHOWN));
 
-    this._updateBoosterPackDragging();
-    this._updateBoosterPackCounts();
-  },
+			if (this.children.length > 0 && this.$childViewContainer instanceof $) {
+				// use onShow because it guarantees elements will have been added to the DOM
+				/*
+				// update booster pack margin top dynamically based on how many are shown
+				var containerHeight = this.$childViewContainer.innerHeight();
+				var maxHeight = 0;
+				this.children.each(function (childView, index) {
+					var itemHeight = childView.$el.height();
+					if (itemHeight > maxHeight) {
+						maxHeight = itemHeight;
+					}
+				});
+				var heightPerItem = containerHeight / this.collection.length;
+				var maxHeightDiff = maxHeight - heightPerItem;
+				heightPerItem = (containerHeight - maxHeightDiff) / this.collection.length;
+				this.children.each(function (childView, index) {
+					var itemHeight = childView.$el.height();
+					if (index > 1 && heightPerItem < itemHeight) {
+						childView.$el.css("margin-top", heightPerItem - itemHeight);
+					} else {
+						childView.$el.css("margin-top", 0);
+					}
+				});
+				 */
+				this.children.each(function (childView, index) {
+					childView.$el.draggable({
+						distance: 10,
+						revert: true
+					});
+				});
+			}
+		}
 
-  /* endregion LAYOUT */
+		this._updateBoosterPackDragging();
+		this._updateBoosterPackCounts();
+	},
 
-  /* region MARIONETTE EVENTS */
+	/* endregion LAYOUT */
 
-  onShow() {
-    // listen to manager events
-    InventoryManager.getInstance().onConnect().then(this.onInventoryManagerConnected.bind(this));
+	/* region MARIONETTE EVENTS */
 
-    // listen to global events
-    this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
-  },
+	onShow: function () {
+		// listen to manager events
+		InventoryManager.getInstance().onConnect().then(this.onInventoryManagerConnected.bind(this));
 
-  /* endregion MARIONETTE EVENTS */
+		// listen to global events
+		this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
+	},
 
-  /* region EVENT LISTENERS */
+	/* endregion MARIONETTE EVENTS */
 
-  onInventoryManagerConnected() {
-    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, 'add remove', this.onResize);
-    this.onResize();
-  },
+	/* region EVENT LISTENERS */
 
-  /* endregion EVENT LISTENERS */
+	onInventoryManagerConnected: function () {
+		this.listenTo(InventoryManager.getInstance().boosterPacksCollection, "add remove", this.onResize);
+		this.onResize();
+	},
 
-  setLocked(locked) {
-    if (this._stateLocked !== locked) {
-      this._stateLocked = locked;
-      this.setDraggingEnabled(!locked);
-      this.onResize();
-    }
-  },
+	/* endregion EVENT LISTENERS */
 
-  setDraggingEnabled(draggingEnabled) {
-    if (this._draggingEnabled !== draggingEnabled) {
-      this._draggingEnabled = draggingEnabled;
-      this._updateBoosterPackDragging();
-    }
-  },
+	setLocked: function (locked) {
+		if (this._stateLocked !== locked) {
+			this._stateLocked = locked;
+			this.setDraggingEnabled(!locked);
+			this.onResize();
+		}
+	},
 
-  getLocked() {
-    return this._stateLocked;
-  },
+	setDraggingEnabled: function (draggingEnabled) {
+		if (this._draggingEnabled !== draggingEnabled) {
+			this._draggingEnabled = draggingEnabled;
+			this._updateBoosterPackDragging();
+		}
+	},
 
-  _updateBoosterPackCounts() {
-    this.ui.$totalBoosterPacksCount.text(this._boosterPackModels.length);
-  },
+	getLocked: function () {
+		return this._stateLocked;
+	},
 
-  _updateBoosterPackDragging() {
-    if (this.children.length > 0 && this.$childViewContainer instanceof $) {
-      this.children.each((childView) => {
-        this._updateBoosterPackDraggingForItemView(childView);
-      });
-    }
-  },
+	_updateBoosterPackCounts: function () {
+		this.ui.$totalBoosterPacksCount.text(this._boosterPackModels.length);
+	},
 
-  _updateBoosterPackDraggingForItemView(childView) {
-    if (childView.$el.draggable('instance') != null) {
-      if (this._draggingEnabled) {
-        childView.$el.draggable('enable');
-      } else {
-        childView.$el.draggable('disable');
-      }
-    }
-  },
+	_updateBoosterPackDragging: function () {
+		if (this.children.length > 0 && this.$childViewContainer instanceof $) {
+			this.children.each(function (childView) {
+				this._updateBoosterPackDraggingForItemView(childView);
+			}.bind(this));
+		}
+	},
+
+	_updateBoosterPackDraggingForItemView: function (childView) {
+		if (childView.$el.draggable("instance") != null) {
+			if (this._draggingEnabled) {
+				childView.$el.draggable("enable");
+			} else {
+				childView.$el.draggable("disable");
+			}
+		}
+	}
 
 });
 

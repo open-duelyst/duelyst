@@ -1,491 +1,495 @@
-// pragma PKGS: nongame
-
+//pragma PKGS: nongame
+'use strict';
 // global libs
-const Logger = require('app/common/logger');
-const CONFIG = require('app/common/config');
-const generatePushID = require('app/common/generate_push_id');
-const Scene = require('app/view/Scene');
-const SDK = require('app/sdk');
-const moment = require('moment');
-const Promise = require('bluebird');
-const RSX = require('app/data/resources');
-const audio_engine = require('app/audio/audio_engine');
+var Logger = require('app/common/logger')
+var CONFIG = require('app/common/config')
+var generatePushID = require('app/common/generate_push_id');
+var Scene = require('app/view/Scene')
+var SDK = require('app/sdk')
+var moment = require('moment')
+var Promise = require("bluebird");
+var RSX = require('app/data/resources');
+var audio_engine = require('app/audio/audio_engine');
 // template
+var ProfileTemplate = require('./templates/profile_layout.hbs');
 //
-const Animations = require('app/ui/views/animations');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const GamesManager = require('app/ui/managers/games_manager');
-const InventoryManager = require('app/ui/managers/inventory_manager');
-const UtilsUI = require('app/common/utils/utils_ui');
-const DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
-const DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-const ChangePortraitItemView = require('app/ui/views/item/change_portrait');
-const ChangeUsernameItemView = require('app/ui/views/item/change_username');
-const ChangePasswordItemView = require('app/ui/views/item/change_password');
-const ConfirmDialogItemView = require('app/ui/views/item/confirm_dialog');
+var Animations = require("app/ui/views/animations");
+var NavigationManager = require('app/ui/managers/navigation_manager');
+var GamesManager = require('app/ui/managers/games_manager');
+var InventoryManager = require('app/ui/managers/inventory_manager');
+var UtilsUI = require('app/common/utils/utils_ui');
+var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
+var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
+var ChangePortraitItemView = require('app/ui/views/item/change_portrait');
+var ChangeUsernameItemView = require('app/ui/views/item/change_username');
+var ChangePasswordItemView = require('app/ui/views/item/change_password');
+var ConfirmDialogItemView = require('app/ui/views/item/confirm_dialog');
 // region views
-const ProfileManager = require('app/ui/managers/profile_manager');
-const openUrl = require('app/common/openUrl');
-const ProfileErrorView = require('./profile_error_item');
-const ProfileRegionLoadingView = require('./profile_region_loading_item');
-const ProfileSummaryView = require('./profile_summary_item');
-const ProfileRiftSummary = require('./profile_rift_summary_item');
-const ProfileFactionLevelCollectionView = require('./profile_faction_level_collection');
-const ProfileRankHistoryCollectionView = require('./profile_rank_history_collection');
-const ProfileMatchHistoryCollectionView = require('./profile_match_history_collection');
-const ProfileTemplate = require('./templates/profile_layout.hbs');
+var ProfileManager = require("app/ui/managers/profile_manager");
+var ProfileErrorView = require('./profile_error_item');
+var ProfileRegionLoadingView = require('./profile_region_loading_item');
+var ProfileSummaryView = require('./profile_summary_item');
+var ProfileRiftSummary = require('./profile_rift_summary_item')
+var ProfileFactionLevelCollectionView = require('./profile_faction_level_collection');
+var ProfileRankHistoryCollectionView = require('./profile_rank_history_collection');
+var ProfileMatchHistoryCollectionView = require('./profile_match_history_collection');
+var openUrl = require('app/common/openUrl');
 
-const ProfileLayout = Backbone.Marionette.LayoutView.extend({
+var ProfileLayout = Backbone.Marionette.LayoutView.extend({
 
-  id: 'app-profile',
-  className: 'modal duelyst-modal',
-  template: ProfileTemplate,
-  ui: {
-    $profileTabs: '#profile_tabs',
-    $portraitImg: '.portrait img',
-    $usernameContent: '.username-content',
-  },
-  regions: {
-    contentRegion: '.content-region',
-  },
-  events: {
-    'click #profile_tabs li': 'onTabChanged',
-    'click .change-portrait': 'onChangePortraitClick',
-    'click .change-username': 'onChangeUsernameClicked',
-    'click .change-password': 'onChangePasswordClicked',
-  },
-  selectedTabValue: null,
-  baseSelectedTabValue: 'summary',
-  animateIn: Animations.fadeIn,
-  animateOut: Animations.fadeOut,
-  cache: null,
-  apiEndpointUrl: null,
-  gamesHistoryPage: 0,
-  _requestId: null,
+	id: "app-profile",
+	className: "modal duelyst-modal",
+	template: ProfileTemplate,
+	ui: {
+		$profileTabs: "#profile_tabs",
+		$portraitImg: ".portrait img",
+		$usernameContent: ".username-content"
+	},
+	regions: {
+		contentRegion: ".content-region"
+	},
+	events: {
+		"click #profile_tabs li": "onTabChanged",
+		"click .change-portrait" : "onChangePortraitClick",
+		"click .change-username" : "onChangeUsernameClicked",
+		"click .change-password" : "onChangePasswordClicked"
+	},
+	selectedTabValue:null,
+	baseSelectedTabValue:"summary",
+	animateIn: Animations.fadeIn,
+	animateOut: Animations.fadeOut,
+	cache:null,
+	apiEndpointUrl:null,
+	gamesHistoryPage:0,
+	_requestId: null,
 
-  serializeModel(model) {
-    const data = model.toJSON.apply(model, _.rest(arguments));
-    data.isViewingBuddyProfile = model.userId != null;
-    if (!data.isViewingBuddyProfile) {
-      data.season_count = Math.floor(moment.duration(moment().utc().valueOf() - data.created_at).asMonths());
-    }
-    if (!data.rank && data.presence) {
-      data.rank = data.presence.rank;
-    }
-    return data;
-  },
+	serializeModel: function(model){
+		var data =  model.toJSON.apply(model, _.rest(arguments))
+		data.isViewingBuddyProfile = model.userId != null;
+		if (!data.isViewingBuddyProfile) {
+			data.season_count = Math.floor(moment.duration(moment().utc().valueOf() - data.created_at).asMonths());
+		}
+		if (!data.rank && data.presence) {
+			data.rank = data.presence.rank
+		}
+		return data
+	},
 
-  initialize() {
-    // generate unique id for requests
-    this._requestId = generatePushID();
+	initialize: function() {
+		// generate unique id for requests
+		this._requestId = generatePushID();
 
-    this.cache = {};
+		this.cache = {};
 
-    if (this.model.userId) {
-      this.apiEndpointUrl = `${process.env.API_URL}/api/users/${this.model.userId}`;
-    } else {
-      this.apiEndpointUrl = `${process.env.API_URL}/api/me`;
-    }
-  },
+		if (this.model.userId) {
+			this.apiEndpointUrl = process.env.API_URL + '/api/users/' + this.model.userId;
+		} else {
+			this.apiEndpointUrl = process.env.API_URL + '/api/me';
+		}
+	},
 
-  onRender() {
-    this._bindPortrait();
-    this.showSelectedTab();
+	onRender: function () {
+		this._bindPortrait();
+		this.showSelectedTab();
 
-    if (window.isSteam) {
-      this.$el.find('.change-password').text('Set Password');
-    }
-  },
+		if (window.isSteam) {
+			this.$el.find(".change-password").text("Set Password");
+		}
+	},
 
-  onShow() {
-    // change gradient color mapping
-    Scene.getInstance().getFX().showGradientColorMap(this._requestId, CONFIG.ANIMATE_FAST_DURATION, {
-      r: 194, g: 203, b: 220, a: 255,
-    }, {
-      r: 36, g: 51, b: 65, a: 255,
-    });
+	onShow: function() {
+		// change gradient color mapping
+		Scene.getInstance().getFX().showGradientColorMap(this._requestId, CONFIG.ANIMATE_FAST_DURATION, {r:194, g:203, b:220, a:255}, {r:36, g:51, b:65, a:255});
 
-    // listen to events
-    this.listenTo(ProfileManager.getInstance().profile, 'change:presence', this._bindPortrait);
+		// listen to events
+		this.listenTo(ProfileManager.getInstance().profile, "change:presence", this._bindPortrait);
 
-    // start at default tab
-    this.setSelectedTab(this.baseSelectedTabValue);
-  },
+		// start at default tab
+		this.setSelectedTab(this.baseSelectedTabValue);
+	},
 
-  onPrepareForDestroy() {
-    // reset gradient color mapping
-    Scene.getInstance().getFX().clearGradientColorMap(this._requestId, CONFIG.ANIMATE_MEDIUM_DURATION);
-  },
+	onPrepareForDestroy: function () {
+		// reset gradient color mapping
+		Scene.getInstance().getFX().clearGradientColorMap(this._requestId, CONFIG.ANIMATE_MEDIUM_DURATION);
+	},
 
-  onDestroy() {
-  },
+	onDestroy: function() {
+	},
 
-  onChangePortraitClick() {
-    NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({ model: new Backbone.Model() }));
-  },
+	onChangePortraitClick: function() {
+		NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
+	},
 
-  _bindPortrait() {
-    let portraitId;
-    if (this.model.userId != null) {
-      // viewing buddy
-      portraitId = this.model.get('portrait_id');
-    } else {
-      // viewing self
-      portraitId = ProfileManager.getInstance().profile.get('presence').portrait_id;
-    }
-    const portraitData = SDK.CosmeticsFactory.profileIconForIdentifier(portraitId);
-    const portraitImg = portraitData.img;
-    const portraitScaledImg = RSX.getResourcePathForScale(portraitImg, CONFIG.resourceScaleCSS);
-    this.ui.$portraitImg.attr('src', portraitScaledImg);
-  },
+	_bindPortrait: function () {
+		var portraitId;
+		if (this.model.userId != null) {
+			// viewing buddy
+			portraitId = this.model.get("portrait_id");
+		} else {
+			// viewing self
+			portraitId = ProfileManager.getInstance().profile.get("presence").portrait_id;
+		}
+		var portraitData = SDK.CosmeticsFactory.profileIconForIdentifier(portraitId);
+		var portraitImg = portraitData.img;
+		var portraitScaledImg = RSX.getResourcePathForScale(portraitImg, CONFIG.resourceScaleCSS);
+		this.ui.$portraitImg.attr("src", portraitScaledImg);
+	},
 
-  onChangeUsernameClicked(e) {
-    const changeUsernameItemView = new ChangeUsernameItemView({ model: ProfileManager.getInstance().profile });
-    changeUsernameItemView.listenTo(changeUsernameItemView, 'success', () => {
-      this.ui.$usernameContent.text(ProfileManager.getInstance().get('username'));
-    });
-    NavigationManager.getInstance().showDialogView(changeUsernameItemView);
-  },
+	onChangeUsernameClicked: function (e) {
+		var changeUsernameItemView = new ChangeUsernameItemView({model:ProfileManager.getInstance().profile});
+		changeUsernameItemView.listenTo(changeUsernameItemView,"success",function() {
+			this.ui.$usernameContent.text(ProfileManager.getInstance().get("username"));
+		}.bind(this));
+		NavigationManager.getInstance().showDialogView(changeUsernameItemView);
+	},
 
-  onChangePasswordClicked(e) {
-    if (!window.isSteam) {
-      NavigationManager.getInstance().showDialogView(new ChangePasswordItemView());
-    } else {
-      const confirmDialogItemView = new ConfirmDialogItemView({ title: 'Click OK and use the forgot password system to set a password for use outside of Steam.' });
-      this.listenToOnce(confirmDialogItemView, 'confirm', () => {
-        openUrl(`${process.env.API_URL}/forgot`);
-      });
-      this.listenToOnce(confirmDialogItemView, 'cancel', () => {
-        this.stopListening(confirmDialogItemView);
-      });
-      NavigationManager.getInstance().showDialogView(confirmDialogItemView);
-    }
-  },
+	onChangePasswordClicked: function (e) {
+		if (!window.isSteam) {
+			NavigationManager.getInstance().showDialogView(new ChangePasswordItemView());
+		} else {
+			var confirmDialogItemView = new ConfirmDialogItemView({title:"Click OK and use the forgot password system to set a password for use outside of Steam."});
+			this.listenToOnce(confirmDialogItemView,"confirm",function() {
+				openUrl(process.env.API_URL + '/forgot');
+			});
+			this.listenToOnce(confirmDialogItemView,"cancel",function() {
+				this.stopListening(confirmDialogItemView);
+			}.bind(this));
+			NavigationManager.getInstance().showDialogView(confirmDialogItemView);
+		}
+	},
 
-  onTabChanged(e) {
-    const li = $(e.currentTarget);
-    const selectedTabValue = li.data('value');
-    this.setSelectedTab(selectedTabValue);
-  },
+	onTabChanged: function(e) {
+		var li = $(e.currentTarget);
+		var selectedTabValue = li.data("value");
+		this.setSelectedTab(selectedTabValue);
+	},
 
-  setSelectedTab(selectedTabValue) {
-    if (selectedTabValue !== this.selectedTabValue) {
-      this.gamesHistoryPage = 0;
-      this.selectedTabValue = selectedTabValue;
-      audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SELECT_SFX_PRIORITY);
-      this.showSelectedTab();
-    }
-  },
+	setSelectedTab: function (selectedTabValue) {
+		if (selectedTabValue !== this.selectedTabValue) {
+			this.gamesHistoryPage = 0;
+			this.selectedTabValue = selectedTabValue;
+			audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SELECT_SFX_PRIORITY);
+			this.showSelectedTab();
+		}
+	},
 
-  showSelectedTab() {
-    this.ui.$profileTabs.children().removeClass('active');
-    if (this.selectedTabValue != null) {
-      this.ui.$profileTabs.find(`[data-value='${this.selectedTabValue}']`).addClass('active');
-      switch (this.selectedTabValue) {
-        case 'summary':
-          this.showSummary();
-          break;
-        case 'rank_history':
-          this.showRankHistory();
-          break;
-        case 'match_history':
-          this.showMatchHistory();
-          break;
-        case 'faction_levels':
-          this.showFactionLevels();
-          break;
-        case 'rift_summary':
-          this.showRiftSummary();
-          break;
-      }
-    }
-  },
+	showSelectedTab: function () {
+		this.ui.$profileTabs.children().removeClass("active");
+		if (this.selectedTabValue != null) {
+			this.ui.$profileTabs.find("[data-value='" + this.selectedTabValue + "']").addClass("active");
+			switch (this.selectedTabValue) {
+				case "summary":
+					this.showSummary();
+					break;
+				case "rank_history":
+					this.showRankHistory();
+					break;
+				case "match_history":
+					this.showMatchHistory();
+					break;
+				case "faction_levels":
+					this.showFactionLevels();
+					break;
+				case "rift_summary":
+					this.showRiftSummary();
+					break;
+			}
+		}
+	},
 
-  showSummary() {
-    if (this.cache.summary) {
-      this.contentRegion.show(new ProfileSummaryView({
-        model: this.cache.summary,
-      }));
-    } else {
-      //
-      const rankedGameCounterModel = new DuelystBackbone.Model();
-      rankedGameCounterModel.url = `${this.apiEndpointUrl}/stats/games/ranked`;
-      rankedGameCounterModel.fetch();
+	showSummary: function() {
 
-      //
-      const gauntletGameCounterModel = new DuelystBackbone.Model();
-      gauntletGameCounterModel.url = `${this.apiEndpointUrl}/stats/games/gauntlet`;
-      gauntletGameCounterModel.fetch();
+		if (this.cache["summary"]) {
+			this.contentRegion.show(new ProfileSummaryView({
+				model:this.cache["summary"]
+			}))
+		} else {
+			//
+			var rankedGameCounterModel = new DuelystBackbone.Model()
+			rankedGameCounterModel.url = this.apiEndpointUrl + '/stats/games/ranked'
+			rankedGameCounterModel.fetch()
 
-      //
-      const gauntletTopRunWinCountModel = new DuelystBackbone.Model();
-      gauntletTopRunWinCountModel.url = `${this.apiEndpointUrl}/stats/gauntlet_runs/top/win_count`;
-      gauntletTopRunWinCountModel.fetch();
+			//
+			var gauntletGameCounterModel = new DuelystBackbone.Model()
+			gauntletGameCounterModel.url = this.apiEndpointUrl + '/stats/games/gauntlet'
+			gauntletGameCounterModel.fetch()
 
-      //
-      const topRankModel = new DuelystBackbone.Model();
-      topRankModel.url = `${this.apiEndpointUrl}/rank/top`;
-      topRankModel.fetch();
+			//
+			var gauntletTopRunWinCountModel = new DuelystBackbone.Model()
+			gauntletTopRunWinCountModel.url = this.apiEndpointUrl + '/stats/gauntlet_runs/top/win_count'
+			gauntletTopRunWinCountModel.fetch()
 
-      //
-      const divisionStatsModel = new DuelystBackbone.Model();
-      divisionStatsModel.url = `${this.apiEndpointUrl}/rank/division_stats`;
-      divisionStatsModel.fetch();
+			//
+			var topRankModel = new DuelystBackbone.Model()
+			topRankModel.url = this.apiEndpointUrl + '/rank/top'
+			topRankModel.fetch()
 
-      //
-      const factionProgressionModel = new DuelystBackbone.Model();
-      factionProgressionModel.url = `${this.apiEndpointUrl}/faction_progression`;
-      factionProgressionModel.fetch();
+			//
+			var divisionStatsModel = new DuelystBackbone.Model()
+			divisionStatsModel.url = this.apiEndpointUrl + '/rank/division_stats'
+			divisionStatsModel.fetch()
 
-      //
-      const ribbonsCollection = new DuelystBackbone.Collection();
-      ribbonsCollection.url = `${this.apiEndpointUrl}/ribbons`;
-      ribbonsCollection.fetch();
+			//
+			var factionProgressionModel = new DuelystBackbone.Model()
+			factionProgressionModel.url = this.apiEndpointUrl + '/faction_progression'
+			factionProgressionModel.fetch()
 
-      var currentSeasonRankModel = null;
-      if (this.model.userId) {
-        var currentSeasonRankModel = new DuelystBackbone.Model();
-        currentSeasonRankModel.url = `${this.apiEndpointUrl}/rank/current`;
-        currentSeasonRankModel.fetch();
-      } else {
-        currentSeasonRankModel = GamesManager.getInstance().rankingModel;
-      }
+			//
+			var ribbonsCollection = new DuelystBackbone.Collection()
+			ribbonsCollection.url = this.apiEndpointUrl + '/ribbons'
+			ribbonsCollection.fetch()
 
-      const currentSeasonLadderPositionModel = new DuelystBackbone.Model();
-      currentSeasonLadderPositionModel.url = `${this.apiEndpointUrl}/rank/current_ladder_position`;
-      currentSeasonLadderPositionModel.fetch();
+			var currentSeasonRankModel = null
+			if (this.model.userId) {
+				var currentSeasonRankModel = new DuelystBackbone.Model()
+				currentSeasonRankModel.url = this.apiEndpointUrl + '/rank/current'
+				currentSeasonRankModel.fetch()
+			} else {
+				currentSeasonRankModel = GamesManager.getInstance().rankingModel
+			}
 
-      const currentSeasonGameCounterModel = new DuelystBackbone.Model();
-      currentSeasonGameCounterModel.url = `${this.apiEndpointUrl}/rank/history/${moment().utc().startOf('month').format('YYYY-MM')}/game_counter`;
-      currentSeasonGameCounterModel.fetch();
+			var currentSeasonLadderPositionModel = new DuelystBackbone.Model()
+			currentSeasonLadderPositionModel.url = this.apiEndpointUrl + '/rank/current_ladder_position'
+			currentSeasonLadderPositionModel.fetch()
 
-      //
-      this.contentRegion.show(new ProfileRegionLoadingView());
+			var currentSeasonGameCounterModel = new DuelystBackbone.Model()
+			currentSeasonGameCounterModel.url = this.apiEndpointUrl + '/rank/history/' + moment().utc().startOf('month').format("YYYY-MM") + '/game_counter'
+			currentSeasonGameCounterModel.fetch()
 
-      Promise.all([
-        rankedGameCounterModel.onSyncOrReady(),
-        gauntletGameCounterModel.onSyncOrReady(),
-        gauntletTopRunWinCountModel.onSyncOrReady(),
-        topRankModel.onSyncOrReady(),
-        divisionStatsModel.onSyncOrReady(),
-        factionProgressionModel.onSyncOrReady(),
-        ribbonsCollection.onSyncOrReady(),
-        currentSeasonRankModel.onSyncOrReady(),
-        currentSeasonGameCounterModel.onSyncOrReady(),
-        currentSeasonLadderPositionModel.onSyncOrReady(),
-      ]).then(() => {
-        if (this.isDestroyed) return; // view is destroyed
+			//
+			this.contentRegion.show(new ProfileRegionLoadingView())
 
-        // Add win streak to model
-        const ribbons = [];
-        _.each(SDK.RibbonFactory.ribbons, (v, k) => {
-          const ribbon = _.clone(v);
-          _.extend(ribbon, { count: 0 });
-          ribbons.push(ribbon);
-        });
-        _.each(ribbonsCollection.toJSON(), (r) => {
-          const ribbon = _.find(ribbons, (ribbon) => ribbon.id == r.ribbon_id);
-          if (ribbon) ribbon.count += 1;
-        });
+			Promise.all([
+				rankedGameCounterModel.onSyncOrReady(),
+				gauntletGameCounterModel.onSyncOrReady(),
+				gauntletTopRunWinCountModel.onSyncOrReady(),
+				topRankModel.onSyncOrReady(),
+				divisionStatsModel.onSyncOrReady(),
+				factionProgressionModel.onSyncOrReady(),
+				ribbonsCollection.onSyncOrReady(),
+				currentSeasonRankModel.onSyncOrReady(),
+				currentSeasonGameCounterModel.onSyncOrReady(),
+				currentSeasonLadderPositionModel.onSyncOrReady()
+			]).then(function(){
+				if (this.isDestroyed) return; // view is destroyed
 
-        this.cache.summary = new Backbone.Model({
-          ranked: rankedGameCounterModel.attributes,
-          gauntlet: gauntletGameCounterModel.attributes,
-          run: gauntletTopRunWinCountModel.attributes,
-          currentSeasonRank: currentSeasonRankModel.attributes,
-          currentSeasonGameCounterModel: currentSeasonGameCounterModel.attributes,
-          currentSeasonLadderPositionModel: currentSeasonLadderPositionModel.attributes,
-          topRank: topRankModel.attributes,
-          divisionStats: divisionStatsModel.attributes,
-          factionProgression: factionProgressionModel.attributes,
-          ribbons,
-        });
+				// Add win streak to model
+				var ribbons = []
+				_.each(SDK.RibbonFactory.ribbons,function(v,k) {
+					var ribbon = _.clone(v)
+					_.extend(ribbon,{count:0})
+					ribbons.push(ribbon)
+				})
+				_.each(ribbonsCollection.toJSON(),function(r){
+					var ribbon = _.find(ribbons,function(ribbon) { return ribbon.id == r.ribbon_id })
+					if (ribbon)
+						ribbon.count += 1
+				})
 
-        this.contentRegion.show(new ProfileSummaryView({
-          model: this.cache.summary,
-        }));
-      }).catch((error) => {
-        let errorMessage = '';
-        if (error) {
-          errorMessage = error.message;
-        }
-        Logger.module('UI').error('Error loading profile summary data', errorMessage);
-        this.contentRegion.show(new ProfileErrorView({
-          model: new Backbone.Model({ message: errorMessage }),
-        }));
-      });
-    }
+				this.cache["summary"] = new Backbone.Model({
+					ranked: rankedGameCounterModel.attributes,
+					gauntlet: gauntletGameCounterModel.attributes,
+					run: gauntletTopRunWinCountModel.attributes,
+					currentSeasonRank: currentSeasonRankModel.attributes,
+					currentSeasonGameCounterModel: currentSeasonGameCounterModel.attributes,
+					currentSeasonLadderPositionModel: currentSeasonLadderPositionModel.attributes,
+					topRank: topRankModel.attributes,
+					divisionStats: divisionStatsModel.attributes,
+					factionProgression: factionProgressionModel.attributes,
+					ribbons: ribbons
+				});
 
-    //
-    this.selectedTabValue = 'summary';
-    this.ui.$profileTabs.children().removeClass('active');
-    this.ui.$profileTabs.children(`[data-value='${this.selectedTabValue}']`).addClass('active');
-  },
+				this.contentRegion.show(new ProfileSummaryView({
+					model:this.cache["summary"]
+				}));
+			}.bind(this)).catch(function(error) {
+				var errorMessage = "";
+				if (error) {
+					errorMessage = error.message
+				}
+				Logger.module("UI").error("Error loading profile summary data",errorMessage)
+				this.contentRegion.show(new ProfileErrorView({
+					model: new Backbone.Model({message:errorMessage})
+				}))
+			}.bind(this))
+		}
 
-  showRankHistory() {
-    if (this.cache.rank_history) {
-      this.contentRegion.show(new ProfileRankHistoryCollectionView({
-        model: this.cache.rank_history,
-      }));
-    } else {
-      var currentSeasonRankModel = null;
-      if (this.model.userId) {
-        var currentSeasonRankModel = new DuelystBackbone.Model();
-        currentSeasonRankModel.url = `${this.apiEndpointUrl}/rank/current`;
-        currentSeasonRankModel.fetch();
-      } else {
-        currentSeasonRankModel = GamesManager.getInstance().rankingModel;
-      }
+		//
+		this.selectedTabValue = "summary"
+		this.ui.$profileTabs.children().removeClass("active")
+		this.ui.$profileTabs.children("[data-value='"+this.selectedTabValue+"']").addClass("active")
+	},
 
-      //
-      const rankHistoryCollection = new DuelystBackbone.Collection();
-      rankHistoryCollection.url = `${this.apiEndpointUrl}/rank/history`;
-      rankHistoryCollection.fetch();
+	showRankHistory: function() {
 
-      //
-      const rankHistoryGameCounters = new DuelystBackbone.Collection();
-      rankHistoryGameCounters.url = `${this.apiEndpointUrl}/rank/history/game_counters`;
-      rankHistoryGameCounters.fetch();
+		if (this.cache["rank_history"]) {
+			this.contentRegion.show(new ProfileRankHistoryCollectionView({
+				model:this.cache["rank_history"]
+			}))
+		} else {
 
-      //
-      const topRankModel = new DuelystBackbone.Model();
-      topRankModel.url = `${this.apiEndpointUrl}/rank/top`;
-      topRankModel.fetch();
+			var currentSeasonRankModel = null
+			if (this.model.userId) {
+				var currentSeasonRankModel = new DuelystBackbone.Model()
+				currentSeasonRankModel.url = this.apiEndpointUrl + '/rank/current'
+				currentSeasonRankModel.fetch()
+			} else {
+				currentSeasonRankModel = GamesManager.getInstance().rankingModel
+			}
 
-      //
-      const divisionStatsModel = new DuelystBackbone.Model();
-      divisionStatsModel.url = `${this.apiEndpointUrl}/rank/division_stats`;
-      divisionStatsModel.fetch();
+			//
+			var rankHistoryCollection = new DuelystBackbone.Collection()
+			rankHistoryCollection.url = this.apiEndpointUrl + '/rank/history'
+			rankHistoryCollection.fetch()
 
-      //
-      this.contentRegion.show(new ProfileRegionLoadingView());
+			//
+			var rankHistoryGameCounters = new DuelystBackbone.Collection()
+			rankHistoryGameCounters.url = this.apiEndpointUrl + '/rank/history/game_counters'
+			rankHistoryGameCounters.fetch()
 
-      Promise.all([
-        rankHistoryCollection.onSyncOrReady(),
-        topRankModel.onSyncOrReady(),
-        divisionStatsModel.onSyncOrReady(),
-        rankHistoryGameCounters.onSyncOrReady(),
-      ]).then(() => {
-        this.cache.rank_history = new Backbone.Model({
-          currentSeasonRankModel: currentSeasonRankModel.toJSON(),
-          rankHistory: rankHistoryCollection.toJSON(),
-          topRank: topRankModel.attributes,
-          divisionStats: divisionStatsModel.attributes,
-          rankHistoryGameCounters: rankHistoryGameCounters.toJSON(),
-        });
-        this.contentRegion.show(new ProfileRankHistoryCollectionView({
-          model: this.cache.rank_history,
-        }));
-      });
-    }
+			//
+			var topRankModel = new DuelystBackbone.Model()
+			topRankModel.url = this.apiEndpointUrl + '/rank/top'
+			topRankModel.fetch()
 
-    //
-    this.selectedTabValue = 'rank_history';
-    this.ui.$profileTabs.children().removeClass('active');
-    this.ui.$profileTabs.children(`[data-value='${this.selectedTabValue}']`).addClass('active');
-  },
+			//
+			var divisionStatsModel = new DuelystBackbone.Model()
+			divisionStatsModel.url = this.apiEndpointUrl + '/rank/division_stats'
+			divisionStatsModel.fetch()
 
-  showMatchHistory() {
-    let matchHistoryCollectionView = null;
+			//
+			this.contentRegion.show(new ProfileRegionLoadingView())
 
-    if (this.cache[`match_history_${this.gamesHistoryPage}`]) {
-      matchHistoryCollectionView = new ProfileMatchHistoryCollectionView({
-        model: this.cache[`match_history_${this.gamesHistoryPage}`],
-      });
-      this.contentRegion.show(matchHistoryCollectionView);
-      this.listenTo(matchHistoryCollectionView, 'next_page', this.onMatchHistoryPageNext);
-    } else {
-      //
-      const gameHistoryCollection = new DuelystBackbone.Collection();
-      gameHistoryCollection.url = `${this.apiEndpointUrl}/games?page=${this.gamesHistoryPage}`;
-      gameHistoryCollection.fetch();
+			Promise.all([
+				rankHistoryCollection.onSyncOrReady(),
+				topRankModel.onSyncOrReady(),
+				divisionStatsModel.onSyncOrReady(),
+				rankHistoryGameCounters.onSyncOrReady()
+			]).then(function(){
+				this.cache["rank_history"] = new Backbone.Model({
+					currentSeasonRankModel:currentSeasonRankModel.toJSON(),
+					rankHistory:rankHistoryCollection.toJSON(),
+					topRank:topRankModel.attributes,
+					divisionStats:divisionStatsModel.attributes,
+					rankHistoryGameCounters:rankHistoryGameCounters.toJSON()
+				})
+				this.contentRegion.show(new ProfileRankHistoryCollectionView({
+					model:this.cache["rank_history"]
+				}));
+			}.bind(this));
+		}
 
-      //
-      this.contentRegion.show(new ProfileRegionLoadingView());
+		//
+		this.selectedTabValue = "rank_history"
+		this.ui.$profileTabs.children().removeClass("active")
+		this.ui.$profileTabs.children("[data-value='"+this.selectedTabValue+"']").addClass("active")
+	},
 
-      Promise.all([
-        gameHistoryCollection.onSyncOrReady(),
-      ]).then(() => {
-        this.cache[`match_history_${this.gamesHistoryPage}`] = new Backbone.Model({
-          matchHistory: gameHistoryCollection.toJSON(),
-        });
-        matchHistoryCollectionView = new ProfileMatchHistoryCollectionView({
-          model: this.cache[`match_history_${this.gamesHistoryPage}`],
-        });
-        this.contentRegion.show(matchHistoryCollectionView);
-        this.listenTo(matchHistoryCollectionView, 'next_page', this.onMatchHistoryPageNext);
-      });
-    }
+	showMatchHistory: function() {
 
-    //
-    this.selectedTabValue = 'match_history';
-    this.ui.$profileTabs.children().removeClass('active');
-    this.ui.$profileTabs.children(`[data-value='${this.selectedTabValue}']`).addClass('active');
-  },
+		var matchHistoryCollectionView = null
 
-  showRiftSummary() {
-    if (this.cache.rift_summary) {
-      this.contentRegion.show(new ProfileRiftSummary({
-        model: this.cache.rift_summary,
-      }));
-    } else {
-      const riftSummaryModel = new DuelystBackbone.Model();
-      riftSummaryModel.url = `${this.apiEndpointUrl}/rift`;
-      riftSummaryModel.fetch();
+		if (this.cache["match_history_"+this.gamesHistoryPage]) {
+			matchHistoryCollectionView = new ProfileMatchHistoryCollectionView({
+				model:this.cache["match_history_"+this.gamesHistoryPage]
+			})
+			this.contentRegion.show(matchHistoryCollectionView)
+			this.listenTo(matchHistoryCollectionView,"next_page",this.onMatchHistoryPageNext)
+		} else {
+			//
+			var gameHistoryCollection = new DuelystBackbone.Collection()
+			gameHistoryCollection.url = this.apiEndpointUrl + '/games?page=' + this.gamesHistoryPage
+			gameHistoryCollection.fetch()
 
-      this.contentRegion.show(new ProfileRegionLoadingView());
+			//
+			this.contentRegion.show(new ProfileRegionLoadingView())
 
-      Promise.all([
-        riftSummaryModel.onSyncOrReady(),
-      ]).then(() => {
-        this.cache.rift_summary = new Backbone.Model(riftSummaryModel.toJSON());
-        this.contentRegion.show(new ProfileRiftSummary({
-          model: this.cache.rift_summary,
-        }));
-      });
-    }
+			Promise.all([
+				gameHistoryCollection.onSyncOrReady(),
+			]).then(function(){
+				this.cache["match_history_"+this.gamesHistoryPage] = new Backbone.Model({
+					matchHistory:gameHistoryCollection.toJSON()
+				})
+				matchHistoryCollectionView = new ProfileMatchHistoryCollectionView({
+					model:this.cache["match_history_"+this.gamesHistoryPage]
+				})
+				this.contentRegion.show(matchHistoryCollectionView);
+				this.listenTo(matchHistoryCollectionView,"next_page",this.onMatchHistoryPageNext)
+			}.bind(this));
+		}
 
-    this.selectedTabValue = 'rift_summary';
-    this.ui.$profileTabs.children().removeClass('active');
-    this.ui.$profileTabs.children(`[data-value='${this.selectedTabValue}']`).addClass('active');
-  },
+		//
+		this.selectedTabValue = "match_history"
+		this.ui.$profileTabs.children().removeClass("active")
+		this.ui.$profileTabs.children("[data-value='"+this.selectedTabValue+"']").addClass("active")
+	},
 
-  showFactionLevels() {
-    if (this.cache.faction_levels) {
-      this.contentRegion.show(new ProfileFactionLevelCollectionView({
-        model: this.cache.faction_levels,
-      }));
-    } else {
-      //
-      const factionProgressionModel = new DuelystBackbone.Model();
-      factionProgressionModel.url = `${this.apiEndpointUrl}/faction_progression`;
-      factionProgressionModel.fetch();
+	showRiftSummary: function() {
 
-      //
-      this.contentRegion.show(new ProfileRegionLoadingView());
+		if (this.cache["rift_summary"]) {
+			this.contentRegion.show(new ProfileRiftSummary({
+				model:this.cache["rift_summary"]
+			}))
+		} else {
+			var riftSummaryModel = new DuelystBackbone.Model();
+			riftSummaryModel.url = this.apiEndpointUrl + '/rift';
+			riftSummaryModel.fetch();
 
-      Promise.all([
-        factionProgressionModel.onSyncOrReady(),
-      ]).then(() => {
-        this.cache.faction_levels = new Backbone.Model({
-          factionProgression: factionProgressionModel.toJSON(),
-        });
-        this.contentRegion.show(new ProfileFactionLevelCollectionView({
-          model: this.cache.faction_levels,
-        }));
-      });
-    }
+			this.contentRegion.show(new ProfileRegionLoadingView());
 
-    //
-    this.selectedTabValue = 'faction_levels';
-    this.ui.$profileTabs.children().removeClass('active');
-    this.ui.$profileTabs.children(`[data-value='${this.selectedTabValue}']`).addClass('active');
-  },
+			Promise.all([
+				riftSummaryModel.onSyncOrReady()
+			]).then(function(){
+				this.cache["rift_summary"] = new Backbone.Model(riftSummaryModel.toJSON());
+				this.contentRegion.show(new ProfileRiftSummary({
+					model:this.cache["rift_summary"]
+				}));
+			}.bind(this));
+		}
 
-  onMatchHistoryPageNext() {
-    this.gamesHistoryPage += 1;
-    this.showMatchHistory();
-  },
+		this.selectedTabValue = "rift_summary";
+		this.ui.$profileTabs.children().removeClass("active");
+		this.ui.$profileTabs.children("[data-value='"+this.selectedTabValue+"']").addClass("active");
+	},
+
+	showFactionLevels: function() {
+
+		if (this.cache["faction_levels"]) {
+			this.contentRegion.show(new ProfileFactionLevelCollectionView({
+				model:this.cache["faction_levels"]
+			}))
+		} else {
+			//
+			var factionProgressionModel = new DuelystBackbone.Model()
+			factionProgressionModel.url = this.apiEndpointUrl + '/faction_progression'
+			factionProgressionModel.fetch()
+
+			//
+			this.contentRegion.show(new ProfileRegionLoadingView())
+
+			Promise.all([
+				factionProgressionModel.onSyncOrReady(),
+			]).then(function(){
+				this.cache["faction_levels"] = new Backbone.Model({
+					factionProgression:factionProgressionModel.toJSON()
+				})
+				this.contentRegion.show(new ProfileFactionLevelCollectionView({
+					model:this.cache["faction_levels"]
+				}));
+			}.bind(this));
+		}
+
+
+		//
+		this.selectedTabValue = "faction_levels"
+		this.ui.$profileTabs.children().removeClass("active")
+		this.ui.$profileTabs.children("[data-value='"+this.selectedTabValue+"']").addClass("active")
+	},
+
+	onMatchHistoryPageNext: function() {
+		this.gamesHistoryPage += 1
+		this.showMatchHistory()
+	}
 
 });
 

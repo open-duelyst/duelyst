@@ -56,11 +56,11 @@
  * @property {Number}               tileHeight          - Height of a tile
  */
 cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
-  tiles: null,
-  tileset: null,
-  layerOrientation: null,
-  properties: null,
-  layerName: "",
+	tiles: null,
+	tileset: null,
+	layerOrientation: null,
+	properties: null,
+	layerName: "",
 
     //size of the layer in tiles
     _layerSize: null,
@@ -112,7 +112,7 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
      * @param {Number} [height] The untransformed size's height of the TMXLayer.
      */
     setContentSize:function (size, height) {
-      cc.Node.prototype.setContentSize.call(this, size, height);
+	    cc.Node.prototype.setContentSize.call(this, size, height);
         this._renderCmd._updateCacheContext(size, height);
     },
 
@@ -121,7 +121,7 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
      * @function
      * @return {cc.Texture2D}
      */
-  getTexture: function(){
+	getTexture: function(){
         return this._renderCmd.getTexture();
     },
 
@@ -142,18 +142,18 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
         this._layerSize.height = Var.height;
     },
 
-  _getLayerWidth: function () {
-    return this._layerSize.width;
-  },
-  _setLayerWidth: function (width) {
-    this._layerSize.width = width;
-  },
-  _getLayerHeight: function () {
-    return this._layerSize.height;
-  },
-  _setLayerHeight: function (height) {
-    this._layerSize.height = height;
-  },
+	_getLayerWidth: function () {
+		return this._layerSize.width;
+	},
+	_setLayerWidth: function (width) {
+		this._layerSize.width = width;
+	},
+	_getLayerHeight: function () {
+		return this._layerSize.height;
+	},
+	_setLayerHeight: function (height) {
+		this._layerSize.height = height;
+	},
 
     /**
      * Size of the map's tile (could be different from the tile's size)
@@ -172,18 +172,18 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
         this._mapTileSize.height = Var.height;
     },
 
-  _getTileWidth: function () {
-    return this._mapTileSize.width;
-  },
-  _setTileWidth: function (width) {
-    this._mapTileSize.width = width;
-  },
-  _getTileHeight: function () {
-    return this._mapTileSize.height;
-  },
-  _setTileHeight: function (height) {
-    this._mapTileSize.height = height;
-  },
+	_getTileWidth: function () {
+		return this._mapTileSize.width;
+	},
+	_setTileWidth: function (width) {
+		this._mapTileSize.width = width;
+	},
+	_getTileHeight: function () {
+		return this._mapTileSize.height;
+	},
+	_setTileHeight: function (height) {
+		this._mapTileSize.height = height;
+	},
 
     /**
      * Pointer to the map of tiles
@@ -352,7 +352,7 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
             tile.setPosition(this.getPositionAt(pos));
             tile.vertexZ = this._vertexZForPos(pos);
             tile.anchorX = 0;
-          tile.anchorY = 0;
+	        tile.anchorY = 0;
             tile.opacity = this._opacity;
 
             var indexForZ = this._atlasIndexForExistantZ(z);
@@ -790,7 +790,7 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
             sprite.tag = z;
 
         sprite.anchorX = 0;
-      sprite.anchorY = 0;
+	    sprite.anchorY = 0;
         sprite.opacity = this._opacity;
         if (cc._renderType === cc._RENDER_TYPE_WEBGL) {
             sprite.rotation = 0.0;
@@ -803,9 +803,9 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
         if ((gid & cc.TMX_TILE_DIAGONAL_FLAG) >>> 0) {
             // put the anchor in the middle for ease of rotation.
             sprite.anchorX = 0.5;
-          sprite.anchorY = 0.5;
+	        sprite.anchorY = 0.5;
             sprite.x = this.getPositionAt(pos).x + sprite.width / 2;
-          sprite.y = this.getPositionAt(pos).y + sprite.height / 2;
+	        sprite.y = this.getPositionAt(pos).y + sprite.height / 2;
 
             var flag = (gid & (cc.TMX_TILE_HORIZONTAL_FLAG | cc.TMX_TILE_VERTICAL_FLAG) >>> 0) >>> 0;
             // handle the 4 diagonally flipped states.
@@ -815,10 +815,10 @@ cc.TMXLayer = cc.SpriteBatchNode.extend(/** @lends cc.TMXLayer# */{
                 sprite.rotation = 270;
             else if (flag == (cc.TMX_TILE_VERTICAL_FLAG | cc.TMX_TILE_HORIZONTAL_FLAG) >>> 0) {
                 sprite.rotation = 90;
-              sprite.setFlippedX(true);
+	            sprite.setFlippedX(true);
             } else {
                 sprite.rotation = 270;
-              sprite.setFlippedX(true);
+	            sprite.setFlippedX(true);
             }
         } else {
             if ((gid & cc.TMX_TILE_HORIZONTAL_FLAG) >>> 0) {

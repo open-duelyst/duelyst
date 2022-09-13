@@ -8,7 +8,8 @@ server/redis/test/
 test/unit/sdk/ai/card_intent_scoring.js
 test/unit/sdk/cards/
 
-# Importers of gitignored code
+# Ignore .gitignored files and code which imports them
+app/data/packages.js
 gulp/rsx.js
 
 # Third-party code

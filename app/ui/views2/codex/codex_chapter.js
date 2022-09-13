@@ -1,228 +1,229 @@
-// pragma PKGS: codex
+//pragma PKGS: codex
+'use strict';
 
-const CONFIG = require('app/common/config');
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
-const UtilsUI = require('app/common/utils/utils_ui');
-const audio_engine = require('app/audio/audio_engine');
-const audio_object = require('app/audio/audio_object');
-const RSX = require('app/data/resources');
-const Animations = require('app/ui/views/animations');
-const ProfileManager = require('app/ui/managers/profile_manager');
-const CodexChapterTmpl = require('./templates/codex_chapter.hbs');
+var CONFIG = require("app/common/config");
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
+var UtilsUI = require('app/common/utils/utils_ui');
+var audio_engine = require("app/audio/audio_engine");
+var audio_object = require("app/audio/audio_object");
+var RSX = require("app/data/resources");
+var CodexChapterTmpl = require('./templates/codex_chapter.hbs');
+var Animations = require("app/ui/views/animations");
+var ProfileManager = require('app/ui/managers/profile_manager')
 
-const CodexChapterItemView = Backbone.Marionette.ItemView.extend({
+var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
 
-  className: 'codex-chapter',
+	className: "codex-chapter",
 
-  template: CodexChapterTmpl,
+	template: CodexChapterTmpl,
 
-  events: {
-    'click .audio-play': 'onClickAudioPlay',
-    'click .audio-pause': 'onClickAudioPause',
-    'click .audio-stop': 'onClickAudioStop',
-    'change .audio-volume-range': 'onChangeAudioVolume',
-    'change .audio-seek-range': 'onChangeAudioSeek',
-  },
+	events: {
+		"click .audio-play": "onClickAudioPlay",
+		"click .audio-pause": "onClickAudioPause",
+		"click .audio-stop": "onClickAudioStop",
+		"change .audio-volume-range": "onChangeAudioVolume",
+		"change .audio-seek-range": "onChangeAudioSeek"
+	},
 
-  ui: {
-    $chapterText: '.chapter-text',
-    $audio: '.audio',
-    $audioElapsed: '.audio-elapsed',
-    $audioVolumeRange: '.audio-volume-range',
-    $audioSeekRange: '.audio-seek-range',
-  },
+	ui: {
+		$chapterText: ".chapter-text",
+		$audio: ".audio",
+		$audioElapsed: ".audio-elapsed",
+		$audioVolumeRange: ".audio-volume-range",
+		$audioSeekRange: ".audio-seek-range"
+	},
 
-  _audioState: false,
-  _elapsedIntervalId: null,
+	_audioState: false,
+	_elapsedIntervalId: null,
 
-  /* region INITIALIZE */
+	/* region INITIALIZE */
 
-  serializeModel(model) {
-    const data = model.toJSON.apply(model, _.rest(arguments));
-    data.description = model.get('description').replace(/\n|\r/g, '<br/>');
-    data.text = model.get('text').replace(/\n|\r/g, '<br/>');
-    return data;
-  },
+	serializeModel: function(model){
+		var data =  model.toJSON.apply(model, _.rest(arguments));
+		data.description = model.get("description").replace(/\n|\r/g, "<br/>");
+		data.text = model.get("text").replace(/\n|\r/g, "<br/>");
+		return data;
+	},
 
-  /* endregion INITIALIZE */
+	/* endregion INITIALIZE */
 
-  /* region EVENTS */
+	/* region EVENTS */
 
-  onShow() {
-    // set starting volume
-    this.ui.$audioVolumeRange.val(parseFloat(ProfileManager.getInstance().get('voiceVolume')));
+	onShow: function () {
+		// set starting volume
+		this.ui.$audioVolumeRange.val(parseFloat(ProfileManager.getInstance().get("voiceVolume")));
 
-    // set starting seek
-    this._updateAudioSeek();
+		// set starting seek
+		this._updateAudioSeek();
 
-    // start audio
-    this.onClickAudioPlay();
+		// start audio
+		this.onClickAudioPlay();
 
-    // listen to events
-    this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
-    this.onResize();
-  },
+		// listen to events
+		this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
+		this.onResize();
+	},
 
-  onDestroy() {
-    this.stopAudio();
-  },
+	onDestroy: function () {
+		this.stopAudio();
+	},
 
-  onResize() {
-    UtilsUI.overlayScrollbars(this.$el, this.ui.$chapterText);
-  },
+	onResize: function () {
+		UtilsUI.overlayScrollbars(this.$el, this.ui.$chapterText);
+	},
 
-  onClickAudioPlay() {
-    this.playAudio();
-  },
+	onClickAudioPlay: function () {
+		this.playAudio();
+	},
 
-  onClickAudioPause() {
-    this.pauseAudio();
-  },
+	onClickAudioPause: function () {
+		this.pauseAudio();
+	},
 
-  onClickAudioStop() {
-    this.stopAudio();
-  },
+	onClickAudioStop: function () {
+		this.stopAudio();
+	},
 
-  onChangeAudioVolume() {
-    this.changeAudioVolume(this.ui.$audioVolumeRange.val());
-  },
+	onChangeAudioVolume: function () {
+		this.changeAudioVolume(this.ui.$audioVolumeRange.val());
+	},
 
-  onChangeAudioSeek() {
-    this.seekAudio(this.ui.$audioSeekRange.val());
-  },
+	onChangeAudioSeek: function () {
+		this.seekAudio(this.ui.$audioSeekRange.val());
+	},
 
-  /* endregion EVENTS */
+	/* endregion EVENTS */
 
-  /* region SHOW / HIDE */
+	/* region SHOW / HIDE */
 
-  show(playAudio) {
-    Animations.fadeIn.call(this);
+	show: function (playAudio) {
+		Animations.fadeIn.call(this);
 
-    if (playAudio) {
-      this.playAudio();
-    }
-  },
+		if (playAudio) {
+			this.playAudio();
+		}
+	},
 
-  hide(stopAudio) {
-    Animations.fadeOut.call(this);
+	hide: function (stopAudio) {
+		Animations.fadeOut.call(this);
 
-    if (stopAudio) {
-      this.stopAudio();
-    }
-  },
+		if (stopAudio) {
+			this.stopAudio();
+		}
+	},
 
-  /* endregion SHOW / HIDE */
+	/* endregion SHOW / HIDE */
 
-  /* region AUDIO */
+	/* region AUDIO */
 
-  playAudio() {
-    const audio = this.model.get('audio');
-    const audioState = this._audioState;
-    if (audio != null && audioState !== audio_object.STATE_PLAYING) {
-      // fade music out
-      audio_engine.current().stop_music();
+	playAudio: function () {
+		var audio = this.model.get("audio");
+		var audioState = this._audioState;
+		if (audio != null && audioState !== audio_object.STATE_PLAYING) {
+			// fade music out
+			audio_engine.current().stop_music();
 
-      // set state
-      this._audioState = audio_object.STATE_PLAYING;
+			// set state
+			this._audioState = audio_object.STATE_PLAYING;
 
-      // play or resume
-      this.ui.$audio.addClass('playing');
-      if (audioState === audio_object.STATE_PAUSED) {
-        this.ui.$audio.removeClass('paused');
-        audio_engine.current().resume_voice(audio);
-      } else {
-        audio_engine.current().play_voice(audio);
-      }
-      const voice = audio_engine.current().get_voice();
-      voice.when_ended().then(() => {
-        this.stopAudio();
-      });
+			// play or resume
+			this.ui.$audio.addClass("playing");
+			if (audioState === audio_object.STATE_PAUSED) {
+				this.ui.$audio.removeClass("paused");
+				audio_engine.current().resume_voice(audio);
+			} else {
+				audio_engine.current().play_voice(audio);
+			}
+			var voice = audio_engine.current().get_voice();
+			voice.when_ended().then(function () {
+				this.stopAudio();
+			}.bind(this));
 
-      // update seek
-      this._elapsedIntervalId = setInterval(this._updateAudioSeek.bind(this), 1000);
-    }
-  },
+			// update seek
+			this._elapsedIntervalId = setInterval(this._updateAudioSeek.bind(this), 1000);
+		}
+	},
 
-  stopAudio() {
-    const audio = this.model.get('audio');
-    const audioState = this._audioState;
-    if (audio != null && audioState !== audio_object.STATE_STOPPED) {
-      // set state
-      this._audioState = audio_object.STATE_STOPPED;
+	stopAudio: function () {
+		var audio = this.model.get("audio");
+		var audioState = this._audioState;
+		if (audio != null && audioState !== audio_object.STATE_STOPPED) {
+			// set state
+			this._audioState = audio_object.STATE_STOPPED;
 
-      if (audioState === audio_object.STATE_PAUSED) {
-        this.ui.$audio.removeClass('paused');
-      }
-      this.ui.$audio.removeClass('playing');
-      if (this._elapsedIntervalId != null) {
-        clearInterval(this._elapsedIntervalId);
-        this._elapsedIntervalId = null;
-      }
-      audio_engine.current().stop_voice(audio);
+			if (audioState === audio_object.STATE_PAUSED) {
+				this.ui.$audio.removeClass("paused");
+			}
+			this.ui.$audio.removeClass("playing");
+			if (this._elapsedIntervalId != null) {
+				clearInterval(this._elapsedIntervalId);
+				this._elapsedIntervalId = null;
+			}
+			audio_engine.current().stop_voice(audio);
 
-      // restart music
-      audio_engine.current().play_music(RSX.music_codex.audio);
+			// restart music
+			audio_engine.current().play_music(RSX.music_codex.audio);
 
-      this._updateAudioSeek();
-    }
-  },
+			this._updateAudioSeek();
+		}
+	},
 
-  pauseAudio() {
-    const audio = this.model.get('audio');
-    const audioState = this._audioState;
-    if (audio != null && audioState === audio_object.STATE_PLAYING) {
-      // set state
-      this._audioState = audio_object.STATE_PAUSED;
-      this.ui.$audio.removeClass('playing');
-      this.ui.$audio.addClass('paused');
-      if (this._elapsedIntervalId != null) {
-        clearInterval(this._elapsedIntervalId);
-        this._elapsedIntervalId = null;
-      }
-      audio_engine.current().pause_voice(audio);
+	pauseAudio: function () {
+		var audio = this.model.get("audio");
+		var audioState = this._audioState;
+		if (audio != null && audioState === audio_object.STATE_PLAYING) {
+			// set state
+			this._audioState = audio_object.STATE_PAUSED;
+			this.ui.$audio.removeClass("playing");
+			this.ui.$audio.addClass("paused");
+			if (this._elapsedIntervalId != null) {
+				clearInterval(this._elapsedIntervalId);
+				this._elapsedIntervalId = null;
+			}
+			audio_engine.current().pause_voice(audio);
 
-      // restart music
-      audio_engine.current().play_music(RSX.music_codex.audio);
-    }
-  },
+			// restart music
+			audio_engine.current().play_music(RSX.music_codex.audio);
+		}
+	},
 
-  changeAudioVolume(val) {
-    ProfileManager.getInstance().set('voiceVolume', val);
-  },
+	changeAudioVolume: function (val) {
+		ProfileManager.getInstance().set("voiceVolume", val);
+	},
 
-  seekAudio(val) {
-    let voice = audio_engine.current().get_voice();
-    if (voice == null || !voice.get_is_playing()) {
-      this.playAudio();
-      voice = audio_engine.current().get_voice();
-      voice.when_playing().then(() => {
-        this.seekAudio(val);
-      });
-    } else {
-      const duration = voice.get_duration();
-      voice.set_elapsed(duration * val);
-      this._updateAudioSeek();
-    }
-  },
+	seekAudio: function (val) {
+		var voice = audio_engine.current().get_voice();
+		if (voice == null || !voice.get_is_playing()) {
+			this.playAudio();
+			voice = audio_engine.current().get_voice();
+			voice.when_playing().then(function () {
+				this.seekAudio(val);
+			}.bind(this));
+		} else {
+			var duration = voice.get_duration();
+			voice.set_elapsed(duration * val);
+			this._updateAudioSeek();
+		}
+	},
 
-  _updateAudioSeek() {
-    const voice = audio_engine.current().get_voice();
-    if (voice != null && voice.get_src() === this.model.get('audio')) {
-      const elapsed = voice.get_elapsed();
-      const duration = voice.get_duration();
-      const seekPct = duration > 0.0 ? elapsed / duration : 0.0;
-      const minutes = Math.floor(elapsed / 60);
-      const seconds = Math.round(elapsed % 60);
-      this.ui.$audioElapsed.text(`${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`);
-      this.ui.$audioSeekRange.val(seekPct);
-    } else {
-      this.ui.$audioElapsed.text('00:00');
-      this.ui.$audioSeekRange.val(0.0);
-    }
-  },
+	_updateAudioSeek: function () {
+		var voice = audio_engine.current().get_voice();
+		if (voice != null && voice.get_src() === this.model.get("audio")) {
+			var elapsed = voice.get_elapsed();
+			var duration = voice.get_duration();
+			var seekPct = duration > 0.0 ? elapsed / duration : 0.0;
+			var minutes = Math.floor(elapsed / 60);
+			var seconds = Math.round(elapsed % 60);
+			this.ui.$audioElapsed.text((minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds));
+			this.ui.$audioSeekRange.val(seekPct);
+		} else {
+			this.ui.$audioElapsed.text("00:00");
+			this.ui.$audioSeekRange.val(0.0);
+		}
+	},
 
-  /* endregion AUDIO */
+	/* endregion AUDIO */
 
 });
 

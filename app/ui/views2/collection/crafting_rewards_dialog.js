@@ -1,30 +1,32 @@
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const CraftingRewardsDialogItemViewTempl = require('./templates/crafting_rewards_dialog.hbs');
+'use strict';
 
-const CraftingRewardsDialogItemView = Backbone.Marionette.ItemView.extend({
+var CraftingRewardsDialogItemViewTempl = require('./templates/crafting_rewards_dialog.hbs');
+var NavigationManager = require('app/ui/managers/navigation_manager');
 
-  id: 'crafting-rewards-dialog',
-  className: 'modal prompt-modal',
+var CraftingRewardsDialogItemView = Backbone.Marionette.ItemView.extend({
 
-  template: CraftingRewardsDialogItemViewTempl,
+	id: "crafting-rewards-dialog",
+	className: "modal prompt-modal",
 
-  ui: {},
+	template: CraftingRewardsDialogItemViewTempl,
 
-  events: {
-    'click .cancel-dialog': 'onCancel',
-  },
+	ui: {},
 
-  onShow() {
-    // listen to specific user attempted actions as this is a dialog and dialogs block user actions
-    this.listenToOnce(NavigationManager.getInstance(), 'user_attempt_skip', this.onCancel);
-    this.listenToOnce(NavigationManager.getInstance(), 'user_attempt_cancel', this.onCancel);
-    this.listenToOnce(NavigationManager.getInstance(), 'user_attempt_confirm', this.onCancel);
-  },
+	events: {
+		"click .cancel-dialog": "onCancel"
+	},
 
-  onCancel() {
-    NavigationManager.getInstance().destroyDialogView();
-    this.trigger('cancel');
-  },
+	onShow: function () {
+		// listen to specific user attempted actions as this is a dialog and dialogs block user actions
+		this.listenToOnce(NavigationManager.getInstance(), "user_attempt_skip", this.onCancel);
+		this.listenToOnce(NavigationManager.getInstance(), "user_attempt_cancel", this.onCancel);
+		this.listenToOnce(NavigationManager.getInstance(), "user_attempt_confirm", this.onCancel);
+	},
+
+	onCancel: function() {
+		NavigationManager.getInstance().destroyDialogView();
+		this.trigger("cancel");
+	}
 
 });
 

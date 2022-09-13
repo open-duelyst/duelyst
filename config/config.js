@@ -314,6 +314,11 @@ const config = convict({
       doc: 'Recaptcha Enabled',
       default: false,
     },
+    siteKey: {
+      doc: 'Site key for Google RECAPTCHA.',
+      default: '',
+      env: 'RECAPTCHA_SITE_KEY',
+    },
     secret: {
       doc: 'Recaptcha Secret',
       default: '',

@@ -1,79 +1,81 @@
-const EmotesLayoutTempl = require('app/ui/templates/item/emote.hbs');
-const Animations = require('app/ui/views/animations');
-const InventoryManager = require('app/ui/managers/inventory_manager');
+'use strict';
 
-const EmoteItemView = Backbone.Marionette.ItemView.extend({
+var EmotesLayoutTempl = require('app/ui/templates/item/emote.hbs');
+var Animations = require("app/ui/views/animations");
+var InventoryManager = require('app/ui/managers/inventory_manager');
 
-  className: 'btn emote',
+var EmoteItemView = Backbone.Marionette.ItemView.extend({
 
-  template: EmotesLayoutTempl,
+	className: "btn emote",
 
-  events: {
-    click: 'onSelect',
-  },
+	template: EmotesLayoutTempl,
 
-  animateIn() {
-    Animations.cssClassAnimation.call(this, 'active');
-  },
-  animateOut: Animations.fadeOut,
+	events: {
+		"click": "onSelect"
+	},
 
-  /* region MARIONETTE EVENTS */
+	animateIn: function () {
+		Animations.cssClassAnimation.call(this, "active");
+	},
+	animateOut: Animations.fadeOut,
 
-  onShow() {
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add remove', this.onCosmeticsCollectionChange);
-  },
+	/* region MARIONETTE EVENTS */
 
-  onRender() {
-    this._bindUsability();
-  },
+	onShow: function () {
+		this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add remove",this.onCosmeticsCollectionChange);
+	},
 
-  _bindUsability() {
-    if (this.model.get('_canPurchase')) {
-      this.$el.addClass('purchasable');
-      this.$el.removeClass('disabled');
-    } else {
-      this.$el.removeClass('purchasable');
-      if (!this.model.get('_canUse')) {
-        this.$el.addClass('disabled');
-      } else {
-        this.$el.removeClass('disabled');
-      }
-    }
-  },
+	onRender: function () {
+		this._bindUsability();
+	},
 
-  /* endregion MARIONETTE EVENTS */
+	_bindUsability: function () {
+		if (this.model.get("_canPurchase")) {
+			this.$el.addClass("purchasable");
+			this.$el.removeClass("disabled");
+		} else {
+			this.$el.removeClass("purchasable");
+			if (!this.model.get("_canUse")) {
+				this.$el.addClass("disabled");
+			} else {
+				this.$el.removeClass("disabled");
+			}
+		}
+	},
 
-  /* region EVENTS */
+	/* endregion MARIONETTE EVENTS */
 
-  onCosmeticsCollectionChange(cosmeticModel) {
-    const emoteId = this.model.get('id');
-    if (cosmeticModel != null && cosmeticModel.get('cosmetic_id') === emoteId) {
-      this.model.set('_canUse', InventoryManager.getInstance().getCanUseCosmeticById(emoteId));
-      this.model.set('_canPurchase', InventoryManager.getInstance().getCanPurchaseCosmeticById(emoteId));
-      this._bindUsability();
-    }
-  },
+	/* region EVENTS */
 
-  onSelect(e) {
-    const saleData = {};
-    const saleId = $(e.currentTarget).data('sale-id');
-    const salePriceStr = $(e.currentTarget).data('sale-price');
+	onCosmeticsCollectionChange: function(cosmeticModel) {
+		var emoteId = this.model.get("id");
+		if (cosmeticModel != null && cosmeticModel.get("cosmetic_id") === emoteId) {
+			this.model.set("_canUse", InventoryManager.getInstance().getCanUseCosmeticById(emoteId));
+			this.model.set("_canPurchase", InventoryManager.getInstance().getCanPurchaseCosmeticById(emoteId));
+			this._bindUsability();
+		}
+	},
 
-    if (saleId != null && saleId != '') {
-      saleData.saleId = saleId;
-    }
-    if (salePriceStr != null && salePriceStr != '' && !_.isNaN(parseInt(salePriceStr))) {
-      saleData.salePrice = parseInt(salePriceStr);
-    }
+	onSelect: function (e) {
+		var saleData = {};
+		var saleId = $(e.currentTarget).data("sale-id");
+		var salePriceStr = $(e.currentTarget).data("sale-price");
 
-    this.saleData = saleData;
+		if (saleId != null && saleId != "") {
+			saleData.saleId = saleId;
+		}
+		if (salePriceStr != null && salePriceStr != "" && !_.isNaN(parseInt(salePriceStr))) {
+			saleData.salePrice = parseInt(salePriceStr);
+		}
 
-    if (this.model.get('_canUse') || this.model.get('_canPurchase')) {
-      this.trigger('select', this);
-    }
-  },
+		this.saleData = saleData;
 
-  /* endregion EVENTS */
+		if (this.model.get("_canUse") || this.model.get("_canPurchase")) {
+			this.trigger("select", this);
+		}
+	}
+
+	/* endregion EVENTS */
 
 });
 

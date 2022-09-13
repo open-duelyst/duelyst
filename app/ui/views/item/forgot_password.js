@@ -1,78 +1,81 @@
-const Session = require('app/common/session2');
-const validator = require('validator');
-const Logger = require('app/common/logger');
-const Animations = require('app/ui/views/animations');
-const ForgotPasswordTmpl = require('app/ui/templates/item/forgot_password.hbs');
-const i18next = require('i18next');
-const FormPromptModalItemView = require('./form_prompt_modal');
+'use strict';
 
-const ForgotPasswordItemView = FormPromptModalItemView.extend({
+var Session = require('app/common/session2');
+var validator = require('validator');
+var Logger = require('app/common/logger');
+var Animations = require("app/ui/views/animations");
+var FormPromptModalItemView = require('./form_prompt_modal');
+var ForgotPasswordTmpl = require('app/ui/templates/item/forgot_password.hbs');
+var i18next = require('i18next')
 
-  template: ForgotPasswordTmpl,
+var ForgotPasswordItemView = FormPromptModalItemView.extend({
 
-  id: 'app-forgot-password',
+	template: ForgotPasswordTmpl,
 
-  ui: {
-    $form: '.prompt-form',
-    $email: '.email',
-    $submit: '.prompt-submit',
-    $submitted: '.prompt-submitted',
-    $error: '.prompt-error',
-    $errorMessage: '.error-message',
-    $success: '.prompt-success',
-  },
+	id: "app-forgot-password",
 
-  _hasModifiedEmail: false,
+	ui: {
+		$form: ".prompt-form",
+		$email: ".email",
+		$submit: ".prompt-submit",
+		$submitted: ".prompt-submitted",
+		$error: ".prompt-error",
+		$errorMessage: ".error-message",
+		$success: ".prompt-success"
+	},
 
-  /* region EVENTS */
+	_hasModifiedEmail: false,
 
-  onFormControlChangeContent(event) {
-    // update modified state
-    const $target = $(event.target);
-    if (this.ui.$email.is($target)) {
-      this._hasModifiedEmail = true;
-    }
+	/* region EVENTS */
 
-    FormPromptModalItemView.prototype.onFormControlChangeContent.apply(this, arguments);
-  },
+	onFormControlChangeContent: function (event) {
 
-  onSubmit(e) {
-    FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
+		// update modified state
+		var $target = $(event.target);
+		if (this.ui.$email.is($target)) {
+			this._hasModifiedEmail = true;
+		}
 
-    const email = this.ui.$email.val();
-    Session.forgot(email).bind(this)
-      .then(function (res) {
-        this.onSuccess(res);
-      })
-      .catch(function (e) {
-        // onError expects a string not an actual error
-        this.onError(e.innerMessage || e.message);
-      });
-  },
+		FormPromptModalItemView.prototype.onFormControlChangeContent.apply(this, arguments);
+	},
 
-  /* endregion EVENTS */
+	onSubmit: function(e) {
+		FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
 
-  /* region STATE */
+		var email = this.ui.$email.val();
+		Session.forgot(email).bind(this)
+		.then(function (res) {
+			this.onSuccess(res)
+		})
+		.catch(function (e) {
+			// onError expects a string not an actual error
+			this.onError(e.innerMessage || e.message)
+		})
+	},
 
-  updateValidState() {
-    FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
+	/* endregion EVENTS */
 
-    const email = this.ui.$email.val();
-    let isValid = true;
+	/* region STATE */
 
-    // check email
-    if (this._hasModifiedEmail && !validator.isEmail(email)) {
-      this.showInvalidFormControl(this.ui.$email, i18next.t('login.invalid_email_message'));
-      isValid = false;
-    } else {
-      this.showValidFormControl(this.ui.$email);
-    }
+	updateValidState: function () {
+		FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
 
-    // set valid state
-    this.isValid = isValid && this._hasModifiedEmail;
-  },
+		var email = this.ui.$email.val();
+		var isValid = true;
 
-  /* endregion STATE */
+		// check email
+		if (this._hasModifiedEmail && !validator.isEmail(email)) {
+			this.showInvalidFormControl(this.ui.$email, i18next.t("login.invalid_email_message"));
+			isValid = false;
+		} else {
+			this.showValidFormControl(this.ui.$email);
+		}
+
+		// set valid state
+		this.isValid = isValid && this._hasModifiedEmail;
+	}
+
+	/* endregion STATE */
 
 });
 

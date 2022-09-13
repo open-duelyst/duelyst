@@ -1,20 +1,21 @@
-// pragma PKGS: tutorial_support
-const TutorialChallengeStartTmpl = require('app/ui/templates/item/tutorial/challenge_start.hbs');
-const TutorialSupportView = require('./tutorial_support');
+'use strict';
+//pragma PKGS: tutorial_support
+var TutorialSupportView = require('./tutorial_support');
+var TutorialChallengeStartTmpl = require('app/ui/templates/item/tutorial/challenge_start.hbs');
 
-const TutorialChallengeStartView = TutorialSupportView.extend({
+var TutorialChallengeStartView = TutorialSupportView.extend({
 
-  id: 'tutorial-challenge-start',
+	id: "tutorial-challenge-start",
 
-  template: TutorialChallengeStartTmpl,
+	template: TutorialChallengeStartTmpl,
 
-  events: {
-    'click .start': 'onStartChallenge',
-  },
+	events: {
+		"click .start": "onStartChallenge"
+	},
 
-  onStartChallenge() {
-    this.trigger('start_challenge');
-  },
+	onStartChallenge: function() {
+		this.trigger("start_challenge");
+	}
 
 });
 

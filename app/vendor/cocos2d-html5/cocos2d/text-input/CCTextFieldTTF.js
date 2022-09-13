@@ -104,8 +104,8 @@ cc.TextFieldDelegate = cc.Class.extend(/** @lends cc.TextFieldDelegate# */{
  * var textField = new cc.TextFieldTTF("<click here for input>", "Arial", 32);
  */
 cc.TextFieldTTF = cc.LabelTTF.extend(/** @lends cc.TextFieldTTF# */{
-  delegate:null,
-  colorSpaceHolder:null,
+	delegate:null,
+	colorSpaceHolder:null,
 
     _colorText: null,
     _lens:null,

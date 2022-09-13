@@ -1,56 +1,59 @@
-const QuestsManager = require('app/ui/managers/quests_manager');
-const { QuestFactory } = require('app/sdk');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const Logger = require('app/common/logger');
-const QuestItemViewTempl = require('./templates/quest_item.hbs');
+'use strict';
 
-const QuestItemView = Backbone.Marionette.ItemView.extend({
+var QuestItemViewTempl = require('./templates/quest_item.hbs');
+var QuestsManager = require('app/ui/managers/quests_manager');
+var QuestFactory = require('app/sdk').QuestFactory;
+var NavigationManager = require('app/ui/managers/navigation_manager');
+var Logger = require('app/common/logger');
 
-  tagName: 'li',
-  className: 'quest',
+var QuestItemView = Backbone.Marionette.ItemView.extend({
 
-  template: QuestItemViewTempl,
+	tagName: "li",
+	className: "quest",
 
-  ui: {
-    $outlinePath: '.path',
-    $frameImage: '.frame-image',
-    $questContent: '.quest-content',
-  },
+	template: QuestItemViewTempl,
 
-  serializeModel(model) {
-    const data = model.toJSON.apply(model, _.rest(arguments));
-    const quest = QuestFactory.questForIdentifier(data.quest_type_id);
+	ui: {
+		"$outlinePath": ".path",
+		"$frameImage": ".frame-image",
+		"$questContent": ".quest-content",
+	},
 
-    if (quest) {
-      quest.params = data.params;
+	serializeModel: function(model){
 
-      data.quest_name = quest.getName();
-      data.quest_instructions = quest.getDescription();
-      data.is_replaceable = (data.is_replaceable != false);
-      data.is_beginner = quest.isBeginner || false;
-      data.is_catch_up = quest.isCatchUp || false;
-      data.gift_chests = quest.giftChests;
-      if (quest.cosmeticKeys != null && quest.cosmeticKeys.length != 0) {
-        // For now only grab one, change this if we want to show a stack in future
-        data.cosmetic_key = quest.cosmeticKeys[0];
-      }
-      data.rewards_details = quest.rewardDetails;
-    }
+		var data =  model.toJSON.apply(model, _.rest(arguments));
+		var quest = QuestFactory.questForIdentifier(data.quest_type_id);
 
-    return data;
-  },
+		if (quest) {
+			quest.params = data.params;
 
-  onShow() {
-    // model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
-    this.listenTo(this.model, 'change', this.render);
+			data.quest_name = quest.getName();
+			data.quest_instructions = quest.getDescription();
+			data.is_replaceable = (data.is_replaceable != false);
+			data.is_beginner = quest.isBeginner || false;
+			data.is_catch_up = quest.isCatchUp || false;
+			data.gift_chests = quest.giftChests;
+			if (quest.cosmeticKeys != null && quest.cosmeticKeys.length != 0) {
+				// For now only grab one, change this if we want to show a stack in future
+				data.cosmetic_key = quest.cosmeticKeys[0];
+			}
+			data.rewards_details = quest.rewardDetails;
+		}
 
-    this.$el.addClass('animateIn');
-    this.$el.find('[data-toggle="popover"]').popover({
-      container: $('.daily-quests-region'),
-      animation: true,
-      placement: 'right',
-    }).popover('show');
-  },
+		return data;
+	},
+
+	onShow: function() {
+		// model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
+		this.listenTo(this.model,"change",this.render);
+
+		this.$el.addClass("animateIn");
+		this.$el.find('[data-toggle="popover"]').popover({
+			container: $(".daily-quests-region"),
+			animation: true,
+			placement: 'right'
+		}).popover("show")
+	}
 
 });
 

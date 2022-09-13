@@ -214,21 +214,21 @@ cc.EventMouse = cc.Event.extend(/** @lends cc.EventMouse# */{
         this._y = y;
     },
 
-  /**
-   * Returns cursor location
-   * @return {cc.Point} location
-   */
+	/**
+	 * Returns cursor location
+	 * @return {cc.Point} location
+	 */
     getLocation: function () {
         return {x: this._x, y: this._y};
     },
 
-  /**
-   * Returns the current cursor location in screen coordinates
-   * @return {cc.Point}
-   */
-  getLocationInView: function() {
-    return {x: this._x, y: cc.view._designResolutionSize.height - this._y};
-  },
+	/**
+	 * Returns the current cursor location in screen coordinates
+	 * @return {cc.Point}
+	 */
+	getLocationInView: function() {
+		return {x: this._x, y: cc.view._designResolutionSize.height - this._y};
+	},
 
     _setPrevCursor: function (x, y) {
         this._prevX = x;

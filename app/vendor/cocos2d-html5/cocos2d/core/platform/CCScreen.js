@@ -32,67 +32,67 @@
  */
 cc.screen = /** @lends cc.screen# */{
     _supportsFullScreen: false,
-  // the pre fullscreenchange function
+	// the pre fullscreenchange function
     _preOnFullScreenChange: null,
     _touchEvent: "",
-  _fn: null,
-  // Function mapping for cross browser support
-  _fnMap: [
-    [
-      'requestFullscreen',
-      'exitFullscreen',
-      'fullscreenchange',
-      'fullscreenEnabled',
-      'fullscreenElement'
-    ],
-    [
-      'requestFullScreen',
-      'exitFullScreen',
-      'fullScreenchange',
-      'fullScreenEnabled',
-      'fullScreenElement'
-    ],
-    [
-      'webkitRequestFullScreen',
-      'webkitCancelFullScreen',
-      'webkitfullscreenchange',
-      'webkitIsFullScreen',
-      'webkitCurrentFullScreenElement'
-    ],
-    [
-      'mozRequestFullScreen',
-      'mozCancelFullScreen',
-      'mozfullscreenchange',
-      'mozFullScreen',
-      'mozFullScreenElement'
-    ],
-    [
-      'msRequestFullscreen',
-      'msExitFullscreen',
-      'MSFullscreenChange',
-      'msFullscreenEnabled',
-      'msFullscreenElement'
-    ]
-  ],
+	_fn: null,
+	// Function mapping for cross browser support
+	_fnMap: [
+		[
+			'requestFullscreen',
+			'exitFullscreen',
+			'fullscreenchange',
+			'fullscreenEnabled',
+			'fullscreenElement'
+		],
+		[
+			'requestFullScreen',
+			'exitFullScreen',
+			'fullScreenchange',
+			'fullScreenEnabled',
+			'fullScreenElement'
+		],
+		[
+			'webkitRequestFullScreen',
+			'webkitCancelFullScreen',
+			'webkitfullscreenchange',
+			'webkitIsFullScreen',
+			'webkitCurrentFullScreenElement'
+		],
+		[
+			'mozRequestFullScreen',
+			'mozCancelFullScreen',
+			'mozfullscreenchange',
+			'mozFullScreen',
+			'mozFullScreenElement'
+		],
+		[
+			'msRequestFullscreen',
+			'msExitFullscreen',
+			'MSFullscreenChange',
+			'msFullscreenEnabled',
+			'msFullscreenElement'
+		]
+	],
 
     /**
      * initialize
      * @function
      */
     init: function () {
-      this._fn = {};
-      var i, val, map = this._fnMap, valL;
-      for (i = 0, l = map.length; i < l; i++ ) {
-        val = map[ i ];
-        if ( val && val[1] in document ) {
-          for ( i = 0, valL = val.length; i < valL; i++ ) {
-            this._fn[ map[0][ i ] ] = val[ i ];
-          }
-          break;
-        }
-      }
+	    this._fn = {};
+	    var i, val, map = this._fnMap, valL;
+	    for (i = 0, l = map.length; i < l; i++ ) {
+		    val = map[ i ];
+		    if ( val && val[1] in document ) {
+			    for ( i = 0, valL = val.length; i < valL; i++ ) {
+				    this._fn[ map[0][ i ] ] = val[ i ];
+			    }
+			    break;
+		    }
+	    }
 
-    this._supportsFullScreen = (this._fn.requestFullscreen != undefined);
+		this._supportsFullScreen = (this._fn.requestFullscreen != undefined);
         this._touchEvent = ('ontouchstart' in window) ? 'touchstart' : 'mousedown';
     },
 
@@ -101,7 +101,7 @@ cc.screen = /** @lends cc.screen# */{
      * @returns {Boolean}
      */
     fullScreen: function() {
-      return this._supportsFullScreen && document[ this._fn.fullscreenEnabled ];
+	    return this._supportsFullScreen && document[ this._fn.fullscreenEnabled ];
     },
 
     /**
@@ -110,18 +110,18 @@ cc.screen = /** @lends cc.screen# */{
      * @param {Function} onFullScreenChange
      */
     requestFullScreen: function (element, onFullScreenChange) {
-      if (!this._supportsFullScreen) return;
+	    if (!this._supportsFullScreen) return;
 
-      element = element || document.documentElement;
-      element[ this._fn.requestFullscreen ]();
+	    element = element || document.documentElement;
+	    element[ this._fn.requestFullscreen ]();
 
-      if (onFullScreenChange) {
-        var eventName = this._fn.fullscreenchange;
-        if (this._preOnFullScreenChange)
-          document.removeEventListener(eventName, this._preOnFullScreenChange);
-        this._preOnFullScreenChange = onFullScreenChange;
+	    if (onFullScreenChange) {
+		    var eventName = this._fn.fullscreenchange;
+		    if (this._preOnFullScreenChange)
+			    document.removeEventListener(eventName, this._preOnFullScreenChange);
+		    this._preOnFullScreenChange = onFullScreenChange;
             cc._addEventListener(document, eventName, onFullScreenChange, false);
-      }
+	    }
 
         return element[ this._fn.requestFullscreen ]();
     },
@@ -140,8 +140,8 @@ cc.screen = /** @lends cc.screen# */{
      * @param {Function} onFullScreenChange
      */
     autoFullScreen: function (element, onFullScreenChange) {
-      element = element || document.body;
-      var touchTarget = cc._canvas || element;
+	    element = element || document.body;
+	    var touchTarget = cc._canvas || element;
         var theScreen = this;
         // Function bind will be too complicated here because we need the callback function's reference to remove the listener
         function callback() {

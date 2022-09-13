@@ -203,20 +203,20 @@ cc.Animation = cc.Class.extend(/** @lends cc.Animation# */{
     ctor:function (frames, delay, loops) {
         this._frames = [];
 
-    if (frames === undefined) {
-      this.initWithSpriteFrames(null, 0);
-    } else {
-      var frame0 = frames[0];
-      if(frame0){
-        if (frame0 instanceof cc.SpriteFrame) {
-          //init with sprite frames , delay and loops.
-          this.initWithSpriteFrames(frames, delay, loops);
-        }else if(frame0 instanceof cc.AnimationFrame) {
-          //init with sprite frames , delay and loops.
-          this.initWithAnimationFrames(frames, delay, loops);
-        }
-      }
-    }
+		if (frames === undefined) {
+			this.initWithSpriteFrames(null, 0);
+		} else {
+			var frame0 = frames[0];
+			if(frame0){
+				if (frame0 instanceof cc.SpriteFrame) {
+					//init with sprite frames , delay and loops.
+					this.initWithSpriteFrames(frames, delay, loops);
+				}else if(frame0 instanceof cc.AnimationFrame) {
+					//init with sprite frames , delay and loops.
+					this.initWithAnimationFrames(frames, delay, loops);
+				}
+			}
+		}
     },
 
     // attributes

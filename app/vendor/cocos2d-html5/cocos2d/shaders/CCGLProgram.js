@@ -109,18 +109,18 @@ cc.GLProgram = cc.Class.extend(/** @lends cc.GLProgram# */{
         return ( status == 1 );
     },
 
-  /**
-   * Create a cc.GLProgram object
-   * @param {String} vShaderFileName
-   * @param {String} fShaderFileName
-   * @returns {cc.GLProgram}
-   */
+	/**
+	 * Create a cc.GLProgram object
+	 * @param {String} vShaderFileName
+	 * @param {String} fShaderFileName
+	 * @returns {cc.GLProgram}
+	 */
     ctor: function (vShaderFileName, fShaderFileName, glContext) {
         this._uniforms = [];
         this._hashForUniforms = [];
         this._glContext = glContext || cc._renderContext;
 
-    vShaderFileName && fShaderFileName && this.init(vShaderFileName, fShaderFileName);
+		vShaderFileName && fShaderFileName && this.init(vShaderFileName, fShaderFileName);
     },
 
     /**

@@ -1,31 +1,33 @@
-const Logger = require('app/common/logger');
-const SDK = require('app/sdk');
-const FactionModel = require('app/ui/models/faction');
-const CONFIG = require('app/common/config');
+'use strict';
 
-const FactionsCollection = Backbone.Collection.extend({
+var Logger = require('app/common/logger');
+var SDK = require('app/sdk');
+var FactionModel = require('app/ui/models/faction');
+var CONFIG = require('app/common/config');
 
-  model: FactionModel,
+var FactionsCollection = Backbone.Collection.extend({
 
-  initialize() {
-    Logger.module('UI').log('initialize a Factions collection');
-  },
+	model: FactionModel,
 
-  /**
-   * Adds all enabled factions to this collection.
-   */
-  addAllFactionsToCollection() {
-    const factions = SDK.FactionFactory.getAllEnabledFactions();
-    for (let i = 0, il = factions.length; i < il; i++) {
-      const faction = factions[i];
-      this.add(faction);
-    }
-  },
+	initialize: function() {
+		Logger.module("UI").log("initialize a Factions collection");
+	},
 
-  comparator(a, b) {
-    // sort by non-neutrality then id ascending
-    return (a.get('isNeutral') - b.get('isNeutral')) || (a.get('id') - b.get('id'));
-  },
+	/**
+	 * Adds all enabled factions to this collection.
+	 */
+	addAllFactionsToCollection: function () {
+		var factions = SDK.FactionFactory.getAllEnabledFactions();
+		for(var i = 0, il = factions.length; i < il; i++) {
+			var faction = factions[i];
+			this.add(faction);
+		}
+	},
+
+	comparator: function (a, b) {
+		// sort by non-neutrality then id ascending
+		return (a.get("isNeutral") - b.get("isNeutral")) || (a.get("id") - b.get("id"));
+	}
 });
 
 // Expose the class either via CommonJS or the global object

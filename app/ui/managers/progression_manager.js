@@ -1,398 +1,416 @@
 // See: https://coderwall.com/p/myzvmg for why managers are created this way
 
-const _ProgressionManager = {};
+var _ProgressionManager = {};
 _ProgressionManager.instance = null;
 _ProgressionManager.getInstance = function () {
-  if (this.instance == null) {
-    this.instance = new ProgressionManager();
-  }
-  return this.instance;
+	if (this.instance == null) {
+		this.instance = new ProgressionManager();
+	}
+	return this.instance;
 };
 _ProgressionManager.current = _ProgressionManager.getInstance;
 
 module.exports = _ProgressionManager;
 
-const CONFIG = require('app/common/config');
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
-const Logger = require('app/common/logger');
-const SDK = require('app/sdk');
-const NotificationModel = require('app/ui/models/notification');
-const DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-const DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
-const Analytics = require('app/common/analytics');
-const ReferralDialogView = require('app/ui/views2/referrals/referral_dialog');
-const moment = require('moment');
-const ErrorDialogItemView = require('app/ui/views/item/error_dialog');
+var CONFIG = require('app/common/config');
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
+var Logger = require('app/common/logger');
+var SDK = require('app/sdk');
+var Manager = require("./manager");
+var NewPlayerManager = require('./new_player_manager');
+var NotificationsManager = require("./notifications_manager");
+var NotificationModel = require('app/ui/models/notification');
+var NavigationManager = require("./navigation_manager");
+var QuestsManager = require("./quests_manager");
+var InventoryManager = require("./inventory_manager");
+var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
+var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
+var Analytics = require('app/common/analytics');
+var ReferralDialogView = require('app/ui/views2/referrals/referral_dialog')
+var moment = require('moment');
+var ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 
-const i18next = require('i18next');
+var i18next = require("i18next");
 
-const QuestBeginnerCompleteSoloChallenges = require('app/sdk/quests/questBeginnerCompleteSoloChallenges');
-const InventoryManager = require('./inventory_manager');
-const QuestsManager = require('./quests_manager');
-const NavigationManager = require('./navigation_manager');
-const NotificationsManager = require('./notifications_manager');
-const NewPlayerManager = require('./new_player_manager');
-const Manager = require('./manager');
+var QuestBeginnerCompleteSoloChallenges = require('app/sdk/quests/questBeginnerCompleteSoloChallenges')
 
-const ChallengeModel = DuelystBackbone.Model.extend({
-  idAttribute: 'challenge_id',
-});
+var ChallengeModel = DuelystBackbone.Model.extend({
+	idAttribute: "challenge_id"
+})
 
 var ProgressionManager = Manager.extend({
 
-  gameCounterModel: null,
-  gameCounterRewardsCollection: null,
-  bossesDefeatedCollection: null,
-  bossEventsCollection: null,
+	gameCounterModel: null,
+	gameCounterRewardsCollection: null,
+	bossesDefeatedCollection: null,
+	bossEventsCollection: null,
 
-  _factionProgressionStats: null,
+	_factionProgressionStats: null,
 
-  challengeProgressionCollection: null,
-  unreadChallengeProgressionRewards: null,
+	challengeProgressionCollection: null,
+	unreadChallengeProgressionRewards: null,
 
-  /* region CONNECT */
+	/* region CONNECT */
 
-  onBeforeConnect() {
-    Manager.prototype.onBeforeConnect.call(this);
+	onBeforeConnect:function() {
+		Manager.prototype.onBeforeConnect.call(this);
 
-    ProfileManager.getInstance().onReady()
-      .bind(this)
-      .then(function () {
-        this.checkForReferralRewards();
+		ProfileManager.getInstance().onReady()
+		.bind(this)
+		.then(function () {
 
-        const userId = ProfileManager.getInstance().get('id');
-        const neededToBeReady = [];
+			this.checkForReferralRewards()
 
-        this.unreadChallengeProgressionRewards = [];
+			var userId = ProfileManager.getInstance().get('id');
+			var neededToBeReady = [];
 
-        this.gameCounterRewardsCollection = new DuelystFirebase.Collection(null, {
-          firebase: new Firebase(process.env.FIREBASE_URL)
-            .child('user-progression')
-            .child(userId)
-            .child('game-counter-rewards'),
-        });
-        neededToBeReady.push(this.gameCounterRewardsCollection);
+			this.unreadChallengeProgressionRewards = [];
 
-        this.gameCounterModel = new DuelystFirebase.Model(null, {
-          firebase: new Firebase(process.env.FIREBASE_URL)
-            .child('user-progression')
-            .child(userId)
-            .child('game-counter'),
-        });
-        neededToBeReady.push(this.gameCounterModel);
+			this.gameCounterRewardsCollection = new DuelystFirebase.Collection(null, {
+				firebase: new Firebase(process.env.FIREBASE_URL)
+					.child("user-progression")
+					.child(userId)
+					.child("game-counter-rewards")
+			});
+			neededToBeReady.push(this.gameCounterRewardsCollection);
 
-        this.bossesDefeatedCollection = new DuelystFirebase.Collection(null, {
-          firebase: new Firebase(process.env.FIREBASE_URL)
-            .child('user-bosses-defeated')
-            .child(userId),
-        });
-        neededToBeReady.push(this.bossesDefeatedCollection);
+			this.gameCounterModel = new DuelystFirebase.Model(null, {
+				firebase: new Firebase(process.env.FIREBASE_URL)
+					.child("user-progression")
+					.child(userId)
+					.child("game-counter")
+			});
+			neededToBeReady.push(this.gameCounterModel);
 
-        this.bossEventsCollection = new DuelystFirebase.Collection(null, {
-          firebase: new Firebase(process.env.FIREBASE_URL)
-            .child('boss-events'),
-        });
-        this.bossEventsCollection.comparator = 'event_start';
-        neededToBeReady.push(this.bossEventsCollection);
+			this.bossesDefeatedCollection = new DuelystFirebase.Collection(null, {
+				firebase: new Firebase(process.env.FIREBASE_URL)
+					.child("user-bosses-defeated")
+					.child(userId)
+			});
+			neededToBeReady.push(this.bossesDefeatedCollection);
 
-        this._factionProgressionStats = {};
-        _.each(SDK.FactionFactory.getAllPlayableFactions(), (faction) => {
-          const factionId = faction.id.toString();
-          const factionProgressionModel = new DuelystFirebase.Model(null, {
-            firebase: new Firebase(process.env.FIREBASE_URL)
-              .child('user-faction-progression')
-              .child(userId)
-              .child(factionId)
-              .child('stats'),
-          });
-          this._factionProgressionStats[factionId] = factionProgressionModel;
-          neededToBeReady.push(factionProgressionModel);
-        });
+			this.bossEventsCollection = new DuelystFirebase.Collection(null, {
+				firebase: new Firebase(process.env.FIREBASE_URL)
+					.child("boss-events")
+			});
+			this.bossEventsCollection.comparator = "event_start"
+			neededToBeReady.push(this.bossEventsCollection);
 
-        this.challengeProgressionCollection = new DuelystBackbone.Collection();
-        this.challengeProgressionCollection.model = ChallengeModel;
-        this.challengeProgressionCollection.url = `${process.env.API_URL}/api/me/challenges/gated`;
-        this.challengeProgressionCollection.fetch();
-        neededToBeReady.push(this.challengeProgressionCollection);
+			this._factionProgressionStats = {};
+			_.each(SDK.FactionFactory.getAllPlayableFactions(),function(faction) {
+				var factionId = faction.id.toString();
+				var factionProgressionModel = new DuelystFirebase.Model(null, {
+					firebase: new Firebase(process.env.FIREBASE_URL)
+						.child("user-faction-progression")
+						.child(userId)
+						.child(factionId)
+						.child("stats")
+				});
+				this._factionProgressionStats[factionId] = factionProgressionModel;
+				neededToBeReady.push(factionProgressionModel);
+			}.bind(this));
 
-        // this.challengeProgressionCollection = new DuelystFirebase.Model(null, {
-        //   firebase: new Firebase(process.env.FIREBASE_URL).child("user-challenge-progression").child(userId)
-        // });
-        // neededToBeReady.push(this.challengeProgressionCollection);
+			this.challengeProgressionCollection = new DuelystBackbone.Collection();
+			this.challengeProgressionCollection.model = ChallengeModel;
+			this.challengeProgressionCollection.url = process.env.API_URL + '/api/me/challenges/gated';
+			this.challengeProgressionCollection.fetch();
+			neededToBeReady.push(this.challengeProgressionCollection);
 
-        // what to do when we're ready
-        this.onReady()
-          .then(() => {
-            this.listenTo(this.gameCounterRewardsCollection, 'add', this.ongameCounterRewardReceived);
-          });
+			// this.challengeProgressionCollection = new DuelystFirebase.Model(null, {
+			// 	firebase: new Firebase(process.env.FIREBASE_URL).child("user-challenge-progression").child(userId)
+			// });
+			// neededToBeReady.push(this.challengeProgressionCollection);
 
-        this._markAsReadyWhenModelsAndCollectionsSynced(neededToBeReady);
-      });
-  },
+			// what to do when we're ready
+			this.onReady()
+			.then(function(){
+				this.listenTo(this.gameCounterRewardsCollection, "add", this.ongameCounterRewardReceived);
+			}.bind(this));
 
-  checkForReferralRewards() {
-    const rewardsClaimedAt = moment.utc(ProfileManager.getInstance().get('referral_rewards_claimed_at') || 0);
-    const rewardsUpdatedAt = moment.utc(ProfileManager.getInstance().get('referral_rewards_updated_at') || 0);
-    if (rewardsClaimedAt.isBefore(rewardsUpdatedAt)) {
-      const notification = new NotificationModel({
-        message: i18next.t('rewards.referral_rewards_available_message'),
-        type: NotificationsManager.NOTIFICATION_BUDDY_INVITE,
-        ctaTitle: i18next.t('common.claim_label'),
-      });
-      this.listenTo(notification, 'cta_accept', function (model) {
-        var model = new DuelystBackbone.Model();
-        model.url = `${process.env.API_URL}/api/me/referrals/summary`;
-        model.fetch();
-        NavigationManager.getInstance().showModalView(new ReferralDialogView({ model }));
-        this.stopListening(notification);
-      }, this);
-      this.listenTo(notification, 'dismiss', function (model) {
-        this.stopListening(notification);
-      }, this);
-      NotificationsManager.getInstance().showNotification(notification);
-    }
-  },
+			this._markAsReadyWhenModelsAndCollectionsSynced(neededToBeReady);
+		})
+	},
 
-  getFactionProgressionStatsModel(factionId) {
-    if (factionId != null) {
-      return this._factionProgressionStats[String(factionId)];
-    }
-  },
+	checkForReferralRewards: function() {
+		var rewardsClaimedAt = moment.utc(ProfileManager.getInstance().get("referral_rewards_claimed_at") || 0)
+		var rewardsUpdatedAt = moment.utc(ProfileManager.getInstance().get("referral_rewards_updated_at") || 0)
+		if (rewardsClaimedAt.isBefore(rewardsUpdatedAt)) {
+			var notification = new NotificationModel({
+				message: i18next.t("rewards.referral_rewards_available_message"),
+				type: NotificationsManager.NOTIFICATION_BUDDY_INVITE,
+				ctaTitle: i18next.t("common.claim_label")
+			})
+			this.listenTo(notification, "cta_accept", function (model) {
+				var model = new DuelystBackbone.Model()
+				model.url = process.env.API_URL + '/api/me/referrals/summary'
+				model.fetch()
+				NavigationManager.getInstance().showModalView(new ReferralDialogView({model:model}))
+				this.stopListening(notification)
+			}, this)
+			this.listenTo(notification, "dismiss", function (model) {
+				this.stopListening(notification)
+			}, this)
+			NotificationsManager.getInstance().showNotification(notification)
+		}
+	},
 
-  isFactionUnlocked(factionId) {
-    // Lyonar and Neutral always unlocked
-    if (factionId == SDK.Factions.Faction1 || factionId == SDK.Factions.Neutral) {
-      return true;
-    }
-    const progressionStatsModel = this.getFactionProgressionStatsModel(factionId);
-    return (progressionStatsModel != null && progressionStatsModel.get('xp') != null);
-  },
+	getFactionProgressionStatsModel: function(factionId) {
+		if (factionId != null) {
+			return this._factionProgressionStats[String(factionId)];
+		}
+	},
 
-  isFactionUnlockedOrCardsOwned(factionId) {
-    return this.isFactionUnlocked(factionId) || InventoryManager.getInstance().hasAnyCardsOfFaction(factionId);
-  },
+	isFactionUnlocked: function(factionId) {
+		// Lyonar and Neutral always unlocked
+		if (factionId == SDK.Factions.Faction1 || factionId == SDK.Factions.Neutral) {
+			return true
+		}
+		var progressionStatsModel = this.getFactionProgressionStatsModel(factionId);
+		return (progressionStatsModel != null && progressionStatsModel.get("xp") != null)
+	},
 
-  getGameCount() {
-    return this.gameCounterModel.get('game_count') || 0;
-  },
+	isFactionUnlockedOrCardsOwned: function(factionId) {
+		return this.isFactionUnlocked(factionId) || InventoryManager.getInstance().hasAnyCardsOfFaction(factionId);
+	},
 
-  getHasActiveBossEvent() {
-    return this.getCurrentBossEventModels().length != 0;
-  },
+	getGameCount: function () {
+		return this.gameCounterModel.get("game_count") || 0;
+	},
 
-  getTimeToActiveBossEventEnds() {
-    const bossEventModels = this.getCurrentBossEventModels();
+	getHasActiveBossEvent: function () {
+		return this.getCurrentBossEventModels().length != 0;
+	},
 
-    if (bossEventModels.length == 0) {
-      return 0;
-    }
+	getTimeToActiveBossEventEnds: function () {
+		var bossEventModels = this.getCurrentBossEventModels();
 
-    const currentEventModel = bossEventModels[0];
-    const momentNowUtc = moment.utc();
-    const eventEndMoment = moment.utc(currentEventModel.get('event_end'));
+		if (bossEventModels.length ==0) {
+			return 0
+		}
 
-    return eventEndMoment.valueOf() - momentNowUtc.valueOf();
-  },
+		var currentEventModel = bossEventModels[0];
+		var momentNowUtc = moment.utc();
+		var eventEndMoment = moment.utc(currentEventModel.get("event_end"))
 
-  getCurrentBossEventModels() {
-    const momentNowUtc = moment.utc();
-    return this.bossEventsCollection.filter((eventModel) => {
-      const bossCard = SDK.GameSession.getCardCaches().getCardById(eventModel.get('boss_id'));
+		return eventEndMoment.valueOf() - momentNowUtc.valueOf();
+	},
 
-      return (eventModel.get('event_start') < momentNowUtc.valueOf())
-        && (eventModel.get('event_end') > momentNowUtc.valueOf())
-        && (bossCard != null);
-    });
-  },
+	getCurrentBossEventModels: function () {
+		var momentNowUtc = moment.utc();
+		return this.bossEventsCollection.filter(function(eventModel){
+			var bossCard = SDK.GameSession.getCardCaches().getCardById(eventModel.get("boss_id"));
 
-  getUpcomingBossEventModel() {
-    const momentNowUtc = moment.utc();
-    return this.bossEventsCollection.find((eventModel) => {
-      const bossCard = SDK.GameSession.getCardCaches().getCardById(eventModel.get('boss_id'));
+			return (eventModel.get("event_start") < momentNowUtc.valueOf()) &&
+				(eventModel.get("event_end") > momentNowUtc.valueOf()) &&
+				(bossCard != null);
+		});
+	},
 
-      return (eventModel.get('event_start') > momentNowUtc.valueOf()) && (bossCard != null);
-    });
-  },
+	getUpcomingBossEventModel: function () {
+		var momentNowUtc = moment.utc();
+		return this.bossEventsCollection.find(function(eventModel){
+			var bossCard = SDK.GameSession.getCardCaches().getCardById(eventModel.get("boss_id"));
 
-  getTimeToUpcomingBossEventAvailable() {
-    const currentEventModel = this.getUpcomingBossEventModel();
-    if (!currentEventModel) return 0;
-    const momentNowUtc = moment.utc();
-    const eventStartMoment = moment.utc(currentEventModel.get('event_start'));
+			return (eventModel.get("event_start") > momentNowUtc.valueOf()) && (bossCard != null);
+		});
+	},
 
-    return eventStartMoment.valueOf() - momentNowUtc.valueOf();
-  },
+	getTimeToUpcomingBossEventAvailable: function () {
+		var currentEventModel = this.getUpcomingBossEventModel();
+		if (!currentEventModel)
+			return 0
+		var momentNowUtc = moment.utc();
+		var eventStartMoment = moment.utc(currentEventModel.get("event_start"))
 
-  getHasDefeatedBossForEvent(bossCardId, bossEventId) {
-    const defeatedBossModel = this.bossesDefeatedCollection.find((defeatedBossModel) => (defeatedBossModel.get('boss_id') == bossCardId)
-        && (defeatedBossModel.get('boss_event_id') == bossEventId));
+		return eventStartMoment.valueOf() - momentNowUtc.valueOf();
+	},
 
-    return defeatedBossModel != null;
-  },
+	getHasDefeatedBossForEvent: function (bossCardId,bossEventId) {
+		var defeatedBossModel =  this.bossesDefeatedCollection.find(function(defeatedBossModel){
+			return (defeatedBossModel.get("boss_id") == bossCardId) &&
+				(defeatedBossModel.get("boss_event_id") == bossEventId)
+		});
 
-  onBeforeDisconnect() {
-    Manager.prototype.onBeforeDisconnect.call(this);
-    this.stopListening(this.gameCounterRewardsCollection);
-    this.gameCounterRewardsCollection = null;
-  },
+		return defeatedBossModel != null;
+	},
 
-  /* endregion CONNECT */
+	onBeforeDisconnect: function() {
+		Manager.prototype.onBeforeDisconnect.call(this);
+		this.stopListening(this.gameCounterRewardsCollection);
+		this.gameCounterRewardsCollection = null;
+	},
 
-  // Returns a promise that resolves to the challenge type when completed
-  completeChallengeWithType(challengeType) {
-    return new Promise((resolve, reject) => {
-      const challengePreviouslyCompleted = this.hasCompletedChallengeOfType(challengeType);
+	/* endregion CONNECT */
 
-      let processQuests = false;
-      QuestsManager.getInstance().dailyQuestsCollection.each((questModel) => {
-        if (SDK.QuestFactory.questForIdentifier(questModel.get('quest_type_id')) instanceof QuestBeginnerCompleteSoloChallenges) {
-          processQuests = true;
-        }
-      });
+	// Returns a promise that resolves to the challenge type when completed
+	completeChallengeWithType: function(challengeType) {
+		return new Promise(function (resolve, reject) {
+			var challengePreviouslyCompleted = this.hasCompletedChallengeOfType(challengeType);
 
-      const request = $.ajax({
-        data: JSON.stringify({ completed_at: moment().utc().valueOf(), process_quests: processQuests }),
-        url: `${process.env.API_URL}/api/me/challenges/gated/${challengeType}/completed_at`,
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
-      });
+			var processQuests = false
+			QuestsManager.getInstance().dailyQuestsCollection.each(function(questModel){
+				if (SDK.QuestFactory.questForIdentifier(questModel.get("quest_type_id")) instanceof QuestBeginnerCompleteSoloChallenges) {
+					processQuests = true
+				}
+			})
 
-      request.done((response) => {
-        if (request.status != 304) {
-          // 304 Status means a challenge was already completed
-          Analytics.track('challenge completed', {
-            category: Analytics.EventCategory.Challenges,
-            challenge_type: challengeType,
-          }, {
-            labelKey: 'challenge_type',
-          });
-          const { challenge } = response;
-          this.challengeProgressionCollection.add([challenge], { merge: true });
-          this.trigger(EVENTS.challenge_completed, { challengeCompletedType: challengeType });
-        }
+			var request = $.ajax({
+				data: JSON.stringify({completed_at: moment().utc().valueOf(),process_quests:processQuests}),
+				url: process.env.API_URL + '/api/me/challenges/gated/' + challengeType + '/completed_at',
+				type: 'PUT',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
 
-        if (response && response.challenge) {
-          resolve(response.challenge);
-        } else {
-          resolve({});
-        }
-      });
+			request.done(function (response) {
 
-      request.fail((response) => {
-        // Temporary error, should parse server response.
-        const error = 'Complete challenge request failed';
-        EventBus.getInstance().trigger(EVENTS.ajax_error, error);
-        reject(new Error(`Failed to complete challenge with type ${challengeType}`));
-      });
-    });
-  },
+				if (request.status != 304) {
+					// 304 Status means a challenge was already completed
+					Analytics.track("challenge completed", {
+						category: Analytics.EventCategory.Challenges,
+						challenge_type: challengeType
+					},{
+						labelKey:"challenge_type"
+					});
+					var challenge = response.challenge;
+					this.challengeProgressionCollection.add([challenge],{merge: true});
+					this.trigger(EVENTS.challenge_completed,{challengeCompletedType:challengeType});
+				}
 
-  markChallengeAsAttemptedWithType(challengeType) {
-    return new Promise((resolve, reject) => {
-      const challengePreviouslyAttempted = this.hasAttemptedChallengeOfType(challengeType);
+				if (response && response.challenge) {
+					resolve(response.challenge)
+				} else {
+					resolve({})
+				}
 
-      const request = $.ajax({
-        data: JSON.stringify({ last_attempted_at: moment().utc().valueOf() }),
-        url: `${process.env.API_URL}/api/me/challenges/gated/${challengeType}/last_attempted_at`,
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
-      });
+			}.bind(this));
 
-      request.done((response) => {
-        const { challenge } = response;
-        this.challengeProgressionCollection.add([challenge], { merge: true });
-        this.trigger(EVENTS.challenge_attempted, { challengeCompletedType: challengeType });
+			request.fail(function (response) {
+				// Temporary error, should parse server response.
+				var error = 'Complete challenge request failed';
+				EventBus.getInstance().trigger(EVENTS.ajax_error, error);
+				reject(new Error("Failed to complete challenge with type " + challengeType));
+			});
 
-        resolve(challengeType);
-      });
+		}.bind(this));
+	},
 
-      request.fail((response) => {
-        // Temporary error, should parse server response.
-        const error = 'Attempt challenge request failed';
-        EventBus.getInstance().trigger(EVENTS.ajax_error, error);
-        reject(new Error(`Failed to attempt challenge with type ${challengeType}`));
-      });
-    });
-  },
+	markChallengeAsAttemptedWithType: function(challengeType) {
+		return new Promise(function (resolve, reject) {
+			var challengePreviouslyAttempted = this.hasAttemptedChallengeOfType(challengeType);
 
-  completeDailyChallenge(challengeId) {
-    const completeDailyChallengePromise = new Promise((resolve, reject) => {
-      const request = $.ajax({
-        data: JSON.stringify({ completed_at: moment().utc().valueOf() }),
-        url: `${process.env.API_URL}/api/me/challenges/daily/${challengeId}/completed_at`,
-        type: 'PUT',
-        contentType: 'application/json',
-        dataType: 'json',
-      });
+			var request = $.ajax({
+				data: JSON.stringify({last_attempted_at: moment().utc().valueOf()}),
+				url: process.env.API_URL + '/api/me/challenges/gated/' + challengeType + '/last_attempted_at',
+				type: 'PUT',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
 
-      request.done((response, textStatus, jqXHR) => {
-        if (request.status != 304) {
-          // 304 Status means a challenge was already completed
-          Analytics.track('daily challenge completed', {
-            category: Analytics.EventCategory.Challenges,
-            challenge_type: challengeId,
-          }, {
-            labelKey: 'challenge_type',
-          });
-        }
+			request.done(function (response) {
 
-        if (response && response.challenge) {
-          resolve(response.challenge);
-        } else {
-          resolve({});
-        }
-      });
+				var challenge = response.challenge;
+				this.challengeProgressionCollection.add([challenge],{merge: true});
+				this.trigger(EVENTS.challenge_attempted,{challengeCompletedType:challengeType});
 
-      request.fail((response) => {
-        let error = 'Complete daily challenge request failed';
-        if (response && response.responseJSON && response.responseJSON.message) {
-          error = response.responseJSON.message;
-        }
-        EventBus.getInstance().trigger(EVENTS.ajax_error, error);
-        resolve({});
-      });
-    });
+				resolve(challengeType);
+			}.bind(this));
 
-    // This doesn't need to be directly part of the daily challenge completion promise chain
-    completeDailyChallengePromise.then(() => QuestsManager.getInstance().updateDailyChallengeLastCompletedAt());
+			request.fail(function (response) {
+				// Temporary error, should parse server response.
+				var error = 'Attempt challenge request failed';
+				EventBus.getInstance().trigger(EVENTS.ajax_error, error);
+				reject(new Error("Failed to attempt challenge with type " + challengeType));
+			});
 
-    return completeDailyChallengePromise;
-  },
+		}.bind(this));
+	},
 
-  hasAttemptedChallengeOfType(challengeType) {
-    const challengeData = this.challengeProgressionCollection.get(challengeType);
-    return challengeData && (challengeData.get('last_attempted_at') != null || challengeData.get('completed_at') != null);
-  },
+	completeDailyChallenge: function(challengeId) {
+		var completeDailyChallengePromise = new Promise(function (resolve, reject) {
+			var request = $.ajax({
+				data: JSON.stringify({completed_at: moment().utc().valueOf()}),
+				url: process.env.API_URL + '/api/me/challenges/daily/' + challengeId + '/completed_at',
+				type: 'PUT',
+				contentType: 'application/json',
+				dataType: 'json'
+			});
 
-  hasAttemptedChallengeCategory(challengeCategory) {
-    const challengesInCategory = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory);
-    return _.reduce(challengesInCategory, function (memo, challenge) {
-      return memo && this.hasAttemptedChallengeOfType(challenge.type);
-    }, true, this);
-  },
+			request.done(function (response,textStatus,jqXHR) {
 
-  hasCompletedChallengeOfType(challengeType) {
-    const challengeData = this.challengeProgressionCollection.get(challengeType);
-    return challengeData && (challengeData.get('completed_at') != null);
-  },
+				if (request.status != 304) {
+					// 304 Status means a challenge was already completed
+					Analytics.track("daily challenge completed", {
+						category: Analytics.EventCategory.Challenges,
+						challenge_type: challengeId
+					},{
+						labelKey:"challenge_type"
+					});
+				}
 
-  // A Challenge category is completed if all challenges in that category are done
-  hasCompletedChallengeCategory(challengeCategory) {
-    const challengesInCategory = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory);
-    return _.reduce(challengesInCategory, function (memo, challenge) {
-      return memo && this.hasCompletedChallengeOfType(challenge.type);
-    }, true, this);
-  },
+				if (response && response.challenge) {
+					resolve(response.challenge)
+				} else {
+					resolve({})
+				}
 
-  /* region EVENT HANDLERS */
+			}.bind(this));
 
-  ongameCounterRewardReceived(questModel) {
-    Logger.module('UI').log('ProgressionManager::ongameCounterRewardReceived');
-  },
+			request.fail(function (response) {
+				var error = 'Complete daily challenge request failed';
+				if (response && response.responseJSON && response.responseJSON.message) {
+					error = response.responseJSON.message;
+				}
+				EventBus.getInstance().trigger(EVENTS.ajax_error, error);
+				resolve({});
+			});
 
-  /* endregion EVENT HANDLERS */
+		}.bind(this));
+
+		// This doesn't need to be directly part of the daily challenge completion promise chain
+		completeDailyChallengePromise.then(function () {
+			return QuestsManager.getInstance().updateDailyChallengeLastCompletedAt();
+		});
+
+		return completeDailyChallengePromise;
+	},
+
+
+	hasAttemptedChallengeOfType: function(challengeType) {
+		var challengeData = this.challengeProgressionCollection.get(challengeType);
+		return challengeData && (challengeData.get('last_attempted_at') != null || challengeData.get('completed_at') != null);
+	},
+
+	hasAttemptedChallengeCategory: function(challengeCategory) {
+		var challengesInCategory = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory);
+		return _.reduce(challengesInCategory, function (memo, challenge) {
+			return memo && this.hasAttemptedChallengeOfType(challenge.type);
+		},true, this);
+	},
+
+	hasCompletedChallengeOfType: function(challengeType) {
+		var challengeData = this.challengeProgressionCollection.get(challengeType);
+		return challengeData && (challengeData.get('completed_at') != null);
+	},
+
+	// A Challenge category is completed if all challenges in that category are done
+	hasCompletedChallengeCategory: function(challengeCategory) {
+		var challengesInCategory = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory);
+		return _.reduce(challengesInCategory, function (memo, challenge) {
+			return memo && this.hasCompletedChallengeOfType(challenge.type);
+		},true, this);
+	},
+
+
+
+
+	/* region EVENT HANDLERS */
+
+	ongameCounterRewardReceived:function(questModel) {
+		Logger.module("UI").log("ProgressionManager::ongameCounterRewardReceived");
+	}
+
+	/* endregion EVENT HANDLERS */
 
 });
