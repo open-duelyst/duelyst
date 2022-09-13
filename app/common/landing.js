@@ -47,7 +47,10 @@ function shouldRedirect() {
 
 // redirect to the landing page, URL set via process.env config
 function redirect() {
-  const redirectUrl = process.env.LANDING_PAGE_URL;
+  let redirectUrl = process.env.LANDING_PAGE_URL;
+  if (redirectUrl === '') {
+    redirectUrl = '/';
+  };
   debug(`redirect to ${redirectUrl}`);
   Storage.set('redirected', true);
   return window.location.replace(redirectUrl);
