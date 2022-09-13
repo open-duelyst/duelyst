@@ -68,51 +68,7 @@ const CreditCardFormView = Backbone.Marionette.ItemView.extend({
     this.trigger('submit');
 
     return new Promise((resolve, reject) => {
-      if (typeof Stripe !== 'undefined') {
-        Stripe.setPublishableKey(process.env.STRIPE_CLIENT_KEY);
-        Stripe.card.createToken({
-          number: this.ui.number.val(),
-          cvc: this.ui.cvc.val(),
-          exp_month: this.ui.expiration_month.val(),
-          exp_year: this.ui.expiration_year.val(),
-        }, (status, response) => {
-          if (response.error) {
-            // Show the errors on the form
-            const errorMessage = response.error.message || 'Failed to save credit card data.';
-            reject(errorMessage);
-          } else {
-            // response contains id and card, which contains additional card details
-            const token = response.id;
-            const last_four_digits = this.ui.number.val().substr(this.ui.number.val().length - 4);
-
-            if (this.ui.save_card.is(':checked') || InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-              const request = $.ajax({
-                data: JSON.stringify({
-                  card_token: token,
-                  last_four_digits,
-                }),
-                url: `${process.env.API_URL}/api/me/shop/customer`,
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-              });
-
-              request.done((response) => {
-                resolve({ token, stored: true });
-              });
-
-              request.fail((response) => {
-                reject(response && response.responseJSON && (response.responseJSON.error || response.responseJSON.message) || 'Failed to save credit card data. Please retry.');
-              });
-            } else {
-              resolve({ token, stored: false });
-            }
-          }
-        });
-      } else {
-        const errorMessage = 'Failed to save credit card data.';
-        reject(errorMessage);
-      }
+      resolve('Credit card storage is disabled.');
     });
   },
 

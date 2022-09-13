@@ -17,7 +17,6 @@
 	"analyticsEnabled": true,
 	"amaId":"",
 	"gaId":"",
-	"stripeClientKey":"",
 	"zendeskEnabled": true,
 	"bugsnag": {
 		"client_key": ""

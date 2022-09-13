@@ -217,16 +217,6 @@ const config = convict({
       env: 'BUGSNAG_WORKER',
     },
   },
-  stripeSecretKey: {
-    doc: 'Stripe Secret API key.',
-    default: '',
-    env: 'STRIPE_API_KEY',
-  },
-  stripeClientKey: {
-    doc: 'STRIPE client key.',
-    default: '',
-    env: 'STRIPE_CLIENT_KEY',
-  },
   consul: {
     enabled: {
       doc: 'Enable/disable Consul-based server assignment.',
