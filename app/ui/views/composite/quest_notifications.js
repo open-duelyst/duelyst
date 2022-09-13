@@ -1,22 +1,24 @@
-const CONFIG = require('app/common/config');
-const NotificationsManager = require('app/ui/managers/notifications_manager');
-const QuestNotificationItemView = require('app/ui/views/item/quest_notification');
-const NotificationsCompositeView = require('./notifications');
+'use strict';
 
-const QuestNotificationsView = NotificationsCompositeView.extend({
+var CONFIG = require('app/common/config');
+var NotificationsManager = require('app/ui/managers/notifications_manager');
+var NotificationsCompositeView = require('./notifications');
+var QuestNotificationItemView = require('app/ui/views/item/quest_notification');
 
-  id: 'app-quest-notifications',
+var QuestNotificationsView = NotificationsCompositeView.extend({
 
-  childView: QuestNotificationItemView,
+	id: "app-quest-notifications",
 
-  onAddChild(childView) {
-    // dismiss after short delay
-    setTimeout(() => {
-      childView.$el.fadeOut(CONFIG.QUEST_NOTIFICATION_FADE_DURATION * 1000.0, () => {
-        NotificationsManager.getInstance().dismissNotification(childView.model);
-      });
-    }, CONFIG.QUEST_NOTIFICATION_DURATION * 1000.0);
-  },
+	childView: QuestNotificationItemView,
+
+	onAddChild: function (childView) {
+		// dismiss after short delay
+		setTimeout(function () {
+			childView.$el.fadeOut(CONFIG.QUEST_NOTIFICATION_FADE_DURATION * 1000.0, function () {
+				NotificationsManager.getInstance().dismissNotification(childView.model);
+			}.bind(this));
+		}.bind(this), CONFIG.QUEST_NOTIFICATION_DURATION * 1000.0);
+	}
 
 });
 

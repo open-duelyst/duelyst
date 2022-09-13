@@ -1,11 +1,13 @@
-const MainNotificationItemView = require('app/ui/views/item/main_notification');
-const NotificationsCompositeView = require('./notifications');
+'use strict';
 
-const MainNotificationsView = NotificationsCompositeView.extend({
+var NotificationsCompositeView = require('./notifications');
+var MainNotificationItemView = require('app/ui/views/item/main_notification');
 
-  id: 'app-main-notifications',
+var MainNotificationsView = NotificationsCompositeView.extend({
 
-  childView: MainNotificationItemView,
+	id: "app-main-notifications",
+
+	childView: MainNotificationItemView
 
 });
 

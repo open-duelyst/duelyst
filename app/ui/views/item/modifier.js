@@ -1,19 +1,21 @@
-const ModifierTmpl = require('app/ui/templates/item/modifier.hbs');
+'use strict';
 
-const ModifierItemView = Backbone.Marionette.ItemView.extend({
+var ModifierTmpl = require('app/ui/templates/item/modifier.hbs');
 
-  className: 'media modifier',
+var ModifierItemView = Backbone.Marionette.ItemView.extend({
 
-  template: ModifierTmpl,
+	className: "media modifier",
 
-  /* ui selector cache */
-  ui: {},
+	template: ModifierTmpl,
 
-  /* Ui events hash */
-  events: {},
+	/* ui selector cache */
+	ui: {},
 
-  /* on render callback */
-  onRender() {},
+	/* Ui events hash */
+	events: {},
+
+	/* on render callback */
+	onRender: function() {}
 });
 
 // Expose the class either via CommonJS or the global object

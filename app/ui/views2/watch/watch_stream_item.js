@@ -1,52 +1,54 @@
-const Animations = require('app/ui/views/animations');
-const moment = require('moment');
-const Analytics = require('app/common/analytics');
-const openUrl = require('app/common/openUrl');
-const Template = require('./templates/watch_stream_item.hbs');
+'use strict'
 
-const WatchStreamItemView = Backbone.Marionette.ItemView.extend({
+var Animations = require('app/ui/views/animations')
+var moment = require('moment')
+var Analytics = require('app/common/analytics')
+var Template = require('./templates/watch_stream_item.hbs')
+var openUrl = require('app/common/openUrl')
 
-  className: 'watch-stream-item',
-  template: Template,
+var WatchStreamItemView = Backbone.Marionette.ItemView.extend({
 
-  events: {
-    'click a': 'onOpenStream',
-    'click button': 'onOpenStream',
-  },
+	className: "watch-stream-item",
+	template: Template,
 
-  init() {
-  },
+	events: {
+		"click a": "onOpenStream",
+		"click button": "onOpenStream",
+	},
 
-  onRender() {
-    this.$el.find('[data-toggle=\'tooltip\']').tooltip();
-  },
+	init: function(){
+	},
 
-  onDestroy() {
-    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
-  },
+	onRender: function() {
+		this.$el.find("[data-toggle='tooltip']").tooltip();
+	},
 
-  animateReveal(duration, delay) {
-    Animations.fadeZoomUpIn.call(this, duration, delay, 0, 0, 0.9);
-  },
+	onDestroy: function () {
+		this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+	},
 
-  onOpenStream(e) {
-    openUrl(this.model.get('url'));
+	animateReveal: function(duration, delay) {
+		Animations.fadeZoomUpIn.call(this, duration, delay, 0, 0, 0.9);
+	},
 
-    let streamerName = '';
-    if (this.model != null && this.model.get('name') != null) {
-      streamerName = this.model.get('name');
-    }
-    Analytics.track('watch stream', {
-      category: Analytics.EventCategory.Watch,
-      streamer_name: streamerName,
-    }, {
-      labelKey: 'streamer_name',
-    });
+	onOpenStream: function(e){
+		openUrl(this.model.get("url"));
 
-    e.preventDefault();
-    return false;
-  },
+		var streamerName = "";
+		if (this.model != null && this.model.get("name") != null) {
+			streamerName = this.model.get("name");
+		}
+		Analytics.track("watch stream", {
+			category:Analytics.EventCategory.Watch,
+			streamer_name:streamerName
+		},{
+			labelKey:"streamer_name"
+		});
 
-});
+		e.preventDefault();
+		return false
+	}
 
-module.exports = WatchStreamItemView;
+})
+
+module.exports = WatchStreamItemView

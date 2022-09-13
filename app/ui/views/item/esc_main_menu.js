@@ -1,84 +1,86 @@
-const CONFIG = require('app/common/config');
-const Session = require('app/common/session2');
-const SDK = require('app/sdk');
-const RSX = require('app/data/resources');
-const audio_engine = require('app/audio/audio_engine');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const EscMainMenuTmpl = require('app/ui/templates/item/esc_main_menu.hbs');
-const UtilityMenuItemView = require('./utility_menu');
-const ConfirmDialogItemView = require('./confirm_dialog');
+'use strict';
 
-const EscMainMenuItemView = UtilityMenuItemView.extend({
+var CONFIG = require('app/common/config');
+var Session = require('app/common/session2');
+var SDK = require('app/sdk');
+var RSX = require('app/data/resources');
+var audio_engine = require('app/audio/audio_engine');
+var UtilityMenuItemView = require('./utility_menu');
+var ConfirmDialogItemView = require("./confirm_dialog");
+var NavigationManager = require("app/ui/managers/navigation_manager");
+var EscMainMenuTmpl = require('app/ui/templates/item/esc_main_menu.hbs');
 
-  template: EscMainMenuTmpl,
+var EscMainMenuItemView = UtilityMenuItemView.extend({
 
-  id: 'app-esc-main-menu',
-  className: 'modal duelyst-modal',
+	template: EscMainMenuTmpl,
 
-  onRender() {
-    UtilityMenuItemView.prototype.onRender.apply(this, arguments);
+	id: "app-esc-main-menu",
+	className: "modal duelyst-modal",
 
-    if (window.isSteam) {
-      this.$el.find('.logout').remove();
-    }
-    if (window.isDesktop) {
-      this.$el.find('.desktop-quit').on('click', this.onDesktopQuitClicked.bind(this));
-    } else {
-      this.$el.find('.desktop-quit').remove();
-    }
-  },
+	onRender: function() {
+		UtilityMenuItemView.prototype.onRender.apply(this, arguments);
 
-  onShow() {
-    UtilityMenuItemView.prototype.onShow.apply(this, arguments);
+		if (window.isSteam) {
+			this.$el.find(".logout").remove();
+		}
+		if (window.isDesktop) {
+			this.$el.find(".desktop-quit").on("click", this.onDesktopQuitClicked.bind(this));
+		} else {
+			this.$el.find(".desktop-quit").remove();
+		}
+	},
 
-    // show ZENDSEK widget
-    window.zE && window.zE.show && window.zE.show();
+	onShow: function() {
+		UtilityMenuItemView.prototype.onShow.apply(this, arguments);
 
-    audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
-  },
+		// show ZENDSEK widget
+		window.zE && window.zE.show && window.zE.show()
 
-  onDestroy() {
-    // hide ZENDSEK widget
-    window.zE && window.zE.hide && window.zE.hide();
-  },
+		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
+	},
 
-  animateReveal() {
-    // don't animate reveal esc menu
-  },
+	onDestroy: function() {
+		// hide ZENDSEK widget
+		window.zE && window.zE.hide && window.zE.hide()
+	},
 
-  onLoggedInRender() {
-    UtilityMenuItemView.prototype.onLoggedInRender.apply(this, arguments);
-    this.$el.find('.logout').on('click', this.onLogoutClicked.bind(this));
-  },
+	animateReveal: function() {
+		// don't animate reveal esc menu
+	},
 
-  onLoggedOutRender() {
-    UtilityMenuItemView.prototype.onLoggedOutRender.apply(this, arguments);
-    this.$el.find('.logout').addClass('disabled');
-  },
+	onLoggedInRender: function () {
+		UtilityMenuItemView.prototype.onLoggedInRender.apply(this, arguments);
+		this.$el.find(".logout").on("click", this.onLogoutClicked.bind(this));
+	},
 
-  onLogoutClicked() {
-    const confirmDialogItemView = new ConfirmDialogItemView({ title: 'Are you sure you want to logout?' });
-    this.listenToOnce(confirmDialogItemView, 'confirm', () => {
-      Session.logout();
-    });
-    this.listenToOnce(confirmDialogItemView, 'cancel', () => {
-      this.stopListening(confirmDialogItemView);
-    });
-    NavigationManager.getInstance().showDialogView(confirmDialogItemView);
-  },
+	onLoggedOutRender: function () {
+		UtilityMenuItemView.prototype.onLoggedOutRender.apply(this, arguments);
+		this.$el.find(".logout").addClass("disabled");
+	},
 
-  onDesktopQuitClicked() {
-    if (window.isDesktop) {
-      const confirmDialogItemView = new ConfirmDialogItemView({ title: 'Are you sure you want to quit?' });
-      this.listenToOnce(confirmDialogItemView, 'confirm', () => {
-        window.quitDesktop();
-      });
-      this.listenToOnce(confirmDialogItemView, 'cancel', () => {
-        this.stopListening(confirmDialogItemView);
-      });
-      NavigationManager.getInstance().showDialogView(confirmDialogItemView);
-    }
-  },
+	onLogoutClicked: function() {
+		var confirmDialogItemView = new ConfirmDialogItemView({title:"Are you sure you want to logout?"});
+		this.listenToOnce(confirmDialogItemView,"confirm",function() {
+			Session.logout();
+		}.bind(this));
+		this.listenToOnce(confirmDialogItemView,"cancel",function() {
+			this.stopListening(confirmDialogItemView);
+		}.bind(this));
+		NavigationManager.getInstance().showDialogView(confirmDialogItemView);
+	},
+
+	onDesktopQuitClicked: function() {
+		if (window.isDesktop) {
+			var confirmDialogItemView = new ConfirmDialogItemView({title:"Are you sure you want to quit?"});
+			this.listenToOnce(confirmDialogItemView,"confirm",function() {
+				window.quitDesktop();
+			}.bind(this));
+			this.listenToOnce(confirmDialogItemView,"cancel",function() {
+				this.stopListening(confirmDialogItemView);
+			}.bind(this));
+			NavigationManager.getInstance().showDialogView(confirmDialogItemView);
+		}
+	}
 
 });
 

@@ -1,455 +1,458 @@
-const Logger = require('app/common/logger');
-const CONFIG = require('app/common/config');
-const SDK = require('app/sdk');
-const UtilsEnv = require('app/common/utils/utils_env');
-const GameDataManager = require('app/ui/managers/game_data_manager');
-const ProgressionManager = require('app/ui/managers/progression_manager');
-const CardsCollection = require('app/ui/collections/cards');
-const Firebase = require('firebase');
-const i18next = require('i18next');
+'use strict';
 
-const DeckModel = Backbone.Model.extend({
+var Logger = require('app/common/logger');
+var CONFIG = require('app/common/config');
+var SDK = require('app/sdk');
+var UtilsEnv = require('app/common/utils/utils_env');
+var GameDataManager = require('app/ui/managers/game_data_manager');
+var ProgressionManager = require('app/ui/managers/progression_manager');
+var CardsCollection = require('app/ui/collections/cards');
+var Firebase = require('firebase');
+var i18next = require('i18next');
 
-  _cardModels: null,
-  _histogram: null,
-  _isValid: null,
-  _isLegacy: false,
+var DeckModel = Backbone.Model.extend({
 
-  defaults: {
-    name: i18next.t(`${CONFIG.DEFAULT_DECK_NAME}`),
-    faction_id: null,
-    plays: 0,
-    wins: 0,
-    loses: 0,
-    isStarter: false,
-    created_at: 0,
-    updated_at: 0,
-    played_at: 0,
-    cards: [],
-    minion_count: 0,
-    spell_count: 0,
-    artifact_count: 0,
-    color_code: 0,
-    numCardsUnlocked: 0,
-    numCardsUnlockable: 0,
-    searchableContent: '',
-    card_back_id: null,
-  },
+	_cardModels: null,
+	_histogram: null,
+	_isValid:null,
+	_isLegacy:false,
 
-  initialize() {
-    Logger.module('UI').log('initialize a Deck model', this.get('name'));
-    this.listenTo(this, 'sync', this.onSync);
-    this._cardModels = new CardsCollection();
-    this._histogram = [];
-  },
+	defaults: {
+		name: i18next.t(""+CONFIG.DEFAULT_DECK_NAME),
+		faction_id: null,
+		plays: 0,
+		wins: 0,
+		loses: 0,
+		isStarter: false,
+		created_at: 0,
+		updated_at: 0,
+		played_at: 0,
+		cards: [],
+		minion_count: 0,
+		spell_count: 0,
+		artifact_count: 0,
+		color_code: 0,
+		numCardsUnlocked: 0,
+		numCardsUnlockable: 0,
+		searchableContent: "",
+		card_back_id: null
+	},
 
-  onSync() {
-    if (this.hasChanged()) {
-      this.updateCardModelsFromCardsData();
-    }
-  },
+	initialize: function() {
+		Logger.module("UI").log("initialize a Deck model", this.get("name"));
+		this.listenTo(this,'sync',this.onSync);
+		this._cardModels = new CardsCollection();
+		this._histogram = [];
+	},
 
-  getCardModels() {
-    return this._cardModels;
-  },
+	onSync: function() {
+		if (this.hasChanged()) {
+			this.updateCardModelsFromCardsData();
+		}
+	},
 
-  addCard(cardModel) {
-    // when attempting to add another general, remove current first
-    if (cardModel && cardModel.get('isGeneral') && this.hasGeneral()) {
-      const generalCardModel = this.getGeneralCardModel();
-      if (cardModel.get('id') !== generalCardModel.get('id')) {
-        this.changeCardModel(generalCardModel, -1);
-      }
-    }
-    const changed = this.changeCardModel(cardModel, 1);
-    if (changed) {
-      this.updatePropertiesFromCardModels(changed);
-    }
-    return changed;
-  },
+	getCardModels: function() {
+		return this._cardModels;
+	},
 
-  addCardIds(cardIds) {
-    let changed = false;
-    const cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardIds(cardIds);
-    if (cardModels.length > 0) {
-      for (let i = 0, il = cardModels.length; i < il; i++) {
-        changed = this.changeCardModel(cardModels[i], 1) || changed;
-      }
-    }
-    if (changed) {
-      this.updatePropertiesFromCardModels(changed);
-    }
-    return changed;
-  },
+	addCard: function(cardModel) {
+		// when attempting to add another general, remove current first
+		if (cardModel && cardModel.get("isGeneral") && this.hasGeneral()) {
+			var generalCardModel = this.getGeneralCardModel();
+			if (cardModel.get("id") !== generalCardModel.get("id")) {
+				this.changeCardModel(generalCardModel, -1);
+			}
+		}
+		var changed = this.changeCardModel(cardModel, 1);
+		if (changed) {
+			this.updatePropertiesFromCardModels(changed);
+		}
+		return changed;
+	},
 
-  addCardsData(cardsData) {
-    let changed = false;
-    const cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardsData(cardsData);
-    if (cardModels.length > 0) {
-      for (let i = 0, il = cardModels.length; i < il; i++) {
-        changed = this.changeCardModel(cardModels[i], 1) || changed;
-      }
-    }
-    if (changed) {
-      this.updatePropertiesFromCardModels(changed);
-    }
-    return changed;
-  },
+	addCardIds: function(cardIds) {
+		var changed = false;
+		var cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardIds(cardIds);
+		if (cardModels.length > 0) {
+			for (var i = 0, il = cardModels.length; i < il; i++) {
+				changed = this.changeCardModel(cardModels[i], 1) || changed;
+			}
+		}
+		if (changed) {
+			this.updatePropertiesFromCardModels(changed);
+		}
+		return changed;
+	},
 
-  removeCard(cardModel) {
-    const changed = this.changeCardModel(cardModel, -1);
-    if (changed) {
-      this.updatePropertiesFromCardModels(changed);
-    }
-    return changed;
-  },
+	addCardsData: function(cardsData) {
+		var changed = false;
+		var cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardsData(cardsData);
+		if (cardModels.length > 0) {
+			for (var i = 0, il = cardModels.length; i < il; i++) {
+				changed = this.changeCardModel(cardModels[i], 1) || changed;
+			}
+		}
+		if (changed) {
+			this.updatePropertiesFromCardModels(changed);
+		}
+		return changed;
+	},
 
-  getCountForBaseCardId(cardId) {
-    let count = 0;
+	removeCard: function(cardModel) {
+		var changed = this.changeCardModel(cardModel, -1);
+		if (changed) {
+			this.updatePropertiesFromCardModels(changed);
+		}
+		return changed;
+	},
 
-    // add counts of all cards in deck that have a matching base card id
-    const baseCardId = SDK.Cards.getBaseCardId(cardId);
-    this._cardModels.forEach((cardModel) => {
-      if (cardModel.get('baseCardId') === baseCardId) {
-        count += (cardModel.get('deckCount') || 0);
-      }
-    });
+	getCountForBaseCardId: function(cardId) {
+		var count = 0;
 
-    return count;
-  },
+		// add counts of all cards in deck that have a matching base card id
+		var baseCardId = SDK.Cards.getBaseCardId(cardId);
+		this._cardModels.forEach(function (cardModel) {
+			if (cardModel.get("baseCardId") === baseCardId) {
+				count += (cardModel.get("deckCount") || 0);
+			}
+		});
 
-  getCountForCardId(cardId) {
-    let count = 0;
+		return count;
+	},
 
-    // add counts of all cards in deck that have the exact id
-    // skins count as same version of card
-    cardId = SDK.Cards.getNonSkinnedCardId(cardId);
-    const baseCardId = SDK.Cards.getBaseCardId(cardId);
-    const isPrismatic = SDK.Cards.getIsPrismaticCardId(cardId);
-    this._cardModels.forEach((cardModel) => {
-      if (cardModel.get('id') === cardId || (cardModel.get('isSkinned') && cardModel.get('baseCardId') === baseCardId && cardModel.get('isPrismatic') === isPrismatic)) {
-        count += (cardModel.get('deckCount') || 0);
-      }
-    });
+	getCountForCardId: function(cardId) {
+		var count = 0;
 
-    return count;
-  },
+		// add counts of all cards in deck that have the exact id
+		// skins count as same version of card
+		cardId = SDK.Cards.getNonSkinnedCardId(cardId);
+		var baseCardId = SDK.Cards.getBaseCardId(cardId);
+		var isPrismatic = SDK.Cards.getIsPrismaticCardId(cardId);
+		this._cardModels.forEach(function (cardModel) {
+			if (cardModel.get("id") === cardId || (cardModel.get("isSkinned") && cardModel.get("baseCardId") === baseCardId && cardModel.get("isPrismatic") === isPrismatic)) {
+				count += (cardModel.get("deckCount") || 0);
+			}
+		});
 
-  changeCardModel(cardModel, deltaCount) {
-    const cardId = cardModel.get('id');
-    const factionId = cardModel.get('factionId');
-    if (cardId != null && (this.get('isStarter') || ProgressionManager.getInstance().isFactionUnlocked(factionId))) {
-      deltaCount || (deltaCount = 1);
+		return count;
+	},
 
-      // check for existing card
-      let deckCardModel = this._cardModels.get(cardId);
-      if (!deckCardModel) {
-        // clone card so that we can modify it in deck
-        deckCardModel = cardModel.clone();
-      }
+	changeCardModel: function(cardModel, deltaCount) {
+		var cardId = cardModel.get("id");
+		var factionId = cardModel.get("factionId");
+		if (cardId != null && (this.get("isStarter") || ProgressionManager.getInstance().isFactionUnlocked(factionId))) {
+			deltaCount || (deltaCount = 1);
 
-      // validate card type and deck size
-      const deckSize = this.get('cards').length;
-      const isGeneral = deckCardModel.get('isGeneral');
-      const validCard = (isGeneral || this.hasGeneral()) && deckCardModel.get('isNeutral') || this.get('faction_id') === factionId;
-      const deckCount = this.getCountForCardId(cardId);
-      const inventoryCount = cardModel.get('inventoryCount');
-      if (deltaCount > 0) {
-        deltaCount = Math.min(deckCount + deltaCount, inventoryCount) - deckCount;
-      }
-      if (isGeneral || deltaCount < 0 || (deltaCount > 0 && deckSize < CONFIG.MAX_DECK_SIZE && validCard)) {
-        // validate card count in deck
-        const totalCount = this.getCountForBaseCardId(cardId);
-        const maxDeckDuplicates = isGeneral ? 1 : CONFIG.MAX_DECK_DUPLICATES;
-        const newCount = Math.max(Math.min(totalCount + deltaCount, maxDeckDuplicates), 0);
-        deltaCount = newCount - totalCount;
-        if (newCount !== totalCount && ((deltaCount < 0 && deckCount > 0) || (inventoryCount >= deckCount + deltaCount))) {
-          // update card count in deck
-          const cardDeckCount = deckCardModel.get('deckCount');
-          const newCardDeckCount = cardDeckCount + deltaCount;
-          deckCardModel.set('deckCount', newCardDeckCount);
+			// check for existing card
+			var deckCardModel = this._cardModels.get(cardId);
+			if (!deckCardModel) {
+				// clone card so that we can modify it in deck
+				deckCardModel = cardModel.clone();
+			}
 
-          // add or remove the card
-          if (newCardDeckCount === 0) {
-            // remove card
-            this._cardModels.remove(deckCardModel);
-          } else if (cardDeckCount === 0 && newCardDeckCount > cardDeckCount) {
-            // set deck faction
-            if (isGeneral && this.get('faction_id') !== factionId) {
-              this.set('faction_id', factionId);
-            }
+			// validate card type and deck size
+			var deckSize = this.get("cards").length;
+			var isGeneral = deckCardModel.get("isGeneral");
+			var validCard = (isGeneral || this.hasGeneral()) && deckCardModel.get("isNeutral") || this.get("faction_id") === factionId;
+			var deckCount = this.getCountForCardId(cardId);
+			var inventoryCount = cardModel.get("inventoryCount");
+			if (deltaCount > 0) {
+				deltaCount = Math.min(deckCount + deltaCount, inventoryCount) - deckCount;
+			}
+			if (isGeneral || deltaCount < 0 || (deltaCount > 0 && deckSize < CONFIG.MAX_DECK_SIZE && validCard)) {
+				// validate card count in deck
+				var totalCount = this.getCountForBaseCardId(cardId);
+				var maxDeckDuplicates = isGeneral ? 1 : CONFIG.MAX_DECK_DUPLICATES;
+				var newCount = Math.max(Math.min(totalCount + deltaCount, maxDeckDuplicates), 0);
+				deltaCount = newCount - totalCount;
+				if (newCount !== totalCount && ((deltaCount < 0 && deckCount > 0) || (inventoryCount >= deckCount + deltaCount))) {
+					// update card count in deck
+					var cardDeckCount = deckCardModel.get("deckCount");
+					var newCardDeckCount = cardDeckCount + deltaCount;
+					deckCardModel.set("deckCount", newCardDeckCount);
 
-            // add card
-            this._cardModels.add(deckCardModel);
-          }
+					// add or remove the card
+					if (newCardDeckCount === 0) {
+						// remove card
+						this._cardModels.remove(deckCardModel);
+					} else if (cardDeckCount === 0 && newCardDeckCount > cardDeckCount) {
+						// set deck faction
+						if (isGeneral && this.get("faction_id") !== factionId) {
+							this.set('faction_id', factionId);
+						}
 
-          // a card was changed
-          return true;
-        }
-      }
-    }
+						// add card
+						this._cardModels.add(deckCardModel);
+					}
 
-    // no card was changed
-    return false;
-  },
+					// a card was changed
+					return true;
+				}
+			}
+		}
 
-  updateCard(cardModel) {
-    const cardId = cardModel.get('id');
-    let changed = false;
+		// no card was changed
+		return false;
+	},
 
-    // update for skinned cards in deck
-    if (!SDK.Cards.getIsSkinnedCardId(cardId)) {
-      const baseCardId = SDK.Cards.getBaseCardId(cardId);
-      const skinIds = SDK.CosmeticsFactory.cardSkinIdsForCard(baseCardId);
-      let removeAllSkins = false;
-      if (skinIds.length > 1) {
-        const gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
-        if (gameDataCardModel.get('inventoryCount') < this.getCountForCardId(cardId)) {
-          removeAllSkins = true;
-        }
-      }
+	updateCard: function(cardModel) {
+		var cardId = cardModel.get("id");
+		var changed = false;
 
-      for (let i = 0, il = skinIds.length; i < il; i++) {
-        const skinId = skinIds[i];
-        let skinnedCardId = SDK.Cards.getCardIdForCardSkinId(skinId);
-        if (SDK.Cards.getIsPrismaticCardId(cardId)) {
-          skinnedCardId = SDK.Cards.getPrismaticCardId(skinnedCardId);
-        }
-        if (removeAllSkins) {
-          const skinnedDeckCardModel = this._cardModels.get(skinnedCardId);
-          if (skinnedDeckCardModel != null && skinnedDeckCardModel.get('deckCount') > 0) {
-            const skinnedGameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(skinnedCardId);
-            this.changeCardModel(skinnedGameDataCardModel, -skinnedDeckCardModel.get('deckCount'));
-            changed = true;
-          }
-        } else {
-          const skinChanged = this._updateCardFromId(skinnedCardId);
-          if (!changed) { changed = skinChanged; }
-        }
-      }
-    }
+		// update for skinned cards in deck
+		if (!SDK.Cards.getIsSkinnedCardId(cardId)) {
+			var baseCardId = SDK.Cards.getBaseCardId(cardId);
+			var skinIds = SDK.CosmeticsFactory.cardSkinIdsForCard(baseCardId);
+			var removeAllSkins = false;
+			if (skinIds.length > 1) {
+				var gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
+				if (gameDataCardModel.get("inventoryCount") < this.getCountForCardId(cardId)) {
+					removeAllSkins = true;
+				}
+			}
 
-    // update for this card in deck
-    const baseChanged = this._updateCardFromId(cardId);
-    if (!changed) { changed = baseChanged; }
+			for (var i = 0, il = skinIds.length; i < il; i++) {
+				var skinId = skinIds[i];
+				var skinnedCardId = SDK.Cards.getCardIdForCardSkinId(skinId);
+				if (SDK.Cards.getIsPrismaticCardId(cardId)) {
+					skinnedCardId = SDK.Cards.getPrismaticCardId(skinnedCardId);
+				}
+				if (removeAllSkins) {
+					var skinnedDeckCardModel = this._cardModels.get(skinnedCardId);
+					if (skinnedDeckCardModel != null && skinnedDeckCardModel.get("deckCount") > 0) {
+						var skinnedGameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(skinnedCardId);
+						this.changeCardModel(skinnedGameDataCardModel, -skinnedDeckCardModel.get("deckCount"));
+						changed = true;
+					}
+				} else {
+					var skinChanged = this._updateCardFromId(skinnedCardId);
+					if (!changed) { changed = skinChanged; }
+				}
+			}
+		}
 
-    // update deck if changed
-    if (changed) {
-      this.updatePropertiesFromCardModels();
-    }
-    return changed;
-  },
+		// update for this card in deck
+		var baseChanged = this._updateCardFromId(cardId);
+		if (!changed) { changed = baseChanged; }
 
-  _updateCardFromId(cardId) {
-    let changed = false;
+		// update deck if changed
+		if (changed) {
+			this.updatePropertiesFromCardModels();
+		}
+		return changed;
+	},
 
-    const deckCardModel = this._cardModels.get(cardId);
-    if (deckCardModel != null) {
-      // card is in deck
-      const gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
-      const inventoryCount = gameDataCardModel.get('inventoryCount');
-      const deckCount = deckCardModel.get('deckCount');
-      const totalCount = this.getCountForCardId(cardId);
+	_updateCardFromId: function (cardId) {
+		var changed = false;
 
-      // update existing deck card's inventory count
-      deckCardModel.set('inventoryCount', inventoryCount);
+		var deckCardModel = this._cardModels.get(cardId);
+		if (deckCardModel != null) {
+			// card is in deck
+			var gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
+			var inventoryCount = gameDataCardModel.get("inventoryCount");
+			var deckCount = deckCardModel.get("deckCount");
+			var totalCount = this.getCountForCardId(cardId);
 
-      // check if card has less usable count than are in deck
-      if (deckCount > 0 && inventoryCount < totalCount) {
-        changed = this.changeCardModel(gameDataCardModel, -Math.min(totalCount - inventoryCount, deckCount));
-      } else if (inventoryCount < deckCount) {
-        changed = this.changeCardModel(gameDataCardModel, deckCount - inventoryCount);
-      }
-    }
+			// update existing deck card's inventory count
+			deckCardModel.set("inventoryCount", inventoryCount);
 
-    return changed;
-  },
+			// check if card has less usable count than are in deck
+			if (deckCount > 0 && inventoryCount < totalCount) {
+				changed = this.changeCardModel(gameDataCardModel, -Math.min(totalCount - inventoryCount, deckCount));
+			} else if (inventoryCount < deckCount) {
+				changed = this.changeCardModel(gameDataCardModel, deckCount - inventoryCount);
+			}
+		}
 
-  hasGeneral() {
-    const generalCardModel = this.getGeneralCardModel();
-    return generalCardModel && generalCardModel.get('isGeneral');
-  },
+		return changed;
+	},
 
-  getGeneralId() {
-    const generalCardModel = this.getGeneralCardModel();
-    return generalCardModel && generalCardModel.get('id');
-  },
+	hasGeneral: function() {
+		var generalCardModel = this.getGeneralCardModel();
+		return generalCardModel && generalCardModel.get("isGeneral");
+	},
 
-  getGeneralCardModel() {
-    return this._cardModels.at(0);
-  },
+	getGeneralId: function() {
+		var generalCardModel = this.getGeneralCardModel();
+		return generalCardModel && generalCardModel.get("id");
+	},
 
-  isValid() {
-    return this._isValid;
-  },
+	getGeneralCardModel: function() {
+		return this._cardModels.at(0);
+	},
 
-  isLegacy() {
-    return this._isLegacy;
-  },
+	isValid: function() {
+		return this._isValid;
+	},
 
-  updatePropertiesFromCardModels(changed) {
-    let i; let
-      il;
-    const cards = [];
-    let minionCount = 0;
-    let spellCount = 0;
-    let artifactCount = 0;
+	isLegacy: function() {
+		return this._isLegacy;
+	},
 
-    // if we have a faction id, that means we have a general
-    const factionId = this.get('faction_id');
-    const needsGeneral = !this.hasGeneral();
+	updatePropertiesFromCardModels: function(changed) {
+		var i, il;
+		var cards = [];
+		var minionCount = 0;
+		var spellCount = 0;
+		var artifactCount = 0;
 
-    // reset histogram
-    this._histogram = [];
-    for (i = 0, il = CONFIG.MAX_MANA; i <= il; i++) {
-      this._histogram[i] = {
-        manaCost: i,
-        histogramDisplayCost: `${i}`,
-        count: 0,
-        height: 0,
-      };
-    }
-    this._histogram[9].histogramDisplayCost = '9+';
+		// if we have a faction id, that means we have a general
+		var factionId = this.get("faction_id");
+		var needsGeneral = !this.hasGeneral();
 
-    // filter collection
-    const modelsToRemove = [];
-    let hasLegacyCard = false;
-    this._cardModels.forEach((cardModel) => {
-      // we must have a general and the card must either be neutral or of the same faction as the general
-      // card must have a count above 0 and total below max
-      // otherwise the card is removed from the collection
-      const id = cardModel.get('id');
-      const inventoryCount = cardModel.get('inventoryCount');
-      const deckCount = cardModel.get('deckCount');
-      const count = Math.min(deckCount, inventoryCount);
-      if (!needsGeneral
-        && cardModel.get('isUnlocked')
-        && (cardModel.get('isNeutral') || factionId === cardModel.get('factionId'))
-        && count > 0 && deckCount <= inventoryCount && this.getCountForBaseCardId(id) <= CONFIG.MAX_DECK_DUPLICATES) {
-        // add one card data object for each count of the card
-        _.times(count, () => {
-          cards.push(cardModel.getCardDataForDeck());
-        });
+		// reset histogram
+		this._histogram = [];
+		for (i = 0, il = CONFIG.MAX_MANA; i <= il; i++) {
+			this._histogram[i] = {
+				manaCost: i,
+				histogramDisplayCost: ""+i,
+				count: 0,
+				height: 0
+			};
+		}
+		this._histogram[9].histogramDisplayCost = "9+"
 
-        if (!cardModel.get('isGeneral')) {
-          // update histogram count as long as the card is not a general
-          let manaCost = cardModel.get('manaCost');
-          if (manaCost > 9) { // for cards with cost greater than 9 mana, lump them into the 9 mana count
-            manaCost = 9;
-          }
-          this._histogram[manaCost].count += count;
+		// filter collection
+		var modelsToRemove = [];
+		var hasLegacyCard = false;
+		this._cardModels.forEach(function(cardModel) {
+			// we must have a general and the card must either be neutral or of the same faction as the general
+			// card must have a count above 0 and total below max
+			// otherwise the card is removed from the collection
+			var id = cardModel.get('id');
+			var inventoryCount = cardModel.get("inventoryCount");
+			var deckCount = cardModel.get("deckCount");
+			var count = Math.min(deckCount, inventoryCount);
+			if (!needsGeneral
+				&& cardModel.get("isUnlocked")
+				&& (cardModel.get("isNeutral") || factionId === cardModel.get("factionId"))
+				&& count > 0 && deckCount <= inventoryCount && this.getCountForBaseCardId(id) <= CONFIG.MAX_DECK_DUPLICATES) {
+				// add one card data object for each count of the card
+				_.times(count, function() {
+					cards.push(cardModel.getCardDataForDeck());
+				});
 
-          // update individual counts
-          if (cardModel.get('isEntity')) {
-            minionCount += count;
-          } else if (cardModel.get('isSpell')) {
-            spellCount += count;
-          } else if (cardModel.get('isArtifact')) {
-            artifactCount += count;
-          }
+				if (!cardModel.get("isGeneral")) {
+					// update histogram count as long as the card is not a general
+					var manaCost = cardModel.get("manaCost");
+					if (manaCost > 9)	{ // for cards with cost greater than 9 mana, lump them into the 9 mana count
+						manaCost = 9
+					}
+					this._histogram[manaCost].count += count;
 
-          // check for legacy status of card
-          if (cardModel.get('isLegacy') || cardModel.get('cardSetId') == SDK.CardSet.Shimzar) {
-            hasLegacyCard = true;
-          }
-        }
-      } else {
-        modelsToRemove.push(cardModel);
-      }
-    });
+					// update individual counts
+					if (cardModel.get("isEntity")) {
+						minionCount += count;
+					} else if (cardModel.get("isSpell")) {
+						spellCount += count;
+					} else if (cardModel.get("isArtifact")) {
+						artifactCount += count;
+					}
 
-    // remove card models as needed
-    if (modelsToRemove.length > 0) {
-      this._cardModels.remove(modelsToRemove);
-    }
+					// check for legacy status of card
+					if (cardModel.get("isLegacy") || cardModel.get("cardSetId") == SDK.CardSet.Shimzar) {
+						hasLegacyCard = true;
+					}
 
-    // set deck to legacy if it has any legacy cards
-    if (hasLegacyCard) {
-      this._isLegacy = true;
-    } else {
-      this._isLegacy = false;
-    }
+				}
+			} else {
+				modelsToRemove.push(cardModel);
+			}
+		}.bind(this));
 
-    // set base deck size
-    let deckSize = minionCount + spellCount + artifactCount;
+		// remove card models as needed
+		if (modelsToRemove.length > 0) {
+			this._cardModels.remove(modelsToRemove);
+		}
 
-    // set histogram
-    if (deckSize > 0) {
-      for (i = 0, il = this._histogram.length; i < il; i++) {
-        const histogramItem = this._histogram[i];
-        histogramItem.height = (histogramItem.count / deckSize) * 100.0;
-      }
-    }
+		// set deck to legacy if it has any legacy cards
+		if (hasLegacyCard) {
+			this._isLegacy = true;
+		}
+		else {
+			this._isLegacy = false;
+		}
 
-    if (!needsGeneral && CONFIG.DECK_SIZE_INCLUDES_GENERAL) {
-      deckSize += 1;
-    }
+		// set base deck size
+		var deckSize = minionCount + spellCount + artifactCount;
 
-    // update validation state
-    // deck defaults to valid because:
-    // - any deck in development is valid
-    // - any starter deck is valid
-    // - each card is already validated as it is added/removed
-    let valid = true;
+		// set histogram
+		if (deckSize > 0) {
+			for (i = 0, il = this._histogram.length; i < il; i++) {
+				var histogramItem = this._histogram[i];
+				histogramItem.height = (histogramItem.count / deckSize) * 100.0;
+			}
+		}
 
-    if (!this.get('isStarter') && !process.env.ALL_CARDS_AVAILABLE) {
-      // when deck is in production
-      if (needsGeneral) {
-        // deck must have a general
-        valid = false;
-      } else if (deckSize !== (CONFIG.DECK_SIZE_INCLUDES_GENERAL ? CONFIG.MAX_DECK_SIZE : CONFIG.MAX_DECK_SIZE + 1)) {
-        // deck must match the max deck size
-        valid = false;
-      }
-    }
+		if (!needsGeneral && CONFIG.DECK_SIZE_INCLUDES_GENERAL) {
+			deckSize += 1;
+		}
 
-    this._isValid = valid;
+		// update validation state
+		// deck defaults to valid because:
+		// - any deck in development is valid
+		// - any starter deck is valid
+		// - each card is already validated as it is added/removed
+		var valid = true;
 
-    // get searchable content
-    let searchableContent = this.get('name');
-    if (factionId != null) {
-      const faction = SDK.FactionFactory.factionForIdentifier(factionId);
-      if (faction != null) {
-        searchableContent += ` ${faction.name}`;
-      }
-    }
+		if (!this.get("isStarter") && !process.env.ALL_CARDS_AVAILABLE) {
+			// when deck is in production
+			if (needsGeneral) {
+				// deck must have a general
+				valid = false;
+			} else if (deckSize !== (CONFIG.DECK_SIZE_INCLUDES_GENERAL ? CONFIG.MAX_DECK_SIZE : CONFIG.MAX_DECK_SIZE + 1)) {
+				// deck must match the max deck size
+				valid = false;
+			}
+		}
 
-    this.set({
-      minion_count: minionCount,
-      spell_count: spellCount,
-      artifact_count: artifactCount,
-      cards,
-      searchableContent,
-    });
-  },
+		this._isValid = valid;
 
-  updateCardModelsFromCardsData() {
-    // resets and repopulates card models from card ids
-    this._cardModels.reset();
+		// get searchable content
+		var searchableContent = this.get("name");
+		if (factionId != null) {
+			var faction = SDK.FactionFactory.factionForIdentifier(factionId);
+			if (faction != null) {
+				searchableContent += " " + faction.name;
+			}
+		}
 
-    // get card models from cards
-    const cards = this.get('cards');
-    const cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardsData(cards);
-    if (cardModels.length > 0) {
-      for (let i = 0, il = cardModels.length; i < il; i++) {
-        const cardModel = cardModels[i];
-        const cardId = cardModel.get('id');
+		this.set({
+			minion_count: minionCount,
+			spell_count: spellCount,
+			artifact_count: artifactCount,
+			cards: cards,
+			searchableContent: searchableContent
+		});
+	},
 
-        // create each deck card model
-        let deckCardModel = this._cardModels.get(cardId);
-        if (!deckCardModel) {
-          deckCardModel = cardModel.clone();
-          this._cardModels.add(deckCardModel);
-        }
+	updateCardModelsFromCardsData: function() {
+		// resets and repopulates card models from card ids
+		this._cardModels.reset();
 
-        // update count
-        deckCardModel.set('deckCount', (deckCardModel.get('deckCount') || 0) + 1);
-      }
+		// get card models from cards
+		var cards = this.get('cards');
+		var cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardsData(cards);
+		if (cardModels.length > 0) {
+			for (var i = 0, il = cardModels.length; i < il; i++) {
+				var cardModel = cardModels[i];
+				var cardId = cardModel.get("id");
 
-      // update cards list
-      this.updatePropertiesFromCardModels();
-    }
-  },
+				// create each deck card model
+				var deckCardModel = this._cardModels.get(cardId);
+				if (!deckCardModel) {
+					deckCardModel = cardModel.clone();
+					this._cardModels.add(deckCardModel);
+				}
+
+				// update count
+				deckCardModel.set("deckCount", (deckCardModel.get("deckCount") || 0) + 1);
+			}
+
+			// update cards list
+			this.updatePropertiesFromCardModels();
+		}
+	}
 });
 
 // Expose the class either via CommonJS or the global object

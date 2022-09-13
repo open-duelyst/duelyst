@@ -1,123 +1,125 @@
-const SDK = require('app/sdk');
-const CONFIG = require('app/common/config');
-const RSX = require('app/data/resources');
-const Firebase = require('firebase');
-const Animations = require('app/ui/views/animations');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const InventoryManager = require('app/ui/managers/inventory_manager');
-const i18next = require('i18next');
-const DeckMetadataTmpl = require('./templates/deck_metadata.hbs');
-const HistogramTmpl = require('./templates/histogram.hbs');
+'use strict';
 
-const DeckMetadataItemView = Backbone.Marionette.ItemView.extend({
+var SDK = require('app/sdk');
+var CONFIG = require('app/common/config');
+var RSX = require('app/data/resources');
+var Firebase = require('firebase');
+var Animations = require('app/ui/views/animations');
+var NavigationManager = require('app/ui/managers/navigation_manager');
+var InventoryManager = require('app/ui/managers/inventory_manager');
+var DeckMetadataTmpl = require('./templates/deck_metadata.hbs');
+var HistogramTmpl = require('./templates/histogram.hbs');
+var i18next = require('i18next');
 
-  className: 'deck-metadata',
-  template: DeckMetadataTmpl,
+var DeckMetadataItemView = Backbone.Marionette.ItemView.extend({
 
-  /* ui selector cache */
-  ui: {
-    $deckName: '.deck-name',
-    $histogram: '.deck-histogram',
-    $colorCodeSelect: '.deck-color-code-select',
-    $deckCardBack: '.deck-card-back',
-    $deckCardBackImg: '.deck-card-back img',
-  },
+	className: "deck-metadata",
+	template: DeckMetadataTmpl,
 
-  /* Ui events hash */
-  events: {
-    'click .deck-color-code-select-menu .deck-color-code': 'onDeckColorCodeClicked',
-    'click .deck-card-back': 'onDeckCardBackClicked',
-    'mouseleave .deck-card-back': 'onDeckCardBackEndHover',
-    'input input.deck-name': 'onNameChange',
-  },
+	/* ui selector cache */
+	ui: {
+		"$deckName": ".deck-name",
+		"$histogram": ".deck-histogram",
+		"$colorCodeSelect": ".deck-color-code-select",
+		"$deckCardBack": ".deck-card-back",
+		"$deckCardBackImg": ".deck-card-back img"
+	},
 
-  modelEvents: {
-    'change:cards': 'render',
-    'change:card_back_id': 'bindDeckCardBack',
-  },
+	/* Ui events hash */
+	events: {
+		"click .deck-color-code-select-menu .deck-color-code": "onDeckColorCodeClicked",
+		"click .deck-card-back": "onDeckCardBackClicked",
+		"mouseleave .deck-card-back" : "onDeckCardBackEndHover",
+		"input input.deck-name": "onNameChange"
+	},
 
-  templateHelpers: {
+	modelEvents: {
+		"change:cards": "render",
+		"change:card_back_id": "bindDeckCardBack"
+	},
 
-    getDeckSize() {
-      return this.model.get('cards').length;
-    },
+	templateHelpers: {
 
-    getDeckSizeMax() {
-      return CONFIG.MAX_DECK_SIZE;
-    },
+		getDeckSize: function() {
+			return this.model.get('cards').length;
+		},
 
-    getColorCodes() {
-      return CONFIG.COLOR_CODES;
-    },
+		getDeckSizeMax: function() {
+			return CONFIG.MAX_DECK_SIZE;
+		},
 
-  },
+		getColorCodes: function() {
+			return CONFIG.COLOR_CODES;
+		}
 
-  /* region MARIONETTE */
+	},
 
-  onRender() {
-    // recreate histogram
-    const histogramModel = new Backbone.Model({ histogram: this.model._histogram });
-    const histogramHTMLData = HistogramTmpl(histogramModel.toJSON());
-    if (this.ui.$histogram instanceof $) {
-      this.ui.$histogram.append(histogramHTMLData);
-    }
+	/* region MARIONETTE */
 
-    // bind card back
-    this.bindDeckCardBack();
-  },
+	onRender: function() {
+		// recreate histogram
+		var histogramModel = new Backbone.Model({histogram: this.model._histogram});
+		var histogramHTMLData = HistogramTmpl(histogramModel.toJSON());
+		if (this.ui.$histogram instanceof $) {
+			this.ui.$histogram.append(histogramHTMLData);
+		}
 
-  onPrepareForDestroy() {
-    this.ui.$deckCardBack.tooltip('destroy');
-  },
+		// bind card back
+		this.bindDeckCardBack();
+	},
 
-  /* endregion MARIONETTE */
+	onPrepareForDestroy: function () {
+		this.ui.$deckCardBack.tooltip("destroy");
+	},
 
-  /* region EVENTS */
+	/* endregion MARIONETTE */
 
-  onNameChange(e) {
-    this.model.set('name', $(e.currentTarget).val());
-  },
+	/* region EVENTS */
 
-  onDeckColorCodeClicked(e) {
-    const $target = $(e.target);
-    const colorCode = parseInt($target.data('code'));
-    const colorCodeData = CONFIG.COLOR_CODES[colorCode];
-    if (colorCodeData != null) {
-      const currentColorCode = this.model.get('color_code');
-      const currentColorCodeData = CONFIG.COLOR_CODES[currentColorCode];
-      if (currentColorCodeData != null) {
-        this.ui.$colorCodeSelect.removeClass(currentColorCodeData.cssClass);
-      }
-      this.model.set('color_code', colorCode);
-      this.ui.$colorCodeSelect.addClass(colorCodeData.cssClass);
-    }
-  },
+	onNameChange: function(e) {
+		this.model.set('name', $(e.currentTarget).val());
+	},
 
-  onDeckCardBackClicked(e) {
-    if (this.model.get('faction_id') == null) {
-      this.ui.$deckCardBack.tooltip({
-        animation: true,
-        title: i18next.t('collection.must_select_general_error'),
-        placement: 'bottom',
-        trigger: 'manual',
-      });
-      this.ui.$deckCardBack.tooltip('show');
-    } else {
-      this.trigger('deck_card_back_selecting');
-    }
-  },
+	onDeckColorCodeClicked: function(e) {
+		var $target = $(e.target);
+		var colorCode = parseInt($target.data("code"));
+		var colorCodeData = CONFIG.COLOR_CODES[colorCode];
+		if (colorCodeData != null) {
+			var currentColorCode = this.model.get("color_code");
+			var currentColorCodeData = CONFIG.COLOR_CODES[currentColorCode];
+			if (currentColorCodeData != null) {
+				this.ui.$colorCodeSelect.removeClass(currentColorCodeData.cssClass);
+			}
+			this.model.set("color_code", colorCode);
+			this.ui.$colorCodeSelect.addClass(colorCodeData.cssClass);
+		}
+	},
 
-  onDeckCardBackEndHover() {
-    this.ui.$deckCardBack.tooltip('destroy');
-  },
+	onDeckCardBackClicked: function(e) {
+		if (this.model.get("faction_id") == null) {
+			this.ui.$deckCardBack.tooltip({
+				animation: true,
+				title: i18next.t('collection.must_select_general_error'),
+				placement: "bottom",
+				trigger: "manual"
+			});
+			this.ui.$deckCardBack.tooltip("show");
+		} else {
+			this.trigger("deck_card_back_selecting");
+		}
+	},
 
-  bindDeckCardBack() {
-    const cardBackId = this.model.get('card_back_id');
-    const cardBackImg = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId).img;
-    this.ui.$deckCardBackImg.attr('src', RSX.getResourcePathForScale(cardBackImg, CONFIG.resourceScaleCSS));
-  },
+	onDeckCardBackEndHover: function () {
+		this.ui.$deckCardBack.tooltip("destroy");
+	},
 
-  /* endregion EVENTS */
+	bindDeckCardBack: function () {
+		var cardBackId = this.model.get("card_back_id");
+		var cardBackImg = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId).img;
+		this.ui.$deckCardBackImg.attr("src", RSX.getResourcePathForScale(cardBackImg, CONFIG.resourceScaleCSS));
+	}
+
+	/* endregion EVENTS */
 
 });
 

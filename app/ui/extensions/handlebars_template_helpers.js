@@ -1,22 +1,22 @@
 Backbone.Marionette.ItemView.prototype.mixinTemplateHelpers = function (target) {
-  const self = this;
-  let templateHelpers = Marionette.getOption(self, 'templateHelpers');
-  const result = {};
+    var self = this;
+    var templateHelpers = Marionette.getOption(self, "templateHelpers");
+    var result = {};
 
-  target = target || {};
+    target = target || {};
 
-  if (_.isFunction(templateHelpers)) {
-    templateHelpers = templateHelpers.call(self);
-  }
-
-  // This _.each block is what we're adding
-  _.each(templateHelpers, (helper, index) => {
-    if (_.isFunction(helper)) {
-      result[index] = helper.call(self);
-    } else {
-      result[index] = helper;
+    if (_.isFunction(templateHelpers)){
+        templateHelpers = templateHelpers.call(self);
     }
-  });
 
-  return _.extend(target, result);
+    // This _.each block is what we're adding
+    _.each(templateHelpers, function (helper, index) {
+        if (_.isFunction(helper)) {
+            result[index] = helper.call(self);
+        } else {
+            result[index] = helper;
+        }
+    });
+
+    return _.extend(target, result);
 };

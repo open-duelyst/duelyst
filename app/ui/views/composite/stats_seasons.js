@@ -1,14 +1,16 @@
-const StatsSeasonRankItemView = require('app/ui/views/item/stats_season_rank');
-const StatsSeasonsCompositeViewTempl = require('app/ui/templates/composite/stats_seasons.hbs');
+'use strict';
 
-const StatsSeasonsCompositeView = Backbone.Marionette.CompositeView.extend({
+var StatsSeasonRankItemView = require('app/ui/views/item/stats_season_rank');
+var StatsSeasonsCompositeViewTempl = require('app/ui/templates/composite/stats_seasons.hbs');
 
-  className: 'stats-seasons',
+var StatsSeasonsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  template: StatsSeasonsCompositeViewTempl,
+	className: "stats-seasons",
 
-  childView: StatsSeasonRankItemView,
-  childViewContainer: '.seasons',
+	template: StatsSeasonsCompositeViewTempl,
+
+	childView: StatsSeasonRankItemView,
+	childViewContainer: ".seasons"
 
 });
 

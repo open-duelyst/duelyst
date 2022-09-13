@@ -1,16 +1,18 @@
-const Templ = require('./templates/rift_runs_empty.hbs');
+'use strict'
 
-const RiftRunsEmpty = Backbone.Marionette.ItemView.extend({
+var Templ = require('./templates/rift_runs_empty.hbs')
 
-  tagName: 'li',
-  template: Templ,
-  ui: {
-  },
+var RiftRunsEmpty = Backbone.Marionette.ItemView.extend({
 
-  onShow() {
-  },
+	tagName: "li",
+	template: Templ,
+	ui: {
+	},
+
+	onShow: function() {
+	}
 
 });
 
 // Expose the class either via CommonJS or the global object
-module.exports = RiftRunsEmpty;
+module.exports = RiftRunsEmpty

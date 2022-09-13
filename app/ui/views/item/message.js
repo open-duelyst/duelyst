@@ -1,49 +1,51 @@
-const Logger = require('app/common/logger');
-const MessageTmpl = require('app/ui/templates/item/message.hbs');
-const ProgressionManager = require('app/ui/managers/progression_manager');
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
+'use strict';
 
-const MessageItemView = Backbone.Marionette.ItemView.extend({
+var Logger = require('app/common/logger');
+var MessageTmpl = require('app/ui/templates/item/message.hbs');
+var ProgressionManager = require('app/ui/managers/progression_manager');
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
 
-  initialize() {
-  },
+var MessageItemView = Backbone.Marionette.ItemView.extend({
 
-  tagName: 'li',
-  className: 'message',
+	initialize: function() {
+	},
 
-  template: MessageTmpl,
+	tagName: "li",
+	className: "message",
 
-  /* ui selector cache */
-  ui: {},
+	template: MessageTmpl,
 
-  /* ui triggers hash */
-  triggers: {
-    click: 'select',
-  },
+	/* ui selector cache */
+	ui: {},
 
-  /* ui events hash */
-  events: {
-    'click .btn-watch-replay': 'onClickReplay',
-  },
+	/* ui triggers hash */
+	triggers: {
+		"click":"select"
+	},
 
-  onRender() {
-  },
+	/* ui events hash */
+	events: {
+		"click .btn-watch-replay":"onClickReplay"
+	},
 
-  onShow() {
-    if (this.model.get('fromId') == ProfileManager.getInstance().get('id')) {
-      this.$el.addClass('from-me');
-    }
-  },
+	onRender: function() {
+	},
 
-  onClickReplay(e) {
-    e.preventDefault();
-    EventBus.getInstance().trigger(EVENTS.start_replay, {
-      gameId: this.model.get('gameId'),
-      userId: this.model.get('fromId'),
-    });
-    return false;
-  },
+	onShow: function() {
+		if (this.model.get("fromId") == ProfileManager.getInstance().get("id")) {
+			this.$el.addClass("from-me");
+		}
+	},
+
+	onClickReplay: function(e) {
+		e.preventDefault()
+		EventBus.getInstance().trigger(EVENTS.start_replay, {
+			gameId: this.model.get("gameId"),
+			userId: this.model.get("fromId")
+		})
+		return false
+	}
 
 });
 

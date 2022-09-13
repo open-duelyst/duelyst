@@ -1,11 +1,13 @@
-const Template = require('./templates/watch_games_loading.hbs');
+'use strict';
 
-const WatchGamesLoadingView = Backbone.Marionette.ItemView.extend({
+var Template = require('./templates/watch_games_loading.hbs')
 
-  className: 'watch-games-loading',
-  template: Template,
+var WatchGamesLoadingView = Backbone.Marionette.ItemView.extend({
 
-});
+	className: "watch-games-loading",
+	template: Template,
+
+})
 
 // Expose the class either via CommonJS or the global object
-module.exports = WatchGamesLoadingView;
+module.exports = WatchGamesLoadingView

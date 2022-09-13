@@ -1,13 +1,15 @@
-const GameTopBarTmpl = require('app/ui/templates/composite/game_top_bar.hbs');
-const ProfileManager = require('app/ui/managers/profile_manager');
+'use strict';
 
-const GameTopBarCompositeView = Backbone.Marionette.CompositeView.extend({
+var GameTopBarTmpl = require('app/ui/templates/composite/game_top_bar.hbs');
+var ProfileManager = require("app/ui/managers/profile_manager");
 
-  id: 'app-game-topbar',
-  template: GameTopBarTmpl,
+var GameTopBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  onShow() {
-  },
+	id: "app-game-topbar",
+	template: GameTopBarTmpl,
+
+	onShow: function() {
+	}
 
 });
 

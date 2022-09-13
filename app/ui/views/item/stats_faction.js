@@ -1,10 +1,12 @@
-const StatsFactionItemViewTempl = require('app/ui/templates/item/stats_faction.hbs');
+'use strict';
 
-const StatsFactionItemView = Backbone.Marionette.ItemView.extend({
+var StatsFactionItemViewTempl = require('app/ui/templates/item/stats_faction.hbs');
 
-  className: 'stat-faction',
+var StatsFactionItemView = Backbone.Marionette.ItemView.extend({
 
-  template: StatsFactionItemViewTempl,
+	className: "stat-faction",
+
+	template: StatsFactionItemViewTempl
 
 });
 

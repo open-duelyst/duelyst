@@ -1,67 +1,69 @@
-const EVENTS = require('app/common/event_types');
-const SDK = require('app/sdk');
-const Animations = require('app/ui/views/animations');
-const GameChooseHandTemplate = require('app/ui/templates/item/game_choose_hand.hbs');
+'use strict';
 
-const GameChooseHandItemView = Backbone.Marionette.ItemView.extend({
+var EVENTS = require('app/common/event_types');
+var SDK = require('app/sdk');
+var Animations = require("app/ui/views/animations");
+var GameChooseHandTemplate = require('app/ui/templates/item/game_choose_hand.hbs');
 
-  id: 'app-game-choose-hand',
-  className: 'modal duelyst-modal',
+var GameChooseHandItemView = Backbone.Marionette.ItemView.extend({
 
-  template: GameChooseHandTemplate,
+	id: "app-game-choose-hand",
+	className: "modal duelyst-modal",
 
-  ui: {
-    $opponentConnected: '.opponent-connected',
-    $opponentConnecting: '.opponent-connecting',
-    $confirmButton: '.confirm',
-  },
+	template: GameChooseHandTemplate,
 
-  triggers: {
-    'click .confirm': 'confirm',
-  },
+	ui: {
+		$opponentConnected: ".opponent-connected",
+		$opponentConnecting: ".opponent-connecting",
+		$confirmButton: ".confirm"
+	},
 
-  animateIn: Animations.fadeIn,
-  animateOut: Animations.fadeOut,
+	triggers: {
+		"click .confirm": "confirm"
+	},
 
-  onRender() {
-    if (!SDK.GameType.isMultiplayerGameType(SDK.GameSession.getInstance().getGameType()) || SDK.GameSession.getInstance().getIsSpectateMode()) {
-      // in non-multiplayer game, no need to show opponent connection status
-      this.ui.$opponentConnecting.hide();
-      this.ui.$opponentConnected.hide();
-    }
-    if (SDK.GameSession.getInstance().getIsSpectateMode()) {
-      this.ui.$confirmButton.hide();
-    }
-    this._updateOpponentConnection();
-  },
+	animateIn: Animations.fadeIn,
+	animateOut: Animations.fadeOut,
 
-  onShow() {
-    this.listenTo(SDK.NetworkManager.getInstance().getEventBus(), EVENTS.opponent_connection_status_changed, this._updateOpponentConnection);
-  },
+	onRender: function() {
+		if (!SDK.GameType.isMultiplayerGameType(SDK.GameSession.getInstance().getGameType()) || SDK.GameSession.getInstance().getIsSpectateMode()) {
+			// in non-multiplayer game, no need to show opponent connection status
+			this.ui.$opponentConnecting.hide();
+			this.ui.$opponentConnected.hide();
+		}
+		if (SDK.GameSession.getInstance().getIsSpectateMode()) {
+			this.ui.$confirmButton.hide();
+		}
+		this._updateOpponentConnection();
+	},
 
-  _updateOpponentConnection() {
-    if (SDK.NetworkManager.getInstance().isOpponentConnected) {
-      this.ui.$opponentConnecting.removeClass('active');
-      this.ui.$opponentConnected.addClass('active');
-    } else {
-      this.ui.$opponentConnecting.addClass('active');
-      this.ui.$opponentConnected.removeClass('active');
-    }
-  },
+	onShow: function() {
+		this.listenTo(SDK.NetworkManager.getInstance().getEventBus(), EVENTS.opponent_connection_status_changed, this._updateOpponentConnection);
+	},
 
-  setConfirmButtonVisibility(visibile) {
-    if (visibile) {
-      this.ui.$confirmButton.css({
-        opacity: '',
-        'pointer-events': '',
-      });
-    } else {
-      this.ui.$confirmButton.css({
-        opacity: 0,
-        'pointer-events': 'none',
-      });
-    }
-  },
+	_updateOpponentConnection: function () {
+		if (SDK.NetworkManager.getInstance().isOpponentConnected) {
+			this.ui.$opponentConnecting.removeClass("active");
+			this.ui.$opponentConnected.addClass("active");
+		} else {
+			this.ui.$opponentConnecting.addClass("active");
+			this.ui.$opponentConnected.removeClass("active");
+		}
+	},
+
+	setConfirmButtonVisibility: function(visibile) {
+		if (visibile) {
+			this.ui.$confirmButton.css({
+				"opacity": "",
+				"pointer-events": ""
+			});
+		} else {
+			this.ui.$confirmButton.css({
+				"opacity": 0,
+				"pointer-events": "none"
+			});
+		}
+	},
 });
 
 // Expose the class either via CommonJS or the global object

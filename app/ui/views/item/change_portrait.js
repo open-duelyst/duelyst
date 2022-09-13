@@ -1,115 +1,120 @@
-const Session = require('app/common/session2');
-const UtilsJavascript = require('app/common/utils/utils_javascript');
-const SDK = require('app/sdk');
-const InventoryManager = require('app/ui/managers/inventory_manager');
-const NavigationManager = require('app/ui/managers/navigation_manager');
-const ChangePortraitItemViewTempl = require('app/ui/templates/item/change_portrait.hbs');
-const FormPromptDialogItemView = require('./form_prompt_dialog');
+'use strict';
+
+var Session = require('app/common/session2');
+var UtilsJavascript = require('app/common/utils/utils_javascript');
+var SDK = require('app/sdk');
+var InventoryManager = require('app/ui/managers/inventory_manager');
+var NavigationManager = require('app/ui/managers/navigation_manager');
+var FormPromptDialogItemView = require('./form_prompt_dialog');
+var ChangePortraitItemViewTempl = require('app/ui/templates/item/change_portrait.hbs');
 
 var ChangePortraitItemView = FormPromptDialogItemView.extend({
 
-  id: 'app-change-portrait',
+	id: "app-change-portrait",
 
-  template: ChangePortraitItemViewTempl,
+	template: ChangePortraitItemViewTempl,
 
-  _cosmeticId: null,
+	_cosmeticId: null,
 
-  initialize() {
-    this._bindCosmetics();
-  },
+	initialize: function () {
+		this._bindCosmetics();
+	},
 
-  onShow() {
-    FormPromptDialogItemView.prototype.onShow.apply(this, arguments);
+	onShow: function() {
+		FormPromptDialogItemView.prototype.onShow.apply(this, arguments);
 
-    // listen to events
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add remove', this.onCosmeticsCollectionChange);
-  },
+		// listen to events
+		this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add remove",this.onCosmeticsCollectionChange);
+	},
 
-  onCosmeticsCollectionChange(cosmeticModel) {
-    const cosmeticId = cosmeticModel != null && cosmeticModel.get('cosmetic_id');
-    const cosmeticData = SDK.CosmeticsFactory.cosmeticForIdentifier(cosmeticId);
-    if (cosmeticData != null && cosmeticData.typeId === SDK.CosmeticsTypeLookup.ProfileIcon) {
-      this._bindCosmetics();
-      this.render();
-    }
-  },
+	onCosmeticsCollectionChange: function(cosmeticModel) {
+		var cosmeticId = cosmeticModel != null && cosmeticModel.get("cosmetic_id");
+		var cosmeticData = SDK.CosmeticsFactory.cosmeticForIdentifier(cosmeticId);
+		if (cosmeticData != null && cosmeticData.typeId === SDK.CosmeticsTypeLookup.ProfileIcon) {
+			this._bindCosmetics();
+			this.render();
+		}
+	},
 
-  _bindCosmetics() {
-    // get all possible profile icons
-    const cosmetics = SDK.CosmeticsFactory.cosmeticsForType(SDK.CosmeticsTypeLookup.ProfileIcon);
-    const visibleCosmetics = [];
-    for (let i = 0, il = cosmetics.length; i < il; i++) {
-      const cosmeticData = cosmetics[i];
-      const cosmeticId = cosmeticData.id;
-      // filter for only usable cosmetics
-      if (InventoryManager.getInstance().getCanSeeCosmeticById(cosmeticId)) {
-        let cosmeticDataCopy = _.extend({}, cosmeticData);
-        // Copy any sale information
-        const saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(cosmeticData.sku);
-        if (saleModel != null) {
-          cosmeticDataCopy = _.extend(cosmeticDataCopy, saleModel.attributes);
-        }
+	_bindCosmetics: function () {
+		// get all possible profile icons
+		var cosmetics = SDK.CosmeticsFactory.cosmeticsForType(SDK.CosmeticsTypeLookup.ProfileIcon);
+		var visibleCosmetics = [];
+		for (var i = 0, il = cosmetics.length; i < il; i++) {
+			var cosmeticData = cosmetics[i];
+			var cosmeticId = cosmeticData.id;
+			// filter for only usable cosmetics
+			if (InventoryManager.getInstance().getCanSeeCosmeticById(cosmeticId)) {
+				var cosmeticDataCopy = _.extend({}, cosmeticData);
+				// Copy any sale information
+				var saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(cosmeticData.sku);
+				if (saleModel != null) {
+					cosmeticDataCopy = _.extend(cosmeticDataCopy,saleModel.attributes);
+				}
 
-        // mark enabled/purchasable
-        cosmeticDataCopy._canUse = InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId);
-        cosmeticDataCopy._canPurchase = InventoryManager.getInstance().getCanPurchaseCosmeticById(cosmeticId);
-        UtilsJavascript.arraySortedInsertByComparator(visibleCosmetics, cosmeticDataCopy, (a, b) => (Number(a._canUse) - Number(b._canUse)) || (b.id - a.id));
-      }
-    }
 
-    // set as non-serialized property of model in case model is firebase
-    this.model.set('_cosmetics', visibleCosmetics);
-  },
+				// mark enabled/purchasable
+				cosmeticDataCopy._canUse = InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId);
+				cosmeticDataCopy._canPurchase = InventoryManager.getInstance().getCanPurchaseCosmeticById(cosmeticId);
+				UtilsJavascript.arraySortedInsertByComparator(visibleCosmetics, cosmeticDataCopy, function (a, b) {
+					return (Number(a._canUse) - Number(b._canUse)) || (b.id - a.id);
+				});
+			}
+		}
 
-  updateValidState() {
-    this.isValid = this._cosmeticId != null;
-  },
+		// set as non-serialized property of model in case model is firebase
+		this.model.set("_cosmetics", visibleCosmetics);
+	},
 
-  onClickSubmit(event) {
-    const cosmeticId = $(event.currentTarget).data('cosmetic-id');
+	updateValidState: function () {
+		this.isValid = this._cosmeticId != null;
+	},
 
-    if (InventoryManager.getInstance().getCanPurchaseCosmeticById(cosmeticId)) {
-      // buy profile icon
-      const productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cosmeticId);
+	onClickSubmit: function(event) {
+		var cosmeticId = $(event.currentTarget).data("cosmetic-id");
 
-      // Check for sales data
-      const saleData = {};
-      const saleId = $(event.currentTarget).data('sale-id');
-      const salePriceStr = $(event.currentTarget).data('sale-price');
+		if (InventoryManager.getInstance().getCanPurchaseCosmeticById(cosmeticId)) {
+			// buy profile icon
+			var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cosmeticId);
 
-      if (saleId != null && saleId != '') {
-        saleData.saleId = saleId;
-      }
-      if (salePriceStr != null && salePriceStr != '' && !_.isNaN(parseInt(salePriceStr))) {
-        saleData.salePrice = parseInt(salePriceStr);
-      }
+			// Check for sales data
+			var saleData = {}
+			var saleId = $(event.currentTarget).data("sale-id");
+			var salePriceStr = $(event.currentTarget).data("sale-price");
 
-      return NavigationManager.getInstance().showDialogForConfirmPurchase(productData, saleData)
-        .bind(this)
-        .then(() => {
-          NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({ model: new Backbone.Model() }));
-        })
-        .catch(() => {
-          NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({ model: new Backbone.Model() }));
-        });
-    } if (InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId)) {
-      this._cosmeticId = cosmeticId;
-      FormPromptDialogItemView.prototype.onClickSubmit.apply(this, arguments);
-    }
-  },
+			if (saleId != null && saleId != "") {
+				saleData.saleId = saleId;
+			}
+			if (salePriceStr != null && salePriceStr != "" && !_.isNaN(parseInt(salePriceStr))) {
+				saleData.salePrice = parseInt(salePriceStr);
+			}
 
-  onSubmit() {
-    FormPromptDialogItemView.prototype.onSubmit.apply(this, arguments);
-    Session.changePortrait(this._cosmeticId)
-      .bind(this)
-      .then(function (res) {
-        this.onSuccess(res);
-      })
-      .catch(function (e) {
-        // onError expects a string not an actual error
-        this.onError(e.innerMessage || e.message);
-      });
-  },
+			return NavigationManager.getInstance().showDialogForConfirmPurchase(productData,saleData)
+			.bind(this)
+			.then(function () {
+				NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
+			})
+			.catch(function () {
+				NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
+			});
+		} else if (InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId)) {
+			this._cosmeticId = cosmeticId;
+			FormPromptDialogItemView.prototype.onClickSubmit.apply(this, arguments);
+		}
+	},
+
+	onSubmit: function() {
+		FormPromptDialogItemView.prototype.onSubmit.apply(this, arguments);
+		Session.changePortrait(this._cosmeticId)
+		.bind(this)
+		.then(function (res) {
+			this.onSuccess(res)
+		})
+		.catch(function (e) {
+			// onError expects a string not an actual error
+			this.onError(e.innerMessage || e.message)
+		})
+	}
 
 });
 

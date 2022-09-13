@@ -1,45 +1,47 @@
-const Logger = require('app/common/logger');
-const ProfileManager = require('app/ui/managers/profile_manager');
-const ProgressionManager = require('app/ui/managers/progression_manager');
-const Template = require('app/ui/templates/item/buddy_selection_empty.hbs');
-const ReferralDialogView = require('app/ui/views2/referrals/referral_dialog');
-const DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
-const RedeemGiftCodeModalView = require('app/ui/views/item/redeem_gift_code_modal');
+'use strict';
 
-const BuddySelectionEmptyItemView = Backbone.Marionette.ItemView.extend({
+var Logger = require('app/common/logger')
+var ProfileManager = require("app/ui/managers/profile_manager");
+var ProgressionManager = require("app/ui/managers/progression_manager");
+var Template = require('app/ui/templates/item/buddy_selection_empty.hbs')
+var ReferralDialogView = require('app/ui/views2/referrals/referral_dialog')
+var DuelystBackbone = require('app/ui/extensions/duelyst_backbone')
+var RedeemGiftCodeModalView = require('app/ui/views/item/redeem_gift_code_modal');
 
-  className: 'buddy-selection-empty',
-  template: Template,
-  events: {
-    'click #open_referral_program': 'onOpenReferralProgram',
-    'click #claim_referral_code': 'onClaimReferralCode',
-  },
-  ui: {
-    claim_referral_code: '#claim_referral_code',
-  },
+var BuddySelectionEmptyItemView = Backbone.Marionette.ItemView.extend({
 
-  templateHelpers: {
-    canRedeemReferralCode() {
-      return ProfileManager.getInstance().get('referred_by_user_id') == null && ProgressionManager.getInstance().getGameCount() <= 0;
-    },
-  },
+	className: "buddy-selection-empty",
+	template: Template,
+	events:{
+		"click #open_referral_program":"onOpenReferralProgram",
+		"click #claim_referral_code":"onClaimReferralCode"
+	},
+	ui: {
+		"claim_referral_code": "#claim_referral_code"
+	},
 
-  initialize() {
-  },
+	templateHelpers: {
+		canRedeemReferralCode: function() {
+			return ProfileManager.getInstance().get("referred_by_user_id") == null && ProgressionManager.getInstance().getGameCount() <= 0
+		}
+	},
 
-  onRender() {
-  },
+	initialize: function() {
+	},
 
-  onOpenReferralProgram() {
-    const model = new DuelystBackbone.Model();
-    model.url = `${process.env.API_URL}/api/me/referrals/summary`;
-    model.fetch();
-    NavigationManager.getInstance().showModalView(new ReferralDialogView({ model }));
-  },
+	onRender: function () {
+	},
 
-  onClaimReferralCode() {
-    NavigationManager.getInstance().showModalView(new RedeemGiftCodeModalView());
-  },
+	onOpenReferralProgram: function() {
+		var model = new DuelystBackbone.Model()
+		model.url = process.env.API_URL + '/api/me/referrals/summary'
+		model.fetch()
+		NavigationManager.getInstance().showModalView(new ReferralDialogView({model:model}))
+	},
+
+	onClaimReferralCode: function() {
+		NavigationManager.getInstance().showModalView(new RedeemGiftCodeModalView());
+	}
 });
 
 // Expose the class either via CommonJS or the global object

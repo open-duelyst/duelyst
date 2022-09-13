@@ -1,53 +1,55 @@
-const CONFIG = require('app/common/config');
-const EventBus = require('app/common/eventbus');
-const EVENTS = require('app/common/event_types');
-const UtilsUI = require('app/common/utils/utils_ui');
-const DeckCardCompositeView = require('./deck_card.js');
-const DeckCardsTmpl = require('./templates/deck_cards.hbs');
+'use strict';
 
-const DeckCardsCompositeView = Backbone.Marionette.CompositeView.extend({
+var CONFIG = require('app/common/config');
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
+var UtilsUI = require('app/common/utils/utils_ui');
+var DeckCardCompositeView = require('./deck_card.js');
+var DeckCardsTmpl = require('./templates/deck_cards.hbs');
 
-  className: 'deck-cards',
-  childView: DeckCardCompositeView,
-  childViewContainer: '.cards',
+var DeckCardsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  template: DeckCardsTmpl,
+	className: "deck-cards",
+	childView: DeckCardCompositeView,
+	childViewContainer: ".cards",
 
-  /* ui selector cache */
-  ui: {
-    $cardsList: '.cards-list',
-  },
+	template: DeckCardsTmpl,
 
-  /* BACKBONE Events */
+	/* ui selector cache */
+	ui: {
+		"$cardsList": ".cards-list"
+	},
 
-  onRender() {
-    this.$el.find('[data-toggle=\'tooltip\']').tooltip({ container: CONFIG.OVERLAY_SELECTOR, trigger: 'hover' });
-  },
+	/* BACKBONE Events */
 
-  onAddChild() {
-    this.onResize();
-  },
+	onRender: function() {
+		this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
+	},
 
-  onRemoveChild() {
-    this.onResize();
-  },
+	onAddChild: function(){
+		this.onResize();
+	},
 
-  onShow() {
-    this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
-    this.onResize();
-  },
+	onRemoveChild: function(){
+		this.onResize();
+	},
 
-  onResize() {
-    UtilsUI.overlayScrollbars(this.$el);
-  },
+	onShow: function() {
+		this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
+		this.onResize();
+	},
 
-  onDestroy() {
-    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
-  },
+	onResize: function () {
+		UtilsUI.overlayScrollbars(this.$el);
+	},
 
-  onBeforeRender() {
-    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
-  },
+	onDestroy: function () {
+		this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+	},
+
+	onBeforeRender: function () {
+		this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+	}
 });
 
 // Expose the class either via CommonJS or the global object
