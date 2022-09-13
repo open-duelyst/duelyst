@@ -226,7 +226,7 @@ cc.FMT_UNKNOWN = 5;
  * @returns {Number}
  */
 cc.getImageFormatByData = function (imgData) {
-  // if it is a png file buffer.
+	// if it is a png file buffer.
     if (imgData.length > 8 && imgData[0] == 0x89
         && imgData[1] == 0x50
         && imgData[2] == 0x4E
@@ -238,13 +238,13 @@ cc.getImageFormatByData = function (imgData) {
         return cc.FMT_PNG;
     }
 
-  // if it is a tiff file buffer.
+	// if it is a tiff file buffer.
     if (imgData.length > 2 && ((imgData[0] == 0x49 && imgData[1] == 0x49)
         || (imgData[0] == 0x4d && imgData[1] == 0x4d)
         || (imgData[0] == 0xff && imgData[1] == 0xd8))) {
         return cc.FMT_TIFF;
     }
-  return cc.FMT_UNKNOWN;
+	return cc.FMT_UNKNOWN;
 };
 
 /**

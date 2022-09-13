@@ -307,17 +307,17 @@ cc.Speed = cc.Action.extend(/** @lends cc.Speed# */{
     _speed:0.0,
     _innerAction:null,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-   * @param {cc.ActionInterval} action
-   * @param {Number} speed
-   */
+	 * @param {cc.ActionInterval} action
+	 * @param {Number} speed
+	 */
     ctor:function (action, speed) {
         cc.Action.prototype.ctor.call(this);
         this._speed = 0;
         this._innerAction = null;
 
-    action && this.initWithAction(action, speed);
+		action && this.initWithAction(action, speed);
     },
 
     /**
@@ -507,13 +507,13 @@ cc.Follow = cc.Action.extend(/** @lends cc.Follow# */{
     topBoundary:0.0,
     bottomBoundary:0.0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * creates the action with a set boundary. <br/>
-   * creates the action with no boundary set.
+	 * creates the action with a set boundary. <br/>
+	 * creates the action with no boundary set.
      * @param {cc.Node} followedNode
      * @param {cc.Rect} rect
-   */
+	 */
     ctor:function (followedNode, rect) {
         cc.Action.prototype.ctor.call(this);
         this._followedNode = null;
@@ -529,9 +529,9 @@ cc.Follow = cc.Action.extend(/** @lends cc.Follow# */{
         this.bottomBoundary = 0.0;
         this._worldRect = cc.rect(0, 0, 0, 0);
 
-    if(followedNode)
-      rect ? this.initWithTarget(followedNode, rect)
-         : this.initWithTarget(followedNode);
+		if(followedNode)
+			rect ? this.initWithTarget(followedNode, rect)
+				 : this.initWithTarget(followedNode);
     },
 
     /**
@@ -633,7 +633,7 @@ cc.Follow = cc.Action.extend(/** @lends cc.Follow# */{
             if (this._boundaryFullyCovered)
                 return;
 
-          this.target.setPosition(cc.clampf(tempPosX, this.leftBoundary, this.rightBoundary), cc.clampf(tempPosY, this.bottomBoundary, this.topBoundary));
+	        this.target.setPosition(cc.clampf(tempPosX, this.leftBoundary, this.rightBoundary), cc.clampf(tempPosY, this.bottomBoundary, this.topBoundary));
         } else {
             this.target.setPosition(tempPosX, tempPosY);
         }

@@ -182,10 +182,10 @@ cc.TransitionScene = cc.Scene.extend(/** @lends cc.TransitionScene# */{
         if (this.init()) {
             this._duration = t;
             this.attr({
-              x: 0,
-              y: 0,
-              anchorX: 0,
-              anchorY: 0
+	            x: 0,
+	            y: 0,
+	            anchorX: 0,
+	            anchorY: 0
             });
             // retain
             this._inScene = scene;
@@ -211,21 +211,21 @@ cc.TransitionScene = cc.Scene.extend(/** @lends cc.TransitionScene# */{
     finish:function () {
         // clean up
         this._inScene.attr({
-      visible: true,
-          x: 0,
-          y: 0,
-          scale: 1.0,
-          rotation: 0.0
+			visible: true,
+	        x: 0,
+	        y: 0,
+	        scale: 1.0,
+	        rotation: 0.0
         });
         if(cc._renderType === cc._RENDER_TYPE_WEBGL)
             this._inScene.getCamera().restore();
 
         this._outScene.attr({
-          visible: false,
-          x: 0,
-          y: 0,
-          scale: 1.0,
-          rotation: 0.0
+	        visible: false,
+	        x: 0,
+	        y: 0,
+	        scale: 1.0,
+	        rotation: 0.0
         });
         if(cc._renderType === cc._RENDER_TYPE_WEBGL)
             this._outScene.getCamera().restore();
@@ -333,16 +333,16 @@ cc.TransitionRotoZoom = cc.TransitionScene.extend(/** @lends cc.TransitionRotoZo
     onEnter:function () {
         cc.TransitionScene.prototype.onEnter.call(this);
 
-      this._inScene.attr({
-        scale: 0.001,
-        anchorX: 0.5,
-        anchorY: 0.5
-      });
-      this._outScene.attr({
-        scale: 1.0,
-        anchorX: 0.5,
-        anchorY: 0.5
-      });
+	    this._inScene.attr({
+		    scale: 0.001,
+		    anchorX: 0.5,
+		    anchorY: 0.5
+	    });
+	    this._outScene.attr({
+		    scale: 1.0,
+		    anchorX: 0.5,
+		    anchorY: 0.5
+	    });
 
         var rotoZoom = cc.sequence(
             cc.spawn(cc.scaleBy(this._duration / 2, 0.001),
@@ -393,15 +393,15 @@ cc.TransitionJumpZoom = cc.TransitionScene.extend(/** @lends cc.TransitionJumpZo
         cc.TransitionScene.prototype.onEnter.call(this);
         var winSize = cc.director.getWinSize();
 
-      this._inScene.attr({
-        scale: 0.5,
-        x: winSize.width,
-        y: 0,
-        anchorX: 0.5,
-        anchorY: 0.5
-      });
+	    this._inScene.attr({
+		    scale: 0.5,
+		    x: winSize.width,
+		    y: 0,
+		    anchorX: 0.5,
+		    anchorY: 0.5
+	    });
         this._outScene.anchorX = 0.5;
-      this._outScene.anchorY = 0.5;
+	    this._outScene.anchorY = 0.5;
 
         var jump = cc.jumpBy(this._duration / 4, cc.p(-winSize.width, 0), winSize.width / 4, 2);
         var scaleIn = cc.scaleTo(this._duration / 4, 1.0);
@@ -865,16 +865,16 @@ cc.TransitionShrinkGrow = cc.TransitionScene.extend(/** @lends cc.TransitionShri
     onEnter:function () {
         cc.TransitionScene.prototype.onEnter.call(this);
 
-      this._inScene.attr({
-        scale: 0.001,
-        anchorX: 2 / 3.0,
-        anchorY: 0.5
-      });
-      this._outScene.attr({
-        scale: 1.0,
-        anchorX: 1 / 3.0,
-        anchorY: 0.5
-      });
+	    this._inScene.attr({
+		    scale: 0.001,
+		    anchorX: 2 / 3.0,
+		    anchorY: 0.5
+	    });
+	    this._outScene.attr({
+		    scale: 1.0,
+		    anchorX: 1 / 3.0,
+		    anchorY: 0.5
+	    });
 
         var scaleOut = cc.scaleTo(this._duration, 0.01);
         var scaleIn = cc.scaleTo(this._duration, 1.0);
@@ -1499,12 +1499,12 @@ cc.TransitionCrossFade = cc.TransitionScene.extend(/** @lends cc.TransitionCross
             return;
 
         inTexture.sprite.anchorX = 0.5;
-      inTexture.sprite.anchorY = 0.5;
+	    inTexture.sprite.anchorY = 0.5;
         inTexture.attr({
-          x: winSize.width / 2,
-          y: winSize.height / 2,
-          anchorX: 0.5,
-          anchorY: 0.5
+	        x: winSize.width / 2,
+	        y: winSize.height / 2,
+	        anchorX: 0.5,
+	        anchorY: 0.5
         });
 
         // render inScene to its texturebuffer
@@ -1515,8 +1515,8 @@ cc.TransitionCrossFade = cc.TransitionScene.extend(/** @lends cc.TransitionCross
         // create the second render texture for outScene
         var outTexture = new cc.RenderTexture(winSize.width, winSize.height);
         outTexture.setPosition(winSize.width / 2, winSize.height / 2);
-      outTexture.sprite.anchorX = outTexture.anchorX = 0.5;
-      outTexture.sprite.anchorY = outTexture.anchorY = 0.5;
+	    outTexture.sprite.anchorX = outTexture.anchorX = 0.5;
+	    outTexture.sprite.anchorY = outTexture.anchorY = 0.5;
 
         // render outScene to its texturebuffer
         outTexture.begin();

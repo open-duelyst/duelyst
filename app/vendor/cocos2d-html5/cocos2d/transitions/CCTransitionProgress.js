@@ -55,14 +55,14 @@ cc.TransitionProgress = cc.TransitionScene.extend(/** @lends cc.TransitionProgre
         scene && this.initWithDuration(t, scene);
     },
 
-  _setAttrs: function(node, x, y) {
-    node.attr({
-      x: x,
-      y: y,
-      anchorX: 0.5,
-      anchorY: 0.5
-    });
-  },
+	_setAttrs: function(node, x, y) {
+		node.attr({
+			x: x,
+			y: y,
+			anchorX: 0.5,
+			anchorY: 0.5
+		});
+	},
 
     /**
      * @override
@@ -79,7 +79,7 @@ cc.TransitionProgress = cc.TransitionScene.extend(/** @lends cc.TransitionProgre
         // create the second render texture for outScene
         var texture = new cc.RenderTexture(winSize.width, winSize.height);
         texture.sprite.anchorX = 0.5;
-      texture.sprite.anchorY = 0.5;
+	    texture.sprite.anchorY = 0.5;
         this._setAttrs(texture, winSize.width / 2, winSize.height / 2);
 
         // render outScene to its texturebuffer

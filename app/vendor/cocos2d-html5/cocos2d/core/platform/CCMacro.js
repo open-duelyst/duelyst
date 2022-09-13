@@ -111,7 +111,7 @@ cc.lerp = function (a, b, r) {
  * @returns {number}
  */
 cc.rand = function () {
-  return Math.random() * 0xffffff;
+	return Math.random() * 0xffffff;
 };
 
 /**
@@ -282,14 +282,14 @@ cc.pointPointsToPixels = function (points) {
  * @function
  */
 cc.pointPixelsToPoints = function (pixels) {
-  var scale = cc.contentScaleFactor();
-  return cc.p(pixels.x / scale, pixels.y / scale);
+	var scale = cc.contentScaleFactor();
+	return cc.p(pixels.x / scale, pixels.y / scale);
 };
 
 cc._pointPixelsToPointsOut = function(pixels, outPoint){
-  var scale = cc.contentScaleFactor();
-  outPoint.x = pixels.x / scale;
-  outPoint.y = pixels.y / scale;
+	var scale = cc.contentScaleFactor();
+	outPoint.x = pixels.x / scale;
+	outPoint.y = pixels.y / scale;
 };
 
 /**
@@ -419,34 +419,34 @@ cc.ONE_MINUS_DST_COLOR = 0x0307;
  * @constant
  * @type Number
  */
-cc.ONE_MINUS_CONSTANT_ALPHA  = 0x8004;
+cc.ONE_MINUS_CONSTANT_ALPHA	= 0x8004;
 
 /**
  * @constant
  * @type Number
  */
-cc.ONE_MINUS_CONSTANT_COLOR  = 0x8002;
+cc.ONE_MINUS_CONSTANT_COLOR	= 0x8002;
 
 /**
  * the constant variable equals gl.LINEAR for texture
  * @constant
  * @type Number
  */
-cc.LINEAR  = 0x2601;
+cc.LINEAR	= 0x2601;
 
 /**
  * the constant variable equals gl.REPEAT for texture
  * @constant
  * @type Number
  */
-cc.REPEAT  = 0x2901;
+cc.REPEAT	= 0x2901;
 
 /**
  * the constant variable equals gl.CLAMP_TO_EDGE for texture
  * @constant
  * @type Number
  */
-cc.CLAMP_TO_EDGE  = 0x812f;
+cc.CLAMP_TO_EDGE	= 0x812f;
 
 /**
  * the constant variable equals gl.MIRRORED_REPEAT for texture

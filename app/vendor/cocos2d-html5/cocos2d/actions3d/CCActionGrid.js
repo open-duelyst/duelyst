@@ -34,17 +34,17 @@
 cc.GridAction = cc.ActionInterval.extend(/** @lends cc.GridAction# */{
     _gridSize:null,
 
-  /**
-   * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   */
+	/**
+	 * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 */
     ctor:function(duration, gridSize){
         cc._checkWebGLRenderMode();
         cc.ActionInterval.prototype.ctor.call(this);
         this._gridSize = cc.size(0,0);
 
-    gridSize && this.initWithDuration(duration, gridSize);
+		gridSize && this.initWithDuration(duration, gridSize);
     },
 
     /**
@@ -320,14 +320,14 @@ cc.StopGrid.create = cc.stopGrid;
 cc.ReuseGrid = cc.ActionInstant.extend(/** @lends cc.ReuseGrid# */{
     _times:null,
 
-  /**
-   * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
-   * @param {Number} times
-   */
-  ctor: function(times) {
-    cc.ActionInstant.prototype.ctor.call(this);
-    times !== undefined && this.initWithTimes(times);
-  },
+	/**
+	 * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
+	 * @param {Number} times
+	 */
+	ctor: function(times) {
+		cc.ActionInstant.prototype.ctor.call(this);
+		times !== undefined && this.initWithTimes(times);
+	},
 
     /**
      * initializes an action with the number of times that the current grid will be reused

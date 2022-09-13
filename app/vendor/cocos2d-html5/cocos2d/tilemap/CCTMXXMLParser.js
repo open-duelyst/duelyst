@@ -109,7 +109,7 @@ cc.TMX_TILE_FLIPPED_MASK = (~(cc.TMX_TILE_FLIPPED_ALL)) >>> 0;
 cc.TMXLayerInfo = cc.Class.extend(/** @lends cc.TMXLayerInfo# */{
     properties:null,
 
-  name:"",
+	name:"",
     _layerSize:null,
     _tiles:null,
     visible:null,
@@ -255,16 +255,16 @@ cc.TMXTilesetInfo = cc.Class.extend(/** @lends cc.TMXTilesetInfo# */{
  * var tmxMapInfo = new cc.TMXMapInfo(xmlStr, resources);
  */
 cc.TMXMapInfo = cc.SAXParser.extend(/** @lends cc.TMXMapInfo# */{
-  properties:null,
+	properties:null,
     orientation:null,
-  parentElement:null,
-  parentGID:null,
-  layerAttrs:0,
-  storingCharacters:false,
-  tmxFileName:null,
-  currentString:null,
+	parentElement:null,
+	parentGID:null,
+	layerAttrs:0,
+	storingCharacters:false,
+	tmxFileName:null,
+	currentString:null,
 
-  _objectGroups:null,
+	_objectGroups:null,
     _mapSize:null,
     _tileSize:null,
     _layers:null,
@@ -331,18 +331,18 @@ cc.TMXMapInfo = cc.SAXParser.extend(/** @lends cc.TMXMapInfo# */{
         this._mapSize.height = value.height;
     },
 
-  _getMapWidth: function () {
-    return this._mapSize.width;
-  },
-  _setMapWidth: function (width) {
-    this._mapSize.width = width;
-  },
-  _getMapHeight: function () {
-    return this._mapSize.height;
-  },
-  _setMapHeight: function (height) {
-    this._mapSize.height = height;
-  },
+	_getMapWidth: function () {
+		return this._mapSize.width;
+	},
+	_setMapWidth: function (width) {
+		this._mapSize.width = width;
+	},
+	_getMapHeight: function () {
+		return this._mapSize.height;
+	},
+	_setMapHeight: function (height) {
+		this._mapSize.height = height;
+	},
 
     /**
      * Tiles width & height
@@ -361,18 +361,18 @@ cc.TMXMapInfo = cc.SAXParser.extend(/** @lends cc.TMXMapInfo# */{
         this._tileSize.height = value.height;
     },
 
-  _getTileWidth: function () {
-    return this._tileSize.width;
-  },
-  _setTileWidth: function (width) {
-    this._tileSize.width = width;
-  },
-  _getTileHeight: function () {
-    return this._tileSize.height;
-  },
-  _setTileHeight: function (height) {
-    this._tileSize.height = height;
-  },
+	_getTileWidth: function () {
+		return this._tileSize.width;
+	},
+	_setTileWidth: function (width) {
+		this._tileSize.width = width;
+	},
+	_getTileHeight: function () {
+		return this._tileSize.height;
+	},
+	_setTileHeight: function (height) {
+		this._tileSize.height = height;
+	},
 
     /**
      * Layers
@@ -530,7 +530,7 @@ cc.TMXMapInfo = cc.SAXParser.extend(/** @lends cc.TMXMapInfo# */{
      */
     parseXMLFile:function (tmxFile, isXmlString) {
         isXmlString = isXmlString || false;
-      var xmlStr = isXmlString ? tmxFile : cc.loader.getRes(tmxFile);
+	    var xmlStr = isXmlString ? tmxFile : cc.loader.getRes(tmxFile);
         if(!xmlStr) throw "Please load the resource first : " + tmxFile;
 
         var mapXML = this._parseXML(xmlStr);
@@ -769,7 +769,7 @@ cc.TMXMapInfo = cc.SAXParser.extend(/** @lends cc.TMXMapInfo# */{
 
                         // Correct y position. (Tiled uses Flipped, cocos2d uses Standard)
                         objectProp["y"] = parseInt(this.getMapSize().height * this.getTileSize().height) - y - objectProp["height"];
-            
+						
                         objectProp["rotation"] = parseInt(selObj.getAttribute('rotation')) || 0;
 
                         var docObjProps = selObj.querySelectorAll("properties > property");

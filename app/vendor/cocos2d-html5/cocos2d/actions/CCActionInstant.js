@@ -269,15 +269,15 @@ cc.ToggleVisibility.create = cc.toggleVisibility;
 cc.RemoveSelf = cc.ActionInstant.extend({
      _isNeedCleanUp: true,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a RemoveSelf object with a flag indicate whether the target should be cleaned up while removing.
-   * @param {Boolean} [isNeedCleanUp=true]
-   */
+	 * Create a RemoveSelf object with a flag indicate whether the target should be cleaned up while removing.
+	 * @param {Boolean} [isNeedCleanUp=true]
+	 */
     ctor:function(isNeedCleanUp){
         cc.FiniteTimeAction.prototype.ctor.call(this);
 
-      isNeedCleanUp !== undefined && this.init(isNeedCleanUp);
+	    isNeedCleanUp !== undefined && this.init(isNeedCleanUp);
     },
 
     /**
@@ -355,15 +355,15 @@ cc.RemoveSelf.create = cc.removeSelf;
 cc.FlipX = cc.ActionInstant.extend(/** @lends cc.FlipX# */{
     _flippedX:false,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a FlipX action to flip or unflip the target.
-   * @param {Boolean} flip Indicate whether the target should be flipped or not
-   */
+	 * Create a FlipX action to flip or unflip the target.
+	 * @param {Boolean} flip Indicate whether the target should be flipped or not
+	 */
     ctor:function(flip){
         cc.FiniteTimeAction.prototype.ctor.call(this);
         this._flippedX = false;
-    flip !== undefined && this.initWithFlipX(flip);
+		flip !== undefined && this.initWithFlipX(flip);
     },
 
     /**
@@ -441,17 +441,17 @@ cc.FlipX.create = cc.flipX;
 cc.FlipY = cc.ActionInstant.extend(/** @lends cc.FlipY# */{
     _flippedY:false,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a FlipY action to flip or unflip the target.
-   *
-   * @param {Boolean} flip
-   */
+	 * Create a FlipY action to flip or unflip the target.
+	 *
+	 * @param {Boolean} flip
+	 */
     ctor: function(flip){
         cc.FiniteTimeAction.prototype.ctor.call(this);
         this._flippedY = false;
 
-    flip !== undefined && this.initWithFlipY(flip);
+		flip !== undefined && this.initWithFlipY(flip);
     },
 
     /**
@@ -530,26 +530,26 @@ cc.FlipY.create = cc.flipY;
  */
 cc.Place = cc.ActionInstant.extend(/** @lends cc.Place# */{
     _x: 0,
-  _y: 0,
+	_y: 0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Creates a Place action with a position.
-   * @param {cc.Point|Number} pos
-   * @param {Number} [y]
-   */
+	 * Creates a Place action with a position.
+	 * @param {cc.Point|Number} pos
+	 * @param {Number} [y]
+	 */
     ctor:function(pos, y){
         cc.FiniteTimeAction.prototype.ctor.call(this);
         this._x = 0;
-      this._y = 0;
+	    this._y = 0;
 
-    if (pos !== undefined) {
-      if (pos.x !== undefined) {
-        y = pos.y;
-        pos = pos.x;
-      }
-      this.initWithPosition(pos, y);
-    }
+		if (pos !== undefined) {
+			if (pos.x !== undefined) {
+				y = pos.y;
+				pos = pos.x;
+			}
+			this.initWithPosition(pos, y);
+		}
     },
 
     /**
@@ -634,21 +634,21 @@ cc.CallFunc = cc.ActionInstant.extend(/** @lends cc.CallFunc# */{
     _function:null,
     _data:null,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Creates a CallFunc action with the callback.
-   * @param {function} selector
-   * @param {object|null} [selectorTarget]
-   * @param {*|null} [data] data for function, it accepts all data types.
-   */
+	 * Creates a CallFunc action with the callback.
+	 * @param {function} selector
+	 * @param {object|null} [selectorTarget]
+	 * @param {*|null} [data] data for function, it accepts all data types.
+	 */
     ctor:function(selector, selectorTarget, data){
         cc.FiniteTimeAction.prototype.ctor.call(this);
 
-    if(selector !== undefined){
-      if(selectorTarget === undefined)
-        this.initWithFunction(selector);
-      else this.initWithFunction(selector, selectorTarget, data);
-    }
+		if(selector !== undefined){
+			if(selectorTarget === undefined)
+				this.initWithFunction(selector);
+			else this.initWithFunction(selector, selectorTarget, data);
+		}
     },
 
     /**
@@ -659,13 +659,13 @@ cc.CallFunc = cc.ActionInstant.extend(/** @lends cc.CallFunc# */{
      * @return {Boolean}
      */
     initWithFunction:function (selector, selectorTarget, data) {
-      if (selectorTarget) {
+	    if (selectorTarget) {
             this._data = data;
             this._callFunc = selector;
             this._selectorTarget = selectorTarget;
-      }
-      else if (selector)
-        this._function = selector;
+	    }
+	    else if (selector)
+		    this._function = selector;
         return true;
     },
 

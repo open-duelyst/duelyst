@@ -39,17 +39,17 @@ cc.Waves3D = cc.Grid3DAction.extend(/** @lends cc.Waves3D# */{
     _amplitude: 0,
     _amplitudeRate: 0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a wave 3d action with duration, grid size, waves and amplitude.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {Number} waves
-   * @param {Number} amplitude
-   */
+	 * Create a wave 3d action with duration, grid size, waves and amplitude.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {Number} waves
+	 * @param {Number} amplitude
+	 */
     ctor:function (duration, gridSize, waves, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
-    amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
+		amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
     },
 
     /**
@@ -157,16 +157,16 @@ cc.Waves3D.create = cc.waves3D;
  */
 cc.FlipX3D = cc.Grid3DAction.extend(/** @lends cc.FlipX3D# */{
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a Flip X 3D action with duration.
-   * @param {Number} duration
-   */
-  ctor: function(duration) {
-    if (duration !== undefined)
-      cc.GridAction.prototype.ctor.call(this, duration, cc.size(1, 1));
-    else cc.GridAction.prototype.ctor.call(this);
-  },
+	 * Create a Flip X 3D action with duration.
+	 * @param {Number} duration
+	 */
+	ctor: function(duration) {
+		if (duration !== undefined)
+			cc.GridAction.prototype.ctor.call(this, duration, cc.size(1, 1));
+		else cc.GridAction.prototype.ctor.call(this);
+	},
 
     /**
      * initializes the action with duration
@@ -292,16 +292,16 @@ cc.FlipX3D.create = cc.flipX3D;
  */
 cc.FlipY3D = cc.FlipX3D.extend(/** @lends cc.FlipY3D# */{
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a flip Y 3d action with duration.
-   * @param {Number} duration
-   */
-  ctor: function(duration) {
-    if (duration !== undefined)
-      cc.GridAction.prototype.ctor.call(this, duration, cc.size(1, 1));
-    else cc.GridAction.prototype.ctor.call(this);
-  },
+	 * Create a flip Y 3d action with duration.
+	 * @param {Number} duration
+	 */
+	ctor: function(duration) {
+		if (duration !== undefined)
+			cc.GridAction.prototype.ctor.call(this, duration, cc.size(1, 1));
+		else cc.GridAction.prototype.ctor.call(this);
+	},
 
     /**
      * Called once per frame. Time is the number of seconds of a frame interval.
@@ -414,19 +414,19 @@ cc.Lens3D = cc.Grid3DAction.extend(/** @lends cc.Lens3D# */{
     _concave:false,
     _dirty:false,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * creates a lens 3d action with center position, radius.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {cc.Point} position
-   * @param {Number} radius
-   */
+	 * creates a lens 3d action with center position, radius.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {cc.Point} position
+	 * @param {Number} radius
+	 */
     ctor:function (duration, gridSize, position, radius) {
         cc.GridAction.prototype.ctor.call(this);
 
         this._position = cc.p(0, 0);
-    radius !== undefined && this.initWithDuration(duration, gridSize, position, radius);
+		radius !== undefined && this.initWithDuration(duration, gridSize, position, radius);
     },
 
     /**
@@ -586,21 +586,21 @@ cc.Ripple3D = cc.Grid3DAction.extend(/** @lends cc.Ripple3D# */{
     _amplitude: 0,
     _amplitudeRate: 0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * creates a ripple 3d action with radius, number of waves, amplitude.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {cc.Point} position
-   * @param {Number} radius
-   * @param {Number} waves
-   * @param {Number} amplitude
-   */
+	 * creates a ripple 3d action with radius, number of waves, amplitude.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {cc.Point} position
+	 * @param {Number} radius
+	 * @param {Number} waves
+	 * @param {Number} amplitude
+	 */
     ctor:function (duration, gridSize, position, radius, waves, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
 
         this._position = cc.p(0, 0);
-    amplitude !== undefined && this.initWithDuration(duration, gridSize, position, radius, waves, amplitude);
+		amplitude !== undefined && this.initWithDuration(duration, gridSize, position, radius, waves, amplitude);
     },
 
     /**
@@ -749,17 +749,17 @@ cc.Shaky3D = cc.Grid3DAction.extend(/** @lends cc.Shaky3D# */{
     _randRange: 0,
     _shakeZ: false,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a shaky3d action with a range, shake Z vertices.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {Number} range
-   * @param {Boolean} shakeZ
-   */
+	 * Create a shaky3d action with a range, shake Z vertices.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {Number} range
+	 * @param {Boolean} shakeZ
+	 */
     ctor:function (duration, gridSize, range, shakeZ) {
         cc.GridAction.prototype.ctor.call(this);
-    shakeZ !== undefined && this.initWithDuration(duration, gridSize, range, shakeZ);
+		shakeZ !== undefined && this.initWithDuration(duration, gridSize, range, shakeZ);
     },
 
     /**
@@ -844,17 +844,17 @@ cc.Liquid = cc.Grid3DAction.extend(/** @lends cc.Liquid# */{
     _amplitude: 0,
     _amplitudeRate: 0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a liquid action with amplitude, a grid and duration.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {Number} waves
-   * @param {Number} amplitude
-   */
+	 * Create a liquid action with amplitude, a grid and duration.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {Number} waves
+	 * @param {Number} amplitude
+	 */
     ctor: function (duration, gridSize, waves, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
-    amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
+		amplitude !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude);
     },
 
     /**
@@ -974,19 +974,19 @@ cc.Waves = cc.Grid3DAction.extend(/** @lends cc.Waves# */{
     _vertical: false,
     _horizontal: false,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a wave action with amplitude, horizontal sin, vertical sin, a grid and duration.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {Number} waves
-   * @param {Number} amplitude
-   * @param {Boolean} horizontal
-   * @param {Boolean} vertical
-   */
+	 * Create a wave action with amplitude, horizontal sin, vertical sin, a grid and duration.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {Number} waves
+	 * @param {Number} amplitude
+	 * @param {Boolean} horizontal
+	 * @param {Boolean} vertical
+	 */
     ctor: function (duration, gridSize, waves, amplitude, horizontal, vertical) {
         cc.GridAction.prototype.ctor.call(this);
-    vertical !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude, horizontal, vertical);
+		vertical !== undefined && this.initWithDuration(duration, gridSize, waves, amplitude, horizontal, vertical);
     },
 
     /**
@@ -1117,20 +1117,20 @@ cc.Twirl = cc.Grid3DAction.extend(/** @lends cc.Twirl# */{
     _amplitude: 0,
     _amplitudeRate: 0,
 
-  /**
+	/**
      * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function. <br />
-   * Create a grid 3d action with center position, number of twirls, amplitude, a grid size and duration.
-   * @param {Number} duration
-   * @param {cc.Size} gridSize
-   * @param {cc.Point} position
-   * @param {Number} twirls
-   * @param {Number} amplitude
-   */
+	 * Create a grid 3d action with center position, number of twirls, amplitude, a grid size and duration.
+	 * @param {Number} duration
+	 * @param {cc.Size} gridSize
+	 * @param {cc.Point} position
+	 * @param {Number} twirls
+	 * @param {Number} amplitude
+	 */
     ctor:function (duration, gridSize, position, twirls, amplitude) {
         cc.GridAction.prototype.ctor.call(this);
 
         this._position = cc.p(0, 0);
-    amplitude !== undefined && this.initWithDuration(duration, gridSize, position, twirls, amplitude);
+		amplitude !== undefined && this.initWithDuration(duration, gridSize, position, twirls, amplitude);
     },
 
     /**
