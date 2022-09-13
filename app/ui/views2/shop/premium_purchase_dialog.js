@@ -722,66 +722,6 @@ const PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 
   /* endregion GOLD CHECKOUT */
 
-  /* region PAYPAL CHECKOUT */
-
-  _paypalCheckout(productData) {
-    const { sku } = productData;
-
-    if (this.paypalReceiptRef) {
-      this.paypalReceiptRef.off('child_added');
-    }
-
-    // if (sku === "STARTERBUNDLE_201604") {
-    //   ProfileManager.getInstance().set("has_tried_purchase_starter_bundle",true);
-    // }
-    ShopManager.getInstance().markAttemptedPurchase(sku);
-
-    const now = moment().utc().subtract(1, 'minute');
-    this.paypalReceiptRef = new Firebase(`${process.env.FIREBASE_URL
-    }/user-charges/${ProfileManager.getInstance().get('id')}`)
-      .orderByPriority()
-      .startAt(now.valueOf())
-      .limit(1);
-    this.paypalReceiptRef.on('child_added', (snapshot, error) => {
-      if (snapshot.val()) {
-        const receipt = snapshot.val();
-        Logger.module('PAYPAL').log(`payment status: ${receipt.payment_status}`);
-        if (receipt.payment_status == 'Completed') {
-          this.paypalReceiptRef.off('child_added');
-
-          this.trigger('complete', {
-            sku,
-            paymentType: 'paypal',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        }
-      } else if (error) {
-        const errorMessage = error.message || 'Purchase failed. Please try again.';
-        this.showError(errorMessage);
-      }
-    });
-
-    this.trigger('processing', {
-      sku,
-      paymentType: 'paypal',
-    });
-
-    const url = `${process.env.PAYPAL_URL
-    }cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=${
-      CONFIG.paypalButtons[sku]
-    }&custom=${ProfileManager.getInstance().get('id')}`;
-
-    if (window.isDesktop) {
-      window.ipcRenderer.send('paypal-create-window', url);
-    } else {
-      // open link in new window
-      window.open(url, 'PayPal', 'height=700,width=1000');
-    }
-  },
-
-  /* endregion PAYPAL CHECKOUT */
-
   /* region STEAM CHECKOUT */
 
   _steamCheckout(productData) {

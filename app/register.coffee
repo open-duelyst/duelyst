@@ -56,7 +56,6 @@ UtilityGameMenuItemView = require 'app/ui/views/item/utility_game_menu'
 EscGameMenuItemView = require 'app/ui/views/item/esc_game_menu'
 EscMainMenuItemView = require 'app/ui/views/item/esc_main_menu'
 
-# LoginMenuItemView = require 'app/ui/views2/bnea/bnea_login_menu'
 LoginMenuItemView = require 'app/ui/views/item/login_menu'
 
 SelectUsernameItemView = require 'app/ui/views/item/select_username'
@@ -84,7 +83,7 @@ App._userNavLockId = "AppUserNavLockId"
 App._queryStringParams = querystring.parse(location.search) # query string params
 
 App.getIsLoggedIn = ->
-	return Storage.get('token') && Storage.get('bneaToken')
+	return Storage.get('token')
 
 #
 # --- Main ---- #
@@ -99,11 +98,7 @@ App.main = ->
 	if !App._mainPromise?
 		App._mainPromise = App._startPromise.then(() ->
 			Logger.module("APPLICATION").log("App:main")
-
-			if !window.sessionStorage.getItem(Storage.namespace() + '.hasAcceptedEula')
-				return App._showBneaTerms()
-			else
-				return App._showLoginMenu()
+			return App._showLoginMenu()
 
 			# # get and reset last game data
 			# lastGameType = CONFIG.lastGameType
@@ -135,14 +130,8 @@ App.main = ->
 			# 		})
 			# 		return Promise.resolve()
 			# 	)
-			# else if !Session.isBneaLinked()
-			# 	# Show welcome screen
-			# 	return App._showBneaWelcome()
 			# else
 			# 	if !App.getIsLoggedIn()
-			# 		# special case of partial login if steam is logged in and duelyst<>bnea link exists, show steam linking menu
-			# 		if window.isSteam && Storage.get('token')
-			# 			return App._showBneaSteamLinking()
 			# 		# kongregate silently logs in so we should never see a login screen
 			# 		# we instead do nothing, this only occurs if our API fails during silent login
 			# 		else if window.isKongregate
@@ -233,26 +222,6 @@ App._showLoginMenu = (options) ->
 		)
 	)
 
-App._showBneaSteamLinking = (options) ->
-	Logger.module("APPLICATION").log("App:_showBneaSteamLinking")
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Steam Linking",{ path: "/#bnea_steam_linking" })
-
-			# show main scene
-			viewPromise = Scene.getInstance().showMain()
-
-			# show BNEA steam linking
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaSteamLinkingItemView(options))
-
-			return Promise.all([
-				viewPromise,
-				contentPromise
-			])
-		)
-	)
-
 App._showSelectUsername = (data) ->
 	Logger.module("APPLICATION").log("App:_showSelectUsername")
 	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
@@ -282,99 +251,11 @@ App._showSelectUsername = (data) ->
 		)
 	)
 
-App._showBneaWelcome = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaWelcome")
-	# in this case, mark that there is a legacy duelyst log in token to show appropriate screen and skip any duelyst legacy login
-	options.isLegacyLoggedIn = Storage.get('token')
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Welcome",{ path: "/#bnea_welcome" })
-
-			# show main scene
-			viewPromise = Scene.getInstance().showMain()
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaWelcomeItemView(options))
-
-			return Promise.all([
-				viewPromise,
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaTerms = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaTerms")
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# show main scene
-			viewPromise = Scene.getInstance().showMain()
-
-			bneaTermsItemView = new BneaTermsItemView(options)
-			bneaTermsItemView.listenToOnce(bneaTermsItemView, "success", () =>
-				window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
-				App.main()
-			)
-			contentPromise = NavigationManager.getInstance().showContentView(bneaTermsItemView)
-
-			return Promise.all([
-				viewPromise,
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaLinking = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaLinking")
-	# in this case, mark that there is a legacy duelyst log in token to show appropriate screen and skip any duelyst legacy login
-	options.isLegacyLoggedIn = Storage.get('token')
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Linking",{ path: "/#bnea_linking" })
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaLinkingItemView(options))
-
-			return Promise.all([
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaRelinking = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaRelinking")
-	return PackageManager.getInstance().loadAndActivateMajorPackage("nongame", null, null,
-		(() ->
-			# analytics call
-			Analytics.page("BNEA Relinking",{ path: "/#bnea_relinking" })
-
-			contentPromise = NavigationManager.getInstance().showContentView(new BneaRelinkingItemView(options))
-
-			return Promise.all([
-				contentPromise
-			])
-		)
-	)
-
-App._showBneaDone = (options = {}) ->
-	Logger.module("APPLICATION").log("App:_showBneaDone")
-	# analytics call
-	Analytics.page("BNEA Done",{ path: "/#bnea_done" })
-	# show dialog
-	contentPromise = NavigationManager.getInstance().showContentView(new BneaDoneItemView(options))
-	return Promise.all([
-		contentPromise
-	])
-
 App.onLogin = (data) ->
 	Logger.module("APPLICATION").log "User logged in: #{data.userId}"
 
 	# save token to localStorage
 	Storage.set('token', data.token)
-	Storage.set('bneaToken', data.bneaToken)
-	Storage.set('bneaRefresh', data.bneaRefresh)
-	Storage.set('bneaLinked', true)
-
 
 	# setup ajax headers for jquery/backbone requests
 	$.ajaxSetup
@@ -559,10 +440,6 @@ App.bindEvents = () ->
 	Session.on('error', App.onSessionError)
 
 	EventBus.getInstance().on(EVENTS.show_login, App._showLoginMenu, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_welcome, App._showBneaWelcome, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_linking, App._showBneaLinking, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_relinking, App._showBneaRelinking, App)
-	EventBus.getInstance().on(EVENTS.show_bnea_done, App._showBneaDone, App)
 
 	# EventBus.getInstance().on(EVENTS.show_play, App.showPlay, App)
 	# EventBus.getInstance().on(EVENTS.show_watch, App.showWatch, App)
@@ -577,7 +454,6 @@ App.bindEvents = () ->
 	# EventBus.getInstance().on(EVENTS.start_replay, App._startGameForReplay, App)
 	# EventBus.getInstance().on(EVENTS.show_free_card_of_the_day, App.showFreeCardOfTheDayReward, App)
 	# EventBus.getInstance().on(EVENTS.premium_currency_dirty_change, App._onPremiumCurrencyDirty, App)
-	# EventBus.getInstance().on(EVENTS.finalize_bnea_steam_txn, App.onFinalizeBneaSteamTxn, App)
 	# EventBus.getInstance().on(EVENTS.discord_spectate, App.onDiscordSpectate, App)
 
 	# GamesManager.getInstance().on(EVENTS.matchmaking_start, App._matchmakingStart, App)
@@ -816,21 +692,6 @@ App.on "start", (options) ->
 			.then (isAuthed) ->
 				if !isAuthed
 					Storage.remove('token')
-					Storage.remove('bneaToken')
-					Storage.remove('bneaRefresh')
-				return isAuthed
-		else if process.env.BNEA_ENABLED
-			# if on steam, the internals of this method will always request a fresh token
-			return Session.isAuthenticatedBnea(
-				Storage.get('token'),
-				Storage.get('bneaToken'),
-				Storage.get('bneaRefresh'),
-			)
-			.then (isAuthed) ->
-				if !isAuthed
-					Storage.remove('token')
-					Storage.remove('bneaToken')
-					Storage.remove('bneaRefresh')
 				return isAuthed
 		else
 			return Session.isAuthenticated(Storage.get('token'))

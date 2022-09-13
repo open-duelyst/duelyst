@@ -30,9 +30,18 @@ Compile TypeScript dependencies:
 yarn tsc:chroma-js
 ```
 
-Build the game:
+Install NPM dependencies:
 ```
 yarn install --dev
+```
+
+Build the game:
+```
+# Mac / Linux:
+FIREBASE_URL=<my-firebase-url> yarn build
+
+# Windows:
+$env:FIREBASE_URL = '<my-firebase-url>'
 yarn build
 ```
 
@@ -40,7 +49,12 @@ The above build command builds the game and its required resources for the first
 
 Once the initial build is done, you can save time by rebuilding only the app (takes about 50 seconds):
 ```
-yarn build:app
+# Mac / Linux:
+FIREBASE_URL=<my-firebase-url> yarn build:app
+
+# Windows:
+$env:FIREBASE_URL = '<my-firebase-url>'
+yarn build
 ```
 
 Or rebuild only the HTML/CSS and localization files (takes about 5 seconds):
@@ -62,9 +76,4 @@ When working in the `server` or `worker` directories, no rebuilds are needed. Se
 
 #### Contributing
 
-If you'd like to contribute to Duelyst, check the open issues for project ideas, such as:
-
-- Getting local single player working via `docker compose up`
-- Getting a reference deployment working
-- Converting part of the code from CoffeeScript to JavaScript (see `decaffeinate`)
-- Rewriting part of the code in TypeScript
+If you'd like to contribute to Duelyst, check the [open issues](https://github.com/open-duelyst/duelyst/issues) for project ideas.

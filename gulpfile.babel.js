@@ -18,7 +18,6 @@ import * as upload from './gulp/upload';
 import * as desktop from './gulp/desktop';
 import * as git from './gulp/git';
 import * as docker from './gulp/docker';
-import * as shop from './gulp/shop';
 import * as localization from './gulp/localization';
 // import * as cdn from './gulp/cdn'
 import {
@@ -70,8 +69,6 @@ gulp.task('changelog', git.changelog);
 gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
 gulp.task('docker:push', docker.push);
-gulp.task('shop:paypal:buttons:SYNC:danger', shop.syncPaypalButtons);
-gulp.task('shop:paypal:buttons:add', shop.addPaypalButtons);
 gulp.task('localization:copy', localization.copy);
 // gulp.task('cdn:purgeAll', cdn.purgeAll)
 // gulp.task('cdn:purgeLocalization', cdn.purgeLocalization)

@@ -15,9 +15,7 @@
 		"region": "us-west-2"
 	},
 	"analyticsEnabled": true,
-	"amaId":"",
 	"gaId":"",
-	"stripeClientKey":"",
 	"zendeskEnabled": true,
 	"bugsnag": {
 		"client_key": ""

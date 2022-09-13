@@ -42,7 +42,7 @@ module.exports = (job, done) ->
 		.bind this_obj
 		.then (userRow)->
 			sku = "diamond_" + @.totalPlatinumAmount
-			return ShopModule._addChargeToUser(txPromise,tx,userRow,userId,sku,@.fullfillmentPrice,"usd",generatePushId(),fullfillmentData,"bnea",moment.utc())
+			return ShopModule._addChargeToUser(txPromise,tx,userRow,userId,sku,@.fullfillmentPrice,"usd",generatePushId(),fullfillmentData,"unknown",moment.utc())
 
 	return txPromise
 	.then () ->

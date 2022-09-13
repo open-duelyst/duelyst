@@ -570,13 +570,12 @@ App.main = ->
 
 						# # check in profile storage if the user has accepted terms
 						# if !ProfileManager.getInstance().get(storageAcceptedEula)
-						# 	# TODO - This is not actually good, but we need to make a new terms and conditions page to replace BNEA one
+						# 	# TODO - This is not actually good, but we need to make a new terms and conditions page
 						# 	return App._showTerms()
 						# # user has accepted, check if they have sent notification
 						# else
 						# 	if !ProfileManager.getInstance().get(storageSentAcceptedEulaNotify)
 						# 		ProfileManager.getInstance().set(storageSentAcceptedEulaNotify, true)
-
 
 						# check for an active game
 						lastGameModel = null

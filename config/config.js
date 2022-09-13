@@ -166,16 +166,6 @@ const config = convict({
     default: false,
     env: 'ANALYTICS_ENABLED',
   },
-  amaId: {
-    doc: 'AMA api key',
-    default: '',
-    env: 'AMA_ID',
-  },
-  marketingAmaId: {
-    doc: 'Marketing AMA api key',
-    default: '',
-    env: 'MARKETING_AMA_ID',
-  },
   gaId: {
     doc: 'Google Analytics Id',
     default: '', // by default points to STAGING analytics
@@ -216,16 +206,6 @@ const config = convict({
       default: '',
       env: 'BUGSNAG_WORKER',
     },
-  },
-  stripeSecretKey: {
-    doc: 'Stripe Secret API key.',
-    default: '',
-    env: 'STRIPE_API_KEY',
-  },
-  stripeClientKey: {
-    doc: 'STRIPE client key.',
-    default: '',
-    env: 'STRIPE_CLIENT_KEY',
   },
   consul: {
     enabled: {
@@ -273,11 +253,6 @@ const config = convict({
     // format: "url",
     default: 'https://sandbox.paypal.com/',
   },
-  paypalButtons: {
-    doc: 'Paypal buttons hash.',
-    format: Object,
-    default: {},
-  },
   paypalNvpApi: {
     username: {
       doc: 'Paypal NVP API username.',
@@ -316,6 +291,7 @@ const config = convict({
     doc: 'Should the AI tools be enabled?',
     format: Boolean,
     default: false,
+    env: 'AI_TOOLS_ENABLED',
   },
   watchSectionCacheTTL: {
     doc: 'How long should watch cache live (seconds)',
@@ -387,10 +363,6 @@ try {
   const configFile = path.join(__dirname, `../config/${config.get('env')}.json`);
   config.loadFile(configFile);
 
-  const paypalMode = config.get('env') === 'production' ? 'production' : 'sandbox';
-  const paypalButtonsConfig = path.join(__dirname, `../app/data/shop-paypal-buttons-${paypalMode}.json`);
-  config.loadFile(paypalButtonsConfig);
-
   // Example loading multiple files
   // CONFIG_FILES=/path/to/production.json,/path/to/secrets.json,/path/to/sitespecific.json
   // config.loadFile(process.env.CONFIG_FILES.split(','));
@@ -432,7 +404,6 @@ console.log(`CONFIG: env:${config.get('env')}`);
 console.log(`CONFIG: firebase:${url.parse(config.get('firebase.url')).host}`);
 console.log(`CONFIG: postgres:${pgUrl.host}${pgUrl.pathname}`);
 console.log(`CONFIG: redis:${config.get('redis.ip')}`);
-// console.log("CONFIG: paypal_buttons:",config.get('paypalButtons'))
 // console.log("isProduction: " + config.isProduction());
 // console.log("isStaging: " + config.isStaging());
 // console.log("isDevelopment: " + config.isDevelopment());
