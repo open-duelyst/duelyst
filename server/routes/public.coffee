@@ -160,15 +160,15 @@ router.get "/replay", (req, res, next) ->
 	replayId = req.query["replayId"] || null
 	# where to grab the javascript version
 	# use staging CDN in development / testing
-	cdnUrl = "https://830f78e090fe8aec00891405dfc14duelyst.freetls.fastly.net/development"
-	if config.get('cdn') and config.get('cdn') != ""
-		cdnUrl = config.get('cdn')
+	urlOrigin = config.get('cdn')
+	if !urlOrigin?
+		urlOrigin = window.location.origin
 
 	knex("user_replays").where('replay_id',replayId).first()
 	.then (replay)->
 		if replay?
 			res.render(__dirname + "/../templates/replay.hbs",{
-				gameVersionAssetBucket: "#{cdnUrl}/v#{replay.version}"
+				gameVersionAssetBucket: "#{urlOrigin}/v#{replay.version}"
 			})
 		else
 			throw new Errors.NotFoundError("Replay #{replayId} not found")

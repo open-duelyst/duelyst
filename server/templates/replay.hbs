@@ -5,8 +5,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>DUELYST</title>
-	<link rel="icon" type="image/gif" href="https://duelyst.freetls.fastly.net/favicon.gif">
-	<link rel="shortcut icon" href="https://duelyst.freetls.fastly.net/favicon.ico">
+	<link rel="icon" type="image/gif" href="{{window.location.origin}}/favicon.gif">
+	<link rel="shortcut icon" href="{{window.location.origin}}/favicon.ico">
 	<meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<meta name="screen-orientation" content="portrait" />
 	<meta name="apple-mobile-web-app-capable" content="yes" />
@@ -20,7 +20,7 @@
 	</script>
 
 	<!-- DUELYST CSS HERE ++ -->
-	<link rel="stylesheet" href="{{ gameVersionAssetBucket }}/duelyst.css">
+	<link rel="stylesheet" href="{{ window.location.origin }}/duelyst.css">
 </head>
 
 <body>
@@ -49,8 +49,8 @@
 	<!-- end container div -->
 
 	<!-- DUELYST JS HERE ++ -->
-	<script src="{{ gameVersionAssetBucket }}/vendor.js" crossorigin></script>
-	<script src="{{ gameVersionAssetBucket }}/duelyst.js" crossorigin></script>
+	<script src="{{ window.location.origin }}/vendor.js" crossorigin></script>
+	<script src="{{ window.location.origin }}/duelyst.js" crossorigin></script>
 
 </body>
 

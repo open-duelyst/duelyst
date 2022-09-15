@@ -351,6 +351,7 @@ describe('special events', () => {
     });
     */
 
+    /* Test disabled: slow
     it('expect neutral sister to add 2 random vanar cards to your hand when summoned', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -384,5 +385,6 @@ describe('special events', () => {
         SDK.GameSession.reset();
       }
     });
+    */
   }); // end 7 sisters describe
 });

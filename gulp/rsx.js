@@ -100,6 +100,12 @@ export function copyCdn() {
     .pipe(gulp.dest('dist/src'));
 }
 
+// Copy web assets (e.g. favicon.ico) into build.
+export function copyWeb() {
+  return gulp.src('app/resources/web/*', { base: 'app/resources/web' })
+    .pipe(gulp.dest('dist/src'));
+}
+
 // Wholesale copy everything from /resources folder
 // Used for testing
 export function copyAll() {
