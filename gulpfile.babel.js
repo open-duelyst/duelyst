@@ -52,6 +52,7 @@ gulp.task('vendor', vendor);
 gulp.task('rsx:imagemin', rsx.imageMin);
 gulp.task('rsx:imagemin:lossy', rsx.imageMinLossy);
 gulp.task('rsx:copy', rsx.copy);
+gulp.task('rsx:copy:web', rsx.copyWeb);
 // gulp.task('rsx:copy:cdn', rsx.copyCdn)
 gulp.task('rsx:copy:all', rsx.copyAll);
 gulp.task('rsx:packages', rsx.packages);
@@ -163,7 +164,9 @@ gulp.task('build', gulp.series(
   'clean:all',
   'source',
   'rsx:copy',
+  // Instead of copying web assets to CDN, copy to dist.
   // 'rsx:copy:cdn',
+  'rsx:copy:web',
   'autowatch',
 ));
 gulp.task('build:app', gulp.series(

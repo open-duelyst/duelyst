@@ -220,6 +220,7 @@
     "push:master": "gulp git:master:patch",
     "push:staging": "gulp git:staging",
     "rsx:copy": "gulp rsx:copy",
+    "rsx:copy:web": "gulp rsx:copy:web",
     "test:data": "mocha -t 1000 --recursive test/unit/data_access",
     "test:firebase": "mocha -t 1000 test/unit/firebase test/integration/firebase",
     "test:misc": "mocha -t 1000 --recursive test/unit/misc",
