@@ -68,7 +68,6 @@
     "simpleflakes": "^2.2.2",
     "socket.io": "4.4.1",
     "socket.io-client": "4.4.1",
-    "socketio-jwt": "4.6.2",
     "store2": "^2.5.1",
     "superagent": "^3.5.2",
     "tcomb": "^2.6.0",
