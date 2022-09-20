@@ -77,7 +77,7 @@ io = require('socket.io')().listen(server, {
 })
 io.use(
   ioJwt.authorize(
-    secret: config.get('jwt.signingSecret')
+    secret: config.get('firebase.legacyToken')
     timeout: 15000
   )
 )
@@ -303,7 +303,7 @@ onGameSpectatorJoin = (requestData) ->
 
 	# verify - synchronous
 	try
-		spectateToken = jwt.verify(requestData.spectateToken, config.get('jwt.signingSecret'))
+		spectateToken = jwt.verify(requestData.spectateToken, config.get('firebase.legacyToken'))
 	catch error
 		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> ERROR decoding spectate token: #{error?.message}".red
 

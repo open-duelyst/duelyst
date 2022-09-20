@@ -46,6 +46,7 @@ services:
       REDIS_IP: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
+      FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start api
     depends_on:
       - db
@@ -60,6 +61,7 @@ services:
     environment:
       REDIS_IP: redis
       FIREBASE_URL: ${FIREBASE_URL}
+      FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start game
     depends_on:
       - redis
@@ -71,6 +73,7 @@ services:
     environment:
       REDIS_IP: redis
       FIREBASE_URL: ${FIREBASE_URL}
+      FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start sp
     depends_on:
       - redis
@@ -83,6 +86,7 @@ services:
       REDIS_IP: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
+      FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start worker
     depends_on:
       - db
@@ -106,6 +110,7 @@ services:
       NODE_ENV: development
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
+      FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     depends_on:
       - db
     working_dir: /app

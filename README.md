@@ -67,7 +67,10 @@ When working in the `server` or `worker` directories, no rebuilds are needed. Se
 #### Starting a test environment in Docker
 
 - Create a [Firebase Realtime Database](https://firebase.google.com/docs/database/) in Google Cloud
-  - Set `FIREBASE_URL` in a `.env` file in the repo root, e.g. `FIREBASE_URL=https://my-example-project.firebaseio.com/`
+  - Set `FIREBASE_URL` in a `.env` file in the repo root
+    - E.g. `FIREBASE_URL=https://my-example-project.firebaseio.com/`
+  - Retrieve your Firebase Database legacy token in `Settings > Service Accounts > Database Secrets`, and put it in `.env` as well
+    - E.g. `FIREBASE_LEGACY_TOKEN=abcdefg1234567890abcdefg1234567890`
   - Create a new service account with read+write access to your realtime database
   - Create a new JSON key for the service account, and store it in a `serviceAccountKey.json` file in the repo root
 - Run database migrations with `docker compose up migrate`

@@ -41,6 +41,11 @@ const config = convict({
       default: '',
       env: 'FIREBASE_URL',
     },
+    legacyToken: {
+      doc: 'Firebase legacy token, e.g. abcdefg1234567890abcdefg1234567890',
+      default: '',
+      env: 'FIREBASE_LEGACY_TOKEN',
+    },
     authServiceUrl: {
       doc: 'Firebase URL for auth service',
       // format: "url",
@@ -54,11 +59,6 @@ const config = convict({
     },
   },
   jwt: {
-    signingSecret: {
-      doc: 'The secret used when signing JSON Web Tokens',
-      default: 'duelyst', // Set in .env
-      env: 'JWT_SECRET',
-    },
     tokenExpiration: {
       doc: 'Time (in minutes) before tokens expire.',
       format: 'int',
