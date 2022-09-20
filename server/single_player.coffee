@@ -8,7 +8,7 @@ _ = require 'underscore'
 colors = require 'colors' # used for console message coloring
 jwt = require 'jsonwebtoken'
 io = require 'socket.io'
-ioJwt = require 'socketio-jwt'
+ioJwt = require '@thream/socketio-jwt'
 Promise = require 'bluebird'
 kue = require 'kue'
 moment = require 'moment'
@@ -77,7 +77,7 @@ io = require('socket.io')().listen(server, {
 })
 io.use(
   ioJwt.authorize(
-    secret: config.get('jwt.signingSecret')
+    secret: config.get('firebase.legacyToken')
     timeout: 15000
   )
 )
@@ -303,7 +303,7 @@ onGameSpectatorJoin = (requestData) ->
 
 	# verify - synchronous
 	try
-		spectateToken = jwt.verify(requestData.spectateToken, config.get('jwt.signingSecret'))
+		spectateToken = jwt.verify(requestData.spectateToken, config.get('firebase.legacyToken'))
 	catch error
 		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> ERROR decoding spectate token: #{error?.message}".red
 

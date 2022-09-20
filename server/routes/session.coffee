@@ -85,7 +85,7 @@ logUserIn = (id) ->
 			expiresIn: config.get('jwt.tokenExpiration')
 			algorithm: 'HS256'
 
-		@token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
+		@token = jwt.sign(payload, config.get('firebase.legacyToken'), options)
 		@analyticsData = analyticsDataFromUserData(data)
 		return UsersModule.bumpSessionCountAndSyncDataIfNeeded(id, data)
 	.then (synced) ->
@@ -172,7 +172,7 @@ router.post "/session/", (req, res, next) ->
 				algorithm: 'HS256'
 
 			# We are encoding the payload inside the token
-			@.token = jwt.sign(payload, config.get('jwt.signingSecret'), options)
+			@.token = jwt.sign(payload, config.get('firebase.legacyToken'), options)
 
 			# make a db transaction/ledger event for the login
 			# UsersModule.logEvent(@id,"session","login")

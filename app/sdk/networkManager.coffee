@@ -57,16 +57,41 @@ class NetworkManager
 			@spectators = new Backbone.Collection()
 
 			TelemetryManager.getInstance().setSignal("game","connecting")
+			token = Storage.get('token')
 
 			# connect using socket.io manager
 			# if no game server address was provided, connect to the current host
 			if !gameServerAddress?
 				Logger.module("SDK").debug "NetworkManager:connecting to dev server #{gameServerAddress}"
-				@socketManager = new io.Manager("#{window.location.hostname}:8000", { auth: {token: "Bearer #{Storage.get('token')}"}, timeout: 20000, reconnection: false, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 1 })
+				@socketManager = new io.Manager("#{window.location.hostname}:8000", {
+					auth: {
+						token: "Bearer #{token}"
+					},
+					timeout: 20000,
+					reconnection: false,
+					reconnectionDelay: 500,
+					reconnectionDelayMax: 5000,
+					reconnectionAttempts: 1
+				})
 			else
-				@socketManager = new io.Manager("wss://#{gameServerAddress}", { auth: {token: "Bearer #{Storage.get('token')}"}, timeout: 20000, reconnection: true, reconnectionDelay: 500, reconnectionDelayMax: 5000, reconnectionAttempts: 20 })
+				@socketManager = new io.Manager("wss://#{gameServerAddress}", {
+					auth: {
+						token: "Bearer #{token}"
+					},
+					timeout: 20000,
+					reconnection: true,
+					reconnectionDelay: 500,
+					reconnectionDelayMax: 5000,
+					reconnectionAttempts: 20
+				})
+
 			# Connect to a specific socket on the host, currently /
-			@socket = @socketManager.socket('/', {forceNew: true})
+			@socket = @socketManager.socket('/', {
+				forceNew: true,
+				auth: {
+					token: "Bearer #{token}"
+				}
+			})
 
 			# When the socket opens, send the token for authetication
 			@socket.on 'connect', (socket) ->

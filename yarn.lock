@@ -452,10 +452,10 @@
   dependencies:
     defer-to-connect "^1.0.1"
 
-"@thream/socketio-jwt@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@thream/socketio-jwt/-/socketio-jwt-3.0.0.tgz#0cbac4dffd6e94c0397c73923ddf7cbe2df530af"
-  integrity sha512-1T2VMela+E9/W1/nApiM4P8SkKBYgAXaToYklF9nSOa4SCMhg0AsmPhFvKsQmQhIC6K4rUxUrJbyOA2eQedFzA==
+"@thream/socketio-jwt@2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@thream/socketio-jwt/-/socketio-jwt-2.2.1.tgz#80b907e252d42b4423c883ec63fe348e3af1360e"
+  integrity sha512-XHvNwSBoTkp/O+oprUkbcNcADtGXneeiMqw9WDPhKdUhGFuhkscqgWNpeDuh1d9FI/J/J7k+/vmeasABKZY5yg==
   dependencies:
     jsonwebtoken "8.5.1"
 
@@ -9231,7 +9231,7 @@ jsonwebtoken@5.4.1:
     jws "^3.0.0"
     ms "^0.7.1"
 
-jsonwebtoken@8.5.1, jsonwebtoken@^8.3.0, jsonwebtoken@^8.5.1:
+jsonwebtoken@8.5.1, jsonwebtoken@^8.5.1:
   version "8.5.1"
   resolved "https://registry.yarnpkg.com/jsonwebtoken/-/jsonwebtoken-8.5.1.tgz#00e71e0b8df54c2121a1f26137df2280673bcc0d"
   integrity sha512-XjwVfRS6jTMsqYs0EsuJ4LGxXV14zQybNd4L2r0UvbVnSF9Af8x7p5MzbJ90Ioz/9TI41/hTCvznF/loiSzn8w==
@@ -13896,14 +13896,6 @@ socket.io@4.4.1:
     socket.io-adapter "~2.3.3"
     socket.io-parser "~4.0.4"
 
-socketio-jwt@4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/socketio-jwt/-/socketio-jwt-4.6.2.tgz#ee06a9d40f68ccccdece427ed80dc31a80d692c6"
-  integrity sha512-bcCnit/cCvqtC921Gwuqor+LpLKrpREmPACVgLfdbFBL95w2nPF7lOxsOxyeRrhc5Kot/1jUSW5+kLo23zJIMA==
-  dependencies:
-    jsonwebtoken "^8.3.0"
-    xtend "~2.1.2"
-
 sort-keys-length@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/sort-keys-length/-/sort-keys-length-1.0.1.tgz#9cb6f4f4e9e48155a6aa0671edd336ff1479a188"
@@ -16168,7 +16160,7 @@ xtend@^2.1.2:
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-2.2.0.tgz#eef6b1f198c1c8deafad8b1765a04dad4a01c5a9"
   integrity sha1-7vax8ZjByN6vrYsXZaBNrUoBxak=
 
-xtend@~2.1.1, xtend@~2.1.2:
+xtend@~2.1.1:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-2.1.2.tgz#6efecc2a4dad8e6962c4901b337ce7ba87b5d28b"
   integrity sha1-bv7MKk2tjmlixJAbM3znuoe10os=
