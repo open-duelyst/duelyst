@@ -9,11 +9,9 @@ GameSession = require './gameSession'
 ApplyCardToBoardAction = require './actions/applyCardToBoardAction'
 
 class NetworkManager
-
 	instance = null
 
 	class _NetworkManager
-
 		connected: false
 		disconnected: true
 		firebaseURL: process.env.FIREBASE_URL
@@ -62,8 +60,9 @@ class NetworkManager
 			# connect using socket.io manager
 			# if no game server address was provided, connect to the current host
 			if !gameServerAddress?
-				Logger.module("SDK").debug "NetworkManager:connecting to dev server #{gameServerAddress}"
-				@socketManager = new io.Manager("#{window.location.hostname}:8000", {
+				url = "#{window.location.hostname}:8000"
+				Logger.module("SDK").debug "NetworkManager: connecting to game server #{url}"
+				@socketManager = new io.Manager(url, {
 					auth: {
 						token: "Bearer #{token}"
 					},
@@ -74,7 +73,9 @@ class NetworkManager
 					reconnectionAttempts: 1
 				})
 			else
-				@socketManager = new io.Manager("wss://#{gameServerAddress}", {
+				url = "wss://#{gameServerAddress}"
+				Logger.module("SDK").debug "NetworkManager: connecting to game server #{url}"
+				@socketManager = new io.Manager(url, {
 					auth: {
 						token: "Bearer #{token}"
 					},
@@ -120,7 +121,7 @@ class NetworkManager
 			# BUG (socket.io) ? : This event may get triggered twice
 			@socket.on 'reconnect_failed', ()->
 				Logger.module("IO").log "NetworkManager::IO:reconnect failed"
-				NetworkManager.getInstance().getEventBus().trigger(EVENTS.reconnect_failed);
+				NetworkManager.getInstance().getEventBus().trigger(EVENTS.reconnect_failed)
 
 			@socket.on 'join_game_response', (response)->
 				NetworkManager.getInstance().getEventBus().trigger(EVENTS.join_game, response)
@@ -128,6 +129,7 @@ class NetworkManager
 					Logger.module("IO").warn "NetworkManager::IO:join_game_response ERROR -> #{response.error}"
 					NetworkManager.getInstance().disconnect()
 				else
+					# FIXME: `response` has type `object`; log a property instead.
 					Logger.module("IO").log "NetworkManager::IO:join_game_response -> #{response}"
 					isOpponentAlreadyConnected = _.find(response.connectedPlayers,(playerId) -> playerId != NetworkManager.getInstance().playerId)
 					if isOpponentAlreadyConnected?
@@ -145,6 +147,7 @@ class NetworkManager
 					Logger.module("IO").warn "NetworkManager::IO:join_game_response ERROR -> #{response.error}"
 					NetworkManager.getInstance().disconnect()
 				else
+					# FIXME: `response` has type `object`; log a property instead.
 					Logger.module("IO").log "NetworkManager::IO:join_game_response -> #{response}"
 
 					NetworkManager.getInstance().isOpponentConnected = true
@@ -154,8 +157,8 @@ class NetworkManager
 					TelemetryManager.getInstance().setSignal("game","in-net-game")
 
 			#  when a game event is received
-			@socket.on EVENTS.network_game_event, (eventData,callback)->
-				Logger.module("IO").log "NetworkManager::IO:network_game_event -> #{eventData}"
+			@socket.on EVENTS.network_game_event, (eventData, callback)->
+				Logger.module("IO").log "NetworkManager::IO:network_game_event -> #{eventData.type}; step count #{eventData.stepCount}"
 
 				# defer the execution of the network step until the next stack call so that socket.io does not gobble up the error
 				_.defer(() -> NetworkManager.getInstance().getEventBus().trigger(EVENTS.network_game_event, eventData))
@@ -212,15 +215,17 @@ class NetworkManager
 				TelemetryManager.getInstance().clearSignal("game","connecting")
 				TelemetryManager.getInstance().clearSignal("game","in-net-game")
 
-		joinGameRoom:() ->
+		joinGameRoom: () ->
 			Logger.module("SDK").debug "NetworkManager:joinGameRoom"
 			if @socket and @socket.connected
 				@socket.emit('join_game',
 					playerId:@playerId
 					gameId:@gameId
 				)
+			else
+				Logger.module("SDK").warn "NetworkManager:joinGameRoom: No socket to emit event!"
 
-		joinGameSpectatorRoom:() ->
+		joinGameSpectatorRoom: () ->
 			Logger.module("SDK").debug "NetworkManager:joinGameSpectatorRoom"
 			if @socket and @socket.connected
 				@socket.emit('spectate_game',
@@ -229,6 +234,8 @@ class NetworkManager
 					playerId: @playerId
 					gameId: @gameId
 				)
+			else
+				Logger.module("SDK").warn "NetworkManager:joinGameSpectatorRoom: No socket to emit event!"
 
 		# Reconnect helper, call with new address
 		reconnect: (newServerAddress) ->
@@ -239,7 +246,7 @@ class NetworkManager
 				@connect(@gameId, @playerId, newServerAddress)
 			,1000)
 
-		disconnect:() ->
+		disconnect: () ->
 			Logger.module("SDK").debug "NetworkManager:disconnect"
 			if @connected
 				@gameId = null
