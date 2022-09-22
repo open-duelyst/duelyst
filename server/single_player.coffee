@@ -136,7 +136,7 @@ io.sockets.on "connection", (socket) ->
 
 getConnectedSpectatorsDataForGamePlayer = (gameId,playerId)->
 	spectators = []
-	for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
+	for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
 		socket = io.sockets.sockets.get(socketId)
 		if socket.playerId == playerId
 			spectators.push({
@@ -184,7 +184,7 @@ onGamePlayerJoin = (requestData) ->
 	playerLeaveGameIfNeeded(this)
 
 	# if this client already exists in this game, disconnect duplicate client
-	for socketId,connected of io.sockets.adapter.rooms[gameId]
+	for socketId,connected of io.sockets.adapter.rooms.get(gameId)
 		socket = io.sockets.sockets.get(socketId)
 		if socket? and socket.playerId == playerId
 			Logger.module("IO").log "[G:#{gameId}]", "join_game -> detected duplicate connection to #{gameId} GameSession for #{playerId.blue}. Disconnecting duplicate...".cyan
@@ -515,17 +515,13 @@ onGameEvent = (eventData) ->
 # @public
 ###
 onGameDisconnect = () ->
-
 	if @.spectatorId
-
 		# make spectator leave game room
 		spectatorLeaveGameIfNeeded(@)
 
 	else
-
 		try
-
-			clients_in_the_room = io.sockets.adapter.rooms[@.gameId]
+			clients_in_the_room = io.sockets.adapter.rooms.get(@.gameId)
 			for clientId,socket of clients_in_the_room
 				if socket.playerId == @.playerId
 					Logger.module("IO").log "onGameDisconnect:: looks like the player #{@.playerId} we are trying to disconnect is still in the game #{@.gameId} room. ABORTING".red
@@ -537,7 +533,6 @@ onGameDisconnect = () ->
 					return
 
 		catch error
-
 			Logger.module("IO").log "onGameDisconnect:: Error #{error?.message}.".red
 
 		# if we are in a buffering state
@@ -721,7 +716,7 @@ onDisconnectedPlayerTimeout = (gameId,playerId) ->
 
 	Logger.module("IO").log "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: #{playerId} for game: #{gameId}"
 
-	clients_in_the_room = io.sockets.adapter.rooms[gameId]
+	clients_in_the_room = io.sockets.adapter.rooms.get(gameId)
 	for clientId,socket of clients_in_the_room
 		if socket.playerId == playerId
 			Logger.module("IO").log "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: looks like the player #{playerId} we are trying to dis-connect is still in the game #{gameId} room. ABORTING".red
@@ -915,7 +910,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 						games[gameId].spectatorDelayedGameSession.executeAuthoritativeStep(step)
 
 					# send events over to spectators of current player
-					for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
+					for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
 						Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to player's spectators"
 						socket = io.sockets.sockets.get(socketId)
 						if socket? and socket.playerId == eventData.step.playerId
@@ -945,7 +940,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 						# broadcast whatever's in the buffer to the opponent
 						_.each(opponentEventDataBuffer, (eventData) ->
 							Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to opponent's spectators"
-							for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
+							for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
 								socket = io.sockets.sockets.get(socketId)
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -972,13 +967,12 @@ _logSpectatorTickInfo = _.debounce((gameId)->
 ###
 emitGameEvent = (fromSocket,gameId,eventData)->
 	if games[gameId]?
-
 		if eventData.type == EVENTS.step
 			Logger.module("IO").log "[G:#{gameId}]", "emitGameEvent -> step #{eventData.step?.index?.toString().yellow} with timestamp #{eventData.step?.timestamp} and action #{eventData.step?.action?.type}"
 			# only broadcast valid steps
 			if eventData.step? and eventData.step.timestamp? and eventData.step.action?
 				# send the step to the owner
-				for socketId,connected of io.sockets.adapter.rooms[gameId]
+				for socketId,connected of io.sockets.adapter.rooms.get(gameId)
 					socket = io.sockets.sockets.get(socketId)
 					if socket? and socket.playerId == eventData.step.playerId
 						eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -1006,7 +1000,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 
 						# broadcast whatever's in the buffer to the opponent
 						_.each(opponentEventDataBuffer, (eventData) ->
-							for socketId,connected of io.sockets.adapter.rooms[gameId]
+							for socketId,connected of io.sockets.adapter.rooms.get(gameId)
 								socket = io.sockets.sockets.get(socketId)
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -1017,7 +1011,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 						)
 		else if eventData.type == EVENTS.invalid_action
 			# send the invalid action notification to the owner
-			for socketId,connected of io.sockets.adapter.rooms[gameId]
+			for socketId,connected of io.sockets.adapter.rooms.get(gameId)
 				socket = io.sockets.sockets.get(socketId)
 				if socket? and socket.playerId == eventData.playerId
 					eventDataCopy = JSON.parse(JSON.stringify(eventData))
