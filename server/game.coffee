@@ -145,7 +145,7 @@ d.run () ->
 getConnectedSpectatorsDataForGamePlayer = (gameId,playerId)->
 	spectators = []
 	for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
-		socket = io.sockets.connected[socketId]
+		socket = io.sockets.sockets[socketId]
 		if socket.playerId == playerId
 			spectators.push({
 				id:socket.spectatorId,
@@ -193,7 +193,7 @@ onGamePlayerJoin = (requestData) ->
 
 	# if this client already exists in this game, disconnect duplicate client
 	for socketId,connected of io.sockets.adapter.rooms[gameId]
-		socket = io.sockets.connected[socketId]
+		socket = io.sockets.sockets[socketId]
 		if socket? and socket.playerId == playerId
 			Logger.module("IO").error "[G:#{gameId}]", "join_game -> detected duplicate connection to #{gameId} GameSession for #{playerId.blue}. Disconnecting duplicate...".cyan
 			playerLeaveGameIfNeeded(socket, silent=true)
@@ -539,7 +539,7 @@ onGameDisconnect = () ->
 					Logger.module("IO").error "onGameDisconnect:: looks like the player #{@.playerId} we are trying to disconnect is still in the game #{@.gameId} room. ABORTING".red
 					return
 
-			for clientId,socket of io.sockets.connected
+			for clientId,socket of io.sockets.sockets
 				if socket.playerId == @.playerId and not socket.spectatorId
 					Logger.module("IO").error "onGameDisconnect:: looks like the player #{@.playerId} that allegedly disconnected is still alive and well.".red
 					return
@@ -736,7 +736,7 @@ onDisconnectedPlayerTimeout = (gameId,playerId) ->
 			Logger.module("IO").error "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: looks like the player #{playerId} we are trying to dis-connect is still in the game #{gameId} room. ABORTING".red
 			return
 
-	for clientId,socket of io.sockets.connected
+	for clientId,socket of io.sockets.sockets
 		if socket.playerId == playerId and not socket.spectatorId
 			Logger.module("IO").error "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: looks like the player #{playerId} we are trying to disconnect is still connected but not in the game #{gameId} room.".red
 			return
@@ -921,7 +921,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 					# send events over to spectators of current player
 					for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
 						Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to player's spectators"
-						socket = io.sockets.connected[socketId]
+						socket = io.sockets.sockets[socketId]
 						if socket? and socket.playerId == eventData.step.playerId
 							# scrub the action data. this should not be skipped since some actions include entire deck that needs to be scrubbed because we don't want spectators deck sniping
 							eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -951,7 +951,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 						_.each(opponentEventDataBuffer, (eventData) ->
 							Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to opponent's spectators"
 							for socketId,connected of io.sockets.adapter.rooms["spectate-#{gameId}"]
-								socket = io.sockets.connected[socketId]
+								socket = io.sockets.sockets[socketId]
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
 									# always scrub steps for sensitive data from opponent's spectator perspective
@@ -984,7 +984,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 			if eventData.step? and eventData.step.timestamp? and eventData.step.action?
 				# send the step to the owner
 				for socketId,connected of io.sockets.adapter.rooms[gameId]
-					socket = io.sockets.connected[socketId]
+					socket = io.sockets.sockets[socketId]
 					if socket? and socket.playerId == eventData.step.playerId
 						eventDataCopy = JSON.parse(JSON.stringify(eventData))
 						# always scrub steps for sensitive data from player perspective
@@ -1012,7 +1012,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 						# broadcast whatever's in the buffer to the opponent
 						_.each(opponentEventDataBuffer, (eventData) ->
 							for socketId,connected of io.sockets.adapter.rooms[gameId]
-								socket = io.sockets.connected[socketId]
+								socket = io.sockets.sockets[socketId]
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
 									# always scrub steps for sensitive data from player perspective
@@ -1023,7 +1023,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 		else if eventData.type == EVENTS.invalid_action
 			# send the invalid action notification to the owner
 			for socketId,connected of io.sockets.adapter.rooms[gameId]
-				socket = io.sockets.connected[socketId]
+				socket = io.sockets.sockets[socketId]
 				if socket? and socket.playerId == eventData.playerId
 					eventDataCopy = JSON.parse(JSON.stringify(eventData))
 					socket.emit EVENTS.network_game_event, eventDataCopy
