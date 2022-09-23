@@ -136,7 +136,7 @@ io.sockets.on "connection", (socket) ->
 
 getConnectedSpectatorsDataForGamePlayer = (gameId,playerId)->
 	spectators = []
-	for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
+	io.sockets.adapter.rooms.get("spectate-#{gameId}")?.forEach((socketId) ->
 		socket = io.sockets.sockets.get(socketId)
 		if socket.playerId == playerId
 			spectators.push({
@@ -144,6 +144,7 @@ getConnectedSpectatorsDataForGamePlayer = (gameId,playerId)->
 				playerId:socket.playerId,
 				username:socket.spectateToken?.u
 			})
+	)
 	return spectators
 
 ###
@@ -184,11 +185,12 @@ onGamePlayerJoin = (requestData) ->
 	playerLeaveGameIfNeeded(this)
 
 	# if this client already exists in this game, disconnect duplicate client
-	for socketId,connected of io.sockets.adapter.rooms.get(gameId)
+	io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
 		socket = io.sockets.sockets.get(socketId)
 		if socket? and socket.playerId == playerId
 			Logger.module("IO").log "[G:#{gameId}]", "join_game -> detected duplicate connection to #{gameId} GameSession for #{playerId.blue}. Disconnecting duplicate...".cyan
 			playerLeaveGameIfNeeded(socket, silent=true)
+	)
 
 	# initialize a server-side game session and join it
 	initGameSession(gameId)
@@ -521,13 +523,14 @@ onGameDisconnect = () ->
 
 	else
 		try
-			clients_in_the_room = io.sockets.adapter.rooms.get(@.gameId)
-			for clientId,socket of clients_in_the_room
+			io.sockets.adapter.rooms.get(@.gameId)?.forEach((socketId) ->
+				socket = io.sockets.sockets.get(socketId)
 				if socket.playerId == @.playerId
 					Logger.module("IO").log "onGameDisconnect:: looks like the player #{@.playerId} we are trying to disconnect is still in the game #{@.gameId} room. ABORTING".red
 					return
+			)
 
-			for clientId,socket of io.sockets.sockets
+			for clientId, socket of io.sockets.sockets
 				if socket.playerId == @.playerId and not socket.spectatorId
 					Logger.module("IO").log "onGameDisconnect:: looks like the player #{@.playerId} that allegedly disconnected is still alive and well.".red
 					return
@@ -713,16 +716,16 @@ startDisconnectedPlayerTimeout = (gameId,playerId) ->
 # @param	{String}	playerId		The player ID who is resigning.
 ###
 onDisconnectedPlayerTimeout = (gameId,playerId) ->
-
 	Logger.module("IO").log "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: #{playerId} for game: #{gameId}"
 
-	clients_in_the_room = io.sockets.adapter.rooms.get(gameId)
-	for clientId,socket of clients_in_the_room
+	io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
+		socket = io.sockets.sockets.get(socketId)
 		if socket.playerId == playerId
 			Logger.module("IO").log "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: looks like the player #{playerId} we are trying to dis-connect is still in the game #{gameId} room. ABORTING".red
 			return
+	)
 
-	for clientId,socket of io.sockets.sockets
+	for clientId, socket of io.sockets.sockets
 		if socket.playerId == playerId and not socket.spectatorId
 			Logger.module("IO").log "[G:#{gameId}]", "onDisconnectedPlayerTimeout:: looks like the player #{playerId} we are trying to disconnect is still connected but not in the game #{gameId} room.".red
 			return
@@ -910,7 +913,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 						games[gameId].spectatorDelayedGameSession.executeAuthoritativeStep(step)
 
 					# send events over to spectators of current player
-					for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
+					io.sockets.adapter.rooms.get("spectate-#{gameId}")?.forEach((socketId) ->
 						Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to player's spectators"
 						socket = io.sockets.sockets.get(socketId)
 						if socket? and socket.playerId == eventData.step.playerId
@@ -918,6 +921,7 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 							eventDataCopy = JSON.parse(JSON.stringify(eventData))
 							UtilsGameSession.scrubSensitiveActionData(games[gameId].session, eventDataCopy.step.action, socket.playerId, true)
 							socket.emit EVENTS.network_game_event, eventDataCopy
+					)
 
 					# skip processing anything for the opponent if this is a RollbackToSnapshotAction since only the sender cares about that one
 					if eventData.step.action.type == SDK.RollbackToSnapshotAction.type
@@ -940,13 +944,14 @@ flushSpectatorNetworkEventBuffer = (gameId) ->
 						# broadcast whatever's in the buffer to the opponent
 						_.each(opponentEventDataBuffer, (eventData) ->
 							Logger.module("IO").debug "[G:#{gameId}]", "flushSpectatorNetworkEventBuffer() -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.name} to opponent's spectators"
-							for socketId,connected of io.sockets.adapter.rooms.get("spectate-#{gameId}")
+							io.sockets.adapter.rooms.get("spectate-#{gameId}")?.forEach((socketId) ->
 								socket = io.sockets.sockets.get(socketId)
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
 									# always scrub steps for sensitive data from opponent's spectator perspective
 									UtilsGameSession.scrubSensitiveActionData(games[gameId].session, eventDataCopy.step.action, socket.playerId, true)
 									socket.emit EVENTS.network_game_event, eventDataCopy
+							)
 						)
 				else
 					io.to("spectate-#{gameId}").emit EVENTS.network_game_event, eventData
@@ -972,7 +977,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 			# only broadcast valid steps
 			if eventData.step? and eventData.step.timestamp? and eventData.step.action?
 				# send the step to the owner
-				for socketId,connected of io.sockets.adapter.rooms.get(gameId)
+				io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
 					socket = io.sockets.sockets.get(socketId)
 					if socket? and socket.playerId == eventData.step.playerId
 						eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -984,6 +989,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 						# 2 for this current reconnecting player and 1 for the opponent
 						# breaking here would essentially result in only the DEAD socket in process of disconnecting receiving the event
 						# break
+				)
 
 				# buffer actions for the opponent other than a rollback action since that should clear the buffer during followups and there's no need to be sent to the opponent
 				# essentially: skip processing anything for the opponent if this is a RollbackToSnapshotAction since only the sender cares about that one
@@ -1000,7 +1006,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 
 						# broadcast whatever's in the buffer to the opponent
 						_.each(opponentEventDataBuffer, (eventData) ->
-							for socketId,connected of io.sockets.adapter.rooms.get(gameId)
+							io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
 								socket = io.sockets.sockets.get(socketId)
 								if socket? and socket.playerId != eventData.step.playerId
 									eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -1008,10 +1014,11 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 									UtilsGameSession.scrubSensitiveActionData(games[gameId].session, eventDataCopy.step.action, socket.playerId)
 									Logger.module("IO").log "[G:#{gameId}]", "emitGameEvent -> transmitting step #{eventData.step?.index?.toString().yellow} with action #{eventData.step.action?.type} to opponent"
 									socket.emit EVENTS.network_game_event, eventDataCopy
+							)
 						)
 		else if eventData.type == EVENTS.invalid_action
 			# send the invalid action notification to the owner
-			for socketId,connected of io.sockets.adapter.rooms.get(gameId)
+			io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
 				socket = io.sockets.sockets.get(socketId)
 				if socket? and socket.playerId == eventData.playerId
 					eventDataCopy = JSON.parse(JSON.stringify(eventData))
@@ -1019,6 +1026,7 @@ emitGameEvent = (fromSocket,gameId,eventData)->
 					# NOTE: don't BREAK here because there is a potential case that during reconnection 3 sockets are connected:
 					# 2 for this current reconnecting player and 1 for the opponent
 					# breaking here would essentially result in only the DEAD socket in process of disconnecting receiving the event
+			)
 		else
 			if eventData.type == EVENTS.network_game_hover or eventData.type == EVENTS.network_game_select or eventData.type == EVENTS.network_game_mouse_clear or eventData.type == EVENTS.show_emote
 				# save the player id of this event
@@ -1762,12 +1770,14 @@ ai_executeAction = (gameId, action) ->
 		step = new SDK.Step(games[gameId].session, action.getOwnerId())
 		step.setAction(action)
 		opponentPlayerId = games[gameId].ai.getOpponentPlayerId()
-		for clientId,socket of io.sockets.sockets
+		io.sockets.adapter.rooms.get(gameId)?.forEach((socketId) ->
+			socket = io.sockets.sockets.get(socketId)
 			if socket.playerId == opponentPlayerId and !socket.spectatorId
 				onGameEvent.call(socket, {
 					type: EVENTS.step
 					step: JSON.parse(games[gameId].session.serializeToJSON(step))
 				})
+		)
 
 ###*
 * Returns whether an action is valid for showing UI.
