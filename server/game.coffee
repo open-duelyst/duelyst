@@ -122,7 +122,7 @@ healthPing = io
 
 # run main io.sockets inside of the domain
 d.run () ->
-	io.sockets.on "authenticated", (socket) ->
+	io.sockets.on "connection", (socket) ->
 		# add the socket to the error domain
 		d.add(socket)
 
