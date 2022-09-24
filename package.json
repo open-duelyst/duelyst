@@ -168,7 +168,7 @@
     "imagemin-jpegtran": "^5.0.0",
     "imagemin-mozjpeg": "^6.0.0",
     "imagemin-optipng": "^5.1.0",
-    "imagemin-pngquant": "^5.0.0",
+    "imagemin-pngquant": "^9.0.2",
     "imagemin-zopfli": "4.2.0",
     "inquirer": "0.10.0",
     "istanbul": "^0.3.17",
