@@ -2,8 +2,8 @@ require('coffee-script/register');
 const _ = require('underscore');
 const moment = require('moment');
 const ProgressBar = require('progress');
-const FirebasePromises = require('../lib/firebase_promises.coffee');
-const DuelystFirebase = require('../lib/duelyst_firebase_module.coffee');
+// const FirebasePromises = require('../lib/firebase_promises.coffee');
+// const DuelystFirebase = require('../lib/duelyst_firebase_module.coffee');
 
 exports.up = function (knex, Promise) {
   return Promise.all([
@@ -23,9 +23,10 @@ exports.up = function (knex, Promise) {
         .bind({})
         .then(function (rows) {
           this.rows = rows;
-          return DuelystFirebase.connect().getRootRef();
+          // return DuelystFirebase.connect().getRootRef();
         })
-        .then(function (rootRef) {
+        // .then(function (rootRef) {
+        .then(function () {
           const bar = new ProgressBar(`migrating ${this.rows.length} records [:bar] :percent :etas`, {
             complete: '=',
             incomplete: ' ',
@@ -44,11 +45,15 @@ exports.up = function (knex, Promise) {
                 created_at: moment().utc().add(n, 'milliseconds').toDate(),
               }));
             });
+            /*
+            // This code copies user ribbons from Postgres to Firebase.
+            // TODO: Convert this into a script instead.
             allPromises.push(FirebasePromises.set(rootRef.child('user-ribbons').child(row.user_id).child(ribbonId), {
               ribbon_id: ribbonId,
               count: ribbonCount,
               updated_at: moment().utc().valueOf(),
             }));
+            */
             return Promise.all(allPromises).then(() => {
               bar.tick();
             });
