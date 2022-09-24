@@ -1,5 +1,7 @@
 # OpenDuelyst
 
+![Duelyst Logo](app/resources/ui/brand_duelyst.png)
+
 This is the source code for Duelyst, a digital collectible card game and turn-based strategy hybrid developed by Counterplay Games and released in 2016.
 
 ## Reference Deployment
