@@ -18,6 +18,15 @@ This document will introduce you to the code and guide you through making a chan
 
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Open Issues](https://github.com/open-duelyst/duelyst/issues)
+- [Node.js v16 LTS Runtime Documentation](https://nodejs.org/dist/latest-v16.x/docs/api/)
+- [Redis Documentation](https://redis.io/docs/)
+- [Postgres v14 Documentation](https://www.postgresql.org/docs/14/index.html)
+- [Firebase API Reference (Frontend)](https://firebase.google.com/docs/reference/node/)
+- [Firebase API Reference (Backend)](https://firebase.google.com/docs/reference/admin/node/)
+- [Socket.io v4 WebSocket Documentation](https://socket.io/docs/v4/)
+- [JSON Web Token Documentation & Debugging](https://jwt.io/)
+- [Mocha Unit Testing Documentation](https://mochajs.org/api/)
+- [Chai Assertion Documentation](https://www.chaijs.com/api/)
 
 ## <a id="code-structure" />Code Structure
 
@@ -33,7 +42,7 @@ To help you get acquainted more quickly, here is a list of files and directories
 - `package.json` contains our Node.js dependencies
 - `server` contains code for the HTTP API server, the multi-player game server, and single-player game server
 - `test` contains unit and integration tests
-- `worker` contains code for the worker which processes asynchronous background jobs
+- `worker` contains code for the worker, which processes asynchronous background jobs
 
 #### Code Style and Linting
 
@@ -49,8 +58,9 @@ You can run the linter with `yarn lint:coffee`, `yarn lint:coffee:app`, or `yarn
 #### Regarding JavaScript, CoffeeScript, and TypeScript
 
 Most of the code is written in CoffeeScript, which compiles into JavaScript.
-We should consider moving to TypeScript where possible.
+We are considering replacing CoffeeScript with JavaScript (see [Issue #4](https://github.com/open-duelyst/duelyst/issues/4)).
 
+We should also consider moving to TypeScript where possible.
 There is a fairly strict `tsconfig.json` in the repo which has been preconfigured for new code.
 After writing new TypeScript code, you can run `yarn tsc` to build it using this config.
 
@@ -80,7 +90,9 @@ yarn install --dev  # Install remaining Node.js dependencies.
 
 In order to successfully run the game, you will need a [Firebase Realtime Database](https://firebase.google.com/docs/database/).
 Fortunately, Google provides a free version of this service called the ["Spark Pricing Plan"](https://firebase.google.com/docs/projects/billing/firebase-pricing-plans).
-Once you have created a Firebase account and a Realtime Database, take note of your Realtime Database's URL, as you'll need it later.
+
+Once you have created a Firebase account and a Realtime Database, take note of your Realtime Database's URL, as you'll need it when building the code.
+You will also want to configure the Security Rules for your database. You can copy these from [rules.json](rules.json) in the repo.
 
 #### Building the Code
 
@@ -104,8 +116,8 @@ After the initial build, you can save time with `yarn build:app` (code only; no 
 
 #### Additional Firebase Configuration
 
-Before starting the servers, there's a bit more Firebase configuration to do.
-From your Firebase project settings page, clicking "Service Accounts" will take you to a Google Cloud page where you can manage accounts.
+Now that you have a development environment set up, there's a bit more Firebase configuration to do.
+From your Firebase project settings page, click the "Service Accounts" tab.
 
 First, click "Database Secrets" and create a new legacy token.
 Create a `.env` file in the repo root with the following contents:
@@ -115,26 +127,27 @@ FIREBASE_URL=<YOUR_FIREBASE_URL>
 FIREBASE_LEGACY_TOKEN=<YOUR_FIREBASE_LEGACY_TOKEN>
 ```
 
-Next, still on the Firebase "Service Accounts" page, create a new service account with the ability to read from and write to Firebase.
+Next, still on the Firebase "Service Accounts" page, click on the Service Accounts popout to open Google Cloud.
+Create a new service account with the ability to read from and write to Firebase.
 You can achieve this by using the "Firebase Realtime Database Admin" role, but you may want to restrict this later.
 
 On the Google "Service Accounts" page, clicking "Manage Keys" next to the newly-created service account will let you create a new JSON key.
 Do this, and save it as `serviceAccountKey.json` in the repo root.
 
-Note: Both `.env` and `serviceAccountKey.json` are ignored by Git for this repo, so these secrets will never be accidentally committed.
-
-#### Running Database Migrations
-
-As a final step before starting the game servers, the Postgres database must be initialized.
-To do this, run `docker compose up migrate`.
+Note: Both `.env` and `serviceAccountKey.json` are ignored by Git for this repo, so these secrets can't be accidentally committed.
 
 #### Starting with Docker
 
 Now that the game has been built and Firebase has been configured, you can start the servers locally and play a game.
-We use [Docker Compose](https://docs.docker.com/compose/) to manage containers, so with Docker Desktop installed you can run `docker compose up` to start everything together.
+We use [Docker Compose](https://docs.docker.com/compose/) to manage containers for the game servers, Redis cache, and Postgres database.
+
+As a final step before starting the game servers, the Postgres database must be initialized.
+To do this, run `docker compose up migrate`.
+
+Now you can run `docker compose up` to start the game servers and their dependencies.
 
 Once you see `Duelyst 'development' started on port 3000` in the logs, the server is ready!
-Open http://localhost:3000/ in a browser to load the game client and play a practice game.
+Open http://localhost:3000/ in a browser to load the game client, create a user, and play a practice game.
 
 ## <a id="frontend-changes" />Making App (Frontend) Changes
 
@@ -170,7 +183,7 @@ When you open a pull request, some tasks will automatically start in our Continu
 We use [Github Actions](https://github.com/features/actions) for CI, so you can see the status and results of these tasks right in the pull request itself.
 
 Once the PR has been reviewed and accepted, it will be merged into the `main` branch.
-At this point, you are now an OpenDuelyst developer. Congrats!
+At this point, you are now an OpenDuelyst developer. Congratulations!
 
 ## <a id="get-help" />Where to Get Help
 
