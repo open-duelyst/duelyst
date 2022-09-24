@@ -90,7 +90,9 @@ yarn install --dev  # Install remaining Node.js dependencies.
 
 In order to successfully run the game, you will need a [Firebase Realtime Database](https://firebase.google.com/docs/database/).
 Fortunately, Google provides a free version of this service called the ["Spark Pricing Plan"](https://firebase.google.com/docs/projects/billing/firebase-pricing-plans).
+
 Once you have created a Firebase account and a Realtime Database, take note of your Realtime Database's URL, as you'll need it when building the code.
+You will also want to configure the Security Rules for your database. You can copy these from [rules.json](rules.json) in the repo.
 
 #### Building the Code
 
