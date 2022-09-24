@@ -1,0 +1,57 @@
+name: integration_tests
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+jobs:
+  integration_tests:
+    runs-on: ubuntu-latest
+    container: node:16
+    services:
+      redis:
+        image: redis:6
+      db:
+        image: postgres:14
+        env:
+          POSTGRES_USER: duelyst
+          POSTGRES_PASSWORD: duelyst
+          POSTGRES_DB: duelyst
+
+    steps:
+    - name: check out code
+      uses: actions/checkout@v3
+
+    # Caching node_modules saves 50s on builds which don't modify dependencies.
+    # Compared to yarn caching, it saves an additional 27 seconds.
+    - name: cache node_modules
+      uses: actions/cache@v3
+      with:
+        path: /home/runner/work/duelyst/duelyst/node_modules
+        key: node-modules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          node-modules-
+
+    - name: redirect git ssh to https
+      run: |
+        git config --global url."https://github.com/".insteadOf "git@github.com:"
+        git config --global url."https://".insteadOf "git://"
+
+    - name: install node dependencies
+      run: yarn install --dev
+
+    - name: run database migrations
+      run: yarn migrate:latest
+      env:
+        NODE_ENV: development
+        POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+
+    - name: run integration tests
+      run: yarn test:integration
+      env:
+        REDIS_IP: redis
+        POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+        # Intentionally left blank. FIXME: Use secrets to hit Firebase instead?
+        FIREBASE_URL: "" 
