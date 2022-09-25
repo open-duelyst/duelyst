@@ -35,7 +35,7 @@
     "glicko2": "^0.8.4",
     "handlebars": "^4.7.7",
     "hbs": "^4.1.0",
-    "helmet": "^0.5.3",
+    "helmet": "^0.8.0",
     "i18next": "^4.0.0",
     "i18next-browser-languagedetector": "^2.1.0",
     "i18next-xhr-backend": "^1.2.1",
