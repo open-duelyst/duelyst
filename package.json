@@ -56,7 +56,7 @@
     "p-throttle": "^1.1.0",
     "p-whilst": "^1.0.0",
     "pg": "8.0.3",
-    "pretty-error": "^1.1.1",
+    "pretty-error": "^4.0.0",
     "pretty-ms": "^1.1.0",
     "prettyjson": "1.1.3",
     "query-string": "^4.3.4",
