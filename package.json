@@ -19,7 +19,7 @@
     "coffee-script": "1.8.0",
     "colors": "*",
     "compose-middleware": "^2.0.1",
-    "convict": "^0.4.2",
+    "convict": "^6.2.2",
     "cors": "^2.7.1",
     "debug": "^2.2.0",
     "enum": "^2.3.0",
