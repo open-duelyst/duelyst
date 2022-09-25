@@ -120,15 +120,15 @@ gulp.task('desktop:git:clone', git.desktopClone);
 gulp.task('desktop:git:sync', git.desktopSync);
 gulp.task('desktop:git:commit', git.desktopCommit);
 gulp.task('desktop:git:push', git.desktopPush);
-gulp.task('desktop:git:diff', git.desktopDiff);
-gulp.task('desktop:git:publish', git.desktopPublish);
+// gulp.task('desktop:git:diff', git.desktopDiff);
+// gulp.task('desktop:git:publish', git.desktopPublish);
 gulp.task('desktop:git', gulp.series(
   'clean:git',
   'desktop:git:clone',
   'desktop:git:sync',
   'desktop:git:commit',
   'desktop:git:push',
-  'desktop:git:diff',
+  // 'desktop:git:diff',
 ));
 
 // watchPaths Does not apply to Browserify bundler
@@ -303,7 +303,7 @@ gulp.task('desktop:package', gulp.series(
   'desktop:zip:win32',
   'desktop:git',
   'desktop:shasums',
-  'desktop:git:publish',
+  // 'desktop:git:publish',
 ));
 gulp.task('desktop:package:steam', gulp.series(
   desktop.steamPrep,

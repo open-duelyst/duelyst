@@ -7,9 +7,11 @@ import readPkg from 'read-pkg';
 import semver from 'semver';
 import _ from 'underscore';
 import changelogGenerator from 'gulp-conventional-changelog';
-import githubRelease from 'gulp-github-release';
+// import githubRelease from 'gulp-github-release';
 import gitRevSync from 'git-rev-sync';
-import latestTag from '@counterplay/git-latest-semver-tag';
+// This package was removed, but is available in git history:
+// - https://github.com/open-duelyst/duelyst/tree/fd4347a/packages/git-latest-semver-tag
+// import latestTag from '@counterplay/git-latest-semver-tag';
 import {
   env, version, production, staging,
 } from './shared';
@@ -67,6 +69,9 @@ export function desktopPush(cb) {
   return git.push('origin', 'main', { cwd: `./dist/git-remotes/${env}`, maxBuffer: Infinity }, cb);
 }
 
+/* Disabled.
+ * - Dependency `git-latest-semver-tag` has security vulnterability:
+ *   https://security.snyk.io/vuln/SNYK-JS-TRIMNEWLINES-1298042
 // produce a diff zip between current version and previous tag
 export function desktopDiff(cb) {
   if (!production && !staging) {
@@ -91,7 +96,10 @@ export function desktopDiff(cb) {
     return cb();
   });
 }
+*/
 
+/* Disabled.
+ * - Github token is not valid.
 // publish github release
 export function desktopPublish(cb) {
   if (!production && !staging) {
@@ -111,7 +119,7 @@ export function desktopPublish(cb) {
   }
   return gulp.src('dist/desktop/*.{zip,SHA1SUM}')
     .pipe(githubRelease({
-      token: 'd26b52d4518a4abd48803edbc57a56def3df8da0',
+      token: undefined,
       owner,
       repo,
       tag,
@@ -121,6 +129,7 @@ export function desktopPublish(cb) {
       prerelease: false,
     }));
 }
+*/
 
 /*
 Git Helper Tasks
