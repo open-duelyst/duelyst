@@ -93,12 +93,6 @@
     bugsnag "^1.8.0"
     bugsnag-js "^3.0.4"
 
-"@counterplay/git-latest-semver-tag@./packages/git-latest-semver-tag":
-  version "2.0.1"
-  dependencies:
-    meow "^3.3.0"
-    semver "^5.0.1"
-
 "@counterplay/steamcmd@./packages/steamcmd":
   version "1.0.0"
   dependencies:

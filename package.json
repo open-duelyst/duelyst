@@ -91,7 +91,6 @@
   },
   "devDependencies": {
     "@coffeelint/cli": "^5.2.9",
-    "@counterplay/git-latest-semver-tag": "./packages/git-latest-semver-tag",
     "@counterplay/steamcmd": "./packages/steamcmd",
     "async": "^1.5.2",
     "babel-core": "^6.26.0",
