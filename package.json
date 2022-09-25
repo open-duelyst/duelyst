@@ -147,7 +147,6 @@
     "gulp-if": "^1.2.5",
     "gulp-imagemin": "^3.0.0",
     "gulp-json-editor": "^2.2.1",
-    "gulp-manifest": "./packages/gulp-manifest",
     "gulp-minify-css": "^1.2.0",
     "gulp-minify-html": "^1.0.3",
     "gulp-notify": "^3.0.0",
