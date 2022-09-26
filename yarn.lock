@@ -44,17 +44,17 @@
   dependencies:
     firebase "2.0.x"
 
-"@bower_components/bootstrap-sass-official@twbs/bootstrap-sass#~3.2.0+1":
-  version "3.2.0"
-  resolved "https://codeload.github.com/twbs/bootstrap-sass/tar.gz/a5f5954268779ce0faf7607b3c35191a8d0fdfe6"
+"@bower_components/bootstrap-sass-official@twbs/bootstrap-sass#3.4.3":
+  version "3.4.3"
+  resolved "https://codeload.github.com/twbs/bootstrap-sass/tar.gz/6b0ca5025c64f2e5696c8719cfce7148c78d0a50"
 
 "@bower_components/firebase@firebase/firebase-bower#2.0.x":
   version "0.0.0"
   resolved "https://codeload.github.com/firebase/firebase-bower/tar.gz/e9b8b4f85de46362aa4af6556c1c3639e7ebe038"
 
-"@bower_components/font-awesome@FortAwesome/Font-Awesome#~4.2":
-  version "4.2.0"
-  resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/a65bd93d81e9e6bd5ebfa41757a4474960b973b4"
+"@bower_components/font-awesome@FortAwesome/Font-Awesome#4.7.0":
+  version "4.7.0"
+  resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/a8386aae19e200ddb0f6845b5feeee5eb7013687"
 
 "@bower_components/jquery@components/jquery#~2.0.3":
   version "2.0.3"
