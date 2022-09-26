@@ -10,7 +10,7 @@
 config/production.json
 config/staging.json
 config/steam/
-rules.json
+firebaseRules.json
 circle.yml
 Dockerfile
 Vagrantfile
