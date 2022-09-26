@@ -52,9 +52,9 @@
   version "0.0.0"
   resolved "https://codeload.github.com/firebase/firebase-bower/tar.gz/e9b8b4f85de46362aa4af6556c1c3639e7ebe038"
 
-"@bower_components/font-awesome@FortAwesome/Font-Awesome#~4.2":
-  version "4.2.0"
-  resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/a65bd93d81e9e6bd5ebfa41757a4474960b973b4"
+"@bower_components/font-awesome@FortAwesome/Font-Awesome#4.7.0":
+  version "4.7.0"
+  resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/a8386aae19e200ddb0f6845b5feeee5eb7013687"
 
 "@bower_components/jquery@components/jquery#~2.0.3":
   version "2.0.3"
