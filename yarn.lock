@@ -44,9 +44,9 @@
   dependencies:
     firebase "2.0.x"
 
-"@bower_components/bootstrap-sass-official@twbs/bootstrap-sass#~3.2.0+1":
-  version "3.2.0"
-  resolved "https://codeload.github.com/twbs/bootstrap-sass/tar.gz/a5f5954268779ce0faf7607b3c35191a8d0fdfe6"
+"@bower_components/bootstrap-sass-official@twbs/bootstrap-sass#3.4.3":
+  version "3.4.3"
+  resolved "https://codeload.github.com/twbs/bootstrap-sass/tar.gz/6b0ca5025c64f2e5696c8719cfce7148c78d0a50"
 
 "@bower_components/firebase@firebase/firebase-bower#2.0.x":
   version "0.0.0"
