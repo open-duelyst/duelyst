@@ -7,7 +7,7 @@
 /scripts/*
 config/production.json
 config/staging.json
-rules.json
+firebaseRules.json
 circle.yml
 Dockerfile
 Vagrantfile

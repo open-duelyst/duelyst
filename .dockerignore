@@ -4,7 +4,7 @@
 circle.yml
 Procfile
 README.md
-rules.json
+firebaseRules.json
 Vagrantfile
 desktop
 app/audio
