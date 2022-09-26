@@ -1664,6 +1664,7 @@ cc.textureCache.addImage = function (url, cb, target) {
 	loadFunc.call(cc.loader, url, function (err, img) {
 		if (err)
 			return cb && cb.call(target, err);
+		let pixelFormat = this._pixelFormat || cc.Texture2D.PIXEL_FORMAT_RGBA8888;
 		cc.textureCache.handleLoadedTexture(url, pixelFormat);
 
 		var texResult = locTexs[url];
