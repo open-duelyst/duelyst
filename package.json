@@ -221,6 +221,7 @@
     "push:staging": "gulp git:staging",
     "rsx:copy": "gulp rsx:copy",
     "rsx:copy:web": "gulp rsx:copy:web",
+    "snyk": "snyk test --show-vulnerable-paths=all --severity-threshold=high",
     "test": "mocha -t 1000 --recursive test",
     "test:integration": "mocha -t 1000 --recursive test/integration",
     "test:integration:achievements": "mocha -t 1000 test/integration/achievements",
