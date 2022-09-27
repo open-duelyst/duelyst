@@ -33,7 +33,6 @@
     "form-urlencoded": "^1.2.1",
     "gamecenter-identity-verifier": "^0.1.1",
     "glicko2": "^0.8.4",
-    "handlebars": "^4.7.7",
     "hbs": "^4.1.0",
     "helmet": "^0.8.0",
     "i18next": "^19.8.5",
