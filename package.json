@@ -1,7 +1,24 @@
 {
   "name": "open-duelyst",
   "version": "1.0.0",
+  "engines": {
+    "yarn": ">= 1.0.0"
+  },
+  "resolutions": {
+    "handlebars": "4.5.3"
+  },
   "dependencies": {
+    "@bower_components/backbone": "jashkenas/backbone#1.1.2",
+    "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
+    "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
+    "@bower_components/backbone.wreqr": "marionettejs/backbone.wreqr#^1.0.0",
+    "@bower_components/backfire": "firebase/backfire#~0.4.0",
+    "@bower_components/bootstrap-sass-official": "twbs/bootstrap-sass#3.4.3",
+    "@bower_components/firebase": "firebase/firebase-bower#2.0.x",
+    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#4.7.0",
+    "@bower_components/jquery": "components/jquery#~2.0.3",
+    "@bower_components/underscore": "jashkenas/underscore#1.6.0",
+    "@bower_components/velocity": "julianshapiro/velocity#~1.2.0",
     "@counterplay/chromajs": "./packages/chroma-js",
     "@counterplay/exception-reporter": "./packages/exception-reporter",
     "@counterplay/warlock": "./packages/warlock",
@@ -33,8 +50,7 @@
     "form-urlencoded": "^1.2.1",
     "gamecenter-identity-verifier": "^0.1.1",
     "glicko2": "^0.8.4",
-    "handlebars": "^4.7.7",
-    "hbs": "^4.1.0",
+    "hbs": "4.1.0",
     "helmet": "^0.8.0",
     "i18next": "^19.8.5",
     "i18next-browser-languagedetector": "^2.1.0",
@@ -75,18 +91,7 @@
     "validator": "^3.18.0",
     "web-animations-js": "2.1.3",
     "winston": "2.1.1",
-    "winston-papertrail": "1.0.1",
-    "@bower_components/backbone": "jashkenas/backbone#1.1.2",
-    "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
-    "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
-    "@bower_components/backbone.wreqr": "marionettejs/backbone.wreqr#^1.0.0",
-    "@bower_components/backfire": "firebase/backfire#~0.4.0",
-    "@bower_components/bootstrap-sass-official": "twbs/bootstrap-sass#~3.2.0+1",
-    "@bower_components/firebase": "firebase/firebase-bower#2.0.x",
-    "@bower_components/font-awesome": "FortAwesome/Font-Awesome#~4.2",
-    "@bower_components/jquery": "components/jquery#~2.0.3",
-    "@bower_components/underscore": "jashkenas/underscore#1.6.0",
-    "@bower_components/velocity": "julianshapiro/velocity#~1.2.0"
+    "winston-papertrail": "1.0.1"
   },
   "devDependencies": {
     "@coffeelint/cli": "^5.2.9",
@@ -216,6 +221,7 @@
     "push:staging": "gulp git:staging",
     "rsx:copy": "gulp rsx:copy",
     "rsx:copy:web": "gulp rsx:copy:web",
+    "snyk": "snyk test --show-vulnerable-paths=all --severity-threshold=high",
     "test": "mocha -t 1000 --recursive test",
     "test:integration": "mocha -t 1000 --recursive test/integration",
     "test:integration:achievements": "mocha -t 1000 test/integration/achievements",
@@ -229,8 +235,5 @@
     "tsc": "tsc",
     "tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
     "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
-  },
-  "engines": {
-    "yarn": ">= 1.0.0"
   }
 }
