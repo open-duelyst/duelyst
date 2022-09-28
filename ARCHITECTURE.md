@@ -64,7 +64,7 @@ AWS S3:
 - Provides binary large object (blob) storage for generic file storage.
 - Not currently used, but code is available to use S3 for CDN, unfinished game archiving, client logging, and database backup features.
 
-<a id="resource-utilization" />## Resource Utilization
+## <a id="resource-utilization" /> Resource Utilization
 
 The following resource utilization numbers were measured by Docker locally. The baseline numbers were measured when
 idle, and the peak and per-game numbers were measured when playing a practice game (which performs the same work as the
