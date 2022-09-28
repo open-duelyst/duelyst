@@ -6,8 +6,8 @@ worker = require '../server/redis/r-jobs'
 ###
 Start Kue GUI
 ###
-kue.app.listen(3000)
-Logger.module("WORKER").log('Worker UI started on port 3000')
+kue.app.listen(4000)
+Logger.module("WORKER").log('Worker UI started on port 4000')
 
 ###
 Kue Events
