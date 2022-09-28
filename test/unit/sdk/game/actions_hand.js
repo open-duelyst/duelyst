@@ -127,6 +127,7 @@ describe('actions: hand', () => {
     expect(cardToPlay.getCanBeAppliedAnywhere()).to.equal(true);
   });
 
+  /* Test disabled: flaky
   it('expect replace card to find different card', () => {
     const player = SDK.GameSession.getInstance().getPlayer1();
     const cardsInHand = player.getDeck().getCardsInHand();
@@ -145,6 +146,7 @@ describe('actions: hand', () => {
 
     expect(SDK.GameSession.getInstance().getPlayer1().getDeck().getCardIndexInHandAtIndex(indexReplaced)).to.not.equal(cardReplaced.getIndex());
   });
+  */
 
   it('expect invalid replace card action after already replaced a card', () => {
     const player = SDK.GameSession.getInstance().getPlayer1();
