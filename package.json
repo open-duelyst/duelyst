@@ -207,6 +207,8 @@
     "build:steam": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build:steam",
     "build:web": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build:web --watch=false",
     "build": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build --watch=false",
+    "cdn:copy": "gulp rsx:copy:cdn",
+    "cdn:upload:staging": "gulp upload:stagingcdn",
     "deploy:staging": "npm run push:master && npm run push:staging",
     "lint:coffee": "coffeelint -f coffeelint.json app server worker",
     "lint:coffee:app": "coffeelint -f coffeelint.json app",

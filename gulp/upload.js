@@ -58,3 +58,25 @@ export function audio(version, cb) {
     .pipe(publisher.cache())
     .pipe(awspublish.reporter());
 }
+
+export function stagingcdn() {
+  const publisher = awspublish.create({
+    region: config.get('assetsBucket.region'),
+    params: {
+      Bucket: config.get('assetsBucket.name')
+    },
+    credentials: {
+      accessKeyId: config.get('assetsBucket.accessKey'),
+      secretAccessKey: config.get('assetsBucket.secretKey'),
+      signatureVersion: "v3"
+    }
+  });
+  return gulp.src(['dist/src/**/*'])
+    .pipe(rename((p) => {
+      p.dirname = `/staging/${p.dirname}`;
+      return p.dirname;
+    }))
+    .pipe(parallelize(publisher.publish(), 2))
+    .pipe(publisher.cache())
+    .pipe(awspublish.reporter());
+}
