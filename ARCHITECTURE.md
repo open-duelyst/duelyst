@@ -17,14 +17,14 @@ API Server:
 
 Game Server:
 
-- The Game server is a Socket.IO WebSocket server which handles multiplayer games.
+- The Game server is a Socket.io WebSocket server which handles multiplayer games.
 - The service enqueues tasks in Redis to be picked up by the workers.
 - The service listens on port 8000 by default.
 - Code can be found in `server/game.coffee`, and configuration can be found in `config/`.
 
 Single Player (SP) Server:
 
-- The SP server is a Socket.IO WebSocket server which handles single-player games.
+- The SP server is a Socket.io WebSocket server which handles single-player games.
 - The service enqueues tasks in Redis to be picked up by the workers.
 - The service listens on port 8000 by default.
 - Code can be found in `server/single_player.coffee`, and configuration can be found in `config/`.
@@ -34,12 +34,13 @@ Worker:
 - The worker uses Kue to poll Redis-backed queues for tasks like game creation and matchmaking.
 - Some matchmaking tasks also use Postgres, for server healthchecks and retrieving bot users.
 - Code can be found in `worker/worker.coffee`, and configuration can be found in `config/`.
-- A Kue GUI is available at `http://localhost:3000` via `docker compose up worker-ui`).
+- A Kue GUI is available at `http://localhost:4000` via `docker compose up worker-ui`).
 
 ## Other Dependencies
 
-Firebase:
+Firebase Realtime Database:
 
+- Provides a way to the game client to access both permanent and transient data, without direct access to Postgres, such as transmitting game steps.
 - Client code can be found in `app` (see `new Firebase()` calls) and `server/lib/duelyst_firebase_module.coffee`, and configuration can be found in `config/`
 
 Postgres:
@@ -64,7 +65,7 @@ AWS S3:
 - Provides binary large object (blob) storage for generic file storage.
 - Not currently used, but code is available to use S3 for CDN, unfinished game archiving, client logging, and database backup features.
 
-## <a id="resource-utilization" /> Resource Utilization
+## Resource Utilization <a id="resource-utilization" />
 
 The following resource utilization numbers were measured by Docker locally. The baseline numbers were measured when
 idle, and the peak and per-game numbers were measured when playing a practice game (which performs the same work as the
@@ -73,6 +74,7 @@ Game WebSocket server, plus computational work for AI decisions).
 #### Node.js processes (API, Game, SP, Worker):
 
 - CPU: 0-1% baseline; API spikes to 15-65% on loads; SP spikes to 5% on AI processing.
+  - NOTE: The API spikes during loads are largely due to serving 75MB of static assets from Express instead of CDN.
 - Memory: 300MB baseline. API increases to ~500MB over time.
 - Network: Near-zero baseline.
 	- API sends about 500KB per game.
@@ -97,13 +99,9 @@ Game WebSocket server, plus computational work for AI decisions).
 	- This ongoing traffic is due to Kue polling; see `server/redis/r-jobs.coffee`.
 - Storage: Under 200MB.
 
-#### S3 bucket:
-
-- Not yet in use.
-
 #### Total resources used for 250 concurrent, 10-minute games (125 MP, 125 SP):
 
-- vCPU: About 9 (Half of this is API and Worker)
+- vCPU: About 10 (Half of this is API and Worker)
 - Memory: About 2GB (though more will improve buffer/cache efficiency)
 - Network: About 300 KB/s overall; 175MB total for 250 games (700KB per game)
-- Storage: About 22GB with each service on a different instance; provision 8GB per service regardless (48GB).
+- Storage: About 22GB with each service on a different instance.

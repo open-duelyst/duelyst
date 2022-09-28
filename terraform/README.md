@@ -1,7 +1,8 @@
 # Terraform
 
 This directory contains [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) for creating
-staging and production environments. For development environments, see [here](../CONTRIBUTING.md#dev-environment).
+staging and production environments in AWS. For instructions on creating a development environment, see
+[here](../CONTRIBUTING.md#dev-environment).
 
 To get started, install [Terraform](https://www.terraform.io/downloads) for your OS. At the time of writing, the latest
 version is 1.3.0, though we will be managing version constraints in the code itself.
@@ -34,7 +35,7 @@ create this manually in the UI. Give it a _globally unique_ name, and leave all 
 
 Once you have a user, an access key, a secret key, and an S3 bucket, you can initialize and use Terraform.
 
-To do this, prepare two more configuration files:
+To do this, create two more configuration files:
 
 `staging/config.aws.tfbackend`:
 ```
@@ -50,7 +51,7 @@ bucket = "your-globally-unique-bucket-name"
 ```
 
 Once these files are in place, you can run `terraform_init.sh` in the `staging` directory to initialize Terraform and
-the required providers. These files are ignored in Git.
+the required providers. These files are ignored in Git to avoid the risk of accidentally committing your secrets.
 
 When this command succeeds, you're ready to use Terraform to provision a staging environment. See the `staging`
 directory for more info.

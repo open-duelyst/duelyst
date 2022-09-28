@@ -55,7 +55,14 @@ The following table summarizes the above resource utilization estimations for 50
 - AWS EKS
 	- Creating an EKS cluster generates a $0.10/hour charge, making the base price $73/mo
 	- This price does not include Compute, Data Transfer, or Storage billing, so EKS is not a good fit for the project.
-- AWS Elastic Beanstalk (TBD)
+
+## Load Balancers
+
+- AWS ALB (TBD)
+
+## CDN
+
+- AWS CloudFront (TBD)
 
 ## Managed Postgres
 
@@ -64,6 +71,10 @@ The following table summarizes the above resource utilization estimations for 50
 ## Managed Redis
 
 - AWS Elasticache (TBD)
+
+## S3 Bucket (Standard Tier) to store game archives, static content, etc.:
+
+- TBD
 
 ## S3 Bucket (Standard Tier) to store Terraform state:
 
