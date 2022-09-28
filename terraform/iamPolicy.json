@@ -1,0 +1,82 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeAccountAttributes",
+                "ec2:DescribeInstanceCreditSpecifications",
+                "ec2:DescribeInstanceEventNotificationAttributes",
+                "ec2:DescribeInstanceEventWindows",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstanceTypeOfferings",
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeInstances",
+                "ec2:DescribeLaunchTemplateVersions",
+                "ec2:DescribeLaunchTemplates",
+                "ec2:DescribeTags",
+                "ec2:DescribeVolumeStatus",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeVolumesModifications",
+                "ec2:DescribeVpcs",
+                "sns:GetSubscriptionAttributes"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:DeleteAlarms",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:ListTagsForResource",
+                "cloudwatch:PutMetricAlarm",
+                "iam:PassRole",
+                "s3:ListBucket",
+                "sns:CreateTopic",
+                "sns:DeleteTopic",
+                "sns:GetTopicAttributes",
+                "sns:ListTagsForResource",
+                "sns:SetTopicAttributes",
+                "sns:Subscribe"
+            ],
+            "Resource": [
+                "arn:aws:cloudwatch:*:YOUR-AWS-ACCOUNT-ID:alarm:*",
+                "arn:aws:iam::YOUR-AWS-ACCOUNT-ID:role/*",
+                "arn:aws:s3:::YOUR-TERRAFORM-S3-BUCKET",
+                "arn:aws:sns:*:YOUR-AWS-ACCOUNT-ID:*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AttachVolume",
+                "ec2:CreateTags",
+                "ec2:CreateVolume",
+                "ec2:DeleteTags",
+                "ec2:DeleteVolume",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeVolumeAttribute",
+                "ec2:DetachVolume",
+                "ec2:GetLaunchTemplateData",
+                "ec2:ModifyVolume",
+                "ec2:ModifyVolumeAttribute",
+                "ec2:RunInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:TerminateInstances",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:instance/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:launch-template/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:network-interface/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:security-group/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:subnet/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:volume/*",
+                "arn:aws:ec2:*::image/*",
+                "arn:aws:s3:::YOUR-TERRAFORM-S3-BUCKET/*"
+            ]
+        }
+    ]
+}

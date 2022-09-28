@@ -70,7 +70,7 @@ The following resource utilization numbers were measured by Docker locally. The 
 idle, and the peak and per-game numbers were measured when playing a practice game (which performs the same work as the
 Game WebSocket server, plus computational work for AI decisions).
 
-Node.js processes (API, Game, SP, Worker):
+#### Node.js processes (API, Game, SP, Worker):
 
 - CPU: 0-1% baseline; API spikes to 15-65% on loads; SP spikes to 5% on AI processing.
 - Memory: 300MB baseline. API increases to ~500MB over time.
@@ -81,14 +81,14 @@ Node.js processes (API, Game, SP, Worker):
 		- This ongoing traffic is due to Kue polling; see `server/redis/r-jobs.coffee`.
 - Storage: About 5GB (2.0GB for OS baseline, 1.3GB for `app/`, 0.8GB for `node_modules/`, 0.5GB for `dist/`)
 
-Postgres database:
+#### Postgres database:
 
 - CPU: Near-zero baseline. Reaches 7% on user retrieval (login etc.)
 - Memory: 20MB baseline. Increases to 70MB after logging in and playing games (caching)
 - Network: Near-zero baseline. Sends 10-15KB (internal, unbilled traffic) on user operations (fetching users, challenges, cards, etc.)
 - Storage: About 1GB (0.5GB for OS baseline, 0.1GB for `/var/lib/postgresql` with ~5 users, ~20 games)
 
-Redis cache:
+#### Redis cache:
 
 - CPU: 1% baseline. Stays under 2% during games.
 	- Redis 6.x has a second thread for connection handling, but we don't benefit much from this at our small scale.
@@ -97,13 +97,13 @@ Redis cache:
 	- This ongoing traffic is due to Kue polling; see `server/redis/r-jobs.coffee`.
 - Storage: Under 200MB.
 
-Total resources used for 250 concurrent, 10-minute games (125 MP, 125 SP):
+#### S3 bucket:
+
+- Not yet in use.
+
+#### Total resources used for 250 concurrent, 10-minute games (125 MP, 125 SP):
 
 - vCPU: About 9 (Half of this is API and Worker)
 - Memory: About 2GB (though more will improve buffer/cache efficiency)
 - Network: About 300 KB/s overall; 175MB total for 250 games (700KB per game)
 - Storage: About 22GB with each service on a different instance; provision 8GB per service regardless (48GB).
-
-S3 bucket:
-
-- Not yet in use.
