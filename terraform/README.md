@@ -8,10 +8,138 @@ version is 1.3.0, though we will be managing version constraints in the code its
 
 ## Getting Started
 
-First, create an AWS account. This will create a root user which can be used to create other resources. Since we don't
-want to generate access keys for the root user, we should first create a limited IAM user and access keys.
+First, create an AWS account. This will create a root user which can be used to create other resources. Configure
+Multi-Factor Authentication (MFA) on the root user to prevent unauthorized access.
+
+Before we can use Terraform, we need to create two prerequisite resources by hand: an IAM user, and an S3 bucket.
 
 #### Creating an IAM User
+
+Since we don't want to generate access keys for the root user, we should create a limited IAM user and access keys.
+
+Create a `terraform` user with an Access Key (no password), and attach the following policy to the user:
+
+```json
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeAccountAttributes",
+                "ec2:DescribeInstanceCreditSpecifications",
+                "ec2:DescribeInstanceEventNotificationAttributes",
+                "ec2:DescribeInstanceEventWindows",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstanceTypeOfferings",
+                "ec2:DescribeInstanceTypes",
+                "ec2:DescribeInstances",
+                "ec2:DescribeLaunchTemplateVersions",
+                "ec2:DescribeLaunchTemplates",
+                "ec2:DescribeTags",
+                "ec2:DescribeVolumeStatus",
+                "ec2:DescribeVolumes",
+                "ec2:DescribeVolumesModifications",
+                "ec2:DescribeVpcs",
+                "sns:GetSubscriptionAttributes"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "cloudwatch:DeleteAlarms",
+                "cloudwatch:DescribeAlarms",
+                "cloudwatch:ListTagsForResource",
+                "cloudwatch:PutMetricAlarm",
+                "iam:PassRole",
+                "s3:ListBucket",
+                "sns:CreateTopic",
+                "sns:DeleteTopic",
+                "sns:GetTopicAttributes",
+                "sns:ListTagsForResource",
+                "sns:SetTopicAttributes",
+                "sns:Subscribe"
+            ],
+            "Resource": [
+                "arn:aws:cloudwatch:*:YOUR-AWS-ACCOUNT-ID:alarm:*",
+                "arn:aws:iam::YOUR-AWS-ACCOUNT-ID:role/*",
+                "arn:aws:s3:::YOUR-TERRAFORM-S3-BUCKET",
+                "arn:aws:sns:*:YOUR-AWS-ACCOUNT-ID:*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AttachVolume",
+                "ec2:CreateTags",
+                "ec2:CreateVolume",
+                "ec2:DeleteTags",
+                "ec2:DeleteVolume",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeVolumeAttribute",
+                "ec2:DetachVolume",
+                "ec2:GetLaunchTemplateData",
+                "ec2:ModifyVolume",
+                "ec2:ModifyVolumeAttribute",
+                "ec2:RunInstances",
+                "ec2:StartInstances",
+                "ec2:StopInstances",
+                "ec2:TerminateInstances",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:instance/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:launch-template/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:network-interface/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:security-group/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:subnet/*",
+                "arn:aws:ec2:*:YOUR-AWS-ACCOUNT-ID:volume/*",
+                "arn:aws:ec2:*::image/*",
+                "arn:aws:s3:::YOUR-TERRAFORM-S3-BUCKET/*"
+            ]
+        }
+    ]
+}
+```
+
+This is a policy of "least privilege" which enables the permissions needed to create a staging environment.
+
+In the final step, copy the Access Key and Secret Key into a password manager. You will need these later to use in
+`terraform.tfvars` files which are ignored by Git in this repo.
+
+#### Creating an S3 bucket to store Terraform remote state
+
+In order to avoid local state, we need to create an S3 bucket for Terraform to put its state files in. Since there is a
+bit of a "chicken and egg" problem with the remote state provider configuration and the bucket itself, go ahead and
+create this manually in the UI. Give it a _globally unique_ name, and leave all other settings at the default values.
+
+#### Initializing Providers
+
+Once you have a user, an access key, a secret key, and an S3 bucket, you can initialize and use Terraform.
+
+Terraform makes it somewhat cumbersome to genericize backend initialization in a way which allows each user to
+set their own AWS region and globally-unique S3 bucket name. In order to do this, we need to create two files:
+
+`staging/config.aws.tfbackend`:
+```
+region = "your-preferred-aws-region"
+access_key = "your-access-key"
+secret_key = "your-secret-key"
+```
+
+`staging/config.s3.tfbackend`:
+```
+region = "your-preferred-aws-region"
+bucket = "your-globally-unique-bucket-name"
+```
+
+Once these files are in place, you can run `terraform_init.sh` in the `staging` directory to initialize Terraform and
+the required providers.
+
+When this command succeeds, you're ready to use Terraform to provision a staging environment. See the `staging`
+directory for more info.
 
 ## Notes on Cost Management
 
