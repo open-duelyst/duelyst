@@ -27,7 +27,7 @@ The following table summarizes the above resource utilization estimations for 50
 	- The first 30GB of EBS storage is free for 1 year
 	- Amazon's `gp3` disk type in Elastic Block Store is the most economical option
 	- Storage is billed at $0.08/GB-month ($3.84/month for 8GB x 6 services)
-  - There are additional charges when exceeding 3,000 IOPS or 125MB/s transfer speed
+	- There are additional charges when exceeding 3,000 IOPS or 125MB/s transfer speed
 		- Given our scale, it is very unlikely that we will hit these thresholds
 - Data Transfer:
 	- The first 100GB/month is free indefinitely, and the next 9.1TB/month is billed at $0.09/GB
@@ -47,7 +47,7 @@ The following table summarizes the above resource utilization estimations for 50
 - AWS ECS-EC2
 	- Billed at the same rate as EC2, but allows us to provide containers instead of provisioning VMs
 - AWS ECS-Fargate
-  - Fargate pods are billed at $0.03238/vCPU-hour plus $0.00356/GB-hour for memory
+	- Fargate pods are billed at $0.03238/vCPU-hour plus $0.00356/GB-hour for memory
 	- Fargate Spot pods are billed at $0.012144/vCPU-hour plus $0.0013335/GB-hour for memory
 	- Fargate pod sizing has additional restrictions: with 2 vCPUs, you must allocate at least 4GB of memory
 	- For 6 Spot pods with 2 vCPU and 4GB of memory, this would cost $0.18/hour or $129.75/month.
@@ -58,23 +58,43 @@ The following table summarizes the above resource utilization estimations for 50
 
 ## Load Balancers
 
-- AWS ALB (TBD)
+- AWS Application Load Balancer (ALB):
+	- The Free Tier includes 750 hours of ALB uptime each month, which means one free ALB per account.
+	- Also includes 15 Load Capacity Units (LCUs) per month, which is a metric approximating the following:
+		- New connections
+		- Active connections
+		- Processed bytes
+		- Rule evaluations
+	- More testing is needed to understand how many LCUs we would consume, but the ALB itself should be free.
+- SSL Certificates:
+	- Public certificates are always free through AWS Cert Manager, and can be easily attached to an ALB.
 
 ## CDN
 
-- AWS CloudFront (TBD)
+- AWS CloudFront:
+	- The first 1TB of data transfer and 10 million requests are free.
+	- There's virtually no way we'll exceed the Free Tier limits here.
 
 ## Managed Postgres
 
-- AWS RDS (TBD)
+- AWS RDS:
+	- One db.t4g.micro instance (2 vCPU, 1GB memory, 20GB storage, 20GB backups) is free.
 
 ## Managed Redis
 
-- AWS Elasticache (TBD)
+- AWS Elasticache:
+	- One cache.t3.micro instance (2 vCPU, 500MB memory) is free.
 
 ## S3 Bucket (Standard Tier) to store game archives, static content, etc.:
 
-- TBD
+- Would need to store about 1.1GB of data (514MB dist, 619MB resources)
+- First 12 months is free
+- Storage costs:
+	- $0.023/GB-month ($0.03/mo).
+- Per-Request costs:
+	- The bucket will be behind CloudFront, so this should be minimal.
+- Data Transfer costs:
+	- Free up to 100GB/month.
 
 ## S3 Bucket (Standard Tier) to store Terraform state:
 
