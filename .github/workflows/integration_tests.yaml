@@ -5,6 +5,16 @@ on:
     branches:
     - main
   pull_request:
+    paths:
+      - app/**
+      - config/**
+      - gulp/**
+      - gulpfile.babel.js
+      - package.json
+      - server/**
+      - test/**
+      - worker/**
+      - yarn.lock
 
 jobs:
   integration_tests:

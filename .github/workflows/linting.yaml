@@ -5,6 +5,17 @@ on:
     branches:
     - main
   pull_request:
+    paths:
+      - app/**
+      - cli/**
+      - config/**
+      - desktop/**
+      - gulp/**
+      - gulpfile.babel.js
+      - scripts/**
+      - server/**
+      - test/**
+      - worker/**
 
 jobs:
   linting:
