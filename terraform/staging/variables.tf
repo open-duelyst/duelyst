@@ -24,6 +24,10 @@ variable "cdn_domain_name" {
   type = string
 }
 
+variable "subnet_availability_zone" {
+  type = string
+}
+
 variable "email_address_for_alarms" {
   type = string
 }
