@@ -427,8 +427,5 @@ console.log(`CONFIG: env:${config.get('env')}`);
 console.log(`CONFIG: firebase:${url.parse(config.get('firebase.url')).host}`);
 console.log(`CONFIG: postgres:${pgUrl.host}${pgUrl.pathname}`);
 console.log(`CONFIG: redis:${config.get('redis.ip')}`);
-// console.log("isProduction: " + config.isProduction());
-// console.log("isStaging: " + config.isStaging());
-// console.log("isDevelopment: " + config.isDevelopment());
 
 module.exports = config;
