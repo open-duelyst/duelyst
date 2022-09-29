@@ -24,7 +24,15 @@ variable "cdn_domain_name" {
   type = string
 }
 
-variable "subnet_availability_zone" {
+variable "first_availability_zone" {
+  type = string
+}
+
+variable "second_availability_zone" {
+  type = string
+}
+
+variable "third_availability_zone" {
   type = string
 }
 
