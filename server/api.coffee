@@ -67,6 +67,11 @@ setupDevelopment = () ->
 		server.connected = true
 		Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
 
+setupStaging = () ->
+	server.listen config.get('port'), () ->
+		server.connected = true
+		Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
+
 setupProduction = () ->
 	makeDirectory (err) ->
 		if err?
@@ -91,5 +96,9 @@ process.on 'uncaughtException', (err) ->
 
 if config.isDevelopment()
 	setupDevelopment()
-if config.isProduction()
+else if config.isStaging()
+	setupStaging()
+else if config.isProduction()
 	setupProduction()
+else
+	Logger.module("API").error "Unknown environment from config!"

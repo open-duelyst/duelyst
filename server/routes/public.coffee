@@ -34,9 +34,13 @@ serveIndex = (req, res) ->
 	# serve index.html file
 	if config.isDevelopment()
 		res.sendFile path.resolve(__dirname + "/../../dist/src/index.html")
+	else if config.isStaging()
+		res.redirect('https://d3tg1rqy5u5jtl.cloudfront.net/staging/index.html') # temp testing
 	else if config.isProduction()
 		# Production mode uses index.html from S3
 		res.sendFile path.resolve(__dirname + "/../../public/" + config.get('env') + "/index.html")
+	else
+		Logger.module("API").error "Unknown environment from config!"
 
 serveRegister = (req, res) ->
 	# set no cache header

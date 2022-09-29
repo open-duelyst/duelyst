@@ -4,9 +4,8 @@
 git config --global url."https://github.com/".insteadOf git@github.com:
 git config --global url."https://".insteadOf git://
 
-# Install dependencies
+# Install dependencies.
 yarn install --dev
 
-# To enable socket debug logs, prepend this command with DEBUG=*
-# Use exec to take over the PID from the shell, enabling signal handling
+# Use exec to take over the PID from the shell, enabling signal handling.
 exec yarn $1
