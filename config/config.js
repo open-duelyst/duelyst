@@ -76,6 +76,10 @@ const config = convict({
       default: '',
       env: 'S3_ASSETS_BUCKET'
     },
+    domainName: {
+      default: '',
+      env: 'S3_ASSETS_DOMAIN'
+    },
     region: {
       default: '',
       env: 'AWS_REGION'

@@ -43,7 +43,6 @@ services:
     ports:
       - 3000:3000
     environment:
-      NODE_ENV: staging # Testing.
       REDIS_IP: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}

@@ -22,7 +22,6 @@ resource "aws_cloudfront_distribution" "distribution" {
       }
     }
 
-    #viewer_protocol_policy = "allow-all" # HTTP + HTTPS.
     viewer_protocol_policy = "https-only"
     min_ttl                = 0
     default_ttl            = 3600  # 1 hour.
