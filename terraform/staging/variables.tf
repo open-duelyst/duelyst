@@ -23,3 +23,7 @@ variable "assets_bucket_name" {
 variable "staging_domain_name" {
   type = string
 }
+
+variable "cdn_domain_name" {
+  type = string
+}

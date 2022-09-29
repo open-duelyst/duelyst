@@ -17,3 +17,8 @@ variable "dns_aliases" {
   type    = list(string)
   default = []
 }
+
+variable "certificate_arn" {
+  type        = string
+  description = "The ACM SSL certificate ARN to use for this distribution."
+}
