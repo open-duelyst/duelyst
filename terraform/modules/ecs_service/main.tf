@@ -1,0 +1,35 @@
+resource "aws_ecs_service" "service" {
+  name            = var.name
+  cluster         = var.cluster
+  task_definition = aws_ecs_task_definition.task_def.arn
+  desired_count   = var.container_count
+
+  ordered_placement_strategy {
+    type = "binpack"
+    field = "cpu"
+  }
+}
+
+resource "aws_ecs_task_definition" "task_def" {
+  family = var.name
+
+  container_definitions = jsonencode([
+    {
+      name   = var.name
+      image  = var.container_image
+      cpu    = var.container_cpu
+      memory = var.container_mem
+      portMappings = [
+        {
+          containerPort = var.service_port
+          hostPort      = var.service_port
+        }
+      ]
+    },
+  ])
+
+  #volume {
+  #  name      = "service-storage"
+  #  host_path = "/ecs/service-storage"
+  #}
+}

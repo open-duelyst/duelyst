@@ -12,6 +12,10 @@ variable "aws_secret_key" {
   type = string
 }
 
+variable "ssh_public_key" {
+  type = string
+}
+
 variable "assets_bucket_name" {
   type = string
 }
