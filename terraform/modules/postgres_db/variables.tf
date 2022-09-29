@@ -1,0 +1,39 @@
+variable "name" {
+  type        = string
+  description = "The name of this RDS instance."
+}
+
+variable "postgres_version" {
+  type    = string
+  default = "13.7" # 14 not yet supported without manual upgrade.
+}
+
+variable "instance_type" {
+  type    = string
+  default = "db.t4g.micro"
+}
+
+variable "storage" {
+  type    = string
+  default = "20"
+}
+
+variable "database_name" {
+  type    = string
+  default = "duelyst"
+}
+
+variable "availability_zone" {
+  type        = string
+  description = "The availability zone for this RDS instance."
+}
+
+variable "username" {
+  type        = string
+  description = "The admin user for this RDS instance."
+}
+
+variable "password" {
+  type        = string
+  description = "The password for the admin user of this RDS instance."
+}

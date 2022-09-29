@@ -28,6 +28,14 @@ variable "subnet_availability_zone" {
   type = string
 }
 
+variable "database_user" {
+  type = string
+}
+
+variable "database_password" {
+  type = string
+}
+
 variable "email_address_for_alarms" {
   type = string
 }

@@ -24,7 +24,7 @@ jobs:
       redis:
         image: redis:6
       db:
-        image: postgres:14
+        image: postgres:13
         env:
           POSTGRES_USER: duelyst
           POSTGRES_PASSWORD: duelyst
