@@ -23,14 +23,3 @@ AWS_REGION=baz \
 S3_ASSETS_BUCKET=your-bucket-name \
 yarn cdn:upload:staging
 ```
-
-## Putting CloudFront in front of S3
-
-TBD
-
-## Fetching static assets from S3
-
-TBD
-
-See `setupProduction` in `server/api.coffee`
-See `serveIndex` in `server/routes/public.coffee`
