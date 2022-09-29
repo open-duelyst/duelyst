@@ -8,4 +8,8 @@ resource "aws_db_instance" "postgres" {
   db_name  = var.database_name
   username = var.username
   password = var.password
+
+  tags = {
+    Name = var.name
+  }
 }
