@@ -63,13 +63,13 @@ export function stagingcdn() {
   const publisher = awspublish.create({
     region: config.get('assetsBucket.region'),
     params: {
-      Bucket: config.get('assetsBucket.name')
+      Bucket: config.get('assetsBucket.name'),
     },
     credentials: {
       accessKeyId: config.get('assetsBucket.accessKey'),
       secretAccessKey: config.get('assetsBucket.secretKey'),
-      signatureVersion: "v3"
-    }
+      signatureVersion: 'v3',
+    },
   });
   return gulp.src(['dist/src/**/*'])
     .pipe(rename((p) => {

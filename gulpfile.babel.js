@@ -19,7 +19,7 @@ import * as desktop from './gulp/desktop';
 import * as git from './gulp/git';
 import * as docker from './gulp/docker';
 import * as localization from './gulp/localization';
-import * as cdn from './gulp/cdn'
+import * as cdn from './gulp/cdn';
 import {
   opts, config, env, version, production, staging, development,
 } from './gulp/shared';
@@ -53,7 +53,7 @@ gulp.task('rsx:imagemin', rsx.imageMin);
 gulp.task('rsx:imagemin:lossy', rsx.imageMinLossy);
 gulp.task('rsx:copy', rsx.copy);
 gulp.task('rsx:copy:web', rsx.copyWeb);
-gulp.task('rsx:copy:cdn', rsx.copyCdn)
+gulp.task('rsx:copy:cdn', rsx.copyCdn);
 gulp.task('rsx:copy:all', rsx.copyAll);
 gulp.task('rsx:packages', rsx.packages);
 gulp.task('rsx', gulp.series(rsx.packages, rsx.copy));
@@ -72,8 +72,8 @@ gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
 gulp.task('docker:push', docker.push);
 gulp.task('localization:copy', localization.copy);
-gulp.task('cdn:purgeAll', cdn.purgeAll)
-gulp.task('cdn:purgeLocalization', cdn.purgeLocalization)
+gulp.task('cdn:purgeAll', cdn.purgeAll);
+gulp.task('cdn:purgeLocalization', cdn.purgeLocalization);
 
 // Define git helper tasks (master,staging,production)
 const branches = ['master', 'staging', 'production'];
@@ -201,7 +201,7 @@ gulp.task('default', gulp.series('build'));
 
 // Release Builds (CI ready tasks)
 const ciTargets = ['staging', 'production'];
-const cdnUrl = config.get('cdn')
+const cdnUrl = config.get('cdn');
 
 function validateConfig(cb) {
   // Ensure running build:release:${target} matches running config environemnt
@@ -226,19 +226,19 @@ function validateConfigForDesktop(cb) {
 function overrideCdnUrl(cb) {
   // We override the CDN url here
   // to prevent the CSS task from using for desktop app
-  config.set('cdn', '')
-  cb()
+  config.set('cdn', '');
+  cb();
 }
 function restoreCdnUrl(cb) {
   // We restore the CDN url here in case other tasks need it
-  config.set('cdn', cdnUrl)
-  cb()
+  config.set('cdn', cdnUrl);
+  cb();
 }
 function versionedCdnUrl(cb) {
   // We override the CDN url with a version specific one
-  const cdnUrl = `${config.get('cdn')}/v${version}`
-  config.set('cdn', cdnUrl)
-  cb()
+  const cdnUrl = `${config.get('cdn')}/v${version}`;
+  config.set('cdn', cdnUrl);
+  cb();
 }
 
 gulp.task('build:release', gulp.series(

@@ -74,24 +74,24 @@ const config = convict({
   assetsBucket: {
     name: {
       default: '',
-      env: 'S3_ASSETS_BUCKET'
+      env: 'S3_ASSETS_BUCKET',
     },
     domainName: {
       default: '',
-      env: 'S3_ASSETS_DOMAIN'
+      env: 'S3_ASSETS_DOMAIN',
     },
     region: {
       default: '',
-      env: 'AWS_REGION'
+      env: 'AWS_REGION',
     },
     accessKey: {
       default: '',
-      env: 'AWS_ACCESS_KEY'
+      env: 'AWS_ACCESS_KEY',
     },
     secretKey: {
       default: '',
-      env: 'AWS_SECRET_KEY'
-    }
+      env: 'AWS_SECRET_KEY',
+    },
   },
   // s3 bucket/key/secret used for game session data uploads
   s3_archive: {
