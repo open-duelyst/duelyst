@@ -15,3 +15,15 @@ variable "aws_secret_key" {
 variable "email_address_for_alarms" {
   type = string
 }
+
+variable "assets_bucket_name" {
+  type = string
+}
+
+variable "staging_domain_name" {
+  type = string
+}
+
+variable "cdn_domain_name" {
+  type = string
+}

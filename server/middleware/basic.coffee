@@ -27,7 +27,9 @@ else
 
 module.exports = compose([
 	getRealIp(),
-	cors(),
+	cors({
+		#origin: '*' # Temporarily disable CORS restrictions.
+	}),
 	helmet.noCache(),
 	helmet.xssFilter(),
 	parser,

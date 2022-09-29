@@ -71,6 +71,28 @@ const config = convict({
     default: '',
     env: 'CDN_URL',
   },
+  assetsBucket: {
+    name: {
+      default: '',
+      env: 'S3_ASSETS_BUCKET',
+    },
+    domainName: {
+      default: '',
+      env: 'S3_ASSETS_DOMAIN',
+    },
+    region: {
+      default: '',
+      env: 'AWS_REGION',
+    },
+    accessKey: {
+      default: '',
+      env: 'AWS_ACCESS_KEY',
+    },
+    secretKey: {
+      default: '',
+      env: 'AWS_SECRET_KEY',
+    },
+  },
   // s3 bucket/key/secret used for game session data uploads
   s3_archive: {
     bucket: {
@@ -409,8 +431,5 @@ console.log(`CONFIG: env:${config.get('env')}`);
 console.log(`CONFIG: firebase:${url.parse(config.get('firebase.url')).host}`);
 console.log(`CONFIG: postgres:${pgUrl.host}${pgUrl.pathname}`);
 console.log(`CONFIG: redis:${config.get('redis.ip')}`);
-// console.log("isProduction: " + config.isProduction());
-// console.log("isStaging: " + config.isStaging());
-// console.log("isDevelopment: " + config.isDevelopment());
 
 module.exports = config;

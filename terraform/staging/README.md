@@ -9,3 +9,17 @@ is a helper script which automatically references the `config.aws.tfbackend` and
 previously.
 
 Finally, run `terraform apply` to see the plan output and provision a staging environment.
+
+## Uploading static assets to S3
+
+1. Build everything with `FIREBASE_URL=foo yarn build`
+2. Copy CDN-flagged resources into `dist/` with `yarn cdn:copy`
+3. Upload resources to S3:
+
+```
+AWS_ACCESS_KEY=foo \
+AWS_SECRET_KEY=bar \
+AWS_REGION=baz \
+S3_ASSETS_BUCKET=your-bucket-name \
+yarn cdn:upload:staging
+```

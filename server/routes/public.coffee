@@ -34,8 +34,14 @@ serveIndex = (req, res) ->
 	# serve index.html file
 	if config.isDevelopment()
 		res.sendFile path.resolve(__dirname + "/../../dist/src/index.html")
+	else if config.isStaging()
+		cdnDomain = config.get('assetsBucket.domainName')
+		res.redirect("https://#{cdnDomain}/staging/index.html")
 	else if config.isProduction()
+		# Production mode uses index.html from S3
 		res.sendFile path.resolve(__dirname + "/../../public/" + config.get('env') + "/index.html")
+	else
+		Logger.module("API").error "Unknown environment from config!"
 
 serveRegister = (req, res) ->
 	# set no cache header
@@ -61,7 +67,6 @@ if config.isDevelopment()
 	router.get "/login", serveRegister
 	router.post "/", serveIndex
 
-# Production mode uses index.html from S3
 if config.isProduction()
 	Logger.module("EXPRESS").log "Configuring for PRODUCTION environment #{env}".cyan
 

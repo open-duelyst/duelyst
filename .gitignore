@@ -8,6 +8,7 @@ serviceAccountKey.json
 /app/localization/locales/en/index.json
 /dist
 node_modules
+.awspublish*
 
 # Development artifacts
 *.log
