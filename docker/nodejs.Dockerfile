@@ -24,16 +24,3 @@ COPY packages /duelyst/packages
 COPY server /duelyst/server
 COPY worker /duelyst/worker
 RUN yarn install --production && yarn cache clean
-
-# Configure the service.
-# TODO: Make this customizable by service so we can share the image.
-EXPOSE 8000
-ARG REDIS_HOST
-ENV REDIS_HOST=${REDIS_HOST}
-ARG FIREBASE_URL
-ENV FIREBASE_URL=${FIREBASE_URL}
-ARG FIREBASE_LEGACY_TOKEN
-ENV FIREBASE_LEGACY_TOKEN=${FIREBASE_LEGACY_TOKEN}
-
-# Start the service.
-ENTRYPOINT ["yarn", "sp"]

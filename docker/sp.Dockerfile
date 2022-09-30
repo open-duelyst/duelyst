@@ -1,0 +1,15 @@
+# Build on top of the prebuilt Node.js image for OpenDuelyst.
+ARG NODEJS_IMAGE_VERSION
+FROM duelyst-nodejs:${NODEJS_IMAGE_VERSION}
+
+# Configure the service.
+EXPOSE 8000
+ARG REDIS_HOST
+ENV REDIS_HOST=${REDIS_HOST}
+ARG FIREBASE_URL
+ENV FIREBASE_URL=${FIREBASE_URL}
+ARG FIREBASE_LEGACY_TOKEN
+ENV FIREBASE_LEGACY_TOKEN=${FIREBASE_LEGACY_TOKEN}
+
+# Start the service.
+ENTRYPOINT ["yarn", "sp"]
