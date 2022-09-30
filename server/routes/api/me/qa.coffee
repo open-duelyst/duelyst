@@ -39,26 +39,22 @@ util = require 'util'
 # Daily challenges
 zlib 		= require 'zlib'
 config 		= require '../../../../config/config.js'
-CONFIG = require('app/common/config');
-UtilsEnv = require('app/common/utils/utils_env');
+CONFIG = require('app/common/config')
+UtilsEnv = require('app/common/utils/utils_env')
 generatePushId = require '../../../../app/common/generate_push_id'
 
 {Jobs} = require '../../../redis/'
 
 # create a S3 API client
-AWS 		= require "aws-sdk"
-AWS.config.update
-	accessKeyId: config.get("s3_archive.key")
-	secretAccessKey: config.get("s3_archive.secret")
-s3 = new AWS.S3()
+#AWS 		= require "aws-sdk"
+#AWS.config.update
+#	accessKeyId: config.get("s3_archive.key")
+#	secretAccessKey: config.get("s3_archive.secret")
+#s3 = new AWS.S3()
 # Promise.promisifyAll(s3)
 
 rankedQueue = new Redis.PlayerQueue(Redis.Redis, {name:'ranked'})
 router = express.Router()
-
-
-
-
 Logger.module("EXPRESS").log "QA routes ACTIVE".green
 
 router.delete '/rank/history/:season_key/rewards', (req,res,next)->
@@ -181,7 +177,7 @@ router.put '/rank_rating', (req,res,next)->
 			newLadderPosition = ladderPosition
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 
 	.then ()->
 		res.status(200).json({ladder_position:newLadderPosition})
@@ -221,7 +217,7 @@ router.get '/rank_rating', (req,res,next)->
 			user_rating_data = userRatingRow || {}
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 
 	.then ()->
 		res.status(200).json({user_rating_data:user_rating_data})
@@ -242,7 +238,7 @@ router.get '/ladder_position', (req,res,next)->
 			user_ladder_position = userLadderPosition || null
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 
 	.then ()->
 		res.status(200).json({user_ladder_position:user_ladder_position})
@@ -289,7 +285,7 @@ router.post '/inventory/spirit', (req, res, next) ->
 		InventoryModule.giveUserSpirit(txPromise,tx,user_id,amount,'QA gift')
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 
 	.then ()->
 		res.status(200).json({})
@@ -302,7 +298,7 @@ router.post '/inventory/gold', (req, res, next) ->
 		InventoryModule.giveUserGold(txPromise,tx,user_id,amount,'QA gift')
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 	.then ()->
 		res.status(200).json({})
 
@@ -326,7 +322,7 @@ router.post '/inventory/rift_ticket', (req, res, next) ->
 		RiftModule.addRiftTicketToUser(txPromise,tx,user_id,"qa gift",generatePushId())
 		.then tx.commit
 		.catch tx.rollback
-		return;
+		return
 	.then ()->
 		res.status(200).json({})
 
@@ -878,7 +874,7 @@ router.post '/gauntlet/fill_deck', (req,res,next)->
 				# No more card choices
 				res.status(200).json(gauntletData)
 			else
-				cardIdChoice = null;
+				cardIdChoice = null
 				if (gauntletData.card_choices?)
 					cardIdChoice = gauntletData.card_choices[0]
 				else if (gauntletData.general_choices?)
@@ -1001,7 +997,12 @@ router.put '/account/reset', (req,res,next)->
 	.catch (err)->
 		next(err)
 
+# Allows uploading challenge JSON to S3.
+# Needs to be reworked, since the bucket and region are hardcoded.
+# Stub the handler so we can remove the AWS SDK dependency.
 router.post '/daily_challenge', (req,res,next)->
+	return res.status(403).json({})
+	###
 	Logger.module("QA").log "Pushing Daily challenge"
 	challengeName = req.body.challenge_name
 	challengeDescription = req.body.challenge_description
@@ -1063,6 +1064,7 @@ router.post '/daily_challenge', (req,res,next)->
 	.catch (error) ->
 		Logger.module("QA").log "Failed Pushing Daily challenge\n #{error.toString()}"
 		res.status(403).json({message:error.toString()})
+	###
 
 router.post "/daily_challenge/completed_at", (req, res, next) ->
 	user_id = req.user.d.id

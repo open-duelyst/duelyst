@@ -15,7 +15,7 @@ validatorTypes = require '../../../validators/types'
 zlib = require 'zlib'
 Promise = require 'bluebird'
 moment = require 'moment'
-AWS = require "aws-sdk"
+#AWS = require "aws-sdk"
 
 # promisify
 Promise.promisifyAll(zlib)
@@ -184,11 +184,19 @@ router.post '/codex/missing', (req, res, next) ->
 		res.status(200).json(acquiredCodexChapterIds)
 	.catch (error) -> next(error)
 
+# "Soft Wipe" is a mechanism for replacing a user's inventory with unopened orbs.
+# This was a temporary system which ended on 2016-04-20.
+# See server/lib/data_access/inventory.coffee:softWipeUserCardInventory.
+# Stub the handler so we can remove the AWS SDK dependency.
 router.post '/card_collection/soft_wipe', (req, res, next) ->
-
+	return res.status(403).json({
+		'status': 'error',
+		'code': 403,
+		'message': 'Inventory soft wipes are no longer available.',
+	})
+	###
 	user_id = req.user.d.id
 	password = req.body.password
-
 	Logger.module("API").debug "#{user_id} requesting inventory soft wipe"
 
 	passwordValidationResult = t.validate(password, validatorTypes.Password)
@@ -209,37 +217,25 @@ router.post '/card_collection/soft_wipe', (req, res, next) ->
 			knex("user_spirit_orbs_opened").where('user_id',user_id).select()
 		])
 	.spread (cardCountRows,cardLogRows,cardCollectionRow,spiritOrbOpenedRows)->
-
 		backup =
 			user_cards: cardCountRows
 			user_card_log: cardLogRows
 			user_card_collection: cardCollectionRow
 			user_spirit_orbs_opened: spiritOrbOpenedRows
-
 		return zlib.gzipAsync(JSON.stringify(backup))
-
 	.then (backupDataZipped)->
-
 		@.backupDataZipped = backupDataZipped
 		return InventoryModule.softWipeUserCardInventory(user_id)
-
 	.then () ->
-
-		# configure aws
+		# Upload the backup data to S3.
 		AWS.config.update
 			accessKeyId: config.get("s3_user_backup_snapshots.key")
 			secretAccessKey: config.get("s3_user_backup_snapshots.secret")
-
-		# create a S3 API client
 		s3 = new AWS.S3()
-		# promisify s3
 		Promise.promisifyAll(s3)
 
-		# ...
 		bucket = config.get("s3_user_backup_snapshots.bucket")
 		filename = "#{config.get("env")}/#{user_id}/#{moment().utc().format("YYYY-MM-DD")}.json"
-
-		# ...
 		params =
 			Bucket: bucket
 			Key: filename
@@ -258,12 +254,12 @@ router.post '/card_collection/soft_wipe', (req, res, next) ->
 		# respond and return
 		res.status(200).json({})
 		return Promise.resolve()
-
 	.catch Errors.BadPasswordError, (e) ->
 		return res.status(401).json({message:'invalid password'})
 	.catch Errors.BadRequestError, (e) ->
 		return res.status(400).json({message:e.message})
 	.catch (error) -> next(error)
+	###
 
 # Crafting a cosmetic
 router.post "/cosmetics/:cosmetic_id", (req, res, next) ->

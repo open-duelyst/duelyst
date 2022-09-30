@@ -4,7 +4,7 @@ router = express.Router()
 expressJwt = require 'express-jwt'
 util = require 'util'
 uuid = require 'node-uuid'
-AWS = require "aws-sdk"
+#AWS = require "aws-sdk"
 Promise = require "bluebird"
 fs = require 'fs'
 hbs = require 'hbs'
@@ -22,12 +22,10 @@ Errors = require '../lib/custom_errors'
 config = require '../../config/config.js'
 
 # set up AWS
-AWS.config.update
-  accessKeyId: config.get("s3_client_logs.key")
-  secretAccessKey: config.get("s3_client_logs.secret")
-
-# create a S3 API client
-s3 = new AWS.S3()
+#AWS.config.update
+#  accessKeyId: config.get("s3_client_logs.key")
+#  secretAccessKey: config.get("s3_client_logs.secret")
+#s3 = new AWS.S3()
 #Promise.promisifyAll(s3)
 
 # async promise to get client template
@@ -43,10 +41,17 @@ loadClientLogsHandlebarsTemplateAsync = new Promise (resolve,reject) ->
 ## Require authetication
 router.use '/utility', isSignedIn
 
+# Unused handler to facilitate uploading logs to S3.
+# Stub the handler so we can remove the AWS SDK dependency.
 router.post "/utility/client_logs", (req, res, next) ->
+	return res.status(403).json({
+		'status': 'error',
+		'code': 403,
+		'message': 'This endpoint is deprecated.',
+	})
+	###
 	user_id = req.user.d.id
-	log_id = moment().utc().format("YYYY-MM-DD---hh-mm-ss")
-	log_id += ".#{uuid.v4()}"
+	log_id = "#{moment().utc().format("YYYY-MM-DD---hh-mm-ss")}.#{uuid.v4()}"
 
 	bucket = config.get("s3_client_logs.bucket")
 	env = config.get("env")
@@ -72,5 +77,6 @@ router.post "/utility/client_logs", (req, res, next) ->
 	.catch (err) ->
 		Logger.module("EXPRESS").error "ERROR UPLOADING #{user_id.blue} CLIENT LOGS to #{url} : #{err.message}".red
 		next(err)
+	###
 
 module.exports = router
