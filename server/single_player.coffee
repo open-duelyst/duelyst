@@ -82,7 +82,7 @@ io.use(
   )
 )
 module.exports = io
-server.listen config.get('game_port'), () ->
+server.listen config.get('sp_port'), () ->
 	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
 
 # redis

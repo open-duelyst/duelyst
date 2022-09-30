@@ -1,16 +1,19 @@
 resource "aws_db_instance" "postgres" {
-  engine              = "postgres"
-  engine_version      = var.postgres_version
-  instance_class      = var.instance_type
-  availability_zone   = var.availability_zone
-  allocated_storage   = var.storage
-  skip_final_snapshot = true
+  identifier             = var.name
+  engine                 = "postgres"
+  engine_version         = var.postgres_version
+  vpc_security_group_ids = var.security_group_ids
+  db_subnet_group_name   = aws_db_subnet_group.subnet_group.id
+  instance_class         = var.instance_type
+  allocated_storage      = var.storage
+  skip_final_snapshot    = true
 
   db_name  = var.database_name
   username = var.username
   password = var.password
+}
 
-  tags = {
-    Name = var.name
-  }
+resource "aws_db_subnet_group" "subnet_group" {
+  name       = var.name
+  subnet_ids = var.subnet_ids
 }

@@ -9,6 +9,12 @@ resource "aws_ecs_service" "service" {
     field = "cpu"
   }
 
+  capacity_provider_strategy {
+    base              = 1
+    capacity_provider = var.capacity_provider
+    weight            = 100
+  }
+
   load_balancer {
     target_group_arn = var.alb_target_group
     container_name   = var.name
@@ -22,7 +28,7 @@ resource "aws_ecs_task_definition" "task_def" {
   container_definitions = jsonencode([
     {
       name   = var.name
-      image  = var.container_image
+      image = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
       cpu    = var.container_cpu
       memory = var.container_mem
       portMappings = [

@@ -7,7 +7,7 @@ import rename from 'gulp-rename';
 import size from 'gulp-size';
 import semver from 'semver';
 import {
-  config, env, production, staging, desktopPkgJson,
+  config, env, production, staging,
 } from './shared';
 
 // GZIP ENABLED

@@ -1,8 +1,8 @@
 version: "3.9"
 
 x-base-service: &base
-  image: node:lts
-  entrypoint: bash
+  image: node:16-alpine
+  entrypoint: sh
   working_dir: /app
   volumes:
     - .:/app
@@ -43,11 +43,11 @@ services:
     ports:
       - 3000:3000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start api
+    command: docker/start.sh api
     depends_on:
       - db
       - redis
@@ -59,10 +59,10 @@ services:
     ports:
       - 8000:8000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start game
+    command: docker/start.sh game
     depends_on:
       - redis
 
@@ -71,23 +71,21 @@ services:
     ports:
       - 8000:8000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start sp
+    command: docker/start.sh sp
     depends_on:
       - redis
 
   worker:
     <<: *base
-    ports:
-      - 3002:8080 # FIXME: Remove this? Nothing should be hitting the worker over TCP.
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start worker
+    command: docker/start.sh worker
     depends_on:
       - db
       - redis
@@ -98,12 +96,12 @@ services:
       - donotstart
     ports:
       - 4000:4000
-    command: docker/start worker-ui
+    command: docker/start.sh worker-ui
     depends_on:
       - worker
 
   migrate:
-    image: node:lts
+    <<: *base
     profiles:
       - donotstart
     environment:
@@ -111,26 +109,23 @@ services:
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
     depends_on:
       - db
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: docker/start migrate:latest
+    command: docker/start.sh migrate:latest
 
   test-unit:
     <<: *base
     profiles:
       - donotstart
-    command: docker/start test:unit
+    command: docker/start.sh test:unit
 
   test-integration:
     <<: *base
     profiles:
       - donotstart
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
-    command: docker/start test:integration
+    command: docker/start.sh test:integration
     depends_on:
       - db
       - redis

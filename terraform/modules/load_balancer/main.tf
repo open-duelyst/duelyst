@@ -14,8 +14,8 @@ resource "aws_lb" "lb" {
 
 resource "aws_lb_listener" "http_to_https_listener" {
   load_balancer_arn = aws_lb.lb.arn
-  port = 80
-  protocol = "HTTP"
+  port              = 80
+  protocol          = "HTTP"
 
   default_action {
     type = "redirect"
@@ -41,8 +41,7 @@ resource "aws_lb_listener" "api_listener" {
 }
 
 resource "aws_lb_target_group" "api_target_group" {
-  name = "${var.name}-api"
-  #target_type
+  name             = "${var.name}-api"
   vpc_id           = var.vpc_id
   port             = var.api_service_port
   protocol         = "HTTP"
@@ -52,4 +51,30 @@ resource "aws_lb_target_group" "api_target_group" {
     matcher = "200"
     path    = "/" # FIXME: Use /healthcheck for API.
   }
+}
+
+resource "aws_lb_listener" "sp_listener" {
+  load_balancer_arn = aws_lb.lb.arn
+  port              = var.sp_listen_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  certificate_arn   = var.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.sp_target_group.arn
+  }
+}
+
+resource "aws_lb_target_group" "sp_target_group" {
+  name             = "${var.name}-sp"
+  vpc_id           = var.vpc_id
+  port             = var.sp_service_port
+  protocol         = "HTTP"
+  protocol_version = "HTTP1"
+
+  #health_check {
+  #matcher = "200"
+  #  path = "/" # FIXME: Do we have an HTTP healthcheck?
+  #}
 }

@@ -13,3 +13,8 @@ variable "subnet_ids" {
   type        = list(string)
   description = "The subnets for this Redis instance."
 }
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "The security groups for this Redis instance."
+}

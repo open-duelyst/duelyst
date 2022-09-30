@@ -8,15 +8,31 @@ variable "cluster" {
   description = "The ECS cluster in which to run this service."
 }
 
+variable "capacity_provider" {
+  type        = string
+  description = "The cluster capacity provider for this service."
+}
+
+variable "ecr_registry" {
+  type        = string
+  description = "The ECR registry from which to source container images."
+}
+
+variable "ecr_repository" {
+  type        = string
+  description = "The ECR repository from which to source container images."
+}
+
+variable "deployed_version" {
+  type        = string
+  description = "The version of the image to pull from the ECR repository."
+  default     = "latest"
+}
+
 variable "container_count" {
   type        = number
   description = "The number of containers to run for this service."
   default     = 1
-}
-
-variable "container_image" {
-  type        = string
-  description = "The Docker or ECR image name to use for this service."
 }
 
 variable "container_cpu" {

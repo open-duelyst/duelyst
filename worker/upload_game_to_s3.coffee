@@ -1,18 +1,18 @@
 url 		= require 'url'
 _ 			= require "underscore"
-AWS 		= require "aws-sdk"
+#AWS 		= require "aws-sdk"
 Promise 	= require "bluebird"
 Logger 		= require '../app/common/logger.coffee'
 config 		= require '../config/config.js'
 colors		= require 'colors'
 zlib 		= require 'zlib'
 
-AWS.config.update
-  accessKeyId: config.get("s3_archive.key")
-  secretAccessKey: config.get("s3_archive.secret")
+#AWS.config.update
+#  accessKeyId: config.get("s3_archive.key")
+#  secretAccessKey: config.get("s3_archive.secret")
 
 # create a S3 API client
-s3 = new AWS.S3()
+#s3 = new AWS.S3()
 
 env = config.get("env")
 

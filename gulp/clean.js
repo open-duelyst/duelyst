@@ -5,8 +5,6 @@ import del from 'del';
 export function all() {
   return del([
     'dist',
-    'desktop/src',
-    'desktop/node_modules',
   ]);
 }
 
@@ -27,17 +25,6 @@ export function web() {
 // Cleans out localization files only
 export function locales() {
   return del('dist/src/resources/locales');
-}
-
-// Cleans out desktop specific parts output folders
-// (leaves /dist/src intact)
-export function desktop() {
-  return del([
-    'desktop/src',
-    'desktop/node_modules',
-    'dist/desktop',
-    'dist/git-remotes',
-  ]);
 }
 
 // Cleans out git remotes from the dist folder

@@ -1,11 +1,9 @@
 import minimist from 'minimist';
-import desktopPkgJson from 'duelyst-desktop/package.json';
 import config from '../config/config';
 
 // Re-export version and config
 export { version } from '../version.json';
 export { config };
-export { desktopPkgJson };
 
 // Export helpers
 export const env = config.get('env');
