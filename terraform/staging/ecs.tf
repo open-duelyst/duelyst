@@ -18,8 +18,10 @@ module "ecs_service_api" {
   ecr_repository   = module.ecr_repository_api.id
   deployed_version = "latest"
   container_count  = 1
-  service_port     = 80
+  service_port     = 3000
   alb_target_group = module.staging_load_balancer.api_target_group_arn
+
+  depends_on = [module.ecr_repository_api]
 }
 
 module "ecs_service_sp" {
@@ -31,4 +33,6 @@ module "ecs_service_sp" {
   container_count  = 1
   service_port     = 8000
   alb_target_group = module.staging_load_balancer.sp_target_group_arn
+
+  depends_on = [module.ecr_repository_sp]
 }
