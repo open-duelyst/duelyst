@@ -6,7 +6,9 @@ import filter from 'gulp-filter';
 import rename from 'gulp-rename';
 import size from 'gulp-size';
 import semver from 'semver';
-import { config, env, production, staging } from './shared';
+import {
+  config, env, production, staging,
+} from './shared';
 
 // GZIP ENABLED
 // If version is provided, upload will be written to subdir, ie: /staging/v54x/
