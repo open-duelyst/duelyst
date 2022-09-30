@@ -35,7 +35,7 @@ variable "min_capacity" {
 variable "max_capacity" {
   type        = number
   description = "The maximum number of ECS-EC2 instances."
-  default     = 2
+  default     = 1
 }
 
 variable "ssh_public_key" {
