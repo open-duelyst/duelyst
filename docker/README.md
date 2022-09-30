@@ -8,24 +8,27 @@ Use `docker compose up`, which will use the `docker/start.sh` script to run Yarn
 
 ## Testing Container Builds
 
-Build a container:
+Build a container image:
 ```
 # <service> should be one of ('api', 'game', 'sp', 'worker')
-scripts/build_containers.sh <service>
+# <version> should match the latest git release; defaults to 'testing'
+scripts/build_container.sh <service> <version>
 ```
 
-Test a container:
+Test a container image:
 ```
 # This should successfully start the SP server.
 # Ctrl-C should successfully terminate the container.
 docker run -it duelyst-sp
 ```
 
-## Pushing Containers to ECR
+## Publishing Containers to ECR
 
-Use the same build process as before, but provide a version:
+Tag and publish a container image:
 ```
 # <service> should be one of ('api', 'game', 'sp', 'worker')
-# <version> should match the latest git release.
-scripts/build_containers.sh <service> <version>
+# <version> should match the latest git release
+# <registry> is your AWS ECR registry alias
+# <repo> is your AWS ECR repository name
+scripts/publish_container.sh <service> <version> <registry> <repo>
 ```

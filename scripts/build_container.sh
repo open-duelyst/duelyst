@@ -26,12 +26,4 @@ docker build \
 	--build-arg NODEJS_IMAGE_VERSION=$VERSION \
 	. || quit "Failed to build service image!"
 
-# Don't push development images to ECR.
-if [ $VERSION == 'testing' ]; then
-	echo "Done! Not pushing test image to ECR."
-	exit 0
-fi
-
-# Check AWS access.
-which aws > /dev/null || quit "AWS CLI is not installed. Exiting."
-aws sts get-caller-identity > /dev/null || quit "Not authenticated on the AWS CLI. Exiting."
+echo "Successfully built image duelyst-${SERVICE}:${VERSION}"
