@@ -1,7 +1,4 @@
-# Base image is 856MB.
-#FROM node:lts
-
-# Base image is 114MB.
+# This image is 114MB. node:lts is 856MB.
 FROM node:16-alpine
 
 # Work around boneskull/yargs dependency using the deprecated git protocol.
