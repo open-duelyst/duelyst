@@ -4,7 +4,7 @@ Dockerfiles and scripts for starting and managing our containers.
 
 ## Local Development
 
-Use `docker compose up`, which will use the `docker/start` script to run Yarn scripts.
+Use `docker compose up`, which will use the `docker/start.sh` script to run Yarn scripts.
 
 ## Building and Pushing Containers to AWS ECR
 

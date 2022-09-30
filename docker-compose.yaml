@@ -47,7 +47,7 @@ services:
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start api
+    command: docker/start.sh api
     depends_on:
       - db
       - redis
@@ -62,7 +62,7 @@ services:
       REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start game
+    command: docker/start.sh game
     depends_on:
       - redis
 
@@ -74,7 +74,7 @@ services:
       REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start sp
+    command: docker/start.sh sp
     depends_on:
       - redis
 
@@ -85,7 +85,7 @@ services:
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
-    command: docker/start worker
+    command: docker/start.sh worker
     depends_on:
       - db
       - redis
@@ -96,7 +96,7 @@ services:
       - donotstart
     ports:
       - 4000:4000
-    command: docker/start worker-ui
+    command: docker/start.sh worker-ui
     depends_on:
       - worker
 
@@ -112,13 +112,13 @@ services:
     working_dir: /app
     volumes:
       - .:/app
-    command: docker/start migrate:latest
+    command: docker/start.sh migrate:latest
 
   test-unit:
     <<: *base
     profiles:
       - donotstart
-    command: docker/start test:unit
+    command: docker/start.sh test:unit
 
   test-integration:
     <<: *base
@@ -128,7 +128,7 @@ services:
       REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
-    command: docker/start test:integration
+    command: docker/start.sh test:integration
     depends_on:
       - db
       - redis
