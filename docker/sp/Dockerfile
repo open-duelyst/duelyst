@@ -4,9 +4,8 @@
 # Base image is 114MB.
 FROM node:16-alpine
 
-# Configure dependencies.
-RUN apk add git # For boneskull/yargs git protocol workaround.
-#RUN apk add python3 # For building bcrypt for Electron.
+# Work around boneskull/yargs dependency using the deprecated git protocol.
+RUN apk add git
 RUN git config --global url."https://github.com/".insteadOf git@github.com:
 RUN git config --global url."https://".insteadOf git://
 
@@ -30,8 +29,6 @@ COPY app/data /duelyst/app/data
 COPY app/sdk /duelyst/app/sdk
 COPY bin /duelyst/bin
 COPY config /duelyst/config
-# /root/.cache (from Electron) is 93MB.
-#COPY desktop /duelyst/desktop
 COPY packages /duelyst/packages
 COPY server /duelyst/server
 # /duelyst/node_modules is 816MB.

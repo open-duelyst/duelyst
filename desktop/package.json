@@ -7,6 +7,8 @@
     "electron": "^20.1.2",
     "electron-debug": "1.0.0",
     "electron-localshortcut": "^0.6.1",
+    "electron-packager": "^9.0.1",
+    "electron-rebuild": "^1.6.0",
     "electron-window": "^0.8.1",
     "lodash.debounce": "^4.0.6",
     "minimist": "^1.1.2",

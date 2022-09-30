@@ -116,8 +116,6 @@
     "conventional-changelog": "^1.0.1",
     "csv-write-stream": "^1.0.0",
     "del": "^2.2.0",
-    "electron-packager": "^9.0.1",
-    "electron-rebuild": "^1.6.0",
     "envify": "^3.4.0",
     "eslint": "^8.23.0",
     "eslint-config-airbnb-base": "^15.0.0",
