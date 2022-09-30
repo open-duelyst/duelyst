@@ -6,21 +6,12 @@ Dockerfiles and scripts for starting and managing our containers.
 
 Use `docker compose up`, which will use the `docker/start.sh` script to run Yarn scripts.
 
-## Building and Pushing Containers to AWS ECR
+## Testing Container Builds
 
-First, ensure your `.env` file is populated with the following keys and values:
+Build a container:
 ```
-REDIS_HOST=foo
-FIREBASE_URL=bar
-FIREBASE_LEGACY_TOKEN=baz
-```
-
-Build containers:
-```
-# <environment> should be one of ('staging', 'production')
 # <service> should be one of ('api', 'game', 'sp', 'worker')
-# <version> is added to the image tag; defaults to 'testing'
-scripts/build_containers.sh <environment> <service> <version>
+scripts/build_containers.sh <service>
 ```
 
 Test a container:
@@ -28,4 +19,13 @@ Test a container:
 # This should successfully start the SP server.
 # Ctrl-C should successfully terminate the container.
 docker run -it duelyst-sp
+```
+
+## Pushing Containers to ECR
+
+Use the same build process as before, but provide a version:
+```
+# <service> should be one of ('api', 'game', 'sp', 'worker')
+# <version> should match the latest git release.
+scripts/build_containers.sh <service> <version>
 ```
