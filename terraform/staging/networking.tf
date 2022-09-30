@@ -43,11 +43,6 @@ module "internal_security_group" {
       description = "Allow TCP/443 from VPC"
       port        = 443
       cidr_blocks = ["10.0.0.0/16"]
-    },
-    {
-      description = "Temporarily allow SSH from public Internet"
-      port        = 22
-      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }

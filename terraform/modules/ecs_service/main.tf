@@ -1,6 +1,3 @@
-data "aws_caller_identity" "current" {}
-data "aws_region" "current" {}
-
 resource "aws_ecs_service" "service" {
   name            = var.name
   cluster         = var.cluster
@@ -31,7 +28,7 @@ resource "aws_ecs_task_definition" "task_def" {
   container_definitions = jsonencode([
     {
       name   = var.name
-      image  = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.ecr_repository}:${var.deployed_version}"
+      image = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
       cpu    = var.container_cpu
       memory = var.container_mem
       portMappings = [

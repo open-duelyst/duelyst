@@ -13,6 +13,11 @@ variable "capacity_provider" {
   description = "The cluster capacity provider for this service."
 }
 
+variable "ecr_registry" {
+  type        = string
+  description = "The ECR registry from which to source container images."
+}
+
 variable "ecr_repository" {
   type        = string
   description = "The ECR repository from which to source container images."

@@ -48,6 +48,10 @@ variable "database_password" {
   type = string
 }
 
+variable "ecr_registry_id" {
+  type = string
+}
+
 variable "email_address_for_alarms" {
   type = string
 }
