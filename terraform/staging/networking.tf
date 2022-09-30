@@ -35,11 +35,11 @@ module "internal_security_group" {
   vpc_id      = module.internal_vpc.id
 }
 
-module "allow_ssh_security_group" {
+module "https_security_group" {
   source              = "../modules/security_group/public"
-  name                = "allow-ssh"
-  description         = "Allows SSH access from the public Internet"
+  name                = "https"
+  description         = "Allows HTTPS access from the public Internet"
   vpc_id              = module.internal_vpc.id
-  ingress_description = "Allow TCP/22 from 0.0.0.0/0"
-  ingress_port        = 22
+  ingress_description = "Allow TCP/443 from 0.0.0.0/0"
+  ingress_port        = 443
 }
