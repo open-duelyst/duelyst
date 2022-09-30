@@ -4,6 +4,7 @@
   "version": "1.96.17",
   "main": "desktop.js",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "electron": "^20.1.2",
     "electron-debug": "1.0.0",
     "electron-localshortcut": "^0.6.1",
