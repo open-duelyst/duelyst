@@ -213,7 +213,7 @@
     "lint:coffee": "coffeelint -f coffeelint.json app server worker",
     "lint:coffee:app": "coffeelint -f coffeelint.json app",
     "lint:coffee:backend": "coffeelint -f coffeelint.json server worker",
-    "lint:js": "eslint --quiet app cli config desktop gulp gulpfile.babel.js scripts server test worker ",
+    "lint:js": "eslint --quiet app cli config desktop gulp gulpfile.babel.js scripts server test worker",
     "format:js": "eslint --fix app cli config desktop gulp gulpfile.babel.js scripts server test worker",
     "migrate:latest": "cd ./server && knex migrate:latest",
     "migrate:rollback": "cd ./server && knex migrate:rollback",

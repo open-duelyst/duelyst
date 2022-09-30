@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.createTable('paypal_ipn_errors', (table) => {
       table.string('transaction_id', 36).notNullable().primary();
@@ -10,7 +10,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.dropTableIfExists('paypal_ipn_errors'),
   ]);

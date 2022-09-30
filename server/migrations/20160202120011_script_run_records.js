@@ -2,7 +2,7 @@ require('coffee-script/register');
 const _ = require('underscore');
 const moment = require('moment');
 
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.createTable('script_run_records', (table) => {
       table.string('id', 36).notNullable().primary();
@@ -15,7 +15,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.dropTableIfExists('script_run_records'),
   ]);

@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.raw('ALTER TABLE gift_codes ADD COLUMN IF NOT EXISTS exclusion_id varchar;'),
     // partial index since it will only be queried when a gift_code has a user and created concurrently for performance reasons
@@ -6,7 +6,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.table('gift_codes', (table) => {
       table.dropIndex('claimed_by_user_id'); // will use default index name gift_codes_claimed_by_user_id_index

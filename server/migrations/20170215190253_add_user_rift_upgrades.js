@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.table('users', (table) => {
       table.integer('rift_stored_upgrade_count');
@@ -20,7 +20,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.table('users', (table) => {
       table.dropColumn('rift_stored_upgrade_count');
