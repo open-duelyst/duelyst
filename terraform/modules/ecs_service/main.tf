@@ -5,8 +5,14 @@ resource "aws_ecs_service" "service" {
   desired_count   = var.container_count
 
   ordered_placement_strategy {
-    type = "binpack"
+    type  = "binpack"
     field = "cpu"
+  }
+
+  load_balancer {
+    target_group_arn = var.alb_target_group
+    container_name   = var.name
+    container_port   = var.service_port
   }
 }
 

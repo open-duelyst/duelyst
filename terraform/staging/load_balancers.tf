@@ -1,4 +1,4 @@
-module "api_load_balancer" {
+module "staging_load_balancer" {
   source          = "../modules/load_balancer"
   name            = "duelyst-staging"
   vpc_id          = module.internal_vpc.id
@@ -11,7 +11,7 @@ module "api_load_balancer" {
   certificate_arn = module.staging_ssl_certificate.arn
 
   api_listen_port  = 443
-  api_service_port = 3000
+  api_service_port = 80 # TODO: Change to 3000.
 }
 
 module "staging_ssl_certificate" {

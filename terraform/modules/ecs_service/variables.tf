@@ -35,3 +35,8 @@ variable "service_port" {
   type        = number
   description = "The TCP port to expose for this service."
 }
+
+variable "alb_target_group" {
+  type        = string
+  description = "The ALB target group to associate with this service."
+}

@@ -12,10 +12,11 @@ module "ecs_cluster" {
 }
 
 module "ecs_service_api" {
-  source          = "../modules/ecs_service"
-  name            = "duelyst-api-staging"
-  cluster         = module.ecs_cluster.id
-  container_image = "nginx:latest" # FIXME
-  container_count = 1
-  service_port    = 80
+  source           = "../modules/ecs_service"
+  name             = "duelyst-api-staging"
+  cluster          = module.ecs_cluster.id
+  container_image  = "nginx:latest" # FIXME
+  container_count  = 1
+  service_port     = 80
+  alb_target_group = module.staging_load_balancer.api_target_group_arn
 }
