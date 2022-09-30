@@ -29,6 +29,12 @@ const config = convict({
     default: 8000,
     env: 'GAME_PORT',
   },
+  sp_port: {
+    doc: 'The SP server port to bind.',
+    format: 'port',
+    default: 8000,
+    env: 'SP_PORT',
+  },
   api: {
     doc: 'API URL.',
     default: 'http://localhost:3000',
