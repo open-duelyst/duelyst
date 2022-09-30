@@ -2,7 +2,7 @@ version: "3.9"
 
 x-base-service: &base
   image: node:16-alpine
-  entrypoint: bash
+  entrypoint: sh
   working_dir: /app
   volumes:
     - .:/app
@@ -101,7 +101,7 @@ services:
       - worker
 
   migrate:
-    image: node:16-alpine
+    <<: *base
     profiles:
       - donotstart
     environment:
@@ -109,9 +109,6 @@ services:
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
     depends_on:
       - db
-    working_dir: /app
-    volumes:
-      - .:/app
     command: docker/start.sh migrate:latest
 
   test-unit:
