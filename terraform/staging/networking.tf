@@ -29,20 +29,20 @@ module "third_subnet" {
 }
 
 module "internal_security_group" {
-  source          = "../modules/security_group"
-  name            = "internal-only"
-  description     = "Disallows all ingress traffic"
-  vpc_id          = module.internal_vpc.id
+  source      = "../modules/security_group"
+  name        = "internal-only"
+  description = "Disallows all ingress traffic"
+  vpc_id      = module.internal_vpc.id
   ingress_configs = [
     {
       description = "Allow TCP/80 from VPC"
-      port = 80
-      cidrs = ["10.0.0.0/16"]
+      port        = 80
+      cidr_blocks = ["10.0.0.0/16"]
     },
     {
       description = "Allow TCP/443 from VPC"
-      port = 443
-      cidrs = ["10.0.0.0/16"]
+      port        = 443
+      cidr_blocks = ["10.0.0.0/16"]
     }
   ]
 }
@@ -56,12 +56,12 @@ module "https_security_group" {
     {
       description = "Allow TCP/80 from 0.0.0.0/0"
       port        = 80
-      cidrs       = ["0.0.0.0/0"]
+      cidr_blocks = ["0.0.0.0/0"]
     },
     {
       description = "Allow TCP/443 from 0.0.0.0/0"
       port        = 443
-      cidrs       = ["0.0.0.0/0"]
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }
