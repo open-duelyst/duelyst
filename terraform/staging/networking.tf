@@ -65,3 +65,17 @@ module "https_security_group" {
     }
   ]
 }
+
+module "postgres_security_group" {
+  source      = "../modules/security_group"
+  name        = "postgres"
+  description = "Allows Postgres traffic from the VPC"
+  vpc_id      = module.internal_vpc.id
+  ingress_configs = [
+    {
+      description = "Allow TCP/5432 from VPC"
+      port        = 5432
+      cidr_blocks = ["10.0.0.0/16"]
+    }
+  ]
+}

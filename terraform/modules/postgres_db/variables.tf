@@ -23,9 +23,14 @@ variable "database_name" {
   default = "duelyst"
 }
 
-variable "availability_zone" {
-  type        = string
-  description = "The availability zone for this RDS instance."
+variable "subnet_ids" {
+  type        = list(string)
+  description = "The subnets to use for this RDS instance."
+}
+
+variable "security_group_ids" {
+  type        = list(string)
+  description = "The security groups to use for this RDS instance."
 }
 
 variable "username" {
