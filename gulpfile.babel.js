@@ -53,7 +53,7 @@ gulp.task('rsx:imagemin', rsx.imageMin);
 gulp.task('rsx:imagemin:lossy', rsx.imageMinLossy);
 gulp.task('rsx:copy', rsx.copy);
 gulp.task('rsx:copy:web', rsx.copyWeb);
-gulp.task('rsx:copy:cdn', rsx.copyCdn);
+gulp.task('rsx:copy:cdn', gulp.series(rsx.copyCdn, rsx.copyWeb));
 gulp.task('rsx:copy:all', rsx.copyAll);
 gulp.task('rsx:packages', rsx.packages);
 gulp.task('rsx', gulp.series(rsx.packages, rsx.copy));

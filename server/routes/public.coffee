@@ -126,7 +126,13 @@ router.get "/rift_ladder", (req, res) ->
 			topPlayerDataRows[i].rank = i+1
 		res.json(topPlayerDataRows)
 
+# /healthcheck
+# Simple HTTP/200 response for use with load balancer health checks.
+router.get "/healthcheck", (req, res) ->
+	res.status(200).send("OK")
+
 # /health
+# Comprehensive health check taking DB connection pool status into account.
 router.get "/health", (req, res) ->
 	MAX_QUEUED_ALLOWED = 25
 	pool = poolStats(knex.client.pool)

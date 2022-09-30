@@ -11,11 +11,6 @@ module "cloudfront_cdn" {
   certificate_arn  = module.cdn_ssl_certificate.arn
 }
 
-module "staging_ssl_certificate" {
-  source      = "../modules/ssl_certificate"
-  domain_name = var.staging_domain_name
-}
-
 module "cdn_ssl_certificate" {
   source      = "../modules/ssl_certificate"
   domain_name = var.cdn_domain_name

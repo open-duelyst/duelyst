@@ -1,0 +1,36 @@
+variable "name" {
+  type        = string
+  description = "The name of the ALB."
+}
+
+variable "vpc_id" {
+  type        = string
+  description = "The VPC ID for this load balancer and its targets."
+}
+
+variable "security_groups" {
+  type        = list(string)
+  description = "The security groups to use for this ALB."
+}
+
+variable "subnets" {
+  type        = list(string)
+  description = "The subnets to use for this ALB."
+}
+
+variable "certificate_arn" {
+  type        = string
+  description = "The SSL certificate ARN to use for this load balancer."
+}
+
+variable "api_listen_port" {
+  type        = number
+  description = "Traffic port for the API listener."
+  default     = 443
+}
+
+variable "api_service_port" {
+  type        = number
+  description = "Traffic port for the API service."
+  default     = 3000
+}

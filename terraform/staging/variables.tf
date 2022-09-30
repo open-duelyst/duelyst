@@ -12,7 +12,7 @@ variable "aws_secret_key" {
   type = string
 }
 
-variable "email_address_for_alarms" {
+variable "ssh_public_key" {
   type = string
 }
 
@@ -25,5 +25,33 @@ variable "staging_domain_name" {
 }
 
 variable "cdn_domain_name" {
+  type = string
+}
+
+variable "first_availability_zone" {
+  type = string
+}
+
+variable "second_availability_zone" {
+  type = string
+}
+
+variable "third_availability_zone" {
+  type = string
+}
+
+variable "database_user" {
+  type = string
+}
+
+variable "database_password" {
+  type = string
+}
+
+variable "email_address_for_alarms" {
+  type = string
+}
+
+variable "billing_alarm_threshold" {
   type = string
 }
