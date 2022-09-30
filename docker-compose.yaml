@@ -80,8 +80,6 @@ services:
 
   worker:
     <<: *base
-    ports:
-      - 3002:8080 # FIXME: Remove this? Nothing should be hitting the worker over TCP.
     environment:
       REDIS_IP: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
