@@ -1,8 +1,14 @@
 #!/usr/bin/env bash
 
+# Helper function for error handling.
+quit () {
+	echo $1
+	exit 1
+}
+
 # Parse arguments.
 SERVICE=$1
-if [ -z $SERVICE ]; then echo "First argument must be SERVICE e.g. 'sp'!"; exit 1; fi
+if [ -z $SERVICE ]; then quit "First argument must be SERVICE e.g. 'sp'!"; fi
 VERSION=$2
 if [ -z $VERSION ]; then VERSION=testing; fi
 
@@ -11,23 +17,21 @@ echo "Building image for duelyst-nodejs:$VERSION."
 docker build \
 	-f docker/nodejs.Dockerfile \
 	-t duelyst-nodejs:$VERSION \
-	. || {
-	echo "Failed to build Node.js image!"
-	exit 1
-}
+	. || quit "Failed to build Node.js image!"
 
 # Build the service image.
 docker build \
 	-f docker/$SERVICE.Dockerfile \
 	-t duelyst-$SERVICE:$VERSION \
 	--build-arg NODEJS_IMAGE_VERSION=$VERSION \
-	. || {
-	echo "Failed to build service image!"
-	exit 1
-}
+	. || quit "Failed to build service image!"
 
 # Don't push development images to ECR.
 if [ $VERSION == 'testing' ]; then
 	echo "Done! Not pushing test image to ECR."
 	exit 0
 fi
+
+# Check AWS access.
+which aws > /dev/null || quit "AWS CLI is not installed. Exiting."
+aws sts get-caller-identity > /dev/null || quit "Not authenticated on the AWS CLI. Exiting."
