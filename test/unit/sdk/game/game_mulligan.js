@@ -82,6 +82,7 @@ describe('game mulligan', () => {
     expect(playCardFromHandAction.getIsValid()).to.equal(false);
   });
 
+  /* Test disabled: flaky
   it('expect player to have different starting hand after mulligan something', () => {
     const player = SDK.GameSession.getInstance().getPlayer2();
     const handBefore = player.getDeck().getHand().slice(0);
@@ -105,6 +106,7 @@ describe('game mulligan', () => {
 
     expect(pass).to.equal(true);
   });
+  */
 
   it('expect game to be active after both players have drawn starting hand', () => {
     SDK.GameSession.getInstance().executeAction(SDK.GameSession.getInstance().getPlayer1().actionDrawStartingHand());
