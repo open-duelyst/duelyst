@@ -11,7 +11,9 @@ module "staging_load_balancer" {
   certificate_arn = module.staging_ssl_certificate.arn
 
   api_listen_port  = 443
-  api_service_port = 80 # TODO: Change to 3000.
+  api_service_port = 3000
+  sp_listen_port   = 8000
+  sp_service_port  = 8000
 }
 
 module "staging_ssl_certificate" {

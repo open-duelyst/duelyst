@@ -34,3 +34,15 @@ variable "api_service_port" {
   description = "Traffic port for the API service."
   default     = 3000
 }
+
+variable "sp_listen_port" {
+  type        = number
+  description = "Traffic port for the SP listener."
+  default     = 8000
+}
+
+variable "sp_service_port" {
+  type        = number
+  description = "Traffic port for the SP service."
+  default     = 8000
+}
