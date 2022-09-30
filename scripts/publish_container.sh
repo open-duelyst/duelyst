@@ -27,5 +27,9 @@ aws ecr-public get-login-password --region us-east-1 | \
 	docker login --username AWS --password-stdin public.ecr.aws || quit "Failed to authenticate."
 
 # Tag and publish the image.
-docker tag duelyst-${SERVICE}:${VERSION} public.ecr.aws/${REGISTRY}/${REPOSITORY}
-docker push public.ecr.aws/${REGISTRY}/${REPOSITORY}
+LOCAL_IMAGE="duelyst-${SERVICE}:${VERSION}"
+REMOTE_IMAGE="public.ecr.aws/${REGISTRY}/${REPOSITORY}:${VERSION}"
+echo "Tagging $LOCAL_IMAGE as $REMOTE_IMAGE"
+docker tag $LOCAL_IMAGE $REMOTE_IMAGE
+echo "Pushing $REMOTE_IMAGE"
+docker push $REMOTE_IMAGE
