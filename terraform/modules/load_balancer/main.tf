@@ -50,6 +50,6 @@ resource "aws_lb_target_group" "api_target_group" {
 
   health_check {
     matcher = "200"
-    path    = "/healthcheck"
+    path    = "/" # FIXME: Use /healthcheck for API.
   }
 }

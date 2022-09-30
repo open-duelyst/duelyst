@@ -33,7 +33,18 @@ module "internal_security_group" {
   name            = "internal-only"
   description     = "Disallows all ingress traffic"
   vpc_id          = module.internal_vpc.id
-  ingress_configs = []
+  ingress_configs = [
+    {
+      description = "Allow TCP/80 from VPC"
+      port = 80
+      cidrs = ["10.0.0.0/16"]
+    },
+    {
+      description = "Allow TCP/443 from VPC"
+      port = 443
+      cidrs = ["10.0.0.0/16"]
+    }
+  ]
 }
 
 module "https_security_group" {

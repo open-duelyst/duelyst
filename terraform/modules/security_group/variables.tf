@@ -17,8 +17,8 @@ variable "ingress_configs" {
   type = list(object({
     description = string
     port        = number
-    cidrs       = list(string)
+    cidr_blocks = list(string)
   }))
-  description = "A list of ingress configuration objects with description, port, and cidr keys."
+  description = "A list of ingress configuration objects."
   default     = []
 }
