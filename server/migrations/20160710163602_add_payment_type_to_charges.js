@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.table('user_charges', (table) => {
       table.string('payment_type');
@@ -13,7 +13,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.table('user_charges', (table) => {
       table.dropColumn('payment_type');

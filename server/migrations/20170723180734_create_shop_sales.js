@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.createTable('shop_sales', (table) => {
       table.string('sale_id', 36).primary().notNullable();
@@ -15,7 +15,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.dropTableIfExists('shop_sales'),
     knex.schema.table('user_currency_log', (table) => {

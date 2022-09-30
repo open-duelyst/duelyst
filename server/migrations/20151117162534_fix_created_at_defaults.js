@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.raw('ALTER TABLE games ALTER COLUMN created_at SET DEFAULT now()'),
     knex.schema.raw('ALTER TABLE invite_codes ALTER COLUMN created_at SET DEFAULT now()'),
@@ -35,6 +35,6 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.resolve();
 };

@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.table('user_quests', (table) => {
       table.integer('spirit_orbs');
@@ -11,7 +11,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.table('user_quests', (table) => {
       table.dropColumn('spirit_orbs');

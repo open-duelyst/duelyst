@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return knex.schema.table('users', (table) => {
     table.string('campaign_source');
     table.string('campaign_medium');
@@ -12,7 +12,7 @@ exports.up = function (knex, Promise) {
   });
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return knex.schema.table('users', (table) => {
     table.dropColumn('campaign_source');
     table.dropColumn('campaign_medium');

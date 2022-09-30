@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.table('user_rift_runs', (table) => {
       table.integer('rift_rating'); // TODO: should this be keyed? // Allowing this to be nullable so default can be code configured in data_access/rift.coffee
@@ -10,7 +10,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.table('user_rift_runs', (table) => {
       table.dropColumn('rift_rating');

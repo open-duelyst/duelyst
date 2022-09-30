@@ -52,15 +52,11 @@ jobs:
     - name: install node dependencies
       run: yarn install --dev
 
-    # Temporarily disabling migrations. Job is failing due to module resolution issues.
-    # TypeError: Cannot read properties of undefined (reading 'all')
-    # at Object.exports.up (/__w/duelyst/duelyst/server/migrations/20150716164611_create_schema.js:5:18)
-    #- name: run database migrations
-    #run: yarn migrate:latest
-    #  env:
-    #    NODE_ENV: development
-    #    NODE_PATH: "/__w/duelyst/duelyst/node_modules:/__w/duelyst/duelyst"
-    #    POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
+    - name: run database migrations
+      run: yarn migrate:latest
+      env:
+        NODE_ENV: development
+        POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
 
     - name: run integration tests
       run: yarn test:integration:misc

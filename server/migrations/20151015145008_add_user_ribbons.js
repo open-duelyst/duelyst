@@ -1,11 +1,13 @@
 require('coffee-script/register');
 const _ = require('underscore');
 const moment = require('moment');
-const ProgressBar = require('progress');
-// const FirebasePromises = require('../lib/firebase_promises.coffee');
-// const DuelystFirebase = require('../lib/duelyst_firebase_module.coffee');
+const Promise = require('bluebird');
 
-exports.up = function (knex, Promise) {
+// var FirebasePromises = require('../lib/firebase_promises.coffee')
+// var DuelystFirebase = require('../lib/duelyst_firebase_module.coffee')
+const ProgressBar = require('progress');
+
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.createTable('user_ribbons', (table) => {
       table.string('user_id', 36).notNullable();
@@ -23,9 +25,9 @@ exports.up = function (knex, Promise) {
         .bind({})
         .then(function (rows) {
           this.rows = rows;
-          // return DuelystFirebase.connect().getRootRef();
+        // return DuelystFirebase.connect().getRootRef()
         })
-        // .then(function (rootRef) {
+      // .then(function(rootRef){
         .then(function () {
           const bar = new ProgressBar(`migrating ${this.rows.length} records [:bar] :percent :etas`, {
             complete: '=',
@@ -46,14 +48,14 @@ exports.up = function (knex, Promise) {
               }));
             });
             /*
-            // This code copies user ribbons from Postgres to Firebase.
-            // TODO: Convert this into a script instead.
-            allPromises.push(FirebasePromises.set(rootRef.child('user-ribbons').child(row.user_id).child(ribbonId), {
-              ribbon_id: ribbonId,
-              count: ribbonCount,
-              updated_at: moment().utc().valueOf(),
-            }));
-            */
+          // This code copies user ribbons from Postgres to Firebase.
+          // TODO: Convert this into a script instead.
+          allPromises.push(FirebasePromises.set(rootRef.child("user-ribbons").child(row["user_id"]).child(ribbonId),{
+            ribbon_id: ribbonId,
+            count: ribbonCount,
+            updated_at: moment().utc().valueOf()
+          }))
+          */
             return Promise.all(allPromises).then(() => {
               bar.tick();
             });
@@ -65,7 +67,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.dropTableIfExists('user_ribbons'),
     knex.schema.table('user_rewards', (table) => {

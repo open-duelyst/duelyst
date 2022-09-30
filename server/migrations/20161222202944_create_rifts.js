@@ -1,4 +1,4 @@
-exports.up = function (knex, Promise) {
+exports.up = function (knex) {
   return Promise.all([
     knex.schema.createTable('user_rift_runs', (table) => {
       table.string('user_id', 36).notNullable();
@@ -46,7 +46,7 @@ exports.up = function (knex, Promise) {
   ]);
 };
 
-exports.down = function (knex, Promise) {
+exports.down = function (knex) {
   return Promise.all([
     knex.schema.dropTableIfExists('user_rift_runs'),
     knex.schema.dropTableIfExists('user_rift_tickets'),
