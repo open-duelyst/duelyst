@@ -61,7 +61,7 @@ jobs:
     - name: run integration tests
       run: yarn test:integration:misc
       env:
-        REDIS_IP: redis
+        REDIS_HOST: redis
         POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
         # TODO: Create a Firebase Realtime Database for CI.
         FIREBASE_URL: ""

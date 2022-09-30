@@ -153,7 +153,7 @@ const config = convict({
     ip: {
       doc: 'Redis IP.',
       default: '127.0.0.1',
-      env: 'REDIS_IP',
+      env: 'REDIS_HOST',
     },
     port: {
       doc: 'Redis port.',

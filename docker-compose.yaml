@@ -43,7 +43,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
@@ -59,7 +59,7 @@ services:
     ports:
       - 8000:8000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start game
@@ -71,7 +71,7 @@ services:
     ports:
       - 8000:8000
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
     command: docker/start sp
@@ -81,7 +81,7 @@ services:
   worker:
     <<: *base
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
       FIREBASE_LEGACY_TOKEN: ${FIREBASE_LEGACY_TOKEN}
@@ -125,7 +125,7 @@ services:
     profiles:
       - donotstart
     environment:
-      REDIS_IP: redis
+      REDIS_HOST: redis
       POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
       FIREBASE_URL: ${FIREBASE_URL}
     command: docker/start test:integration
