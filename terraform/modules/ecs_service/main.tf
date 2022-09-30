@@ -12,6 +12,12 @@ resource "aws_ecs_service" "service" {
     field = "cpu"
   }
 
+  capacity_provider_strategy {
+    base              = 1
+    capacity_provider = var.capacity_provider
+    weight            = 100
+  }
+
   load_balancer {
     target_group_arn = var.alb_target_group
     container_name   = var.name

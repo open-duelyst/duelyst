@@ -8,6 +8,11 @@ variable "cluster" {
   description = "The ECS cluster in which to run this service."
 }
 
+variable "capacity_provider" {
+  type        = string
+  description = "The cluster capacity provider for this service."
+}
+
 variable "ecr_repository" {
   type        = string
   description = "The ECR repository from which to source container images."

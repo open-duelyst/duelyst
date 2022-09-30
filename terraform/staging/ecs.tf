@@ -12,27 +12,25 @@ module "ecs_cluster" {
 }
 
 module "ecs_service_api" {
-  source           = "../modules/ecs_service"
-  name             = "duelyst-api-staging"
-  cluster          = module.ecs_cluster.id
-  ecr_repository   = module.ecr_repository_api.id
-  deployed_version = "latest"
-  container_count  = 1
-  service_port     = 3000
-  alb_target_group = module.staging_load_balancer.api_target_group_arn
-
-  depends_on = [module.ecr_repository_api]
+  source            = "../modules/ecs_service"
+  name              = "duelyst-api-staging"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.capacity_provider
+  ecr_repository    = module.ecr_repository_api.id
+  deployed_version  = "latest"
+  container_count   = 1
+  service_port      = 3000
+  alb_target_group  = module.staging_load_balancer.api_target_group_arn
 }
 
 module "ecs_service_sp" {
-  source           = "../modules/ecs_service"
-  name             = "duelyst-sp-staging"
-  cluster          = module.ecs_cluster.id
-  ecr_repository   = module.ecr_repository_sp.id
-  deployed_version = "1.97.0"
-  container_count  = 1
-  service_port     = 8000
-  alb_target_group = module.staging_load_balancer.sp_target_group_arn
-
-  depends_on = [module.ecr_repository_sp]
+  source            = "../modules/ecs_service"
+  name              = "duelyst-sp-staging"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.capacity_provider
+  ecr_repository    = module.ecr_repository_sp.id
+  deployed_version  = "1.97.0"
+  container_count   = 1
+  service_port      = 8000
+  alb_target_group  = module.staging_load_balancer.sp_target_group_arn
 }
