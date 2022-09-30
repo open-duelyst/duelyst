@@ -26,9 +26,16 @@ echo "Authenticating with ECR."
 aws ecr-public get-login-password --region us-east-1 | \
 	docker login --username AWS --password-stdin public.ecr.aws || quit "Failed to authenticate."
 
-# Tag and publish the image.
+# Tag and publish the image (SemVer).
 LOCAL_IMAGE="duelyst-${SERVICE}:${VERSION}"
 REMOTE_IMAGE="public.ecr.aws/${REGISTRY}/${REPOSITORY}:${VERSION}"
+echo "Tagging $LOCAL_IMAGE as $REMOTE_IMAGE"
+docker tag $LOCAL_IMAGE $REMOTE_IMAGE
+echo "Pushing $REMOTE_IMAGE"
+docker push $REMOTE_IMAGE
+
+# Tag and publish the image (latest).
+REMOTE_IMAGE="public.ecr.aws/${REGISTRY}/${REPOSITORY}:latest"
 echo "Tagging $LOCAL_IMAGE as $REMOTE_IMAGE"
 docker tag $LOCAL_IMAGE $REMOTE_IMAGE
 echo "Pushing $REMOTE_IMAGE"
