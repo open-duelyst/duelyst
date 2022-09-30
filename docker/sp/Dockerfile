@@ -1,6 +1,16 @@
 # Base image is 856MB.
-FROM node:lts
+#FROM node:lts
 
+# Base image is 114MB.
+FROM node:16-alpine
+
+# Configure dependencies.
+RUN apk add git # For boneskull/yargs git protocol workaround.
+#RUN apk add python3 # For building bcrypt for Electron.
+RUN git config --global url."https://github.com/".insteadOf git@github.com:
+RUN git config --global url."https://".insteadOf git://
+
+# Configure the container.
 EXPOSE 8000
 ARG REDIS_HOST
 ENV REDIS_HOST=${REDIS_HOST}
@@ -9,6 +19,7 @@ ENV FIREBASE_URL=${FIREBASE_URL}
 ARG FIREBASE_LEGACY_TOKEN
 ENV FIREBASE_LEGACY_TOKEN=${FIREBASE_LEGACY_TOKEN}
 
+# Copy and build the code.
 WORKDIR /duelyst
 COPY package.json /duelyst/
 COPY version.json /duelyst/
@@ -20,15 +31,11 @@ COPY app/sdk /duelyst/app/sdk
 COPY bin /duelyst/bin
 COPY config /duelyst/config
 # /root/.cache (from Electron) is 93MB.
-COPY desktop /duelyst/desktop
+#COPY desktop /duelyst/desktop
 COPY packages /duelyst/packages
 COPY server /duelyst/server
-
-# Work around boneskull/yargs using deprecated git protocol.
-RUN git config --global url."https://github.com/".insteadOf git@github.com:
-RUN git config --global url."https://".insteadOf git://
-
 # /duelyst/node_modules is 816MB.
 RUN yarn install --dev
 
+# Start the service.
 ENTRYPOINT ["yarn", "sp"]
