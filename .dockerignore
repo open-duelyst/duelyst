@@ -6,6 +6,7 @@ Procfile
 README.md
 firebaseRules.json
 Vagrantfile
+desktop
 app/audio
 app/replay
 app/resources
