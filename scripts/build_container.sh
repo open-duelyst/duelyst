@@ -11,7 +11,6 @@ echo "Building image for duelyst-nodejs:$VERSION."
 docker build \
 	-f docker/nodejs.Dockerfile \
 	-t duelyst-nodejs:$VERSION \
-	--build-arg NODEJS_IMAGE_VERSION=$VERSION \
 	. || {
 	echo "Failed to build Node.js image!"
 	exit 1
@@ -27,6 +26,7 @@ if [ -z $FIREBASE_LEGACY_TOKEN ]; then echo "FIREBASE_LEGACY_TOKEN must be set!"
 docker build \
 	-f docker/$SERVICE.Dockerfile \
 	-t duelyst-$SERVICE:$VERSION \
+	--build-arg NODEJS_IMAGE_VERSION=$VERSION \
 	--build-arg REDIS_HOST=$REDIS_HOST \
 	--build-arg FIREBASE_URL=$FIREBASE_URL \
 	--build-arg FIREBASE_LEGACY_TOKEN=$FIREBASE_LEGACY_TOKEN \
