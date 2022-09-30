@@ -6,11 +6,11 @@ resource "aws_security_group" "security_group" {
   dynamic "ingress" {
     for_each = var.ingress_configs
     content {
-      description = ingress.description
-      from_port   = ingress.port
-      to_port     = ingress.port
-      protocol    = ingress.protocol
-      cidr_blocks = ingress.cidr
+      description = ingress.value["description"]
+      from_port   = ingress.value["port"]
+      to_port     = ingress.value["port"]
+      protocol    = "tcp"
+      cidr_blocks = ingress.value["cidrs"]
     }
   }
 

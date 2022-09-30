@@ -14,7 +14,11 @@ variable "vpc_id" {
 }
 
 variable "ingress_configs" {
-  type = list(object)
-  description = "A list of ingress config blocks with description, port, protocol, and cidr keys."
-  default = []
+  type = list(object({
+    description = string
+    port        = number
+    cidrs       = list(string)
+  }))
+  description = "A list of ingress configuration objects with description, port, and cidr keys."
+  default     = []
 }

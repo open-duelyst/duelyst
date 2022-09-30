@@ -12,6 +12,21 @@ resource "aws_lb" "lb" {
   }
 }
 
+resource "aws_lb_listener" "http_to_https_listener" {
+  load_balancer_arn = aws_lb.lb.arn
+  port = 80
+  protocol = "HTTP"
+
+  default_action {
+    type = "redirect"
+    redirect {
+      port        = var.api_listen_port
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
+
 resource "aws_lb_listener" "api_listener" {
   load_balancer_arn = aws_lb.lb.arn
   port              = var.api_listen_port
