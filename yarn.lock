@@ -12152,7 +12152,7 @@ redis-errors@^1.0.0, redis-errors@^1.2.0:
   resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
   integrity sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==
 
-redis-parser@^2.0.0, redis-parser@^2.6.0:
+redis-parser@^2.0.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-2.6.0.tgz#52ed09dacac108f1a631c07e9b69941e7a19504b"
   integrity sha512-9Hdw19gwXFBJdN8ENUoNVJFRyMDFrE/ZBClPicKYDPwNPJ4ST1TedAHYNSiGKElwh2vrmRGMoJYbVdJd+WQXIw==
@@ -12168,15 +12168,6 @@ redis@^0.12.1:
   version "0.12.1"
   resolved "https://registry.yarnpkg.com/redis/-/redis-0.12.1.tgz#64df76ad0fc8acebaebd2a0645e8a48fac49185e"
   integrity sha1-ZN92rQ/IrOuuvSoGReikj6xJGF4=
-
-redis@^2.4.2:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/redis/-/redis-2.8.0.tgz#202288e3f58c49f6079d97af7a10e1303ae14b02"
-  integrity sha512-M1OkonEQwtRmZv4tEWF2VgpG0JWJ8Fv1PhlgT5+B+uNq2cA3Rt1Yt/ryoR+vQNOQcIEgdCdfH0jr3bDpihAw1A==
-  dependencies:
-    double-ended-queue "^2.1.0-0"
-    redis-commands "^1.2.0"
-    redis-parser "^2.6.0"
 
 redis@~2.6.0-2:
   version "2.6.5"
