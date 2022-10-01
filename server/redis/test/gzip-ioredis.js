@@ -1,6 +1,9 @@
-const redis = require('redis');
+const Redis = require('ioredis');
 
-const client = redis.createClient({ host: '127.0.0.1', port: 6379, detect_buffers: true });
+const client = new Redis({
+  host: '127.0.0.1',
+  port: 6379,
+});
 const json = JSON.stringify({ data: 'this is a game' });
 const zlib = require('zlib');
 

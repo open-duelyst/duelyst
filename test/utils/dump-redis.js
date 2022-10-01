@@ -1,7 +1,7 @@
 const path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../..'));
 
-const redis = require('redis');
+const Redis = require('ioredis');
 const c = require('../../config/config');
 const Logger = require('../../app/common/logger.coffee');
 
@@ -10,10 +10,9 @@ if (process.env.NODE_ENV !== 'test') {
   process.exit(1);
 }
 
-const client = redis.createClient({
+const client = new Redis({
   host: c.get('redis.ip'),
   port: c.get('redis.port'),
-  detect_buffers: true,
 });
 
 client.on('ready', () => {
