@@ -29,7 +29,6 @@ resource "aws_ecs_cluster_capacity_providers" "capacity_mapping" {
   }
 }
 
-# NOTE: Terraform may fail to delete/recreate this resource when the ASG ARN changes.
 resource "aws_ecs_capacity_provider" "capacity_provider" {
   name = var.name
 
@@ -41,7 +40,6 @@ resource "aws_ecs_capacity_provider" "capacity_provider" {
       maximum_scaling_step_size = 1
       minimum_scaling_step_size = 1
       status                    = "ENABLED"
-      target_capacity           = var.desired_capacity
     }
   }
 }

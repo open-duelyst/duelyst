@@ -3,7 +3,6 @@ module "ecs_cluster" {
   name               = "duelyst-staging"
   ssh_public_key     = var.ssh_public_key
   security_group_ids = [module.internal_security_group.id]
-
   subnets = [
     module.first_subnet.id,
     module.second_subnet.id,
