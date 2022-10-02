@@ -43,6 +43,11 @@ module "internal_security_group" {
       description = "Allow TCP/443 from VPC"
       port        = 443
       cidr_blocks = ["10.0.0.0/16"]
+    },
+    {
+      description = "Allow TCP/8000 from VPC"
+      port        = 8000
+      cidr_blocks = ["10.0.0.0/16"]
     }
   ]
 }
