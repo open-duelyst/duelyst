@@ -65,12 +65,13 @@ router.post "/forgot", (req, res, next) ->
 			return knex("password_reset_tokens").insert({ reset_token:@resetToken, user_id:@userId, created_at:moment().utc().toDate() })
 			.bind @
 			.then () =>
-				mail.sendForgotPasswordAsync(@username, email, @resetToken)
-				Logger.module("SESSION").debug "Forgot password mail sent"
+				#mail.sendForgotPasswordAsync(@username, email, @resetToken)
+				#Logger.module("SESSION").debug "Forgot password mail sent"
 				return res.format({
 					'text/html': () ->
 						return res.render(__dirname + "/../templates/sent-reset.hbs",{
-							title: "Email Sent"
+							#title: "Email Sent"
+							title: "Email NOT SENT - SMTP is currently disabled."
 						})
 					'application/json': () ->
 						return res.status(200).json({})

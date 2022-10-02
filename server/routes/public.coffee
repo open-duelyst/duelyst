@@ -142,7 +142,7 @@ router.get "/health", (req, res) ->
 				environment: config.get('env')
 				pool: pool
 			}
-			mail.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
+			#mail.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
 			res.status(500)
 		else
 			res.status(200)

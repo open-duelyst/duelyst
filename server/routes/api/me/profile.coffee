@@ -76,7 +76,7 @@ router.post "/email_verify_token", (req, res, next) ->
 			created_at:moment().utc().toDate()
 		)
 	.then ()->
-		mail.sendEmailVerificationLinkAsync(@.userRow.username, @.userRow.email, verifyToken)
+		#mail.sendEmailVerificationLinkAsync(@.userRow.username, @.userRow.email, verifyToken)
 		return res.status(200).json({})
 
 module.exports = router
