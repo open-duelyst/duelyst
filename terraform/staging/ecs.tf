@@ -33,6 +33,10 @@ module "ecs_service_api" {
       value = "staging"
     },
     {
+      name = "API_URL"
+      value = "https://${var.staging_domain_name}"
+    },
+    {
       name  = "REDIS_HOST"
       value = module.redis.instance_dns
     },
@@ -43,6 +47,10 @@ module "ecs_service_api" {
     {
       name  = "S3_ASSETS_DOMAIN"
       value = var.s3_assets_domain
+    },
+    {
+      name = "ALL_CARDS_AVAILABLE"
+      value = true
     }
   ]
 
