@@ -167,9 +167,15 @@ resource "aws_iam_policy" "task_policy" {
     {
       "Effect": "Allow",
       "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:BatchGetImage",
+        "ecr:GetAuthorizationToken",
+        "ecr:GetDownloadUrlForLayer",
         "kms:Decrypt",
-        "ssm:GetParameters",
-        "secretsmanager:GetSecretValue"
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "secretsmanager:GetSecretValue",
+        "ssm:GetParameters"
       ],
       "Resource": ["*"]
     }
