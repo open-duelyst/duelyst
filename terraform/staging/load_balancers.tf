@@ -2,7 +2,7 @@ module "staging_load_balancer" {
   source          = "../modules/load_balancer"
   name            = "duelyst-staging"
   vpc_id          = module.internal_vpc.id
-  security_groups = [module.https_security_group.id]
+  security_groups = [module.load_balancer_security_group.id]
   subnets = [
     module.first_subnet.id,
     module.second_subnet.id,
