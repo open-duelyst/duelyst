@@ -33,6 +33,7 @@ if cdnDomain
 if config.isDevelopment()
 	corsMiddleware = cors()
 else
+	Logger.module("API").warn "Enabling CORS for domains #{JSON.stringify(corsAllowedOrigins)}"
 	corsMiddleware = cors(
 		origin: (origin, callback) ->
 			if corsAllowedOrigins.indexOf(origin) != -1
