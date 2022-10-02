@@ -17,12 +17,14 @@ The following table summarizes the above resource utilization estimations for 50
 
 - Instance types:
 	- Based on the above data, 2 vCPUs and 1GB RAM would likely suffice for each service
-	- `t4g.micro` Spot instances have 2 vCPUs and 1GB RAM, and are billed at $0.0084/hour on-demand
+	- `t3g.micro` instances have 2 vCPUs and 1GB RAM, and are free for 12 months
+	- `t4g.micro` instances have 2 vCPUs and 1GB RAM, and are billed at $0.0084/hour on-demand ($6.13/mo)
 		- The `g` in `t4g` indicates AWS Gravitron (ARM) processors, which are about 20% cheaper than x86
 		- Spot Instances (pre-emptible) are further discounted by 70%, for a final rate of $0.0025/hour
 			- See https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html
 			- Note: At peak load, vCPU will be limited after a 2h24m burst; scaling up will prevent this
-	- With 6 `t4g.micro` Spot Instances, we'd be billed $0.36/hour or $10.95/month.
+	- With 2 `t4g.micro` On-Demand instances (4 cores for 4 staging apps), we'd be billed $12.26/mo.
+	- With 6 `t4g.micro` Spot instances, we'd be billed $10.95/month.
 - Storage:
 	- The first 30GB of EBS storage is free for 1 year
 	- Amazon's `gp3` disk type in Elastic Block Store is the most economical option
@@ -107,3 +109,8 @@ The following table summarizes the above resource utilization estimations for 50
 	- Free up to 100GB/month.
 - Total costs:
 	- Approximately $0.01/month.
+
+## AWS KMS Keys
+
+- Used to encrypt and decrypt secrets in app containers.
+- Costs $1/month per key.

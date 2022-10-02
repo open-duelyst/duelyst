@@ -8,5 +8,5 @@ module "postgres" {
   ]
   security_group_ids = [module.postgres_security_group.id]
   username           = var.database_user
-  password           = var.database_password
+  password_ssm_path  = "/duelyst/staging/postgres/password"
 }

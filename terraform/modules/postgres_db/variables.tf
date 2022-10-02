@@ -38,7 +38,7 @@ variable "username" {
   description = "The admin user for this RDS instance."
 }
 
-variable "password" {
+variable "password_ssm_path" {
   type        = string
-  description = "The password for the admin user of this RDS instance."
+  description = "The path of the encrypted password in AWS SSM Parameter Store."
 }
