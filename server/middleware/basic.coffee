@@ -20,18 +20,36 @@ if config.isDevelopment() or config.isStaging()
 else
 	parser = bodyParser.json()
 
-# Enable CORS
-# Disable client cache headers
-# Security headers
-# Body parser and urlencoded
+# Build CORS domain allowlist for staging/production.
+corsAllowedOrigins = []
+apiDomain = config.get('apiDomain')
+if apiDomain
+	corsAllowedOrigins.push apiDomain
+cdnDomain = config.get('assetsBucket.domainName')
+if cdnDomain
+	corsAllowedOrigins.push cdnDomain
+
+# Enable CORS allowlist in staging/production.
+if config.isDevelopment()
+	corsMiddleware = cors()
+else
+	corsMiddleware = cors(
+		origin: (origin, callback) ->
+			if corsAllowedOrigins.indexOf(origin) != -1
+				callback(null, true)
+			else
+				callback(new Error('The domain was blocked by CORS configuration.'))
+	)
 
 module.exports = compose([
 	getRealIp(),
-	cors({
-		#origin: '*' # Temporarily disable CORS restrictions.
-	}),
+	# Enable CORS
+	corsMiddleware,
+	# Disable client cache headers
 	helmet.noCache(),
+	# Security headers
 	helmet.xssFilter(),
+	# Body parser and urlencoded
 	parser,
 	bodyParser.urlencoded({extended: true}),
 	# apache log format

@@ -2,7 +2,6 @@
 	"env": "production",
 	"api": "",
 	"cdn": "",
-	"s3_url":"",
 	"consul": {
 		"gameServiceName": "production-game"
 	},

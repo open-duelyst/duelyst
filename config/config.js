@@ -40,6 +40,11 @@ const config = convict({
     default: 'http://localhost:3000',
     env: 'API_URL',
   },
+  apiDomain: {
+    doc: 'API domain (for CORS configuration).',
+    default: '',
+    env: 'API_DOMAIN',
+  },
   firebase: {
     url: {
       doc: 'Firebase URL, e.g. https://my-duelyst-project-12345.firebaseio.com/',

@@ -40,6 +40,33 @@ resource "aws_lb_listener" "api_listener" {
   }
 }
 
+# Redirect requests for static assets to CloudFront, bypassing API.
+resource "aws_lb_listener_rule" "cdn_redirect" {
+  listener_arn = aws_lb_listener.api_listener.arn
+  priority     = 100
+
+  action {
+    type = "redirect"
+    redirect {
+      host        = var.cdn_domain_name
+      path        = "/${var.cdn_path_prefix}#{path}"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = [
+        "/*.css",
+        "/*.html",
+        "/*.ico",
+        "/*.js",
+        "/resources/*"
+      ]
+    }
+  }
+}
+
 resource "aws_lb_target_group" "api_target_group" {
   name             = "${var.name}-api"
   vpc_id           = var.vpc_id

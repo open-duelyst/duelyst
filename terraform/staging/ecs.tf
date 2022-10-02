@@ -28,41 +28,18 @@ module "ecs_service_api" {
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
 
   environment_variables = [
-    {
-      name  = "NODE_ENV"
-      value = "staging"
-    },
-    {
-      name = "API_URL"
-      value = "https://${var.staging_domain_name}"
-    },
-    {
-      name  = "REDIS_HOST"
-      value = module.redis.instance_dns
-    },
-    {
-      name  = "FIREBASE_URL"
-      value = var.firebase_url
-    },
-    {
-      name  = "S3_ASSETS_DOMAIN"
-      value = var.s3_assets_domain
-    },
-    {
-      name = "ALL_CARDS_AVAILABLE"
-      value = true
-    }
+    { name = "NODE_ENV", value = "staging" },
+    { name = "API_URL", value = "https://${var.staging_domain_name}" },
+    { name = "API_DOMAIN", value = var.staging_domain_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "FIREBASE_URL", value = var.firebase_url },
+    { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
+    { name = "ALL_CARDS_AVAILABLE", value = true }
   ]
 
   secrets = [
-    {
-      name      = "FIREBASE_LEGACY_TOKEN"
-      valueFrom = "/duelyst/staging/firebase/legacy-token"
-    },
-    {
-      name      = "POSTGRES_CONNECTION"
-      valueFrom = "/duelyst/staging/postgres/connection-string"
-    }
+    { name = "FIREBASE_LEGACY_TOKEN", valueFrom = "/duelyst/staging/firebase/legacy-token" },
+    { name = "POSTGRES_CONNECTION", valueFrom = "/duelyst/staging/postgres/connection-string" }
   ]
 }
 
@@ -82,24 +59,12 @@ module "ecs_service_sp" {
   alb_target_group  = module.staging_load_balancer.sp_target_group_arn
 
   environment_variables = [
-    {
-      name  = "NODE_ENV"
-      value = "staging"
-    },
-    {
-      name  = "REDIS_HOST"
-      value = module.redis.instance_dns
-    },
-    {
-      name  = "FIREBASE_URL"
-      value = var.firebase_url
-    }
+    { name = "NODE_ENV", value = "staging" },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
   secrets = [
-    {
-      name      = "FIREBASE_LEGACY_TOKEN"
-      valueFrom = "/duelyst/staging/firebase/legacy-token"
-    }
+    { name = "FIREBASE_LEGACY_TOKEN", valueFrom = "/duelyst/staging/firebase/legacy-token" }
   ]
 }
