@@ -25,7 +25,8 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_ecs_task_definition" "task_def" {
-  family = var.name
+  family             = var.name
+  execution_role_arn = var.task_role
 
   container_definitions = jsonencode([
     {
@@ -50,11 +51,6 @@ resource "aws_ecs_task_definition" "task_def" {
       secrets     = var.secrets
     }
   ])
-
-  #volume {
-  #  name      = "service-storage"
-  #  host_path = "/ecs/service-storage"
-  #}
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {

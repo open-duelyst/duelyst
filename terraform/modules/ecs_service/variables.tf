@@ -13,6 +13,11 @@ variable "capacity_provider" {
   description = "The cluster capacity provider for this service."
 }
 
+variable "task_role" {
+  type        = string
+  description = "The task execution IAM role for this service."
+}
+
 variable "ecr_registry" {
   type        = string
   description = "The ECR registry from which to source container images."
@@ -67,9 +72,9 @@ variable "environment_variables" {
 
 variable "secrets" {
   type = list(object({
-    name     = string
-    ssm_path = string
+    name      = string
+    valueFrom = string
   }))
-  description = "A list of secret objects with name and ssm_path keys."
+  description = "A list of secret objects with name and valueFrom (SSM path) keys."
   sensitive   = true
 }

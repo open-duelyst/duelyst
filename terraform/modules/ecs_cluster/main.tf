@@ -14,21 +14,12 @@ locals {
   }
 }
 
+# Create an ECS cluster.
 resource "aws_ecs_cluster" "cluster" {
   name = var.name
 }
 
-resource "aws_ecs_cluster_capacity_providers" "capacity_mapping" {
-  cluster_name       = aws_ecs_cluster.cluster.name
-  capacity_providers = [aws_ecs_capacity_provider.capacity_provider.name]
-
-  default_capacity_provider_strategy {
-    base              = 1
-    weight            = 100
-    capacity_provider = aws_ecs_capacity_provider.capacity_provider.name
-  }
-}
-
+# Create an ECS capacity provider.
 resource "aws_ecs_capacity_provider" "capacity_provider" {
   name = var.name
 
@@ -44,6 +35,19 @@ resource "aws_ecs_capacity_provider" "capacity_provider" {
   }
 }
 
+# Attach the ECS capacity provider to the ECS cluster.
+resource "aws_ecs_cluster_capacity_providers" "capacity_mapping" {
+  cluster_name       = aws_ecs_cluster.cluster.name
+  capacity_providers = [aws_ecs_capacity_provider.capacity_provider.name]
+
+  default_capacity_provider_strategy {
+    base              = 1
+    weight            = 100
+    capacity_provider = aws_ecs_capacity_provider.capacity_provider.name
+  }
+}
+
+# Create an autoscaling group for instances providing capacity to the ECS cluster.
 resource "aws_autoscaling_group" "asg" {
   name                = "ecs-${var.name}"
   vpc_zone_identifier = var.subnets
@@ -77,6 +81,7 @@ resource "aws_autoscaling_group" "asg" {
   }
 }
 
+# Create a launch template for instances inside the autoscaling group.
 resource "aws_launch_template" "template" {
   name_prefix            = "ecs-${var.name}"
   image_id               = local.ami_ids[var.architecture][data.aws_region.current.name]
@@ -92,11 +97,13 @@ resource "aws_launch_template" "template" {
   }
 }
 
+# Create an SSH key pair for the instances.
 resource "aws_key_pair" "ssh_key" {
   key_name   = "ecs-${var.name}-ssh"
   public_key = var.ssh_public_key
 }
 
+# Create a role for the instances.
 resource "aws_iam_role" "ecs_instance_role" {
   name = "ECSInstance"
   path = "/"
@@ -118,12 +125,61 @@ resource "aws_iam_role" "ecs_instance_role" {
 EOF	
 }
 
+# Attach the pre-defined AmazonEC2ContainerServiceforEC2Role to the instance role.
+resource "aws_iam_role_policy_attachment" "ecs_instance_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+  role       = aws_iam_role.ecs_instance_role.name
+}
+
+# Create an instance profile for the instances.
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "ECSInstance"
   role = aws_iam_role.ecs_instance_role.name
 }
 
-resource "aws_iam_role_policy_attachment" "ecs_instance_policy_attachment" {
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
-  role       = aws_iam_role.ecs_instance_role.name
+# Create a role for ECS tasks.
+resource "aws_iam_role" "task_role" {
+  name = "ECSTask"
+  path = "/"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "ecs-tasks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+# Create a policy for ECS tasks.
+resource "aws_iam_policy" "task_policy" {
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt",
+        "ssm:GetParameters",
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": ["*"]
+    }
+  ]
+}
+EOF
+}
+
+# Attach the task policy to the task role.
+resource "aws_iam_role_policy_attachment" "task_policy_attachment" {
+  policy_arn = aws_iam_policy.task_policy.arn
+  role       = aws_iam_role.task_role.name
 }
