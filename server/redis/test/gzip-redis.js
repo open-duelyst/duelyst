@@ -1,6 +1,6 @@
-const redis = require('redis');
+const redis = require('ioredis');
 
-const client = redis.createClient({ host: '127.0.0.1', port: 6379, detect_buffers: true });
+const client = redis.createClient({ host: '127.0.0.1', port: 6379 });
 const json = JSON.stringify({ data: 'this is a game' });
 const zlib = require('zlib');
 
@@ -23,7 +23,7 @@ client.get('plain', (err, reply) => {
 
 // store the raw buffer
 client.set('gzip', gzip);
-client.get(new Buffer('gzip'), (err, reply) => {
+client.getBuffer('gzip', (err, reply) => {
   const response = JSON.parse(zlib.gunzipSync(reply));
   console.log('------------------------');
   console.log(`gzip in => 0x${reply.toString('hex')}`);

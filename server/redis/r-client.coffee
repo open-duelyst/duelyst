@@ -1,43 +1,32 @@
 Promise = require 'bluebird'
-redis = require 'ioredis'
-
 Logger = require '../../app/common/logger.coffee'
-config = require '../../config/config.js'
 
+# Configure Redis
+redis = require 'redis'
+config = require '../../config/config.js'
+redisIp = config.get("redis.ip")
+redisPort = config.get("redis.port")
+redisPassword = config.get("redis.password")
+
+# promisifyAll
 Promise.promisifyAll(redis)
 
-# Configure Redis client
-redisHost = config.get('redis.host')
-redisPort = config.get('redis.port')
-Logger.module("REDIS").info "redis: connecting to server #{redisHost}:#{redisPort}"
-module.exports = RedisClient = new redis({
-	host: redisHost,
-	port: redisPort,
-	connectTimeout: 1000,
-	retryStrategy: (attempts) ->
-		# Attempt reconnection with gradual backoff up to 5000ms.
-		backoff = Math.min(attempts * 200, 5000)
-		return backoff
-})
+# redis client
+module.exports = RedisClient = redis.createClient({host: redisIp, port: redisPort, detect_buffers: true})
 
 # redis auth
-redisPassword = config.get("redis.password")
 if redisPassword
 	RedisClient.auth(redisPassword)
 
-# Ready event fires when a connection is ready for use.
+# Ready event
 RedisClient.on "ready", () ->
-	Logger.module("REDIS").log "redis: connection ready"
+	Logger.module("REDIS").debug "client onReady"
 
-# Connect event fires when a connection is established.
+# Connect event
 RedisClient.on "connect", () ->
-	Logger.module("REDIS").log "redis: connection established"
-
-# Reconnecting event
-RedisClient.on "reconnecting", () ->
-	Logger.module("REDIS").warn "redis: reconnecting"
+	Logger.module("REDIS").debug "client onConnect"
 
 # Error event
-# No need to manually reconnect; will happen in automatically.
+# TODO: We should probably do something if we receive an error
 RedisClient.on "error", (error) ->
-	Logger.module("REDIS").error "redis error: #{JSON.stringify(error)})"
+	Logger.module("REDIS").error "client onError: #{JSON.stringify(error)})"
