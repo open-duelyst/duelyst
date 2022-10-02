@@ -3,7 +3,7 @@
 	"api": "http://localhost:3000",
 	"postgres_connection_string": "postgres://USER:PASSWORD@HOST:PORT/DATABASE",
 	"redis": {
-		"ip": "duelyst-staging.lg8cfc.0001.use1.cache.amazonaws.com",
+		"host": "duelyst-staging.lg8cfc.0001.use1.cache.amazonaws.com",
 		"port": 6379,
 		"ttl": 3600,
 		"password": ""

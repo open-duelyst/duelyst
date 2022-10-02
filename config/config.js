@@ -150,8 +150,8 @@ const config = convict({
     },
   },
   redis: {
-    ip: {
-      doc: 'Redis IP.',
+    host: {
+      doc: 'Redis host.',
       default: '127.0.0.1',
       env: 'REDIS_HOST',
     },
@@ -436,6 +436,6 @@ console.log(`CONFIG: version:${config.version}`);
 console.log(`CONFIG: env:${config.get('env')}`);
 console.log(`CONFIG: firebase:${url.parse(config.get('firebase.url')).host}`);
 console.log(`CONFIG: postgres:${pgUrl.host}${pgUrl.pathname}`);
-console.log(`CONFIG: redis:${config.get('redis.ip')}`);
+console.log(`CONFIG: redis:${config.get('redis.host')}`);
 
 module.exports = config;

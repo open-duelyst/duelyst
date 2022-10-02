@@ -11,7 +11,7 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const client = new Redis({
-  host: c.get('redis.ip'),
+  host: c.get('redis.host'),
   port: c.get('redis.port'),
 });
 

@@ -7,7 +7,7 @@ config = require '../../config/config.js'
 Promise.promisifyAll(redis)
 
 # Configure Redis client
-redisHost = config.get('redis.ip')
+redisHost = config.get('redis.host')
 redisPort = config.get('redis.port')
 Logger.module("REDIS").info "redis: connecting to server #{redisHost}:#{redisPort}"
 module.exports = RedisClient = new redis({
