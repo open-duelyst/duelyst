@@ -35,10 +35,11 @@ variable "security_group_ids" {
 
 variable "username" {
   type        = string
-  description = "The admin user for this RDS instance."
+  description = "The username for this RDS instance."
 }
 
 variable "password" {
   type        = string
-  description = "The password for the admin user of this RDS instance."
+  description = "The password for this RDS instance."
+  sensitive   = true
 }

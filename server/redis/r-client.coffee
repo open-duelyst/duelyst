@@ -1,20 +1,20 @@
 Promise = require 'bluebird'
-Logger = require '../../app/common/logger.coffee'
-
-# Configure Redis
 redis = require 'redis'
-config = require '../../config/config.js'
-redisIp = config.get("redis.ip")
-redisPort = config.get("redis.port")
-redisPassword = config.get("redis.password")
 
-# promisifyAll
+Logger = require '../../app/common/logger.coffee'
+config = require '../../config/config.js'
+
 Promise.promisifyAll(redis)
 
 # redis client
-module.exports = RedisClient = redis.createClient({host: redisIp, port: redisPort, detect_buffers: true})
+module.exports = RedisClient = redis.createClient({
+	host: config.get('redis.host'),
+	port: config.get('redis.port'),
+	detect_buffers: true
+})
 
 # redis auth
+redisPassword = config.get("redis.password")
 if redisPassword
 	RedisClient.auth(redisPassword)
 

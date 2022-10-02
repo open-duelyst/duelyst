@@ -2,9 +2,6 @@ kue = require 'kue'
 Logger = require '../../app/common/logger.coffee'
 config = require '../../config/config.js'
 env = config.get('env')
-redisIp = config.get("redis.ip")
-redisPort = config.get("redis.port")
-redisPassword = config.get("redis.password")
 
 ###*
 # 'Jobs'
@@ -17,7 +14,7 @@ module.exports = Jobs = kue.createQueue(
 	disableSearch: true
 	redis:
 		port: config.get("redis.port")
-		host: config.get("redis.ip")
+		host: config.get("redis.host")
 		auth: config.get("redis.password")
 	# Promotion options determine the behavior of Kue's internal timers:
 	# https://github.com/Automattic/kue/blob/v0.11.6/lib/kue.js#L146L157

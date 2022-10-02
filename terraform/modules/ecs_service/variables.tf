@@ -13,6 +13,11 @@ variable "capacity_provider" {
   description = "The cluster capacity provider for this service."
 }
 
+variable "task_role" {
+  type        = string
+  description = "The task execution IAM role for this service."
+}
+
 variable "ecr_registry" {
   type        = string
   description = "The ECR registry from which to source container images."
@@ -55,4 +60,20 @@ variable "service_port" {
 variable "alb_target_group" {
   type        = string
   description = "The ALB target group to associate with this service."
+}
+
+variable "environment_variables" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  description = "A list of environment variable objects with name and value keys."
+}
+
+variable "secrets" {
+  type = list(object({
+    name      = string
+    valueFrom = string
+  }))
+  description = "A list of secret objects with name and valueFrom (SSM path) keys."
 }

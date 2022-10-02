@@ -43,14 +43,19 @@ module "internal_security_group" {
       description = "Allow TCP/443 from VPC"
       port        = 443
       cidr_blocks = ["10.0.0.0/16"]
+    },
+    {
+      description = "Allow TCP/8000 from VPC"
+      port        = 8000
+      cidr_blocks = ["10.0.0.0/16"]
     }
   ]
 }
 
-module "https_security_group" {
+module "load_balancer_security_group" {
   source      = "../modules/security_group"
   name        = "https"
-  description = "Allows HTTP and HTTPS access from the public Internet"
+  description = "Allows load balancer access from the public Internet"
   vpc_id      = module.internal_vpc.id
   ingress_configs = [
     {
@@ -61,6 +66,11 @@ module "https_security_group" {
     {
       description = "Allow TCP/443 from 0.0.0.0/0"
       port        = 443
+      cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description = "Allows TCP/8000 from 0.0.0.0/0"
+      port        = 8000
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]

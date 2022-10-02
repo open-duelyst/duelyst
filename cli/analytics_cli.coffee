@@ -171,7 +171,7 @@ onConfigurationComplete = ()->
 	console.log("CONFIG: env: "+coloredEnv)
 	console.log("CONFIG: firebase: "+url.parse(config.get('firebase')).host)
 	console.log("CONFIG: postgres: "+pgUrl.host+pgUrl.pathname)
-	console.log("CONFIG: redis: "+config.get('redis.ip'))
+	console.log("CONFIG: redis: "+config.get('redis.host'))
 	console.log("================".blue)
 
 	# configure knex

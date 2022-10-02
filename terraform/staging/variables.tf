@@ -40,11 +40,11 @@ variable "third_availability_zone" {
   type = string
 }
 
-variable "database_user" {
+variable "firebase_url" {
   type = string
 }
 
-variable "database_password" {
+variable "database_user" {
   type = string
 }
 

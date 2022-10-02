@@ -8,6 +8,13 @@ Then populate `terraform.tfvars` with the keys and values from `variables.tf` an
 is a helper script which automatically references the `config.aws.tfbackend` and `config.s3.tfbackend` files we created
 previously.
 
+Passwords should not be stored in Terraform. Instead, the following keys must be created in AWS
+SSM Parameter Store (see `scripts/create-ssm-secret.sh`):
+
+```
+/duelyst/staging/postgres/password
+```
+
 Finally, run `terraform apply` to see the plan output and provision a staging environment.
 
 ## Uploading static assets to S3
