@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "postgres_password" {
-  name = var.password_ssm_path
-}
-
 resource "aws_db_instance" "postgres" {
   identifier             = var.name
   engine                 = "postgres"
@@ -14,7 +10,7 @@ resource "aws_db_instance" "postgres" {
 
   db_name  = var.database_name
   username = var.username
-  password = data.aws_ssm_parameter.postgres_password.value
+  password = var.password
 }
 
 resource "aws_db_subnet_group" "subnet_group" {

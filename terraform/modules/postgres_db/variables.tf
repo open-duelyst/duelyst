@@ -35,10 +35,11 @@ variable "security_group_ids" {
 
 variable "username" {
   type        = string
-  description = "The admin user for this RDS instance."
+  description = "The username for this RDS instance."
 }
 
-variable "password_ssm_path" {
+variable "password" {
   type        = string
-  description = "The path of the encrypted password in AWS SSM Parameter Store."
+  description = "The password for this RDS instance."
+  sensitive   = true
 }
