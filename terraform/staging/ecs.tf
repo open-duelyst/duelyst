@@ -39,6 +39,10 @@ module "ecs_service_api" {
     {
       name  = "FIREBASE_URL"
       value = var.firebase_url
+    },
+    {
+      name  = "S3_ASSETS_DOMAIN"
+      value = var.s3_assets_domain
     }
   ]
 

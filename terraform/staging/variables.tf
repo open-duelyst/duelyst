@@ -44,6 +44,10 @@ variable "firebase_url" {
   type = string
 }
 
+variable "s3_assets_domain" {
+  type = string
+}
+
 variable "database_user" {
   type = string
 }
