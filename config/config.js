@@ -267,7 +267,7 @@ const config = convict({
   },
   postgres_connection_string: {
     doc: 'Postgres connection string.',
-    default: 'pg://ubuntu:password@127.0.0.1/duelyst',
+    default: 'pg://duelyst:duelyst@127.0.0.1/duelyst',
     env: 'POSTGRES_CONNECTION',
   },
   allCardsAvailable: {

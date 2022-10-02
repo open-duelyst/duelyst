@@ -1,7 +1,6 @@
 {
 	"env": "staging",
 	"api": "http://localhost:3000",
-	"postgres_connection_string": "postgres://USER:PASSWORD@HOST:PORT/DATABASE",
 	"redis": {
 		"host": "duelyst-staging.lg8cfc.0001.use1.cache.amazonaws.com",
 		"port": 6379,
