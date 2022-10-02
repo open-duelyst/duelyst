@@ -76,5 +76,4 @@ variable "secrets" {
     valueFrom = string
   }))
   description = "A list of secret objects with name and valueFrom (SSM path) keys."
-  sensitive   = true
 }
