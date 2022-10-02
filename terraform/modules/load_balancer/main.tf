@@ -48,8 +48,8 @@ resource "aws_lb_target_group" "api_target_group" {
   protocol_version = "HTTP1"
 
   health_check {
-    matcher = "200"
     path    = "/healthcheck"
+    matcher = "200"
   }
 }
 
@@ -74,6 +74,7 @@ resource "aws_lb_target_group" "sp_target_group" {
   protocol_version = "HTTP1"
 
   health_check {
-    protocol = "TCP"
+    path    = "/health"
+    matcher = "200"
   }
 }
