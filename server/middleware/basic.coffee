@@ -39,7 +39,7 @@ else
 			if corsAllowedOrigins.indexOf(origin) != -1
 				callback(null, true)
 			else
-				callback(new Error('The domain was blocked by CORS configuration.'))
+				callback(new Error("The origin #{origin} was blocked by CORS configuration."))
 	)
 
 module.exports = compose([
