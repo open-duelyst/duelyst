@@ -1948,6 +1948,8 @@ App._joinGame = (gameListingData, loadMyGameResourcesPromise, loadOpponentGameRe
 		joinGamePromise = App._subscribeToJoinGameEventsPromise()
 
 		# join game and if a game server is assigned to this listing, connect there
+		# NOTE: gameListingData contains key "game_type" with possible value "single_player".
+		# We can use this to differentiate the port number in NetworkManager.
 		SDK.NetworkManager.getInstance().connect(gameListingData["game_id"], ProfileManager.getInstance().get('id'), gameListingData["game_server"])
 
 		return joinGamePromise.then((gameSessionData) ->
