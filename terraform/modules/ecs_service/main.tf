@@ -46,7 +46,9 @@ resource "aws_ecs_task_definition" "task_def" {
           awslogs-group  = aws_cloudwatch_log_group.log_group.name
         }
       }
-    },
+      environment = var.environment_variables
+      secrets     = var.secrets
+    }
   ])
 
   #volume {

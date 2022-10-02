@@ -56,3 +56,20 @@ variable "alb_target_group" {
   type        = string
   description = "The ALB target group to associate with this service."
 }
+
+variable "environment_variables" {
+  type = list(object({
+    name  = string
+    value = string
+  }))
+  description = "A list of environment variable objects with name and value keys."
+}
+
+variable "secrets" {
+  type = list(object({
+    name     = string
+    ssm_path = string
+  }))
+  description = "A list of secret objects with name and ssm_path keys."
+  sensitive   = true
+}
