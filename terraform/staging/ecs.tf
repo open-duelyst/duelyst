@@ -38,7 +38,7 @@ module "ecs_service_sp" {
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_sp.id
   deployed_version  = "1.97.0"
-  container_count   = 0
+  container_count   = 1
   container_cpu     = 1
   container_mem     = 500
   service_port      = 8000
@@ -63,10 +63,6 @@ module "ecs_service_sp" {
     {
       name      = "FIREBASE_LEGACY_TOKEN"
       valueFrom = "/duelyst/staging/firebase/legacy-token"
-    },
-    {
-      name      = "POSTGRES_CONNECTION"
-      valueFrom = "/duelyst/staging/postgres/connection-string"
     }
   ]
 }
