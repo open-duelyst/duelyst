@@ -8,15 +8,15 @@
 		"ttl": 3600,
 		"password": ""
 	},
-	"inviteCodesActive":false,
-	"datGuiEditorEnabled":true,
-	"aiToolsEnabled":true,
-	"allCardsAvailable":true,
-	"watchSectionMinCurrentVersionGameCount":1,
+	"inviteCodesActive": false,
+	"datGuiEditorEnabled": true,
+	"aiToolsEnabled": true,
+	"allCardsAvailable": true,
+	"watchSectionMinCurrentVersionGameCount": 1,
 	"recaptcha": {
-		"enabled":false
+		"enabled": false
 	},
 	"matchmakingDefaults": {
-		"allowMatchWithLastOpponent":true
+		"allowMatchWithLastOpponent": true
 	}
 }
