@@ -23,8 +23,10 @@ try
 			clientEmail = config.get('firebase.clientEmail')
 			privateKey = config.get('firebase.privateKey')
 		}
+		if !firebaseServiceAccount.projectId || !firebaseServiceAccount.clientEmail || !firebaseServiceAccount.privateKey
+			throw new Error('FIREBASE_{PROJECT_ID,CLIENT_EMAIL,PRIVATE_KEY} must be set!')
 catch error
-	Logger.module('Firebase').error 'Failed to read Firebase credentials!'
+	Logger.module('Firebase').error "Failed to read Firebase credentials: #{error}"
 	firebaseServiceAccount = {}
 
 class DuelystFirebaseModule
