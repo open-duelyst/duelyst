@@ -52,6 +52,21 @@ const config = convict({
       default: '',
       env: 'FIREBASE_LEGACY_TOKEN',
     },
+    projectId: {
+      doc: 'Firebase project ID (for staging/production).',
+      default: '',
+      env: 'FIREBASE_PROJECT_ID',
+    },
+    clientEmail: {
+      doc: 'Firebase client email for the private key (for staging/production).',
+      default: '',
+      env: 'FIREBASE_CLIENT_EMAIL',
+    },
+    privateKey: {
+      doc: 'Firebase private key (for staging/production).',
+      default: '',
+      env: 'FIREBASE_PRIVATE_KEY',
+    },
     authServiceUrl: {
       doc: 'Firebase URL for auth service',
       // format: "url",
