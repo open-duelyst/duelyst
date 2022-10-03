@@ -58,8 +58,8 @@ resource "aws_lb_listener_rule" "cdn_redirect" {
     path_pattern {
       values = [
         "/*.css",
-        "/*.html",
         "/*.ico",
+        "/*.gif",
         "/*.js",
         "/resources/*"
       ]
