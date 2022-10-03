@@ -95,6 +95,7 @@ setupProduction = () ->
 			Logger.module("SERVER").error "setupDirectory() failed; exiting: #{err}"
 			process.exit(1)
 		else
+			# FIXME: register.html is not currently in the build.
 			downloadRegisterHtml cdnUrl, (err) ->
 				if err?
 					Logger.module("SERVER").warn "downloadRegisterHtml() failed: #{err}"

@@ -20,24 +20,11 @@ if config.isDevelopment() or config.isStaging()
 else
 	parser = bodyParser.json()
 
-# Build CORS domain allowlist for staging/production.
-corsAllowedOrigins = [undefined] # 'undefined' here refers to Same-Origin (lol).
-cdnDomain = config.get('assetsBucket.domainName')
-if cdnDomain
-	corsAllowedOrigins.push cdnDomain
-
-# Enable CORS allowlist in staging/production.
+# Enable CORS to CDN in staging/production.
 if config.isDevelopment()
 	corsMiddleware = cors()
 else
-	Logger.module("API").warn "Enabling CORS for domains #{JSON.stringify(corsAllowedOrigins)}"
-	corsMiddleware = cors({
-		origin: (origin, callback) ->
-			if (!origin || corsAllowedOrigins.indexOf(origin) != -1)
-				callback(null, true)
-			else
-				callback(new Error("The origin #{origin} was blocked by CORS configuration."))
-	})
+	corsMiddleware = cors({origin: config.get('assetsBucket.domainName')})
 
 module.exports = compose([
 	getRealIp(),
