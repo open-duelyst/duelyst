@@ -21,10 +21,7 @@ else
 	parser = bodyParser.json()
 
 # Build CORS domain allowlist for staging/production.
-corsAllowedOrigins = []
-apiDomain = config.get('apiDomain')
-if apiDomain
-	corsAllowedOrigins.push apiDomain
+corsAllowedOrigins = [undefined] # 'undefined' here refers to Same-Origin (lol).
 cdnDomain = config.get('assetsBucket.domainName')
 if cdnDomain
 	corsAllowedOrigins.push cdnDomain
@@ -36,8 +33,6 @@ else
 	Logger.module("API").warn "Enabling CORS for domains #{JSON.stringify(corsAllowedOrigins)}"
 	corsMiddleware = cors({
 		origin: (origin, callback) ->
-			# For same-origin requests, origin will be 'undefined' by design.
-			# In addition to this, enable specifically allowlisted origins.
 			if (!origin || corsAllowedOrigins.indexOf(origin) != -1)
 				callback(null, true)
 			else
