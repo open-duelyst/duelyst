@@ -1,6 +1,8 @@
 module "assets_bucket" {
-  source      = "../modules/assets_bucket"
-  bucket_name = var.assets_bucket_name
+  source          = "../modules/assets_bucket"
+  bucket_name     = var.assets_bucket_name
+  domain_name     = var.staging_domain_name
+  cdn_domain_name = var.cdn_domain_name
 }
 
 module "cloudfront_cdn" {
