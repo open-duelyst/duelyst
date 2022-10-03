@@ -78,10 +78,8 @@ class NetworkManager
 			Logger.module("SDK").warn "NetworkManager: connecting to game server #{websocketUrl}"
 
 			# connect using socket.io manager
-			@socketManager = new io.Manager(url, {
-				auth: {
-					token: "Bearer #{token}"
-				},
+			@socketManager = new io.Manager(websocketUrl, {
+				auth: {token: "Bearer #{token}"},
 				timeout: 20000,
 				reconnection: true,
 				reconnectionDelay: 500,
