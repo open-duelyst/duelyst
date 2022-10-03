@@ -19,6 +19,13 @@ docker build \
 	-t duelyst-nodejs:$VERSION \
 	. || quit "Failed to build Node.js image!"
 
+# Rebuild the Node.js with bcrypt image if needed.
+echo "Building image for duelyst-nodejs-bcrypt:$VERSION."
+docker build \
+	-f docker/nodejs_bcrypt.Dockerfile \
+	-t duelyst-nodejs-bcrypt \
+	. || quit "Failed to build Node.js with bcrypt image!"
+
 # Build the service image.
 docker build \
 	-f docker/$SERVICE.Dockerfile \
