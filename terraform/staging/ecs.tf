@@ -31,7 +31,7 @@ module "ecs_service_api" {
     { name = "NODE_ENV", value = "staging" },
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
-    { name = "FIREBASE_PROJECT", value = var.firebase_project },
+    { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
     { name = "ALL_CARDS_AVAILABLE", value = true }
   ]
