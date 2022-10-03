@@ -24,7 +24,9 @@ else
 if config.isDevelopment()
 	corsMiddleware = cors()
 else
-	corsMiddleware = cors({origin: config.get('assetsBucket.domainName')})
+	corsMiddleware = cors({
+		origin: "https://#{config.get('assetsBucket.domainName')}",
+	})
 
 module.exports = compose([
 	getRealIp(),
