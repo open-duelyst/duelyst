@@ -20,7 +20,7 @@ Since we don't want to generate access keys for the root user, we should create 
 
 Create a `terraform` user with an Access Key (no password), and attach [this IAM policy](iamPolicy.json) to the user.
 
-This is a policy of "least privilege" which enables the permissions needed to create a staging environment.
+This policy includes all permissions needed to create a staging environment.
 
 In the final step, copy the Access Key and Secret Key into a password manager. You will need these later to use in
 `terraform.tfvars` files which are ignored by Git in this repo.
