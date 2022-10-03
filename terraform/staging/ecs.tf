@@ -29,7 +29,6 @@ module "ecs_service_api" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "API_URL", value = "https://${var.staging_domain_name}" },
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
