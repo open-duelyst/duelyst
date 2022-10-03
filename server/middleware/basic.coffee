@@ -34,13 +34,13 @@ if config.isDevelopment()
 	corsMiddleware = cors()
 else
 	Logger.module("API").warn "Enabling CORS for domains #{JSON.stringify(corsAllowedOrigins)}"
-	corsMiddleware = cors(
+	corsMiddleware = cors({
 		origin: (origin, callback) ->
 			if corsAllowedOrigins.indexOf(origin) != -1
 				callback(null, true)
 			else
 				callback(new Error("The origin #{origin} was blocked by CORS configuration."))
-	)
+	})
 
 module.exports = compose([
 	getRealIp(),
