@@ -36,7 +36,9 @@ else
 	Logger.module("API").warn "Enabling CORS for domains #{JSON.stringify(corsAllowedOrigins)}"
 	corsMiddleware = cors({
 		origin: (origin, callback) ->
-			if corsAllowedOrigins.indexOf(origin) != -1
+			# For same-origin requests, origin will be 'undefined' by design.
+			# In addition to this, enable specifically allowlisted origins.
+			if (!origin || corsAllowedOrigins.indexOf(origin) != -1)
 				callback(null, true)
 			else
 				callback(new Error("The origin #{origin} was blocked by CORS configuration."))
