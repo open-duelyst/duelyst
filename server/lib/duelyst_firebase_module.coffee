@@ -24,8 +24,12 @@ try
 			client_email: config.get('firebase.clientEmail'),
 			private_key: config.get('firebase.privateKey'),
 		}
-		if !firebaseServiceAccount.project_id || !firebaseServiceAccount.client_email || !firebaseServiceAccount.private_key
-			throw new Error('FIREBASE_{PROJECT_ID,CLIENT_EMAIL,PRIVATE_KEY} must be set!')
+		if !firebaseServiceAccount.project_id
+			throw new Error('FIREBASE_PROJECT_ID must be set!')
+		if !firebaseServiceAccount.client_email
+			throw new Error('FIREBASE_CLIENT_EMAIL must be set!')
+		if !firebaseServiceAccount.private_key
+			throw new Error('FIREBASE_PRIVATE_KEY must be set!')
 catch error
 	Logger.module('Firebase').error "Failed to read Firebase credentials: #{error}"
 	firebaseServiceAccount = {}
