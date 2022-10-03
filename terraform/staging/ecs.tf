@@ -67,7 +67,6 @@ module "ecs_service_sp" {
   ]
 }
 
-# Change container_count to 1 in order to run database migrations.
 module "ecs_service_migrate" {
   source            = "../modules/ecs_service"
   name              = "duelyst-migrate-staging"
@@ -77,11 +76,12 @@ module "ecs_service_migrate" {
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_migrate.id
   deployed_version  = "1.97.0"
-  container_count   = 1
+  container_count   = 0 # Change to 1 to apply database migrations.
   container_cpu     = 1
-  container_mem     = 350                                               # "1GB" instances are actually 936MB; system uses 158MB.
-  service_port      = 12345                                             # Unused.
-  alb_target_group  = module.staging_load_balancer.api_target_group_arn # Unused.
+  container_mem     = 350 # "1GB" instances are actually 936MB; system uses 158MB.
+  enable_lb         = false
+  service_port      = 0
+  alb_target_group  = ""
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },

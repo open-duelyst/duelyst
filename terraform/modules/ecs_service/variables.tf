@@ -52,6 +52,12 @@ variable "container_mem" {
   default     = 32
 }
 
+variable "enable_lb" {
+  type        = bool
+  description = "Whether or not to associate this ECS service with an ALB target group."
+  default     = true
+}
+
 variable "service_port" {
   type        = number
   description = "The TCP port to expose for this service."
