@@ -3,12 +3,12 @@ variable "bucket_name" {
   description = "The globally unique name for this S3 bucket."
 }
 
-variable "domain_name" {
+variable "api_origin" {
   type        = string
-  description = "The primary domain for CORS configuration."
+  description = "The CORS origin for the API server."
 }
 
-variable "cdn_domain_name" {
+variable "cdn_origin" {
   type        = string
-  description = "The CDN domain name for CORS configuration."
+  description = "The CORS origin for the CDN."
 }
