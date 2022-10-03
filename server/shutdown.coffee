@@ -32,13 +32,15 @@ module.exports.errorShutdown = (err) ->
 		totalmem: os.totalmem()
 	}
 
-	return mail.sendCrashAlertAsync(serverInfo, err)
-	.timeout 2500
-	.then () ->
-		Logger.module("SHUTDOWN").debug "Email alert sent."
-	.catch () ->
-		Logger.module("SHUTDOWN").error "Failed to send email alert."
+	process.exit(1)
+
+	#return mail.sendCrashAlertAsync(serverInfo, err)
+	#.timeout 2500
+	#.then () ->
+	#	Logger.module("SHUTDOWN").debug "Email alert sent."
+	#.catch () ->
+	#	Logger.module("SHUTDOWN").error "Failed to send email alert."
 	# Ghetto fix: give Winston 1s to send buffered log to Papertrail before exiting
-	.delay 1000
-	.then () ->
-		process.exit(1)
+	#.delay 1000
+	#.then () ->
+	#	process.exit(1)

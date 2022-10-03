@@ -34,14 +34,9 @@ serveIndex = (req, res) ->
 	# serve index.html file
 	if config.isDevelopment()
 		res.sendFile path.resolve(__dirname + "/../../dist/src/index.html")
-	else if config.isStaging()
-		cdnDomain = config.get('assetsBucket.domainName')
-		res.redirect("https://#{cdnDomain}/staging/index.html")
-	else if config.isProduction()
-		# Production mode uses index.html from S3
-		res.sendFile path.resolve(__dirname + "/../../public/" + config.get('env') + "/index.html")
+	# Staging/Production mode uses index.html from S3
 	else
-		Logger.module("API").error "Unknown environment from config!"
+		res.sendFile path.resolve(__dirname + "/../../public/" + env + "/index.html")
 
 serveRegister = (req, res) ->
 	# set no cache header
@@ -49,8 +44,9 @@ serveRegister = (req, res) ->
 	# serve index.html file
 	if config.isDevelopment()
 		res.sendFile path.resolve(__dirname + "/../../dist/src/register.html")
-	else if config.isProduction()
-		res.sendFile path.resolve(__dirname + "/../../public/" + config.get('env') + "/register.html")
+	# Staging/Production mode uses register.html from S3
+	else
+		res.sendFile path.resolve(__dirname + "/../../public/" + env + "/register.html")
 
 # Setup routes for production / development mode
 # Development mode uses index.html from /dist folder
@@ -66,8 +62,7 @@ if config.isDevelopment()
 	router.get "/register", serveRegister
 	router.get "/login", serveRegister
 	router.post "/", serveIndex
-
-if config.isProduction()
+else
 	Logger.module("EXPRESS").log "Configuring for PRODUCTION environment #{env}".cyan
 
 	# temporarily disabled to allow iframing
@@ -147,7 +142,7 @@ router.get "/health", (req, res) ->
 				environment: config.get('env')
 				pool: pool
 			}
-			mail.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
+			#mail.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
 			res.status(500)
 		else
 			res.status(200)

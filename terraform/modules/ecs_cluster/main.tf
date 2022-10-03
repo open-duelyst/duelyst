@@ -131,6 +131,12 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_policy_attachment" {
   role       = aws_iam_role.ecs_instance_role.name
 }
 
+# Attach the pre-defined CloudWatchAgentServerPolicy policy to the instance role.
+resource "aws_iam_role_policy_attachment" "ecs_instance_cw_policy_attachment" {
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = aws_iam_role.ecs_instance_role.name
+}
+
 # Create an instance profile for the instances.
 resource "aws_iam_instance_profile" "ecs_instance_profile" {
   name = "ECSInstance"

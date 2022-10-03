@@ -23,6 +23,10 @@ pe.skipNodeFiles()
 
 # Configuration object
 config = require '../config/config.js'
+env = config.get('env')
+cdnDomain = config.get('assetsBucket.domainName')
+cdnUrl = "https://#{cdnDomain}/#{env}"
+apiPort = config.get('port')
 
 if config.isDevelopment()
 	Logger.module("SERVER").log "DEV MODE: enabling long stack support"
@@ -32,73 +36,82 @@ if config.isDevelopment()
 # Methods to download assets from S3
 # TODO : Put in module
 makeDirectory = (cb) ->
-	mkdirp (__dirname + '/../public/' + config.get('env')), (err) ->
-		if err? then cb err
-		else cb null
+	pubDir = "#{__dirname}/../public/#{env}"
+	Logger.module("API").warn "Creating directory #{pubDir}"
+	mkdirp pubDir, (err) ->
+		if err?
+			Logger.module("API").error "Failed to create directory #{pubDir}: #{err}"
+			cb err
+		else
+			cb null
 
-getIndexHtml = (url, cb) ->
-	request(url: url + '/index.html', gzip: true)
+downloadIndexHtml = (url, cb) ->
+	origin = "#{url}/index.html"
+	destination = "#{__dirname}/../public/#{env}/index.html"
+	Logger.module("API").warn "Downloading #{origin} to #{destination}."
+
+	request(url: origin, gzip: true)
 	.on 'error', (err) ->
 		cb err
 	.on 'response', (res) ->
 		if res.statusCode != 200
 			cb new Error("request returned status #{res.statusCode}")
-	.pipe fs.createWriteStream(__dirname + '/../public/' + config.get('env') + '/index.html')
+	.pipe fs.createWriteStream(destination)
 	.on 'error', (err) ->
+		Logger.module("API").error "Failed to download #{origin} to #{destination}"
 		cb err
 	.on 'finish', () ->
+		Logger.module("API").warn "Downloaded #{origin} to #{destination}"
 		cb null
 
-getRegisterHtml = (url, cb) ->
-	request(url: url + '/register.html', gzip: true)
+downloadRegisterHtml = (url, cb) ->
+	origin = "#{url}/register.html"
+	destination = "#{__dirname}/../public/#{env}/register.html"
+	Logger.module("API").warn "Downloading #{origin} to #{destination}."
+
+	request(url: origin, gzip: true)
 	.on 'error', (err) ->
+		Logger.module("API").error "Failed to download #{origin}: #{err}"
 		cb err
 	.on 'response', (res) ->
 		if res.statusCode != 200
 			cb new Error("request returned status #{res.statusCode}")
-	.pipe fs.createWriteStream(__dirname + '/../public/' + config.get('env') + '/register.html')
+	.pipe fs.createWriteStream(destination)
 	.on 'error', (err) ->
+		Logger.module("API").error "Failed to write #{origin} to #{destination}: #{err}"
 		cb err
 	.on 'finish', () ->
+		Logger.module("API").warn "Downloaded #{origin} to #{destination}"
 		cb null
 
 setupDevelopment = () ->
-	server.listen config.get('port'), () ->
+	server.listen apiPort, () ->
 		server.connected = true
-		Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
-
-setupStaging = () ->
-	server.listen config.get('port'), () ->
-		server.connected = true
-		Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
+		Logger.module("SERVER").log "Duelyst '#{env}' started on port #{apiPort}"
 
 setupProduction = () ->
 	makeDirectory (err) ->
 		if err?
-			Logger.module("SERVER").log "setupDirectory() failed: " + err
+			Logger.module("SERVER").error "setupDirectory() failed; exiting: #{err}"
 			process.exit(1)
 		else
-			getIndexHtml config.get('s3_url'), (err) ->
+			# FIXME: register.html is not currently in the build.
+			downloadRegisterHtml cdnUrl, (err) ->
 				if err?
-					Logger.module("SERVER").log "getIndexHtml() failed: " + err
+					Logger.module("SERVER").warn "downloadRegisterHtml() failed: #{err}"
+			downloadIndexHtml cdnUrl, (err) ->
+				if err?
+					Logger.module("SERVER").error "downloadIndexHtml() failed; exiting: #{err}"
 					process.exit(1)
 				else
-					getRegisterHtml config.get('s3_url'), (err) ->
-						if err?
-							Logger.module("SERVER").log "getIndexHtml() failed: " + err
-							process.exit(1)
-						server.listen config.get('port'), () ->
-							server.connected = true
-							Logger.module("SERVER").log "Duelyst '#{config.get('env')}' started on port #{config.get('port')}"
+					server.listen apiPort, () ->
+						server.connected = true
+						Logger.module("SERVER").log "Duelyst '#{env}' started on port #{apiPort}"
 
 process.on 'uncaughtException', (err) ->
 	shutdown.errorShutdown(err)
 
 if config.isDevelopment()
 	setupDevelopment()
-else if config.isStaging()
-	setupStaging()
-else if config.isProduction()
-	setupProduction()
 else
-	Logger.module("API").error "Unknown environment from config!"
+	setupProduction()

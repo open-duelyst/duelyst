@@ -13,9 +13,25 @@ firebaseLoggingEnabled = config.get('firebase.loggingEnabled')
 
 # Read service account credentials.
 try
-	firebaseServiceAccount = require('../../serviceAccountKey.json')
+	# Development mode uses a local JSON file containing credentials.
+	if config.isDevelopment()
+		firebaseServiceAccount = require('../../serviceAccountKey.json')
+	# Staging/Production mode pulls secrets from AWS SSM into the environment.
+	# https://github.com/firebase/firebase-admin-node/blob/v11.0.1/src/app/credential-internal.ts#L167L174
+	else
+		firebaseServiceAccount = {
+			project_id: config.get('firebase.projectId'),
+			client_email: config.get('firebase.clientEmail'),
+			private_key: config.get('firebase.privateKey'),
+		}
+		if !firebaseServiceAccount.project_id
+			throw new Error('FIREBASE_PROJECT_ID must be set!')
+		if !firebaseServiceAccount.client_email
+			throw new Error('FIREBASE_CLIENT_EMAIL must be set!')
+		if !firebaseServiceAccount.private_key
+			throw new Error('FIREBASE_PRIVATE_KEY must be set!')
 catch error
-	Logger.module('Firebase').error 'Failed to read serviceAccountKey.json; will not authenticate to Firebase'
+	Logger.module('Firebase').error "Failed to read Firebase credentials: #{error}"
 	firebaseServiceAccount = {}
 
 class DuelystFirebaseModule

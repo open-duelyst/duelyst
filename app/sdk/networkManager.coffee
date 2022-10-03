@@ -40,7 +40,7 @@ class NetworkManager
 
 		# connect to a specific game
 		# TODO: modify to opts and pass in jwt token for auth
-		connect: (gameId,playerId,gameServerAddress,spectatorId=null,spectateToken=null) ->
+		connect: (gameType, gameId, playerId, gameServerAddress, spectatorId=null, spectateToken=null) ->
 			if @connected
 				Logger.module("SDK").warn "NetworkManager already connected."
 				return
@@ -57,34 +57,35 @@ class NetworkManager
 			TelemetryManager.getInstance().setSignal("game","connecting")
 			token = Storage.get('token')
 
-			# connect using socket.io manager
-			# if no game server address was provided, connect to the current host
-			if !gameServerAddress?
-				url = "#{window.location.hostname}:8000"
-				Logger.module("SDK").debug "NetworkManager: connecting to game server #{url}"
-				@socketManager = new io.Manager(url, {
-					auth: {
-						token: "Bearer #{token}"
-					},
-					timeout: 20000,
-					reconnection: false,
-					reconnectionDelay: 500,
-					reconnectionDelayMax: 5000,
-					reconnectionAttempts: 1
-				})
+			# determine which server to use
+			env = process.env.NODE_ENV || 'development'
+			if env == 'development'
+				websocketUrl = "ws://#{window.location.hostname}:8000"
 			else
-				url = "wss://#{gameServerAddress}"
-				Logger.module("SDK").debug "NetworkManager: connecting to game server #{url}"
-				@socketManager = new io.Manager(url, {
-					auth: {
-						token: "Bearer #{token}"
-					},
-					timeout: 20000,
-					reconnection: true,
-					reconnectionDelay: 500,
-					reconnectionDelayMax: 5000,
-					reconnectionAttempts: 20
-				})
+				if gameServerAddress?
+					websocketUrl = gameServerAddress
+				else
+					# TODO: Use different port numbers for MP/SP games.
+					if gameType == 'single_player'
+						websocketUrl = "wss://#{window.location.hostname}:8000"
+					else
+						websocketUrl = "wss://#{window.location.hostname}:8000"
+
+			# validate and log websocket URL
+			if !websocketUrl
+				Logger.module("SDK").error "NetworkManager: failed to determine WebSocket URL!"
+				return
+			Logger.module("SDK").warn "NetworkManager: connecting to game server #{websocketUrl}"
+
+			# connect using socket.io manager
+			@socketManager = new io.Manager(websocketUrl, {
+				auth: {token: "Bearer #{token}"},
+				timeout: 20000,
+				reconnection: true,
+				reconnectionDelay: 500,
+				reconnectionDelayMax: 5000,
+				reconnectionAttempts: 20,
+			})
 
 			# Connect to a specific socket on the host, currently /
 			@socket = @socketManager.socket('/', {

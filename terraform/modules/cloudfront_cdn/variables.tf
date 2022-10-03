@@ -13,9 +13,14 @@ variable "root_object" {
   default = "staging/index.html"
 }
 
-variable "dns_aliases" {
-  type    = list(string)
-  default = []
+variable "cdn_domain_name" {
+  type        = string
+  description = "Domain name for the Cloudfront distribution."
+}
+
+variable "app_domain_name" {
+  type        = string
+  description = "Domain name for the Duelyst API service."
 }
 
 variable "certificate_arn" {

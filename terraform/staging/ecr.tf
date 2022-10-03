@@ -17,3 +17,8 @@ module "ecr_repository_worker" {
   source = "../modules/ecr_repository"
   name   = "duelyst-worker"
 }
+
+module "ecr_repository_migrate" {
+  source = "../modules/ecr_repository"
+  name   = "duelyst-migrate"
+}

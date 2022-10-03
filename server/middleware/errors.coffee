@@ -71,7 +71,7 @@ module.exports.production = (err, req, res, next) ->
 			environment: config.get('env')
 		}
 		# Send an email alert
-		mail.sendErrorAlertAsync(serverInfo, err)
+		#mail.sendErrorAlertAsync(serverInfo, err)
 
 	res.status(error.status)
 	return res.format({

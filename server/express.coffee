@@ -44,8 +44,7 @@ app.use(middleware.errors.logError)
 
 if config.isDevelopment()
 	app.use(middleware.errors.development)
-
-if config.isProduction()
+else
 	app.use(middleware.errors.production)
 
 module.exports = app

@@ -1320,7 +1320,14 @@ App._spectateGame = (e) ->
 		joinGamePromise = App._subscribeToJoinGameEventsPromise()
 
 		# join game and if a game server is assigned to this listing, connect there
-		SDK.NetworkManager.getInstance().connect(gameListingData["game_id"], playerId, gameListingData["game_server"], ProfileManager.getInstance().get('id'), spectateToken)
+		SDK.NetworkManager.getInstance().connect(
+			gameListingData["game_type"],
+			gameListingData["game_id"],
+			playerId,
+			gameListingData["game_server"],
+			ProfileManager.getInstance().get('id'),
+			spectateToken,
+		)
 
 		return joinGamePromise.then((gameSessionData) ->
 
@@ -1948,7 +1955,12 @@ App._joinGame = (gameListingData, loadMyGameResourcesPromise, loadOpponentGameRe
 		joinGamePromise = App._subscribeToJoinGameEventsPromise()
 
 		# join game and if a game server is assigned to this listing, connect there
-		SDK.NetworkManager.getInstance().connect(gameListingData["game_id"], ProfileManager.getInstance().get('id'), gameListingData["game_server"])
+		SDK.NetworkManager.getInstance().connect(
+			gameListingData["game_type"],
+			gameListingData["game_id"],
+			ProfileManager.getInstance().get('id'),
+			gameListingData["game_server"],
+		)
 
 		return joinGamePromise.then((gameSessionData) ->
 			return App._startGameWithData(gameSessionData)

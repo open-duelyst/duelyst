@@ -20,18 +20,23 @@ if config.isDevelopment() or config.isStaging()
 else
 	parser = bodyParser.json()
 
-# Enable CORS
-# Disable client cache headers
-# Security headers
-# Body parser and urlencoded
+# Enable CORS to CDN in staging/production.
+cdnDomain = config.get('assetsBucket.domainName')
+if cdnDomain && !config.isDevelopment()
+	# Same-Origin requests are already allowed; add CDN origin as well.
+	corsOptions = {origin: "https://#{cdnDomain}"}
+else
+	corsOptions = {}
 
 module.exports = compose([
 	getRealIp(),
-	cors({
-		#origin: '*' # Temporarily disable CORS restrictions.
-	}),
+	# Enable CORS
+	cors(corsOptions),
+	# Disable client cache headers
 	helmet.noCache(),
+	# Security headers
 	helmet.xssFilter(),
+	# Body parser and urlencoded
 	parser,
 	bodyParser.urlencoded({extended: true}),
 	# apache log format

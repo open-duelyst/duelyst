@@ -9,6 +9,8 @@ module "staging_load_balancer" {
     module.third_subnet.id,
   ]
   certificate_arn = module.staging_ssl_certificate.arn
+  cdn_domain_name = var.cdn_domain_name
+  cdn_path_prefix = "staging/"
 
   api_listen_port  = 443
   api_service_port = 3000

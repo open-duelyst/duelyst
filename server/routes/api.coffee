@@ -83,14 +83,14 @@ router.post "/api/me/report_player", (req, res, next) ->
 	# Return immediately so not to wait for email to send
 	res.status(200).json({})
 
-	DuelystFirebase.connect().getRootRef()
-	.then (rootRef) ->
-		return FirebasePromises.once(rootRef.child('users').child(other_user_id).child('username'),'value')
-	.then (snapshot) ->
-		username = snapshot.val()
-		# we may not have the response email but we still send report
-		return mail.sendPlayerReportAsync(username,other_user_id,message,user_id,email)
-	.catch (error) ->
-		Logger.module("API").error "Failed to send report player email."
+	#DuelystFirebase.connect().getRootRef()
+	#.then (rootRef) ->
+	#	return FirebasePromises.once(rootRef.child('users').child(other_user_id).child('username'),'value')
+	#.then (snapshot) ->
+	#	username = snapshot.val()
+	#	# we may not have the response email but we still send report
+	#	return mail.sendPlayerReportAsync(username,other_user_id,message,user_id,email)
+	#.catch (error) ->
+	#	Logger.module("API").error "Failed to send report player email."
 
 module.exports = router

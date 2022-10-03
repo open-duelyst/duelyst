@@ -8,7 +8,7 @@ resource "aws_cloudfront_distribution" "distribution" {
   is_ipv6_enabled     = true
   default_root_object = var.root_object
 
-  aliases = var.dns_aliases
+  aliases = [var.cdn_domain_name]
 
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
@@ -39,5 +39,18 @@ resource "aws_cloudfront_distribution" "distribution" {
   viewer_certificate {
     acm_certificate_arn = var.certificate_arn
     ssl_support_method  = "sni-only"
+  }
+}
+
+resource "aws_cloudfront_response_headers_policy" "cors_policy" {
+  name    = "cors-policy"
+  comment = "Enable CORS for CDN requests"
+
+  cors_config {
+    access_control_allow_credentials = false
+    access_control_allow_headers { items = ["*"] }
+    access_control_allow_methods { items = ["GET", "HEAD", "OPTIONS"] }
+    access_control_allow_origins { items = [var.app_domain_name, var.cdn_domain_name] }
+    origin_override = true
   }
 }
