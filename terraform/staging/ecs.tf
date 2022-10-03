@@ -66,3 +66,28 @@ module "ecs_service_sp" {
     { name = "FIREBASE_LEGACY_TOKEN", valueFrom = "/duelyst/staging/firebase/legacy-token" }
   ]
 }
+
+# Change container_count to 1 in order to run database migrations.
+module "ecs_service_migrate" {
+  source            = "../modules/ecs_service"
+  name              = "duelyst-migrate-staging"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  ecr_registry      = var.ecr_registry_id
+  ecr_repository    = module.ecr_repository_migrate.id
+  deployed_version  = "1.97.0"
+  container_count   = 1
+  container_cpu     = 1
+  container_mem     = 350                                               # "1GB" instances are actually 936MB; system uses 158MB.
+  service_port      = 12345                                             # Unused.
+  alb_target_group  = module.staging_load_balancer.api_target_group_arn # Unused.
+
+  environment_variables = [
+    { name = "NODE_ENV", value = "staging" },
+  ]
+
+  secrets = [
+    { name = "POSTGRES_CONNECTION", valueFrom = "/duelyst/staging/postgres/connection-string" }
+  ]
+}
