@@ -31,12 +31,15 @@ module "ecs_service_api" {
     { name = "NODE_ENV", value = "staging" },
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
+    { name = "FIREBASE_PROJECT", value = var.firebase_project },
     { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
     { name = "ALL_CARDS_AVAILABLE", value = true }
   ]
 
   secrets = [
     { name = "FIREBASE_LEGACY_TOKEN", valueFrom = "/duelyst/staging/firebase/legacy-token" },
+    { name = "FIREBASE_CLIENT_EMAIL", valueFrom = "/duelyst/staging/firebase/client-email" },
+    { name = "FIREBASE_PRIVATE_KEY", valueFrom = "/duelyst/staging/firebase/private-key" },
     { name = "POSTGRES_CONNECTION", valueFrom = "/duelyst/staging/postgres/connection-string" }
   ]
 }

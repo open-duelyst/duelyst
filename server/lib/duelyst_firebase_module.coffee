@@ -17,11 +17,12 @@ try
 	if config.isDevelopment()
 		firebaseServiceAccount = require('../../serviceAccountKey.json')
 	# Staging/Production mode pulls secrets from AWS SSM into the environment.
+	# https://github.com/firebase/firebase-admin-node/blob/v11.0.1/src/app/credential.ts#L18L22
 	else
 		firebaseServiceAccount = {
-			projectId = config.get('firebase.projectId')
-			clientEmail = config.get('firebase.clientEmail')
-			privateKey = config.get('firebase.privateKey')
+			projectId: config.get('firebase.projectId'),
+			clientEmail: config.get('firebase.clientEmail'),
+			privateKey: config.get('firebase.privateKey'),
 		}
 		if !firebaseServiceAccount.projectId || !firebaseServiceAccount.clientEmail || !firebaseServiceAccount.privateKey
 			throw new Error('FIREBASE_{PROJECT_ID,CLIENT_EMAIL,PRIVATE_KEY} must be set!')

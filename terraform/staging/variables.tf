@@ -40,6 +40,10 @@ variable "third_availability_zone" {
   type = string
 }
 
+variable "firebase_project" {
+  type = string
+}
+
 variable "firebase_url" {
   type = string
 }
