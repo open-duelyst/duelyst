@@ -9,9 +9,16 @@ module "billing_alarm" {
   alarm_actions = [module.email_sns_topic.topic_arn]
 }
 
+module "lb_alarms" {
+  source           = "../modules/alarms/load_balancer"
+  load_balancer_id = module.staging_load_balancer.load_balancer_id
+  target_group_ids = module.staging_load_balancer.target_group_ids
+  alarm_actions    = [module.email_sns_topic.topic_arn]
+}
+
 module "ecs_alarms" {
-  source        = "../modules/alarms/ecs"
-  cluster_name  = "duelyst-staging"
+  source       = "../modules/alarms/ecs"
+  cluster_name = "duelyst-staging"
   service_names = [
     "duelyst-api-staging",
     "duelyst-sp-staging",
