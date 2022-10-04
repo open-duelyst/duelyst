@@ -9,22 +9,24 @@ module "billing_alarm" {
   alarm_actions = [module.email_sns_topic.topic_arn]
 }
 
+module "ecs_alarms" {
+  source        = "../modules/alarms/ecs"
+  cluster_name  = "duelyst-staging"
+  service_names = []
+  alarm_actions = [module.email_sns_topic.topic_arn]
+}
+
 module "redis_alarms" {
-  source               = "../modules/alarms/elasticache"
-  cluster_id           = "duelyst-staging"
-  node_id              = "0001"
-  instance_type        = module.redis.instance_type
-  cpu_threshold        = 90
-  engine_cpu_threshold = 90
-  memory_threshold     = 90
-  alarm_actions        = [module.email_sns_topic.topic_arn]
+  source        = "../modules/alarms/elasticache"
+  cluster_id    = "duelyst-staging"
+  node_id       = "0001"
+  instance_type = module.redis.instance_type
+  alarm_actions = [module.email_sns_topic.topic_arn]
 }
 
 module "postgres_alarms" {
-  source           = "../modules/alarms/rds"
-  database_id      = "duelyst-staging"
-  instance_type    = module.postgres.instance_type
-  cpu_threshold    = 90
-  memory_threshold = 90
-  alarm_actions    = [module.email_sns_topic.topic_arn]
+  source        = "../modules/alarms/rds"
+  database_id   = "duelyst-staging"
+  instance_type = module.postgres.instance_type
+  alarm_actions = [module.email_sns_topic.topic_arn]
 }
