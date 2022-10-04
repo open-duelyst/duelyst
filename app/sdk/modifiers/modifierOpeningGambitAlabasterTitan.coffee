@@ -13,17 +13,15 @@ class ModifierOpeningGambitAlabasterTitan extends ModifierOpeningGambit
 	fxResource: ["FX.Modifiers.ModifierOpeningGambit"]
 
 	onOpeningGambit: (action) ->
-
 		gameSession = @getGameSession()
-
 		hasSpells = false
-
 		drawPile = @getCard().getOwner().getDeck().getDrawPile()
+
 		for cardIndex, i in drawPile
 			if gameSession.getCardByIndex(cardIndex)?.getType() == CardType.Spell
 				hasSpells = true
 				break
-	
+
 		if !hasSpells
 			artifact1 = {id: Cards.Artifact.ArclyteRegalia}
 			artifact2 = {id: Cards.Artifact.IndomitableWill}

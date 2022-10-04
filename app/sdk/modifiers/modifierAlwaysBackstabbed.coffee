@@ -23,7 +23,7 @@ class ModifierAlwaysBackstabbed extends Modifier
 		if @_private.listeningToEvents
 			if event.type == EVENTS.modify_action_for_entities_involved_in_attack
 				@onModifyActionForEntitiesInvolvedInAttack(event)
-	
+
 	getIsActionRelevant: (a) ->
 		return a instanceof AttackAction and a.getTarget() == @getCard()
 

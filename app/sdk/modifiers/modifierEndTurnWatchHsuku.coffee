@@ -9,22 +9,16 @@ ModifierCannotStrikeback = require './modifierCannotStrikeback'
 Modifier = require './modifier'
 
 class ModifierEndTurnWatchHsuku extends ModifierEndTurnWatch
-
 	type:"ModifierEndTurnWatchHsuku"
 	@type:"ModifierEndTurnWatchHsuku"
-
 	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
-
 	buffName: null
 	debuffName: null
 
 	onTurnWatch: () ->
 		super()
-
 		if @getGameSession().getIsRunningAsAuthoritative()
-
 			units = @getGameSession().getBoard().getUnits()
-
 			for unit in units
 				if unit? and !unit.getIsGeneral()
 					randomNum = @getGameSession().getRandomIntegerForExecution(6)
@@ -67,7 +61,6 @@ class ModifierEndTurnWatchHsuku extends ModifierEndTurnWatch
 								abilityModifier = ModifierStunned.createContextObject()
 						if statModifier?
 							statModifier.appliedName = @debuffName
-				
 					if statModifier?
 						@getGameSession().applyModifierContextObject(statModifier, unit)
 					if abilityModifier?

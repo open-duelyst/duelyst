@@ -14,9 +14,7 @@ class TeleportInFrontOfUnitAction extends TeleportAction
 
 	getPrivateDefaults: (gameSession) ->
 		p = super(gameSession)
-	
 		p.inFrontOfUnit = null # used by the authoritative source action to know where to teleport
-	
 		return p
 
 	_execute: () ->

@@ -33,6 +33,5 @@ class ModifierEnemyMinionAttackWatchGainKeyword extends ModifierEnemyMinionAttac
 			# pick one modifier from the remaining list and splice it out of the set of choices
 			modifierContextObject = @allModifierContextObjects.splice(@getGameSession().getRandomIntegerForExecution(@allModifierContextObjects.length), 1)[0]
 			@getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
-	
 
 module.exports = ModifierEnemyMinionAttackWatchGainKeyword

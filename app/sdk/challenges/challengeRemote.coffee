@@ -1,8 +1,8 @@
-Challenge 		= require("app/sdk/challenges/challenge")
-GameSession 	= require 'app/sdk/gameSession'
-FactionFactory 	= require 'app/sdk/cards/factionFactory'
-AgentActions 	= require 'app/sdk/agents/agentActions'
-RSX 			= require('app/data/resources')
+Challenge = require("app/sdk/challenges/challenge")
+GameSession = require 'app/sdk/gameSession'
+FactionFactory = require 'app/sdk/cards/factionFactory'
+AgentActions = require 'app/sdk/agents/agentActions'
+RSX = require('app/data/resources')
 BattleMapTemplate = require 'app/sdk/battleMapTemplate'
 fetch = require 'isomorphic-fetch'
 Promise = require 'bluebird'

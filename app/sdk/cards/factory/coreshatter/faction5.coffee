@@ -59,7 +59,6 @@ if i18next.t() is undefined
 		return text
 
 class CardFactory_CoreshatterSet_Faction5
-
 	###*
 	 * Returns a card that matches the identifier.
 	 * @param {Number|String} identifier
@@ -288,7 +287,7 @@ class CardFactory_CoreshatterSet_Faction5
 			card.setBaseSoundResource(
 				apply : RSX.sfx_spell_blindscorch.audio
 				walk : RSX.sfx_neutral_firestarter_impact.audio
-				attack :	RSX.sfx_neutral_firestarter_attack_swing.audio
+				attack : RSX.sfx_neutral_firestarter_attack_swing.audio
 				receiveDamage : RSX.sfx_neutral_firestarter_hit.audio
 				attackDamage : RSX.sfx_neutral_firestarter_impact.audio
 				death : RSX.sfx_neutral_firestarter_death.audio
