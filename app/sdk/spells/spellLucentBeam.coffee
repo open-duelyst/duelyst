@@ -14,7 +14,7 @@ class SpellLucentBeam extends SpellDamage
 		super(board,x,y,sourceAction)
 
 	getAllActionsFromParentAction: (action) ->
-		actions = [action];
+		actions = [action]
 
 		subActions = action.getSubActions()
 		if subActions? and subActions.length > 0

@@ -80,7 +80,7 @@ UtilsGameSession.getValidBoardPositionsFromPattern = (board, boardPosition, patt
 			bpy = boardPosition.y
 
 		for offset in pattern
-			patternPosition = {x: offset.x + bpx, y: offset.y + bpy};
+			patternPosition = {x: offset.x + bpx, y: offset.y + bpy}
 			if board.isOnBoard(patternPosition) and (allowObstructions or !board.getObstructionAtPosition(patternPosition))
 				boardPositions.push(patternPosition)
 

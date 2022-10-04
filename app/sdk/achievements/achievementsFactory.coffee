@@ -169,7 +169,7 @@ class AchievementsFactory
 		@_enabledAchievementsCache = {}
 		for k,v of @_achievementsCache
 			if v.enabled
-				@_enabledAchievementsCache[k] = v;
+				@_enabledAchievementsCache[k] = v
 
 
 	@achievementForIdentifier: (identifier) ->
@@ -182,7 +182,7 @@ class AchievementsFactory
 		if !@_enabledAchievementsCache
 			@_generateCache()
 
-		return @_enabledAchievementsCache;
+		return @_enabledAchievementsCache
 
 
 module.exports = AchievementsFactory

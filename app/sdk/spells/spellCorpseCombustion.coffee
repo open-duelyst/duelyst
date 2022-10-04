@@ -48,7 +48,7 @@ class SpellCorpseCombustion extends SpellSpawnEntity
 		return true
 
 	getAllActionsFromParentAction: (action) ->
-		actions = [action];
+		actions = [action]
 
 		subActions = action.getSubActions()
 		if subActions? and subActions.length > 0

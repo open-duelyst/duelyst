@@ -392,7 +392,7 @@ class QuestFactory
 		chanceSum = _.reduce(validQuestChanceTuples,(memo,tuple) ->
 			return memo + tuple[1]
 		,0)
-		inverseChanceSum = 1.0 / chanceSum;
+		inverseChanceSum = 1.0 / chanceSum
 
 		normalizedQuestChanceTuples = _.map(validQuestChanceTuples,(tuple) ->
 			return [tuple[0],tuple[1] * inverseChanceSum]

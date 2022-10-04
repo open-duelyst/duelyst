@@ -1828,7 +1828,7 @@ class Modifier extends SDKObject
 				if @getBuffsAttributeAbsolutely(buffKey) or @getRebasesAttribute(buffKey)
 					attributeValue = buffValue
 				else
-					attributeValue = attributeValue + buffValue;
+					attributeValue = attributeValue + buffValue
 
 		return attributeValue
 

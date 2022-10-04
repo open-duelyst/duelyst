@@ -69,10 +69,10 @@ class Board extends SDKObject
 		position = aroundEntity.getPosition()
 		positionX = position.x
 		positionY = position.y
-		startX = Math.max(0,positionX-radius);
-		endX = Math.min(@columnCount-1,positionX+radius);
-		startY = Math.max(0,positionY-radius);
-		endY = Math.min(@rowCount-1,positionY+radius);
+		startX = Math.max(0,positionX-radius)
+		endX = Math.min(@columnCount-1,positionX+radius)
+		startY = Math.max(0,positionY-radius)
+		endY = Math.min(@rowCount-1,positionY+radius)
 
 		for x in [startX..endX]
 			for y in [startY..endY]
@@ -328,10 +328,10 @@ class Board extends SDKObject
 			else
 				positionX = position.x
 				positionY = position.y
-				startX = Math.max(0,positionX-radius);
-				endX = Math.min(@columnCount-1,positionX+radius);
-				startY = Math.max(0,positionY-radius);
-				endY = Math.min(@rowCount-1,positionY+radius);
+				startX = Math.max(0,positionX-radius)
+				endX = Math.min(@columnCount-1,positionX+radius)
+				startY = Math.max(0,positionY-radius)
+				endY = Math.min(@rowCount-1,positionY+radius)
 
 				if !type? or type == CardType.Entity
 					for x in [startX..endX]

@@ -43,4 +43,4 @@ class AnalyticsUtil
 		return "seen_on_d" + dayIndex
 
 
-module.exports = AnalyticsUtil;
+module.exports = AnalyticsUtil

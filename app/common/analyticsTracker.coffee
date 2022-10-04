@@ -25,10 +25,10 @@ class AnalyticsTracker
 		# general analytics data
 		playerSetupData = gameSession.getPlayerSetupDataForPlayerId(myPlayerId)
 		factionId = playerSetupData.factionId
-		factionName = SDK.FactionFactory.factionForIdentifier(factionId).name;
+		factionName = SDK.FactionFactory.factionForIdentifier(factionId).name
 		opponentSetupData = gameSession.getPlayerSetupDataForPlayerId(gameSession.getOpponentPlayerId())
 		opponentFactionId = opponentSetupData.factionId
-		opponentFactionName = SDK.FactionFactory.factionForIdentifier(opponentFactionId).name;
+		opponentFactionName = SDK.FactionFactory.factionForIdentifier(opponentFactionId).name
 
 		myPlayer = gameSession.getMyPlayer()
 		opponentPlayer = gameSession.getOpponentPlayer()
@@ -44,10 +44,10 @@ class AnalyticsTracker
 		opponentGeneralId = SDK.Cards.getBaseCardId(opponentSetupData.generalId)
 
 			# Game duration stats
-		now = moment();
+		now = moment()
 		lastActionInGame = new moment(gameSession.lastActionTimestamp)
-		since = moment(gameSession.createdAt);
-		duration = moment.duration(lastActionInGame.diff(since));
+		since = moment(gameSession.createdAt)
+		duration = moment.duration(lastActionInGame.diff(since))
 		deckSpiritCost = _.reduce(playerSetupData.deck, (memo, card) ->
 			card = SDK.CardFactory.cardForIdentifier(card.id,gameSession)
 			cardRarityId = card.getRarityId()

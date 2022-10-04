@@ -26,7 +26,7 @@ class ModifierOpeningGambitLifeGive extends ModifierOpeningGambit
 		return p
 
 	getAllActionsFromParentAction: (action) ->
-		actions = [action];
+		actions = [action]
 
 		subActions = action.getSubActions()
 		if subActions? and subActions.length > 0

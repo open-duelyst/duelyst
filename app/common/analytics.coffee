@@ -100,4 +100,4 @@ class Analytics
 					module.toggleLoggingEnabled()
 
 
-module.exports = Analytics;
+module.exports = Analytics

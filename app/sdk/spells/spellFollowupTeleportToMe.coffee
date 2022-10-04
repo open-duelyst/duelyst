@@ -11,7 +11,7 @@ class SpellFollowupTeleportToMe extends SpellFollowupTeleport
 		source = @getTeleportSource(@getFollowupSourcePosition())
 		if source?
 			# set x offset based on which direction the source unit faces
-			sourcePosition = source.getPosition();
+			sourcePosition = source.getPosition()
 			if source.isOwnedByPlayer1() then offset = 1 else offset = -1
 			return {x: sourcePosition.x + offset, y: sourcePosition.y}
 
