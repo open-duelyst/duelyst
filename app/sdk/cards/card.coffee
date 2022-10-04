@@ -1232,9 +1232,12 @@ class Card extends SDKObject
 	getBaseAnimResource: () ->
 		return @_private.baseAnimResource
 
-	#getAnimResource: () ->
-	#	# override to return a value other than the base resource
-	#	return @_private.baseAnimResource
+	# Disabled: Defiend again below.
+	###
+	getAnimResource: () ->
+		# override to return a value other than the base resource
+		return @_private.baseAnimResource
+	###
 
 	getAnimResource: () ->
 		# search modifiers for any with resource
@@ -1256,10 +1259,12 @@ class Card extends SDKObject
 
 		return @_private.animResource
 
-	#getSoundResource: () ->
-	#	# override to return a value other than the base resource
-	#	return @_private.baseSoundResource
+	#===== / ======
 
+	### SOUND ###
+
+	# Disabled: Defined again below.
+	###
 	getSoundResource: () ->
 		# search modifiers for any with resource
 		if !@_private.soundResource?
@@ -1279,15 +1284,19 @@ class Card extends SDKObject
 			@_private.soundResource = resource || @_private.baseSoundResource
 
 		return @_private.soundResource
-
-	#===== / ======
-
-	### SOUND ###
+	###
 
 	setBaseSoundResource: (soundResource) ->
 		# store the original resource, set when the card is first made
 		# so no matter how many changes it undergoes, it always has the original
 		@_private.baseSoundResource = soundResource
+
+	getBaseSoundResource: () ->
+		return @_private.baseSoundResource
+
+	getSoundResource: () ->
+		# override to return a value other than the base resource
+		return @_private.baseSoundResource
 
 	#===== / ======
 
