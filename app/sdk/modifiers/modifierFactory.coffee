@@ -752,7 +752,7 @@ class ModifierFactory
 		if (modifierType == ModifierBandingAttack.type)
 			return ModifierBandingAttack
 		if (modifierType == ModifierBandingAttackAndHealth.type)
-				return ModifierBandingAttackAndHealth
+			return ModifierBandingAttackAndHealth
 		if (modifierType == ModifierBandingHeal.type)
 			return ModifierBandingHeal
 		if (modifierType == ModifierAirdrop.type)

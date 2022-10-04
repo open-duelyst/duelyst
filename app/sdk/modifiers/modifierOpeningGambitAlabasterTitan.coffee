@@ -23,7 +23,7 @@ class ModifierOpeningGambitAlabasterTitan extends ModifierOpeningGambit
 			if gameSession.getCardByIndex(cardIndex)?.getType() == CardType.Spell
 				hasSpells = true
 				break
-		
+	
 		if !hasSpells
 			artifact1 = {id: Cards.Artifact.ArclyteRegalia}
 			artifact2 = {id: Cards.Artifact.IndomitableWill}

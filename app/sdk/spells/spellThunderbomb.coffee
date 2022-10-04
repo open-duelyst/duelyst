@@ -12,7 +12,7 @@ class SpellThunderbomb extends SpellDamage
 		applyEffectPosition = {x: x, y: y}
 		targetEntity = board.getUnitAtPosition(applyEffectPosition)
 		enemyEntities = board.getFriendlyEntitiesAroundEntity(targetEntity, CardType.Unit, 1)
-		
+	
 		super(board,x,y,sourceAction)
 
 		#damage enemy units around target

@@ -11,7 +11,7 @@ class SwapGeneralAction extends Action
 
 	constructor: () ->
 		@type ?= SwapGeneralAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

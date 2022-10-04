@@ -9,7 +9,7 @@ class TakeAnotherTurnAction extends Action
 
 	constructor: () ->
 		@type ?= TakeAnotherTurnAction.type
-		super
+		super()
 
 	_execute: () ->
 		#Logger.module("SDK").debug "[G:#{@.getGameSession().gameId}]", "#{this.type}::execute - setting current player to take a second turn"

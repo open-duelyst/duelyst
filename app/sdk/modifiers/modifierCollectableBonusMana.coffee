@@ -8,15 +8,10 @@ i18next = require 'i18next'
 i18next = require('i18next')
 
 class ModifierCollectableBonusMana extends ModifierCollectable
-
 	type:"ModifierCollectableBonusMana"
 	@type:"ModifierCollectableBonusMana"
-
 	@modifierName: i18next.t("modifiers.bonus_mana_name")
 	@description: i18next.t("modifiers.bonus_mana_def")
-
-	bonusMana: 1
-	bonusDuration: 1
 	bonusMana: 1
 	bonusDuration: 1
 	fxResource: ["FX.Modifiers.ModifierCollectibleBonusMana"]

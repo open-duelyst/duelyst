@@ -9,6 +9,6 @@ class DieAction extends RemoveAction
 
 	constructor: () ->
 		@type ?= DieAction.type
-		super
+		super()
 
 module.exports = DieAction

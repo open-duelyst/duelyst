@@ -67,7 +67,7 @@ class ModifierEndTurnWatchHsuku extends ModifierEndTurnWatch
 								abilityModifier = ModifierStunned.createContextObject()
 						if statModifier?
 							statModifier.appliedName = @debuffName
-					
+				
 					if statModifier?
 						@getGameSession().applyModifierContextObject(statModifier, unit)
 					if abilityModifier?

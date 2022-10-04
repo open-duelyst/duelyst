@@ -18,10 +18,10 @@ class GameTurn extends SDKObject
 		@steps = []
 		@createdAt = Date.now()
 		@updatedAt = Date.now()
-		
+	
 	setPlayerId: (val) ->
 		@playerId = val
-		
+	
 	getPlayerId: () ->
 		return @playerId
 
@@ -30,16 +30,16 @@ class GameTurn extends SDKObject
 
 	addStep: (step) ->
 		@steps.push(step)
-		
+	
 	setEnded: (val) ->
 		@ended = val
-		
+	
 	getEnded: () ->
 		return @ended
-		
+	
 	deserialize: (data) ->
 		UtilsJavascript.fastExtend(@, data)
-		
+	
 		@steps = []
 		if data.steps?
 			for stepData in data.steps

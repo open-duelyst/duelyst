@@ -24,7 +24,7 @@ class SpellWrathOfGod extends SpellKillTarget
 			action = new PlayCardAction(@getGameSession(), @getOwnerId(), x, y, {id: Cards.Tile.Hallowed})
 			action.setOwnerId(@getOwnerId())
 			@getGameSession().executeAction(action)
-		
+	
 		super(board,x,y,sourceAction)
 
 	getAppliesSameEffectToMultipleTargets: () ->

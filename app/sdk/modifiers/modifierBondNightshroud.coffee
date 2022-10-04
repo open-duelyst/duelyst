@@ -14,7 +14,7 @@ class ModifierBondNightshroud extends ModifierBond
 
 		numFriendlyArcanysts = 0
 		for unit in @getGameSession().getBoard().getFriendlyEntitiesForEntity(@getCard())
-			if unit.getBelongsToTribe(Races.Arcanyst) 
+			if unit.getBelongsToTribe(Races.Arcanyst)
 				numFriendlyArcanysts++
 
 		general = @getCard().getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

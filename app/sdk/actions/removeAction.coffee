@@ -7,7 +7,7 @@ class RemoveAction extends Action
 
 	constructor: () ->
 		@type ?= RemoveAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

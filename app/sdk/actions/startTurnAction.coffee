@@ -8,7 +8,7 @@ class StartTurnAction extends Action
 
 	constructor: () ->
 		@type ?= StartTurnAction.type
-		super
+		super()
 
 	isRemovableDuringScrubbing: () ->
 		return false

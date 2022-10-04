@@ -16,7 +16,7 @@ class ModifierDealDamageWatchControlEnemyMinionUntilEOT extends ModifierDealDama
 
 		target = action.getTarget()
 
-		if target?.type == CardType.Unit and !target.getIsGeneral() 
+		if target?.type == CardType.Unit and !target.getIsGeneral()
 
 			endTurnDuration = 1
 			if !@getCard().isOwnersTurn()

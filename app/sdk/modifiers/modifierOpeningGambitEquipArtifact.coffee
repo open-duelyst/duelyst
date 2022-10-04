@@ -17,7 +17,7 @@ class ModifierOpeningGambitEquipArtifact extends ModifierOpeningGambit
 
 	onOpeningGambit: (action) ->
 		super(action)
-		
+	
 		gameSession = @getGameSession()
 		playCardAction = new PlayCardSilentlyAction(gameSession, @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, @cardDataOrIndexToEquip)
 		playCardAction.setSource(@getCard())

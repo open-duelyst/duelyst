@@ -34,6 +34,6 @@ class ModifierSynergizeSummonMinionNearGeneral extends ModifierSynergize
 			for position in spawnLocations
 				playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
 				playCardAction.setSource(@getCard())
-				@getGameSession().executeAction(playCardAction)	
+				@getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierSynergizeSummonMinionNearGeneral

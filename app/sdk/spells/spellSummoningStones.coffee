@@ -50,7 +50,7 @@ class SpellSummoningStones extends Spell
 							indexesOfObelysk.push(cardIndex)
 
 				indexToSummon = indexesOfObelysk[@getGameSession().getRandomIntegerForExecution(indexesOfObelysk.length)]
-				
+			
 				if indexToSummon?
 					card = @getGameSession().getCardByIndex(indexToSummon)
 					validSpawnLocations = UtilsGameSession.getSmartSpawnPositionsFromPattern(@getGameSession(), {x:0, y:0}, CONFIG.ALL_BOARD_POSITIONS, card)

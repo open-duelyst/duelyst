@@ -62,8 +62,8 @@ class ModifierFateLyonarSmallMinionQuest extends ModifierFate
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusLyonar)
-				for mod in general.getModifiersByClass(ModifierQuestStatusLyonar)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusLyonar)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

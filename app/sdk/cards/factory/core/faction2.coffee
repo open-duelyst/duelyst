@@ -414,7 +414,7 @@ class CardFactory_CoreSet_Faction2
 			])
 			card.setDescription(i18next.t("cards.faction_2_unit_panddo_desc"))
 			card.addKeywordClassToInclude(ModifierToken)
-			
+		
 
 		if (identifier == Cards.Faction2.TuskBoar)
 			card = new Unit(gameSession)

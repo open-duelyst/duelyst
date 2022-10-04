@@ -57,7 +57,7 @@ class ModifierBondApplyModifiers extends ModifierBond
 
 	@createContextObjectForAllEnemies: (modifiersContextObjects, managedByCard, description, options) ->
 		return @createContextObject(modifiersContextObjects, managedByCard, false, false, true, false, CONFIG.WHOLE_BOARD_RADIUS, description, options)
-	
+
 	@createContextObjectForAllEnemyUnitsAndGenerals: (modifiersContextObjects, managedByCard, description, options) ->
 		return @createContextObject(modifiersContextObjects, managedByCard, false, false, true, true, CONFIG.WHOLE_BOARD_RADIUS, description, options)
 

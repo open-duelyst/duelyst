@@ -6,7 +6,7 @@ Cards = require 'app/sdk/cards/cardsLookupComplete'
 class SpellMightOfVespyr extends SpellApplyModifiers
 
 	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
-		
+	
 		buffAmount = 0
 		allUnits = board.getUnits(true, false)
 		if allUnits?

@@ -2,16 +2,11 @@ Modifier = require './modifier'
 ModifierSummonWatchByCardBuffTarget = require './modifierSummonWatchByCardBuffTarget'
 
 class ModifierSummonWatchDreadnaught extends ModifierSummonWatchByCardBuffTarget
-
 	type:"ModifierSummonWatchDreadnaught"
 	@type:"ModifierSummonWatchDreadnaught"
-
 	fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
-
 	@description: "%X you summon %Y"
 	validCardIds: null # array of card IDs to watch for
-
-	fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
 
 	@getDescription: (modifierContextObject) ->
 		if modifierContextObject

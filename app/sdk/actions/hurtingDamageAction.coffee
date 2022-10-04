@@ -12,6 +12,6 @@ class HurtingDamageAction extends TrueDamageAction
 
 	constructor: () ->
 		@type ?= HurtingDamageAction.type
-		super
+		super()
 
 module.exports = HurtingDamageAction

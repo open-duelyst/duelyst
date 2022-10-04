@@ -10,7 +10,7 @@ class SwapUnitAllegianceAction extends Action
 
 	constructor: () ->
 		@type ?= SwapUnitAllegianceAction.type
-		super
+		super()
 
 	_execute: () ->
 

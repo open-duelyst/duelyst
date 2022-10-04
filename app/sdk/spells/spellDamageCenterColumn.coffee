@@ -5,7 +5,7 @@ UtilsGameSession = require 'app/common/utils/utils_game_session'
 class SpellDamageCenterColumn extends SpellDamage
 
 	_findApplyEffectPositions: (position, sourceAction) ->
-		
+	
 		board = @getGameSession().getBoard()
 		centerPosition = {x: 4, y: 2}
 		applyEffectPositions = []

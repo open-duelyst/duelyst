@@ -21,7 +21,7 @@ class ModifierSummonWatchApplyModifiersToBoth extends ModifierSummonWatch
 
 				for modifierContextObject in @modifiersContextObjects
 					@getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
-					
+				
 				entity = action.getTarget()
 				if entity?
 					for modifierContextObject in @modifiersContextObjects

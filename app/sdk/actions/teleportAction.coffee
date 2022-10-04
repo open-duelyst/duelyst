@@ -9,7 +9,7 @@ class TeleportAction extends Action
 
 	constructor: () ->
 		@type ?= TeleportAction.type
-		super
+		super()
 
 	###
    * Returns whether this was a valid teleport, i.e. whether source and target positions are different.

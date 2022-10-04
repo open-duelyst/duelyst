@@ -7,7 +7,7 @@ class RefreshExhaustionAction extends Action
 
 	constructor: () ->
 		@type ?= RefreshExhaustionAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

@@ -12,6 +12,6 @@ class PlayCardAsTransformAction extends PlayCardSilentlyAction
 
 	constructor: () ->
 		@type ?= PlayCardAsTransformAction.type
-		super
+		super()
 
 module.exports = PlayCardAsTransformAction

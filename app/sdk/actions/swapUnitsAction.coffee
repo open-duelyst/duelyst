@@ -9,7 +9,7 @@ class SwapUnitsAction extends Action
 
 	constructor: () ->
 		@type ?= SwapUnitsAction.type
-		super
+		super()
 
 	_execute: () ->
 

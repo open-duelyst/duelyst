@@ -34,7 +34,7 @@ class ModifierBackstab extends Modifier
 		contextObject = super(options)
 		contextObject.backstabBonus = backstabBonus
 		return contextObject
-		
+	
 	getIsActionRelevant: (a) ->
 		return a instanceof AttackAction and a.getSource() == @getCard() and (@getGameSession().getBoard().getIsPositionBehindEntity(a.getTarget(), @getCard().getPosition(), 1, 0) or a.getTarget()?.hasActiveModifierClass(ModifierAlwaysBackstabbed))
 

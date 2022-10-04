@@ -21,7 +21,7 @@ class ModifierDealDamageWatchDamageJoinedEnemies extends ModifierDealDamageWatch
 			damageAmount = action.getDamageAmount()
 			position = unit.getPosition()
 			damagedPositions.push(position)
-			
+		
 			@damageEnemiesNearby(damageAmount, unit, damagedPositions)
 
 	damageEnemiesNearby: (damageAmount, unit, damagedPositions) ->

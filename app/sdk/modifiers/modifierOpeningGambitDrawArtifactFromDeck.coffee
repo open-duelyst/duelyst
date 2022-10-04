@@ -18,10 +18,10 @@ class ModifierOpeningGambitDrawArtifactFromDeck extends ModifierOpeningGambit
 
 	@getDescription: (modifierContextObject) ->
 		if modifierContextObject
-				if modifierContextObject.numArtifacts <= 1
-					return @description.replace /%X/, "a random artifact"
-				else
-					return @description.replace /%X/, "up to "+modifierContextObject.numArtifacts+" Artifacts"
+			if modifierContextObject.numArtifacts <= 1
+				return @description.replace /%X/, "a random artifact"
+			else
+				return @description.replace /%X/, "up to "+modifierContextObject.numArtifacts+" Artifacts"
 		else
 			return @description
 

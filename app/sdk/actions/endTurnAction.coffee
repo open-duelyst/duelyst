@@ -8,7 +8,7 @@ class EndTurnAction extends Action
 
 	constructor: () ->
 		@type ?= EndTurnAction.type
-		super
+		super()
 
 	isRemovableDuringScrubbing: () ->
 		return false

@@ -7,7 +7,7 @@ class RestoreChargeToAllArtifactsAction extends Action
 
 	constructor: () ->
 		@type ?= RestoreChargeToAllArtifactsAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

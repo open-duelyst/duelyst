@@ -30,7 +30,7 @@ class SpellIntensifyTeleportOwnSide extends SpellIntensify
 						randomTeleportAction.setSource(teleportTarget)
 						if @isOwnedByPlayer1()
 							randomTeleportAction.setPatternSourcePosition({x:0, y:0})
-						else 
+						else
 							randomTeleportAction.setPatternSourcePosition({x: Math.ceil(CONFIG.BOARDCOL * 0.5), y:0})
 						randomTeleportAction.setTeleportPattern(CONFIG.PATTERN_HALF_BOARD)
 						@getGameSession().executeAction(randomTeleportAction)

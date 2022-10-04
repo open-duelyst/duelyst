@@ -10,7 +10,7 @@ class TrueDamageAction extends DamageAction
 
 	constructor: () ->
 		@type ?= TrueDamageAction.type
-		super
+		super()
 
 	getTotalDamageAmount: () ->
 		return @getDamageAmount()

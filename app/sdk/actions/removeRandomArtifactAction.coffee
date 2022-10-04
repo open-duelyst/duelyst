@@ -8,7 +8,7 @@ class RemoveRandomArtifactAction extends Action
 
 	constructor: () ->
 		@type ?= RemoveRandomArtifactAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

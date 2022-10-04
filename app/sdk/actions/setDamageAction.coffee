@@ -8,7 +8,7 @@ class SetDamageAction extends Action
 
 	constructor: () ->
 		@type ?= SetDamageAction.type
-		super
+		super()
 
 	_execute: () ->
 		super()

@@ -37,9 +37,11 @@ class SpellKneel extends Spell
 	_postFilterPlayPositions: (validPositions) ->
 		# if there is a valid unit to teleport, and the position we want to teleport to is empty and on the board
 		board = @getGameSession().getBoard()
-		if (validPositions.length > 0) and
-			 (!board.getCardAtPosition(@getTeleportTargetPosition(), @targetType)) and
-			 (board.isOnBoard(@getTeleportTargetPosition()))
+		if (
+			(validPositions.length > 0) and
+			(!board.getCardAtPosition(@getTeleportTargetPosition(), @targetType)) and
+			(board.isOnBoard(@getTeleportTargetPosition()))
+		)
 			# allow the spell to be cast
 			return super(validPositions)
 		else

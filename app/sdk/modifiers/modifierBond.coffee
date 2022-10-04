@@ -3,23 +3,17 @@ Modifier = require './modifier'
 i18next = require('i18next')
 
 class ModifierBond extends Modifier
-
 	type:"ModifierBond"
 	@type:"ModifierBond"
-
-	@modifierName:"ModifierBond"
 	@description: "Bond"
-
 	@isKeyworded: true
 	@modifierName: i18next.t("modifiers.bond_name")
-	@description: null
+	#@description: null
 	@keywordDefinition: i18next.t("modifiers.bond_def")
-
 	activeInHand: false
 	activeInDeck: false
 	activeInSignatureCards: false
 	activeOnBoard: true
-
 	fxResource: ["FX.Modifiers.ModifierBond"]
 
 	onActivate: () ->

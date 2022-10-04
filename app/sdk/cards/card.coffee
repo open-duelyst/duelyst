@@ -411,10 +411,9 @@ class Card extends SDKObject
 
 		# make sure that following properties don't get serialized
 		Object.defineProperty(cardData, '_hasBeenApplied', {
-				enumerable: false,
-				writable: true
-			}
-		)
+			enumerable: false,
+			writable: true
+		})
 
 		cardData.id = @id
 
@@ -535,10 +534,9 @@ class Card extends SDKObject
 		if cardData? and _.isObject(cardData)
 			# for redundancy sake, make sure that following properties don't get serialized
 			Object.defineProperty(cardData, '_hasBeenApplied', {
-					enumerable: false,
-					writable: true
-				}
-			)
+				enumerable: false,
+				writable: true
+			})
 
 			if !cardData._hasBeenApplied
 				# copy properties into card
@@ -1234,9 +1232,9 @@ class Card extends SDKObject
 	getBaseAnimResource: () ->
 		return @_private.baseAnimResource
 
-	getAnimResource: () ->
-		# override to return a value other than the base resource
-		return @_private.baseAnimResource
+	#getAnimResource: () ->
+	#	# override to return a value other than the base resource
+	#	return @_private.baseAnimResource
 
 	getAnimResource: () ->
 		# search modifiers for any with resource
@@ -1257,6 +1255,10 @@ class Card extends SDKObject
 			@_private.animResource = resource || @_private.baseAnimResource
 
 		return @_private.animResource
+
+	#getSoundResource: () ->
+	#	# override to return a value other than the base resource
+	#	return @_private.baseSoundResource
 
 	getSoundResource: () ->
 		# search modifiers for any with resource
@@ -1286,13 +1288,6 @@ class Card extends SDKObject
 		# store the original resource, set when the card is first made
 		# so no matter how many changes it undergoes, it always has the original
 		@_private.baseSoundResource = soundResource
-
-	getBaseSoundResource: () ->
-		return @_private.baseSoundResource
-
-	getSoundResource: () ->
-		# override to return a value other than the base resource
-		return @_private.baseSoundResource
 
 	#===== / ======
 
@@ -1438,8 +1433,8 @@ class Card extends SDKObject
 			for modifier in @getModifiers()
 				if modifier?
 					if !modifier.getIsHiddenToUI()
-					# uncomment line below to filter out aura sub-modifiers on the same card
-					#if !modifier.getIsHiddenToUI() and (!modifier.getIsManagedByAuraModifier() or (modifier.getParentModifier() != null and modifier.getCardAffected() != modifier.getParentModifier().getCardAffected()))
+						# uncomment line below to filter out aura sub-modifiers on the same card
+						#if !modifier.getIsHiddenToUI() and (!modifier.getIsManagedByAuraModifier() or (modifier.getParentModifier() != null and modifier.getCardAffected() != modifier.getParentModifier().getCardAffected()))
 						# create stack as needed
 						modifierIsActive = modifier.getIsActive()
 						modifierAppliedName = modifier.getAppliedName()

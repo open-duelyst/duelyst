@@ -11,7 +11,7 @@ class QuestBeginner extends Quest
 	isBeginner:true
 
 	constructor:()->
-		super
+		super()
 		if Math.floor(@id / 100) != 99
 			throw new Error("Invalid Beginner Quest ID")
 

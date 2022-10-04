@@ -7,7 +7,7 @@ class EndFollowupAction extends StopBufferingEventsAction
 
 	constructor: () ->
 		@type ?= EndFollowupAction.type
-		super
+		super()
 
 	isRemovableDuringScrubbing: () ->
 		return false

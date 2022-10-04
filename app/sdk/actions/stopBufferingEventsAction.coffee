@@ -7,7 +7,7 @@ class StopBufferingEventsAction extends Action
 
 	constructor: () ->
 		@type ?= StopBufferingEventsAction.type
-		super
+		super()
 
 	isRemovableDuringScrubbing: () ->
 		return false

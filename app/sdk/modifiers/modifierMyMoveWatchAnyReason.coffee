@@ -22,7 +22,7 @@ class ModifierMyMoveWatchAnyReason extends Modifier
 		super(event)
 		action = event.action
 
-		if (action instanceof MoveAction or (action instanceof TeleportAction and action.getIsValidTeleport())) and action.getSource() is @getCard() 
+		if (action instanceof MoveAction or (action instanceof TeleportAction and action.getIsValidTeleport())) and action.getSource() is @getCard()
 			@onMyMoveWatchAnyReason(action)
 		else if action instanceof SwapUnitsAction and (action.getSource() is @getCard() or action.getTarget() is @getCard())
 			@onMyMoveWatchAnyReason(action)

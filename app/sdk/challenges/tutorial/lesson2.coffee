@@ -263,7 +263,7 @@ class LessonTwo extends Challenge
 			isOpponent: true
 		]))
 		@_opponentAgent.addActionForTurn(3,AgentActions.createAgentActionPlayCardFindPosition(1,(() ->
-				return [GameSession.getInstance().getGeneralForPlayer2().getPosition()]
+			return [GameSession.getInstance().getGeneralForPlayer2().getPosition()]
 		).bind(this)))
 
 

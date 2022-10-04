@@ -2182,8 +2182,8 @@ whenLocalizationReady.then ()->
 				# show popover
 				Editor.$popoverNewDataSource = $(gui.domElement).find("> ul > li.title")
 				Editor.$popoverNewDataSource.popover({
-				# set the content to the html string of the gui
-				# we just do this so the popover is positioned correctly
+					# set the content to the html string of the gui
+					# we just do this so the popover is positioned correctly
 					content: $guiEl.prop('outerHTML')
 					html: true
 					animation: false

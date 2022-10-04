@@ -61,11 +61,11 @@ if i18next.t() is undefined
 class CardFactory_CoreshatterSet_Faction5
 
 	###*
-   * Returns a card that matches the identifier.
-   * @param {Number|String} identifier
-   * @param {GameSession} gameSession
-   * @returns {Card}
-   ###
+	 * Returns a card that matches the identifier.
+	 * @param {Number|String} identifier
+	 * @param {GameSession} gameSession
+	 * @returns {Card}
+	 ###
 	@cardForIdentifier: (identifier,gameSession) ->
 		card = null
 
@@ -288,7 +288,7 @@ class CardFactory_CoreshatterSet_Faction5
 			card.setBaseSoundResource(
 				apply : RSX.sfx_spell_blindscorch.audio
 				walk : RSX.sfx_neutral_firestarter_impact.audio
-				attack :  RSX.sfx_neutral_firestarter_attack_swing.audio
+				attack :	RSX.sfx_neutral_firestarter_attack_swing.audio
 				receiveDamage : RSX.sfx_neutral_firestarter_hit.audio
 				attackDamage : RSX.sfx_neutral_firestarter_impact.audio
 				death : RSX.sfx_neutral_firestarter_death.audio
@@ -407,22 +407,22 @@ class CardFactory_CoreshatterSet_Faction5
 			card.setBoundingBoxWidth(145)
 			card.setBoundingBoxHeight(95)
 			card.setBaseSoundResource(
-			    apply : RSX.sfx_summonlegendary.audio
-			    walk : RSX.sfx_neutral_rook_hit.audio
-			    attack : RSX.sfx_neutral_khymera_attack_swing.audio
-			    receiveDamage : RSX.sfx_neutral_khymera_hit.audio
-			    attackDamage : RSX.sfx_neutral_khymera_impact.audio
-			    death : RSX.sfx_neutral_khymera_death.audio
+				apply : RSX.sfx_summonlegendary.audio
+				walk : RSX.sfx_neutral_rook_hit.audio
+				attack : RSX.sfx_neutral_khymera_attack_swing.audio
+				receiveDamage : RSX.sfx_neutral_khymera_hit.audio
+				attackDamage : RSX.sfx_neutral_khymera_impact.audio
+				death : RSX.sfx_neutral_khymera_death.audio
 			)
 			card.setBaseAnimResource(
-			    breathing : RSX.f5MegaBrontodonBreathing.name
-			    idle : RSX.f5MegaBrontodonIdle.name
-			    walk : RSX.f5MegaBrontodonRun.name
-			    attack : RSX.f5MegaBrontodonAttack.name
-			    attackReleaseDelay: 0.0
-			    attackDelay: 0.7
-			    damage : RSX.f5MegaBrontodonHit.name
-			    death : RSX.f5MegaBrontodonDeath.name
+				breathing : RSX.f5MegaBrontodonBreathing.name
+				idle : RSX.f5MegaBrontodonIdle.name
+				walk : RSX.f5MegaBrontodonRun.name
+				attack : RSX.f5MegaBrontodonAttack.name
+				attackReleaseDelay: 0.0
+				attackDelay: 0.7
+				damage : RSX.f5MegaBrontodonHit.name
+				death : RSX.f5MegaBrontodonDeath.name
 			)
 
 		if (identifier == Cards.Spell.MarchOfTheBrontos)
@@ -489,7 +489,7 @@ class CardFactory_CoreshatterSet_Faction5
 				apply : RSX.sfx_spell_deathstrikeseal.audio
 				walk : RSX.sfx_singe2.audio
 				attack : RSX.sfx_f2_celestialphantom_attack_swing.audio
-				receiveDamage :  RSX.sfx_f2_celestialphantom_hit.audio
+				receiveDamage :	RSX.sfx_f2_celestialphantom_hit.audio
 				attackDamage : RSX.sfx_f2_celestialphantom_attack_impact.audio
 				death : RSX.sfx_f2_celestialphantom_death.audio
 			)
