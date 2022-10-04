@@ -1,7 +1,7 @@
 # NOTE: You must enable monitoring of estimated charges before creating alerts.
 # Docs: https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html#turning_on_billing_metrics
 resource "aws_cloudwatch_metric_alarm" "alarm" {
-  alarm_name        = "estimated-billing"
+  alarm_name        = "Estimated monthly bill will exceed target threshold"
   alarm_description = "AWS bill is on track to exceed ${var.threshold} USD this month"
 
   namespace           = "AWS/Billing"
