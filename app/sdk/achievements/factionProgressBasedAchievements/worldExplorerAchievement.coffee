@@ -15,7 +15,7 @@ class WorldExplorerAchievement extends Achievement
 	# returns progress made by reaching a state of faction progression
 	@progressForFactionProgression: (factionProgressionData) ->
 		# Check all factions for having at least 1 match played
-		playableFactions = FactionFactory.getAllPlayableFactions();
+		playableFactions = FactionFactory.getAllPlayableFactions()
 		playableFactionIds = _.map(playableFactions, (faction) -> return faction.id)
 		for playableFactionId in playableFactionIds
 			factionData = factionProgressionData[playableFactionId]

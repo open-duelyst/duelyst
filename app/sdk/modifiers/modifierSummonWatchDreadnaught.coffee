@@ -11,8 +11,6 @@ class ModifierSummonWatchDreadnaught extends ModifierSummonWatchByCardBuffTarget
 	@description: "%X you summon %Y"
 	validCardIds: null # array of card IDs to watch for
 
-	fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
-
 	@getDescription: (modifierContextObject) ->
 		if modifierContextObject
 			replaceText = @description.replace /%X/, modifierContextObject.cardDescription

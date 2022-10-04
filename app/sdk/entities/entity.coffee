@@ -318,7 +318,7 @@ class Entity extends Card
 		return @getReach() == CONFIG.REACH_RANGED
 
 	getAttackRange:() ->
-		return @_private.attackRange;
+		return @_private.attackRange
 
 	setCustomAttackPattern: (pattern) ->
 		@_private.customAttackPattern = pattern

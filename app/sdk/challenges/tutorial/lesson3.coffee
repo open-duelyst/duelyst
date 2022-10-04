@@ -10,7 +10,7 @@ Cards 			= require 'app/sdk/cards/cardsLookupComplete'
 Deck 			= require 'app/sdk/cards/deck'
 AgentActions = require 'app/sdk/agents/agentActions'
 CONFIG = require 'app/common/config'
-RSX = require('app/data/resources');
+RSX = require('app/data/resources')
 ChallengeCategory = require('app/sdk/challenges/challengeCategory')
 i18next = require('i18next')
 

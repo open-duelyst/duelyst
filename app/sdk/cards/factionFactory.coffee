@@ -174,7 +174,7 @@ class FactionFactory
 			# check if there is a response map defined for my general
 			responseDataForMyGeneral = myFaction.generalTauntResponses[myGeneralId]
 			if _.isObject(responseDataForMyGeneral)
-					# check if there is a response defined for the opponent general
+				# check if there is a response defined for the opponent general
 				responseDataForOpponentGeneral = responseDataForMyGeneral[opponentGeneralId]
 				if _.isString(responseDataForOpponentGeneral)
 					response = responseDataForOpponentGeneral

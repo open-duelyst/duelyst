@@ -16,10 +16,10 @@ class ModifierTakeDamageWatchDamageEnemy extends ModifierTakeDamageWatch
 		return contextObject
 
 	onDamageTaken: (action) ->
-			randomDamageAction = new RandomDamageAction(@getGameSession())
-			randomDamageAction.setOwnerId(@getCard().getOwnerId())
-			randomDamageAction.setSource(@getCard())
-			randomDamageAction.setDamageAmount(@damageAmount)
-			@getGameSession().executeAction(randomDamageAction)
+		randomDamageAction = new RandomDamageAction(@getGameSession())
+		randomDamageAction.setOwnerId(@getCard().getOwnerId())
+		randomDamageAction.setSource(@getCard())
+		randomDamageAction.setDamageAmount(@damageAmount)
+		@getGameSession().executeAction(randomDamageAction)
 
 module.exports = ModifierTakeDamageWatchDamageEnemy

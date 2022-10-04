@@ -21,7 +21,7 @@ class ModifierDealOrTakeDamageWatchRandomTeleportOther extends ModifierDealOrTak
 			if !targetToTeleport # If we couldn't find a unit that dealt the damage, assume the source of damage was spell, in which case teleport the general
 				targetToTeleport = @getCard().getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId())
 		else if action.getTarget().getOwnerId() isnt @getCard().getOwnerId() # else we are dealing damage
-				targetToTeleport = action.getTarget()
+			targetToTeleport = action.getTarget()
 
 		if targetToTeleport? and !_.contains(@_private.cardIndicesTeleported, targetToTeleport.getIndex())
 			@_private.cardIndicesTeleported.push(targetToTeleport.getIndex())

@@ -150,7 +150,7 @@ class Logger
 		if (styleIndex < Object.keys(styles).length)
 			key = Object.keys(styles)[styleIndex]
 
-		return styles[key][0] + str + styles[key][1];
+		return styles[key][0] + str + styles[key][1]
 
 
 module.exports = Logger

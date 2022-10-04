@@ -173,15 +173,15 @@ class Spell extends Card
 					numLocationsOnBoard = 0
 					board = @getGameSession().getBoard()
 					for position in affectPattern
-						boardPosition.x = @_private.effectCenterPosition.x + position.x;
-						boardPosition.y = @_private.effectCenterPosition.y + position.y;
+						boardPosition.x = @_private.effectCenterPosition.x + position.x
+						boardPosition.y = @_private.effectCenterPosition.y + position.y
 						if board.isOnBoard(boardPosition)
 							patternCenter.x += position.x
 							patternCenter.y += position.y
 							numLocationsOnBoard++
 					if numLocationsOnBoard > 0
-						@_private.effectCenterPosition.x += patternCenter.x / numLocationsOnBoard;
-						@_private.effectCenterPosition.y += patternCenter.y / numLocationsOnBoard;
+						@_private.effectCenterPosition.x += patternCenter.x / numLocationsOnBoard
+						@_private.effectCenterPosition.y += patternCenter.y / numLocationsOnBoard
 			else if @radius >= CONFIG.WHOLE_BOARD_RADIUS || (@getCanBeAppliedAnywhere() and @getTargetsAnywhere())
 				@_private.effectCenterPosition = CONFIG.BOARDCENTER
 

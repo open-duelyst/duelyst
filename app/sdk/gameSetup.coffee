@@ -266,7 +266,7 @@ GameSetup.createGameSetupData = (gameSession, player1Data, player2Data) ->
 		gameSetupData.boardCardsData.push(card.createGameSetupCardData())
 
 	# snapshot player data
-	gameSetupData.players = [];
+	gameSetupData.players = []
 	player1 = gameSession.getPlayer1()
 	gameSetupData.players[0] = GameSetup.createGameSetupDataForPlayer(gameSession, player1, player1Data)
 	player2 = gameSession.getPlayer2()

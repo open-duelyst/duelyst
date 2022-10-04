@@ -6,7 +6,7 @@ class SpellIntensifyHealMyGeneral extends SpellIntensify
 	healAmount: 0
 
 	_findApplyEffectPositions: (position, sourceAction) ->
-			return [@getGameSession().getGeneralForPlayerId(@getOwnerId()).getPosition()]
+		return [@getGameSession().getGeneralForPlayerId(@getOwnerId()).getPosition()]
 
 	onApplyOneEffectToBoard: (board,x,y,sourceAction) ->
 		super(board,x,y,sourceAction)

@@ -33,7 +33,7 @@ class ModifierKillWatchAndSurvive extends Modifier
 			@onKillWatchAndSurvive(action)
 
 	getIsActionRelevant: (action) ->
-		if action instanceof DieAction and action.getTarget() != @getCard() and action.getTarget()?.type is CardType.Unit and action.getSource() is @getCard() 
+		if action instanceof DieAction and action.getTarget() != @getCard() and action.getTarget()?.type is CardType.Unit and action.getSource() is @getCard()
 			if @includeAllies or action.getTarget().getOwnerId() != @getCard().getOwnerId()
 				if @includeGenerals or !action.getTarget().getIsGeneral()
 					return true

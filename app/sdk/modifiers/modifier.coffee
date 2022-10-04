@@ -509,10 +509,9 @@ class Modifier extends SDKObject
 
 		# make sure that following properties don't get serialized
 		Object.defineProperty(contextObject, '_hasBeenApplied', {
-				enumerable: false,
-				writable: true
-			}
-		)
+			enumerable: false,
+			writable: true
+		})
 
 		contextObject.type = @type
 
@@ -628,10 +627,9 @@ class Modifier extends SDKObject
 
 			# make sure that following properties don't get serialized
 			Object.defineProperty(contextObject, '_hasBeenApplied', {
-					enumerable: false,
-					writable: true
-				}
-			)
+				enumerable: false,
+				writable: true
+			})
 
 			if contextObject.type
 				@.type = contextObject.type
@@ -1828,7 +1826,7 @@ class Modifier extends SDKObject
 				if @getBuffsAttributeAbsolutely(buffKey) or @getRebasesAttribute(buffKey)
 					attributeValue = buffValue
 				else
-					attributeValue = attributeValue + buffValue;
+					attributeValue = attributeValue + buffValue
 
 		return attributeValue
 

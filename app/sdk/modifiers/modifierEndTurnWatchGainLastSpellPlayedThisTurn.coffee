@@ -23,7 +23,7 @@ class ModifierEndTurnWatchGainLastSpellPlayedThisTurn extends ModifierEndTurnWat
 			!action.getIsImplicit() and
 			action.getOwnerId() is @getOwnerId()
 				lastSpell = action.getCard()
-				break;
+				break
 
 		if lastSpell?
 			# put fresh copy of spell into hand

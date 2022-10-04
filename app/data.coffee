@@ -6,8 +6,8 @@ DATA = DATA or {}
 DATA.FX = require 'app/data/fx'
 
 # init caches
-_cache = {};
-_filterCache = {};
+_cache = {}
+_filterCache = {}
 
 ###
   Finds, caches, and returns data for a string identifier.
@@ -21,7 +21,7 @@ DATA.dataForIdentifier = (identifier) ->
 
 		# find and cache data for identifier
 		if !data?
-			keys = identifier.split(".");
+			keys = identifier.split(".")
 
 			data = DATA
 			for key in keys
@@ -141,7 +141,7 @@ DATA.getFilterKeyedIdentifiers = (identifiers, filterKeys) ->
   Releases and resets search caches.
 ###
 DATA.releaseCaches = () ->
-	_cache = {};
-	_filterCache = {};
+	_cache = {}
+	_filterCache = {}
 
 module.exports = DATA

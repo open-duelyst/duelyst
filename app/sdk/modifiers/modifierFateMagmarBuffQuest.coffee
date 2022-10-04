@@ -66,8 +66,8 @@ class ModifierFateMagmarBuffQuest extends ModifierFate
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusMagmar)
-				for mod in general.getModifiersByClass(ModifierQuestStatusMagmar)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusMagmar)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

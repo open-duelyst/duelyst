@@ -6728,7 +6728,6 @@ cos[Emote.Faction1AltConfused] = {
 	rsx: RSX.emote_f1_alt_confused
 	name: i18next.t("cosmetics.emote_ziran_confused_name")
 	shopDescription: i18next.t("cosmetics.emote_ziran_confused_desc")
-	shopDescription: "Umm..."
 	emoteOrder: EMOTE_ORDER_CONFUSED
 	rarityId: Rarity.Common
 	category: EmoteCategory.Faction
@@ -8016,7 +8015,6 @@ cos[Emote.Faction1ThirdConfused] = {
 	rsx: RSX.emote_f1_third_confused
 	name: i18next.t("cosmetics.emote_brome_confused_name")
 	shopDescription: i18next.t("cosmetics.emote_brome_confused_desc")
-	shopDescription: "Umm..."
 	emoteOrder: EMOTE_ORDER_CONFUSED
 	rarityId: Rarity.Common
 	category: EmoteCategory.Faction

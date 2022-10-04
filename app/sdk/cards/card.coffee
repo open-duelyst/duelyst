@@ -411,10 +411,9 @@ class Card extends SDKObject
 
 		# make sure that following properties don't get serialized
 		Object.defineProperty(cardData, '_hasBeenApplied', {
-				enumerable: false,
-				writable: true
-			}
-		)
+			enumerable: false,
+			writable: true
+		})
 
 		cardData.id = @id
 
@@ -535,10 +534,9 @@ class Card extends SDKObject
 		if cardData? and _.isObject(cardData)
 			# for redundancy sake, make sure that following properties don't get serialized
 			Object.defineProperty(cardData, '_hasBeenApplied', {
-					enumerable: false,
-					writable: true
-				}
-			)
+				enumerable: false,
+				writable: true
+			})
 
 			if !cardData._hasBeenApplied
 				# copy properties into card
@@ -1147,13 +1145,13 @@ class Card extends SDKObject
 
 				# sort the context objects for display alphanumerically
 				sortedContextObjects = _.sortBy(filteredContextObjects, ((contextObject) ->
-					sortValue = "z";
+					sortValue = "z"
 					modifierClass = @getGameSession().getModifierClassForType(contextObject.type)
-					if modifierClass.modifierName then sortValue = modifierClass.modifierName;
+					if modifierClass.modifierName then sortValue = modifierClass.modifierName
 					# descriptions come after those with only names
-					if modifierClass.description? then sortValue = "z" + sortValue;
+					if modifierClass.description? then sortValue = "z" + sortValue
 					# keyworded come before all others
-					if modifierClass.getIsKeyworded() then sortValue = "0" + sortValue;
+					if modifierClass.getIsKeyworded() then sortValue = "0" + sortValue
 
 					return sortValue
 				).bind(@))
@@ -1234,9 +1232,12 @@ class Card extends SDKObject
 	getBaseAnimResource: () ->
 		return @_private.baseAnimResource
 
+	# Duplicated below.
+	###
 	getAnimResource: () ->
 		# override to return a value other than the base resource
 		return @_private.baseAnimResource
+	###
 
 	getAnimResource: () ->
 		# search modifiers for any with resource
@@ -1258,6 +1259,12 @@ class Card extends SDKObject
 
 		return @_private.animResource
 
+	#===== / ======
+
+	### SOUND ###
+
+	# Duplicated below.
+	###
 	getSoundResource: () ->
 		# search modifiers for any with resource
 		if !@_private.soundResource?
@@ -1277,10 +1284,7 @@ class Card extends SDKObject
 			@_private.soundResource = resource || @_private.baseSoundResource
 
 		return @_private.soundResource
-
-	#===== / ======
-
-	### SOUND ###
+	###
 
 	setBaseSoundResource: (soundResource) ->
 		# store the original resource, set when the card is first made
@@ -1333,7 +1337,7 @@ class Card extends SDKObject
 	getIsPositionValidTarget: (targetPosition) ->
 		# index must be string and cannot be map index as position may be outside board space
 		# map indices can conflict when generated for positions outside the board
-		index = targetPosition.x + "_" + targetPosition.y;
+		index = targetPosition.x + "_" + targetPosition.y
 		res = @_private.cachedIsValidTargetPosition[index]
 		if !res?
 			res = @_private.cachedIsValidTargetPosition[index] = UtilsPosition.getIsPositionInPositions(@getValidTargetPositions(), targetPosition) and @isAreaOfEffectOnBoard(targetPosition)
@@ -1438,8 +1442,8 @@ class Card extends SDKObject
 			for modifier in @getModifiers()
 				if modifier?
 					if !modifier.getIsHiddenToUI()
-					# uncomment line below to filter out aura sub-modifiers on the same card
-					#if !modifier.getIsHiddenToUI() and (!modifier.getIsManagedByAuraModifier() or (modifier.getParentModifier() != null and modifier.getCardAffected() != modifier.getParentModifier().getCardAffected()))
+						# uncomment line below to filter out aura sub-modifiers on the same card
+						#if !modifier.getIsHiddenToUI() and (!modifier.getIsManagedByAuraModifier() or (modifier.getParentModifier() != null and modifier.getCardAffected() != modifier.getParentModifier().getCardAffected()))
 						# create stack as needed
 						modifierIsActive = modifier.getIsActive()
 						modifierAppliedName = modifier.getAppliedName()

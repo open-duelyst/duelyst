@@ -9,9 +9,9 @@ class PlayerModifierMyDeathwatchDrawCard extends PlayerModifier
 	@type:"PlayerModifierMyDeathwatchDrawCard"
 
 	@createContextObject: (duration=1, options) ->
-    contextObject = super(options)
-    contextObject.durationEndTurn = duration
-    return contextObject
+		contextObject = super(options)
+		contextObject.durationEndTurn = duration
+		return contextObject
 
 	onAfterCleanupAction: (e) ->
 		super(e)

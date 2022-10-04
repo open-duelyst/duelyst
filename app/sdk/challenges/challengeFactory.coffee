@@ -158,7 +158,7 @@ class ChallengeFactory
 
 	@getCategoryForType: (categoryType) ->
 		return _.find(@getAllChallengeCategories(), (category) ->
-			return category.type == categoryType;
+			return category.type == categoryType
 		)
 
 	@getChallengesForCategoryType: (challengeCategoryType) ->
@@ -169,7 +169,7 @@ class ChallengeFactory
 
 	@getChallengeForType: (challengeType) ->
 		return _.find(@getAllChallenges(), (challenge) ->
-			return challenge.type == challengeType;
+			return challenge.type == challengeType
 		)
 
 	@_challengeCardRewards: null # {Array} card ids to give user 3 copies of

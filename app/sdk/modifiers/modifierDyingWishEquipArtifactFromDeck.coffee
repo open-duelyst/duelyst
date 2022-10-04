@@ -18,10 +18,10 @@ class ModifierDyingWishEquipArtifactFromDeck extends ModifierDyingWish
 
 	@getDescription: (modifierContextObject) ->
 		if modifierContextObject
-				if modifierContextObject.numArtifacts <= 1
-					return @description.replace /%X/, "a random artifact"
-				else
-					return @description.replace /%X/, ""+modifierContextObject.numArtifacts+" random artifacts"
+			if modifierContextObject.numArtifacts <= 1
+				return @description.replace /%X/, "a random artifact"
+			else
+				return @description.replace /%X/, ""+modifierContextObject.numArtifacts+" random artifacts"
 		else
 			return @description
 

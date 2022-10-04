@@ -97,7 +97,6 @@ class Analytics
 	@toggleLoggingEnabled: () ->
 		for module in @_getAnalyticsModules()
 			if module.toggleLoggingEnabled != undefined
-					module.toggleLoggingEnabled()
+				module.toggleLoggingEnabled()
 
-
-module.exports = Analytics;
+module.exports = Analytics

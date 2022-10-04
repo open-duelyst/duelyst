@@ -47,57 +47,57 @@ whenLocalizationReady.then ()->
 		dat.GUI.TEXT_OPEN = "Open Editor"
 
 		# inject css overrides
-		css = "";
-		css += ".editor { position: absolute; float:left; z-index: 99999; pointer-events: none; margin: 0; padding: 0; width: 100%; height: 100%; top: 0; bottom: 0; left: 0; right: 0; }";
-		css += ".dg.container { position: relative; float:left; padding: 0; height: 100%; display: flex; flex-flow: column-reverse nowrap; }";
-		css += ".dg.container > ul { overflow: hidden; overflow-y: auto; background-color: black; pointer-events: auto; max-height: 100%; }";
-		css += ".dg.container > ul::-webkit-scrollbar { width: 5px; background: #1a1a1a; }";
-		css += ".dg.container > ul::-webkit-scrollbar-thumb { border-radius: 5px; background: #676767; }";
-		css += ".dg.container > ul::-webkit-scrollbar-corner { height: 0; display: none; }";
-		css += ".dg.container > ul.closed { padding-bottom: 0; }";
-		css += ".dg.container > ul > .title { padding-right: 25px; }";
-		css += ".dg.container .primary-button { background-color: #222222; text-align: center; padding: 5px; pointer-events: auto; position: relative; height: 30px; font-size: 12px; line-height: 20px; }";
-		css += ".dg.container .primary-button:hover { background-color: #333333; }";
-		css += ".dg.container .close-button { }";
-		css += ".dg.container .close-button:hover { }";
-		css += ".dg.container .save-button { background-color: #0C7ED8; font-size: 14px; }";
-		css += ".dg.container .save-button:hover { background-color: #2499f3; }";
-		css += ".dg.container .reload-css-button { }";
-		css += ".dg.container .reload-css-button:hover { }";
-		css += ".dg.container .resource-validate-button { }";
-		css += ".dg.container .resource-validate-button:hover { }";
-		css += ".dg .action-button { position: absolute; z-index: 9999; top: 1px; right: 0px; padding: 2px; width: 25px; height: 25px; color: white; font-size: 16px; text-shadow: none; }";
-		css += ".dg .closed .action-button { display: none; }";
-		css += ".dg .action-button:last-child { right: 0; }";
-		css += ".dg .action-button:nth-last-child(2) { right: 20px; }";
-		css += ".dg .action-button:nth-last-child(3) { right: 40px; }";
-		css += ".dg .action-button:nth-last-child(4) { right: 60px; }";
-		css += ".dg .action-button:nth-last-child(5) { right: 80px; }";
-		css += ".dg.main {position: absolute; left: 0;}";
-		css += ".dg.main > ul {}";
-		css += ".dg.main > ul > li.folder > .dg > ul > li.folder > .dg > ul > li.title { background: rgba(76, 76, 76, 1);}";
-		css += ".dg.selected { position: absolute; right: 0; width: 300px; padding-left: 3px;}";
-		css += ".dg.selected > ul > li.title { position: relative; width: 300px; z-index: 1; }";
-		css += ".dg.selected > ul > li.function:nth-child(2) { position: relative; width: 297px; z-index: 1; }";
-		css += ".dg.selected > ul > li.function:nth-child(3) { position: relative; width: 297px; z-index: 1; }";
-		css += ".dg.container > ul.closed > li:nth-child(4) { margin-top: 0; }";
-		css += ".dg.selected > ul > li.folder > .dg > ul > li.title { background: rgba(76, 76, 76, 1);}";
-		css += ".dg.new-data { position: relative; width: 200px !important; }";
-		css += ".dg.new-data .close-button { display: none; }";
-		css += ".dg .c { padding-right: 20px; }";
-		css += ".dg .c select { color: black; max-width: 100%; }";
-		css += ".dg .c input[type=text] { line-height: 10px; height: 18px; }";
-		css += ".dg li { position: relative; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }";
-		css += ".dg li.title { padding-right: 48px; }";
-		css += ".dg li.folder { border-left: 0; }";
-		css += ".dg li.folder > .dg { border-left: 6px solid rgba(0,0,0,0); margin-left: -2px; }";
-		css += ".dg li.folder > .dg > ul > li.title { border-left: 3px solid #9D32E7; }";
-		css += ".dg .function .property-name { width: 90%; }";
-		css += ".editor-popover { border-radius: 0; text-shadow: none; z-index: 100000; background: rgb(12, 126, 216); }";
-		css += ".editor-popover .popover-content { padding: 2px; }";
-		css += ".editor-popover.left > .arrow:after { border-left-color: #0C7ED8; }";
-		css += ".editor-popover.right > .arrow:after { border-right-color: #0C7ED8; }";
-		dat.utils.css.inject(css);
+		css = ""
+		css += ".editor { position: absolute; float:left; z-index: 99999; pointer-events: none; margin: 0; padding: 0; width: 100%; height: 100%; top: 0; bottom: 0; left: 0; right: 0; }"
+		css += ".dg.container { position: relative; float:left; padding: 0; height: 100%; display: flex; flex-flow: column-reverse nowrap; }"
+		css += ".dg.container > ul { overflow: hidden; overflow-y: auto; background-color: black; pointer-events: auto; max-height: 100%; }"
+		css += ".dg.container > ul::-webkit-scrollbar { width: 5px; background: #1a1a1a; }"
+		css += ".dg.container > ul::-webkit-scrollbar-thumb { border-radius: 5px; background: #676767; }"
+		css += ".dg.container > ul::-webkit-scrollbar-corner { height: 0; display: none; }"
+		css += ".dg.container > ul.closed { padding-bottom: 0; }"
+		css += ".dg.container > ul > .title { padding-right: 25px; }"
+		css += ".dg.container .primary-button { background-color: #222222; text-align: center; padding: 5px; pointer-events: auto; position: relative; height: 30px; font-size: 12px; line-height: 20px; }"
+		css += ".dg.container .primary-button:hover { background-color: #333333; }"
+		css += ".dg.container .close-button { }"
+		css += ".dg.container .close-button:hover { }"
+		css += ".dg.container .save-button { background-color: #0C7ED8; font-size: 14px; }"
+		css += ".dg.container .save-button:hover { background-color: #2499f3; }"
+		css += ".dg.container .reload-css-button { }"
+		css += ".dg.container .reload-css-button:hover { }"
+		css += ".dg.container .resource-validate-button { }"
+		css += ".dg.container .resource-validate-button:hover { }"
+		css += ".dg .action-button { position: absolute; z-index: 9999; top: 1px; right: 0px; padding: 2px; width: 25px; height: 25px; color: white; font-size: 16px; text-shadow: none; }"
+		css += ".dg .closed .action-button { display: none; }"
+		css += ".dg .action-button:last-child { right: 0; }"
+		css += ".dg .action-button:nth-last-child(2) { right: 20px; }"
+		css += ".dg .action-button:nth-last-child(3) { right: 40px; }"
+		css += ".dg .action-button:nth-last-child(4) { right: 60px; }"
+		css += ".dg .action-button:nth-last-child(5) { right: 80px; }"
+		css += ".dg.main {position: absolute; left: 0;}"
+		css += ".dg.main > ul {}"
+		css += ".dg.main > ul > li.folder > .dg > ul > li.folder > .dg > ul > li.title { background: rgba(76, 76, 76, 1);}"
+		css += ".dg.selected { position: absolute; right: 0; width: 300px; padding-left: 3px;}"
+		css += ".dg.selected > ul > li.title { position: relative; width: 300px; z-index: 1; }"
+		css += ".dg.selected > ul > li.function:nth-child(2) { position: relative; width: 297px; z-index: 1; }"
+		css += ".dg.selected > ul > li.function:nth-child(3) { position: relative; width: 297px; z-index: 1; }"
+		css += ".dg.container > ul.closed > li:nth-child(4) { margin-top: 0; }"
+		css += ".dg.selected > ul > li.folder > .dg > ul > li.title { background: rgba(76, 76, 76, 1);}"
+		css += ".dg.new-data { position: relative; width: 200px !important; }"
+		css += ".dg.new-data .close-button { display: none; }"
+		css += ".dg .c { padding-right: 20px; }"
+		css += ".dg .c select { color: black; max-width: 100%; }"
+		css += ".dg .c input[type=text] { line-height: 10px; height: 18px; }"
+		css += ".dg li { position: relative; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }"
+		css += ".dg li.title { padding-right: 48px; }"
+		css += ".dg li.folder { border-left: 0; }"
+		css += ".dg li.folder > .dg { border-left: 6px solid rgba(0,0,0,0); margin-left: -2px; }"
+		css += ".dg li.folder > .dg > ul > li.title { border-left: 3px solid #9D32E7; }"
+		css += ".dg .function .property-name { width: 90%; }"
+		css += ".editor-popover { border-radius: 0; text-shadow: none; z-index: 100000; background: rgb(12, 126, 216); }"
+		css += ".editor-popover .popover-content { padding: 2px; }"
+		css += ".editor-popover.left > .arrow:after { border-left-color: #0C7ED8; }"
+		css += ".editor-popover.right > .arrow:after { border-right-color: #0C7ED8; }"
+		dat.utils.css.inject(css)
 
 		# create gui
 		Editor.gui = new dat.GUI({ autoPlace: false, closed: true })
@@ -211,7 +211,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Gift Crate failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Clear Crate Progression"] = () ->
 			request = $.ajax(
@@ -225,7 +225,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Clear Crate Progression failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Common Cosmetic Chest"] = () ->
 			request = $.ajax(
@@ -239,7 +239,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Rare Cosmetic Chest"] = () ->
 			request = $.ajax(
@@ -253,7 +253,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Epic Cosmetic Chest"] = () ->
 			request = $.ajax(
@@ -267,7 +267,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Boss Chest"] = () ->
 			hoursBack = prompt("Hours back to give the chest:",0) || 0
@@ -286,7 +286,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Common Cosmetic Chest Key"] = () ->
 			request = $.ajax(
@@ -300,7 +300,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest Key failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Rare Cosmetic Chest Key"] = () ->
 			request = $.ajax(
@@ -314,7 +314,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest Key failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Epic Cosmetic Chest Key"] = () ->
 			request = $.ajax(
@@ -328,7 +328,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest Key failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaButtons["Add Boss Chest Key"] = () ->
 			request = $.ajax(
@@ -342,7 +342,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Cosmetic Chest Key failed\n" + response.responseJSON.message)
-			);
+			)
 
 		skins = SDK.CosmeticsFactory.cosmeticsForType(SDK.CosmeticsTypeLookup.CardSkin)
 		skinNames = _.map(skins, (skin) -> return skin.name)
@@ -356,7 +356,7 @@ whenLocalizationReady.then ()->
 			if skinNameIndex != -1
 				skinData = skins[skinNameIndex]
 				if skinData != -1
-					console.log(skinName, "with id", skinData.id, "and data", skinData);
+					console.log(skinName, "with id", skinData.id, "and data", skinData)
 					request = $.ajax(
 						url: process.env.API_URL + "/api/me/qa/cosmetic/" + skinData.id,
 						type: 'POST',
@@ -438,11 +438,11 @@ whenLocalizationReady.then ()->
 			)
 			request.done((data)->
 				alert("Success: Set quest generation back " + days_back + " days\nReload required")
-				location.reload();
+				location.reload()
 			)
 			request.fail((response) ->
 				alert("FAILED: Set quest generation back failed\n" + response.responseJSON.message)
-			);
+			)
 		qaQuestButtons["Setup Frostfire 2016"] = () ->
 			request = $.ajax(
 				url: process.env.API_URL + "/api/me/qa/quests/setup_frostfire_2016",
@@ -531,7 +531,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED:\n" + response.responseJSON.message)
-			);
+			)
 
 		qaRankButtons = {}
 		qaRankButtons["Clear Last Season Rank Rewards"] = () ->
@@ -651,8 +651,8 @@ whenLocalizationReady.then ()->
 			).done ()->
 				alert("done!")
 		qaProgressionButtons["Complete Progression"] = () ->
-			NewPlayerManager.getInstance()._completeProgression();
-			alert("Complete: Navigate away from main menu and back");
+			NewPlayerManager.getInstance()._completeProgression()
+			alert("Complete: Navigate away from main menu and back")
 
 		qaProgressionButtons["Set All Factions To Level 10"] = () ->
 			request = $.ajax(
@@ -667,7 +667,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Set all factions to level 10 failed\n" + response.responseJSON.message)
-			);
+			)
 
 		qaAddFactionLevel = {"Faction": SDK.FactionFactory.getAllPlayableFactions()[0].name}
 		qaAddFactionLevel["Add"] = () ->
@@ -689,7 +689,7 @@ whenLocalizationReady.then ()->
 				)
 				request.fail((response) ->
 					alert("FAILED: adding faction level failed\n" + response.responseJSON.message)
-				);
+				)
 		qaAddFactionLevelFolder = qaProgressionFolder.addFolder("Add Faction Level")
 		qaAddFactionLevelFolder.add(qaAddFactionLevel, "Faction", _.map(SDK.FactionFactory.getAllPlayableFactions(), (factionData) -> return factionData.name))
 		qaAddFactionLevelFolder.add(qaAddFactionLevel, "Add")
@@ -710,7 +710,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Gauntlet Victory failed\n" + response.responseJSON.message)
-			);
+			)
 		qaGauntletButtons["Add Gauntlet Loss"] = () ->
 			request = $.ajax(
 				url: process.env.API_URL + "/api/me/qa/gauntlet/progress",
@@ -726,7 +726,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Add Gauntlet Loss failed\n" + response.responseJSON.message)
-			);
+			)
 		qaGauntletButtons["Fill Gauntlet Deck"] = () ->
 			alert("Please wait for confirmation dialogue (May take up to 10 seconds).")
 			request = $.ajax(
@@ -740,7 +740,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Filling Gauntlet deck\n" + response.responseJSON.message)
-			);
+			)
 		qaGauntletButtons["Remove Gauntlet General"] = () ->
 			alert("Removing general from current Gauntlet Deck.")
 			request = $.ajax(
@@ -754,7 +754,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Removing Gauntlet deck General\n" + response.responseJSON.message)
-			);
+			)
 
 		qaGauntletButtons["Delete Current Gauntlet Run"] = () ->
 			request = $.ajax(
@@ -769,11 +769,11 @@ whenLocalizationReady.then ()->
 			request.fail((response) ->
 				console.log("QA Error:\n" + JSON.stringify(response,null,2))
 				alert("FAILED: Removing Gauntlet run \n" + JSON.stringify(response,null,2))
-			);
+			)
 		qaGauntletButtons["Enable Gauntlet/Rift"] = () ->
-			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Gauntlet).availableOnDaysOfWeek = null;
-			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Gauntlet).gamesRequiredToUnlock = null;
-			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Rift).gamesRequiredToUnlock = null;
+			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Gauntlet).availableOnDaysOfWeek = null
+			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Gauntlet).gamesRequiredToUnlock = null
+			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Rift).gamesRequiredToUnlock = null
 
 			alert("Gauntlet has been enabled LOCALLY.\nRefreshing will clear this change.")
 
@@ -848,7 +848,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: \n" + response.responseJSON.message)
-			);
+			)
 		qaInventoryButtons["Add X Gold"] = () ->
 			amount = prompt("Gold amount to add:",100) || 100
 			amount = parseInt(amount)
@@ -867,7 +867,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Adding Gold\n" + response.responseJSON.message)
-			);
+			)
 		qaInventoryButtons["Add X Spirit"] = () ->
 			amount = prompt("Spirit amount to add:",900) || 900
 			amount = parseInt(amount)
@@ -887,7 +887,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Adding Spirit\n" + response.responseJSON.message)
-			);
+			)
 
 		qaInventoryButtons["Add X Diamond"] = () ->
 			amount = prompt("Diamond amount to add:", 450) || 450
@@ -908,7 +908,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Adding Diamond\n" + response.responseJSON.message)
-			);
+			)
 
 		qaInventoryButtons["Add Rift Ticket"] = () ->
 			request = $.ajax(
@@ -923,7 +923,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: Adding Rift Ticket\n" + response.responseJSON.message)
-			);
+			)
 		qaInventoryButtons["Add 3x Rare"] = ()->
 
 			factionId = prompt("Enter Faction:",1) || 1
@@ -958,7 +958,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: \n" + response.responseJSON.message)
-			);
+			)
 
 		qaInventoryButtons["Craft Orb Set with Spirit"] = ()->
 			cardSetPromptStr = "Enter card set id:"
@@ -989,7 +989,7 @@ whenLocalizationReady.then ()->
 				errorStr = JSON.stringify(errorStr)
 
 				alert("FAILED: \n" + errorStr)
-			);
+			)
 
 		qaInventoryButtons["Delete unused cards in inventory"] = ()->
 			request = $.ajax(
@@ -1003,7 +1003,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: \n" + response.responseJSON.message)
-			);
+			)
 
 		qaInventoryButtons["Delete Bloodbound inventory"] = ()->
 			request = $.ajax(
@@ -1017,7 +1017,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: \n" + response.responseJSON.message)
-			);
+			)
 
 		qaInventoryButtons["Delete Ancient Bonds inventory"] = ()->
 			request = $.ajax(
@@ -1031,11 +1031,11 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("FAILED: \n" + response.responseJSON.message)
-			);
+			)
 
 		qaChallengeButtons = {}
 		qaChallengeButtons["Enable Sandbox"] = () ->
-			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Sandbox).isHiddenInUI = false;
+			SDK.PlayModeFactory.playModeForIdentifier(SDK.PlayModes.Sandbox).isHiddenInUI = false
 			alert("Sandbox is now enabled.")
 		qaChallengeButtons["Set my daily challenge completion time"] = () ->
 			relativeDays = prompt("Set daily challenge's last completion time X days relative to today:\n" +
@@ -1052,7 +1052,7 @@ whenLocalizationReady.then ()->
 				contentType: 'application/json',
 				dataType: 'json'
 			).done ()->
-				QuestsManager.getInstance().dailyChallengesLastCompletedAtModel.fetch();
+				QuestsManager.getInstance().dailyChallengesLastCompletedAtModel.fetch()
 				alert("done!")
 		qaChallengeButtons["Play daily challenge for date"] = () ->
 			dailyChallengeDateString = prompt("Enter date in to load daily challenge for:\n" +
@@ -1060,7 +1060,7 @@ whenLocalizationReady.then ()->
 					"Format: YYYY-MM-DD"
 			,moment.utc().format("YYYY-MM-DD"))
 
-			dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + dailyChallengeDateString);
+			dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + dailyChallengeDateString)
 			dailyChallengeRef.once("value",	(dailyChallengeSnapshot) ->
 				if not dailyChallengeSnapshot? or not dailyChallengeSnapshot.val()?
 					alert("No challenge found for date provided: " + dailyChallengeDateString)
@@ -1072,7 +1072,7 @@ whenLocalizationReady.then ()->
 					SDK.ChallengeRemote.loadAndCreateFromModelData(dailyChallengeData)
 					.then (challenge) ->
 						challenge._generatedForQA = true
-						EventBus.getInstance().trigger(EVENTS.start_challenge, challenge);
+						EventBus.getInstance().trigger(EVENTS.start_challenge, challenge)
 					return
 			)
 		qaChallengeButtons["Mark current daily challenge as passed QA"] = () ->
@@ -1103,7 +1103,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("Failed: Daily challenge not set as passed qa\n#{error.toString()}")
-			);
+			)
 
 		qaChallengeButtons["Get list of daily challenges"] = () ->
 			startDateString = prompt("Enter start date of range:\n" + "Format: YYYY-MM-DD",moment.utc().format("YYYY-MM-DD"))
@@ -1119,7 +1119,7 @@ whenLocalizationReady.then ()->
 
 			Promise.each(allDateKeys, (dateKey) ->
 				return new Promise (resolve,reject) ->
-					dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + dateKey);
+					dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + dateKey)
 					dailyChallengeRef.once('value', (dataSnapshot) ->
 						challengeResults[dateKey] = dataSnapshot.val()
 						resolve({
@@ -1128,7 +1128,7 @@ whenLocalizationReady.then ()->
 						})
 					, (error) ->
 						reject("fb error")
-					);
+					)
 			).then (challengesData) ->
 				alert("Challenges: (This is also printed to console)\n" +
 					JSON.stringify(challengeResults,null,2))
@@ -1139,8 +1139,8 @@ whenLocalizationReady.then ()->
 		# cache all boss cards
 		btBossNames = []
 		btBossCardIds = []
-		factionId = SDK.Factions.Boss;
-		generalIds = SDK.FactionFactory.generalIdsForFaction(factionId);
+		factionId = SDK.Factions.Boss
+		generalIds = SDK.FactionFactory.generalIdsForFaction(factionId)
 		for id in generalIds
 			sdkCard = SDK.GameSession.getCardCaches().getCardById(id)
 			btBossNames.push(sdkCard.getName())
@@ -1156,7 +1156,7 @@ whenLocalizationReady.then ()->
 				if bossIndex != -1
 					bossCardId = btBossCardIds[bossIndex]
 					if bossCardId? and bossCardId != btBossCardIds[0]
-						adjustedMs = btSetupBossEvent["Delta Time (ms)"];
+						adjustedMs = btSetupBossEvent["Delta Time (ms)"]
 						if isNaN(adjustedMs) || !_.isNumber(adjustedMs) then adjustedMs = 0
 						request = $.ajax(
 							url: process.env.API_URL + "/api/me/qa/boss_event",
@@ -1174,7 +1174,7 @@ whenLocalizationReady.then ()->
 						)
 						request.fail((response) ->
 							alert("Failed: Could not create QA Boss Event \n#{error.toString()}")
-						);
+						)
 		btSetupBossEventFolder = qaBossFolder.addFolder("Setup QA Boss Event")
 		btSetupBossEventFolder.add(btSetupBossEvent, "Boss", btBossNames)
 		btSetupBossEventFolder.add(btSetupBossEvent, "Delta Time (ms)").step(1)
@@ -1194,7 +1194,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("Failed: Could not remove QA Boss Event \n#{error.toString()}")
-			);
+			)
 		qaBossFolder.add(qaBossButtons, "Remove QA Boss Event")
 
 		qaBossButtons['Reset Boss Rewards'] = () ->
@@ -1210,7 +1210,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("Failed: Could not remove Boss Rewards \n#{error.toString()}")
-			);
+			)
 		qaBossFolder.add(qaBossButtons, "Reset Boss Rewards")
 
 		qaMiscButtons = {}
@@ -1270,7 +1270,7 @@ whenLocalizationReady.then ()->
 			request.fail((response) ->
 				console.dir(response)
 				alert("Failed: Could not reset achievement:\n#{error.responseJSON.message}")
-			);
+			)
 		mtSetupAchievementResetFolder.add(mtSetupAchievementReset, "Achievements", mtAchievementNames)
 		mtSetupAchievementResetFolder.add(mtSetupAchievementReset, "Submit")
 
@@ -1300,7 +1300,7 @@ whenLocalizationReady.then ()->
 			request.fail((response) ->
 				console.dir(response)
 				alert("Failed: Could set up backfill:\n#{response.responseJSON.message}")
-			);
+			)
 
 		qaMiscButtons['Fake Twitch Drop'] = () ->
 
@@ -1320,7 +1320,7 @@ whenLocalizationReady.then ()->
 
 					alert("Language change complete")
 					Storage.set('preferredLanguageKey', languageKey)
-					EventBus.getInstance().trigger(EVENTS.request_reload,{id: "language_changed", message: "Language Changed.  Please restart."});
+					EventBus.getInstance().trigger(EVENTS.request_reload,{id: "language_changed", message: "Language Changed.  Please restart."})
 					return
 				)
 			else if languageKey != null
@@ -1329,7 +1329,7 @@ whenLocalizationReady.then ()->
 						alert("Something went wrong loading language:\n" + err)
 						return
 					Storage.set('preferredLanguageKey', languageKey)
-					EventBus.getInstance().trigger(EVENTS.request_reload,{id: "language_changed", message: "Language Changed.  Please restart."});
+					EventBus.getInstance().trigger(EVENTS.request_reload,{id: "language_changed", message: "Language Changed.  Please restart."})
 #					i18next.changeLanguage(languageKey, (err,t) ->
 #						if (err?)
 #							alert("Something went wrong changing language:\n" + err)
@@ -1358,11 +1358,11 @@ whenLocalizationReady.then ()->
 
 			request.done((data)->
 				alert("Please reload")
-				location.reload();
+				location.reload()
 			)
 			request.fail((response) ->
 				alert("Failed: Could not reset account:\n#{response.responseJSON.message}")
-			);
+			)
 
 		qaMiscButtons['Convert rift run to have duplicate card choices'] = () ->
 
@@ -1378,7 +1378,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("Failed: Could not create rift duplicate card choices:\n#{response.responseJSON.message}")
-			);
+			)
 
 		qaMiscButtons['Retrieve Charge Log'] = () ->
 
@@ -1395,7 +1395,7 @@ whenLocalizationReady.then ()->
 			)
 			request.fail((response) ->
 				alert("Failed: Could not retrieve user charge log:\n#{response.responseJSON.message}")
-			);
+			)
 
 		# User qa buttons
 		qaQuestFolder.add(qaQuestButtons,"Reset Daily Quests")
@@ -1720,7 +1720,7 @@ whenLocalizationReady.then ()->
 				return
 
 			return (new Promise (resolve,reject) ->
-				dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + challengeDate);
+				dailyChallengeRef = new Firebase(process.env.FIREBASE_URL + "/daily-challenges/" + challengeDate)
 				dailyChallengeRef.once("value",	(dailyChallengeSnapshot) ->
 					if not dailyChallengeSnapshot? or not dailyChallengeSnapshot.val()?
 						# No existing challenge
@@ -1779,7 +1779,7 @@ whenLocalizationReady.then ()->
 				)
 				request.fail((response) ->
 					alert("FAILED: Pushing daily challenge \n" + response.responseJSON.message)
-				);
+				)
 			.catch (e) ->
 				alert("Failed pushing daily challenge: \n #{e.toString()}")
 
@@ -1809,7 +1809,7 @@ whenLocalizationReady.then ()->
 		# validate resources
 		buttons["Validate Resources"] = () ->
 			# resolve resources in fx data
-			result = Editor.getFXDataWithResolvedResources();
+			result = Editor.getFXDataWithResolvedResources()
 
 			if result.brokenResources.length > 0
 				# broken resources found, alert user to fix
@@ -1825,7 +1825,7 @@ whenLocalizationReady.then ()->
 		# save edited data
 		buttons["Save & Download"] = () ->
 			# resolve resources in fx data
-			result = Editor.getFXDataWithResolvedResources();
+			result = Editor.getFXDataWithResolvedResources()
 			result.overSelectableLimit = ""
 
 			if result.brokenResources.length > 0
@@ -1842,23 +1842,23 @@ whenLocalizationReady.then ()->
 
 				# remove line breaks between objects that don't contain other objects to compress data
 				json = json.replace(/\{[^\{\}]+\}/g, (match, p1) ->
-					return match.replace(/[\r\n][\s\t]*?(["'\}\]])/g, "$1");
-				);
+					return match.replace(/[\r\n][\s\t]*?(["'\}\]])/g, "$1")
+				)
 
 				# remove quotes around property names
-				json = json.replace(/["'](\w+)["'][\s\t]*?:/g, "$1:");
+				json = json.replace(/["'](\w+)["'][\s\t]*?:/g, "$1:")
 
 				# remove quotes from all resources
-				json = json.replace(/["'](RSX\..*?)["']/g, "$1");
+				json = json.replace(/["'](RSX\..*?)["']/g, "$1")
 
 				# edit the json to create a js file
-				content = "";
-				content += 'var RSX = require("./resources.js");\n\n';
-				content += '/**\n';
-				content += ' * fx.js - map of fx options and resources.\n';
-				content += '*/\n\n';
-				content += "var FX = " + json + ";";
-				content += "\nmodule.exports = FX;";
+				content = ""
+				content += 'var RSX = require("./resources.js");\n\n'
+				content += '/**\n'
+				content += ' * fx.js - map of fx options and resources.\n'
+				content += '*/\n\n'
+				content += "var FX = " + json + ";"
+				content += "\nmodule.exports = FX;"
 
 				# blob the content
 				blob = new Blob([content], {type: "application/js;charset=utf-8"})
@@ -1916,13 +1916,13 @@ whenLocalizationReady.then ()->
 				isForParticles = property == "plistFile"
 				if property == "spriteIdentifier" || isForParticles
 					if _.isArray(value)
-						dataResolved[property] = [];
+						dataResolved[property] = []
 						for item, i in value
 							dataResolved[property].push(resolveResource(item, path + "." + i, isForParticles))
 					else
 						dataResolved[property] = resolveResource(value, path, isForParticles)
 				else if _.isArray(value)
-					dataResolved[property] = [];
+					dataResolved[property] = []
 					totalNumSelectableItems = 0
 					for item, i in value
 						subPath = path + "." + i
@@ -1962,7 +1962,7 @@ whenLocalizationReady.then ()->
 				else
 					dataResolved[property] = value
 
-			return dataResolved;
+			return dataResolved
 
 		# get data
 		fxData = walkData(DATA.FX)
@@ -2013,7 +2013,7 @@ whenLocalizationReady.then ()->
 		if !Editor.getIsPathForSelected(path)
 			# sort keys alphabetically when not selecting
 			keys.sort((a, b) ->
-				return a.localeCompare(b);
+				return a.localeCompare(b)
 			)
 
 		for key in keys
@@ -2182,8 +2182,8 @@ whenLocalizationReady.then ()->
 				# show popover
 				Editor.$popoverNewDataSource = $(gui.domElement).find("> ul > li.title")
 				Editor.$popoverNewDataSource.popover({
-				# set the content to the html string of the gui
-				# we just do this so the popover is positioned correctly
+					# set the content to the html string of the gui
+					# we just do this so the popover is positioned correctly
 					content: $guiEl.prop('outerHTML')
 					html: true
 					animation: false
@@ -2618,8 +2618,8 @@ whenLocalizationReady.then ()->
 
 		buttons["Start Profiling"] = () ->
 			# swap ui
-			$stop_button.removeClass("disabled");
-			$start_button.addClass("disabled");
+			$stop_button.removeClass("disabled")
+			$start_button.addClass("disabled")
 			$performance_tools_title.text("Performance Tools (running)")
 
 			# start profiling
@@ -2632,8 +2632,8 @@ whenLocalizationReady.then ()->
 			PERF.stop()
 
 			# swap ui
-			$start_button.removeClass("disabled");
-			$stop_button.addClass("disabled");
+			$start_button.removeClass("disabled")
+			$stop_button.addClass("disabled")
 			$performance_tools_title.text("Performance Tools")
 		stop_button = Editor.gui_performance_tools.add(buttons, "Stop Profiling")
 		$stop_button = $(stop_button.domElement).closest("li")

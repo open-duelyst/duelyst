@@ -13,7 +13,6 @@ class ModifierHPThresholdGainModifiers extends ModifierHPChange
 	@type:"ModifierHPThresholdGainModifiers"
 
 	@modifierName:"Modifier HP Threshold Gain Modifiers"
-	@description: "Gains new keyword abilities as health decreases"
 	@description:i18next.t("modifiers.HP_threshold_gain_modifiers_def")
 
 	fxResource: ["FX.Modifiers.ModifierBuffSelfOnReplace"]
@@ -85,9 +84,9 @@ class ModifierHPThresholdGainModifiers extends ModifierHPChange
 		modifiers = []
 		index = @getIndex()
 		for modifier in card.getModifiers()
-		  for modifierContextObject in modifierContextObjects
-		    if modifier.getType() == modifierContextObject.type and modifier.getParentModifierIndex() == index
-		      modifiers.push(modifier)
+			for modifierContextObject in modifierContextObjects
+				if modifier.getType() == modifierContextObject.type and modifier.getParentModifierIndex() == index
+					modifiers.push(modifier)
 		return modifiers
 
 module.exports = ModifierHPThresholdGainModifiers

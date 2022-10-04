@@ -90,14 +90,14 @@ class ModifierFateVanarTokenQuest extends ModifierFate
 
 	getIsActionRelevant: (action) ->
 		if action instanceof ApplyCardToBoardAction or action instanceof CloneEntityAction or action instanceof SwapUnitAllegianceAction or action instanceof RemoveAction
-				return true
+			return true
 		return false
 
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusVanar)
-				for mod in general.getModifiersByClass(ModifierQuestStatusVanar)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusVanar)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

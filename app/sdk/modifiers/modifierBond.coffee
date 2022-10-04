@@ -7,8 +7,8 @@ class ModifierBond extends Modifier
 	type:"ModifierBond"
 	@type:"ModifierBond"
 
-	@modifierName:"ModifierBond"
-	@description: "Bond"
+	# Duplicated below.
+	#@description: "Bond"
 
 	@isKeyworded: true
 	@modifierName: i18next.t("modifiers.bond_name")

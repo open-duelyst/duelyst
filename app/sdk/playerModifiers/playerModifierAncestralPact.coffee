@@ -9,9 +9,9 @@ class PlayerModifierAncestralPact extends PlayerModifier
 	@type:"PlayerModifierAncestralPact"
 
 	@createContextObject: (duration=1, options) ->
-    contextObject = super(options)
-    contextObject.durationEndTurn = duration
-    return contextObject
+		contextObject = super(options)
+		contextObject.durationEndTurn = duration
+		return contextObject
 
 	onAction: (e) ->
 		super(e)

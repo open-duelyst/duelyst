@@ -54,7 +54,7 @@ jobs:
       run: yarn tsc:chroma-js
 
     - name: lint coffeescript code
-      run: yarn lint:coffee:backend
+      run: yarn lint:coffee
 
     - name: lint javascript code
       run: yarn lint:js

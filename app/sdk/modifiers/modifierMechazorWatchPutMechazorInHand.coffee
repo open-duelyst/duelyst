@@ -27,8 +27,10 @@ class ModifierMechazorWatchPutMechazorInHand extends Modifier
 
 		action = e.action
 
-		if (action instanceof PlayCardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Spell.DeployMechaz0r) or
-			 (action instanceof PlayCardFromHandAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Neutral.Mechaz0r)
+		if (
+			(action instanceof PlayCardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Spell.DeployMechaz0r) or
+			(action instanceof PlayCardFromHandAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Neutral.Mechaz0r)
+		)
 			a = new PutCardInHandAction(this.getGameSession(), @getCard().getOwnerId(), {id: Cards.Neutral.Mechaz0r})
 			this.getGameSession().executeAction(a)
 

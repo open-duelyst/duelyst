@@ -156,7 +156,6 @@ class LessonOne extends Challenge
 			preventSelectionUntilLabelIndex: 1
 			instructionLabels:[
 				label:i18next.t("tutorial.lesson_1_turn_1_instruction_4")
-				duration: 8
 				position:
 					x:5
 					y:1
@@ -265,7 +264,6 @@ class LessonOne extends Challenge
 		@_opponentAgent.addActionForTurn(0,AgentActions.createAgentSoftActionShowInstructionLabels([
 			label:i18next.t("tutorial.lesson_1_turn_0_instruction_8")
 			positionAtHandIndex:0
-			duration:4
 			triggersInstructionIndex:1
 			duration: CONFIG.INSTRUCTIONAL_ULTRAFAST_DURATION
 #		,
