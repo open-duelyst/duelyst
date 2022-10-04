@@ -70,15 +70,15 @@ server = http.createServer (req, res) ->
 
 # io server setup, binds to http server
 io = require('socket.io')().listen(server, {
-  cors: {
-    origin: "*"
-  }
+	cors: {
+		origin: "*"
+	}
 })
 io.use(
-  ioJwt.authorize(
-    secret: config.get('firebase.legacyToken'),
-    timeout: 15000
-  )
+	ioJwt.authorize(
+		secret: config.get('firebase.legacyToken'),
+		timeout: 15000
+	)
 )
 module.exports = io
 server.listen config.get('game_port'), () ->
@@ -1538,6 +1538,6 @@ shutdown = () ->
 			process.exit(1)
 
 process.on "SIGTERM", shutdown
-process.on "SIGINT",  shutdown
-process.on "SIGHUP",  shutdown
+process.on "SIGINT",	shutdown
+process.on "SIGHUP",	shutdown
 process.on "SIGQUIT", shutdown

@@ -18,7 +18,7 @@ checklocks = () ->
 		console.log "lock1 is #{locked1}"
 		console.log "lock2 is #{locked2}"
 
-locks = Promise.join lock1,lock2, 
+locks = Promise.join lock1,lock2,
 (unlockFn1,unlockFn2) ->
 	console.log "lock1 acquired: " + _.isFunction(unlockFn1)
 	console.log "lock2 acquired: " + _.isFunction(unlockFn2)
@@ -28,7 +28,7 @@ locks = Promise.join lock1,lock2,
 	console.log "locking done..."
 	checklocks()
 	return Promise.join unlock1(),unlock2(),
-	(result1, result2) -> 
+	(result1, result2) ->
 		console.log "unlock1 success: " + Boolean(result1)
 		console.log "unlock2 success: " + Boolean(result1)
 	.then () ->

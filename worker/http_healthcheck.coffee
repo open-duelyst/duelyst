@@ -60,4 +60,4 @@ healthcheck = () ->
 	server.listen 8080, () ->
 		Logger.module("MATCHMAKER").debug "HTTP health check : running on port 8080 /health."
 
-module.exports = healthcheck;
+module.exports = healthcheck
