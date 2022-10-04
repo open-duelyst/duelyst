@@ -1734,7 +1734,7 @@ class UsersModule
 							win_count_reward_progress = @.progressionRow.win_count - @.progressionRow.last_awarded_win_count
 
 							# if we've had 3 wins since last award, the user has earned an award
-							if @.progressionRow.win_count - @.progressionRow.last_awarded_win_count  >= CONFIG.WINS_REQUIRED_FOR_WIN_REWARD
+							if @.progressionRow.win_count - @.progressionRow.last_awarded_win_count >= CONFIG.WINS_REQUIRED_FOR_WIN_REWARD
 								@.hasEarnedWinReward = true
 								@.progressionRow.last_awarded_win_count_at = MOMENT_NOW_UTC.toDate()
 								@.progressionRow.last_awarded_win_count = @.progressionRow.win_count
@@ -1998,7 +1998,7 @@ class UsersModule
 	# @param	{String}	gameType	Game type (see SDK.GameType)
 	# @param	{Boolean}	isUnscored	Should this game be scored or unscored if the user, for example, conceded too early?
 	# @param	{Boolean}	isDraw	is this game a draw?
-  # @param {Object} gameSessionData data for the game played
+	# @param {Object} gameSessionData data for the game played
 	# @param	{Moment}	systemTime	Pass in the current system time to use. Used only for testing.
 	# @return	{Promise}				Promise that will notify when complete.
 	###
@@ -2045,15 +2045,14 @@ class UsersModule
 				return FirebasePromises.once(bossEventsRef,'value')
 			.then (bossEventsSnapshot)->
 				bossEventsData = bossEventsSnapshot.val()
-				# data will have
-				# event-id :
-				#   event_id
+				# eventData contains:
+				#		event_id
 				#		boss_id
-				#   event_start
-				#   event_end
-				#   valid_end (event_end + 30 minute buffer)
+				#		event_start
+				#		event_end
+				#		valid_end (event_end + 30 minute buffer)
 				@.matchingEventData = null
-				for eventId,eventData of bossEventsData
+				for eventId, eventData of bossEventsData
 					if !eventData.boss_id? or parseInt(eventData.boss_id) != bossId
 						continue
 					if !eventData.event_start? or eventData.event_start > MOMENT_NOW_UTC.valueOf()
@@ -2850,12 +2849,12 @@ class UsersModule
 					Logger.module("UsersModule").error "setNewPlayerFeatureProgression() -> ERROR: requested same stage: #{stage}."
 					throw new Errors.BadRequestError("New player progression stage already at the requested stage")
 				else if progressionRow
-				 	# TODO: this never gets called, here 2 gets called twice for tutorial -> tutorialdone
+					# TODO: this never gets called, here 2 gets called twice for tutorial -> tutorialdone
 					@.progressionRow.stage = stage
 					@.progressionRow.updated_at = MOMENT_NOW_UTC.toDate()
 					queryPromise = tx("user_new_player_progression").where({'user_id':userId,'module_name':moduleName}).update({
-						stage:			@.progressionRow.stage,
-						updated_at:		@.progressionRow.updated_at
+						stage: @.progressionRow.stage,
+						updated_at: @.progressionRow.updated_at
 					})
 				else
 					@.progressionRow =
@@ -3090,7 +3089,7 @@ class UsersModule
 												"wallet_spirit","wallet_cores","wallet_updated_at","total_gold_earned","total_spirit_earned","buddy_count",
 												"tx_count","synced_firebase_at","stripe_customer_id","card_last_four_digits","card_updated_at",
 												"top_gauntlet_win_count","portrait_id","total_gold_tips_given","referral_code","is_suspended","suspended_at",
-												"suspended_memo","top_rank_ladder_position","top_rank_rating","is_bot"];
+												"suspended_memo","top_rank_ladder_position","top_rank_rating","is_bot"]
 
 		return DuelystFirebase.connect().getRootRef()
 		.then (fbRootRef)->
@@ -3148,12 +3147,12 @@ class UsersModule
 			])
 
 		.spread (fbUserAggregates,fbUserArenaRun,fbUserChallengeProgression,fbUserDecks,fbUserFactionProgression,fbUserGames,fbUserGameJobStatus,fbUserInventory,fbUserLogs,
-							fbUserMatchmakingErrors,fbUserNews,fbUserProgression,fbUserQuests,fbUserRanking,fbUserRewards,fbUserStats,fbUserTransactions,fbUserAchievements,
-							sqlUserCards,sqlUserCardCollection,sqlUserCardLog,sqlUserChallenges,sqlUserCharges,sqlUserCurrencyLog,sqlUserDecks,sqlUserFactionProgression,sqlUserFactionProgressionEvents,
-							sqlUserGames,sqlUserGauntletRun,sqlUserGauntletRunComplete,sqlUserGauntletTickets,sqlUserGauntletTicketsUsed,sqlUserProgression,
-							sqlUserProgressionDays,sqlUserQuests,sqlUserQuestsComplete,sqlUserRankEvents,sqlUserRankHistory,sqlUserRewards,sqlUserSpiritOrbs,sqlUserSpiritOrbsOpened,
-							sqlUserCodexInventory,sqlUserNewPlayerProgression,sqlUserAchievements,sqlUserChestRows,sqlUserChestOpenedRows,sqlUserChestKeyRows,sqlUserChestKeyUsedRows,sqlUserRow)->
-
+			fbUserMatchmakingErrors,fbUserNews,fbUserProgression,fbUserQuests,fbUserRanking,fbUserRewards,fbUserStats,fbUserTransactions,fbUserAchievements,
+			sqlUserCards,sqlUserCardCollection,sqlUserCardLog,sqlUserChallenges,sqlUserCharges,sqlUserCurrencyLog,sqlUserDecks,sqlUserFactionProgression,sqlUserFactionProgressionEvents,
+			sqlUserGames,sqlUserGauntletRun,sqlUserGauntletRunComplete,sqlUserGauntletTickets,sqlUserGauntletTicketsUsed,sqlUserProgression,
+			sqlUserProgressionDays,sqlUserQuests,sqlUserQuestsComplete,sqlUserRankEvents,sqlUserRankHistory,sqlUserRewards,sqlUserSpiritOrbs,sqlUserSpiritOrbsOpened,
+			sqlUserCodexInventory,sqlUserNewPlayerProgression,sqlUserAchievements,sqlUserChestRows,sqlUserChestOpenedRows,sqlUserChestKeyRows,sqlUserChestKeyUsedRows,sqlUserRow
+		) ->
 			userSnapshot = {
 				firebase: {}
 				sql: {}

@@ -44,10 +44,10 @@ class GamesModule
 
 			# game duration in seconds
 			lastActionTimestamp = gameData.lastActionTimestamp || moment().utc()
-			gameStart = moment.utc(gameData.createdAt);
-			gameEnd = moment.utc(lastActionTimestamp);
-			duration = moment.duration(gameEnd.diff(gameStart));
-			gameDuration = Math.round(duration.asSeconds());
+			gameStart = moment.utc(gameData.createdAt)
+			gameEnd = moment.utc(lastActionTimestamp)
+			duration = moment.duration(gameEnd.diff(gameStart))
+			gameDuration = Math.round(duration.asSeconds())
 
 			# find generals
 			cardsIndices = Object.keys(gameData.cardsByIndex)

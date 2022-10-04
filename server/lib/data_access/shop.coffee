@@ -202,7 +202,7 @@ class ShopModule
 			.then (userRow)->
 
 				if not userRow
-					return Promise.reject(new Errors.NotFoundError("user not found"));
+					return Promise.reject(new Errors.NotFoundError("user not found"))
 
 				if userRow.stripe_customer_id and userRow.card_last_four_digits
 					# UPDATE CARD

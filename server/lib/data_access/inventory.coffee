@@ -921,7 +921,7 @@ class InventoryModule
 					# setup what to update the user params with
 					userUpdateParams =
 						wallet_gold:		final_wallet_gold
-						wallet_updated_at: 	NOW_UTC_MOMENT.toDate();
+						wallet_updated_at: 	NOW_UTC_MOMENT.toDate()
 
 					knex("users").where('id',userId).update(userUpdateParams).transacting(tx)
 
@@ -1020,13 +1020,13 @@ class InventoryModule
 
 		# return the insert statement and attach it to the transaction
 		return trx("user_spirit_orbs").insert(
-				id:					boosterId
-				user_id:			userId
-				transaction_type:	transactionType
-				transaction_id:		transactionId
-				params:				additionalBoosterAttrs
-				card_set:			cardSetId
-				created_at:			NOW_UTC_MOMENT.toDate()
+			id: boosterId
+			user_id: userId
+			transaction_type: transactionType
+			transaction_id: transactionId
+			params: additionalBoosterAttrs
+			card_set: cardSetId
+			created_at: NOW_UTC_MOMENT.toDate()
 		).bind {}
 		.then ()->
 			# If a set has a max number of orbs, make sure the user doesn't go over that

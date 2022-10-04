@@ -1,8 +1,8 @@
-### 
+###
 # A small helper module for hash generation and compares
 # Uses Bluebird to promisify the bcrypt modules
 # Methods are both node style callback and promise compatible
-# @module hash_helpers 
+# @module hash_helpers
 ###
 
 Promise = require 'bluebird'

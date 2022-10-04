@@ -41,30 +41,21 @@ class AchievementsModule
 	# @return	{Promise}
 	###
 	@markAchievementAsRead: (userId,achievementId)->
-
 		MOMENT_NOW_UTC = moment().utc()
-
 		Logger.module("UsersModule").time "markAchievementAsRead() -> user #{userId.blue} read achievement type #{achievementId}."
-
 		txPromise = knex.transaction (tx)->
-
 			knex("user_achievements").where({'user_id':userId,'achievement_id':achievementId}).update(is_unread:false).transacting(tx)
 			.then (updateCount)->
-
 				if updateCount > 0
 					return updateCount
 				else
-					throw new Errors.NotFoundError("Cound not find achievement to mark as read for user");
-
+					throw new Errors.NotFoundError("Cound not find achievement to mark as read for user")
 			.then ()-> return DuelystFirebase.connect().getRootRef()
 			.then (rootRef)->
-
 				return FirebasePromises.update(rootRef.child("user-achievements").child(userId).child('completed').child(achievementId), {is_unread: false})
-
 			.then tx.commit
 			.catch tx.rollback
 			return
-
 		return txPromise
 
 	#	resolves to an array of ids for newly completed achievements
@@ -410,7 +401,7 @@ class AchievementsModule
 							else if rewardType == 'giftChests'
 								rewardObject['gift_chests'] ?= []
 								for type in rewardValue
-										rewardObject['gift_chests'].push(type)
+									rewardObject['gift_chests'].push(type)
 
 						if rewardObject.gold then allPromises.push InventoryModule.giveUserGold(txPromise,tx,userId,rewardObject.gold,'achievement',achievementId)
 						if rewardObject.spirit then allPromises.push InventoryModule.giveUserSpirit(txPromise,tx,userId,rewardObject.spirit,'achievement',achievementId)

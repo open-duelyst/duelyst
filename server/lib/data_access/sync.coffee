@@ -841,12 +841,12 @@ class SyncModule
 					inserts = []
 
 					# Mark seasons older than this as read, newer are marked as unread
-					beginUnreadSeasonsTimestamp = moment("9-1-2015 +0000", "MM-DD-YYYY Z").utc().valueOf();
+					beginUnreadSeasonsTimestamp = moment("9-1-2015 +0000", "MM-DD-YYYY Z").utc().valueOf()
 
 					if @.ranking?.history?
 						for key,historyRank of @.ranking?.history
 
-							isUnread = historyRank.starting_at >= beginUnreadSeasonsTimestamp;
+							isUnread = historyRank.starting_at >= beginUnreadSeasonsTimestamp
 
 							if isUnread
 								rewardsClaimedAt = null
@@ -1179,7 +1179,7 @@ class SyncModule
 
 						chargeCreated = charge.created
 						if !charge.created? && charge.payment_date?
-							chargeCreated = Date.parse(charge.payment_date) / 1000;
+							chargeCreated = Date.parse(charge.payment_date) / 1000
 
 						inserts.push trx.insert(
 							charge_id:			key

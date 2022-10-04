@@ -398,10 +398,10 @@ router.post "/single_player", (req, res, next) ->
 
 		# custom game setup options
 		gameSetupOptions = {
-				ai: {
-					# set ai starting hand size based on difficulty
-					startingHandSize: Math.min(CONFIG.STARTING_HAND_SIZE, Math.max(1, Math.floor(CONFIG.STARTING_HAND_SIZE * Math.min(1.0, aiDifficulty / 0.2))))
-				}
+			ai: {
+				# set ai starting hand size based on difficulty
+				startingHandSize: Math.min(CONFIG.STARTING_HAND_SIZE, Math.max(1, Math.floor(CONFIG.STARTING_HAND_SIZE * Math.min(1.0, aiDifficulty / 0.2))))
+			}
 		}
 
 		# create game
