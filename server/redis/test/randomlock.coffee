@@ -19,7 +19,7 @@ findLock = (players) ->
 		if _.isFunction(unlock)
 			console.log "Lock acquired: #{players[0]}"
 			return {locked: players[0], unlock: unlock}
-		else 
+		else
 			players = players.slice(1)
 			return findLock(players)
 	)

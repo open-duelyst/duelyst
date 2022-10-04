@@ -78,7 +78,7 @@ class GauntletModule
 					# setup what to update the user params with
 					userUpdateParams =
 						wallet_gold:		final_wallet_gold
-						wallet_updated_at: 	NOW_UTC_MOMENT.toDate();
+						wallet_updated_at: 	NOW_UTC_MOMENT.toDate()
 
 					return knex("users").where('id',userId).update(userUpdateParams).transacting(tx)
 
@@ -445,9 +445,9 @@ class GauntletModule
 
 					# if this is the user's top ever run, update the user record
 					if @.runData.win_count > userRow.top_gauntlet_win_count
-							allPromises.push knex("users").where('id',userId).update({
-								top_gauntlet_win_count: @.runData.win_count
-							}).transacting(tx)
+						allPromises.push knex("users").where('id',userId).update({
+							top_gauntlet_win_count: @.runData.win_count
+						}).transacting(tx)
 
 					allPromises.push knex("user_gauntlet_run").where('user_id',userId).update(
 						loss_count: @.runData.loss_count
@@ -999,20 +999,14 @@ class GauntletModule
 							card_choices: @.runData.card_choices
 							general_choices: @.runData.general_choices
 							general_id: @.runData.general_id
-							faction_id: @.runData.faction_id
 							is_complete: @.runData.is_complete
 							completed_at: @.runData.completed_at
 							games: @.runData.GameSession
 						).transacting(tx)
-
 				else
-
 					return Promise.reject(new Errors.NotFoundError("No active gauntlet run found."))
-
 			.then ()-> return DuelystFirebase.connect().getRootRef()
-
 			.then (fbRootRef) ->
-
 				if @.runData.started_at then @.runData.started_at = moment.utc(@.runData.started_at).valueOf()
 				if @.runData.updated_at then @.runData.updated_at = moment.utc(@.runData.updated_at).valueOf()
 				if @.runData.ended_at then @.runData.ended_at = moment.utc(@.runData.ended_at).valueOf()

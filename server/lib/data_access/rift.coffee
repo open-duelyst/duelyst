@@ -110,7 +110,7 @@ class RiftModule
 					# setup what to update the user params with
 					userUpdateParams =
 						wallet_gold:		final_wallet_gold
-						wallet_updated_at: 	NOW_UTC_MOMENT.toDate();
+						wallet_updated_at: 	NOW_UTC_MOMENT.toDate()
 
 					return tx("users").where('id',userId).update(userUpdateParams)
 
@@ -262,14 +262,14 @@ class RiftModule
 
 		# return the insert statement and attach it to the transaction
 		return knex.insert(
-				id:					ticketId
-				user_id:			userId
-				transaction_type:	transactionType
-				transaction_id:		transactionId
-				created_at:			NOW_UTC_MOMENT.toDate()
-			)
-			.into("user_rift_tickets")
-			.transacting(trx)
+			id:					ticketId
+			user_id:			userId
+			transaction_type:	transactionType
+			transaction_id:		transactionId
+			created_at:			NOW_UTC_MOMENT.toDate()
+		)
+		.into("user_rift_tickets")
+		.transacting(trx)
 		.then ()-> return DuelystFirebase.connect().getRootRef()
 		.then (fbRootRef) ->
 			tickets = fbRootRef.child("user-inventory").child(userId).child("rift-tickets")
@@ -347,17 +347,16 @@ class RiftModule
 					return Promise.reject(new Errors.NotFoundError("Could not start run: rift ticket not found."))
 
 			.then (generalCardChoices) ->
-
-					@.runData.general_choices = generalCardChoices
-					delete @.ticketRow.is_unread
-					return Promise.all([
-						tx("user_rift_tickets").delete().where('id',ticketId),
-						tx("user_rift_tickets_used").insert(@.ticketRow),
-						tx("user_rift_runs").insert(@.runData),
-						tx("users").where("id",userId).update(
-							rift_stored_upgrade_count: 0
-						)
-					])
+				@.runData.general_choices = generalCardChoices
+				delete @.ticketRow.is_unread
+				return Promise.all([
+					tx("user_rift_tickets").delete().where('id',ticketId),
+					tx("user_rift_tickets_used").insert(@.ticketRow),
+					tx("user_rift_runs").insert(@.runData),
+					tx("users").where("id",userId).update(
+						rift_stored_upgrade_count: 0
+					)
+				])
 			.then () ->
 				storedUpgradeUpdatePromises = []
 				for row in @.storedUpgradeRows
@@ -738,8 +737,8 @@ class RiftModule
 					rating = RiftModule.RIFT_DEFAULT_RATING
 
 				# Clamp rating between 0 to 4000 for metric and map to 0-100
-				clampedRating = Math.max(Math.min(4000,rating),0);
-				metric = clampedRating / 4000;
+				clampedRating = Math.max(Math.min(4000,rating),0)
+				metric = clampedRating / 4000
 				return Promise.resolve(metric)
 			else
 				return Promise.reject(new Errors.NotFoundError("Rift run not found."))

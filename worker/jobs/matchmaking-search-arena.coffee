@@ -254,7 +254,7 @@ module.exports = (job, done) ->
 								token1: @token1,
 								token2: @token2,
 								gameType: gameType
-							}).removeOnComplete(true).save();
+							}).removeOnComplete(true).save()
 
 							# We're done
 							return done(null, {opponentName: @token2.name})

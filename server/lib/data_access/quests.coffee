@@ -328,9 +328,9 @@ class QuestsModule
 				if dirty
 					Logger.module("QuestsModule").debug("generateDailyQuests() -> Updating user record. user #{userId.blue}.")
 					return tx("users").where('id',userId).update(
-							daily_quests_generated_at:	@.userRow.daily_quests_generated_at
-							daily_quests_updated_at:	@.userRow.daily_quests_updated_at
-						)
+						daily_quests_generated_at:	@.userRow.daily_quests_generated_at
+						daily_quests_updated_at:	@.userRow.daily_quests_updated_at
+					)
 			.then ()-> SyncModule._bumpUserTransactionCounter(tx,userId)
 			.then tx.commit
 			.catch tx.rollback
@@ -1051,51 +1051,35 @@ class QuestsModule
 		])
 		.bind {}
 		.spread (userRow,questRows)->
-
 			@.userRow = userRow
 			@.questRows = questRows
-
 			if questRows?.length > 0
-
 				allQueries = []
-
 				for quest in questRows
-
 					try
-
-					# generate a quest model object based on quest ID
+						# generate a quest model object based on quest ID
 						questModel = QuestFactory.questForIdentifier(quest.quest_type_id)
 
 						# check if game and player satisfied this class of quest
 						progressAmount = questModel.progressForProgressedFactionData(progressedFactionData)
-
 						if progressAmount > 0
-
 							quest.progress ?= 0
 							allQueries.push QuestsModule._setQuestProgress(txPromise,tx,quest,quest.progress + progressAmount,null,MOMENT_NOW_UTC)
-
 						else
-
 							Logger.module("QuestsModule").debug "updateQuestProgressWithProgressedFactionData() -> quest[#{quest.quest_slot_index}] NOT satisfied: #{questModel.getName()} User #{userId.blue}. Faction id: #{factionId}.".yellow
 
 					catch e
-
 						Logger.module("QuestsModule").debug("updateQuestProgressWithProgressedFactionData() -> caught ERROR processing QUEST DATA".red, e)
 						return Promise.reject(new Error("ERROR PROCESSING QUEST DATA"))
 						break
 
 				return Promise.all(allQueries)
-
 			else
-
 				# no quests, no need to update anything
 				return Promise.resolve()
-
 		.then (rewards)-> @.rewards = _.flatten(_.compact(rewards))
 		.then ()->
-
 			quests = []
-
 			for quest in @.questRows
 				quests[quest.quest_slot_index] = quest
 
@@ -1104,7 +1088,6 @@ class QuestsModule
 				rewards:@.rewards
 
 			Logger.module("QuestsModule").timeEnd "updateQuestProgressWithProgressedFactionData() -> for faction id #{factionId} by user #{userId.blue}.".green
-
 			return toReturn
 
 	###*
