@@ -61,7 +61,7 @@ dnsHealthCheck = () ->
 server = http.createServer (req, res) ->
 	pathname = url.parse(req.url).pathname
 	if pathname == '/health'
-		Logger.module("GAME SERVER").debug "HTTP Health Ping"
+		#Logger.module("GAME SERVER").debug "HTTP Health Ping"
 		res.statusCode = 200
 		res.write JSON.stringify({players: playerCount, games: gameCount})
 		res.end()
