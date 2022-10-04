@@ -56,6 +56,7 @@ module "ecs_service_game" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
+    { name = "GAME_PORT", value = 8001 },
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
