@@ -9,13 +9,13 @@ variable "service_names" {
 }
 
 variable "cpu_threshold" {
-  type        = string
+  type        = number
   description = "Fire an alert when CPU utilization exceeds this threshold (%)."
   default     = 90
 }
 
 variable "memory_threshold" {
-  type        = string
+  type        = number
   description = "Fire an alert when memory utilization exceeds this threshold (%)."
   default     = 90
 }
