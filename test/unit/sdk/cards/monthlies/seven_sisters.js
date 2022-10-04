@@ -182,6 +182,9 @@ describe('special events', () => {
       expect(crystalCloaker.getHP()).to.equal(5);
       expect(crystalCloaker.getATK()).to.equal(4);
     });
+
+    // Test disabled: slow.
+    /*
     it('expect neutral sister to add 2 random lyonar cards to your hand when summoned', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -215,6 +218,10 @@ describe('special events', () => {
         SDK.GameSession.reset();
       }
     });
+    */
+
+    // Test disabled: slow.
+    /*
     it('expect neutral sister to add 2 random songhai cards to your hand when summoned', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -248,6 +255,10 @@ describe('special events', () => {
         SDK.GameSession.reset();
       }
     });
+    */
+
+    // Test disabled: slow.
+    /*
     it('expect neutral sister to add 2 random vetruvian cards to your hand when summoned', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -281,6 +292,8 @@ describe('special events', () => {
         SDK.GameSession.reset();
       }
     });
+    */
+
     /* Test disabled: inconsistently slow
     it('expect neutral sister to add 2 random abyssian cards to your hand when summoned', () => {
       for (let i = 0; i < 100; i++) {
