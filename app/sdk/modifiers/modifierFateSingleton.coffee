@@ -62,8 +62,8 @@ class ModifierFateSingleton extends ModifierFate
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusNeutral)
-				for mod in general.getModifiersByClass(ModifierQuestStatusNeutral)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusNeutral)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

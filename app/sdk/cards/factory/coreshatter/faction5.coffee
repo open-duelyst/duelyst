@@ -407,22 +407,22 @@ class CardFactory_CoreshatterSet_Faction5
 			card.setBoundingBoxWidth(145)
 			card.setBoundingBoxHeight(95)
 			card.setBaseSoundResource(
-					apply : RSX.sfx_summonlegendary.audio
-					walk : RSX.sfx_neutral_rook_hit.audio
-					attack : RSX.sfx_neutral_khymera_attack_swing.audio
-					receiveDamage : RSX.sfx_neutral_khymera_hit.audio
-					attackDamage : RSX.sfx_neutral_khymera_impact.audio
-					death : RSX.sfx_neutral_khymera_death.audio
+				apply : RSX.sfx_summonlegendary.audio
+				walk : RSX.sfx_neutral_rook_hit.audio
+				attack : RSX.sfx_neutral_khymera_attack_swing.audio
+				receiveDamage : RSX.sfx_neutral_khymera_hit.audio
+				attackDamage : RSX.sfx_neutral_khymera_impact.audio
+				death : RSX.sfx_neutral_khymera_death.audio
 			)
 			card.setBaseAnimResource(
-					breathing : RSX.f5MegaBrontodonBreathing.name
-					idle : RSX.f5MegaBrontodonIdle.name
-					walk : RSX.f5MegaBrontodonRun.name
-					attack : RSX.f5MegaBrontodonAttack.name
-					attackReleaseDelay: 0.0
-					attackDelay: 0.7
-					damage : RSX.f5MegaBrontodonHit.name
-					death : RSX.f5MegaBrontodonDeath.name
+				breathing : RSX.f5MegaBrontodonBreathing.name
+				idle : RSX.f5MegaBrontodonIdle.name
+				walk : RSX.f5MegaBrontodonRun.name
+				attack : RSX.f5MegaBrontodonAttack.name
+				attackReleaseDelay: 0.0
+				attackDelay: 0.7
+				damage : RSX.f5MegaBrontodonHit.name
+				death : RSX.f5MegaBrontodonDeath.name
 			)
 
 		if (identifier == Cards.Spell.MarchOfTheBrontos)

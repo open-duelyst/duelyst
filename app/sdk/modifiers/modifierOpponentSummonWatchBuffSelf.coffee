@@ -17,9 +17,9 @@ class ModifierOpponentSummonWatchBuffSelf extends ModifierOpponentSummonWatch
 	@createContextObject: (attackBuff=0, maxHPBuff=0, options) ->
 		contextObject = super(options)
 		statContextObject = Modifier.createContextObjectWithAttributeBuffs(attackBuff,maxHPBuff,{
-														modifierName:@modifierName,
-														description:Stringifiers.stringifyAttackHealthBuff(attackBuff,maxHPBuff),
-													})
+			modifierName:@modifierName,
+			description:Stringifiers.stringifyAttackHealthBuff(attackBuff,maxHPBuff),
+		})
 		statContextObject.appliedName = "Overseer's Growth"
 		contextObject.modifiersContextObjects = [
 			statContextObject

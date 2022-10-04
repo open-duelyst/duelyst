@@ -55,8 +55,8 @@ class ModifierFateVetruvianMovementQuest extends ModifierFate
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusVetruvian)
-				for mod in general.getModifiersByClass(ModifierQuestStatusVetruvian)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusVetruvian)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())

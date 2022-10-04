@@ -16,10 +16,10 @@ class ModifierDyingWishDrawCard extends ModifierDyingWish
 
 	@getDescription: (modifierContextObject) ->
 		if modifierContextObject
-				if modifierContextObject.numCards <= 1
-					return @description.replace /%X/, "a card"
-				else
-					return @description.replace /%X/, modifierContextObject.numCards+" cards"
+			if modifierContextObject.numCards <= 1
+				return @description.replace /%X/, "a card"
+			else
+				return @description.replace /%X/, modifierContextObject.numCards+" cards"
 		else
 			return @description
 

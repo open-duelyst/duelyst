@@ -67,8 +67,8 @@ class ModifierFateSonghaiMinionQuest extends ModifierFate
 	removeQuestStatusModifier: () ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 		if general.hasActiveModifierClass(ModifierQuestStatusSonghai)
-				for mod in general.getModifiersByClass(ModifierQuestStatusSonghai)
-					@getGameSession().removeModifier(mod)
+			for mod in general.getModifiersByClass(ModifierQuestStatusSonghai)
+				@getGameSession().removeModifier(mod)
 
 	applyQuestStatusModifier: (questCompleted) ->
 		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
