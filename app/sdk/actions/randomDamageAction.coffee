@@ -12,7 +12,7 @@ class RandomDamageAction extends DamageAction
 
 	constructor: () ->
 		@type ?= RandomDamageAction.type
-		super()
+		super
 
 	_modifyForExecution: () ->
 		super()

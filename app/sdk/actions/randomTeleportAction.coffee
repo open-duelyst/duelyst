@@ -13,7 +13,7 @@ class RandomTeleportAction extends TeleportAction
 
 	constructor: () ->
 		@type ?= RandomTeleportAction.type
-		super()
+		super
 
 	getPrivateDefaults: (gameSession) ->
 		p = super(gameSession)

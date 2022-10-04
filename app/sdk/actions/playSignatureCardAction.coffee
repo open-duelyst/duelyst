@@ -8,7 +8,7 @@ class PlaySignatureCardAction extends PlayCardAction
 
 	constructor: () ->
 		@type ?= PlaySignatureCardAction.type
-		super()
+		super
 
 	getManaCost: () ->
 		card = @getCard()

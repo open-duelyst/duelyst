@@ -30,7 +30,7 @@ class ReplaceCardFromHandAction extends PutCardInHandAction
 			@replacedCardIndex = deck.getCardIndexInHandAtIndex(@indexOfCardInHand)
 
 			# make a copy of indices
-			indices = _.range(drawPile.length)
+			indices = _.range(drawPile.length);
 
 			# find first card from the top down that is different
 			indexOfCardInDeck = null

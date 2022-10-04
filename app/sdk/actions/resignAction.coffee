@@ -9,7 +9,7 @@ class ResignAction extends DieAction
 
 	constructor: () ->
 		@type ?= ResignAction.type
-		super()
+		super
 
 	isRemovableDuringScrubbing: () ->
 		return false

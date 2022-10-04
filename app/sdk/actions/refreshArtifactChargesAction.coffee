@@ -8,7 +8,7 @@ class RefreshArtifactChargesAction extends Action
 
 	constructor: () ->
 		@type ?= RefreshArtifactChargesAction.type
-		super()
+		super
 
 	_execute: () ->
 		super()

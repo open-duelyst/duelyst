@@ -10,7 +10,7 @@ class KillAction extends Action
 
 	constructor: () ->
 		@type ?= KillAction.type
-		super()
+		super
 
 	_execute: () ->
 		super()

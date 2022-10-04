@@ -11,7 +11,7 @@ class RollbackToSnapshotAction extends Action
 
 	constructor: () ->
 		@type ?= RollbackToSnapshotAction.type
-		super()
+		super
 
 	_execute: () ->
 		#Logger.module("SDK").debug "[G:#{@.getGameSession().gameId}]", "#{this.type}::execute"

@@ -10,7 +10,7 @@ class HealAction extends Action
 
 	constructor: () ->
 		@type ?= HealAction.type
-		super()
+		super
 
 	getPrivateDefaults: (gameSession) ->
 		p = super(gameSession)

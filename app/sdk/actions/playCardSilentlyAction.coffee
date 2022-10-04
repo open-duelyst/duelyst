@@ -13,7 +13,7 @@ class PlayCardSilentlyAction extends ApplyCardToBoardAction
 
 	constructor: () ->
 		@type ?= PlayCardSilentlyAction.type
-		super()
+		super
 
 	getCard: () ->
 		if !@_private.cachedCard?

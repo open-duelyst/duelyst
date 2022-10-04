@@ -14,6 +14,6 @@ class PlayCardAction extends ApplyCardToBoardAction
 
 	constructor: () ->
 		@type ?= PlayCardAction.type
-		super()
+		super
 
 module.exports = PlayCardAction

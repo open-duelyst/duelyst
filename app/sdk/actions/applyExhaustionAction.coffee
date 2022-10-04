@@ -7,7 +7,7 @@ class ApplyExhaustionAction extends Action
 
 	constructor: (gameSession) ->
 		@type ?= ApplyExhaustionAction.type
-		super()
+		super
 
 	_execute: () ->
 		super()

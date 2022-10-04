@@ -21,7 +21,7 @@ class RemoveManaCoreAction extends Action
 			for i in [0...@manaAmount]
 				if owner.getMaximumMana() > 0
 					owner.maximumMana--
-
+	
 	getManaAmount: () ->
 		return @manaAmount
 

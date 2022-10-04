@@ -11,7 +11,7 @@ class DrawCardAction extends PutCardInHandAction
 
 	constructor: () ->
 		@type ?= DrawCardAction.type
-		super()
+		super
 
 	_execute: () ->
 		if @getGameSession().getIsRunningAsAuthoritative()

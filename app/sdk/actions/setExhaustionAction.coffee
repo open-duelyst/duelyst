@@ -10,7 +10,7 @@ class SetExhaustionAction extends Action
 
 	constructor: () ->
 		@type ?= SetExhaustionAction.type
-		super()
+		super
 
 	setExhausted: (val) ->
 		@exhausted = val

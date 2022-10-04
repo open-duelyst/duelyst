@@ -9,7 +9,7 @@ class MoveAction extends Action
 
 	constructor: () ->
 		@type ?= MoveAction.type
-		super()
+		super
 
 	getPrivateDefaults: (gameSession) ->
 		p = super(gameSession)

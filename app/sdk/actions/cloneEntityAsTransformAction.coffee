@@ -14,6 +14,6 @@ class CloneEntityAsTransformAction extends CloneEntityAction
 
 	constructor: () ->
 		@type ?= CloneEntityAsTransformAction.type
-		super()
+		super
 
 module.exports = CloneEntityAsTransformAction

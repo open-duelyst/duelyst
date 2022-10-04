@@ -11,7 +11,7 @@ class CloneEntityAction extends PlayCardSilentlyAction
 
 	constructor: () ->
 		@type ?= CloneEntityAction.type
-		super()
+		super
 
 	getCard: () ->
 		if !@_private.cachedCard?

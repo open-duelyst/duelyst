@@ -8,6 +8,6 @@ class BurnCardAction extends DrawCardAction
 
 	constructor: () ->
 		@type ?= BurnCardAction.type
-		super()
+		super
 
 module.exports = BurnCardAction

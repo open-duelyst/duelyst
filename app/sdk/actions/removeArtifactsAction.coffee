@@ -7,7 +7,7 @@ class RemoveArtifactsAction extends Action
 
 	constructor: () ->
 		@type ?= RemoveArtifactsAction.type
-		super()
+		super
 
 	_execute: () ->
 		super()
