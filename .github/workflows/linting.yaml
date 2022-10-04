@@ -56,7 +56,7 @@ jobs:
     - name: lint coffeescript code
       # The grep command filters successes and warnings, showing only errors.
       # Unfortunately there is no CLI option for this behavior.
-      run: yarn lint:coffee | grep -v '⚡\|✓'
+      run: yarn lint:coffee:backend | grep -v '⚡\|✓'
 
     - name: lint javascript code
       run: yarn lint:js
