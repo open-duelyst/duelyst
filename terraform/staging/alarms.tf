@@ -12,7 +12,10 @@ module "billing_alarm" {
 module "ecs_alarms" {
   source        = "../modules/alarms/ecs"
   cluster_name  = "duelyst-staging"
-  service_names = []
+  service_names = [
+    "duelyst-api-staging",
+    "duelyst-sp-staging",
+  ]
   alarm_actions = [module.email_sns_topic.topic_arn]
 }
 
