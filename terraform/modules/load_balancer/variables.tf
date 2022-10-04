@@ -60,11 +60,11 @@ variable "sp_service_port" {
 }
 
 variable "cdn_domain_name" {
-  type = string
+  type        = string
   description = "The CDN domain name to use for static asset redirects."
 }
 
 variable "cdn_path_prefix" {
-  type = string
+  type        = string
   description = "The CDN path prefix to use for static asset requests, e.g. 'staging/'."
 }

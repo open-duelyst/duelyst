@@ -2,6 +2,10 @@ output "api_target_group_arn" {
   value = aws_lb_target_group.api_target_group.arn
 }
 
+output "game_target_group_arn" {
+  value = aws_lb_target_group.game_target_group.arn
+}
+
 output "sp_target_group_arn" {
   value = aws_lb_target_group.sp_target_group.arn
 }
@@ -13,6 +17,7 @@ output "load_balancer_id" {
 output "target_group_ids" {
   value = [
     aws_lb_target_group.api_target_group.arn_suffix,
+    aws_lb_target_group.game_target_group.arn_suffix,
     aws_lb_target_group.sp_target_group.arn_suffix,
   ]
 }
