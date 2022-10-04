@@ -19,3 +19,12 @@ module "redis_alarms" {
   memory_threshold     = 90
   alarm_actions        = [module.email_sns_topic.topic_arn]
 }
+
+module "postgres_alarms" {
+  source           = "../modules/alarms/rds"
+  database_id      = "duelyst-staging"
+  instance_type    = module.postgres.instance_type
+  cpu_threshold    = 90
+  memory_threshold = 90
+  alarm_actions    = [module.email_sns_topic.topic_arn]
+}
