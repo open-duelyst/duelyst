@@ -6,7 +6,7 @@ locals {
 
 resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   alarm_name        = "ElastiCache CPU Utilization"
-  alarm_description = "ElastiCache system CPU utilization is over ${var.cpu_threshold}"
+  alarm_description = "ElastiCache system CPU utilization is over ${var.cpu_threshold}%"
 
   namespace           = "AWS/ElastiCache"
   metric_name         = "CPUUtilization"
@@ -30,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "engine_cpu_alarm" {
   alarm_name        = "ElastiCache Engine CPU Utilization"
-  alarm_description = "ElastiCache engine CPU utilization is over ${var.engine_cpu_threshold}"
+  alarm_description = "ElastiCache engine CPU utilization is over ${var.engine_cpu_threshold}%"
 
   namespace           = "AWS/ElastiCache"
   metric_name         = "EngineCPUUtilization"
@@ -54,7 +54,7 @@ resource "aws_cloudwatch_metric_alarm" "engine_cpu_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   alarm_name        = "ElastiCache Memory Utilization"
-  alarm_description = "ElastiCache memory utilization is over ${var.memory_threshold}"
+  alarm_description = "ElastiCache memory utilization is over ${var.memory_threshold}%"
 
   namespace           = "AWS/ElastiCache"
   metric_name         = "BytesUsedForCache"

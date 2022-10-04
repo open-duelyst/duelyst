@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   alarm_name        = "ECS CPU Utilization"
-  alarm_description = "ECS CPU utilization is over ${var.cpu_threshold}"
+  alarm_description = "ECS CPU utilization is over ${var.cpu_threshold}%"
 
   namespace           = "AWS/ECS"
   metric_name         = "CPUUtilization"
@@ -23,7 +23,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   alarm_name        = "ECS Memory Utilization"
-  alarm_description = "ECS memory utilization is over ${var.memory_threshold}"
+  alarm_description = "ECS memory utilization is over ${var.memory_threshold}%"
 
   namespace           = "AWS/ECS"
   metric_name         = "MemoryUtilization"

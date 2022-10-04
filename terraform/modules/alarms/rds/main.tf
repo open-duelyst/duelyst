@@ -6,7 +6,7 @@ locals {
 
 resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   alarm_name        = "RDS CPU Utilization"
-  alarm_description = "RDS CPU utilization is over ${var.cpu_threshold}"
+  alarm_description = "RDS CPU utilization is over ${var.cpu_threshold}%"
 
   namespace           = "AWS/RDS"
   metric_name         = "CPUUtilization"
@@ -29,7 +29,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
 
 resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   alarm_name        = "RDS Memory Utilization"
-  alarm_description = "RDS memory utilization is over ${var.memory_threshold}"
+  alarm_description = "RDS memory utilization is over ${var.memory_threshold}%"
 
   namespace           = "AWS/RDS"
   metric_name         = "FreeableMemory"
