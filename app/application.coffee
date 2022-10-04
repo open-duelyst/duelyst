@@ -361,7 +361,7 @@ if process.env.AI_TOOLS_ENABLED
 
 			# set as non authoritative
 			# all steps will be coming from ai simulation server
-			SDK.GameSession.getInstance().setIsRunningAsAuthoritative(false);
+			SDK.GameSession.getInstance().setIsRunningAsAuthoritative(false)
 
 			# request run simulation
 			return new Promise (resolve, reject) ->
@@ -788,7 +788,7 @@ App._showMainMenu = () ->
 				if NewsManager.getInstance().getFirstUnreadAnnouncement()
 					# show announcment UI if we have an unread announcement
 					modalPromise = NewsManager.getInstance().getFirstUnreadAnnouncementContentAsync().then((announcementContentModel)->
-						return NavigationManager.getInstance().showModalView(new AnnouncementModalView({model:announcementContentModel}));
+						return NavigationManager.getInstance().showModalView(new AnnouncementModalView({model:announcementContentModel}))
 					)
 				else
 					# show quests if any quests
@@ -2102,7 +2102,7 @@ App._startGameWithChallenge = (challenge) ->
 
 	if not challenge instanceof SDK.ChallengeRemote
 		# mark challenge as attempted
-		ProgressionManager.getInstance().markChallengeAsAttemptedWithType(challenge.type);
+		ProgressionManager.getInstance().markChallengeAsAttemptedWithType(challenge.type)
 
 	# challenge handles setting up game session
 	SDK.GameSession.reset()
@@ -2604,7 +2604,7 @@ App._startLoadingGameOverData = ()->
 App.showVictoryWhenGameDataReady = () ->
 
 	# show activity dialog
-	NavigationManager.getInstance().showDialogView(new ActivityDialogItemView());
+	NavigationManager.getInstance().showDialogView(new ActivityDialogItemView())
 
 	# resolve when post game assets are done loading
 	return PackageManager.getInstance().loadMinorPackage("postgame")
@@ -2660,7 +2660,7 @@ App.showVictory = (userGameModel,rewardModels,newBeginnerQuestsCollection) ->
 		if SDK.GameSession.getInstance().isChallenge()
 
 			# for challenges
-			App.addNextScreenCallbackToVictoryFlow(rewardModels);
+			App.addNextScreenCallbackToVictoryFlow(rewardModels)
 			userGameModel ?= new Backbone.Model({})
 
 

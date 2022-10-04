@@ -29,7 +29,7 @@ class SpellKneel extends Spell
 		targetGeneral = @getGameSession().getGeneralForPlayerId(@getOwnerId())
 		if targetGeneral?
 			# set x offset based on which direction the target General faces
-			targetGeneralPosition = targetGeneral.getPosition();
+			targetGeneralPosition = targetGeneral.getPosition()
 			if targetGeneral.isOwnedByPlayer1() then offset = 1 else offset = -1
 			return {x: targetGeneralPosition.x + offset, y: targetGeneralPosition.y}
 		return

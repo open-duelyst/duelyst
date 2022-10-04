@@ -1147,13 +1147,13 @@ class Card extends SDKObject
 
 				# sort the context objects for display alphanumerically
 				sortedContextObjects = _.sortBy(filteredContextObjects, ((contextObject) ->
-					sortValue = "z";
+					sortValue = "z"
 					modifierClass = @getGameSession().getModifierClassForType(contextObject.type)
-					if modifierClass.modifierName then sortValue = modifierClass.modifierName;
+					if modifierClass.modifierName then sortValue = modifierClass.modifierName
 					# descriptions come after those with only names
-					if modifierClass.description? then sortValue = "z" + sortValue;
+					if modifierClass.description? then sortValue = "z" + sortValue
 					# keyworded come before all others
-					if modifierClass.getIsKeyworded() then sortValue = "0" + sortValue;
+					if modifierClass.getIsKeyworded() then sortValue = "0" + sortValue
 
 					return sortValue
 				).bind(@))
@@ -1333,7 +1333,7 @@ class Card extends SDKObject
 	getIsPositionValidTarget: (targetPosition) ->
 		# index must be string and cannot be map index as position may be outside board space
 		# map indices can conflict when generated for positions outside the board
-		index = targetPosition.x + "_" + targetPosition.y;
+		index = targetPosition.x + "_" + targetPosition.y
 		res = @_private.cachedIsValidTargetPosition[index]
 		if !res?
 			res = @_private.cachedIsValidTargetPosition[index] = UtilsPosition.getIsPositionInPositions(@getValidTargetPositions(), targetPosition) and @isAreaOfEffectOnBoard(targetPosition)

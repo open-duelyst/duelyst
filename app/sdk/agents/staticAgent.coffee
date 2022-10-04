@@ -85,7 +85,7 @@ class StaticAgent extends BaseAgent
 				currentAction = actionsForThisTurn[@currentActionIndexInTurn]
 				if currentAction.isSoft
 					AgentActions.executeSoftActionForAgent(@,currentAction)
-					this.currentActions.push(currentAction);
+					this.currentActions.push(currentAction)
 					@currentActionIndexInTurn++
 					keepScanningForSoftActions = true
 
@@ -96,7 +96,7 @@ class StaticAgent extends BaseAgent
 
 		# grab the action we're supposed to execute
 		agentActionToExecute = actionsForThisTurn[@currentActionIndexInTurn]
-		this.currentActions.push(agentActionToExecute);
+		this.currentActions.push(agentActionToExecute)
 
 		# iterate current action index
 		@currentActionIndexInTurn++

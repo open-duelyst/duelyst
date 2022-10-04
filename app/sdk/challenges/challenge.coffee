@@ -307,7 +307,7 @@ class Challenge
 			if playersTurnIndex == @snapShotOnPlayerTurn and !@_snapShotData
 				gameSession = GameSession.current()
 				@_snapShotData = gameSession.serializeToJSON(gameSession)
-				@_eventBus.trigger(EVENTS.challenge_start, {type: EVENTS.challenge_start});
+				@_eventBus.trigger(EVENTS.challenge_start, {type: EVENTS.challenge_start})
 
 	_onValidateGameOver:()->
 		gameSession = GameSession.current()
