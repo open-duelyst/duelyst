@@ -1,16 +1,12 @@
 {
-  "indentation": {
-    "level": "error",
-    "value": 1
-  },
-  "line_endings": {
-    "value": "unix",
-    "level": "error"
-  },
-  "no_tabs": {
-    "level": "ignore"
-  },
-  "max_line_length": {
-    "level": "ignore"
-  }
+  "arrow_spacing": {"level": "ignore"},
+  "braces_spacing": {"level": "ignore"},
+  "colon_assignment_spacing": {"level": "ignore"},
+  "indentation": {"level": "error", "value": 1},
+  "line_endings": {"value": "unix", "level": "error"},
+  "max_line_length": {"level": "ignore"},
+  "no_tabs": {"level": "ignore"},
+  "no_trailing_whitespace": {"level": "error"},
+  "space_operators": {"level": "ignore"},
+  "spacing_after_comma": {"level": "ignore"}
 }
