@@ -85,9 +85,9 @@ class ModifierHPThresholdGainModifiers extends ModifierHPChange
 		modifiers = []
 		index = @getIndex()
 		for modifier in card.getModifiers()
-		  for modifierContextObject in modifierContextObjects
-		    if modifier.getType() == modifierContextObject.type and modifier.getParentModifierIndex() == index
-		      modifiers.push(modifier)
+			for modifierContextObject in modifierContextObjects
+				if modifier.getType() == modifierContextObject.type and modifier.getParentModifierIndex() == index
+					modifiers.push(modifier)
 		return modifiers
 
 module.exports = ModifierHPThresholdGainModifiers

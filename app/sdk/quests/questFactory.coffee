@@ -215,7 +215,7 @@ class QuestFactory
 				return 0
 
 			# Player can't use any cards with cost greater than 3 to make progress
-			 playerGameSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameSessionData,playerId)
+			playerGameSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameSessionData,playerId)
 			for cardData in playerGameSetupData.deck
 				cardId = cardData.id
 				card = GameSession.getInstance().createCardForIdentifier(cardId)

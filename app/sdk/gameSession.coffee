@@ -2238,7 +2238,7 @@ class _GameSession extends SDKObject
 	setExecutingAction: (val) ->
 		@_private.action = val
 		if !val? or !val.getIsDepthFirst()
-		 @setExecutingNonDepthFirstAction(val)
+			@setExecutingNonDepthFirstAction(val)
 
 	###*
 	 * Returns the currently executing non-depth first action.
