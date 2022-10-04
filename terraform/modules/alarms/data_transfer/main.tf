@@ -3,6 +3,7 @@
 # $0.09/GB sent.
 # NOTE: Alarms targeting Standard metrics (not High-resolution metrics) are billed at $0.10/month. The first 10 alarms
 # in an AWS account are free, indefinitely.
+# NOTE: Aggregating metrics across dimensions (in this case InstanceId) is only available with Detailed Monitoring.
 resource "aws_cloudwatch_metric_alarm" "alarm" {
   alarm_name        = "ec2-data-transfer-free-tier"
   alarm_description = "EC2 Data Transfer is at 90% of Free Tier threshold!"
@@ -16,6 +17,10 @@ resource "aws_cloudwatch_metric_alarm" "alarm" {
   # Set the threshold to 80% of the limit, so we get the alarm before billing begins.
   # There are 730 hours in the average month. 100000000000 / 730 * 80% = 109589041.
   threshold = "109589041" # 109MB/hour in bytes. Proportional to 80GB/month.
+
+  dimensions = {
+    InstanceId = "*"
+  }
 
   # Check the metric once per hour.
   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation
