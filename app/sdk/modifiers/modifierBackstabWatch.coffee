@@ -27,7 +27,7 @@ class ModifierBackstabWatch extends Modifier
 		if card? and target? and a.getSource() == card
 			return target.hasActiveModifierClass(ModifierAlwaysBackstabbed) or
 				(card.hasModifierType(ModifierBackstab.type) and
-				a instanceof AttackAction and 
+				a instanceof AttackAction and
 				@getGameSession().getBoard().getIsPositionBehindEntity(target, card.getPosition(), 1, 0))
 		return false
 

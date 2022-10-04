@@ -23,12 +23,12 @@ class ModifierMyAttackWatchScarabBlast extends ModifierMyAttackWatch
 			if targetPosition.x == myPosition.x
 				if targetPosition.y < myPosition.y
 					sameColumnDown = true
-				else 
+				else
 					sameColumnUp = true
 			else if targetPosition.y == myPosition.y
 				if targetPosition.x < myPosition.x
 					sameRowLeft = true
-				else 
+				else
 					sameRowRight = true
 
 			spawnPositions = []
