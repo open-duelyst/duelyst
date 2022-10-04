@@ -1,5 +1,5 @@
 variable "threshold" {
-  type        = string
+  type        = number
   description = "Fire an alert when estimated monthly charges exceed this dollar amount."
 }
 
