@@ -4,7 +4,7 @@ resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
 
   namespace           = "AWS/ECS"
   metric_name         = "CPUUtilization"
-  statistic           = "Maximum"
+  statistic           = "Average"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = var.cpu_threshold
 
@@ -52,7 +52,7 @@ resource "aws_cloudwatch_metric_alarm" "service_cpu_alarm" {
 
   namespace           = "AWS/ECS"
   metric_name         = "CPUUtilization"
-  statistic           = "Maximum"
+  statistic           = "Average"
   comparison_operator = "GreaterThanOrEqualToThreshold"
   threshold           = var.cpu_threshold
 
