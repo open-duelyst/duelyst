@@ -10,11 +10,11 @@ Summarize the bug here. What happens? What did you expect to happen?
 
 ## Impacted services
 
-[ ] The frontend app
-[ ] The game servers
-[ ] Game builds or automation scripts
-[ ] Tests or Github Actions
-[ ] Infrastructure (Terraform)
+- [ ] The frontend app
+- [ ] The game servers
+- [ ] Game builds or automation scripts
+- [ ] Tests or Github Actions
+- [ ] Infrastructure (Terraform)
 
 ## Steps to reproduce
 
