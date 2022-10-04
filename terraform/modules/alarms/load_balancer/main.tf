@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "unhealthy_target_alarm" {
-  for_each = toset(var.target_group_ids)
+  for_each = var.target_group_ids
 
   alarm_name        = "Unhealthy targets in group ${each.key}"
   alarm_description = "At least ${var.unhealthy_target_threshold} targets are unhealthy in target group ${each.key}."
@@ -12,7 +12,7 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_target_alarm" {
 
   dimensions = {
     LoadBalancer = var.load_balancer_id
-    TargetGroup  = each.key
+    TargetGroup  = each.value
   }
 
   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation
@@ -25,7 +25,7 @@ resource "aws_cloudwatch_metric_alarm" "unhealthy_target_alarm" {
 }
 
 resource "aws_cloudwatch_metric_alarm" "error_rate_alarm" {
-  for_each = toset(var.target_group_ids)
+  for_each = var.target_group_ids
 
   alarm_name        = "Elevated 5xx for targets in group ${each.key}"
   alarm_description = "Observed more than ${var.error_threshold} 5xx errors for target ${each.key} in window."
@@ -38,7 +38,7 @@ resource "aws_cloudwatch_metric_alarm" "error_rate_alarm" {
 
   dimensions = {
     LoadBalancer = var.load_balancer_id
-    TargetGroup  = each.key
+    TargetGroup  = each.value
   }
 
   # https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html#alarm-evaluation

@@ -54,6 +54,11 @@ module "internal_security_group" {
       port        = 8000
       cidr_blocks = ["10.0.0.0/16"]
     },
+    {
+      description = "Allow TCP/8001 from VPC"
+      port        = 8001
+      cidr_blocks = ["10.0.0.0/16"]
+    },
     #{
     #  description = "Temporary SSH access"
     #  port        = 22

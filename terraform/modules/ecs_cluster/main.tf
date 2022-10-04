@@ -49,10 +49,8 @@ resource "aws_ecs_cluster_capacity_providers" "capacity_mapping" {
 
 # Create an autoscaling group for instances providing capacity to the ECS cluster.
 resource "aws_autoscaling_group" "asg" {
-  name                = "ecs-${var.name}"
-  vpc_zone_identifier = var.subnets
-
-  desired_capacity      = var.desired_capacity
+  name                  = "ecs-${var.name}"
+  vpc_zone_identifier   = var.subnets
   max_size              = var.max_capacity
   min_size              = var.min_capacity
   protect_from_scale_in = true
@@ -76,6 +74,7 @@ resource "aws_autoscaling_group" "asg" {
 
   lifecycle {
     ignore_changes = [
+      # ASG capacity is managed by ECS.
       desired_capacity,
     ]
   }

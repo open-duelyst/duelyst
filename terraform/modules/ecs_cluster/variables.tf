@@ -20,12 +20,6 @@ variable "instance_type" {
   default     = "t4g.micro"
 }
 
-variable "desired_capacity" {
-  type        = number
-  description = "The desired number of ECS-EC2 instances."
-  default     = 1
-}
-
 variable "min_capacity" {
   type        = number
   description = "The minimum number of ECS-EC2 instances."
