@@ -14,8 +14,7 @@ class ModifierEnemyMinionAttackWatchGainKeyword extends ModifierEnemyMinionAttac
 	@modifierName:"ModifierEnemyMinionAttackWatchGainKeyword"
 	@description:"Whenever an enemy minion attacks, this minion gains a random keyword"
 
-	fxResource: ["FX.Modifiers.ModifierEnemyMinionAttackWatch"]
-	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
+	fxResource: ["FX.Modifiers.ModifierEnemyMinionAttackWatch", "FX.Modifiers.ModifierGenericBuff"]
 
 	allModifierContextObjects =[]
 

@@ -13,7 +13,6 @@ class ModifierHPThresholdGainModifiers extends ModifierHPChange
 	@type:"ModifierHPThresholdGainModifiers"
 
 	@modifierName:"Modifier HP Threshold Gain Modifiers"
-	@description: "Gains new keyword abilities as health decreases"
 	@description:i18next.t("modifiers.HP_threshold_gain_modifiers_def")
 
 	fxResource: ["FX.Modifiers.ModifierBuffSelfOnReplace"]

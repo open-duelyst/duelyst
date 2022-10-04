@@ -17,8 +17,6 @@ class ModifierCollectableBonusMana extends ModifierCollectable
 
 	bonusMana: 1
 	bonusDuration: 1
-	bonusMana: 1
-	bonusDuration: 1
 	fxResource: ["FX.Modifiers.ModifierCollectibleBonusMana"]
 
 	onCollect: (entity) ->
