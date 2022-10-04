@@ -51,7 +51,7 @@ module "ecs_service_game" {
   ecr_repository    = module.ecr_repository_game.id
   deployed_version  = "1.97.0"
   container_count   = 1
-  service_port      = 8000
+  service_port      = 8001
   alb_target_group  = module.staging_load_balancer.game_target_group_arn
 
   environment_variables = [

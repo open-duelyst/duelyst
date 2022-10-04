@@ -14,8 +14,8 @@ module "staging_load_balancer" {
 
   api_listen_port   = 443
   api_service_port  = 3000
-  game_listen_port  = 8000
-  game_service_port = 8000
+  game_listen_port  = 8001
+  game_service_port = 8001
   sp_listen_port    = 8000
   sp_service_port   = 8000
 }
