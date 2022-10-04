@@ -68,11 +68,12 @@ resource "aws_lb_listener_rule" "cdn_redirect" {
 }
 
 resource "aws_lb_target_group" "api_target_group" {
-  name             = "${var.name}-api"
-  vpc_id           = var.vpc_id
-  port             = var.api_service_port
-  protocol         = "HTTP"
-  protocol_version = "HTTP1"
+  name                 = "${var.name}-api"
+  vpc_id               = var.vpc_id
+  port                 = var.api_service_port
+  protocol             = "HTTP"
+  protocol_version     = "HTTP1"
+  deregistration_delay = 120 # Down from 300; matches Spot termination delay.
 
   health_check {
     path    = "/healthcheck"
@@ -94,11 +95,12 @@ resource "aws_lb_listener" "game_listener" {
 }
 
 resource "aws_lb_target_group" "game_target_group" {
-  name             = "${var.name}-game"
-  vpc_id           = var.vpc_id
-  port             = var.game_service_port
-  protocol         = "HTTP"
-  protocol_version = "HTTP1"
+  name                 = "${var.name}-game"
+  vpc_id               = var.vpc_id
+  port                 = var.game_service_port
+  protocol             = "HTTP"
+  protocol_version     = "HTTP1"
+  deregistration_delay = 120 # Down from 300.
 
   health_check {
     path    = "/health"
@@ -120,11 +122,12 @@ resource "aws_lb_listener" "sp_listener" {
 }
 
 resource "aws_lb_target_group" "sp_target_group" {
-  name             = "${var.name}-sp"
-  vpc_id           = var.vpc_id
-  port             = var.sp_service_port
-  protocol         = "HTTP"
-  protocol_version = "HTTP1"
+  name                 = "${var.name}-sp"
+  vpc_id               = var.vpc_id
+  port                 = var.sp_service_port
+  protocol             = "HTTP"
+  protocol_version     = "HTTP1"
+  deregistration_delay = 120 # Down from 300.
 
   health_check {
     path    = "/health"
