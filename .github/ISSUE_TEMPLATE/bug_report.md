@@ -24,9 +24,9 @@ Summarize the bug here. What happens? What did you expect to happen?
 
 ## Environment information
 
-- Operating system (Windows, Mac, Linux?)
-- Browser (Chrome, Firefox?)
-- Browser version
+- Operating system: E.g. Windows, Mac, Linux
+- Browser: E.g. Chrome, Firefox
+- Browser version: E.g. 105.0.1
 
 ## Additional context
 
