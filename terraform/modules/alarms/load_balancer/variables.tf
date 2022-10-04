@@ -4,7 +4,7 @@ variable "load_balancer_id" {
 }
 
 variable "target_group_ids" {
-  type        = list(string)
+  type        = map(any)
   description = "The target groups to monitor."
 }
 
