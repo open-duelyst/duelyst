@@ -80,6 +80,32 @@ resource "aws_lb_target_group" "api_target_group" {
   }
 }
 
+resource "aws_lb_listener" "game_listener" {
+  load_balancer_arn = aws_lb.lb.arn
+  port              = var.game_listen_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-Ext-2018-06"
+  certificate_arn   = var.certificate_arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.game_target_group.arn
+  }
+}
+
+resource "aws_lb_target_group" "game_target_group" {
+  name             = "${var.name}-game"
+  vpc_id           = var.vpc_id
+  port             = var.game_service_port
+  protocol         = "HTTP"
+  protocol_version = "HTTP1"
+
+  health_check {
+    path    = "/health"
+    matcher = "200"
+  }
+}
+
 resource "aws_lb_listener" "sp_listener" {
   load_balancer_arn = aws_lb.lb.arn
   port              = var.sp_listen_port

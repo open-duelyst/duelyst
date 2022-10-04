@@ -35,6 +35,18 @@ variable "api_service_port" {
   default     = 3000
 }
 
+variable "game_listen_port" {
+  type        = number
+  description = "Traffic port for the Game listener."
+  default     = 8000
+}
+
+variable "game_service_port" {
+  type        = number
+  description = "Traffic port for the Game service."
+  default     = 8000
+}
+
 variable "sp_listen_port" {
   type        = number
   description = "Traffic port for the SP listener."

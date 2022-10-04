@@ -21,7 +21,9 @@ module "ecs_alarms" {
   cluster_name = "duelyst-staging"
   service_names = [
     "duelyst-api-staging",
+    "duelyst-game-staging",
     "duelyst-sp-staging",
+    "duelyst-worker-staging",
   ]
   alarm_actions = [module.email_sns_topic.topic_arn]
 }
