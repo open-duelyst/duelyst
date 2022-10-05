@@ -1,6 +1,6 @@
 {
   "name": "open-duelyst",
-  "version": "1.97.0",
+  "version": "1.97.1",
   "engines": {
     "yarn": ">= 1.0.0"
   },
