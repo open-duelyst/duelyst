@@ -2,7 +2,7 @@ module "ecs_cluster" {
   source             = "../modules/ecs_cluster"
   name               = "duelyst-staging"
   ssh_public_key     = var.ssh_public_key
-  max_capacity       = 2 # Increase by 1 to allow graceful deployments without stopping live containers.
+  max_capacity       = 1 # Increase by 1 to allow graceful deployments without stopping live containers.
   max_spot_capacity  = 1
   security_group_ids = [module.internal_security_group.id]
   subnets = [
@@ -16,7 +16,7 @@ module "ecs_service_api" {
   source            = "../modules/ecs_service"
   name              = "duelyst-api-staging"
   cluster           = module.ecs_cluster.id
-  capacity_provider = module.ecs_cluster.capacity_provider
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
