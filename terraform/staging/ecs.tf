@@ -95,7 +95,7 @@ module "ecs_service_worker" {
   source            = "../modules/ecs_service"
   name              = "duelyst-worker-staging"
   cluster           = module.ecs_cluster.id
-  capacity_provider = module.ecs_cluster.capacity_provider
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
