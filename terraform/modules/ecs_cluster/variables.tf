@@ -6,6 +6,10 @@ variable "name" {
 variable "subnets" {
   type        = list(string)
   description = "The subnets to use for ECS-EC2 instances."
+  validation {
+    condition     = length(var.subnets) == 3
+    error_message = "Must provide exactly 3 subnets"
+  }
 }
 
 variable "architecture" {
@@ -29,6 +33,18 @@ variable "min_capacity" {
 variable "max_capacity" {
   type        = number
   description = "The maximum number of ECS-EC2 instances."
+  default     = 1
+}
+
+variable "min_spot_capacity" {
+  type        = number
+  description = "The minimum number of ECS-EC2 Spot instances."
+  default     = 1
+}
+
+variable "max_spot_capacity" {
+  type        = number
+  description = "The maximum number of ECS-EC2 Spot instances."
   default     = 1
 }
 
