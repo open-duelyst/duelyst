@@ -23,7 +23,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.0"
+  deployed_version  = "1.97.1"
   container_count   = 1
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
@@ -53,7 +53,7 @@ module "ecs_service_game" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_game.id
-  deployed_version  = "1.97.0"
+  deployed_version  = "1.97.1"
   container_count   = 1
   service_port      = 8001
   alb_target_group  = module.staging_load_balancer.game_target_group_arn
@@ -78,7 +78,7 @@ module "ecs_service_sp" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_sp.id
-  deployed_version  = "1.97.0"
+  deployed_version  = "1.97.1"
   container_count   = 1
   service_port      = 8000
   alb_target_group  = module.staging_load_balancer.sp_target_group_arn
@@ -102,7 +102,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.0"
+  deployed_version  = "1.97.1"
   container_count   = 1
   enable_lb         = false
   service_port      = 0
@@ -130,7 +130,7 @@ module "ecs_service_migrate" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_migrate.id
-  deployed_version  = "1.97.0"
+  deployed_version  = "1.97.1"
   container_count   = 0 # Change to 1 to apply database migrations.
   enable_lb         = false
   service_port      = 0
