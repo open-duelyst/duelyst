@@ -11,6 +11,7 @@ module "cloudfront_cdn" {
   bucket_origin_id = "duelyst-assets"
   app_domain_name  = var.staging_domain_name
   cdn_domain_name  = var.cdn_domain_name
+  cdn_path_prefix  = "staging/"
   certificate_arn  = module.cdn_ssl_certificate.arn
 }
 

@@ -8,11 +8,6 @@ variable "bucket_origin_id" {
   description = "A unique name for this origin."
 }
 
-variable "root_object" {
-  type    = string
-  default = "staging/index.html"
-}
-
 variable "cdn_domain_name" {
   type        = string
   description = "Domain name for the Cloudfront distribution."
@@ -21,6 +16,11 @@ variable "cdn_domain_name" {
 variable "app_domain_name" {
   type        = string
   description = "Domain name for the Duelyst API service."
+}
+
+variable "cdn_path_prefix" {
+  type        = string
+  description = "The CDN path prefix to use for static asset policies, e.g. 'staging/'."
 }
 
 variable "certificate_arn" {
