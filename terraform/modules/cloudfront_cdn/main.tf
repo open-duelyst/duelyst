@@ -48,9 +48,15 @@ resource "aws_cloudfront_response_headers_policy" "cors_policy" {
 
   cors_config {
     access_control_allow_credentials = false
+    origin_override                  = true
+
     access_control_allow_headers { items = ["*"] }
     access_control_allow_methods { items = ["GET", "HEAD", "OPTIONS"] }
-    access_control_allow_origins { items = [var.app_domain_name, var.cdn_domain_name] }
-    origin_override = true
+    access_control_allow_origins {
+      items = [
+        "https://${var.app_domain_name}",
+        "https://${var.cdn_domain_name}"
+      ]
+    }
   }
 }
