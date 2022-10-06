@@ -26,7 +26,7 @@ const config = convict({
   game_port: {
     doc: 'The game server port to bind.',
     format: 'port',
-    default: 8000,
+    default: 8001,
     env: 'GAME_PORT',
   },
   sp_port: {

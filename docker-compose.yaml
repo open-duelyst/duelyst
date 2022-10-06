@@ -57,7 +57,7 @@ services:
     profiles:
       - donotstart
     ports:
-      - 8000:8000
+      - 8001:8001
     environment:
       REDIS_HOST: redis
       FIREBASE_URL: ${FIREBASE_URL}
