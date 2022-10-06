@@ -1439,7 +1439,7 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 
 ### Shutdown Handler ###
 shutdownHandler = () ->
-	Logger.module("SERVER").log "Shutting down game server."
+	Logger.module("SERVER").log "Received shutdown signal; shutting down SP server."
 	Logger.module("SERVER").log "Active Players: #{playerCount}."
 	Logger.module("SERVER").log "Active Games: #{gameCount}."
 
