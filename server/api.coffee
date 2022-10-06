@@ -8,7 +8,7 @@ mkdirp = require 'mkdirp'
 request = require 'request'
 Promise = require 'bluebird'
 Logger = require '../app/common/logger'
-shutdown = require './shutdown'
+shutdownLib = require './shutdown'
 mail = require './mailer'
 Promise.promisifyAll(mail)
 
@@ -109,7 +109,7 @@ setupProduction = () ->
 						Logger.module("SERVER").log "Duelyst '#{env}' started on port #{apiPort}"
 
 process.on 'uncaughtException', (err) ->
-	shutdown.errorShutdown(err)
+	shutdownLib.errorShutdown(err)
 
 if config.isDevelopment()
 	setupDevelopment()

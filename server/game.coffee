@@ -15,7 +15,7 @@ moment = require 'moment'
 request = require 'superagent'
 
 # Our modules
-shutdown = require './shutdown'
+shutdownLib = require './shutdown'
 SDK = require '../app/sdk.coffee'
 Logger = require '../app/common/logger.coffee'
 EVENTS = require '../app/common/event_types'
@@ -109,7 +109,7 @@ saveGameCount = (gameCount) ->
 
 # error 'domain' to deal with io.sockets uncaught errors
 d = require('domain').create()
-d.on 'error', shutdown.errorShutdown
+d.on 'error', shutdownLib.errorShutdown
 d.add(io.sockets)
 
 # health ping on socket namespace /health
@@ -1485,7 +1485,7 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 		Logger.module("GAME-OVER").error "[G:#{gameId}]", "ERROR: afterGameOver failed #{error}".red
 
 ### Shutdown Handler ###
-shutdown = () ->
+shutdownHandler = () ->
 	Logger.module("SERVER").log "Shutting down game server."
 	Logger.module("SERVER").log "Active Players: #{playerCount}."
 	Logger.module("SERVER").log "Active Games: #{gameCount}."
@@ -1537,7 +1537,7 @@ shutdown = () ->
 			Logger.module("SERVER").log "Re-assignment failed: #{err.message}. Exiting."
 			process.exit(1)
 
-process.on "SIGTERM", shutdown
-process.on "SIGINT", shutdown
-process.on "SIGHUP", shutdown
-process.on "SIGQUIT", shutdown
+process.on "SIGTERM", shutdownHandler
+process.on "SIGINT", shutdownHandler
+process.on "SIGHUP", shutdownHandler
+process.on "SIGQUIT", shutdownHandler
