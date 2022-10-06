@@ -39,8 +39,9 @@ resource "aws_cloudfront_cache_policy" "cache_policy_resources" {
       headers {
         items = [
           "Origin",
-          "Access-Control-Request-Method",
-          "Access-Control-Request-Headers",
+          # Don't think we need these to be part of the cache key.
+          #"Access-Control-Request-Method",
+          #"Access-Control-Request-Headers",
         ]
       }
     }
@@ -48,11 +49,21 @@ resource "aws_cloudfront_cache_policy" "cache_policy_resources" {
   }
 }
 
+# https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   name = "origin-policy"
 
   cookies_config { cookie_behavior = "none" }
-  headers_config { header_behavior = "allViewer" }
+  headers_config {
+    header_behavior = "whitelist"
+    headers {
+      items = [
+        "Origin",
+        "Access-Control-Request-Method",
+        "Access-Control-Request-Headers",
+      ]
+    }
+  }
   query_strings_config { query_string_behavior = "none" }
 }
 
