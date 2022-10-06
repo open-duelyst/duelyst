@@ -6,7 +6,7 @@ This is the source code for Duelyst, a digital collectible card game and turn-ba
 
 ## Contributing to OpenDuelyst
 
-If you'd like to contribute to OpenDuelyst, check out our [Contributor Guide](CONTRIBUTING.md).
+If you'd like to contribute to OpenDuelyst, check out our [Contributor Guide](docs/CONTRIBUTING.md).
 Following this guide will also enable you to play local single player games while we work on the reference deployment.
 
 ## Reference Deployment
@@ -16,7 +16,7 @@ This work is currently in progress.
 
 ## Client/Server Architecture
 
-For client and server architecture documentation, see [ARCHITECTURE.md](ARCHITECTURE.md).
+For client and server architecture documentation, see [ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Filing Issues and Reporting Bugs
 

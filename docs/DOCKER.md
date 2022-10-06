@@ -1,10 +1,12 @@
 # Docker
 
-Dockerfiles and scripts for starting and managing our containers.
+Dockerfiles and scripts for starting and managing our containers are located in
+the `docker/` directory.
 
 ## Local Development
 
-Use `docker compose up`, which will use the `docker/start.sh` script to run Yarn scripts.
+Use `docker compose up`, which will use the `docker/start.sh` script to run
+Yarn scripts.
 
 ## Testing Container Builds
 

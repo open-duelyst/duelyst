@@ -2,7 +2,7 @@
 
 This directory contains [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) for creating
 staging and production environments in AWS. For instructions on creating a development environment, see
-[here](../CONTRIBUTING.md#dev-environment).
+[here](CONTRIBUTING.md#dev-environment).
 
 To get started, install [Terraform](https://www.terraform.io/downloads) for your OS. At the time of writing, the latest
 version is 1.3.0, though we will be managing version constraints in the code itself.
