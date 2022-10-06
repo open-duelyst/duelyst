@@ -15,7 +15,7 @@ moment = require 'moment'
 request = require 'superagent'
 
 # Our modules
-shutdown = require './shutdown'
+shutdownLib = require './shutdown'
 SDK = require '../app/sdk.coffee'
 Logger = require '../app/common/logger.coffee'
 EVENTS = require '../app/common/event_types'
@@ -81,8 +81,9 @@ io.use(
 	)
 )
 module.exports = io
-server.listen config.get('game_port'), () ->
-	Logger.module("GAME SERVER").log "GAME Server <b>#{os.hostname()}</b> started."
+port = config.get('game_port')
+server.listen port, () ->
+	Logger.module("GAME SERVER").log "Game server started on port #{port}"
 
 # redis
 {Redis, Jobs, GameManager} = require './redis/'
@@ -109,7 +110,7 @@ saveGameCount = (gameCount) ->
 
 # error 'domain' to deal with io.sockets uncaught errors
 d = require('domain').create()
-d.on 'error', shutdown.errorShutdown
+d.on 'error', shutdownLib.errorShutdown
 d.add(io.sockets)
 
 # health ping on socket namespace /health
@@ -126,8 +127,8 @@ d.run () ->
 		# add the socket to the error domain
 		d.add(socket)
 
-		# Socket is now autheticated, continue to bind other handlers
-		Logger.module("IO").debug "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
+		# Socket is now authenticated, continue to bind other handlers
+		Logger.module("IO").debug "DECODED TOKEN ID: #{socket.decodedToken.d.id.blue}"
 
 		savePlayerCount(++playerCount)
 
@@ -183,8 +184,8 @@ onGamePlayerJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	if @.decoded_token.d.id != playerId
-		Logger.module("IO").error "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+	if @.decodedToken.d.id != playerId
+		Logger.module("IO").error "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decodedToken.d.id.blue} is attempting to join a game as #{playerId.blue}".red
 		@emit "join_game_response",
 			error:"Your player id does not match the one you requested to join a game with. Are you sure you're joining the right game?"
 		return
@@ -351,8 +352,8 @@ onGameSpectatorJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	if @.decoded_token.d.id != spectatorId
-		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+	if @.decodedToken.d.id != spectatorId
+		Logger.module("IO").error "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decodedToken.d.id.blue} is attempting to join a game as #{playerId.blue}".red
 		@emit "spectate_game_response",
 			error:"Your login ID does not match the one you requested to spectate the game with."
 		return
@@ -1485,8 +1486,8 @@ afterGameOver = (gameId, gameSession, mouseAndUIEvents) ->
 		Logger.module("GAME-OVER").error "[G:#{gameId}]", "ERROR: afterGameOver failed #{error}".red
 
 ### Shutdown Handler ###
-shutdown = () ->
-	Logger.module("SERVER").log "Shutting down game server."
+shutdownHandler = () ->
+	Logger.module("SERVER").log "Received shutdown signal; shutting down game server."
 	Logger.module("SERVER").log "Active Players: #{playerCount}."
 	Logger.module("SERVER").log "Active Games: #{gameCount}."
 
@@ -1537,7 +1538,7 @@ shutdown = () ->
 			Logger.module("SERVER").log "Re-assignment failed: #{err.message}. Exiting."
 			process.exit(1)
 
-process.on "SIGTERM", shutdown
-process.on "SIGINT", shutdown
-process.on "SIGHUP", shutdown
-process.on "SIGQUIT", shutdown
+process.on "SIGTERM", shutdownHandler
+process.on "SIGINT", shutdownHandler
+process.on "SIGHUP", shutdownHandler
+process.on "SIGQUIT", shutdownHandler

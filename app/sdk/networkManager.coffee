@@ -57,19 +57,22 @@ class NetworkManager
 			TelemetryManager.getInstance().setSignal("game","connecting")
 			token = Storage.get('token')
 
-			# determine which server to use
+			# determine which websocket URL to use
 			env = process.env.NODE_ENV || 'development'
 			if env == 'development'
+				# local games use the SP server
 				websocketUrl = "ws://#{window.location.hostname}:8000"
 			else
 				if gameServerAddress?
+					# if a server address was provided, use it
 					websocketUrl = gameServerAddress
 				else
-					# TODO: Use different port numbers for MP/SP games.
 					if gameType == 'single_player'
+						# online single-player games connect to port 8000
 						websocketUrl = "wss://#{window.location.hostname}:8000"
 					else
-						websocketUrl = "wss://#{window.location.hostname}:8000"
+						# online multi-player games connect to port 8001
+						websocketUrl = "wss://#{window.location.hostname}:8001"
 
 			# validate and log websocket URL
 			if !websocketUrl
@@ -95,7 +98,7 @@ class NetworkManager
 				}
 			})
 
-			# When the socket opens, send the token for authetication
+			# When the socket opens, send the token for authentication
 			@socket.on 'connect', (socket) ->
 				# Storage = require 'app/common/storage'
 				# token = Storage.get('token')

@@ -18,7 +18,7 @@ validators = require '../validators'
 
 router = express.Router()
 
-## Require authetication for all /api routes
+## Require authentication for all /api routes
 router.use '/api', isSignedIn
 
 # All users

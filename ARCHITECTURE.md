@@ -19,7 +19,7 @@ Game Server:
 
 - The Game server is a Socket.io WebSocket server which handles multiplayer games.
 - The service enqueues tasks in Redis to be picked up by the workers.
-- The service listens on port 8000 by default.
+- The service listens on port 8001 by default.
 - Code can be found in `server/game.coffee`, and configuration can be found in `config/`.
 
 Single Player (SP) Server:

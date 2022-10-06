@@ -53,7 +53,7 @@ module "ecs_service_game" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_game.id
-  deployed_version  = "1.97.1"
+  deployed_version  = "1.97.1-socketfix"
   container_count   = 1
   service_port      = 8001
   alb_target_group  = module.staging_load_balancer.game_target_group_arn

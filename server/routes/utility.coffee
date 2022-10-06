@@ -38,7 +38,7 @@ loadClientLogsHandlebarsTemplateAsync = new Promise (resolve,reject) ->
 	.catch (err) ->
 		reject(err)
 
-## Require authetication
+## Require authentication
 router.use '/utility', isSignedIn
 
 # Unused handler to facilitate uploading logs to S3.

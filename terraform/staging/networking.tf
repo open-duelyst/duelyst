@@ -87,6 +87,11 @@ module "load_balancer_security_group" {
       description = "Allows TCP/8000 from 0.0.0.0/0"
       port        = 8000
       cidr_blocks = ["0.0.0.0/0"]
+    },
+    {
+      description = "Allows TCP/8001 from 0.0.0.0/0"
+      port        = 8001
+      cidr_blocks = ["0.0.0.0/0"]
     }
   ]
 }
