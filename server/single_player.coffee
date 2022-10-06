@@ -119,7 +119,7 @@ healthPing = io
 
 io.sockets.on "connection", (socket) ->
 	# Socket is now authenticated, continue to bind other handlers
-	# Logger.module("IO").log "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
+	Logger.module("IO").log "DECODED TOKEN ID: #{socket.decodedToken.d.id.blue}"
 	Logger.module("IO").log "TOKEN ID: #{socket.id.blue}"
 
 	savePlayerCount(++playerCount)
@@ -176,11 +176,11 @@ onGamePlayerJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	# if @.decoded_token.d.id != playerId
-	# 	Logger.module("IO").log "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
-	# 	@emit "join_game_response",
-	# 		error:"Your player id does not match the one you requested to join a game with. Are you sure you're joining the right game?"
-	# 	return
+	if @.decodedToken.d.id != playerId
+		Logger.module("IO").log "[G:#{gameId}]", "join_game -> REFUSING JOIN: A player #{@.decodedToken.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+		@emit "join_game_response",
+			error:"Your player id does not match the one you requested to join a game with. Are you sure you're joining the right game?"
+		return
 
 	# if a client is already in another game, leave it
 	playerLeaveGameIfNeeded(this)
@@ -347,11 +347,11 @@ onGameSpectatorJoin = (requestData) ->
 		return
 
 	# if someone is trying to join a game they don't belong to as a player they are not authenticated as
-	# if @.decoded_token.d.id != spectatorId
-	# 	Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decoded_token.d.id.blue} is attempting to join a game as #{playerId.blue}".red
-	# 	@emit "spectate_game_response",
-	# 		error:"Your login ID does not match the one you requested to spectate the game with."
-	# 	return
+	if @.decodedToken.d.id != spectatorId
+		Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> REFUSING JOIN: A player #{@.decodedToken.d.id.blue} is attempting to join a game as #{playerId.blue}".red
+		@emit "spectate_game_response",
+			error:"Your login ID does not match the one you requested to spectate the game with."
+		return
 
 	Logger.module("IO").log "[G:#{gameId}]", "spectate_game -> spectator:#{spectatorId} is joining game:#{gameId}".cyan
 
