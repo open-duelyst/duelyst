@@ -18,6 +18,11 @@ variable "app_domain_name" {
   description = "Domain name for the Duelyst API service."
 }
 
+variable "cdn_path_prefix" {
+  type        = string
+  description = "The CDN path prefix to use for static asset policies, e.g. 'staging/'."
+}
+
 variable "certificate_arn" {
   type        = string
   description = "The ACM SSL certificate ARN to use for this distribution."
