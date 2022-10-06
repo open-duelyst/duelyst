@@ -98,7 +98,7 @@ class NetworkManager
 				}
 			})
 
-			# When the socket opens, send the token for authetication
+			# When the socket opens, send the token for authentication
 			@socket.on 'connect', (socket) ->
 				# Storage = require 'app/common/storage'
 				# token = Storage.get('token')

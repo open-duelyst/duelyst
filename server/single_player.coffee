@@ -117,7 +117,7 @@ healthPing = io
 			socket.emit 'pong'
 
 io.sockets.on "connection", (socket) ->
-	# Socket is now autheticated, continue to bind other handlers
+	# Socket is now authenticated, continue to bind other handlers
 	# Logger.module("IO").log "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
 	Logger.module("IO").log "TOKEN ID: #{socket.id.blue}"
 

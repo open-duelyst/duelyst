@@ -53,7 +53,7 @@ config = require '../../config/config.js'
 env = config.get('env')
 {version} = require '../../version'
 
-## Require authetication
+## Require authentication
 router.use '/matchmaking', isSignedIn
 
 ###*

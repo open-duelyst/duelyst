@@ -126,7 +126,7 @@ d.run () ->
 		# add the socket to the error domain
 		d.add(socket)
 
-		# Socket is now autheticated, continue to bind other handlers
+		# Socket is now authenticated, continue to bind other handlers
 		Logger.module("IO").debug "DECODED TOKEN ID: #{socket.decoded_token.d.id.blue}"
 
 		savePlayerCount(++playerCount)
