@@ -28,19 +28,25 @@ resource "aws_ecs_service" "service" {
 }
 
 resource "aws_ecs_task_definition" "task_def" {
-  family             = var.name
-  execution_role_arn = var.task_role
+  family                   = var.name
+  execution_role_arn       = var.task_role
+  requires_compatibilities = []
+  tags                     = {}
 
   container_definitions = jsonencode([
     {
-      name   = var.name
-      image  = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
-      cpu    = var.container_cpu
-      memory = var.container_mem
+      name        = var.name
+      image       = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
+      essential   = true
+      cpu         = var.container_cpu
+      memory      = var.container_mem
+      mountPoints = []
+      volumesFrom = []
       portMappings = var.enable_lb ? [
         {
           containerPort = var.service_port
           hostPort      = var.service_port
+          protocol      = "tcp"
         }
       ] : []
       logConfiguration = {
