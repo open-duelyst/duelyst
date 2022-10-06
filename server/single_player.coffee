@@ -82,8 +82,9 @@ io.use(
 	)
 )
 module.exports = io
-server.listen config.get('sp_port'), () ->
-	Logger.module("AI SERVER").log "AI Server <b>#{os.hostname()}</b> started."
+port = config.get('sp_port')
+server.listen port, () ->
+	Logger.module("AI SERVER").log "SP server started on port #{port}"
 
 # redis
 {Redis, Jobs, GameManager} = require './redis/'

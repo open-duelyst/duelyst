@@ -81,8 +81,9 @@ io.use(
 	)
 )
 module.exports = io
-server.listen config.get('game_port'), () ->
-	Logger.module("GAME SERVER").log "GAME Server <b>#{os.hostname()}</b> started."
+port = config.get('game_port')
+server.listen port, () ->
+	Logger.module("GAME SERVER").log "Game server started on port #{port}"
 
 # redis
 {Redis, Jobs, GameManager} = require './redis/'
