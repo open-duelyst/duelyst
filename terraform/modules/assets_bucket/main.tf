@@ -12,7 +12,6 @@ resource "aws_s3_bucket_cors_configuration" "cors_config" {
     expose_headers  = [
       "Access-Control-Allow-Methods",
       "Access-Control-Allow-Origin",
-      #"Access-Control-Expose-Headers",
       "ETag",
     ]
     max_age_seconds = 3600
