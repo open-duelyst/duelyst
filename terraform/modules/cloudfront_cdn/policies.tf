@@ -79,7 +79,7 @@ resource "aws_cloudfront_response_headers_policy" "response_headers_policy" {
     access_control_allow_origins {
       items = [
         "https://${var.app_domain_name}",
-        "https://${var.cdn_domain_name}", # Was previously missing 'https://'.
+        "https://${var.cdn_domain_name}",
       ]
     }
   }
