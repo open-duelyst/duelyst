@@ -23,7 +23,7 @@ The following table summarizes our resource utilization estimations for 500 conc
 
 Running a staging environment in AWS costs about $6/month, with the following breakdown:
 
-### RDS and ElastiCache ($0/mo with Free Tier resources)
+### RDS and ElastiCache ($0/mo with Free Tier)
 
 Of the above six resources, AWS offers fully managed solutions for Postgres (RDS) and Redis
 (ElastiCache). While these are generally more expensive than running containers, the Free Tier
@@ -68,7 +68,7 @@ With Postgres and Redis handled by RDS and ElastiCache, we have four Node.js ser
 In staging, they'll need about 1 vCPU and up to 500MB of memory each, for a total of 4 vCPU and
 2GB of memory. In production, we might scale to twice that amount at 8 vCPU and 4GB of memory.
 
-Based on these figures, an instance type with 2vCPU and 1GB of memory would be suitable, as we can
+Based on these figures, an instance type with 2 vCPU and 1GB of memory would be suitable, as we can
 scale between 2-4 of these to handle our traffic. AWS offers `t3.micro` and `t4g.micro` instances
 in this configuration. The EC2 Free Tier includes one `t3.micro` for 12 months, with each
 additional costing around $8/mo. The `t4g.micro` instance uses ARM processors, and instead costs
@@ -91,7 +91,7 @@ storage requirements for the apps, so we won't incur any significant storage cos
 In summary, running two `t4g.micro` Spot instances to power a staging ECS cluster would cost about
 $4 per month.
 
-### Networking ($0/month)
+### Networking ($0/month with Free Tier)
 
 For load balancing, AWS provides one load balancer as part of the Free Tier. We can also attach
 an SSL certificate through AWS ACM, which provides free public certificates.

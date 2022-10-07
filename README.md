@@ -13,8 +13,8 @@ while we work on the reference deployment.
 
 ## Reference Deployment
 
-OpenDuelyst will soon be deployed as "Duelyst Classic": a version of the game exactly as it was in v1.96.17, before the
-servers were shut down. This work is currently in progress.
+Work is underway to deploy OpenDuelyst as "Duelyst Classic": a version of the game exactly as it was in v1.96.17,
+before the servers were shut down. This is being tracked in [issue #3](https://github.com/open-duelyst/duelyst/issues/3).
 
 ## Client/Server Architecture
 
