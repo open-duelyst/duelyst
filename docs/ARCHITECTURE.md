@@ -1,5 +1,7 @@
 # OpenDuelyst Architecture
 
+<img src="diagrams/services.png" alt="Service Architecture Diagram" width=600 />
+
 ## Client Architecture
 
 The game client is a Backbone.js + Marionette application which runs in the browser. Code can be found in `app/`, and configuration can be found in `app/common/config.js`.
