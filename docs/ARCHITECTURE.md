@@ -1,4 +1,4 @@
-# OpenDuelyst Architecture
+# Duelyst Service Architecture
 
 <img src="diagrams/services.png" alt="Service Architecture Diagram" width=600 />
 

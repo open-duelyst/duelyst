@@ -1,4 +1,4 @@
-# Docker
+# Building and Testing Docker Images
 
 Dockerfiles and scripts for starting and managing our containers are located in
 the `docker/` directory.
