@@ -7,8 +7,9 @@ Counterplay Games and released in 2016.
 
 ## Contributing to OpenDuelyst
 
-If you'd like to contribute to OpenDuelyst, check out our [Contributor Guide](docs/CONTRIBUTING.md). Following this
-guide will also enable you to play local single player games while we work on the reference deployment.
+If you'd like to contribute to OpenDuelyst, check out our [Documentation](docs/README.md) and
+[Contributor Guide](docs/CONTRIBUTING.md). Following this guide will also enable you to play local single player games
+while we work on the reference deployment.
 
 ## Reference Deployment
 
