@@ -1,9 +1,8 @@
 # Mingrammer diagrams for the OpenDuelyst service architecture.
 # Install Graphviz to generate graphs: https://graphviz.gitlab.io/download/
 # On OSX, this is 'brew install graphviz'
-from diagrams import Cluster, Diagram, Edge, Node
+from diagrams import Cluster, Diagram, Edge
 from diagrams.firebase.develop import RealtimeDatabase
-from diagrams.onprem.client import Client
 from diagrams.onprem.database import Postgresql
 from diagrams.onprem.inmemory import Redis
 from diagrams.programming.language import Javascript, Nodejs
@@ -12,7 +11,7 @@ graph_attrs = {
     'bgcolor': 'snow2',
     'fontsize': '48',
     'labelloc': 'top',
-    'pad': '0.2', # Inches.
+    'pad': '0.2',  # Inches.
 }
 
 cluster_attrs = {
