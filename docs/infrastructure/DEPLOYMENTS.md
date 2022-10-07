@@ -1,25 +1,42 @@
-# Deploying OpenDuelyst
+# Deploying OpenDuelyst Builds
 
-This doc contains info on some common scenarios / problems with deployments.
+## Uploading static assets to S3
 
-## Frontend
+This process only needs to be completed once (or until you change the contents of the `resources/`
+directory). Around 600MB of files will be uploaded to S3 and cached by CloudFront:
+
+1. Build everything with `FIREBASE_URL=foo yarn build`
+2. Copy CDN-flagged resources into `dist/` with `yarn cdn:copy`
+3. Upload resources to S3:
+
+```
+AWS_ACCESS_KEY=foo \
+AWS_SECRET_KEY=bar \
+AWS_REGION=baz \
+S3_ASSETS_BUCKET=your-bucket-name \
+yarn cdn:upload:staging
+```
+
+## Deploying Frontend Builds
 
 The frontend code is served from S3 and fronted by CloudFront.
 
 Deploying a new version of the frontend build might require the following:
 
+- Creating a new staging build with `scripts/build_staging_app.sh`
 - Replacing `duelyst.js` (or any other modified resources) in S3
 - Creating a cache invalidation request for `/staging/duelyst.js` (etc.) in CloudFront
 
 You can use `yarn cdn:upload:staging` to copy all resources, but we should create another
 script for deploying only the files in `dist/src/*` (not `dist/src/**/*` which includes resources)
 
-## Backend
+## Deploying Backend Builds
 
 The backend code is containerized, uploaded to ECR, and executed in ECS.
 
 Deploying a new version of the backend build might require the following:
 
+- Cutting a new version by updating `package.json` and `version.json`
 - Creating a new image with `scripts/build_container.sh`
 - Publishing a new image to ECR with `scripts/publish_container.sh`
 - Bumping the `deployed_version` in `terraform/staging/ecs.tf`

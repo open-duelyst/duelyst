@@ -41,6 +41,7 @@ working on the game:
 - `app/` contains code for the frontend / game client
 - `config/` contains configuration for backend services
 - `docker-compose.yaml` contains our Docker container configuration
+- `docs` contains documentation, including this guide
 - `gulp/` and `gulpfile.babel.js` contain workflow automation, for tasks like building the code
 - `package.json` contains our Node.js dependencies
 - `server` contains code for the HTTP API server and the WebSocket game servers
@@ -238,5 +239,5 @@ For OpenDuelyst, the `MAJOR` version should not exceed `1`. Note that the immedi
 At the moment, you can get help with OpenDuelyst by opening an issue.
 Since this is a volunteer project, it may take a few days for someone to look at your issue.
 
-You can also join the [OpenDuelyst Discord server]() for technical discussion around the
-development and 
+You can also join the [OpenDuelyst Discord server](https://discord.gg/HhUWfZ9cxe) for technical
+discussion and support.
