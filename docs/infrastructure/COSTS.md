@@ -1,6 +1,6 @@
 # Notes on Cost Management
 
-For notes on resource utilization, see [ARCHITECTURE.md](../ARCHITECTURE.md#resource-utilization).
+For notes on resource utilization, see [ARCHITECTURE.md](ARCHITECTURE.md#resource-utilization).
 
 The following table summarizes the above resource utilization estimations for 500 CCU load:
 

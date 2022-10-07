@@ -1,4 +1,9 @@
 # gulp
+
+NOTE: These docs are a bit older, and have not been updated in a while.
+For example, you no longer need to install Gulp globally, as we run Gulp
+via Yarn tasks instead.
+
 ### Installation
 Ensure the correct version of gulp is installed globally:
 ```
