@@ -1,5 +1,5 @@
 {
-	"email_input_label": "Email or Username",
+	"username_input_label": "Username",
 	"password_input_label": "Password",
 	"login_button_label": "Login",
 	"forgot_password_button_label": "Forgot Password?",
