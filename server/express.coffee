@@ -29,7 +29,6 @@ app.use(routes.public)
 app.use(routes.session)
 app.use(routes.api)
 app.use(routes.forgot)
-app.use(routes.verify)
 app.use(routes.utility)
 app.use(routes.matchmaker)
 
