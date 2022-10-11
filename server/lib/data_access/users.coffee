@@ -117,8 +117,7 @@ class UsersModule
 	# @param	{String}	inviteCode		Invite code used
 	# @return	{Promise}					Promise that will return the userId on completion.
 	###
-	@createNewUser: (email = null,username,password,inviteCode = 'kumite14',referralCode,campaignData,registrationSource = null)->
-
+	@createNewUser: (username,password,inviteCode = 'kumite14',referralCode,campaignData,registrationSource = null)->
 		# validate referral code and force it to lower case
 		referralCode = referralCode?.toLowerCase().trim()
 		if referralCode? and not validator.isLength(referralCode,3)
@@ -144,7 +143,7 @@ class UsersModule
 				referralCodePromise = UsersModule.getValidReferralCode(referralCode)
 
 			return Promise.all([
-				UsersModule.userIdForEmail(email),
+				UsersModule.userIdForEmail(null),
 				UsersModule.userIdForUsername(username),
 				referralCodePromise
 			])

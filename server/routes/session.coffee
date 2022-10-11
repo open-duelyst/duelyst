@@ -235,8 +235,7 @@ router.post "/session/register", (req, res, next) ->
 	.then (isCaptchaVerified) ->
 		if not isCaptchaVerified
 			throw new Errors.UnverifiedCaptchaError("We could not verify the captcha (bot detection).")
-		email = null
-		return UsersModule.createNewUser(email,username,password,inviteCode,referralCode,campaignData,registrationSource)
+		return UsersModule.createNewUser(username,password,inviteCode,referralCode,campaignData,registrationSource)
 	.then (userId) ->
 		# if we have a friend referral code just fire off async the job to link these two together
 		if friendReferralCode?
