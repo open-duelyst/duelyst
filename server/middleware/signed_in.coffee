@@ -8,7 +8,7 @@ config = require '../../config/config'
 ###
 Any route that requires authentication can use this middleware
 Middleware will validate JWT security and expiration
-Then ensure both an ID and maybe(EMAIL) are present in the JWT payload
+Then ensure both an ID and maybe(username) are present in the JWT payload
 We can add additional checks to the JWT payload here
 ###
 module.exports = compose([

@@ -124,13 +124,10 @@ router.post "/session/", (req, res, next) ->
 	if not result.isValid()
 		return res.status(400).json(result.errors)
 
-	password = result.value.password
-	email = result.value.email?.toLowerCase()
 	username = result.value.username?.toLowerCase()
+	password = result.value.password
 
-	getUserIdAsync = if username then UsersModule.userIdForUsername(username) else UsersModule.userIdForEmail(email)
-
-	getUserIdAsync
+	UsersModule.userIdForUsername(username)
 	.bind {}
 	.then (id) -> # Step 2 : check if user exists
 		if !id
@@ -154,7 +151,6 @@ router.post "/session/", (req, res, next) ->
 			payload =
 				d:
 					id: @id
-					email: @.userRow.email
 					username: @.userRow.username
 				v: 0
 				iat: Math.floor(new Date().getTime() / 1000)
@@ -185,9 +181,9 @@ router.post "/session/", (req, res, next) ->
 	.catch Errors.AccountDisabled, (e) ->
 		return res.status(401).json({message: e.message})
 	.catch Errors.NotFoundError, (e) ->
-		return res.status(401).json({message: 'Invalid Email or Password'})
+		return res.status(401).json({message: 'Invalid Username or Password'})
 	.catch Errors.BadPasswordError, (e) ->
-		return res.status(401).json({message: 'Invalid Email or Password'})
+		return res.status(401).json({message: 'Invalid Username or Password'})
 	.catch (e) -> next(e)
 
 ###
@@ -275,26 +271,6 @@ router.post "/session/register", (req, res, next) ->
 		return res.status(401).json(e)
 	.catch Errors.UnverifiedCaptchaError, (e) ->	# Specific error if the captcha fails
 		Logger.module("Session").error "can not register because captcha #{captcha} input is invalid".red
-		return res.status(401).json(e)
-	.catch (e) -> next(e)
-
-###
-POST handler for checking availability of email
-###
-router.post "/session/email_available", (req, res, next) ->
-	result = t.validate(req.body.email, types.Email)
-	if not result.isValid()
-		return res.status(400).json(result.errors)
-
-	email = result.value.toLowerCase()
-
-	UsersModule.userIdForEmail(email)
-	.then (id) ->
-		if id
-			throw new Errors.AlreadyExistsError("Email already exists")
-		else
-			return res.status(200).json({})
-	.catch Errors.AlreadyExistsError, (e) ->
 		return res.status(401).json(e)
 	.catch (e) -> next(e)
 
