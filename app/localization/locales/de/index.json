@@ -3365,7 +3365,7 @@
     "gift_code_default": "Geschenkcode"
   },
   "login": {
-    "email_input_label": "E-Mail oder Benutzername",
+    "username_input_label": "Benutzername",
     "password_input_label": "Passwort",
     "login_button_label": "Anmelden",
     "forgot_password_button_label": "Passwort vergessen?",

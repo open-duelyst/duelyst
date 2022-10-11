@@ -169,28 +169,7 @@ class Session extends EventEmitter
 			debug data
 			@justRegistered = true
 			@emit 'registered'
-			return {email: opts.email, username: opts.username, password: opts.password}
-
-	isEmailAvailable: (email) ->
-		return Promise.resolve(
-			fetch "#{@url}/session/email_available",
-				method: 'POST'
-				headers:
-					'Accept': 'application/json'
-					'Content-Type': 'application/json'
-				body: JSON.stringify({email: email})
-		)
-		.then (res) ->
-			# available
-			if res.ok then return true
-			# 401 result suggests email is bad or unavailable
-			if res.status == 401 then return false
-			# all other results suggest server is unavailable or had an error
-			# so assume email is valid and let the server handle it in the later registration request
-			return true
-		.catch (e) ->
-			debug("isEmailAvailable #{e.message}")
-			return true
+			return {username: opts.username, password: opts.password}
 
 	isUsernameAvailable: (username) ->
 		return Promise.resolve(

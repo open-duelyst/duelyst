@@ -106,25 +106,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		var inviteCode = this.ui.$inviteCode.val();
 		var isValid = true;
 
-		// check email
-		if (this._hasModifiedEmail && !this._emailUnavailable) {
-			if (!validator.isEmail(email)) {
-				this.showInvalidFormControl(this.ui.$email, i18next.t("registration.registration_validation_invalid_email"));
-				isValid = false;
-			} else {
-				this.showValidFormControl(this.ui.$email);
-
-				// attempt to check whether email is available, but don't block registration for it
-				Session.isEmailAvailable(email)
-				.then(function (available) {
-					if (!available) {
-						this._emailUnavailable = true;
-						this.showInvalidFormControl(this.ui.$email, i18next.t("registration.registration_validation_email_exists"));
-					}
-				}.bind(this));
-			}
-		}
-
 		// check username
 		if (isValid && this._hasModifiedUsername && !this._usernameUnavailable) {
 			if (!validator.isLength(username,3, 18) || !validator.isAlphanumeric(username)) {
@@ -188,7 +169,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		var captcha = $("#g-recaptcha-response").val()
 
 		Session.register({
-			email: email,
 			username: username,
 			password: password,
 			keycode: inviteCode.length > 0 ? inviteCode : undefined ,
@@ -212,7 +192,7 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
 
 		// log user in
-		Session.login(registration.email, registration.password)
+		Session.login(registration.username, registration.password)
 		.finally(function () {
 			// unlock user triggered navigation
 			NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);

@@ -32,7 +32,7 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 		$registrationBlock: ".registration-block",
 		$registration: ".registration",
 		$forgotPassword: ".forgot-password",
-		$email: ".login-email",
+		$username: ".login-username",
 		$password: ".login-password"
 	},
 
@@ -165,7 +165,7 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 	/* region LOGIN */
 
 	onLogin: function() {
-		var email = this.ui.$email.val();
+		var username = this.ui.$username.val();
 		var password = this.ui.$password.val();
 
 		this.updateValidState();
@@ -176,7 +176,7 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 
 			// lockdown user triggered navigation while we login
 			NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
-			Session.login(email, password)
+			Session.login(username, password)
 			.bind(this)
 			.catch(function (e) {
 				// onError expects a string not an actual error
@@ -192,19 +192,16 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 	},
 
 	updateValidState: function () {
-		var usernameOrEmail = this.ui.$email.val();
+		var username = this.ui.$username.val();
 		var password = this.ui.$password.val();
 		this.isValid = true;
 
-		// check email
-		if (usernameOrEmail.indexOf('@') > 0 && !validator.isEmail(usernameOrEmail)) {
-			this.showInvalidFormControlWithTooltip(this.ui.$email, i18next.t("login.invalid_email_message"));
-			this.isValid = false;
-		} else if (usernameOrEmail.indexOf('@') < 0 && (!validator.isLength(usernameOrEmail,3, 18) || !validator.isAlphanumeric(usernameOrEmail))) {
-			this.showInvalidFormControlWithTooltip(this.ui.$email, i18next.t("login.invalid_username_message"));
+		// check username
+		if ((!validator.isLength(username, 3, 18) || !validator.isAlphanumeric(username))) {
+			this.showInvalidFormControlWithTooltip(this.ui.$username, i18next.t("login.invalid_username_message"));
 			this.isValid = false;
 		} else {
-			this.showValidFormControl(this.ui.$email);
+			this.showValidFormControl(this.ui.$username);
 		}
 
 		// check password
@@ -217,7 +214,7 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 	},
 
 	resetInvalidState: function () {
-		this.showValidFormControl(this.ui.$email);
+		this.showValidFormControl(this.ui.$username);
 		this.showValidFormControl(this.ui.$password);
 	},
 
@@ -267,7 +264,7 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 		if (errorMessage.indexOf("suspended") > 0) {
 			NavigationManager.getInstance().showDialogViewByClass(ErrorDialogItemView,{title:i18next.t("login.account_suspended_message"),message:errorMessage});
 		} else {
-			this.showInvalidFormControlWithTooltip(this.ui.$email, errorMessage || i18next.t("login.invalid_username_or_password_message"));
+			this.showInvalidFormControlWithTooltip(this.ui.$username, errorMessage || i18next.t("login.invalid_username_or_password_message"));
 			this.showInvalidFormControl(this.ui.$password);
 		}
 	},

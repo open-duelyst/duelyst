@@ -9,7 +9,6 @@ const token = t.struct({
 
 const loginInput = t.struct({
   password: types.Password,
-  email: t.maybe(types.Email),
   username: t.maybe(types.Username),
 });
 
@@ -36,7 +35,6 @@ const discourseSsoInput = t.struct({
 
 const signupInput = t.struct({
   password: types.NewPassword,
-  email: types.Email,
   username: types.Username,
   keycode: t.maybe(t.Str),
   referral_code: t.maybe(types.ReferralCode),
