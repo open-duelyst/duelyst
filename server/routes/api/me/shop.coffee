@@ -38,44 +38,12 @@ router.post "/premium_purchase", (req, res, next) ->
 			next(error)
 
 router.post "/customer", (req, res, next) ->
-	result = t.validate(req.body, validators.shopInput)
-	if not result.isValid()
-		return res.status(400).json(result.errors)
-
-	user_id = req.user.d.id
-	card_token = result.value.card_token
-	card_last_four_digits = result.value.last_four_digits
-
-	Logger.module("API").debug "Updating Credit Card and Customer data for user #{user_id.blue}".magenta
-	ShopModule.updateUserCreditCardToken(user_id,card_token,card_last_four_digits)
-	.then (customerData) ->
-		Logger.module("API").debug "Updated Credit Card and Customer data for user #{user_id.blue}".cyan
-		res.status(200).json({})
-	.catch (error) ->
-		Logger.module("API").error "ERROR Updating Credit Card and Customer data for user #{user_id.blue}".red
-		if error.raw?.type == "card_error" or error.raw?.type == "invalid_request_error"
-			Logger.module("API").error "ERROR is safe to print for user #{user_id.blue}".red
-			res.status(500).json({error: error.message})
-		else
-			next(error)
+	return res.status(400).send('Payment methods are not supported.')
 
 router.delete "/customer", (req, res, next) ->
-	user_id = req.user.d.id
-	ShopModule.deleteUserCreditCardToken(user_id)
-	.then (customerData) ->
-		Logger.module("API").debug "Deleted Credit Card and Customer data for user #{user_id.blue}".cyan
-		res.status(200).json({})
-	.catch (error) ->
-		Logger.module("API").error "ERROR Deleting Credit Card and Customer data for user #{user_id.blue}".red
-		if error.raw?.type == "card_error" or error.raw?.type == "invalid_request_error"
-			Logger.module("API").error "ERROR is safe to print for user #{user_id.blue}".red
-			res.status(500).json({error: error.message})
-		else
-			next(error)
+	return res.status(400).send('Payment methods are not supported.')
 
 router.get "/products", (req, res, next) ->
-	user_id = req.user.d.id
-
 	return Promise.resolve(ShopData)
 	.then (shopData) ->
 		res.status(200).json(shopData)
@@ -83,8 +51,6 @@ router.get "/products", (req, res, next) ->
 		res.status(500).json({error: error.message})
 
 router.get "/premium_pack_products", (req, res, next) ->
-	user_id = req.user.d.id
-
 	return Promise.resolve(PremiumShopData)
 	.then (premiumPackData) ->
 		res.status(200).json(premiumPackData)
