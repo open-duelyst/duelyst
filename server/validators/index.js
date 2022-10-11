@@ -102,11 +102,6 @@ const bossBattleInput = t.struct({
   ai_username: t.maybe(t.Str),
 });
 
-const shopInput = t.struct({
-  card_token: t.Str,
-  last_four_digits: t.Str,
-});
-
 const reportPlayerInput = t.struct({
   user_id: t.subtype(t.Str, (s) => s.length >= 1 && s.length <= 100),
   message: t.subtype(t.Str, (s) => s.length >= 1 && s.length <= 1000),
@@ -153,7 +148,6 @@ module.exports = {
   matchmakingInput,
   singlePlayerInput,
   bossBattleInput,
-  shopInput,
   reportPlayerInput,
   deckInput,
   purchaseInput,
