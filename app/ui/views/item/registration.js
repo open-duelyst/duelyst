@@ -193,7 +193,7 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
 
 		// log user in
-		Session.login(registration.email, registration.password)
+		Session.login(registration.username, registration.password)
 		.finally(function () {
 			// unlock user triggered navigation
 			NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
