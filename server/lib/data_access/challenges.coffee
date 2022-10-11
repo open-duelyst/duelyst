@@ -15,13 +15,11 @@ QuestsModule = require './quests'
 GamesModule = require './games'
 CONFIG = require '../../../app/common/config.js'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
 DataAccessHelpers = require('./helpers')
 hashHelpers = require '../hash_helpers.coffee'
-Promise.promisifyAll(mail)
 AnalyticsUtil = require '../../../app/common/analyticsUtil.coffee'
 
 # SDK imports

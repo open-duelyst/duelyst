@@ -9,8 +9,6 @@ request = require 'request'
 Promise = require 'bluebird'
 Logger = require '../app/common/logger'
 shutdownLib = require './shutdown'
-mail = require './mailer'
-Promise.promisifyAll(mail)
 
 # Setup http server and express app
 app = require "./express"

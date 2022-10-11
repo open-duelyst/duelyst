@@ -24,8 +24,6 @@ formurlencoded= require 'form-urlencoded'
 knex = require '../lib/data_access/knex'
 
 # our modules
-mail = require '../mailer'
-Promise.promisifyAll(mail)
 UsersModule = require '../lib/data_access/users'
 ReferralsModule = require '../lib/data_access/referrals'
 InventoryModule = require '../lib/data_access/inventory'

@@ -1,7 +1,5 @@
 express = require 'express'
 Promise = require 'bluebird'
-mail = require '../mailer.coffee'
-Promise.promisifyAll(mail)
 Logger = require '../../app/common/logger.coffee'
 Errors = require '../lib/custom_errors'
 DuelystFirebase = require '../lib/duelyst_firebase_module'
@@ -76,21 +74,17 @@ router.post "/api/me/report_player", (req, res, next) ->
 		return res.status(400).json(result.errors)
 
 	user_id = req.user.d.id
-	email = req.user.d.email || null
 	other_user_id = result.value.user_id
 	message = result.value.message
-
-	# Return immediately so not to wait for email to send
-	res.status(200).json({})
+	res.status(404).send('Player reporting is not currently implemented.')
 
 	#DuelystFirebase.connect().getRootRef()
 	#.then (rootRef) ->
 	#	return FirebasePromises.once(rootRef.child('users').child(other_user_id).child('username'),'value')
 	#.then (snapshot) ->
 	#	username = snapshot.val()
-	#	# we may not have the response email but we still send report
-	#	return mail.sendPlayerReportAsync(username,other_user_id,message,user_id,email)
+	#	# TODO: Do something with player reports.
 	#.catch (error) ->
-	#	Logger.module("API").error "Failed to send report player email."
+	#	Logger.module("API").error "Failed to send player report."
 
 module.exports = router

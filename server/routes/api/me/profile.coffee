@@ -8,8 +8,6 @@ t = require 'tcomb-validation'
 uuid = require 'node-uuid'
 moment = require 'moment'
 Promise = require 'bluebird'
-mail = require '../../../mailer'
-Promise.promisifyAll(mail)
 
 router = express.Router()
 
@@ -76,7 +74,6 @@ router.post "/email_verify_token", (req, res, next) ->
 			created_at:moment().utc().toDate()
 		)
 	.then ()->
-		#mail.sendEmailVerificationLinkAsync(@.userRow.username, @.userRow.email, verifyToken)
-		return res.status(200).json({})
+		return res.status(404).send('Email verification is not currently implemented.')
 
 module.exports = router

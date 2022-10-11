@@ -7,8 +7,6 @@ Logger = require '../../app/common/logger'
 config = require '../../config/config'
 Errors = require '../lib/custom_errors'
 Promise = require 'bluebird'
-mail = require '../mailer'
-Promise.promisifyAll(mail)
 
 # Pretty error printing, helps with stack traces
 PrettyError = require 'pretty-error'
@@ -64,14 +62,6 @@ module.exports.production = (err, req, res, next) ->
 		error.status = 500
 		error.message = 'Internal Server Error.'
 		error.description = "Sorry, we've experienced an error."
-
-		# Server info to include with email alert
-		serverInfo = {
-			hostname: os.hostname()
-			environment: config.get('env')
-		}
-		# Send an email alert
-		#mail.sendErrorAlertAsync(serverInfo, err)
 
 	res.status(error.status)
 	return res.format({

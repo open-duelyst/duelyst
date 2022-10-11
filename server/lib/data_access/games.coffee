@@ -7,12 +7,10 @@ colors = require 'colors'
 moment = require 'moment'
 _ = require 'underscore'
 SyncModule = require './sync'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
 DataAccessHelpers = require('./helpers')
-Promise.promisifyAll(mail)
 
 # SDK imports
 SDK = require '../../../app/sdk'

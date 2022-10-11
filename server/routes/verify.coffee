@@ -12,8 +12,6 @@ types = require '../validators/types'
 UsersModule = require '../lib/data_access/users'
 
 # our modules
-mail = require '../mailer'
-Promise.promisifyAll(mail)
 Errors = require '../lib/custom_errors.coffee'
 
 # Configuration object

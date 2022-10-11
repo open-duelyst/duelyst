@@ -12,11 +12,9 @@ CosmeticChestsModule = require './cosmetic_chests'
 GamesModule = require './games'
 CONFIG = require '../../../app/common/config.js'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
-Promise.promisifyAll(mail)
 
 # SDK imports
 SDK = require '../../../app/sdk'

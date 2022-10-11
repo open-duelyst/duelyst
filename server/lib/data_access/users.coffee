@@ -20,13 +20,11 @@ RiftModule = require './gauntlet'
 CosmeticChestsModule = require './cosmetic_chests'
 CONFIG = require '../../../app/common/config.js'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
 DataAccessHelpers = require('./helpers')
 hashHelpers = require '../hash_helpers.coffee'
-Promise.promisifyAll(mail)
 AnalyticsUtil = require '../../../app/common/analyticsUtil.coffee'
 {version} = require '../../../version.json'
 
@@ -126,7 +124,6 @@ class UsersModule
 		if referralCode? and not validator.isLength(referralCode,3)
 			return Promise.reject(new Errors.InvalidReferralCodeError("invalid referral code"))
 
-		if email then email = email.toLowerCase()
 		userId = generatePushId()
 		username = username.toLowerCase()
 		inviteCode ?= null
@@ -167,7 +164,7 @@ class UsersModule
 
 				userRecord =
 					id:userId
-					email:email # email maybe equals null here
+					email:null
 					username:username
 					password:passwordHash
 					created_at:MOMENT_NOW_UTC.toDate()
@@ -251,12 +248,6 @@ class UsersModule
 					return knex("invite_codes").where('code',inviteCode).delete()
 
 			.then ()->
-
-				# if email then mail.sendSignupAsync(username, email, verifyToken)
-
-				# NOTE: don't send registration notifications at large volume, and also since they contain PID
-				# mail.sendNotificationAsync("New Registration", "#{email} has registered with #{username}.")
-
 				return Promise.resolve(userId)
 
 	###*
@@ -653,7 +644,6 @@ class UsersModule
 	# @return	{Promise}					Promise that will return the user data on completion.
 	###
 	@userDataForEmail: (email)->
-
 		return knex("users").first().where('email',email)
 
 	###*

@@ -13,13 +13,9 @@ InventoryModule = require './inventory'
 GamesModule = require './games'
 SyncModule = require './sync'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
-Promise.promisifyAll(mail)
-
-
 
 # redis
 {Redis, Jobs, SRankManager} = require '../../redis/'
