@@ -169,7 +169,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		var captcha = $("#g-recaptcha-response").val()
 
 		Session.register({
-			email: email,
 			username: username,
 			password: password,
 			keycode: inviteCode.length > 0 ? inviteCode : undefined ,

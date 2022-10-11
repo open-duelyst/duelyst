@@ -202,7 +202,6 @@ router.post "/session/register", (req, res, next) ->
 		return res.status(400).json(result.errors)
 
 	password = result.value.password
-	email = result.value.email.toLowerCase()
 	username = result.value.username.toLowerCase()
 	inviteCode = result.value.keycode?.trim()
 	referralCode = result.value.referral_code?.trim()
@@ -242,6 +241,7 @@ router.post "/session/register", (req, res, next) ->
 	.then (isCaptchaVerified) ->
 		if not isCaptchaVerified
 			throw new Errors.UnverifiedCaptchaError("We could not verify the captcha (bot detection).")
+		email = null
 		return UsersModule.createNewUser(email,username,password,inviteCode,referralCode,campaignData,registrationSource)
 	.then (userId) ->
 		# if we have a friend referral code just fire off async the job to link these two together
@@ -272,8 +272,8 @@ router.post "/session/register", (req, res, next) ->
 	.catch Errors.InvalidReferralCodeError, (e) ->	# Specific error if the invite code is invalid
 		Logger.module("Session").error "can not register because referral code #{referralCode?.yellow} is invalid".red
 		return res.status(400).json(e)
-	.catch Errors.AlreadyExistsError, (e) ->	# Specific error if the email/user already exists
-		Logger.module("Session").error "can not register because username #{username?.blue} or email already exists".red
+	.catch Errors.AlreadyExistsError, (e) ->	# Specific error if the user already exists
+		Logger.module("Session").error "can not register because username #{username?.blue} already exists".red
 		return res.status(401).json(e)
 	.catch Errors.UnverifiedCaptchaError, (e) ->	# Specific error if the captcha fails
 		Logger.module("Session").error "can not register because captcha #{captcha} input is invalid".red

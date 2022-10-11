@@ -169,7 +169,7 @@ class Session extends EventEmitter
 			debug data
 			@justRegistered = true
 			@emit 'registered'
-			return {email: opts.email, username: opts.username, password: opts.password}
+			return {username: opts.username, password: opts.password}
 
 	isUsernameAvailable: (username) ->
 		return Promise.resolve(
