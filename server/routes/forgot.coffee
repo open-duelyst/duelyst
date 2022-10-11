@@ -7,8 +7,6 @@ uuid = require 'node-uuid'
 moment = require 'moment'
 hashHelpers = require '../lib/hash_helpers.coffee'
 knex = require '../lib/data_access/knex'
-mail = require '../mailer'
-Promise.promisifyAll(mail)
 UsersModule = require '../lib/data_access/users'
 Errors = require '../lib/custom_errors.coffee'
 t = require 'tcomb-validation'
@@ -65,17 +63,7 @@ router.post "/forgot", (req, res, next) ->
 			return knex("password_reset_tokens").insert({ reset_token:@resetToken, user_id:@userId, created_at:moment().utc().toDate() })
 			.bind @
 			.then () =>
-				#mail.sendForgotPasswordAsync(@username, email, @resetToken)
-				#Logger.module("SESSION").debug "Forgot password mail sent"
-				return res.format({
-					'text/html': () ->
-						return res.render(__dirname + "/../templates/sent-reset.hbs",{
-							#title: "Email Sent"
-							title: "Email NOT SENT - SMTP is currently disabled."
-						})
-					'application/json': () ->
-						return res.status(200).json({})
-				})
+				return res.status(404).send('Password reset is not currently implemented.')
 	.catch (e) -> next(e)
 
 router.get "/forgot/:reset_token", (req, res, next) ->
@@ -195,7 +183,6 @@ router.post "/forgot/:reset_token", (req, res, next) ->
 						knex("password_reset_tokens").where('reset_token',reset_token).delete()
 					])
 				.then () ->
-					mail.sendPasswordConfirmationAsync(username, email)
 					return res.format({
 						'text/html': () ->
 							res.render(__dirname + "/../templates/password-changed.hbs",{

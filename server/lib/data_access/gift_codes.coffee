@@ -10,11 +10,9 @@ SyncModule = require './sync'
 InventoryModule = require './inventory'
 CosmeticChestsModule = require './cosmetic_chests'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
-Promise.promisifyAll(mail)
 
 SDK = require '../../../app/sdk'
 

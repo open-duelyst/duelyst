@@ -4,14 +4,11 @@ util = require 'util'
 Logger = require '../../../app/common/logger.coffee'
 colors = require 'colors'
 moment = require 'moment'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 InventoryModule = require("./inventory")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
 crypto = require('crypto')
-
-Promise.promisifyAll(mail)
 
 # SDK imports
 SDK = require '../../../app/sdk'

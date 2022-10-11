@@ -10,8 +10,6 @@ Errors = require '../lib/custom_errors'
 knex = require '../lib/data_access/knex'
 Promise = require 'bluebird'
 {Redis,SRankManager,RiftManager} = require '../redis'
-mail = require '../mailer.coffee'
-Promise.promisifyAll(mail)
 config = require '../../config/config.js'
 env = config.get('env')
 {version} = require '../../version'
@@ -137,12 +135,6 @@ router.get "/health", (req, res) ->
 	.timeout(5000)
 	.spread (row)->
 		if pool.queued >= MAX_QUEUED_ALLOWED
-			serverInfo = {
-				hostname: os.hostname()
-				environment: config.get('env')
-				pool: pool
-			}
-			#mail.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
 			res.status(500)
 		else
 			res.status(200)

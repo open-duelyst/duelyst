@@ -8,12 +8,10 @@ colors = require 'colors'
 moment = require 'moment'
 _ = require 'underscore'
 Errors = require '../custom_errors'
-mail = require '../../mailer'
 knex = require("../data_access/knex")
 config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
 {Redis, Jobs, GameManager} = require '../../redis/'
-Promise.promisifyAll(mail)
 
 ShopData = require 'app/data/shop.json'
 CosmeticsFactory = require 'app/sdk/cosmetics/cosmeticsFactory'
@@ -218,8 +216,7 @@ class ShopModule
 					# https://stripe.com/docs/api/node#create_customer
 					return stripe.customers.createAsync({
 						description: userId,
-						# providing email is optional, we may not have one for our user
-						email: userRow.email || null
+						email: null
 						card: cardToken # via Stripe.JS
 					})
 
@@ -395,8 +392,7 @@ class ShopModule
 #					currency: currencyCode,
 #					source: cardToken
 #					description: chargeDescription
-#					# providing receipt_email is optional, we may not have one for our user
-#					receipt_email: userRow.email || null
+#					receipt_email: null
 #				})
 #
 #			.then (charge) -> # charge object returned from Stripe
@@ -498,16 +494,6 @@ class ShopModule
 #
 #		.bind this_obj
 #		.then () ->
-#
-#			username = @.userRow.username
-#			# we may not have an email provided for the user
-#			email = @.userRow.email || null
-#			if email then mail.sendReceiptAsync(username,email,@.charge.id,productData.qty)
-#
-#			# NOTE: don't send purchase notifications at large volume, and also since they contain PID
-#			# mail.sendTeamPurchaseNotificationAsync(@.userData.username,userId,@.userData.email,@.charge.id,price)
-#
-#			# no need to wait for response for any email
 #			return @.to_return
 #
 #		return trxPromise
@@ -616,16 +602,6 @@ class ShopModule
 
 		.bind this_obj
 		.then () ->
-
-			username = @.userRow.username
-			# we may not have an email provided for the user
-#			email = @.userRow.email || null
-#			if email then mail.sendReceiptAsync(username,email,@.charge.id,productData.qty)
-
-			# NOTE: don't send purchase notifications at large volume, and also since they contain PID
-			# mail.sendTeamPurchaseNotificationAsync(@.userData.username,userId,@.userData.email,@.charge.id,premCurrencyPrice)
-
-			# no need to wait for response for any email
 			return @.to_return
 
 		return txPromise

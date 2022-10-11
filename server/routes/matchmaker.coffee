@@ -13,9 +13,6 @@ t = require 'tcomb-validation'
 validators = require '../validators'
 
 # our modules
-mail = require '../mailer'
-Promise.promisifyAll(mail)
-
 knex = require '../lib/data_access/knex'
 UsersModule = require '../lib/data_access/users'
 GauntletModule = require '../lib/data_access/gauntlet'
