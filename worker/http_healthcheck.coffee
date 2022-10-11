@@ -9,8 +9,6 @@ os = require 'os'
 Promise		= require 'bluebird'
 config = require '../config/config'
 knex 		= require '../server/lib/data_access/knex'
-# mailer = require '../server/mailer'
-# Promise.promisifyAll(mailer)
 
 MAX_QUEUED_ALLOWED = 25
 
@@ -36,12 +34,6 @@ healthcheck = () ->
 			.timeout(5000)
 			.spread (row)->
 				if pool.queued >= MAX_QUEUED_ALLOWED
-					# serverInfo = {
-					# 	hostname: os.hostname()
-					# 	environment: config.get('env')
-					# 	pool: pool
-					# }
-					# mailer.sendErrorAlertAsync(serverInfo, {message: "Database operations queue above maximum limit (#{MAX_QUEUED_ALLOWED})"})
 					res.statusCode = 500
 				else
 					res.statusCode = 200
