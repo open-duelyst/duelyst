@@ -3248,30 +3248,4 @@ class UsersModule
 			Logger.module("UsersModule").error "exportUser() -> #{e.message}".red
 			return null
 
-	###*
-	# Anonymize a user (prevents future logins and removes PID)
-	# @public
-	# @param	{String}	userId			User ID.
-	# @return	{Promise}					Promise that will resolve when complete
-	###
-	@anonymizeUser: (userId)->
-		randomString = crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0,64)
-		timestamp = moment().utc().valueOf()
-		randomEmail = "#{timestamp}-#{randomString}@anon.com"
-		randomUser = "#{timestamp}-#{randomString}-anon"
-
-		return UsersModule.userDataForId(userId)
-		.then (userRow) ->
-			if !userRow
-				throw new Errors.NotFoundError()
-			return Promise.all([
-				UsersModule.disassociateSteamId(userId),
-				UsersModule.changeUsername(userId, randomUser, true)
-			])
-			.catch (e) ->
-				# catch the error if any of the functions above fail and continue with suspending the user
-				Logger.module("UsersModule").error "anonymizeUser() partial failure -> #{e.message}".red
-		.then () ->
-			return UsersModule.suspendUser(userId, "User requested account deletion.")
-
 module.exports = UsersModule
