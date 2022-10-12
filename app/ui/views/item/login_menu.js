@@ -11,7 +11,6 @@ var Animations = require('app/ui/views/animations')
 var NavigationManager = require('app/ui/managers/navigation_manager')
 var LoginMenuTmpl = require('app/ui/templates/item/login_menu.hbs')
 var RegistrationItemView = require('./registration')
-var ForgotPasswordItemView = require('./forgot_password')
 var ErrorDialogItemView = require('./error_dialog')
 var openUrl = require('app/common/openUrl')
 var i18next = require('i18next')
@@ -40,7 +39,6 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 	events: {
 		"click .login": "onLogin",
 		'click .registration': 'onShowRegistration',
-		'click .forgot-password' : 'onShowForgotPassword'
 	},
 
 	animateIn: Animations.fadeIn,
@@ -270,21 +268,6 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
 	},
 
 	/* endregion LOGIN */
-
-	/* region FORGOT PASSWORD */
-
-	onShowForgotPassword: function(e) {
-		e.preventDefault();
-		var forgotPasswordItemView = new ForgotPasswordItemView();
-		forgotPasswordItemView.listenToOnce(forgotPasswordItemView, "success", this.onForgotPasswordComplete.bind(this));
-		NavigationManager.getInstance().showModalView(forgotPasswordItemView);
-	},
-
-	onForgotPasswordComplete: function(e) {
-		NavigationManager.getInstance().destroyModalView();
-	},
-
-	/* endregion FORGOT PASSWORD */
 
 	/* region REGISTRATION */
 

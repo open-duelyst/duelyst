@@ -255,25 +255,6 @@ class Session extends EventEmitter
 		.catch(@_networkError)
 		.then(@_checkResponse)
 
-	forgot: (email) ->
-		return Promise.resolve(
-			fetch "#{@url}/forgot",
-				method: 'POST'
-				headers:
-					'Accept': 'application/json'
-					'Content-Type': 'application/json'
-				body: JSON.stringify({email: email})
-		)
-		.bind(this)
-		.timeout(10000)
-		.catch(@_networkError)
-		.then (res) ->
-			if res.ok then return email
-			if res.status == 404
-				throw new Error('That email was not found')
-			else
-				throw new Error('Please try again')
-
 	isAuthenticated: (token) ->
 		if not token? then return Promise.resolve(false)
 
