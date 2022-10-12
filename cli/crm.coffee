@@ -1937,20 +1937,6 @@ program
 							is_suspended: false
 						})
 
-				else if answers.operation == "Change Email"
-
-					return inquirerPromisifed.prompt [{
-						name:'email'
-						message:"New Email:"
-						type:"input"
-						validate:(input)-> return validator.isEmail(input)
-					}]
-					.bind @
-					.then (answer)->
-
-						console.log("changing email to #{answer.email}")
-						return UsersModule.changeEmail(@.userRow.id,answer.email.toLowerCase())
-
 				else if answers.operation == "Change Username"
 
 					return inquirerPromisifed.prompt [{
@@ -2048,14 +2034,7 @@ program
 		UsersModule ?= require 'server/lib/data_access/users'
 		console.log("loading modules... "+"DONE".green)
 
-		username_or_email = args.username_or_email
-		username_or_email = username_or_email.toLowerCase()
-		username = true
-		if username_or_email.indexOf('@') > 0
-			username = false
-
-		getUserIdAsync = if username then UsersModule.userIdForUsername(username_or_email) else UsersModule.userIdForEmail(username_or_email)
-		getUserIdAsync
+		UsersModule.userIdForUsername(args.username_or_email.toLowerCase())
 		.bind {}
 		.then (id)->
 			if !id

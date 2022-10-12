@@ -28,14 +28,6 @@ class UnauthorizedError extends Error
 		Error.captureStackTrace(this, UnauthorizedError)
 		super(@message)
 
-class UnverifiedEmailError extends Error
-	constructor: (@message = "Email not verified.") ->
-		@name = "UnverifiedEmailError"
-		@status = 400
-		@description = "Unable to process request without a verified email."
-		Error.captureStackTrace(this, UnverifiedEmailError)
-		super(@message)
-
 class BadPasswordError extends Error
 	constructor: (@message) ->
 		@name = "BadPasswordError"
@@ -220,7 +212,6 @@ module.exports.InvalidReferralCodeError = InvalidReferralCodeError
 module.exports.MaxFactionXPForSinglePlayerReachedError = MaxFactionXPForSinglePlayerReachedError
 module.exports.SinglePlayerModeDisabledError = SinglePlayerModeDisabledError
 module.exports.UnverifiedCaptchaError = UnverifiedCaptchaError
-module.exports.UnverifiedEmailError = UnverifiedEmailError
 module.exports.DailyChallengeTimeFrameError = DailyChallengeTimeFrameError
 module.exports.ChestAndKeyTypeDoNotMatchError = ChestAndKeyTypeDoNotMatchError
 module.exports.MaxQuantityOfChestTypeError = MaxQuantityOfChestTypeError

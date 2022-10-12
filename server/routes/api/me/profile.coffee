@@ -50,30 +50,4 @@ router.put "/card_back_id", (req, res, next) ->
 		res.status(200).json({})
 	.catch (error) -> next(error)
 
-router.get "/email_verified_at", (req, res, next) ->
-	user_id = req.user.d.id
-	knex("users").where("id",user_id).first('email_verified_at')
-	.then (user) ->
-		res.status(200).json({
-			email_verified_at: user.email_verified_at?.valueOf()
-		})
-	.catch (error) -> next(error)
-
-router.post "/email_verify_token", (req, res, next) ->
-	user_id = req.user.d.id
-	verifyToken = uuid.v4()
-	return UsersModule.userDataForId(user_id)
-	.bind {}
-	.then (user)->
-		@.userRow = user
-		return knex('email_verify_tokens').where('user_id',user_id).delete()
-	.then ()->
-		return knex('email_verify_tokens').insert(
-			user_id: user_id
-			verify_token:verifyToken
-			created_at:moment().utc().toDate()
-		)
-	.then ()->
-		return res.status(404).send('Email verification is not currently implemented.')
-
 module.exports = router

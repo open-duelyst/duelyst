@@ -12,25 +12,21 @@ DuelystFirebase= require("../server/lib/duelyst_firebase_module")
 fbUtil = require '../app/common/utils/utils_firebase.js'
 
 if process.argv[2]
-
 	console.log process.argv
-
-	email = process.argv[2]
-	console.log "searching for user: " + email
-	console.log "hash: " + fbUtil.escapeEmail(email)
+	username = process.argv[2]
+	console.log "searching for user: " + username
 
 	DuelystFirebase.connect().getRootRef()
 	.bind({})
 	.then (fbRootRef) ->
 		this.fbRootRef = fbRootRef;
-		return UsersModule.userIdForEmail(email)
+		return UsersModule.userIdForUsername(username)
 	.then (userId) ->
 		if !userId
 			throw new Error("userid not found")
 		else
 			console.log("Deleting user account data.")
 			this.userId = userId;
-			this.fbRootRef.child('email-index').child(fbUtil.escapeEmail(email)).remove();
 			this.fbRootRef.child('username-index').child('dummy').remove();
 			this.fbRootRef.child('users').child(userId).remove();
 			this.fbRootRef.child('user-transactions').child(userId).remove();
@@ -52,5 +48,5 @@ if process.argv[2]
 		process.exit(1)
 
 else
-	throw new Error("no user email provided")
+	throw new Error("no username provided")
 	process.exit(1)

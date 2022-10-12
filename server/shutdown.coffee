@@ -12,7 +12,6 @@ config = require '../config/config.js'
 
 ###*
 # Shutdown server process with an unhandled error
-# Will trigger alerts by with exceptionReporter, email
 # @public errorShutdown
 # @param {Error} err
 ###

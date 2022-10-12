@@ -111,14 +111,12 @@ class UsersModule
 	###*
 	# Create a user record for the specified parameters.
 	# @public
-	# @param	{String}	email			User's email (no longer strictly required)
 	# @param	{String}	username		User's username
 	# @param	{String}	password		User's password
 	# @param	{String}	inviteCode		Invite code used
 	# @return	{Promise}					Promise that will return the userId on completion.
 	###
-	@createNewUser: (email = null,username,password,inviteCode = 'kumite14',referralCode,campaignData,registrationSource = null)->
-
+	@createNewUser: (username,password,inviteCode = 'kumite14',referralCode,campaignData,registrationSource = null)->
 		# validate referral code and force it to lower case
 		referralCode = referralCode?.toLowerCase().trim()
 		if referralCode? and not validator.isLength(referralCode,3)
@@ -144,13 +142,10 @@ class UsersModule
 				referralCodePromise = UsersModule.getValidReferralCode(referralCode)
 
 			return Promise.all([
-				UsersModule.userIdForEmail(email),
 				UsersModule.userIdForUsername(username),
 				referralCodePromise
 			])
-		.spread (idForEmail,idForUsername,referralCodeRow)->
-			if idForEmail
-				throw new Errors.AlreadyExistsError("Email already registered")
+		.spread (idForUsername,referralCodeRow)->
 			if idForUsername
 				throw new Errors.AlreadyExistsError("Username not available")
 
@@ -164,7 +159,6 @@ class UsersModule
 
 				userRecord =
 					id:userId
-					email:null
 					username:username
 					password:passwordHash
 					created_at:MOMENT_NOW_UTC.toDate()
@@ -380,71 +374,6 @@ class UsersModule
 					return
 
 	###*
-	# Change a user's email address.
-	# @public
-	# @param	{String}	userId			User ID
-	# @param	{String}	newEmail		New email
-	# @param	{Moment}	systemTime		Pass in the current system time to override clock. Used mostly for testing.
-	# @return	{Promise}					Promise that will return on completion.
-	###
-	@changeEmail: (userId,newEmail,systemTime)->
-
-		MOMENT_NOW_UTC = systemTime || moment().utc()
-		this_obj = {}
-
-		return UsersModule.userIdForEmail(newEmail)
-		.bind {}
-		.then (existingUserId)->
-			if existingUserId
-				throw new Errors.AlreadyExistsError("Email already exists")
-			else
-				return knex.transaction (tx)->
-					knex("users").where('id',userId).first('email').forUpdate().transacting(tx)
-					.bind {}
-					.then (userRow)->
-
-						# we should have a user
-						if !userRow
-							throw new Errors.NotFoundError()
-
-						@.oldEmail = userRow.email
-
-						userUpdateParams =
-							email:newEmail
-
-						return knex("users").where('id',userId).update(userUpdateParams).transacting(tx)
-					.then ()-> SyncModule._bumpUserTransactionCounter(tx,userId)
-					.then tx.commit
-					.catch tx.rollback
-					return
-
-	###*
-	# Mark a user record as having verified email.
-	# @public
-	# @param	{String}	token			Verification Token
-	# @return	{Promise}					Promise that will return on completion.
-	###
-	@verifyEmailUsingToken: (token)->
-		MOMENT_NOW_UTC = moment().utc()
-
-		return knex("email_verify_tokens").first().where('verify_token',token)
-		.bind {}
-		.then (tokenRow)->
-			@.tokenRow = tokenRow
-			unless tokenRow?.created_at
-				throw new Errors.NotFoundError()
-
-			duration = moment.duration(moment().utc().valueOf() - moment.utc(tokenRow?.created_at).valueOf())
-
-			if duration.asDays() < 1
-				return Promise.all([
-					knex('users').where('id',tokenRow.user_id).update({ email_verified_at: MOMENT_NOW_UTC.toDate() }) # mark user as verified
-					knex('email_verify_tokens').where('user_id',tokenRow.user_id).delete() # delete all user's verify tokens
-				])
-			else
-				throw new Errors.NotFoundError()
-
-	###*
 	# Change a user's password.
 	# @public
 	# @param	{String}	userId				User ID
@@ -638,15 +567,6 @@ class UsersModule
 		return knex("users").first().where('id',userId)
 
 	###*
-	# Get user data for email.
-	# @public
-	# @param	{String}	email			User Email
-	# @return	{Promise}					Promise that will return the user data on completion.
-	###
-	@userDataForEmail: (email)->
-		return knex("users").first().where('email',email)
-
-	###*
 	# Intended to be called on login/reload to bump session counter and check transaction counter to update user caches / initiate any hot copies.
 	# @public
 	# @param	{String}	userId			User ID
@@ -818,26 +738,6 @@ class UsersModule
 					return knex('users').where({'id':userId}).update({seen_on_days:userSeenOnDays})
 				else
 					return Promise.resolve()
-
-
-	###*
-	# Get the user ID for the specified email.
-	# @public
-	# @param	{String}	email		User's email
-	# @return	{Promise}				Promise that will return the userId data on completion.
-	###
-	@userIdForEmail: (email, callback) ->
-		if !email then return Promise.resolve(null).nodeify(callback)
-
-		return knex.first('id').from('users').where('email',email)
-		.then (userRow) ->
-
-			return new Promise( (resolve, reject) ->
-				if userRow
-					return resolve(userRow.id)
-				else
-					return resolve(null)
-			).nodeify(callback)
 
 	###*
 	# Get the user ID for the specified username.
@@ -3072,7 +2972,7 @@ class UsersModule
 
 		# List of the columns we want to grab from the users table, is everything except password
 		userTableColumns = ["id","created_at","updated_at","last_session_at","session_count","username_updated_at",
-												"email_verified_at","password_updated_at","invite_code","ltv","purchase_count","last_purchase_at","rank",
+												"password_updated_at","invite_code","ltv","purchase_count","last_purchase_at","rank",
 												"rank_created_at","rank_starting_at","rank_stars","rank_stars_required","rank_delta","rank_top_rank",
 												"rank_updated_at","rank_win_streak","rank_is_unread","top_rank","top_rank_starting_at","top_rank_updated_at",
 												"daily_quests_generated_at","daily_quests_updated_at","achievements_last_read_at","wallet_gold",
@@ -3313,32 +3213,5 @@ class UsersModule
 		.catch (e) ->
 			Logger.module("UsersModule").error "exportUser() -> #{e.message}".red
 			return null
-
-	###*
-	# Anonymize a user (prevents future logins and removes PID)
-	# @public
-	# @param	{String}	userId			User ID.
-	# @return	{Promise}					Promise that will resolve when complete
-	###
-	@anonymizeUser: (userId)->
-		randomString = crypto.randomBytes(Math.ceil(32)).toString('hex').slice(0,64)
-		timestamp = moment().utc().valueOf()
-		randomEmail = "#{timestamp}-#{randomString}@anon.com"
-		randomUser = "#{timestamp}-#{randomString}-anon"
-
-		return UsersModule.userDataForId(userId)
-		.then (userRow) ->
-			if !userRow
-				throw new Errors.NotFoundError()
-			return Promise.all([
-				UsersModule.disassociateSteamId(userId),
-				UsersModule.changeEmail(userId, randomEmail),
-				UsersModule.changeUsername(userId, randomUser, true)
-			])
-			.catch (e) ->
-				# catch the error if any of the functions above fail and continue with suspending the user
-				Logger.module("UsersModule").error "anonymizeUser() partial failure -> #{e.message}".red
-		.then () ->
-			return UsersModule.suspendUser(userId, "User requested account deletion.")
 
 module.exports = UsersModule

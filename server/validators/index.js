@@ -3,7 +3,6 @@ const types = require('./types');
 
 const token = t.struct({
   id: types.UserId,
-  email: t.maybe(types.Email),
   username: t.maybe(types.Username),
 });
 
@@ -26,13 +25,6 @@ const loginGameCenterInput = t.struct({
   identity: types.GameCenterAuth,
 });
 
-const discourseSsoInput = t.struct({
-  password: types.Password,
-  nonce: t.Str,
-  email: t.maybe(types.Email),
-  username: t.maybe(types.Username),
-});
-
 const signupInput = t.struct({
   password: types.NewPassword,
   username: types.Username,
@@ -42,41 +34,6 @@ const signupInput = t.struct({
   campaign_data: t.maybe(types.CampaignData),
   captcha: t.maybe(t.Str),
   is_desktop: t.maybe(t.Bool),
-});
-
-const associateSteamInput = t.struct({
-  password: types.Password,
-  email: t.maybe(types.Email),
-  username: t.maybe(types.Username),
-  steam_ticket: t.Str,
-  steam_friends: t.maybe(t.Array),
-});
-
-const associateGooglePlayInput = t.struct({
-  password: types.Password,
-  email: t.maybe(types.Email),
-  username: t.maybe(types.Username),
-  google_play_id: t.Str,
-  google_auth_token: t.Str,
-});
-
-const associateGameCenterInput = t.struct({
-  password: types.Password,
-  email: t.maybe(types.Email),
-  username: t.maybe(types.Username),
-  identity: types.GameCenterAuth,
-});
-
-const signupSteamInput = t.struct({
-  email: types.Email,
-  username: types.Username,
-  steam_ticket: t.Str,
-  keycode: t.maybe(t.Str),
-  referral_code: t.maybe(types.ReferralCode),
-  friend_referral_code: t.maybe(types.Username),
-  campaign_data: t.maybe(types.CampaignData),
-  captcha: t.maybe(t.Str),
-  steam_friends: t.maybe(t.Array),
 });
 
 const signupGooglePlayInput = t.struct({
@@ -145,11 +102,6 @@ const bossBattleInput = t.struct({
   ai_username: t.maybe(t.Str),
 });
 
-const shopInput = t.struct({
-  card_token: t.Str,
-  last_four_digits: t.Str,
-});
-
 const reportPlayerInput = t.struct({
   user_id: t.subtype(t.Str, (s) => s.length >= 1 && s.length <= 100),
   message: t.subtype(t.Str, (s) => s.length >= 1 && s.length <= 1000),
@@ -189,10 +141,6 @@ module.exports = {
   loginGooglePlayInput,
   loginGameCenterInput,
   signupInput,
-  associateSteamInput,
-  associateGooglePlayInput,
-  associateGameCenterInput,
-  signupSteamInput,
   signupGooglePlayInput,
   signupGameCenterInput,
   signupKeychainInput,
@@ -200,11 +148,9 @@ module.exports = {
   matchmakingInput,
   singlePlayerInput,
   bossBattleInput,
-  shopInput,
   reportPlayerInput,
   deckInput,
   purchaseInput,
   premiumPurchaseInput,
-  discourseSsoInput,
   steamInitTxn,
 };

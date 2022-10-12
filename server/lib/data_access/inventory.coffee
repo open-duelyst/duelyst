@@ -1,11 +1,12 @@
 Promise = require 'bluebird'
 util = require 'util'
-FirebasePromises = require '../firebase_promises'
-DuelystFirebase = require '../duelyst_firebase_module'
-Logger = require '../../../app/common/logger.coffee'
 colors = require 'colors'
 moment = require 'moment'
 _ = require 'underscore'
+
+FirebasePromises = require '../firebase_promises'
+DuelystFirebase = require '../duelyst_firebase_module'
+Logger = require '../../../app/common/logger.coffee'
 SyncModule = require './sync'
 Errors = require '../custom_errors'
 knex = require("../data_access/knex")
@@ -19,7 +20,6 @@ generatePushId = require '../../../app/common/generate_push_id'
 SDK = require '../../../app/sdk'
 
 class InventoryModule
-
 	###*
 	# Maximum number of soft wipes allowed. Determines if a user is eligible for a wipe.
 	# @public

@@ -1,13 +1,14 @@
 Promise = require 'bluebird'
 util = require 'util'
-FirebasePromises = require '../firebase_promises'
-DuelystFirebase = require '../duelyst_firebase_module'
-fbUtil = require '../../../app/common/utils/utils_firebase.js'
-Logger = require '../../../app/common/logger.coffee'
 colors = require 'colors'
 uuid = require 'node-uuid'
 moment = require 'moment'
 _ = require 'underscore'
+
+FirebasePromises = require '../firebase_promises'
+DuelystFirebase = require '../duelyst_firebase_module'
+fbUtil = require '../../../app/common/utils/utils_firebase.js'
+Logger = require '../../../app/common/logger.coffee'
 CONFIG = require '../../../app/common/config.js'
 Errors = require '../custom_errors'
 knex = require("../data_access/knex")

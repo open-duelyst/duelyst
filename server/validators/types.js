@@ -4,7 +4,6 @@ const RankDivisionLookup = require('../../app/sdk/rank/rankDivisionLookup.coffee
 const ShopData = require('../../app/data/shop.json');
 const CosmeticsFactory = require('../../app/sdk/cosmetics/cosmeticsFactory.coffee');
 
-const Email = t.subtype(t.Str, (s) => validator.isEmail(s), 'Email');
 const Password = t.subtype(t.Str, (s) => s.length >= 6, 'Password');
 const NewPassword = t.subtype(t.Str, (s) => s.length >= 8, 'New Password');
 const UserId = t.subtype(t.Str, (s) => s.length === 20 && s.match(/^[A-Za-z0-9\-\_]+$/) !== null, 'UserId');
@@ -86,7 +85,6 @@ const GameCenterAuth = t.struct({
 }, 'Game Center Authentication');
 
 module.exports = {
-  Email,
   UserId,
   Password,
   NewPassword,

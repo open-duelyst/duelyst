@@ -84,15 +84,12 @@ class Session extends EventEmitter
 	initPremiumPurchase: () ->
 		return Promise.resolve("")
 
-	login: (usernameOrEmail, password, silent = false) ->
-		debug("login: #{usernameOrEmail}")
+	login: (username, password, silent = false) ->
+		debug("login: #{username}")
 
 		body = {}
 		body.password = password
-		if usernameOrEmail.indexOf('@') > 0
-			body.email = usernameOrEmail
-		else
-			body.username = usernameOrEmail
+		body.username = username
 
 		return Promise.resolve(
 			fetch "#{@url}/session",
@@ -183,10 +180,10 @@ class Session extends EventEmitter
 		.then (res) ->
 			# available
 			if res.ok then return true
-			# 401 result suggests email is bad or unavailable
+			# 401 result suggests username is bad or unavailable
 			if res.status == 401 then return false
 			# all other results suggest server is unavailable or had an error
-			# so assume email is valid and let the server handle it in the later registration request
+			# so assume username is valid and let the server handle it in the later registration request
 			return true
 		.catch (e) ->
 			debug("isUsernameAvailable #{e.message}")
