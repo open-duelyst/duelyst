@@ -572,15 +572,6 @@ class UsersModule
 		return knex("users").first().where('id',userId)
 
 	###*
-	# Get user data for email.
-	# @public
-	# @param	{String}	email			User Email
-	# @return	{Promise}					Promise that will return the user data on completion.
-	###
-	@userDataForEmail: (email)->
-		return knex("users").first().where('email',email)
-
-	###*
 	# Intended to be called on login/reload to bump session counter and check transaction counter to update user caches / initiate any hot copies.
 	# @public
 	# @param	{String}	userId			User ID
