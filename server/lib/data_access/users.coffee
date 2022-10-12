@@ -143,13 +143,10 @@ class UsersModule
 				referralCodePromise = UsersModule.getValidReferralCode(referralCode)
 
 			return Promise.all([
-				UsersModule.userIdForEmail(null),
 				UsersModule.userIdForUsername(username),
 				referralCodePromise
 			])
-		.spread (idForEmail,idForUsername,referralCodeRow)->
-			if idForEmail
-				throw new Errors.AlreadyExistsError("Email already registered")
+		.spread (idForUsername,referralCodeRow)->
 			if idForUsername
 				throw new Errors.AlreadyExistsError("Username not available")
 
@@ -743,26 +740,6 @@ class UsersModule
 					return knex('users').where({'id':userId}).update({seen_on_days:userSeenOnDays})
 				else
 					return Promise.resolve()
-
-
-	###*
-	# Get the user ID for the specified email.
-	# @public
-	# @param	{String}	email		User's email
-	# @return	{Promise}				Promise that will return the userId data on completion.
-	###
-	@userIdForEmail: (email, callback) ->
-		if !email then return Promise.resolve(null).nodeify(callback)
-
-		return knex.first('id').from('users').where('email',email)
-		.then (userRow) ->
-
-			return new Promise( (resolve, reject) ->
-				if userRow
-					return resolve(userRow.id)
-				else
-					return resolve(null)
-			).nodeify(callback)
 
 	###*
 	# Get the user ID for the specified username.
