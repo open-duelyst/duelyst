@@ -379,45 +379,6 @@ class UsersModule
 					return
 
 	###*
-	# Change a user's email address.
-	# @public
-	# @param	{String}	userId			User ID
-	# @param	{String}	newEmail		New email
-	# @param	{Moment}	systemTime		Pass in the current system time to override clock. Used mostly for testing.
-	# @return	{Promise}					Promise that will return on completion.
-	###
-	@changeEmail: (userId,newEmail,systemTime)->
-
-		MOMENT_NOW_UTC = systemTime || moment().utc()
-		this_obj = {}
-
-		return UsersModule.userIdForEmail(newEmail)
-		.bind {}
-		.then (existingUserId)->
-			if existingUserId
-				throw new Errors.AlreadyExistsError("Email already exists")
-			else
-				return knex.transaction (tx)->
-					knex("users").where('id',userId).first('email').forUpdate().transacting(tx)
-					.bind {}
-					.then (userRow)->
-
-						# we should have a user
-						if !userRow
-							throw new Errors.NotFoundError()
-
-						@.oldEmail = userRow.email
-
-						userUpdateParams =
-							email:newEmail
-
-						return knex("users").where('id',userId).update(userUpdateParams).transacting(tx)
-					.then ()-> SyncModule._bumpUserTransactionCounter(tx,userId)
-					.then tx.commit
-					.catch tx.rollback
-					return
-
-	###*
 	# Change a user's password.
 	# @public
 	# @param	{String}	userId				User ID
@@ -3305,7 +3266,6 @@ class UsersModule
 				throw new Errors.NotFoundError()
 			return Promise.all([
 				UsersModule.disassociateSteamId(userId),
-				UsersModule.changeEmail(userId, randomEmail),
 				UsersModule.changeUsername(userId, randomUser, true)
 			])
 			.catch (e) ->

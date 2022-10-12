@@ -1937,20 +1937,6 @@ program
 							is_suspended: false
 						})
 
-				else if answers.operation == "Change Email"
-
-					return inquirerPromisifed.prompt [{
-						name:'email'
-						message:"New Email:"
-						type:"input"
-						validate:(input)-> return validator.isEmail(input)
-					}]
-					.bind @
-					.then (answer)->
-
-						console.log("changing email to #{answer.email}")
-						return UsersModule.changeEmail(@.userRow.id,answer.email.toLowerCase())
-
 				else if answers.operation == "Change Username"
 
 					return inquirerPromisifed.prompt [{
