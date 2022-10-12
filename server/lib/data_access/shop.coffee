@@ -1,22 +1,18 @@
 Promise = require 'bluebird'
-validator = require 'validator'
 util = require 'util'
+moment = require 'moment'
+_ = require 'underscore'
+
 FirebasePromises = require '../firebase_promises'
 DuelystFirebase = require '../duelyst_firebase_module'
 Logger = require '../../../app/common/logger.coffee'
-colors = require 'colors'
-moment = require 'moment'
-_ = require 'underscore'
 Errors = require '../custom_errors'
 knex = require("../data_access/knex")
-config = require '../../../config/config.js'
 generatePushId = require '../../../app/common/generate_push_id'
-{Redis, Jobs, GameManager} = require '../../redis/'
-
+{Jobs} = require '../../redis/'
 ShopData = require 'app/data/shop.json'
 CosmeticsFactory = require 'app/sdk/cosmetics/cosmeticsFactory'
 CosmeticsTypeLookup = require 'app/sdk/cosmetics/cosmeticsTypeLookup'
-
 InventoryModule = require './inventory'
 UsersModule = require './users'
 CosmeticChestsModule = require './cosmetic_chests'
@@ -24,18 +20,10 @@ SyncModule = require './sync'
 RiftModule = require './rift'
 GiftCrateModule = require './gift_crate'
 
-# redis
-{Redis, Jobs, GameManager} = require '../../redis/'
-
-# TODO: actually remove this
-stripe = {}
-
 class ShopModule
-
 	@SHOP_SALE_BUFFER_MINUTES: 5 # Number of minutes passed a shop sale's expiration we will allow the purchase to work
 
 	@_addChargeToUser: (txPromise,tx,userRow,userId,sku,price,currencyCode,chargeId,chargeJson,paymentType,createdAt) ->
-
 		allPromises = []
 
 		updateParams =
@@ -120,7 +108,6 @@ class ShopModule
 	# @return	{Promise}
 	###
 	@_addPremiumChargeToUser: (txPromise,tx,userId,userRow,sku,price,shopSaleId,systemTime) ->
-
 		allPromises = []
 
 		NOW_UTC_MOMENT = systemTime || moment.utc()
@@ -172,90 +159,6 @@ class ShopModule
 				armoryPurchaseSku: sku
 			).removeOnComplete(true).save()
 
-#	###*
-#	# Execute a purchase based on a product SKU.
-#	# @public
-#	# @param	{String}	userId					User ID.
-#	# @param	{String}	sku						Product SKU.
-#	# @param	{String}	cardToken				Stripe Credit Card token.
-#	# @return	{Promise}							Promise that will resolve when done.
-#	###
-#	@purchaseProduct: (userId,sku,cardToken)->
-#
-#		Logger.module("ShopModule").debug "purchaseProduct() -> user #{userId} buying #{sku}"
-#
-#		# userId must be defined
-#		unless userId
-#			Logger.module("ShopModule").debug "purchaseProduct() -> invalid user ID - #{userId?.blue}.".red
-#			return Promise.reject(new Error("Can not process purchase : invalid user ID - #{userId}"))
-#
-#		# sku must be defined
-#		unless sku
-#			Logger.module("ShopModule").debug "purchaseProduct() -> invalid SKU - #{sku?.blue}.".red
-#			return Promise.reject(new Error("Can not process purchase : invalid SKU - #{sku}"))
-#
-#		NOW_UTC_MOMENT = moment.utc()
-#		this_obj = {}
-#
-#		productData = ShopModule.productDataForSKU(sku)
-#
-#		if not productData?
-#			Logger.module("ShopModule").debug "purchaseProduct() -> no product found for SKU - #{sku?.blue}.".red
-#			return Promise.reject(new Errors.NotFoundError("Could not find product for SKU - #{sku}"))
-#
-#		price = productData.price
-#
-#		if price == 0
-#			return Promise.reject(new Errors.NotFoundError("Could not find price for product: #{sku}"))
-#
-#		trxPromise = knex.transaction (tx)->
-#
-#			tx("users").where('id',userId).first('ltv','username','email','has_purchased_starter_bundle')
-#			.bind this_obj
-#			.then (userRow)->
-#				@.userRow = userRow
-#
-#				if sku == "STARTERBUNDLE_201604" and userRow.has_purchased_starter_bundle
-#					throw new Errors.AlreadyExistsError("Player already purchased the starter bundle.")
-#
-#				if productData.purchase_limit?
-#					return tx("user_currency_log").count().where("user_id",userId).andWhere('sku',sku)
-#					.then (count)->
-#						count = parseInt(count[0].count)
-#						Logger.module("InventoryModule").debug "purchaseProduct() -> product #{sku} has a purchase limit of #{productData.purchase_limit} and user #{userId.blue} has purchased #{count} so far."
-#						if count >= productData.purchase_limit
-#							throw new Errors.AlreadyExistsError("This product has already been purchased.")
-#
-#				if productData.type == "cosmetic"
-#					return tx("user_cosmetic_inventory").where("user_id",userId).andWhere("cosmetic_id",productData.id).first()
-#					.then (row)->
-#						if row?
-#							throw new Errors.AlreadyExistsError("This cosmetic item is already in the user inventory.")
-#			.then ()->
-#				if cardToken
-#					# charge user card for the amount
-#					Logger.module("InventoryModule").debug "purchaseProduct() -> Charging #{userId.blue} one-time card token"
-#					return ShopModule.chargeUserCardToken(userId,sku,cardToken,price,"DUELYST Armory Purchase")
-#				else
-#					# charge user card for the amount
-#					Logger.module("InventoryModule").debug "purchaseProduct() -> Charging #{userId.blue} stored card"
-#					return ShopModule.chargeUserStoredCard(userId,sku,price,"DUELYST Armory Purchase")
-#			.then (charge)->
-#				@.charge = charge
-#				return ShopModule._awardProductDataContents(trxPromise, tx, userId, charge.id, productData, NOW_UTC_MOMENT)
-#			.then (value)->
-#				@.to_return = value
-#			.then ()-> SyncModule._bumpUserTransactionCounter(tx,userId)
-#			.then tx.commit
-#			.catch tx.rollback
-#			return
-#
-#		.bind this_obj
-#		.then () ->
-#			return @.to_return
-#
-#		return trxPromise
-
 	###*
 	# @public
 	# @param	{String}		userId					User ID.
@@ -264,7 +167,6 @@ class ShopModule
 	# @return	{Promise}							Promise that will resolve when done.
 	###
 	@purchaseProductWithPremiumCurrency: (userId,sku,shopSaleId)->
-
 		Logger.module("ShopModule").debug "purchaseProductWithPremiumCurrency() -> user #{userId} buying #{sku}"
 
 		# userId must be defined
@@ -292,8 +194,7 @@ class ShopModule
 			return Promise.reject(new Errors.NotFoundError("Could not find price for product: #{sku}"))
 
 		txPromise = knex.transaction (tx)->
-
-			return tx("users").where('id',userId).first('ltv','username','email','has_purchased_starter_bundle')
+			return tx("users").where('id', userId).first('ltv', 'username', 'has_purchased_starter_bundle')
 			.bind this_obj
 			.then (userRow)->
 				@.userRow = userRow
@@ -428,7 +329,6 @@ class ShopModule
 		return trxPromise
 
 	@_awardProductDataContents: (txPromise,tx,userId,chargeId,productData,systemTime)->
-
 		NOW_UTC_MOMENT = systemTime || moment.utc()
 		allPromises = []
 
@@ -613,15 +513,10 @@ class ShopModule
 				)
 
 				# txPromise,tx,userRow,userId,sku,price,currencyCode,chargeId,chargeJson,paymentType,createdAt
-
 				return Promise.all(allPromises)
-
 		.bind this_obj
 		.then () ->
 			return @.purchaseId
-
 		return trxPromise
-
-
 
 module.exports = ShopModule
