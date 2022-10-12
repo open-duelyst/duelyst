@@ -9,6 +9,12 @@ if config.isDevelopment()
 	process.env.BLUEBIRD_DEBUG = 1
 	Promise.longStackTraces()
 
+# Increase the number of event listeners in Node.js.
+# The default is 10, but we listen to 14 events in the worker process.
+# Setting this to 15 suppresses benign warnings without losing leak detection.
+events = require 'events'
+events.EventEmitter.defaultMaxListeners = 15
+
 ###
 Job Queue Consumer // aka Worker
 ###
