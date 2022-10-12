@@ -17,7 +17,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 
 	ui: {
 		$form: ".prompt-form",
-		$email: ".email",
 		$username: ".username",
 		$password: ".password",
 		$passwordConfirm: ".password-confirm",
@@ -46,12 +45,10 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 	},
 
 	isValid: false,
-	_hasModifiedEmail: false,
 	_hasModifiedUsername: false,
 	_hasModifiedPassword: false,
 	_hasModifiedPasswordConfirm: false,
 	_hasModifiedInviteCode: false,
-	_emailUnavailable: false,
 	_usernameUnavailable: false,
 	_userNavLockId: "RegistrationUserNavLockId",
 
@@ -79,10 +76,7 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 
 		// update modified state
 		var $target = $(event.target);
-		if (this.ui.$email.is($target)) {
-			this._hasModifiedEmail = true;
-			this._emailUnavailable = false;
-		} else if (this.ui.$username.is($target)) {
+		if (this.ui.$username.is($target)) {
 			this._hasModifiedUsername = true;
 			this._usernameUnavailable = false;
 		} else if (this.ui.$password.is($target)) {
@@ -99,7 +93,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 	updateValidState: function () {
 		FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
 
-		var email = this.ui.$email.val();
 		var username = this.ui.$username.val();
 		var password = this.ui.$password.val();
 		var passwordConfirm = this.ui.$passwordConfirm.val();
@@ -148,7 +141,7 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		}
 
 		// ...
-		isValid = isValid && this._hasModifiedEmail && this._hasModifiedUsername && this._hasModifiedPassword && this._hasModifiedPasswordConfirm
+		isValid = isValid && this._hasModifiedUsername && this._hasModifiedPassword && this._hasModifiedPasswordConfirm
 
 		if (process.env.INVITE_CODES_ACTIVE)
 			isValid = isValid && this._hasModifiedInviteCode
@@ -161,7 +154,6 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
 
 		// register
-		var email = this.ui.$email.val().trim();
 		var username = this.ui.$username.val().trim();
 		var password = this.ui.$password.val().trim();
 		var inviteCode = this.ui.$inviteCode.val().trim();
@@ -204,9 +196,7 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 		FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
 
 		// try to force showing invalid input
-		if (/email/i.test(errorMessage)) {
-			this.showInvalidFormControl(this.ui.$email, errorMessage);
-		} else if (/username/i.test(errorMessage)) {
+		if (/username/i.test(errorMessage)) {
 			this.showInvalidFormControl(this.ui.$username, errorMessage);
 		} else if (/password/i.test(errorMessage)) {
 			this.showInvalidFormControl(this.ui.$password, errorMessage);
