@@ -111,7 +111,6 @@ class UsersModule
 	###*
 	# Create a user record for the specified parameters.
 	# @public
-	# @param	{String}	email			User's email (no longer strictly required)
 	# @param	{String}	username		User's username
 	# @param	{String}	password		User's password
 	# @param	{String}	inviteCode		Invite code used
@@ -160,7 +159,6 @@ class UsersModule
 
 				userRecord =
 					id:userId
-					email:null
 					username:username
 					password:passwordHash
 					created_at:MOMENT_NOW_UTC.toDate()
