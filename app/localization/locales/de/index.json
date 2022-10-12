@@ -4021,7 +4021,6 @@
   },
   "registration": {
     "registration_title": "Konto erstellen",
-    "registration_email_label": "E-Mail",
     "registration_username_label": "Benutzername",
     "registration_password_label": "Passwort",
     "registration_password_confirmation_label": "Passwort bestätigen",
