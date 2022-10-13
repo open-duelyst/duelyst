@@ -9,7 +9,7 @@ resource "aws_s3_bucket_cors_configuration" "cors_config" {
     allowed_headers = ["*"]
     allowed_methods = ["GET", "HEAD"]
     allowed_origins = [var.api_origin, var.cdn_origin]
-    expose_headers  = [
+    expose_headers = [
       "Access-Control-Allow-Methods",
       "Access-Control-Allow-Origin",
       "Access-Control-Max-Age",

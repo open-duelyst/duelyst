@@ -1,12 +1,14 @@
 module "ecs_cluster" {
-  source             = "../modules/ecs_cluster"
-  name               = "duelyst-staging"
-  ssh_public_key     = var.ssh_public_key
+  source         = "../modules/ecs_cluster"
+  name           = "duelyst-staging"
+  ssh_public_key = var.ssh_public_key
+
   # Increase capacity by 1 to allow graceful deployments without stopping live containers.
-  min_capacity       = 0
-  max_capacity       = 0
-  min_spot_capacity  = 2
-  max_spot_capacity  = 2
+  min_capacity      = 0
+  max_capacity      = 0
+  min_spot_capacity = 2
+  max_spot_capacity = 2
+
   security_group_ids = [module.internal_security_group.id]
   subnets = [
     module.first_subnet.id,
