@@ -6,9 +6,7 @@ Logger = require 'app/common/logger'
 i18next = require 'i18next'
 
 class QuestBeginnerWinTwoPracticeGames extends QuestBeginner
-
 	@Identifier: 9909
-	goldReward: 100
 
 	constructor:()->
 		super(QuestBeginnerWinTwoPracticeGames.Identifier,i18next.t("quests.quest_beginner_win_practice_games_title_plural",{count:2}),[QuestType.Beginner],@.goldReward)

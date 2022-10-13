@@ -5,9 +5,7 @@ GameType = require 'app/sdk/gameType'
 i18next = require 'i18next'
 
 class QuestBeginnerFactionLevel extends QuestBeginner
-
 	@Identifier: 9906
-	goldReward: 100
 
 	constructor:()->
 		super(QuestBeginnerFactionLevel.Identifier,i18next.t("quests.quest_beginner_faction_up_title"),[QuestType.Beginner],@.goldReward)

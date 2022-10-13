@@ -4,11 +4,10 @@ UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
 
 class QuestBeginnerWinThreeQuickMatches extends QuestBeginner
-
 	@Identifier: 9908
 	isRequired: false
-#	goldReward: 100 # TODO: needs to unlock codex somehow
 
+	# TODO: needs to unlock codex somehow
 	constructor:()->
 		super(QuestBeginnerWinThreeQuickMatches.Identifier,"Lore master",[QuestType.Beginner],@.goldReward)
 		@params["completionProgress"] = 3

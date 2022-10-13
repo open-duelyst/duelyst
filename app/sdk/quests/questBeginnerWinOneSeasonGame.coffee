@@ -5,9 +5,7 @@ GameType = require 'app/sdk/gameType'
 i18next = require 'i18next'
 
 class QuestBeginnerWinOneSeasonGame extends QuestBeginner
-
 	@Identifier: 9910
-	goldReward: 50
 
 	constructor:()->
 		super(QuestBeginnerWinOneSeasonGame.Identifier,i18next.t("quests.quest_beginner_win_ladder_game_title"),[QuestType.Beginner],@.goldReward)
