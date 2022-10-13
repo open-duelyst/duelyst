@@ -18,6 +18,7 @@ This document will introduce you to the code and guide you through making a chan
 
 ## Helpful Links <a id="helpful-links" />
 
+- [OpenDuelyst Roadmap](ROADMAP.md)
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Open Issues](https://github.com/open-duelyst/duelyst/issues)
 - [Node.js v16 API Reference](https://nodejs.org/dist/latest-v16.x/docs/api/)
