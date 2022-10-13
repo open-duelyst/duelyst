@@ -8,18 +8,12 @@ import semver from 'semver';
 import _ from 'underscore';
 import changelogGenerator from 'gulp-conventional-changelog';
 // import githubRelease from 'gulp-github-release';
-import gitRevSync from 'git-rev-sync';
 // This package was removed, but is available in git history:
 // - https://github.com/open-duelyst/duelyst/tree/fd4347a/packages/git-latest-semver-tag
 // import latestTag from '@counterplay/git-latest-semver-tag';
 import {
   env, version, production, staging,
 } from './shared';
-
-// sync method to just return current git branch
-export function getCurrentBranch() {
-  return gitRevSync.branch();
-}
 
 // clone the desktop repos
 export function desktopClone(cb) {

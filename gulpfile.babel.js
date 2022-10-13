@@ -181,11 +181,6 @@ function validateConfig(cb) {
   if (!production && !staging) {
     return cb(new Error('Current NODE_ENV not supported'));
   }
-  // Can check if current working branch matches env
-  // ie staging => git branch is staging
-  // if (env !== git.getCurrentBranch()) {
-  //   return cb(new Error('Branch does not match NODE_ENV'))
-  // }
   return cb();
 }
 function validateConfigForDesktop(cb) {
