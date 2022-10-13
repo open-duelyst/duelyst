@@ -2,6 +2,7 @@ CardSet = require './cardSetLookup'
 i18next = require 'i18next'
 
 defaultOrbGoldCost = 50
+defaultFullSetSpiritCost = 5000 # 2.5-22.6% discount
 
 class CardSetFactory
 	@setMap: {}
@@ -40,7 +41,7 @@ smap[CardSet.Bloodborn] =
 	isUnlockableThroughOrbs: true
 	numOrbsToCompleteSet: 13
 	orbGoldRefund: 300 # If a player buys a complete set this is what they get back per orb already purchased
-	fullSetSpiritCost: 15000
+	fullSetSpiritCost: defaultFullSetSpiritCost # Individual cost is 6460.
 	orbSpiritRefund: 300
 	cardSetUrl: "https://cards.duelyst.com/rise-of-the-bloodborn"
 
@@ -54,7 +55,7 @@ smap[CardSet.Unity] =
 	orbGoldCost: defaultOrbGoldCost
 	isUnlockableThroughOrbs: true
 	numOrbsToCompleteSet: 13
-	fullSetSpiritCost: 15000
+	fullSetSpiritCost: defaultFullSetSpiritCost # Individual cost is 5130.
 	orbGoldRefund: 300 # If a player buys a complete set this is what they get back per orb already purchased
 	cardSetUrl: "https://cards.duelyst.com/ancient-bonds"
 
