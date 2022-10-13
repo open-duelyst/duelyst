@@ -4,9 +4,14 @@
 
 - OpenDuelyst will be free indefinitely, with no form of monetization. The code
 	supporting payment processing has already been disabled or removed.
-- Since monetization is disabled, the rate of card acquisition will be
-	accelerated, by some combination of reducing pack/orb cost and increasing
-	rewards.
+- Since monetization is disabled, the rate of card acquisition is accelerated.
+	- Orbs (card packs) cost 50 gold instead of 100.
+	- Diamond (premium currency) prices are unmodified, since there is currently
+		no way to gain Diamonds outside of test environments.
+	- Spirit (crafting) costs have also been halved. Spirit rewards (from
+		disenchanting cards) have been standardized at 50% of Spirit cost.
+	- Quests which award Gold now award up to twice as much gold, and we are
+		looking into adding new quests.
 - Creating new content or making balance changes are not goals of this project.
 	Instead, we aim to provide a well-maintained reference implementation and
 	reference deployment of the game as it existed before the shutdown in 2020.
@@ -20,7 +25,7 @@
 
 - Our priorities leading up to the launch include any issues which will
 	directly impact the player experience in the web client, such as granting
-	full collections, adding new quests, or reducing the cost of packs/orbs.
+	full collections, adding new quests, or adjusting card acquisition rates.
 
 #### Launch and announcement
 
