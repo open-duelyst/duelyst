@@ -59,7 +59,7 @@ export function audio(version, cb) {
     .pipe(awspublish.reporter());
 }
 
-export function stagingcdn() {
+export function staging() {
   const publisher = awspublish.create({
     region: config.get('assetsBucket.region'),
     params: {

@@ -59,11 +59,11 @@ gulp.task('rsx:build_urls', rsx.buildUrls);
 gulp.task('rsx:codex_urls', rsx.codexUrls);
 gulp.task('revision:generate', revision.generate);
 gulp.task('revision:replace', revision.replace);
-gulp.task('upload:main', uploadToS3.main);
-gulp.task('upload:audio', uploadToS3.audio);
-gulp.task('upload:main:versioned', () => uploadToS3.main(version));
-gulp.task('upload:audio:versioned', () => uploadToS3.audio(version));
-gulp.task('upload:stagingcdn', uploadToS3.stagingcdn);
+gulp.task('cdn:upload:main', uploadToS3.main);
+gulp.task('cdn:upload:audio', uploadToS3.audio);
+gulp.task('cdn:upload:main:versioned', () => uploadToS3.main(version));
+gulp.task('cdn:upload:audio:versioned', () => uploadToS3.audio(version));
+gulp.task('cdn:upload:staging', uploadToS3.staging);
 gulp.task('changelog', git.changelog);
 gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
@@ -196,11 +196,11 @@ gulp.task('build:release', gulp.series(
   'revision:replace',
   'rsx:source_urls',
 ));
-gulp.task('upload:release', gulp.series(
+gulp.task('cdn:upload:release', gulp.series(
   'rsx:copy',
   'rsx:copy:cdn',
-  'upload:main',
-  'upload:audio',
+  'cdn:upload:main',
+  'cdn:upload:audio',
 ));
 gulp.task('build:release:versioned', gulp.series(
   validateConfig,
@@ -212,9 +212,9 @@ gulp.task('build:release:versioned', gulp.series(
   'revision:replace',
   'rsx:source_urls',
 ));
-gulp.task('upload:release:versioned', gulp.series(
+gulp.task('cdn:upload:release:versioned', gulp.series(
   'rsx:copy',
   'rsx:copy:cdn',
-  'upload:main:versioned',
-  'upload:audio:versioned',
+  'cdn:upload:main:versioned',
+  'cdn:upload:audio:versioned',
 ));
