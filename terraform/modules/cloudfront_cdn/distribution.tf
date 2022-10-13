@@ -14,27 +14,17 @@ resource "aws_cloudfront_distribution" "distribution" {
 
   # Cache static assets for 10 minutes by default.
   default_cache_behavior {
-    target_origin_id       = var.bucket_origin_id
-    allowed_methods        = ["GET", "HEAD", "OPTIONS"]
-    cached_methods         = ["GET", "HEAD"]
-    viewer_protocol_policy = "https-only"
-    compress               = false
-    #cache_policy_id            = aws_cloudfront_cache_policy.cache_policy.id
-    #origin_request_policy_id   = aws_cloudfront_origin_request_policy.origin_policy.id
+    target_origin_id           = var.bucket_origin_id
+    allowed_methods            = ["GET", "HEAD", "OPTIONS"]
+    cached_methods             = ["GET", "HEAD"]
+    viewer_protocol_policy     = "https-only"
+    compress                   = false
+    cache_policy_id            = aws_cloudfront_cache_policy.cache_policy.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.response_headers_policy.id
-
-    # Temp revert of above policy usage:
-    min_ttl     = 0
-    default_ttl = 3600
-    max_ttl     = 86400
-    forwarded_values {
-      query_string = false
-      cookies { forward = "none" }
-    }
+    origin_request_policy_id   = aws_cloudfront_origin_request_policy.origin_policy.id
   }
 
   # Cache rarely-changed resource assets for 1 day by default.
-  /*
   ordered_cache_behavior {
     path_pattern               = "/${var.cdn_path_prefix}resources/*"
     target_origin_id           = var.bucket_origin_id
@@ -43,10 +33,9 @@ resource "aws_cloudfront_distribution" "distribution" {
     viewer_protocol_policy     = "https-only"
     compress                   = true
     cache_policy_id            = aws_cloudfront_cache_policy.cache_policy_resources.id
-    origin_request_policy_id   = aws_cloudfront_origin_request_policy.origin_policy.id
     response_headers_policy_id = aws_cloudfront_response_headers_policy.response_headers_policy.id
+    origin_request_policy_id   = aws_cloudfront_origin_request_policy.origin_policy.id
   }
-  */
 
   restrictions {
     geo_restriction {

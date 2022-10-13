@@ -1,8 +1,13 @@
+locals {
+  code_ttl     = 3600  # 1 hour.
+  resource_ttl = 86400 # 1 day.
+}
+
 resource "aws_cloudfront_cache_policy" "cache_policy" {
   name        = "cache-policy"
-  min_ttl     = 60    # 1 minute.
-  default_ttl = 600   # 10 minutes.
-  max_ttl     = 86400 # 1 day.
+  min_ttl     = local.code_ttl
+  default_ttl = local.code_ttl
+  max_ttl     = local.code_ttl
 
   parameters_in_cache_key_and_forwarded_to_origin {
     enable_accept_encoding_brotli = false
@@ -11,13 +16,7 @@ resource "aws_cloudfront_cache_policy" "cache_policy" {
     cookies_config { cookie_behavior = "none" }
     headers_config {
       header_behavior = "whitelist"
-      headers {
-        items = [
-          "Origin",
-          "Access-Control-Request-Method",
-          "Access-Control-Request-Headers",
-        ]
-      }
+      headers { items = ["Origin"] }
     }
     query_strings_config { query_string_behavior = "none" }
   }
@@ -25,9 +24,9 @@ resource "aws_cloudfront_cache_policy" "cache_policy" {
 
 resource "aws_cloudfront_cache_policy" "cache_policy_resources" {
   name        = "cache-policy-resources"
-  min_ttl     = 600   # 10 minutes.
-  default_ttl = 86400 # 1 day.
-  max_ttl     = 86400 # 1 day.
+  min_ttl     = local.resource_ttl
+  default_ttl = local.resource_ttl
+  max_ttl     = local.resource_ttl
 
   parameters_in_cache_key_and_forwarded_to_origin {
     enable_accept_encoding_brotli = true
@@ -36,20 +35,12 @@ resource "aws_cloudfront_cache_policy" "cache_policy_resources" {
     cookies_config { cookie_behavior = "none" }
     headers_config {
       header_behavior = "whitelist"
-      headers {
-        items = [
-          "Origin",
-          # Don't think we need these to be part of the cache key.
-          #"Access-Control-Request-Method",
-          #"Access-Control-Request-Headers",
-        ]
-      }
+      headers { items = ["Origin"] }
     }
     query_strings_config { query_string_behavior = "none" }
   }
 }
 
-# https://aws.amazon.com/premiumsupport/knowledge-center/no-access-control-allow-origin-error/
 resource "aws_cloudfront_origin_request_policy" "origin_policy" {
   name = "origin-policy"
 
