@@ -4,9 +4,7 @@ UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
 
 class QuestBeginnerPlayOneQuickMatch extends QuestBeginner
-
 	@Identifier: 9903
-	goldReward: 100
 
 	constructor:()->
 		super(QuestBeginnerPlayOneQuickMatch.Identifier,"Into the Fray",[QuestType.Beginner],@.goldReward)

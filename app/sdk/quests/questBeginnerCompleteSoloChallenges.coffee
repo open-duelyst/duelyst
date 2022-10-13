@@ -5,9 +5,7 @@ GameType = require 'app/sdk/gameType'
 i18next = require 'i18next'
 
 class QuestBeginnerCompleteSoloChallenges extends QuestBeginner
-
 	@Identifier: 9904
-	goldReward: 50
 	isRequired:false
 
 	constructor:()->

@@ -6,10 +6,9 @@ Logger = require 'app/common/logger'
 i18next = require 'i18next'
 
 class QuestBeginnerWinPracticeGames extends QuestBeginner
-
 	@Identifier: 9901
 	spiritOrbsReward: 1
-	goldReward: null
+	goldReward: null # Awards a Spirit Orb instead of Gold. Adding gold messes up the UI.
 
 	constructor:()->
 		super(QuestBeginnerWinPracticeGames.Identifier,i18next.t("quests.quest_beginner_win_practice_games_title",{count:1}),[QuestType.Beginner],@.goldReward)

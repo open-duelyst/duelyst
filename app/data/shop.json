@@ -2,7 +2,7 @@
 	"packs": {
 		"BOOSTER1_GOLD": {
 			"sku": "BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "core_set_booster_name",
 			"qty": 1,
 			"unit_name": "Spirit Orb",
@@ -98,7 +98,7 @@
 		},
 		"SHIMZAR_BOOSTER1_GOLD": {
 			"sku": "SHIMZAR_BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "shimzar_booster_name",
 			"qty": 1,
 			"unit_name": "Shim'Zar Orb",
@@ -177,7 +177,7 @@
 		},
 		"COMBINED_UNLOCKABLES_BOOSTER1_GOLD": {
 			"sku": "COMBINED_UNLOCKABLES_BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "combined_booster_name",
 			"qty": 1,
 			"unit_name": "Combined Orb",
@@ -256,7 +256,7 @@
 		},
 		"FIRSTWATCH_BOOSTER1_GOLD": {
 			"sku": "FIRSTWATCH_BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "firstwatch_booster_name",
 			"qty": 1,
 			"unit_name": "Unearthed Orb",
@@ -335,7 +335,7 @@
 		},
 		"WARTECH_BOOSTER1_GOLD": {
 			"sku": "WARTECH_BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "wartech_booster_name",
 			"qty": 1,
 			"unit_name": "Immortal Orb",
@@ -414,7 +414,7 @@
 		},
 		"FATE_BOOSTER1_GOLD": {
 			"sku": "FATE_BOOSTER1_GOLD",
-			"gold": 100,
+			"gold": 50,
 			"name": "fate_booster_name",
 			"qty": 1,
 			"unit_name": "Fate Orb",

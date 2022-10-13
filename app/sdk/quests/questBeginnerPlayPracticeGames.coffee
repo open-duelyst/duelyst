@@ -5,9 +5,7 @@ GameType = require 'app/sdk/gameType'
 Logger = require 'app/common/logger'
 
 class QuestBeginnerPlayPracticeGames extends QuestBeginner
-
 	@Identifier: 9902
-	goldReward: 100
 
 	constructor:()->
 		super(QuestBeginnerPlayPracticeGames.Identifier,"Play 3 Practice Games",[QuestType.Beginner],@.goldReward)

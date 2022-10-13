@@ -11,7 +11,7 @@
 	"change_payment_info_button_label": "Change",
 	"delete_payment_info_button_label": "Delete",
 	"confirm_purchase_dialog_quantity_label": "Quantity",
-	"confirm_purchase_dialog_orb_gold_cost": " Each Spirit Orb will cost <span class=\"product-gold-cost\"><strong{{gold_cost}}</strong> GOLD</span>",
+	"confirm_purchase_dialog_orb_gold_cost": " Each Spirit Orb will cost <span class=\"product-gold-cost\"><strong>{{gold_cost}}</strong> Gold</span>",
 	"confirm_purchase_dialog_premium_price": "<strong> {{price}} </strong> DIAMONDS",
 	"all_subcategories_title": "All",
 	"balance_label": "Balance",

@@ -4,9 +4,7 @@ UtilsGameSession = require 'app/common/utils/utils_game_session'
 GameType = require 'app/sdk/gameType'
 
 class QuestBeginnerWinThreeRankedMatches extends QuestBeginner
-
 	@Identifier: 9907
-	goldReward: 100
 
 	constructor:()->
 		super(QuestBeginnerWinThreeRankedMatches.Identifier,"Rank up",[QuestType.Beginner],@.goldReward)

@@ -12,6 +12,10 @@ _InventoryManager.current = _InventoryManager.getInstance;
 
 module.exports = _InventoryManager;
 
+// Duplicates unexported defaultOrbGoldCost var in cardSetFactory.coffee.
+// Need to update here as well for purchase functionality.
+const ORB_GOLD_COST = 50;
+
 var CONFIG = require('app/common/config');
 var EventBus = require('app/common/eventbus');
 var EVENTS = require('app/common/event_types');
@@ -407,7 +411,7 @@ var InventoryManager = Manager.extend({
 	buyBoosterPacksWithGold: function(numBoosterPacks, cardSetId) {
 		if (numBoosterPacks == null || isNaN(numBoosterPacks) || numBoosterPacks <= 0) { numBoosterPacks = 1; }
 		if (cardSetId == null) { cardSetId = SDK.CardSet.Core; }
-		if (this.walletModel.get("gold_amount") >= numBoosterPacks * 100) {
+		if (this.walletModel.get("gold_amount") >= numBoosterPacks * ORB_GOLD_COST) {
 			NewPlayerManager.getInstance().setHasPurchasedBoosterPack();
 
 			return new Promise(function (resolve, reject) {
