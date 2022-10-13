@@ -59,8 +59,25 @@ export function audio(version, cb) {
     .pipe(awspublish.reporter());
 }
 
-export function staging() {
-  const publisher = awspublish.create({
+//
+// NEW CODE BELOW.
+// This is what we use in Yarn scripts.
+//
+
+function getPublisher() {
+  if (process.env.AWS_ACCESS_KEY === undefined) {
+    throw new Error('AWS_ACCESS_KEY must be set');
+  }
+  if (process.env.AWS_SECRET_KEY === undefined) {
+    throw new Error('AWS_SECRET_KEY must be set');
+  }
+  if (process.env.AWS_REGION === undefined) {
+    throw new Error('AWS_REGION must be set');
+  }
+  if (process.env.S3_ASSETS_BUCKET === undefined) {
+    throw new Error('S3_ASSETS_BUCKET must be set');
+  }
+  return awspublish.create({
     region: config.get('assetsBucket.region'),
     params: {
       Bucket: config.get('assetsBucket.name'),
@@ -71,9 +88,39 @@ export function staging() {
       signatureVersion: 'v3',
     },
   });
+}
+
+// Uploads web assets (HTML, CSS, JS, and locales).
+export function webAssets() {
+  if (!(['staging', 'production'].includes(process.env.NODE_ENV))) {
+    throw new Error('NODE_ENV must be either staging or production');
+  }
+  const publisher = getPublisher();
+  const filesToUpload = [
+    'dist/src/*.css',
+    'dist/src/*.html',
+    'dist/src/*.js',
+    'dist/src/**/*.json',
+  ];
+  return gulp.src(filesToUpload)
+    .pipe(rename((p) => {
+      p.dirname = `/${process.env.NODE_ENV}/${p.dirname}`;
+      return p.dirname;
+    }))
+    .pipe(parallelize(publisher.publish(), 2))
+    .pipe(publisher.cache())
+    .pipe(awspublish.reporter());
+}
+
+// Uploads all assets, including resources.
+export function allAssets() {
+  if (!(['staging', 'production'].includes(process.env.NODE_ENV))) {
+    throw new Error('NODE_ENV must be either staging or production');
+  }
+  const publisher = getPublisher();
   return gulp.src(['dist/src/**/*'])
     .pipe(rename((p) => {
-      p.dirname = `/staging/${p.dirname}`;
+      p.dirname = `/${process.env.NODE_ENV}/${p.dirname}`;
       return p.dirname;
     }))
     .pipe(parallelize(publisher.publish(), 2))
