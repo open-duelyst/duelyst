@@ -40,7 +40,8 @@
                                 <label>{{localize 'shop.confirm_purchase_dialog_quantity_label'}}</label>
                                 <input class="form-control quantity" type="text" placeholder="1" maxlength="3" />
                             </div>
-                            <p>Each Spirit Orb will cost <span class="product-gold-cost">0 Gold</span></p>
+                            <!-- The product-gold-cost class will automatically render the localized string. -->
+                            <p><span class="product-gold-cost"></span></p>
                         </div>
                         <div class="purchase-controls">
                             <button type="button" class="btn btn-clean btn-clean-cancel cancel">{{localize 'shop.confirm_purchase_dialog_cancel_button_label'}}</button>
