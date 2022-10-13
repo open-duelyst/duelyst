@@ -1,5 +1,3 @@
-# Helper scripts for performing a full rebuild before starting the backend.
-
 # Clean and reinstall dependencies.
 rm -rf node_modules
 yarn install --dev || exit 1
