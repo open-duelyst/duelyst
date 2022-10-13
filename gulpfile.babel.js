@@ -18,7 +18,6 @@ import * as upload from './gulp/upload';
 import * as git from './gulp/git';
 import * as docker from './gulp/docker';
 import * as localization from './gulp/localization';
-import * as cdn from './gulp/cdn';
 import {
   opts, config, env, version, production, staging, development,
 } from './gulp/shared';
@@ -70,8 +69,6 @@ gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
 gulp.task('docker:push', docker.push);
 gulp.task('localization:copy', localization.copy);
-gulp.task('cdn:purgeAll', cdn.purgeAll);
-gulp.task('cdn:purgeLocalization', cdn.purgeLocalization);
 
 // Define git helper tasks (master,staging,production)
 const branches = ['master', 'staging', 'production'];
@@ -173,7 +170,6 @@ gulp.task('default', gulp.series('build'));
 
 // Release Builds (CI ready tasks)
 const ciTargets = ['staging', 'production'];
-const cdnUrl = config.get('cdn');
 
 function validateConfig(cb) {
   // Ensure running build:release:${target} matches running config environemnt
@@ -188,24 +184,6 @@ function validateConfigForDesktop(cb) {
     return cb(new Error('Current NODE_ENV not supported'));
   }
   return cb();
-}
-
-function overrideCdnUrl(cb) {
-  // We override the CDN url here
-  // to prevent the CSS task from using for desktop app
-  config.set('cdn', '');
-  cb();
-}
-function restoreCdnUrl(cb) {
-  // We restore the CDN url here in case other tasks need it
-  config.set('cdn', cdnUrl);
-  cb();
-}
-function versionedCdnUrl(cb) {
-  // We override the CDN url with a version specific one
-  const cdnUrl = `${config.get('cdn')}/v${version}`;
-  config.set('cdn', cdnUrl);
-  cb();
 }
 
 gulp.task('build:release', gulp.series(
@@ -227,7 +205,6 @@ gulp.task('upload:release', gulp.series(
 gulp.task('build:release:versioned', gulp.series(
   validateConfig,
   'clean:all',
-  // versionedCdnUrl,
   'source',
   'source:register',
   'rsx:build_urls',
