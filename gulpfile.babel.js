@@ -14,11 +14,10 @@ import bump from './gulp/bump';
 import * as clean from './gulp/clean';
 import * as rsx from './gulp/rsx';
 import * as revision from './gulp/revision';
-import * as upload from './gulp/upload';
+import * as cdn from './gulp/cdn';
 import * as git from './gulp/git';
 import * as docker from './gulp/docker';
 import * as localization from './gulp/localization';
-import * as cdn from './gulp/cdn';
 import {
   opts, config, env, version, production, staging, development,
 } from './gulp/shared';
@@ -60,18 +59,17 @@ gulp.task('rsx:build_urls', rsx.buildUrls);
 gulp.task('rsx:codex_urls', rsx.codexUrls);
 gulp.task('revision:generate', revision.generate);
 gulp.task('revision:replace', revision.replace);
-gulp.task('upload:main', upload.main);
-gulp.task('upload:audio', upload.audio);
-gulp.task('upload:main:versioned', () => upload.main(version));
-gulp.task('upload:audio:versioned', () => upload.audio(version));
-gulp.task('upload:stagingcdn', upload.stagingcdn);
+gulp.task('cdn:upload:main', cdn.main);
+gulp.task('cdn:upload:audio', cdn.audio);
+gulp.task('cdn:upload:main:versioned', () => cdn.main(version));
+gulp.task('cdn:upload:audio:versioned', () => cdn.audio(version));
+gulp.task('cdn:upload:all', cdn.allAssets);
+gulp.task('cdn:upload:web', cdn.webAssets);
 gulp.task('changelog', git.changelog);
 gulp.task('docker:build', docker.build);
 gulp.task('docker:tag', docker.tag);
 gulp.task('docker:push', docker.push);
 gulp.task('localization:copy', localization.copy);
-gulp.task('cdn:purgeAll', cdn.purgeAll);
-gulp.task('cdn:purgeLocalization', cdn.purgeLocalization);
 
 // Define git helper tasks (master,staging,production)
 const branches = ['master', 'staging', 'production'];
@@ -173,7 +171,6 @@ gulp.task('default', gulp.series('build'));
 
 // Release Builds (CI ready tasks)
 const ciTargets = ['staging', 'production'];
-const cdnUrl = config.get('cdn');
 
 function validateConfig(cb) {
   // Ensure running build:release:${target} matches running config environemnt
@@ -190,24 +187,6 @@ function validateConfigForDesktop(cb) {
   return cb();
 }
 
-function overrideCdnUrl(cb) {
-  // We override the CDN url here
-  // to prevent the CSS task from using for desktop app
-  config.set('cdn', '');
-  cb();
-}
-function restoreCdnUrl(cb) {
-  // We restore the CDN url here in case other tasks need it
-  config.set('cdn', cdnUrl);
-  cb();
-}
-function versionedCdnUrl(cb) {
-  // We override the CDN url with a version specific one
-  const cdnUrl = `${config.get('cdn')}/v${version}`;
-  config.set('cdn', cdnUrl);
-  cb();
-}
-
 gulp.task('build:release', gulp.series(
   validateConfig,
   'clean:all',
@@ -218,16 +197,15 @@ gulp.task('build:release', gulp.series(
   'revision:replace',
   'rsx:source_urls',
 ));
-gulp.task('upload:release', gulp.series(
+gulp.task('cdn:upload:release', gulp.series(
   'rsx:copy',
   'rsx:copy:cdn',
-  'upload:main',
-  'upload:audio',
+  'cdn:upload:main',
+  'cdn:upload:audio',
 ));
 gulp.task('build:release:versioned', gulp.series(
   validateConfig,
   'clean:all',
-  // versionedCdnUrl,
   'source',
   'source:register',
   'rsx:build_urls',
@@ -235,9 +213,9 @@ gulp.task('build:release:versioned', gulp.series(
   'revision:replace',
   'rsx:source_urls',
 ));
-gulp.task('upload:release:versioned', gulp.series(
+gulp.task('cdn:upload:release:versioned', gulp.series(
   'rsx:copy',
   'rsx:copy:cdn',
-  'upload:main:versioned',
-  'upload:audio:versioned',
+  'cdn:upload:main:versioned',
+  'cdn:upload:audio:versioned',
 ));
