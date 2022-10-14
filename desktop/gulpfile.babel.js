@@ -15,7 +15,7 @@ gulp.task('clean:all', () => del(['dist', 'node_modules']));
 // Manually define platforms and architectures for build tasks.
 gulp.task('desktop:build:darwin:x64', (cb) => desktop.build({ platform: 'darwin', arch: 'x64' }, cb));
 gulp.task('desktop:build:darwin:arm64', (cb) => desktop.build({ platform: 'darwin', arch: 'arm64' }, cb));
-gulp.task('desktop:build:win32', (cb) => desktop.build({ platform: 'win32' }, cb));
+gulp.task('desktop:build:win32', (cb) => desktop.build({ platform: 'win32', arch: 'x64' }, cb));
 
 // Automatically define platforms for Steam & packaging tasks.
 ['darwin', 'win32'].forEach((platform) => {
@@ -57,7 +57,7 @@ gulp.task('desktop:build', gulp.series(
   'desktop:copy',
   'desktop:build:darwin:x64',
   // 'desktop:build:darwin:arm64', // Requires Electron v11.
-  // 'desktop:build:win32',
+  'desktop:build:win32',
 ));
 
 /* Steam & packaging tasks temporarily disabled.
