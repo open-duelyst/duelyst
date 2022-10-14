@@ -31,6 +31,6 @@
     "build:production": "NODE_ENV=production node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build",
     "build:steam": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build:steam",
     "start:mac": "ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-x64/Duelyst.app",
-    "rebuild": "electron-rebuild -v 11.5.0 -f"
+    "rebuild": "electron-rebuild -v 2.0.0 -f"
   }
 }

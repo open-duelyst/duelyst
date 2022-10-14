@@ -59,7 +59,7 @@ export function build(opts, cb) {
     // by default symlinks are removed, we need to preserve for macOS
     derefSymlinks: opts.platform !== 'darwin',
     arch: opts.arch || 'all',
-    electronVersion: '1.2.3', // Initial version.
+    electronVersion: '2.0.0', // First version with JS Exponentiation support.
     //electronVersion: '11.5.0', // First version with support for darwin-arm64.
     //electronVersion: '21.0.1', // Latest version.
     asar: false,
