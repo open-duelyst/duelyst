@@ -147,7 +147,7 @@ app.on('ready', () => {
 
   // setupDiscord();
 
-  const indexPath = path.resolve(__dirname, 'src', 'index.html');
+  const indexPath = path.resolve(__dirname, 'dist/src', 'index.html');
   mainWindow.showURL(indexPath, argsForRenderer);
 });
 

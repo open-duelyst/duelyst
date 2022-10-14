@@ -4,7 +4,7 @@ import del from 'del';
 // Cleans out all build output folders folder
 export function all() {
   return del([
-    'src',
+    'dist',
     'node_modules',
   ]);
 }

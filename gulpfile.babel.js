@@ -180,12 +180,6 @@ function validateConfig(cb) {
   }
   return cb();
 }
-function validateConfigForDesktop(cb) {
-  if (!production && !staging) {
-    return cb(new Error('Current NODE_ENV not supported'));
-  }
-  return cb();
-}
 
 gulp.task('build:release', gulp.series(
   validateConfig,
