@@ -20,14 +20,9 @@ import {
 
 const ncpAsync = Promise.promisify(ncp);
 
-// Installs the desktop's npm packages
-export function npm(cb) {
-  execSync('npm install', { cwd: './desktop' });
-  cb();
-}
-
-// Package the desktop source into an asar
-export function asar(cb) {
+// Installs the desktop's Yarn packages
+export function yarn(cb) {
+  execSync('yarn install');
   cb();
 }
 
@@ -36,29 +31,29 @@ export function setup(cb) {
   if (!production && !staging) {
     return cb(new Error('Current NODE_ENV not supported'));
   }
-  return gulp.src('desktop/package.json')
+  return gulp.src('package.json')
     .pipe(jeditor((json) => {
       if (staging) { json.name = 'duelyst-staging'; }
       if (production) { json.name = 'duelyst'; }
       return json;
     }))
-    .pipe(gulp.dest('desktop/'));
+    .pipe(gulp.dest('dist/'));
 }
 
 // Copy over the /dist source to the /desktop folder for packaging
 export function copy() {
-  gutil.log('Using parent directory /dist as input for desktop build');
-  gutil.log('Ensure /dist is compiled correctly');
-  gutil.log('Ensure /dist/resources is present (gulp rsx:copy before)');
-  return ncpAsync('dist/src/', 'desktop/src');
+  gutil.log('Using parent directory ../dist/ as input for desktop build');
+  gutil.log('Ensure ../dist/ is compiled correctly');
+  gutil.log('Ensure ../dist/resources/ is present (gulp rsx:copy before)');
+  return ncpAsync('../dist/src/', 'dist/src');
 }
 
 // Build the desktop app for the desired platform
 export function build(opts, cb) {
-  const desktopPkgJson = readPkg.sync('./desktop');
+  const desktopPkgJson = readPkg.sync('.');
   const packagerOpts = {
-    dir: 'desktop',
-    out: 'dist/desktop',
+    dir: '.',
+    out: 'dist/build',
     name: desktopPkgJson.productName,
     platform: opts.platform,
     // by default symlinks are removed, we need to preserve for macOS
