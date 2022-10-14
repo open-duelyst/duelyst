@@ -1,9 +1,16 @@
 import * as desktop from './gulp/desktop';
 
-gulp.task('clean:desktop', clean.desktop);
+const desktopPlatforms = ['darwin', 'win32'];
+
+function validateConfigForDesktop(cb) {
+  if (!production && !staging) {
+    return cb(new Error('Current NODE_ENV not supported'));
+  }
+  return cb();
+}
 
 // Define desktop tasks
-const desktopPlatforms = ['darwin', 'win32'];
+gulp.task('clean:desktop', clean.desktop);
 desktopPlatforms.forEach((platform) => {
   gulp.task(`desktop:build:${platform}`, (cb) => desktop.build({ platform }, cb));
   gulp.task(`desktop:build:steam:${platform}`, (cb) => desktop.build({ platform, steam: true }, cb));
