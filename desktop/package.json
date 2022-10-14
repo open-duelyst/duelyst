@@ -12,7 +12,6 @@
     "lodash.debounce": "^4.0.6",
     "minimist": "^1.1.2",
     "node-uuid": "*",
-    "open": "^8.4.0",
     "os-name": "^2.0.1",
     "shell": "^0.9.4"
   },
