@@ -63,7 +63,7 @@ export function build(opts, cb) {
     asar: false,
     prune: true,
     overwrite: true,
-    icon: 'desktop/icon',
+    icon: 'icon',
     appCopyright: '2016 Counterplay Games Inc.',
     appVersion: desktopPkgJson.version,
     // windows
