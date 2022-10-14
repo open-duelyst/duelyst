@@ -1,6 +1,7 @@
 {
   "name": "duelyst-desktop",
   "productName": "Duelyst",
+  "license": "CC0-1.0",
   "version": "1.96.17",
   "main": "desktop.js",
   "dependencies": {
