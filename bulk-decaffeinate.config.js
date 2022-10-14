@@ -1,7 +1,7 @@
 module.exports = {
   decaffeinateArgs: [
     '--disallow-invalid-constructors',
-    '--keep-commonjs'
+    '--keep-commonjs',
   ],
-  jscodeshiftScripts: ['remove-coffee-from-imports.js']
-}
+  jscodeshiftScripts: ['remove-coffee-from-imports.js'],
+};

@@ -60,8 +60,8 @@ export function build(opts, cb) {
     derefSymlinks: opts.platform !== 'darwin',
     arch: opts.arch || 'all',
     electronVersion: '2.0.0', // First version with JS Exponentiation support.
-    //electronVersion: '11.5.0', // First version with support for darwin-arm64.
-    //electronVersion: '21.0.1', // Latest version.
+    // electronVersion: '11.5.0', // First version with support for darwin-arm64.
+    // electronVersion: '21.0.1', // Latest version.
     asar: false,
     prune: true,
     overwrite: true,
@@ -80,24 +80,28 @@ export function build(opts, cb) {
     appCategoryType: 'public.app-category.games',
     helperBundleId: `${desktopPkgJson.productName} Helper`,
     protocols: [
-      //{
-      //  name: 'discord-duelyst',
-      //  schemes: ['discord-357706468843061258'],
-      //},
+      /*
+      {
+        name: 'discord-duelyst',
+        schemes: ['discord-357706468843061258'],
+      },
+      */
       {
         name: 'duelyst',
         schemes: ['duelyst'],
       },
     ],
     // afterCopy does not work with Electron 1.2.3. Works on v11+.
-    //afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
-    //  rebuild({ buildPath, electronVersion, arch, force: true })
-    //  .then(() => {
-    //    gutil.log(`Electron native modules rebuilt for ${platform}-${arch}`)
-    //    callback()
-    //  })
-    //  .catch((error) => callback(error))
-    //}]
+    /*
+    afterCopy: [(buildPath, electronVersion, platform, arch, callback) => {
+      rebuild({ buildPath, electronVersion, arch, force: true })
+      .then(() => {
+        gutil.log(`Electron native modules rebuilt for ${platform}-${arch}`)
+        callback()
+     })
+      .catch((error) => callback(error))
+    }]
+    */
   };
   return packager(packagerOpts, cb);
 }
