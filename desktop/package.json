@@ -19,6 +19,9 @@
     "shell": "^0.9.4"
   },
   "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^7.3.0",
     "devtron": "^1.1.2",
     "gulp": "^4.0.2"
   },
