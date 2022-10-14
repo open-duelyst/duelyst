@@ -3809,6 +3809,8 @@ App.getMinBrowserVersions = () ->
 # check if given browser is valid when compared against list of allowed browsers
 App.isBrowserValid = (browserName, browserMajor, supportedBrowsers) ->
 	if Storage.get("skipBrowserCheck") then return true
+	if browserName == 'Electron' then return true
+
 	if Object.keys(supportedBrowsers).includes(browserName)
 		return parseInt(browserMajor, 10) >= supportedBrowsers[browserName]
 	else
