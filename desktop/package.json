@@ -19,6 +19,7 @@
     "babel-core": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
+    "cross-env": "^7.0.3",
     "devtron": "^1.1.2",
     "electron": "^21.1.1",
     "electron-packager": "^16.0.0",
@@ -26,11 +27,14 @@
     "gulp": "^4.0.2"
   },
   "scripts": {
-    "build": "NODE_ENV=staging node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build",
-    "build:mac": "NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:darwin",
-    "build:production": "NODE_ENV=production node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build",
-    "build:steam": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build:steam",
-    "start:mac": "ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-x64/Duelyst.app",
-    "rebuild": "electron-rebuild -v 2.0.0 -f"
+    "build:all": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build",
+    "build:all:production": "cross-env NODE_ENV=production node node_modules/gulp/bin/gulp.js desktop:build",
+    "build:windows": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:windows",
+    "build:mac": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:mac",
+    "build:macm1": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:macm1",
+    "build:steam": "node mode_modules/gulp/bin/gulp.js desktop:build:steam",
+    "start:windows": "cross-env ELECTRONC_IS_DEV=1 dist/build/Duelyst-win32-x64/Duelyst.exe",
+    "start:mac": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-x64/Duelyst.app",
+    "start:macm1": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-arm64/Duelyst.app"
   }
 }
