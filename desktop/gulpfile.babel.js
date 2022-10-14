@@ -3,8 +3,6 @@ import * as clean from './gulp/clean';
 import * as desktop from './gulp/desktop';
 import { production, staging } from './gulp/shared';
 
-const desktopPlatforms = ['darwin', 'win32'];
-
 function validateConfigForDesktop(cb) {
   if (!production && !staging) {
     return cb(new Error('Current NODE_ENV not supported'));
@@ -14,8 +12,13 @@ function validateConfigForDesktop(cb) {
 
 gulp.task('clean:all', clean.all);
 
-desktopPlatforms.forEach((platform) => {
-  gulp.task(`desktop:build:${platform}`, (cb) => desktop.build({ platform }, cb));
+// Manually define platforms and architectures for build tasks.
+gulp.task('desktop:build:darwin:x64', (cb) => desktop.build({platform: 'darwin', arch: 'x64'}, cb));
+gulp.task('desktop:build:darwin:arm64', (cb) => desktop.build({platform: 'darwin', arch: 'arm64'}, cb));
+gulp.task('desktop:build:win32', (cb) => desktop.build({platform: 'win32'}, cb));
+
+// Automatically define platforms for Steam & packaging tasks.
+['darwin', 'win32'].forEach((platform) => {
   // Temporarily disable Steam & packaging steps.
   //gulp.task(`desktop:build:steam:${platform}`, (cb) => desktop.build({ platform, steam: true }, cb));
   //gulp.task(`desktop:zip:${platform}`, (cb) => desktop.zip(platform, cb));
@@ -52,7 +55,8 @@ gulp.task('desktop:build', gulp.series(
   'desktop:setup',
   'desktop:yarn',
   'desktop:copy',
-  'desktop:build:darwin',
+  'desktop:build:darwin:x64',
+  //'desktop:build:darwin:arm64',
   //'desktop:build:win32',
 ));
 
