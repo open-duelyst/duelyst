@@ -3807,10 +3807,10 @@ App.getMinBrowserVersions = () ->
 				resolve(snapshot.val())
 
 # check if given browser is valid when compared against list of allowed browsers
-App.isBrowserValid = (browserName, browserMajor, browserlist) ->
+App.isBrowserValid = (browserName, browserMajor, supportedBrowsers) ->
 	if Storage.get("skipBrowserCheck") then return true
-	if Object.keys(browserlist).includes(browserName)
-		return parseInt(browserMajor, 10) >= browserlist[browserName]
+	if Object.keys(supportedBrowsers).includes(browserName)
+		return parseInt(browserMajor, 10) >= supportedBrowsers[browserName]
 	else
 		return false
 
@@ -3833,17 +3833,18 @@ App.generateBrowserHtml = (browser, version) ->
 		"""
 
 # show some HTML saying the current browser is not supported if browser detection fails
-App.browserTestFailed = (browserlist) ->
+App.browserTestFailed = (browserName, browserVersion, supportedBrowsers) ->
 	html = """
 		<div style="margin:auto; position:absolute; height:50%; width:100%; top: 0px; bottom: 0px; font-size: 20px; color: white; text-align: center;">
 			<p>Looks like your current browser is not supported.</p>
+			<p>Your browser was detected as: #{browserName} version #{browserVersion}.</p>
 			<p>Visit <a href='https://support.duelyst.com' style="color: gray;">our support page</a> to submit a request for assistance.</p>
 			<br>
 	"""
 
 	# dynamically create html containing list of support browsers
-	Object.keys(browserlist).forEach (browser) ->
-		version = browserlist[browser]
+	Object.keys(supportedBrowsers).forEach (browser) ->
+		version = supportedBrowsers[browser]
 		html += App.generateBrowserHtml(browser, version)
 
 	html += "</div>"
@@ -3942,9 +3943,9 @@ App.setup = () ->
 # ---- Application Start Sequence ---- #
 #
 App.getMinBrowserVersions()
-.then (browserlist) ->
-	if !App.isBrowserValid(userAgent.browser.name, userAgent.browser.major, browserlist)
-		return App.browserTestFailed(browserlist)
+.then (supportedBrowsers) ->
+	if !App.isBrowserValid(userAgent.browser.name, userAgent.browser.major, supportedBrowsers)
+		return App.browserTestFailed(userAgent.browser.name, userAgent.browser.major, supportedBrowsers)
 
 	if !App.glTest()
 		return App.glTestFailed()
