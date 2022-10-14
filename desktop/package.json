@@ -33,7 +33,7 @@
     "build:mac": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:darwin:x64",
     "build:macm1": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:darwin:arm64",
     "build:steam": "node mode_modules/gulp/bin/gulp.js desktop:build:steam",
-    "start:windows": "cross-env ELECTRONC_IS_DEV=1",
+    "start:windows": "cross-env ELECTRONC_IS_DEV=1 dist/build/Duelyst-win32-x64/Duelyst.exe",
     "start:mac": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-x64/Duelyst.app",
     "start:macm1": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-arm64/Duelyst.app"
   }
