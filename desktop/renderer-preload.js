@@ -11,7 +11,8 @@ window.openUrl = require('open');
 // expose electron's ipcRenderer but only whitelist certain channels
 const { ipcRenderer } = require('electron');
 
-const ipcWhiteList = ['discord', 'discord-update-presence', 'create-window', 'steam-error'];
+//const ipcWhiteList = ['discord', 'discord-update-presence', 'create-window', 'steam-error'];
+const ipcWhiteList = ['create-window', 'steam-error'];
 window.ipcRenderer = {};
 window.ipcRenderer.send = (channel, ...args) => {
   if (!ipcWhiteList.includes(channel)) return;

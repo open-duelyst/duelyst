@@ -78,10 +78,10 @@ export function build(opts, cb) {
     appCategoryType: 'public.app-category.games',
     helperBundleId: `${desktopPkgJson.productName} Helper`,
     protocols: [
-      {
-        name: 'discord-duelyst',
-        schemes: ['discord-357706468843061258'],
-      },
+      //{
+      //  name: 'discord-duelyst',
+      //  schemes: ['discord-357706468843061258'],
+      //},
       {
         name: 'duelyst',
         schemes: ['duelyst'],
