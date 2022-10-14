@@ -2,7 +2,7 @@
   "name": "duelyst-desktop",
   "productName": "Duelyst",
   "license": "CC0-1.0",
-  "version": "1.96.17",
+  "version": "1.97.1",
   "main": "desktop.js",
   "dependencies": {
     "bcrypt": "^5.0.1",
