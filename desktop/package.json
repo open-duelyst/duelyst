@@ -19,7 +19,8 @@
     "shell": "^0.9.4"
   },
   "devDependencies": {
-    "devtron": "^1.1.2"
+    "devtron": "^1.1.2",
+    "gulp": "^4.0.2"
   },
   "scripts": {
     "build:desktop": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js desktop:build",
