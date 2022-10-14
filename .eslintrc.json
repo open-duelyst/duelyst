@@ -61,6 +61,14 @@
     {
       "files": ["test/**/*.js"],
       "rules": {"no-unused-expressions": ["off"]}
+    },
+    {
+      "files": ["desktop/gulp/shared.js"],
+      "rules": {"import/no-relative-packages": ["off"]}
+    },
+    {
+      "files": ["desktop/**/*.js"],
+      "rules": {"import/no-unresolved": ["off"]}
     }
   ]
 }
