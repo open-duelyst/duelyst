@@ -25,7 +25,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.1"
+  deployed_version  = "1.97.2"
   container_count   = 1
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
@@ -36,7 +36,8 @@ module "ecs_service_api" {
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
-    { name = "ALL_CARDS_AVAILABLE", value = true }
+    { name = "ALL_CARDS_AVAILABLE", value = true },
+    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
   ]
 
   secrets = [
