@@ -48,12 +48,10 @@ router.get "/:game_id/replay_data", (req, res, next) ->
 	knex("user_games").where('user_id',user_id).andWhere('game_id',game_id).first()
 	.then (row) ->
 		if row?
-
-			gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{game_id}.json"
-			mouseUIDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/ui_events/#{game_id}.json"
-			Logger.module("API").debug "starting download of game #{game_id} replay data from #{gameDataUrl}"
-
 			downloadGameSessionDataAsync = new Promise (resolve,reject)->
+				# FIXME: Hardcoded S3 URL.
+				gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{game_id}.json"
+				Logger.module("API").debug "starting download of game #{game_id} replay data from #{gameDataUrl}"
 				request.get(gameDataUrl).end (err, res) ->
 					if res? && res.status >= 400
 						# Network failure, we should probably return a more intuitive error object
@@ -67,6 +65,8 @@ router.get "/:game_id/replay_data", (req, res, next) ->
 						return resolve(res.text)
 
 			downloadMouseUIDataAsync = new Promise (resolve,reject)->
+				# FIXME: Hardcoded S3 URL.
+				mouseUIDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/ui_events/#{game_id}.json"
 				request.get(mouseUIDataUrl).end (err, res) ->
 					if res? && res.status >= 400
 						# Network failure, we should probably return a more intuitive error object

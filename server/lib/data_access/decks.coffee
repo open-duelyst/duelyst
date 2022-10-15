@@ -121,25 +121,21 @@ class DecksModule
 	# @return	{String}
 	###
 	@hashForDeck: (cards,salt="")->
-
 		if !cards
 			return null
 
 		baseCardIds = _.map(cards,(card) -> return SDK.Cards.getBaseCardId(card))
-
 		sortedCardIds = baseCardIds.sort()
-
-		val = sortedCardIds.join(',') + salt
-
-		hash = crypto.createHash('sha256')
-		cipher = crypto.createCipher('aes-256-ctr','dcDnVgALT39spZb')
-
 		Logger.module("DecksModule").debug "hashCodeForDeck() -> generating hash for #{sortedCardIds}"
 
+		hash = crypto.createHash('sha256')
+		val = sortedCardIds.join(',') + salt
 		hash.update(val)
 		digest = hash.digest('hex')
 		Logger.module("DecksModule").debug "hashCodeForDeck() -> digest: #{digest}"
 
+		# FIXME: (node:27) Warning: Use Cipheriv for counter mode of aes-256-ctr
+		cipher = crypto.createCipher('aes-256-ctr','dcDnVgALT39spZb')
 		crypted = cipher.update(digest,'utf8','hex')
 		crypted += cipher.final('hex')
 		Logger.module("DecksModule").debug "hashCodeForDeck() -> crypted: #{crypted}"
@@ -148,6 +144,5 @@ class DecksModule
 		Logger.module("DecksModule").debug "hashCodeForDeck() -> final: #{final}"
 
 		return final
-
 
 module.exports = DecksModule
