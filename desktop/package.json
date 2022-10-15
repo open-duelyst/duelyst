@@ -16,11 +16,20 @@
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.24.1",
+    "bluebird": "2.9.13",
     "cross-env": "^7.0.3",
+    "del": "2.2.0",
     "electron": "^21.1.1",
     "electron-packager": "^16.0.0",
     "electron-rebuild": "^3.2.9",
-    "gulp": "^4.0.2"
+    "gulp": "^4.0.2",
+    "gulp-json-editor": "2.2.1",
+    "gulp-rename": "1.2.2",
+    "gulp-tap": "0.1.3",
+    "gulp-util": "3.0.5",
+    "hasha": "2.2.0",
+    "ncp": "2.0.0",
+    "read-pkg": "1.1.0"
   },
   "scripts": {
     "build:all": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build",
