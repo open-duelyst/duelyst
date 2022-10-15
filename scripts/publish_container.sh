@@ -2,17 +2,17 @@
 
 # Helper function for error handling.
 quit () {
-	echo $1
+	echo "Usage: publish_container.sh <service> <version> <ecr-registry-id>"
 	exit 1
 }
 
 # Parse arguments.
 SERVICE=$1
-if [ -z $SERVICE ]; then quit "First argument must be SERVICE e.g. 'sp'!"; fi
+if [ -z $SERVICE ]; then quit; fi
 VERSION=$2
-if [ -z $VERSION ]; then quit "Second argument must be VERSION e.g. '1.96.17'"; fi
+if [ -z $VERSION ]; then quit; fi
 REGISTRY=$3
-if [ -z $REGISTRY ]; then quit "Third argument must be REGISTRY e.g. 'abcd1234'"; fi
+if [ -z $REGISTRY ]; then quit; fi
 
 # Check AWS access.
 which aws > /dev/null || quit "AWS CLI is not installed. Exiting."

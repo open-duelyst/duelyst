@@ -367,10 +367,15 @@ const config = convict({
       default: '',
     },
   },
-  matchmakingDefaults: {
+  matchmaking: {
     allowMatchWithLastOpponent: {
       doc: 'Should matchmaking allow matching with the same opponent twice in a row?',
       default: false,
+    },
+    defaultGameServer: {
+      doc: 'Game server domain name for staging and production; used by Worker.',
+      default: '',
+      env: 'DEFAULT_GAME_SERVER',
     },
   },
   steam: {

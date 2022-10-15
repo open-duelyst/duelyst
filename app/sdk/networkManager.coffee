@@ -57,22 +57,23 @@ class NetworkManager
 			TelemetryManager.getInstance().setSignal("game","connecting")
 			token = Storage.get('token')
 
-			# determine which websocket URL to use
+			# Determine which WebSocket URL to use.
+			# SP uses port 8000; MP uses port 8001.
+			# Development uses window.location.hostname and no SSL.
 			env = process.env.NODE_ENV || 'development'
-			if env == 'development'
-				# local games use the SP server
-				websocketUrl = "ws://#{window.location.hostname}:8000"
+			if env == 'development' then websocketUrl = "ws://#{window.location.hostname}:8000"
+
+			# Staging/Production will set gameServerAddress and use SSL.
 			else
 				if gameServerAddress?
-					# if a server address was provided, use it
-					websocketUrl = gameServerAddress
+					if gameType == 'single_player' then websocketUrl = "wss://#{gameServerAddress}:8000"
+					else websocketUrl = "wss://#{gameServerAddress}:8001"
+
+				# Fall back to window.location.hostname if gameServerAddress is missing.
+				# This will work in the web client, but not in the desktop client.
 				else
-					if gameType == 'single_player'
-						# online single-player games connect to port 8000
-						websocketUrl = "wss://#{window.location.hostname}:8000"
-					else
-						# online multi-player games connect to port 8001
-						websocketUrl = "wss://#{window.location.hostname}:8001"
+					if gameType == 'single_player' then websocketUrl = "wss://#{window.location.hostname}:8000"
+					else websocketUrl = "wss://#{window.location.hostname}:8001"
 
 			# validate and log websocket URL
 			if !websocketUrl
