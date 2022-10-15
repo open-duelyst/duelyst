@@ -5,6 +5,9 @@
 Install `cross-env` with `npm install -g cross-env`, which is used to support
 running the steps below on Windows systems in addition to Mac and Linux systems.
 
+On Mac, install Wine with `brew install --cask wine-stable`. You may need to
+manually allow it in the Security & Privacy settings in System Preferences.
+
 ## Build the JavaScript Client
 
 The Desktop build will pull in the JavaScript client code, so we'll build that
@@ -26,9 +29,8 @@ dependencies and scripts.
 2. Run `yarn build:all`. This will build the staging clients. To build
    production clients, use `yarn build:all:production`.
 3. To run the newly-built app, use `yarn start:windows` or `yarn start:mac`.
+4. To package the app, use `yarn zip:windows` or `yarn zip:mac`.
 
 ## Known Issues
 
-- The Windows client does not build successfully without `wine` on Mac.
-- The packaging of desktop clients into checksummed ZIP files is disabled.
 - The Steam build is not yet working.
