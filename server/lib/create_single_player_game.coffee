@@ -166,23 +166,35 @@ createSinglePlayerGame = (userId,name,gameType,deck,cardBackId,battleMapIndexesT
 		Logger.module("SINGLE-PLAYER").debug("New Game ID: #{gameId}")
 		@.newGameSession.gameId = gameId
 		return GameManager.saveGameSession(gameId, @.newGameSession.serializeToJSON(@.newGameSession))
-	.then () -> # assign the player to a server
-		# if consul is disabled, there's no need for a game server IP
-		if !config.get('consul.enabled')
-			Logger.module("SINGLE PLAYER").debug "Not assigning to specific server since no CONSUL in environment.".cyan
-			return Promise.resolve(null)
 
-		Consul.getHealthySinglePlayerServers()
-		.then (servers) ->
-			if servers.length == 0
-				return Promise.reject(new Error("No servers available."))
-			# Grab random node from available servers
-			random_node = _.sample(servers)
-			node_name = random_node["Node"]?["Node"]
-			return Consul.kv.get("nodes/#{node_name}/dns_name")
-			.then (dns_name) ->
-				Logger.module("SINGLE PLAYER").debug "Connecting player to #{dns_name}".green
-				return dns_name
+	.then () -> # assign the player to a server
+		# Consul flow (disabled).
+		###
+		if config.get('consul.enabled')
+			Consul.getHealthySinglePlayerServers()
+			.then (servers) ->
+				if servers.length == 0
+					return Promise.reject(new Error("No servers available."))
+				# Grab random node from available servers
+				random_node = _.sample(servers)
+				node_name = random_node["Node"]?["Node"]
+				return Consul.kv.get("nodes/#{node_name}/dns_name")
+				.then (dns_name) ->
+					Logger.module("SINGLE PLAYER").debug "Connecting player to #{dns_name}".green
+					return dns_name
+		###
+
+		# Return a domain name in staging and production.
+		# TODO: Rework this if we scale beyond one SP server.
+		if ['production', 'staging'].includes(config.get('env'))
+			server = config.get('matchmaking.defaultGameServer')
+			Logger.module('SP').log "Assigning user to game server #{server}"
+			return Promise.resolve(server)
+
+		# Return null in development (defaults to window.location.hostname).
+		Logger.module('SP').log 'Not assigning game server for dev environment'
+		return Promise.resolve(null)
+
 	.then (gameServer)->
 		createdDate = moment().utc().valueOf()
 		@.newGameSession.createdAt  = createdDate
