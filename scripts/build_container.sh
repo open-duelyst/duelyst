@@ -8,7 +8,7 @@ quit () {
 
 # Parse arguments.
 SERVICE=$1
-if [ -z $SERVICE ]; then quit "First argument must be SERVICE e.g. 'sp'!"; fi
+if [ -z $SERVICE ]; then quit "Usage: build_container.sh <service> <version>"; fi
 VERSION=$2
 if [ -z $VERSION ]; then VERSION=testing; fi
 
