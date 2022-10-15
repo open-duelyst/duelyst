@@ -94,7 +94,6 @@
   },
   "devDependencies": {
     "@coffeelint/cli": "^5.2.9",
-    "@counterplay/steamcmd": "./packages/steamcmd",
     "async": "^1.5.2",
     "aws-sdk": "^2.1.5",
     "babel-core": "^6.26.0",
