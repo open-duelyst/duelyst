@@ -1,6 +1,5 @@
 import gulp from 'gulp';
 import gutil from 'gulp-util';
-import debug from 'gulp-debug';
 import size from 'gulp-size';
 import changed from 'gulp-changed';
 import replace from 'gulp-replace';
@@ -110,7 +109,6 @@ export function copyWeb() {
 // Used for testing
 export function copyAll() {
   return gulp.src('./app/resources/**', { base: 'app' })
-    .pipe(debug())
     .pipe(gulp.dest('dist/src'));
 }
 
