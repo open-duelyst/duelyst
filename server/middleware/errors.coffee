@@ -6,8 +6,6 @@ Logger = require '../../app/common/logger'
 StackLogger = require '../lib/stack_logger.coffee'
 config = require '../../config/config'
 
-StackLogger.skipPackage('express')
-
 # first error middleware: internal console.logger
 # prints errors to console with pretty print stacktrace
 module.exports.logError = (err, req, res, next) ->
