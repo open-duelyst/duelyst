@@ -107,26 +107,31 @@ export function build(opts, cb) {
 }
 
 // Build the desktop app for the desired platform
-export function zip(platform, cb) {
+export function zip(opts, cb) {
   if (os.platform() !== 'darwin') {
     gutil.log('This task currently only works on Mac');
     return cb();
   }
+
   const desktopPkgJson = readPkg.sync('./desktop');
-  if (platform === 'darwin') {
+  const baseDir = `dist/desktop/${desktopPkgJson.productName}-${opts.platform}-${opts.arch}`
+  const zipTarget = `dist/desktop/${desktopPkgJson.name}-v${desktopPkgJson.version}-${opts.platform}-${opts.arch}.zip`;
+
+  if (opts.platform === 'darwin') {
     // Add symlink named 'Electron' to actual binary
-    execSync(`cd dist/desktop/${desktopPkgJson.productName}-darwin-x64/${desktopPkgJson.productName}.app/Contents/MacOS/ && ln -fs ${desktopPkgJson.productName} Electron`);
-    const execPath = `ditto -c -k --sequesterRsrc --keepParent dist/desktop/${desktopPkgJson.productName}-darwin-x64/${desktopPkgJson.productName}.app dist/desktop/${desktopPkgJson.name}-v${desktopPkgJson.version}-darwin-x64.zip`;
-    return exec(execPath, cb);
+    const macAppDir = `${baseDir}/${desktopPkgJson.productName}.app`
+    execSync(`cd ${macAppDir}/Contents/MacOs/ && ln -fs ${desktopPkgJson.productName} Electron`);
+
+    const dittoCmd = `ditto -c -k --sequesterRsrc --keepParent ${macAppDir} ${zipTarget}`;
+    return exec(dittoCmd, cb);
   }
-  if (platform === 'win32') {
-    const execPath1 = `ditto -c -k --sequesterRsrc dist/desktop/${desktopPkgJson.productName}-win32-x64 dist/desktop/${desktopPkgJson.name}-v${desktopPkgJson.version}-win32-x64.zip`;
-    const execPath2 = `ditto -c -k --sequesterRsrc dist/desktop/${desktopPkgJson.productName}-win32-ia32 dist/desktop/${desktopPkgJson.name}-v${desktopPkgJson.version}-win32-ia32.zip`;
-    return async.series([
-      (cb) => exec(execPath1, cb),
-      (cb) => exec(execPath2, cb),
-    ], cb);
+
+  if (opts.platform === 'win32') {
+    const dittoCmd = `ditto -c -k --sequesterRsrc ${baseDir} ${zipTarget}`;
+    return exec(dittoCmd, cb);
   }
+
+  console.log(`Unrecognized platform ${opts.platform}; doing nothing`);
   return cb();
 }
 
