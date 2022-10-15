@@ -38,7 +38,7 @@ getRequeueParams = () ->
 	defaults =
 		riftSearchRadiusIncrease: 1
 		delayMs: 7000
-		allowMatchWithLastOpponent: config.get("matchmakingDefaults.allowMatchWithLastOpponent")
+		allowMatchWithLastOpponent: config.get("matchmaking.allowMatchWithLastOpponent")
 
 	if !config.get('consul.enabled')
 		return Promise.resolve(defaults)

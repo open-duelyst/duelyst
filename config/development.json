@@ -16,7 +16,7 @@
 	"recaptcha": {
 		"enabled": false
 	},
-	"matchmakingDefaults": {
+	"matchmaking": {
 		"allowMatchWithLastOpponent": true
 	}
 }

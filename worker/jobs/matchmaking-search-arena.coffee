@@ -31,7 +31,7 @@ getRequeueParams = () ->
 	defaults =
 		gauntletSearchRadiusIncrease: 1
 		delayMs: 10000
-		allowMatchWithLastOpponent: config.get("matchmakingDefaults.allowMatchWithLastOpponent")
+		allowMatchWithLastOpponent: config.get("matchmaking.allowMatchWithLastOpponent")
 
 	if !config.get('consul.enabled')
 		return Promise.resolve(defaults)

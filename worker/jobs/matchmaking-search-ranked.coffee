@@ -36,7 +36,7 @@ getRequeueParams = () ->
 		maxRankRadius: 30 # 15 is good
 		maxDeckValueRadius: 10
 		delayMs: 2000 # 5000 is good
-		allowMatchWithLastOpponent: config.get("matchmakingDefaults.allowMatchWithLastOpponent")
+		allowMatchWithLastOpponent: config.get("matchmaking.allowMatchWithLastOpponent")
 
 	if !config.get('consul.enabled')
 		return Promise.resolve(defaults)
