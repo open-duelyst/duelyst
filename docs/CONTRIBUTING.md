@@ -85,6 +85,9 @@ Once you have `npm`, you can use it to install Yarn (the package manager we use)
 npm install -g yarn  # You can use `sudo` on Mac or Linux if this gives you a permissions error.
 ```
 
+You can also install `cross-env` with `npm install -g cross-env`, which is used to support running
+the steps below on Windows systems in addition to Mac and Linux systems.
+
 #### Installing Node.js Dependencies
 
 Once you have Yarn installed, you can install the dependencies for the game:
@@ -112,15 +115,8 @@ in the repo.
 Now that dependencies are installed, you can build the game code and its assets! This step will
 take a few minutes.
 
-On Mac or Linux:
-```bash
-FIREBASE_URL=<YOUR_FIREBASE_URL> yarn build
 ```
-
-On Windows:
-```powershell
-$env:FIREBASE_URL = '<YOUR_FIREBASE_URL>'
-yarn build
+cross-env FIREBASE_URL=<YOUR_FIREBASE_URL> yarn build
 ```
 
 Including the Firebase URL is important, since it enables the game client to communicate with the
