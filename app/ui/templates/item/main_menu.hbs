@@ -50,42 +50,6 @@
 	<div class="symbol-main-menu-icon"></div>
 </div>
 
-<div class="shop-cardset-promo hide">
-	<img class="btn-cardset-promo" src="{{imageForResourceScale 'resources/shop/frostfire_purchase_main_menu_promo.png'}}" width="266" />
-</div>
-
-<div class="purchase-promo hide">
-		<h2>
-			{{localize 'mystery_crates.frostfire_adjective'}}
-		</h2>
-    <img class="btn-purchase-promo" src="{{imageForResourceScale 'resources/loot_crates/mystery/frostfire/crate_snapshot.png'}}" width="106" />
-    <div class="purchase-promo-text">
-			{{localize 'mystery_crates.frostfire_promo_text'}}
-    </div>
-    <div class="purchase-promo-text">
-			{{localize 'mystery_crates.frostfire_promo_text2'}}
-    </div>
-    <button class="btn btn-clean btn-clean-secondary purchase-promo-btn">
-				{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}
-    </button>
-</div>
-
-<div class="premium-purchase-promo hide">
-    <h2>
-			{{localize 'mystery_crates.frostfire_premium_adjective'}}
-    </h2>
-    <img class="btn-premium-purchase-promo" src="{{imageForResourceScale 'resources/loot_crates/mystery/frostfire_premium/crate_snapshot.png'}}" width="106" />
-    <div class="premium-purchase-promo-text">
-        {{localize 'mystery_crates.frostfire_premium_promo_text'}}
-    </div>
-    <div class="premium-purchase-promo-text">
-			{{localize 'mystery_crates.frostfire_premium_promo_text2'}}
-    </div>
-    <button class="btn btn-clean btn-clean-secondary premium-purchase-promo-btn">
-			{{localize 'shop.confirm_purchase_dialog_purchase_button_label'}}
-    </button>
-</div>
-
 <div class="boss-toast-promo hide {{#if boss_battle_is_defeated}}inactive{{/if}} {{#unless boss_battle_is_available}}inactive{{/unless}}" data-toggle="tooltip" data-placement="left" title="{{localize 'boss_battles.instructions'}}">
 	<h2>
 		{{#unless boss_battle_is_defeated}}
