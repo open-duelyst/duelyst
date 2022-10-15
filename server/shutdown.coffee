@@ -1,11 +1,7 @@
 os = require 'os'
 Logger = require '../app/common/logger'
+StackLogger = require 'lib/stack_logger.coffee'
 Promise = require 'bluebird'
-
-# Pretty error printing, helps with stack traces
-PrettyError = require 'pretty-error'
-pe = new PrettyError()
-pe.skipNodeFiles()
 
 # Configuration object
 config = require '../config/config.js'
@@ -16,5 +12,5 @@ config = require '../config/config.js'
 # @param {Error} err
 ###
 module.exports.errorShutdown = (err) ->
-	Logger.module("SHUTDOWN").error pe.render(err)
+	Logger.module("SHUTDOWN").error StackLogger.render(err)
 	process.exit(1)

@@ -14,11 +14,6 @@ shutdownLib = require './shutdown'
 app = require "./express"
 server = require('http').createServer(app)
 
-# Pretty error printing, helps with stack traces
-PrettyError = require 'pretty-error'
-pe = new PrettyError()
-pe.skipNodeFiles()
-
 # Configuration object
 config = require '../config/config.js'
 env = config.get('env')
