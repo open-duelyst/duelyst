@@ -11,7 +11,6 @@ npm install -g gulpjs/gulp-cli#4.0
 ```
 To check your version, run `gulp -v`:
 ```
-[12:39:16] Requiring external module babel-core/register
 [12:39:16] CLI version 0.4.0
 [12:39:16] Local version 4.0.0-alpha.2
 ```
