@@ -36,6 +36,7 @@ gulp.task('desktop:git', gulp.series(
 
 // Build the Windows desktop client.
 gulp.task('desktop:build:win32:x64', (cb) => desktop.build({ platform: 'win32', arch: 'x64' }, cb));
+gulp.task('desktop:zip:win32:x64', (cb) => desktop.zip({ platform: 'win32', arch: 'x64' }, cb));
 gulp.task('desktop:build:windows', gulp.series(
   validateConfigForDesktop,
   'clean:all',
@@ -47,6 +48,7 @@ gulp.task('desktop:build:windows', gulp.series(
 
 // Build the Mac desktop client.
 gulp.task('desktop:build:darwin:x64', (cb) => desktop.build({ platform: 'darwin', arch: 'x64' }, cb));
+gulp.task('desktop:zip:darwin:x64', (cb) => desktop.zip({ platform: 'darwin', arch: 'x64' }, cb));
 gulp.task('desktop:build:mac', gulp.series(
   validateConfigForDesktop,
   'clean:all',
@@ -58,6 +60,7 @@ gulp.task('desktop:build:mac', gulp.series(
 
 // Build the Mac M1 desktop client.
 gulp.task('desktop:build:darwin:arm64', (cb) => desktop.build({ platform: 'darwin', arch: 'arm64' }, cb));
+gulp.task('desktop:zip:darwin:arm64', (cb) => desktop.zip({ platform: 'darwin', arch: 'arm64' }, cb));
 gulp.task('desktop:build:macm1', gulp.series(
   validateConfigForDesktop,
   'clean:all',
@@ -79,11 +82,10 @@ gulp.task('desktop:build', gulp.series(
   // 'desktop:build:darwin:arm64', // Requires Electron v11.
 ));
 
-// Automatically define platforms for Steam & packaging tasks.
+// Automatically define platforms for Steam tasks.
 ['darwin', 'win32'].forEach((platform) => {
-  // Temporarily disable Steam & packaging steps.
+  // Temporarily disable Steam tasks.
   // gulp.task(`desktop:build:steam:${platform}`, (cb) => desktop.build({ platform, steam: true }, cb));
-  // gulp.task(`desktop:zip:${platform}`, (cb) => desktop.zip(platform, cb));
 });
 
 /* Steam & packaging tasks temporarily disabled.
@@ -101,8 +103,8 @@ gulp.task('desktop:build:steam', gulp.series(
 ));
 
 gulp.task('desktop:package', gulp.series(
-  'desktop:zip:darwin',
-  'desktop:zip:win32',
+  'desktop:zip:darwin:x64',
+  'desktop:zip:win32:x64',
   'desktop:git',
   'desktop:shasums',
   'desktop:git:publish',
