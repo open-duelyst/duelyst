@@ -14,4 +14,4 @@ rm -rf node_modules
 yarn install --dev || exit 1
 
 # Build the game client.
-NODE_ENV=staging ALL_CARDS_AVAILABLE=true yarn build || exit 1
+NODE_ENV=staging ALL_CARDS_AVAILABLE=true yarn build:withallrsx || exit 1

@@ -138,11 +138,11 @@ gulp.task('build', gulp.series(
   'rsx:copy:web',
   'autowatch',
 ));
-gulp.task('build:withcdn', gulp.series(
+gulp.task('build:withallrsx', gulp.series(
   'clean:all',
   'source',
-  'rsx:copy',
-  'rsx:copy:cdn',
+  'rsx:copy:all',
+  'rsx:copy:web',
   'autowatch',
 ));
 gulp.task('build:app', gulp.series(
