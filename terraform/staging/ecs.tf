@@ -114,7 +114,8 @@ module "ecs_service_worker" {
     { name = "NODE_ENV", value = "staging" },
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
-    { name = "FIREBASE_PROJECT_ID", value = var.firebase_project }
+    { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
+    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
   ]
 
   secrets = [
