@@ -2,31 +2,39 @@
 # Middleware for dealing with server errors
 # Should be included in app.use last
 ###
-os = require 'os'
 Logger = require '../../app/common/logger'
 config = require '../../config/config'
-Errors = require '../lib/custom_errors'
-Promise = require 'bluebird'
 
+# Disabling PE because it results in logs like this:
+#
+# [0m  [0m
+# [0m  [0m[90m-[0m [0m[93mreadable[0m[90m:[0m[93m228[0m[37m [0m[37mTLSSocket.Readable.push[0m
+# [0m  [0m  [0m[90mnode:internal/streams/readable:228:10[0m
+# [0m  [0m
+# [0m  [0m[90m-[0m [0m[93mstream_base_commons[0m[90m:[0m[93m190[0m[37m [0m[37mTLSWrap.onStreamRead[0m
+# [0m  [0m  [0m[90mnode:internal/stream_base_commons:190:23[0m
+# [0m  [0m
+# [0m
+#
 # Pretty error printing, helps with stack traces
-PrettyError = require 'pretty-error'
-pe = new PrettyError()
-pe.skipNodeFiles()
-pe.skipPackage('express')
+#PrettyError = require 'pretty-error'
+#pe = new PrettyError()
+#pe.skipNodeFiles()
+#pe.skipPackage('express')
 
 # first error middleware: internal console.logger
 # prints errors to console with pretty print stacktrace
 module.exports.logError = (err, req, res, next) ->
 	# ensure err.status is set
 	err.status = err.status || 500
-	Logger.module("EXPRESS").log "ERROR: #{err.status} #{err.message}  #{req.ip}".red
 
-	# just plainlog 401,404, no need for full stacktrace
-	if (err.status == 401 || err.status == 404)
+	# don't log 4xx outside of localdev
+	if (config.get('env') != 'development' && err.status >= 400 && err.status <= 500)
 		return next(err)
 
-	# fancy log other errors
-	Logger.module("EXPRESS").log pe.render(err)
+	# log other errors
+	Logger.module("EXPRESS").log "ERROR: #{err.status} #{err.message} for client #{req.ip}"
+	#Logger.module("EXPRESS").log pe.render(err)
 	return next(err)
 
 # last error middleware: either development or production
