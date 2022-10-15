@@ -19,7 +19,9 @@ querystring = require 'query-string'
 # core
 Storage = require 'app/common/storage'
 Logger = window.Logger = require 'app/common/logger'
-Logger.enabled = (process.env.NODE_ENV != 'production' && process.env.NODE_ENV != 'staging')
+
+# Disable detailed logging in production.
+Logger.enabled = process.env.NODE_ENV != 'production'
 
 Landing = require 'app/common/landing'
 Session = window.Session = require 'app/common/session2'
