@@ -114,12 +114,12 @@ export function zip(opts, cb) {
   }
 
   const desktopPkgJson = readPkg.sync('package.json');
-  const baseDir = `dist/build/${desktopPkgJson.productName}-${opts.platform}-${opts.arch}`
+  const baseDir = `dist/build/${desktopPkgJson.productName}-${opts.platform}-${opts.arch}`;
   const zipTarget = `dist/build/${desktopPkgJson.name}-v${desktopPkgJson.version}-${opts.platform}-${opts.arch}.zip`;
 
   if (opts.platform === 'darwin') {
     // Add symlink named 'Electron' to actual binary
-    const macAppDir = `${baseDir}/${desktopPkgJson.productName}.app`
+    const macAppDir = `${baseDir}/${desktopPkgJson.productName}.app`;
     execSync(`cd ${macAppDir}/Contents/MacOS/ && ln -fs ${desktopPkgJson.productName} Electron`);
 
     const dittoCmd = `ditto -c -k --sequesterRsrc --keepParent ${macAppDir} ${zipTarget}`;
