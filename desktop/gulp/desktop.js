@@ -6,7 +6,6 @@ import rename from 'gulp-rename';
 import jeditor from 'gulp-json-editor';
 import tap from 'gulp-tap';
 import ncp from 'ncp';
-import async from 'async';
 import hasha from 'hasha';
 import readPkg from 'read-pkg';
 import packager from 'electron-packager';
