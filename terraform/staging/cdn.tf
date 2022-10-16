@@ -12,12 +12,6 @@ module "replays_bucket" {
   cdn_origin  = "https://${var.cdn_domain_name}"
 }
 
-module "replays_iam_user" {
-  source          = "../modules/iam_user"
-  name            = "replay-uploader"
-  allowed_actions = ["s3:PutObject", "s3:PutObjectAcl"]
-}
-
 module "cloudfront_cdn" {
   source           = "../modules/cloudfront_cdn"
   bucket_dns_name  = module.assets_bucket.bucket_dns_name
