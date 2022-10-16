@@ -12,16 +12,7 @@ env = config.get('env')
 awsRegion = config.get('aws.region')
 replaysBucket = config.get('aws.replaysBucketName')
 
-if env == 'development'
-	s3Opts =
-		region: awsRegion
-		accessKeyId: config.get('aws.accessKey')
-		secretAccessKey: config.get('aws.secretKey')
-else
-	s3Opts =
-		region: awsRegion
-
-s3Client = new S3Client(s3Opts)
+s3Client = new S3Client(region: awsRegion)
 Logger.module("REPLAYS").log "Created S3 client with Region #{awsRegion} and Bucket #{replaysBucket}"
 
 Promise.promisifyAll(zlib)

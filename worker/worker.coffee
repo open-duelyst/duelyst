@@ -52,7 +52,6 @@ process.on "SIGABRT", cleanShutdown
 ###
 Setup Jobs
 ###
-archiveGame = require './jobs/archive-game.coffee'
 updateUserPostGame = require './jobs/update-user-post-game.coffee'
 updateUserAchievements = require './jobs/update-user-achievements.coffee'
 updateUserChargeLog = require './jobs/update-user-charge-log.coffee'
@@ -67,7 +66,6 @@ processUserReferralEvent = require './jobs/process-user-referral-event.coffee'
 updateUsersRatings = require './jobs/update-users-ratings.coffee'
 updateUserSeenOn = require './jobs/update-user-seen-on.coffee'
 
-worker.process('archive-game', 1, archiveGame)
 worker.process('update-user-post-game', 2, updateUserPostGame)
 worker.process('update-user-achievements', 1, updateUserAchievements)
 worker.process('update-user-charge-log', 1, updateUserChargeLog)
@@ -81,3 +79,8 @@ worker.process('data-sync-steam-friends', 1, dataSyncSteamFriends)
 worker.process('process-user-referral-event', 1, processUserReferralEvent)
 worker.process('update-users-ratings', 1, updateUsersRatings )
 worker.process('update-user-seen-on', 1, updateUserSeenOn )
+
+# Don't attempt S3 uploads in local development.
+if config.get('env') != 'development'
+	archiveGame = require './jobs/archive-game.coffee'
+	worker.process('archive-game', 1, archiveGame)
