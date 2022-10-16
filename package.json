@@ -1,7 +1,7 @@
 {
   "name": "open-duelyst",
   "license": "CC0-1.0",
-  "version": "1.97.2",
+  "version": "1.97.3",
   "engines": {
     "yarn": ">= 1.0.0"
   },
@@ -9,6 +9,7 @@
     "handlebars": "4.5.3"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.188.0",
     "@bower_components/backbone": "jashkenas/backbone#1.1.2",
     "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
     "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
@@ -88,7 +89,6 @@
   "devDependencies": {
     "@coffeelint/cli": "^5.2.9",
     "async": "^1.5.2",
-    "aws-sdk": "^2.1.5",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^7.3.0",
     "benchmark": "^2.1.0",

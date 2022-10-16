@@ -61,6 +61,7 @@ EOF
 
 # Create a policy for ECS tasks.
 resource "aws_iam_policy" "task_policy" {
+  name   = "ECSTask"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -75,6 +76,8 @@ resource "aws_iam_policy" "task_policy" {
         "kms:Decrypt",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
         "secretsmanager:GetSecretValue",
         "ssm:GetParameters"
       ],

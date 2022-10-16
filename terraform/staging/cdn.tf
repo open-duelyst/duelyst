@@ -1,6 +1,13 @@
 module "assets_bucket" {
-  source      = "../modules/assets_bucket"
+  source      = "../modules/s3_bucket"
   bucket_name = var.assets_bucket_name
+  api_origin  = "https://${var.staging_domain_name}"
+  cdn_origin  = "https://${var.cdn_domain_name}"
+}
+
+module "replays_bucket" {
+  source      = "../modules/s3_bucket"
+  bucket_name = var.replays_bucket_name
   api_origin  = "https://${var.staging_domain_name}"
   cdn_origin  = "https://${var.cdn_domain_name}"
 }

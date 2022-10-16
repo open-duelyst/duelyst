@@ -2,7 +2,7 @@
   "name": "duelyst-desktop",
   "productName": "Duelyst",
   "license": "CC0-1.0",
-  "version": "1.97.2",
+  "version": "1.97.3",
   "main": "desktop.js",
   "dependencies": {
     "electron-debug": "^2.0.0",

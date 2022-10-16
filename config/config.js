@@ -92,14 +92,18 @@ const config = convict({
     default: '',
     env: 'CDN_URL',
   },
-  assetsBucket: {
-    name: {
+  aws: {
+    assetsBucketName: {
       default: '',
       env: 'S3_ASSETS_BUCKET',
     },
-    domainName: {
+    replaysBucketName: {
       default: '',
-      env: 'S3_ASSETS_DOMAIN',
+      env: 'S3_REPLAYS_BUCKET',
+    },
+    cdnDomainName: {
+      default: '',
+      env: 'CDN_DOMAIN_NAME',
     },
     region: {
       default: '',
@@ -107,11 +111,11 @@ const config = convict({
     },
     accessKey: {
       default: '',
-      env: 'AWS_ACCESS_KEY',
+      env: 'AWS_ACCESS_KEY_ID',
     },
     secretKey: {
       default: '',
-      env: 'AWS_SECRET_KEY',
+      env: 'AWS_SECRET_ACCESS_KEY',
     },
   },
   // s3 bucket/key/secret used for game session data uploads

@@ -17,7 +17,7 @@
 				<tbody>
 					{{#each matchHistory}}
 						<tr class="match">
-							<td class="icon {{faction_dev_name}}" data-deck-hash="{{digest}}"><img src="{{imageForResourceScale (concat 'resources/crests/crest_f' faction_id '.png')}}" /></td>
+							<td class="icon {{faction_dev_name}}"><img src="{{imageForResourceScale (concat 'resources/crests/crest_f' faction_id '.png')}}" /></td>
 							<td class="faction {{faction_dev_name}}">{{faction_name}}</td>
 							<td class="opponent">{{opponent_username}}</td>
 							<td>{{localize (concat 'common.game_type_' (replace game_type " " "_"))}}</td>

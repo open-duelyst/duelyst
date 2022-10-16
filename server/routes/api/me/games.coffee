@@ -52,8 +52,8 @@ router.get "/", (req, res, next) ->
 	knex("user_games").where('user_id',user_id).orderBy('game_id','desc').offset(page*10).limit(10).select()
 	.then (rows) ->
 		playerFacingRows = _.map(rows, (row) ->
-			row = _.omit(row,["rating","rating_delta","is_bot_game"])
-			row["digest"] = DecksModule.hashForDeck(row["deck_cards"],user_id)
+			row = _.omit(row, ["rating","rating_delta","is_bot_game"])
+			#row["digest"] = DecksModule.hashForDeck(row["deck_cards"], user_id)
 			return row
 		)
 		res.status(200).json(DataAccessHelpers.restifyData(playerFacingRows))

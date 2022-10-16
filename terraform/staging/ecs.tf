@@ -3,7 +3,7 @@ module "ecs_cluster" {
   name           = "duelyst-staging"
   ssh_public_key = var.ssh_public_key
 
-  # Increase capacity by 1 to allow graceful deployments without stopping live containers.
+  # Set capacity to 3 to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
   min_spot_capacity = 2
@@ -25,7 +25,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.2"
+  deployed_version  = "1.97.3"
   container_count   = 1
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
@@ -35,7 +35,7 @@ module "ecs_service_api" {
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
-    { name = "S3_ASSETS_DOMAIN", value = var.cdn_domain_name },
+    { name = "CDN_DOMAIN_NAME", value = var.cdn_domain_name },
     { name = "ALL_CARDS_AVAILABLE", value = true },
     { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
   ]
@@ -105,7 +105,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.2"
+  deployed_version  = "1.97.3"
   container_count   = 1
   enable_lb         = false
   service_port      = 0
@@ -116,7 +116,9 @@ module "ecs_service_worker" {
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
-    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
+    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
+    { name = "AWS_REGION", value = var.aws_region },
+    { name = "S3_REPLAYS_BUCKET", value = var.replays_bucket_name }
   ]
 
   secrets = [

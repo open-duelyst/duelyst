@@ -35,13 +35,14 @@ resource "aws_ecs_task_definition" "task_def" {
 
   container_definitions = jsonencode([
     {
-      name        = var.name
-      image       = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
-      essential   = true
-      cpu         = var.container_cpu
-      memory      = var.container_mem
-      mountPoints = []
-      volumesFrom = []
+      name         = var.name
+      image        = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
+      essential    = true
+      cpu          = var.container_cpu
+      memory       = var.container_mem
+      network_mode = "awsvpc"
+      mountPoints  = []
+      volumesFrom  = []
       portMappings = var.enable_lb ? [
         {
           containerPort = var.service_port
