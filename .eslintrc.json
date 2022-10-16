@@ -28,7 +28,7 @@
     "global-require": ["warn"],
     "implicit-arrow-linebreak": ["warn"],
     "indent": ["error", 2],
-    "linebreak-style": "off",
+    "linebreak-style": "warn",
     "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
     "max-len": ["warn"],
     "new-cap": ["warn"],
@@ -38,10 +38,10 @@
     "no-param-reassign": ["warn"],
     "no-plusplus": ["warn"],
     "no-restricted-syntax": ["warn"],
-    "no-shadow": "off",
+    "no-shadow": "warn",
     "no-tabs": ["error"],
     "no-underscore-dangle": ["warn"],
-    "no-unused-vars": "off",
+    "no-unused-vars": "warn",
     "no-use-before-define": ["warn"],
     "no-useless-escape": ["warn"],
     "prefer-destructuring": ["warn"],
@@ -61,16 +61,58 @@
       "rules": {"camelcase": ["warn"]}
     },
     {
-      "files": ["test/**/*.js"],
-      "rules": {"no-unused-expressions": ["off"]}
-    },
-    {
       "files": ["desktop/gulp/shared.js"],
-      "rules": {"import/no-relative-packages": ["off"]}
+      "rules": {"import/no-relative-packages": ["warn"]}
     },
     {
       "files": ["desktop/**/*.js"],
-      "rules": {"import/no-unresolved": ["off"]}
+      "rules": {"import/no-unresolved": ["warn"]}
+    },
+    {
+      "files": ["server/ai/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "brace-style": ["warn"],
+        "camelcase": ["warn"],
+        "consistent-return": ["warn"],
+        "default-case": ["warn"],
+        "eqeqeq": ["warn"],
+        "no-lonely-if": ["warn"],
+        "no-mixed-operators": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-undef": ["warn"],
+        "no-var": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-loop-func": ["warn"],
+        "prefer-spread": ["warn"],
+        "radix": ["warn"],
+        "prefer-promise-reject-errors": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["test/**/*.js"],
+      "rules": {"no-unused-expressions": ["warn"]}
+    },
+    {
+      "files": ["test/unit/sdk/ai/card_intent_scoring.js"],
+      "rules": {
+        "camelcase": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-var": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["test/unit/sdk/cards/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "eqeqeq": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-undef": ["warn"],
+        "no-var": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
     }
   ]
 }

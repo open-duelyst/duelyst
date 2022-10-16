@@ -3,10 +3,6 @@ app/tools/
 app/ui/
 app/view/
 scripts/generate_packages.js
-server/ai/
-server/redis/test/
-test/unit/sdk/ai/card_intent_scoring.js
-test/unit/sdk/cards/
 
 # Ignore .gitignored files and code which imports them
 app/data/packages.js
