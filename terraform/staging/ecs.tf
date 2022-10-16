@@ -105,7 +105,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.2"
+  deployed_version  = "1.97.3"
   container_count   = 1
   enable_lb         = false
   service_port      = 0
