@@ -8,8 +8,12 @@ zlib = require 'zlib'
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
 
+env = config.get('env')
+awsRegion = config.get('aws.region')
+replaysBucket = config.get('aws.replaysBucketName')
+
 s3Client = new S3Client({
-	region: config.get('aws.region'),
+	region: awsRegion
 
 	# These credentials are only used in development.
 	# In AWS, the task policy has s3:PutObject + s3:PutObjectAcl permissions.
@@ -17,12 +21,14 @@ s3Client = new S3Client({
 	#secretKey: config.get('aws.secretKey'),
 })
 
+Logger.module("REPLAYS").log "Created S3 client with Region #{awsRegion} and Bucket #{replaysBucket}"
+
 Promise.promisifyAll(zlib)
 
 # returns promise for s3 upload
 # takes *serialized* game data
 upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
-	Logger.module("S3").log "uploading game #{gameId} to S3"
+	Logger.module("REPLAYS").log "uploading game #{gameId} to S3"
 
 	allDeflatePromises = [
 		zlib.gzipAsync(serializedGameSession)
@@ -31,18 +37,16 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 	if serializedMouseUIEventData?
 		allDeflatePromises.push(zlib.gzipAsync(serializedMouseUIEventData))
 
-	bucket = config.get('aws.replaysBucketName')
-	env = config.get('env')
 	filename = env + "/" + gameId + ".json"
 
 	return Promise.all(allDeflatePromises)
 	.spread (gzipGameSessionData, gzipMouseUIEventData)->
-		Logger.module("S3").log "done compressing game #{gameId} for upload"
+		Logger.module("REPLAYS").log "done compressing game #{gameId} for upload"
 		allPromises = []
 
 		if gzipGameSessionData?
 			params =
-				Bucket: bucket
+				Bucket: replaysBucket
 				Key: filename
 				Body: gzipGameSessionData
 				ACL: 'public-read'
@@ -53,7 +57,7 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 
 		if gzipMouseUIEventData?
 			params =
-				Bucket: bucket
+				Bucket: replaysBucket
 				Key: env + "/ui_events/" + gameId + ".json"
 				Body: gzipMouseUIEventData
 				ACL: 'public-read'
@@ -63,11 +67,11 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 			allPromises.push(s3Client.send(cmd))
 
 		return Promise.all(allPromises)
-	.spread (gameDataPutResp, mouseDataPutResp)->
-		url = "https://s3.#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
+	.spread (gameDataPutResp, mouseDataPutResp) ->
+		url = "https://s3.#{awsRegion}.amazonaws.com/" + replaysBucket + "/" + filename
 		return url
 	.catch (e)->
-		Logger.module("S3").error "ERROR uploading game #{gameId} to S3: #{e.message}"
+		Logger.module("REPLAYS").error "ERROR uploading game #{gameId} to S3: #{e.message}"
 		throw e
 
 module.exports = upload
