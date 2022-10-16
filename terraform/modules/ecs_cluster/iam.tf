@@ -76,6 +76,8 @@ resource "aws_iam_policy" "task_policy" {
         "kms:Decrypt",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
+        "s3:PutObject",
+        "s3:PutObjectAcl",
         "secretsmanager:GetSecretValue",
         "ssm:GetParameters"
       ],
