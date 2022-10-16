@@ -73,9 +73,9 @@ const _isTargetImmuneToSource = function (target, source) {
               return true;
             }
           } else {
-            const damageSpell = source instanceof SDK.Spell
-              /* && CARD_INTENT[source.getBaseCardId()] != null
-              && (CARD_INTENT[source.getBaseCardId()].indexOf("burn") !== -1 || CARD_INTENT[source.getBaseCardId()].indexOf("shadownova") !== -1) */;
+            const damageSpell = source instanceof SDK.Spell;
+            /* && CARD_INTENT[source.getBaseCardId()] != null
+            && (CARD_INTENT[source.getBaseCardId()].indexOf("burn") !== -1 || CARD_INTENT[source.getBaseCardId()].indexOf("shadownova") !== -1); */
             if (modifier instanceof SDK.ModifierImmuneToDamageBySpells) {
               if (damageSpell) {
                 return true;

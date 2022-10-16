@@ -1222,8 +1222,8 @@ var ai_preProc_filterProtoActionTargets = function (protoAction) {
   // objective filtering first
   // rejects any PlayCardFromHandAction action that scores below qualitythreshold
   if (protoAction.actionType == 'PlayCardFromHandAction') {
-    filteredProtoActionTargetsAndScores = _.filter(filteredProtoActionTargetsAndScores, (targetAndScore) => targetAndScore.score > preProc_qualityThreshold_playCard, // -2 TODO: unexpected behavior with summon spells - consider excluding summons or diff. threshold for summons?
-    );
+    // TODO: unexpected behavior with summon spells - consider excluding summons or diff. threshold for summons?
+    filteredProtoActionTargetsAndScores = _.filter(filteredProtoActionTargetsAndScores, (targetAndScore) => targetAndScore.score > preProc_qualityThreshold_playCard);
   }
 
   // relative filtering next
