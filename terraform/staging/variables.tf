@@ -20,6 +20,10 @@ variable "assets_bucket_name" {
   type = string
 }
 
+variable "replays_bucket_name" {
+  type = string
+}
+
 variable "staging_domain_name" {
   type = string
 }
