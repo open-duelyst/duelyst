@@ -25,7 +25,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.2"
+  deployed_version  = "1.97.3"
   container_count   = 1
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
@@ -116,7 +116,8 @@ module "ecs_service_worker" {
     { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
-    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
+    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
+    { name = "AWS_REGION", value = var.aws_region }
   ]
 
   secrets = [
