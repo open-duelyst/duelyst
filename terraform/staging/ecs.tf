@@ -118,7 +118,7 @@ module "ecs_service_worker" {
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
     { name = "AWS_REGION", value = var.aws_region },
-    { name = "REPLAYS_BUCKET_NAME", value = var.replays_bucket_name }
+    { name = "S3_REPLAYS_BUCKET", value = var.replays_bucket_name }
   ]
 
   secrets = [
