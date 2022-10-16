@@ -22,7 +22,7 @@ resource "aws_launch_template" "template" {
   vpc_security_group_ids = var.security_group_ids
 
   # Associate ECS-EC2 instances with this ECS cluster.
-  user_data = base64encode("#!/bin/bash\necho ECS_CLUSTER=${var.name} >> /etc/ecs/ecs.config")
+  user_data = base64encode("#!/bin/bash\necho ECS_CLUSTER=${var.name} >> /etc/ecs/ecs.config\necho ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config")
 
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_instance_profile.name
