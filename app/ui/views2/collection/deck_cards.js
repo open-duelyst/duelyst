@@ -2,7 +2,7 @@ const CONFIG = require('app/common/config');
 const EventBus = require('app/common/eventbus');
 const EVENTS = require('app/common/event_types');
 const UtilsUI = require('app/common/utils/utils_ui');
-const DeckCardCompositeView = require('./deck_card.js');
+const DeckCardCompositeView = require('./deck_card');
 const DeckCardsTmpl = require('./templates/deck_cards.hbs');
 
 const DeckCardsCompositeView = Backbone.Marionette.CompositeView.extend({

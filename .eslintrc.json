@@ -77,6 +77,8 @@
         "no-else-return": ["warn"],
         "no-empty": ["warn"],
         "no-extra-bind": ["warn"],
+        "template-curly-spacing": ["warn"],
+        "prefer-const": ["warn"],
         "no-extra-boolean-cast": ["warn"],
         "no-floating-decimal": ["warn"],
         "no-lonely-if": ["warn"],

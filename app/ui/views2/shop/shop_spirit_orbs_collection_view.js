@@ -191,6 +191,7 @@ const ShopSpiritOrbsCollectionView = Backbone.Marionette.ItemView.extend({
 
   showFullsetTooltip() {
     return;
+    /*
     // Destroy old tooltip and tooltip timeout to make sure only new one displays
     this.stopShowingFullsetTooltip();
 
@@ -220,6 +221,7 @@ const ShopSpiritOrbsCollectionView = Backbone.Marionette.ItemView.extend({
       });
       this.bloodbornTooltipElement.tooltip('show');
     }, 1000);
+    */
   },
 
   stopShowingFullsetTooltip() {

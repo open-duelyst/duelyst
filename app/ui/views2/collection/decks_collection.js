@@ -1,4 +1,4 @@
-const DeckPreviewItemView = require('./deck_preview.js');
+const DeckPreviewItemView = require('./deck_preview');
 const DecksCollectionTmpl = require('./templates/decks_collection.hbs');
 
 const DecksCollectionCompositeView = Backbone.Marionette.CompositeView.extend({

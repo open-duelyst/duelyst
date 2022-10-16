@@ -21,7 +21,7 @@ const CosmeticsType = require('app/sdk/cosmetics/cosmeticsTypeLookup');
 const ShopData = require('app/data/shop.json');
 
 const RedeemGiftCodeModalView = require('app/ui/views/item/redeem_gift_code_modal');
-const PremiumPurchaseDialog = require('app/ui/views2/shop/premium_purchase_dialog.js');
+const PremiumPurchaseDialog = require('app/ui/views2/shop/premium_purchase_dialog');
 
 const Session = require('app/common/session2');
 

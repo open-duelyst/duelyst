@@ -12,9 +12,9 @@ const ActivityDialogItemView = require('app/ui/views/item/activity_dialog');
 const ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 const moment = require('moment');
 const i18next = require('i18next');
-const CraftingRewardsDialogItemView = require('./crafting_rewards_dialog.js');
+const CraftingRewardsDialogItemView = require('./crafting_rewards_dialog');
 const CraftingTmpl = require('./templates/crafting.hbs');
-const CraftingCardCompositeView = require('./crafting_card.js');
+const CraftingCardCompositeView = require('./crafting_card');
 
 const CraftingCompositeView = Backbone.Marionette.CompositeView.extend({
 

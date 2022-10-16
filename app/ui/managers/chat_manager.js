@@ -266,8 +266,13 @@ var ChatManager = Manager.extend({
     this.stopConversation(model.get('id'));
   },
 
+  // Redefined below (no-dupe-keys).
+  // getBuddiesCollection() {
+  //  return this.buddies;
+  // },
+
   getBuddiesCollection() {
-    return this.buddies;
+    return this.buddiesCollection;
   },
 
   /* endregion BUDDIES */
@@ -418,10 +423,6 @@ var ChatManager = Manager.extend({
   },
 
   /* endregion STATUS */
-
-  getBuddiesCollection() {
-    return this.buddiesCollection;
-  },
 
   getLastPlayedOpponentUsername() {
     const lastGame = GamesManager.getInstance().playerGames.last();

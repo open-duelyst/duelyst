@@ -22,7 +22,7 @@ const Promise = require('bluebird');
 const openUrl = require('app/common/openUrl');
 const i18next = require('i18next');
 const Session = require('app/common/session2');
-const PremiumPurchaseDialog = require('app/ui/views2/shop/premium_purchase_dialog.js');
+const PremiumPurchaseDialog = require('app/ui/views2/shop/premium_purchase_dialog');
 const _ = require('underscore');
 const CreditCardFormView = require('./credit_card_form');
 

@@ -7,7 +7,7 @@ const EVENTS = require('app/common/event_types');
 const ChatManager = require('app/ui/managers/chat_manager');
 const ProfileManager = require('app/ui/managers/profile_manager');
 const ErrorDialogItemView = require('app/ui/views/item/error_dialog');
-const CopyReplayDialogView = require('app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog.js');
+const CopyReplayDialogView = require('app/ui/views2/profile/profile_match_history_copy_replay_to_clipboard_dialog');
 const Template = require('./templates/profile_match_history_collection.hbs');
 
 const ProfileMatchHistoryCollectionView = Backbone.Marionette.ItemView.extend({

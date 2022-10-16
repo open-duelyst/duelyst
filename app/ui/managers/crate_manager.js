@@ -21,8 +21,8 @@ const Promise = require('bluebird');
 const Analytics = require('app/common/analytics');
 const _ = require('underscore');
 const moment = require('moment');
-const GiftCrateLookup = require('../../sdk/giftCrates/giftCrateLookup');
-const GiftCrateFactory = require('../../sdk/giftCrates/giftCrateFactory');
+const GiftCrateLookup = require('../../sdk/giftCrates/giftCrateLookup.coffee');
+const GiftCrateFactory = require('../../sdk/giftCrates/giftCrateFactory.coffee');
 const ProfileManager = require('./profile_manager');
 const Manager = require('./manager');
 
