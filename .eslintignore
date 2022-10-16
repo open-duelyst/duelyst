@@ -1,9 +1,7 @@
-# Ignore heavily unlinted files
-app/tools/
-app/ui/
-app/view/
+# WIP
+app/tools
 
-# Ignore .gitignored files and code which imports them
+# .gitignored files and code which imports them
 app/data/packages.js
 gulp/rsx.js
 
