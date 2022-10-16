@@ -67,7 +67,7 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 		url = "https://s3.#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
 		return url
 	.catch (e)->
-		Logger.module("S3").error "ERROR uploading game #{gameId} to S3: "#{e.message}
+		Logger.module("S3").error "ERROR uploading game #{gameId} to S3: #{e.message}"
 		throw e
 
 module.exports = upload
