@@ -111,11 +111,11 @@ const config = convict({
     },
     accessKey: {
       default: '',
-      env: 'AWS_ACCESS_KEY',
+      env: 'AWS_ACCESS_KEY_ID',
     },
     secretKey: {
       default: '',
-      env: 'AWS_SECRET_KEY',
+      env: 'AWS_SECRET_ACCESS_KEY',
     },
   },
   // s3 bucket/key/secret used for game session data uploads
