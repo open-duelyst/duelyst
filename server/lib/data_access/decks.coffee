@@ -120,7 +120,7 @@ class DecksModule
 	# @param	{String}		salt			User based salt
 	# @return	{String}
 	###
-	@hashForDeck: (cards,salt="")->
+	@hashForDeck: (cards, salt)->
 		if !cards
 			return null
 

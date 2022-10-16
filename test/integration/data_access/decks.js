@@ -83,7 +83,7 @@ describe('decks module', () => {
 
   describe('hashCodeForDeck()', () => {
     it('generates a deck digest', () => {
-      const digest = DecksModule.hashForDeck([SDK.Cards.Faction1.Sunriser, SDK.Cards.Faction1.Sunriser, SDK.Cards.Faction1.Sunriser]);
+      const digest = DecksModule.hashForDeck([SDK.Cards.Faction1.Sunriser, SDK.Cards.Faction1.Sunriser, SDK.Cards.Faction1.Sunriser], '');
       expect(digest).to.exist;
     });
 
