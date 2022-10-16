@@ -27,6 +27,7 @@
   "rules": {
     "global-require": ["warn"],
     "implicit-arrow-linebreak": ["warn"],
+    "indent": ["error", 2],
     "linebreak-style": "off",
     "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
     "max-len": ["warn"],
@@ -38,6 +39,7 @@
     "no-plusplus": ["warn"],
     "no-restricted-syntax": ["warn"],
     "no-shadow": "off",
+    "no-tabs": ["error"],
     "no-underscore-dangle": ["warn"],
     "no-unused-vars": "off",
     "no-use-before-define": ["warn"],
