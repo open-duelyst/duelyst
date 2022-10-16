@@ -39,7 +39,7 @@
 	"outcome_draw": "Draw",
 	"zero_xp_earned": "+0 XP",
 	"unscored_game_xp_notice": "Games with insufficient gameplay do not earn XP or rewards.",
-	"max_practice_xp_reached_notice":"Single Player and Friendly games stop rewarding XP at level 10. Play Ranked Games to earn more XP and rewards up to max level.",
+	"max_practice_xp_reached_notice":"Single Player and Friendly games stop rewarding XP at level 11. Play Ranked Games to earn more XP and rewards up to max level.",
 	"gold_tip_button_label": "Tip 5 Gold",
 	"gold_tip_button_tooltip": "Tip opponent with a small amount of YOUR gold.",
 	"gold_tip_confirm_message": "Are you sure you want to tip with 5 of your OWN gold?",
