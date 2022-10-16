@@ -8,14 +8,15 @@ zlib = require 'zlib'
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
 
-# create a S3 API client
 s3Client = new S3Client({
 	region: config.get('aws.region'),
-	accessKey: config.get('aws.accessKey'),
-	secretKey: config.get('aws.secretKey'),
+
+	# These credentials are only used in development.
+	# In AWS, the task policy has s3:PutObject + s3:PutObjectAcl permissions.
+	#accessKey: config.get('aws.accessKey'),
+	#secretKey: config.get('aws.secretKey'),
 })
 
-# Promise.promisifyAll(s3)
 Promise.promisifyAll(zlib)
 
 # returns promise for s3 upload
@@ -63,7 +64,7 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 
 		return Promise.all(allPromises)
 	.spread (gameDataPutResp, mouseDataPutResp)->
-		url = "https://s3-#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
+		url = "https://s3.#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
 		return url
 	.catch (e)->
 		Logger.module("S3").error "ERROR uploading game #{gameId} to S3: "#{e.message}
