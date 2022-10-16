@@ -1944,12 +1944,12 @@ describe('users module', () => {
       })
       .then(() => knex('users').update({ is_bot: false }).where('id', userId)));
 
-    it('expect to earn Vanar Faction XP up to level 10 with SINGLE PLAYER games', () => {
+    it('expect to earn Vanar Faction XP up to level 11 with SINGLE PLAYER games', () => {
       const allPromises = [];
-      // levels are indexed from 0 so we check 9 here instead of 10
-      const xpToLevel10 = SDK.FactionProgression.totalXPForLevel(9);
-      const numGamesToLevel10 = xpToLevel10 / SDK.FactionProgression.winXP;
-      for (let i = 0; i < numGamesToLevel10; i++) {
+      // levels are indexed from 0 so we check 10 here instead of 11
+      const xpToLevel11 = SDK.FactionProgression.totalXPForLevel(10);
+      const numGamesToLevel11 = xpToLevel11 / SDK.FactionProgression.winXP;
+      for (let i = 0; i < numGamesToLevel11; i++) {
         allPromises.push(UsersModule.updateUserFactionProgressionWithGameOutcome(userId, SDK.Factions.Vanar, true, generatePushId(), SDK.GameType.SinglePlayer, false));
       }
 
@@ -1960,18 +1960,18 @@ describe('users module', () => {
           FirebasePromises.once(rootRef.child('user-faction-progression').child(userId).child(SDK.Factions.Vanar).child('stats'), 'value'),
         ]))
         .spread((progressionRow, progressionSnapshot) => {
-          expect(progressionRow.game_count).to.equal(numGamesToLevel10);
+          expect(progressionRow.game_count).to.equal(numGamesToLevel11);
           expect(progressionRow.unscored_count).to.equal(0);
-          expect(progressionRow.win_count).to.equal(numGamesToLevel10);
-          expect(progressionRow.single_player_win_count).to.equal(numGamesToLevel10);
-          expect(progressionRow.xp).to.equal(xpToLevel10);
-          // levels are indexed from 0 so we check 9 here instead of 10
-          expect(SDK.FactionProgression.levelForXP(progressionRow.xp)).to.equal(9);
+          expect(progressionRow.win_count).to.equal(numGamesToLevel11);
+          expect(progressionRow.single_player_win_count).to.equal(numGamesToLevel11);
+          expect(progressionRow.xp).to.equal(xpToLevel11);
+          // levels are indexed from 0 so we check 10 here instead of 11
+          expect(SDK.FactionProgression.levelForXP(progressionRow.xp)).to.equal(10);
           expect(progressionRow.xp).to.equal(progressionSnapshot.val().xp);
         });
     });
 
-    it('expect to NOT earn faction XP after level 10 with SINGLE PLAYER games', () => knex('user_faction_progression').where('user_id', userId).first()
+    it('expect to NOT earn faction XP after level 11 with SINGLE PLAYER games', () => knex('user_faction_progression').where('user_id', userId).first()
       .bind({})
       .then(function (row) {
         this.previousRow = row;
@@ -2053,16 +2053,16 @@ describe('users module', () => {
         expect(progressionRow.friendly_win_count).to.equal(1);
       }));
 
-    it('expect to earn faction XP only up to level 10 with FRIENDLY games', () => {
-      // levels are indexed from 0 so we check 9 here instead of 10
-      const xpToLevel10 = SDK.FactionProgression.totalXPForLevel(9);
-      const numGamesToLevel10 = xpToLevel10 / SDK.FactionProgression.winXP;
+    it('expect to earn faction XP only up to level 11 with FRIENDLY games', () => {
+      // levels are indexed from 0 so we check 10 here instead of 11
+      const xpToLevel11 = SDK.FactionProgression.totalXPForLevel(10);
+      const numGamesToLevel11 = xpToLevel11 / SDK.FactionProgression.winXP;
 
       return SyncModule.wipeUserData(userId)
         .bind({})
         .then(() => {
           const allPromises = [];
-          for (let i = 0; i < numGamesToLevel10 + 2; i++) {
+          for (let i = 0; i < numGamesToLevel11 + 2; i++) {
             allPromises.push(UsersModule.updateUserFactionProgressionWithGameOutcome(userId, SDK.Factions.Vanar, true, generatePushId(), SDK.GameType.Friendly, false));
           }
           return Promise.all(allPromises);
@@ -2072,13 +2072,13 @@ describe('users module', () => {
           FirebasePromises.once(rootRef.child('user-faction-progression').child(userId).child(SDK.Factions.Vanar).child('stats'), 'value'),
         ]))
         .spread((progressionRow, progressionSnapshot) => {
-          expect(progressionRow.game_count).to.equal(numGamesToLevel10);
+          expect(progressionRow.game_count).to.equal(numGamesToLevel11);
           expect(progressionRow.unscored_count).to.equal(0);
-          expect(progressionRow.win_count).to.equal(numGamesToLevel10);
-          expect(progressionRow.friendly_win_count).to.equal(numGamesToLevel10);
-          expect(progressionRow.xp).to.equal(xpToLevel10);
-          // levels are indexed from 0 so we check 9 here instead of 10
-          expect(SDK.FactionProgression.levelForXP(progressionRow.xp)).to.equal(9);
+          expect(progressionRow.win_count).to.equal(numGamesToLevel11);
+          expect(progressionRow.friendly_win_count).to.equal(numGamesToLevel11);
+          expect(progressionRow.xp).to.equal(xpToLevel11);
+          // levels are indexed from 0 so we check 10 here instead of 11
+          expect(SDK.FactionProgression.levelForXP(progressionRow.xp)).to.equal(10);
           expect(progressionRow.xp).to.equal(progressionSnapshot.val().xp);
         });
     });

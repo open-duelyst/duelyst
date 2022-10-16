@@ -1152,9 +1152,9 @@ class UsersModule
 				factionProgressionRow.friendly_win_count ?= 0
 				factionProgressionRow.level ?= 0
 
-				# faction xp progression for single player and friendly games is capped at 10
-				# levels are indexed from 0 so we check 9 here instead of 10
-				if (gameType == GameType.SinglePlayer or gameType == GameType.BossBattle or gameType == GameType.Friendly) and factionProgressionRow.level >= 9
+				# faction xp progression for single player and friendly games is capped at 11
+				# levels are indexed from 0 so we check 10 here instead of 11
+				if (gameType == GameType.SinglePlayer or gameType == GameType.BossBattle or gameType == GameType.Friendly) and factionProgressionRow.level >= 10
 					throw new Errors.MaxFactionXPForSinglePlayerReachedError()
 
 				# grab the default xp earned for a win/loss
@@ -1427,7 +1427,7 @@ class UsersModule
 			Logger.module("UsersModule").debug "updateUserFactionProgressionWithGameOutcome() -> user #{userId.blue}".green + " game #{gameId} (#{@.factionProgressionRow["game_count"]}) faction progression recorded. Unscored: #{isUnscored?.toString().cyan}".green
 			return @.factionProgressionRow
 		.catch Errors.MaxFactionXPForSinglePlayerReachedError, (e)->
-			Logger.module("UsersModule").debug "updateUserFactionProgressionWithGameOutcome() -> user #{userId.blue}".green + " game #{gameId} for faction #{factionId} not recorded. MAX LVL 10 for single player games reached."
+			Logger.module("UsersModule").debug "updateUserFactionProgressionWithGameOutcome() -> user #{userId.blue}".green + " game #{gameId} for faction #{factionId} not recorded. MAX LVL 11 for single player games reached."
 			return null
 		.finally ()-> return GamesModule.markClientGameJobStatusAsComplete(userId,gameId,'faction_progression')
 		return txPromise

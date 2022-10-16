@@ -201,6 +201,7 @@
     "test:integration": "mocha -t 1000 --recursive test/integration",
     "test:integration:achievements": "mocha -t 1000 test/integration/achievements",
     "test:integration:data_access": "mocha -t 1000 --recursive test/integration/data_access",
+    "test:integration:users": "mocha -t 1000 test/integration/data_access/users.js",
     "test:integration:firebase": "mocha -t 1000 --recursive test/integration/firebase",
     "test:integration:misc": "mocha -t 1000 --recursive test/integration/misc",
     "test:unit": "mocha -t 1000 --recursive test/unit",
