@@ -21,12 +21,7 @@ Promise.promisifyAll(zlib)
 # returns promise for s3 upload
 # takes *serialized* game data
 upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
-	Logger.module("S3").debug "uploading game #{gameId} to S3"
-
-	bucket = config.get('aws.replaysBucketName')
-	env = config.get('env')
-	filename = env + "/" + gameId + ".json"
-	url = "https://s3-us-west-1.amazonaws.com/" + bucket + "/" + filename
+	Logger.module("S3").log "uploading game #{gameId} to S3"
 
 	allDeflatePromises = [
 		zlib.gzipAsync(serializedGameSession)
@@ -35,9 +30,13 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 	if serializedMouseUIEventData?
 		allDeflatePromises.push(zlib.gzipAsync(serializedMouseUIEventData))
 
+	bucket = config.get('aws.replaysBucketName')
+	env = config.get('env')
+	filename = env + "/" + gameId + ".json"
+
 	return Promise.all(allDeflatePromises)
 	.spread (gzipGameSessionData, gzipMouseUIEventData)->
-		Logger.module("S3").debug "done compressing game #{gameId} for upload"
+		Logger.module("S3").log "done compressing game #{gameId} for upload"
 		allPromises = []
 
 		if gzipGameSessionData?
@@ -48,7 +47,7 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 				ACL: 'public-read'
 				ContentEncoding: "gzip"
 				ContentType: "text/json"
-			cmd = PutObjectCommands(params)
+			cmd = new PutObjectCommand(params)
 			allPromises.push(s3Client.send(cmd))
 
 		if gzipMouseUIEventData?
@@ -59,11 +58,12 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 				ACL: 'public-read'
 				ContentEncoding: "gzip"
 				ContentType: "text/json"
-			cmd = PutObjectCommand(params)
+			cmd = new PutObjectCommand(params)
 			allPromises.push(s3Client.send(cmd))
 
 		return Promise.all(allPromises)
-	.spread (gameDataPutResp,mouseDataPutResp)->
+	.spread (gameDataPutResp, mouseDataPutResp)->
+		url = "https://s3-#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
 		return url
 	.catch (e)->
 		Logger.module("S3").error "ERROR uploading game #{gameId} to S3: "#{e.message}
