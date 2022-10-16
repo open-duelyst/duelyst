@@ -1,37 +1,35 @@
-'use strict';
+const SDK = require('app/sdk');
+const CONFIG = require('app/common/config');
+const moment = require('moment');
+const _ = require('underscore');
+const Template = require('./templates/profile_faction_level_collection.hbs');
 
-var SDK = require('app/sdk')
-var CONFIG = require('app/common/config')
-var moment = require('moment')
-var Template = require('./templates/profile_faction_level_collection.hbs')
-var _ = require('underscore')
+const ProfileFactionLevelCollectionView = Backbone.Marionette.ItemView.extend({
 
-var ProfileFactionLevelCollectionView = Backbone.Marionette.ItemView.extend({
-
-  className: "profile-faction-levels",
+  className: 'profile-faction-levels',
   template: Template,
 
-  serializeModel: function(model){
-    var data =  model.toJSON.apply(model, _.rest(arguments))
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
 
     // ensure all factions are present
-    var factionProgressionKeys = Object.keys(data.factionProgression);
-    var playableFactions = SDK.FactionFactory.getAllPlayableFactions();
+    const factionProgressionKeys = Object.keys(data.factionProgression);
+    const playableFactions = SDK.FactionFactory.getAllPlayableFactions();
     if (factionProgressionKeys.length < playableFactions.length) {
-      for (var i = 0, il = playableFactions.length; i < il; i++) {
-        var factionData = playableFactions[i];
-        var factionId = factionData.id;
+      for (let i = 0, il = playableFactions.length; i < il; i++) {
+        const factionData = playableFactions[i];
+        const factionId = factionData.id;
         if (data.factionProgression[factionId] == null) {
           data.factionProgression[factionId] = {
-            faction_id: factionId
-          }
+            faction_id: factionId,
+          };
         }
       }
     }
 
-    _.each(data.factionProgression,function(v,k){
-      v.faction_name = SDK.FactionFactory.factionForIdentifier(v.faction_id).name
-      v.faction_dev_name = SDK.FactionFactory.factionForIdentifier(v.faction_id).devName
+    _.each(data.factionProgression, (v, k) => {
+      v.faction_name = SDK.FactionFactory.factionForIdentifier(v.faction_id).name;
+      v.faction_dev_name = SDK.FactionFactory.factionForIdentifier(v.faction_id).devName;
 
       if (v.level == null) {
         v.level = 0;
@@ -41,25 +39,25 @@ var ProfileFactionLevelCollectionView = Backbone.Marionette.ItemView.extend({
       }
 
       // level number users should see is +1 from actual 0-indexed level
-      v.level_for_user = v.level + 1
+      v.level_for_user = v.level + 1;
 
-      var levelXPProgress = v.xp - SDK.FactionProgression.totalXPForLevel(v.level)
-      var nextLevel = Math.min(v.level+1,SDK.FactionProgression.maxLevel)
-      v.progress_percent = Math.ceil(100 * levelXPProgress / SDK.FactionProgression.deltaXPForLevel(nextLevel))
+      const levelXPProgress = v.xp - SDK.FactionProgression.totalXPForLevel(v.level);
+      const nextLevel = Math.min(v.level + 1, SDK.FactionProgression.maxLevel);
+      v.progress_percent = Math.ceil(100 * levelXPProgress / SDK.FactionProgression.deltaXPForLevel(nextLevel));
 
-      for (var i=Math.min(v.level+1,SDK.FactionProgression.maxLevel); i<SDK.FactionProgression.maxLevel;i++) {
-        var rewardData = SDK.FactionProgression.rewardDataForLevel(v.faction_id,i)
+      for (let i = Math.min(v.level + 1, SDK.FactionProgression.maxLevel); i < SDK.FactionProgression.maxLevel; i++) {
+        const rewardData = SDK.FactionProgression.rewardDataForLevel(v.faction_id, i);
         if (rewardData) {
           if (rewardData.cards) {
-            var isPrismaticReward = false;
-            var isGeneralReward = false;
-            var isNeutralReward = false;
+            let isPrismaticReward = false;
+            let isGeneralReward = false;
+            let isNeutralReward = false;
 
             // TODO: this only accounts for first card reward
-            for (var j = 0, jl = rewardData.cards.length; j < jl; j++) {
-              var rewardCardData = rewardData.cards[j];
-              var rewardCardId = rewardCardData.id;
-              var rewardCard = SDK.CardFactory.cardForIdentifier(rewardCardId, SDK.GameSession.getInstance());
+            for (let j = 0, jl = rewardData.cards.length; j < jl; j++) {
+              const rewardCardData = rewardData.cards[j];
+              const rewardCardId = rewardCardData.id;
+              const rewardCard = SDK.CardFactory.cardForIdentifier(rewardCardId, SDK.GameSession.getInstance());
               if (rewardCard) {
                 if (rewardCard instanceof SDK.Entity && rewardCard.getIsGeneral()) {
                   isGeneralReward = true;
@@ -75,27 +73,27 @@ var ProfileFactionLevelCollectionView = Backbone.Marionette.ItemView.extend({
             }
 
             if (isGeneralReward) {
-              v.next_reward_description = "1 x " + (isNeutralReward ? "Neutral" : "Faction") + (isPrismaticReward ? " Prismatic " : " Alternate ") + "General";
+              v.next_reward_description = `1 x ${isNeutralReward ? 'Neutral' : 'Faction'}${isPrismaticReward ? ' Prismatic ' : ' Alternate '}General`;
             } else {
-              v.next_reward_description = CONFIG.MAX_DECK_DUPLICATES + " x " + (isNeutralReward ? "Neutral" : "Faction") + (isPrismaticReward ? " Prismatic " : " Basic ") + "Card";
+              v.next_reward_description = `${CONFIG.MAX_DECK_DUPLICATES} x ${isNeutralReward ? 'Neutral' : 'Faction'}${isPrismaticReward ? ' Prismatic ' : ' Basic '}Card`;
             }
           }
           if (rewardData.booster_packs) {
-            v.next_reward_description = rewardData.booster_packs + " Spirit Orb(s)";
+            v.next_reward_description = `${rewardData.booster_packs} Spirit Orb(s)`;
           }
           if (rewardData.emotes) {
-            v.next_reward_description = "Faction Emote";
+            v.next_reward_description = 'Faction Emote';
           }
           // level number users should see is +1 from actual 0-indexed level
           v.next_reward_level = i + 1;
-          break
+          break;
         }
       }
-    })
-    return data
+    });
+    return data;
   },
 
-})
+});
 
 // Expose the class either via CommonJS or the global object
-module.exports = ProfileFactionLevelCollectionView
+module.exports = ProfileFactionLevelCollectionView;

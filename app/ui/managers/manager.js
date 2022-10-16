@@ -2,17 +2,17 @@
  * Abstract manager class, do not use directly.
  */
 
-var EventBus = require("app/common/eventbus");
-var EVENTS = require("app/common/event_types");
-var Logger = require('app/common/logger');
-var Promise = require("bluebird");
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const Logger = require('app/common/logger');
+const Promise = require('bluebird');
 
-var Manager = Backbone.Marionette.Controller.extend({
+const Manager = Backbone.Marionette.Controller.extend({
 
-  connected:null,
-  isReady:null,
+  connected: null,
+  isReady: null,
 
-  constructor: function() {
+  constructor() {
     // Define instance properties off of the prototype chain
     this.connected = null;
     this.isReady = null;
@@ -21,96 +21,95 @@ var Manager = Backbone.Marionette.Controller.extend({
     Backbone.Marionette.Controller.apply(this, arguments);
   },
 
-  initialize: function(options) {
+  initialize(options) {
     // override in sub class
   },
 
-  getConnected: function () {
+  getConnected() {
     return this.connected;
   },
 
-  connect: function () {
+  connect() {
     if (!this.connected) {
       this.connected = true;
       this.listenToOnce(EventBus.getInstance(), EVENTS.session_logged_out, this.disconnect);
-      this.trigger("before_connect");
+      this.trigger('before_connect');
       this.onBeforeConnect();
-      this.trigger("connect");
+      this.trigger('connect');
     }
   },
 
-  onBeforeConnect: function () {
+  onBeforeConnect() {
     // override in sub class to do any setup just before connect is triggered
   },
 
-  disconnect: function () {
+  disconnect() {
     if (this.connected) {
       this.connected = false;
       this.isReady = false;
       this.stopListening();
-      this.trigger("before_disconnect");
+      this.trigger('before_disconnect');
       this.onBeforeDisconnect();
-      this.trigger("disconnect");
+      this.trigger('disconnect');
     }
   },
 
-  onBeforeDisconnect: function () {
+  onBeforeDisconnect() {
     // override in sub class to do any setup just before disconnect is triggered
   },
 
-  getIsReady: function() {
+  getIsReady() {
     return this.isReady;
   },
 
-  ready: function() {
+  ready() {
     this.isReady = true;
-    this.trigger("ready");
+    this.trigger('ready');
   },
 
-  onConnect: function(callback) {
-
-    var p = new Promise(function(resolve,reject){
+  onConnect(callback) {
+    const p = new Promise((resolve, reject) => {
       if (this.connected) {
         resolve();
       } else {
-        this.listenToOnce(this,"connect",function() {
+        this.listenToOnce(this, 'connect', () => {
           resolve();
-        })
+        });
       }
-    }.bind(this));
+    });
 
     p.nodeify(callback);
 
     return p;
   },
 
-  onReady: function(callback) {
-    var p = new Promise(function(resolve,reject){
+  onReady(callback) {
+    const p = new Promise((resolve, reject) => {
       if (this.isReady) {
         resolve();
       } else {
-        this.listenToOnce(this,"ready",resolve);
+        this.listenToOnce(this, 'ready', resolve);
       }
-    }.bind(this));
+    });
 
     p.nodeify(callback);
 
     return p;
   },
 
-  _markAsReadyWhenModelsAndCollectionsSynced: function(modelsAndCollections) {
-    var allPromises = [];
-    for (var i = 0, il = modelsAndCollections.length; i < il; i++) {
-      var modelOrCollection = modelsAndCollections[i];
+  _markAsReadyWhenModelsAndCollectionsSynced(modelsAndCollections) {
+    const allPromises = [];
+    for (let i = 0, il = modelsAndCollections.length; i < il; i++) {
+      const modelOrCollection = modelsAndCollections[i];
       if (modelOrCollection != null && modelOrCollection.onSyncOrReady != null) {
         allPromises.push(modelOrCollection.onSyncOrReady());
       }
     }
-    Promise.all(allPromises).then(function() {
-      Logger.module("UI").log("Manager::_markAsReadyWhenModelsAndCollectionsSynced -> READY");
+    Promise.all(allPromises).then(() => {
+      Logger.module('UI').log('Manager::_markAsReadyWhenModelsAndCollectionsSynced -> READY');
       this.ready();
-    }.bind(this));
-  }
+    });
+  },
 
 });
 

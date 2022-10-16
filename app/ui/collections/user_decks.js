@@ -1,21 +1,19 @@
-'use strict';
+const Logger = require('app/common/logger');
+const DeckModel = require('app/ui/models/deck');
+const DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
+const DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
 
-var Logger = require('app/common/logger');
-var DeckModel = require('app/ui/models/deck');
-var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
+const UserDecksCollection = DuelystBackbone.Collection.extend({
 
-var UserDecksCollection = DuelystBackbone.Collection.extend({
+  model: DeckModel,
+  url: `${process.env.API_URL}/api/me/decks`,
 
-  model:   DeckModel,
-  url:   process.env.API_URL + '/api/me/decks',
-
-  comparator: function (a, b) {
+  comparator(a, b) {
     // sort by most recently touched
-    var lastTouchedTimestampA = Math.max(a.get("created_at") || 0, a.get("updated_at") || 0);
-    var lastTouchedTimestampB = Math.max(b.get("created_at") || 0, b.get("updated_at") || 0);
+    const lastTouchedTimestampA = Math.max(a.get('created_at') || 0, a.get('updated_at') || 0);
+    const lastTouchedTimestampB = Math.max(b.get('created_at') || 0, b.get('updated_at') || 0);
     return lastTouchedTimestampB - lastTouchedTimestampA;
-  }
+  },
 
 });
 

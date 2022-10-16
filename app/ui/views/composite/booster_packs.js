@@ -1,54 +1,49 @@
-'use strict';
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const Logger = require('app/common/logger');
+const CONFIG = require('app/common/config');
+const SDK = require('app/sdk');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const BoosterPacksCompositeViewTemplate = require('app/ui/templates/composite/booster_packs.hbs');
+const BoosterPackPreviewItemView = require('app/ui/views/item/booster_pack_preview');
+const i18next = require('i18next');
 
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var Logger = require('app/common/logger');
-var CONFIG = require('app/common/config');
-var SDK = require('app/sdk');
-var InventoryManager = require('app/ui/managers/inventory_manager');
-var BoosterPacksCompositeViewTemplate = require('app/ui/templates/composite/booster_packs.hbs');
-var BoosterPackPreviewItemView = require('app/ui/views/item/booster_pack_preview');
-var i18next = require('i18next')
+const BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
-var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
-
-  className: "booster-packs",
+  className: 'booster-packs',
   template: BoosterPacksCompositeViewTemplate,
   childView: BoosterPackPreviewItemView,
-  childViewContainer: ".booster-packs-list",
+  childViewContainer: '.booster-packs-list',
 
   _stateLocked: false,
   _draggingEnabled: true,
 
   ui: {
-    $totalBoosterPacksCount: ".total-booster-packs-count"
+    $totalBoosterPacksCount: '.total-booster-packs-count',
   },
 
   templateHelpers: {
-    spiritOrbNameForCardSet: function (cardSetId) {
-      var cardSetData = SDK.CardSetFactory.cardSetForIdentifier(cardSetId);
+    spiritOrbNameForCardSet(cardSetId) {
+      const cardSetData = SDK.CardSetFactory.cardSetForIdentifier(cardSetId);
       if (cardSetData == null || cardSetData.id === SDK.CardSet.Core) {
-        return i18next.t("common.spirit_orb_plural");
-      } else {
-        return cardSetData.name + " Orbs";
+        return i18next.t('common.spirit_orb_plural');
       }
-    }
+      return `${cardSetData.name} Orbs`;
+    },
   },
 
   _boosterPackModels: null,
 
-  initialize: function () {
+  initialize() {
     this._boosterPackModels = [];
   },
 
   /* region LAYOUT */
 
-  onResize: function () {
+  onResize() {
     if (!this._stateLocked) {
-      var cardSet = this.model.get("cardSet") || SDK.CardSet.Core;
-      this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter(function(p){
-        return p.get("card_set") === cardSet || (!p.get("card_set") && cardSet === SDK.CardSet.Core)
-      }.bind(this));
+      const cardSet = this.model.get('cardSet') || SDK.CardSet.Core;
+      this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter((p) => p.get('card_set') === cardSet || (!p.get('card_set') && cardSet === SDK.CardSet.Core));
       this.collection.reset(this._boosterPackModels.slice(0, CONFIG.MAX_BOOSTER_PACKS_SHOWN));
 
       if (this.children.length > 0 && this.$childViewContainer instanceof $) {
@@ -75,10 +70,10 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
           }
         });
          */
-        this.children.each(function (childView, index) {
+        this.children.each((childView, index) => {
           childView.$el.draggable({
             distance: 10,
-            revert: true
+            revert: true,
           });
         });
       }
@@ -92,7 +87,7 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function () {
+  onShow() {
     // listen to manager events
     InventoryManager.getInstance().onConnect().then(this.onInventoryManagerConnected.bind(this));
 
@@ -104,14 +99,14 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region EVENT LISTENERS */
 
-  onInventoryManagerConnected: function () {
-    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, "add remove", this.onResize);
+  onInventoryManagerConnected() {
+    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, 'add remove', this.onResize);
     this.onResize();
   },
 
   /* endregion EVENT LISTENERS */
 
-  setLocked: function (locked) {
+  setLocked(locked) {
     if (this._stateLocked !== locked) {
       this._stateLocked = locked;
       this.setDraggingEnabled(!locked);
@@ -119,38 +114,38 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  setDraggingEnabled: function (draggingEnabled) {
+  setDraggingEnabled(draggingEnabled) {
     if (this._draggingEnabled !== draggingEnabled) {
       this._draggingEnabled = draggingEnabled;
       this._updateBoosterPackDragging();
     }
   },
 
-  getLocked: function () {
+  getLocked() {
     return this._stateLocked;
   },
 
-  _updateBoosterPackCounts: function () {
+  _updateBoosterPackCounts() {
     this.ui.$totalBoosterPacksCount.text(this._boosterPackModels.length);
   },
 
-  _updateBoosterPackDragging: function () {
+  _updateBoosterPackDragging() {
     if (this.children.length > 0 && this.$childViewContainer instanceof $) {
-      this.children.each(function (childView) {
+      this.children.each((childView) => {
         this._updateBoosterPackDraggingForItemView(childView);
-      }.bind(this));
+      });
     }
   },
 
-  _updateBoosterPackDraggingForItemView: function (childView) {
-    if (childView.$el.draggable("instance") != null) {
+  _updateBoosterPackDraggingForItemView(childView) {
+    if (childView.$el.draggable('instance') != null) {
       if (this._draggingEnabled) {
-        childView.$el.draggable("enable");
+        childView.$el.draggable('enable');
       } else {
-        childView.$el.draggable("disable");
+        childView.$el.draggable('disable');
       }
     }
-  }
+  },
 
 });
 

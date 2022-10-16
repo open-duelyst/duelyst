@@ -1,44 +1,42 @@
-'use strict';
+const EmotesLayoutTempl = require('app/ui/templates/item/emote.hbs');
+const Animations = require('app/ui/views/animations');
+const InventoryManager = require('app/ui/managers/inventory_manager');
 
-var EmotesLayoutTempl = require('app/ui/templates/item/emote.hbs');
-var Animations = require("app/ui/views/animations");
-var InventoryManager = require('app/ui/managers/inventory_manager');
+const EmoteItemView = Backbone.Marionette.ItemView.extend({
 
-var EmoteItemView = Backbone.Marionette.ItemView.extend({
-
-  className: "btn emote",
+  className: 'btn emote',
 
   template: EmotesLayoutTempl,
 
   events: {
-    "click": "onSelect"
+    click: 'onSelect',
   },
 
-  animateIn: function () {
-    Animations.cssClassAnimation.call(this, "active");
+  animateIn() {
+    Animations.cssClassAnimation.call(this, 'active');
   },
   animateOut: Animations.fadeOut,
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function () {
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add remove",this.onCosmeticsCollectionChange);
+  onShow() {
+    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add remove', this.onCosmeticsCollectionChange);
   },
 
-  onRender: function () {
+  onRender() {
     this._bindUsability();
   },
 
-  _bindUsability: function () {
-    if (this.model.get("_canPurchase")) {
-      this.$el.addClass("purchasable");
-      this.$el.removeClass("disabled");
+  _bindUsability() {
+    if (this.model.get('_canPurchase')) {
+      this.$el.addClass('purchasable');
+      this.$el.removeClass('disabled');
     } else {
-      this.$el.removeClass("purchasable");
-      if (!this.model.get("_canUse")) {
-        this.$el.addClass("disabled");
+      this.$el.removeClass('purchasable');
+      if (!this.model.get('_canUse')) {
+        this.$el.addClass('disabled');
       } else {
-        this.$el.removeClass("disabled");
+        this.$el.removeClass('disabled');
       }
     }
   },
@@ -47,33 +45,33 @@ var EmoteItemView = Backbone.Marionette.ItemView.extend({
 
   /* region EVENTS */
 
-  onCosmeticsCollectionChange: function(cosmeticModel) {
-    var emoteId = this.model.get("id");
-    if (cosmeticModel != null && cosmeticModel.get("cosmetic_id") === emoteId) {
-      this.model.set("_canUse", InventoryManager.getInstance().getCanUseCosmeticById(emoteId));
-      this.model.set("_canPurchase", InventoryManager.getInstance().getCanPurchaseCosmeticById(emoteId));
+  onCosmeticsCollectionChange(cosmeticModel) {
+    const emoteId = this.model.get('id');
+    if (cosmeticModel != null && cosmeticModel.get('cosmetic_id') === emoteId) {
+      this.model.set('_canUse', InventoryManager.getInstance().getCanUseCosmeticById(emoteId));
+      this.model.set('_canPurchase', InventoryManager.getInstance().getCanPurchaseCosmeticById(emoteId));
       this._bindUsability();
     }
   },
 
-  onSelect: function (e) {
-    var saleData = {};
-    var saleId = $(e.currentTarget).data("sale-id");
-    var salePriceStr = $(e.currentTarget).data("sale-price");
+  onSelect(e) {
+    const saleData = {};
+    const saleId = $(e.currentTarget).data('sale-id');
+    const salePriceStr = $(e.currentTarget).data('sale-price');
 
-    if (saleId != null && saleId != "") {
+    if (saleId != null && saleId != '') {
       saleData.saleId = saleId;
     }
-    if (salePriceStr != null && salePriceStr != "" && !_.isNaN(parseInt(salePriceStr))) {
+    if (salePriceStr != null && salePriceStr != '' && !_.isNaN(parseInt(salePriceStr))) {
       saleData.salePrice = parseInt(salePriceStr);
     }
 
     this.saleData = saleData;
 
-    if (this.model.get("_canUse") || this.model.get("_canPurchase")) {
-      this.trigger("select", this);
+    if (this.model.get('_canUse') || this.model.get('_canPurchase')) {
+      this.trigger('select', this);
     }
-  }
+  },
 
   /* endregion EVENTS */
 

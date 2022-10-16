@@ -1,34 +1,31 @@
-'use strict';
+const SDK = require('app/sdk');
+const moment = require('moment');
+const QuestsManager = require('app/ui/managers/quests_manager');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const Logger = require('app/common/logger');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const Template = require('./templates/daily_challenge_item.hbs');
 
-var SDK = require('app/sdk')
-var moment = require('moment')
-var Template = require('./templates/daily_challenge_item.hbs');
-var QuestsManager = require('app/ui/managers/quests_manager');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var Logger = require('app/common/logger');
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
+const DailyChallengeItemView = Backbone.Marionette.ItemView.extend({
 
-var DailyChallengeItemView = Backbone.Marionette.ItemView.extend({
-
-  tagName: "li",
-  className: "quest daily-challenge",
+  tagName: 'li',
+  className: 'quest daily-challenge',
 
   template: Template,
 
   ui: {
-    "$outlinePath": ".path",
-    "$frameImage": ".frame-image",
-    "$questContent": ".quest-content"
+    $outlinePath: '.path',
+    $frameImage: '.frame-image',
+    $questContent: '.quest-content',
   },
 
   events: {
-    "click button.play-challenge": "onPlayPressed"
+    'click button.play-challenge': 'onPlayPressed',
   },
 
-  serializeModel: function(model){
-
-    var data =  model.toJSON.apply(model, _.rest(arguments));
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
 
     if (data) {
       data.is_rewardable = QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'));
@@ -37,29 +34,27 @@ var DailyChallengeItemView = Backbone.Marionette.ItemView.extend({
       } else {
         data.progress = 1;
       }
-
     }
 
     return data;
-
   },
 
-  onShow: function() {
+  onShow() {
     // model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
-    this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model, 'change', this.render);
     if (QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'))) {
-      this.$el.addClass("animateInShake")
+      this.$el.addClass('animateInShake');
     } else {
-      this.$el.addClass("animateIn")
+      this.$el.addClass('animateIn');
     }
   },
 
-  onPlayPressed: function() {
-    SDK.ChallengeRemote.loadAndCreateFromModelData(this.model.attributes).then(function(challenge){
-      //App._startGameWithChallenge(challenge)
+  onPlayPressed() {
+    SDK.ChallengeRemote.loadAndCreateFromModelData(this.model.attributes).then((challenge) => {
+      // App._startGameWithChallenge(challenge)
       EventBus.getInstance().trigger(EVENTS.start_challenge, challenge);
-    })
-  }
+    });
+  },
 
 });
 

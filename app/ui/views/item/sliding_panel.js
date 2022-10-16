@@ -1,41 +1,40 @@
-//pragma PKGS: nongame
-'use strict';
+// pragma PKGS: nongame
 
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var SlidingPanelTmpl = require('app/ui/templates/item/sliding_panel.hbs');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const SlidingPanelTmpl = require('app/ui/templates/item/sliding_panel.hbs');
 
-var SlidingPanelItemView = Backbone.Marionette.ItemView.extend({
+const SlidingPanelItemView = Backbone.Marionette.ItemView.extend({
 
   tagName: 'li',
-  className: "sliding-panel",
+  className: 'sliding-panel',
 
   template: SlidingPanelTmpl,
 
-  onRender: function () {
-    this.$el.on("mouseenter", this.onMouseEnter.bind(this));
-    this.$el.on("click", this.onClick.bind(this));
+  onRender() {
+    this.$el.on('mouseenter', this.onMouseEnter.bind(this));
+    this.$el.on('click', this.onClick.bind(this));
 
     if (!this.getIsEnabled()) {
-      this.$el.addClass("disabled");
+      this.$el.addClass('disabled');
     } else {
-      this.$el.removeClass("disabled");
+      this.$el.removeClass('disabled');
     }
   },
 
-  getIsEnabled: function () {
-    return this.model.get("enabled");
+  getIsEnabled() {
+    return this.model.get('enabled');
   },
 
-  onMouseEnter: function(){
+  onMouseEnter() {
     audio_engine.current().play_effect(RSX.sfx_ui_menu_hover.audio);
   },
 
-  onClick: function(){
+  onClick() {
     if (this.getIsEnabled()) {
-      this.trigger("select");
+      this.trigger('select');
     }
-  }
+  },
 
 });
 

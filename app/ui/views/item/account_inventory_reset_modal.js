@@ -1,41 +1,39 @@
-'use strict';
-var _ = require('underscore');
-var Promise = require("bluebird");
-var Analytics = require('app/common/analytics');
-var validator = require('validator');
-var FormPromptModalItemView = require('./form_prompt_modal');
-var Template = require('app/ui/templates/item/account_inventory_reset_modal.hbs');
-var NavigationManager = require('app/ui/managers/navigation_manager');
+const _ = require('underscore');
+const Promise = require('bluebird');
+const Analytics = require('app/common/analytics');
+const validator = require('validator');
+const Template = require('app/ui/templates/item/account_inventory_reset_modal.hbs');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const FormPromptModalItemView = require('./form_prompt_modal');
 
-var AccountInventoryResetModalView = FormPromptModalItemView.extend({
+const AccountInventoryResetModalView = FormPromptModalItemView.extend({
 
-  id: "app-account-wipe",
+  id: 'app-account-wipe',
   template: Template,
 
   ui: {
-    $form: ".prompt-form",
-    $password: ".password",
-    $submit: ".prompt-submit",
-    $submitted: ".prompt-submitted",
-    $error: ".prompt-error",
-    $errorMessage: ".error-message",
-    $success: ".prompt-success"
+    $form: '.prompt-form',
+    $password: '.password',
+    $submit: '.prompt-submit',
+    $submitted: '.prompt-submitted',
+    $error: '.prompt-error',
+    $errorMessage: '.error-message',
+    $success: '.prompt-success',
   },
 
   isValid: false,
   _hasModifiedPassword: false,
-  _userNavLockId: "AccountWipeUserNavLockId",
+  _userNavLockId: 'AccountWipeUserNavLockId',
 
   /* region EVENTS */
 
-  onShow: function() {
+  onShow() {
     FormPromptModalItemView.prototype.onShow.apply(this, arguments);
   },
 
-  onFormControlChangeContent: function (event) {
-
+  onFormControlChangeContent(event) {
     // update modified state
-    var $target = $(event.target);
+    const $target = $(event.target);
     if (this.ui.$password.is($target)) {
       this._hasModifiedPassword = true;
     }
@@ -43,66 +41,64 @@ var AccountInventoryResetModalView = FormPromptModalItemView.extend({
     FormPromptModalItemView.prototype.onFormControlChangeContent.apply(this, arguments);
   },
 
-  updateValidState: function () {
+  updateValidState() {
     FormPromptModalItemView.prototype.updateValidState.apply(this, arguments);
 
-    var password = this.ui.$password.val();
-    var isValid = true;
+    const password = this.ui.$password.val();
+    let isValid = true;
 
     // check password
-    if (isValid && this._hasModifiedPassword && !validator.isLength(password,6)) {
+    if (isValid && this._hasModifiedPassword && !validator.isLength(password, 6)) {
       // password is not long enough
-      this.showInvalidFormControl(this.ui.$password, "Minimum 6 characters");
+      this.showInvalidFormControl(this.ui.$password, 'Minimum 6 characters');
       isValid = false;
     } else {
       this.showValidFormControl(this.ui.$password);
     }
 
     // ...
-    isValid = isValid && this._hasModifiedPassword
-
+    isValid = isValid && this._hasModifiedPassword;
 
     // set final valid state
-    this.isValid = isValid
+    this.isValid = isValid;
   },
 
-  onSubmit: function(){
+  onSubmit() {
     FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
 
     // execute
-    var password = this.ui.$password.val();
+    const password = this.ui.$password.val();
 
     Promise.resolve($.ajax({
-      url: process.env.API_URL + '/api/me/inventory/card_collection/soft_wipe',
+      url: `${process.env.API_URL}/api/me/inventory/card_collection/soft_wipe`,
       type: 'POST',
       data: JSON.stringify({
-        password: password
+        password,
       }),
       contentType: 'application/json',
-      dataType: 'json'
+      dataType: 'json',
     }))
       .then(this.onSuccess.bind(this))
-      .catch(function(response){
-        var message;
-        if (response && response.responseJSON)
-          message = response.responseJSON.message;
-        message = message || "unknown error"
-        this.onError(message)
-      }.bind(this))
+      .catch((response) => {
+        let message;
+        if (response && response.responseJSON) message = response.responseJSON.message;
+        message = message || 'unknown error';
+        this.onError(message);
+      });
   },
 
-  onSuccessComplete: function (registration) {
+  onSuccessComplete(registration) {
     FormPromptModalItemView.prototype.onSuccessComplete.apply(this, arguments);
   },
 
-  onErrorComplete: function (errorMessage) {
+  onErrorComplete(errorMessage) {
     FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
 
     // try to force showing invalid input
     if (/password/i.test(errorMessage)) {
       this.showInvalidFormControl(this.ui.$password, errorMessage);
     }
-  }
+  },
 
   /* endregion EVENTS */
 

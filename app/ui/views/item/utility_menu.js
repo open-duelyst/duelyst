@@ -1,30 +1,29 @@
-//pragma PKGS: alwaysloaded
-'use strict';
+// pragma PKGS: alwaysloaded
 
-var Logger = require('app/common/logger');
-var CONFIG = require('app/common/config');
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var RSX = require('app/data/resources');
-var UtilityMenuTmpl = require('app/ui/templates/item/utility_menu.hbs');
-var ChatManager = require('app/ui/managers/chat_manager');
-var QuestsManager = require('app/ui/managers/quests_manager');
-var InventoryManager = require('app/ui/managers/inventory_manager');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var NotificationsManager = require('app/ui/managers/notifications_manager');
-var Animations = require("app/ui/views/animations");
-var BuddiesLayout = require('./../layouts/buddies');
-var SettingsMenuView = require('./settings_menu');
-var ProgressionManager = require('app/ui/managers/progression_manager');
-var ProfileManager = require("app/ui/managers/profile_manager");
+const Logger = require('app/common/logger');
+const CONFIG = require('app/common/config');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const RSX = require('app/data/resources');
+const UtilityMenuTmpl = require('app/ui/templates/item/utility_menu.hbs');
+const ChatManager = require('app/ui/managers/chat_manager');
+const QuestsManager = require('app/ui/managers/quests_manager');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const NotificationsManager = require('app/ui/managers/notifications_manager');
+const Animations = require('app/ui/views/animations');
+const ProgressionManager = require('app/ui/managers/progression_manager');
+const ProfileManager = require('app/ui/managers/profile_manager');
+const BuddiesLayout = require('../layouts/buddies');
+const SettingsMenuView = require('./settings_menu');
 
 /**
  * Basic utility menu that shows buttons for settings and buddies/chat.
  */
-var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
+const UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
 
-  id: "app-utility-menu",
-  className: "utility-menu",
+  id: 'app-utility-menu',
+  className: 'utility-menu',
 
   template: UtilityMenuTmpl,
 
@@ -33,33 +32,33 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
 
   /* region LAYOUT */
 
-  onResize: function () {
+  onResize() {
     // override in sub class
   },
 
   /* endregion LAYOUT */
 
-  onBeforeRender: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-    this.$el.find("[data-toggle='popover']").popover("destroy");
+  onBeforeRender() {
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
+    this.$el.find('[data-toggle=\'popover\']').popover('destroy');
   },
 
-  onRender: function() {
+  onRender() {
     // check login state
-    if (ProfileManager.getInstance().get("id")) {
+    if (ProfileManager.getInstance().get('id')) {
       this.onLoggedInRender();
     } else {
       this.onLoggedOutRender();
     }
 
-    this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip({ container: CONFIG.OVERLAY_SELECTOR, trigger: 'hover' });
 
     this.onResize();
   },
 
-  onShow: function() {
+  onShow() {
     // check login state
-    if (ProfileManager.getInstance().get("id")) {
+    if (ProfileManager.getInstance().get('id')) {
       this.onLoggedInShow();
     } else {
       this.onLoggedOutShow();
@@ -76,109 +75,109 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
     this.animateReveal();
   },
 
-  animateReveal: function() {
-    var buttons = this.$el.find(".animate-reveal:visible");
-    var delay = 400
-    for (var i=0; i<buttons.length; i++) {
-      $(buttons[i]).css('opacity',0)
+  animateReveal() {
+    const buttons = this.$el.find('.animate-reveal:visible');
+    let delay = 400;
+    for (let i = 0; i < buttons.length; i++) {
+      $(buttons[i]).css('opacity', 0);
       buttons[i].animate([
-        {"opacity": 0.0, transform: "translateY(10px)"},
-        {"opacity": 1.0, transform: "translateY(0px)"}
+        { opacity: 0.0, transform: 'translateY(10px)' },
+        { opacity: 1.0, transform: 'translateY(0px)' },
       ], {
         duration: 200,
-        delay: delay,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
-      })
-      delay += 100
+        delay,
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
+      });
+      delay += 100;
     }
   },
 
-  onDestroy: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-    this.$el.find("[data-toggle='popover']").popover("destroy");
+  onDestroy() {
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
+    this.$el.find('[data-toggle=\'popover\']').popover('destroy');
   },
 
-  onLoggedIn: function () {
+  onLoggedIn() {
     this.onLoggedInShow();
     this.render();
   },
 
-  onLoggedOut: function () {
+  onLoggedOut() {
     this.onLoggedOutShow();
     this.render();
   },
 
-  onLoggedInShow: function () {
-    ChatManager.getInstance().onReady(function () {
+  onLoggedInShow() {
+    ChatManager.getInstance().onReady(() => {
       if (this.isDestroyed) return; // this view was destroyed
 
       // listen for unread messages
-      this.listenTo(ChatManager.getInstance().conversations, "change:unread remove", this.onUpdateUnreadConversations);
-      this.listenTo(ChatManager.getInstance().getBuddiesCollection(), "presence_change", this.onUpdateFriendCount);
+      this.listenTo(ChatManager.getInstance().conversations, 'change:unread remove', this.onUpdateUnreadConversations);
+      this.listenTo(ChatManager.getInstance().getBuddiesCollection(), 'presence_change', this.onUpdateFriendCount);
 
       // listen for chat manager disconnect
-      this.listenToOnce(ChatManager.getInstance(), "before_disconnect", function () {
+      this.listenToOnce(ChatManager.getInstance(), 'before_disconnect', function () {
         this.stopListening(ChatManager.getInstance().conversations);
         this.stopListening(ChatManager.getInstance().getBuddiesCollection());
       });
-    }.bind(this));
+    });
   },
 
-  onLoggedOutShow: function () {
+  onLoggedOutShow() {
     this.updateUnreadConversations(0);
     this.updateFriendCount(0);
   },
 
-  onLoggedInRender: function () {
-    ChatManager.getInstance().onReady(function(){
+  onLoggedInRender() {
+    ChatManager.getInstance().onReady(() => {
       if (this.isDestroyed) return; // this view was destroyed
 
       if (ChatManager.getInstance().getConnected()) {
         this.onUpdateUnreadConversations();
         this.onUpdateFriendCount();
       }
-    }.bind(this))
-    this.$el.find(".buddy-list").on("click", this.toggleBuddyList.bind(this));
-    this.$el.find(".settings").on("click", this.toggleSettingsMenu.bind(this));
+    });
+    this.$el.find('.buddy-list').on('click', this.toggleBuddyList.bind(this));
+    this.$el.find('.settings').on('click', this.toggleSettingsMenu.bind(this));
   },
 
-  onLoggedOutRender: function () {
+  onLoggedOutRender() {
     this.updateUnreadConversations(0);
     this.updateFriendCount(0);
-    this.$el.find(".buddy-list").addClass("disabled");
-    this.$el.find(".settings").addClass("disabled");
+    this.$el.find('.buddy-list').addClass('disabled');
+    this.$el.find('.settings').addClass('disabled');
   },
 
-  onUpdateUnreadConversations: function () {
+  onUpdateUnreadConversations() {
     this.updateUnreadConversations(ChatManager.getInstance().conversations.getUnreadConversationCount());
   },
 
-  updateUnreadConversations: function (unreadConversationsCount) {
+  updateUnreadConversations(unreadConversationsCount) {
     if (unreadConversationsCount == null) { unreadConversationsCount = 0; }
-    this.$el.find(".unread-conversation-count").text(unreadConversationsCount);
+    this.$el.find('.unread-conversation-count').text(unreadConversationsCount);
     if (unreadConversationsCount > 0) {
-      this.$el.find(".unread-conversation-block").removeClass("hide");
+      this.$el.find('.unread-conversation-block').removeClass('hide');
     } else {
-      this.$el.find(".unread-conversation-block").addClass("hide");
+      this.$el.find('.unread-conversation-block').addClass('hide');
     }
   },
 
-  onUpdateFriendCount: function () {
+  onUpdateFriendCount() {
     this.updateFriendCount(ChatManager.getInstance().getBuddiesCollection().getOnlineBuddyCount());
   },
 
-  updateFriendCount: function (onlineBuddyCount) {
-    this.$el.find(".buddy-count").text(onlineBuddyCount);
+  updateFriendCount(onlineBuddyCount) {
+    this.$el.find('.buddy-count').text(onlineBuddyCount);
   },
 
-  toggleBuddyList: function() {
+  toggleBuddyList() {
     NavigationManager.getInstance().toggleModalViewByClass(BuddiesLayout, null);
   },
 
-  toggleSettingsMenu: function() {
-    NavigationManager.getInstance().toggleModalViewByClass(SettingsMenuView, {model: ProfileManager.getInstance().profile});
-  }
+  toggleSettingsMenu() {
+    NavigationManager.getInstance().toggleModalViewByClass(SettingsMenuView, { model: ProfileManager.getInstance().profile });
+  },
 
 });
 

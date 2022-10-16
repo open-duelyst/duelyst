@@ -1,6 +1,6 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
 
-var _NotificationsManager = {};
+const _NotificationsManager = {};
 _NotificationsManager.instance = null;
 _NotificationsManager.getInstance = function () {
   if (this.instance == null) {
@@ -10,41 +10,41 @@ _NotificationsManager.getInstance = function () {
 };
 _NotificationsManager.current = _NotificationsManager.getInstance;
 
-_NotificationsManager.NOTIFICATION_QUEST_PROGRESS = "quest_progress";
-_NotificationsManager.NOTIFICATION_BUDDY_MESSAGE = "buddy_message";
-_NotificationsManager.NOTIFICATION_BUDDY_INVITE = "buddy_invite";
-_NotificationsManager.NOTIFICATION_REFERRAL_REWARDS = "referral_rewards";
+_NotificationsManager.NOTIFICATION_QUEST_PROGRESS = 'quest_progress';
+_NotificationsManager.NOTIFICATION_BUDDY_MESSAGE = 'buddy_message';
+_NotificationsManager.NOTIFICATION_BUDDY_INVITE = 'buddy_invite';
+_NotificationsManager.NOTIFICATION_REFERRAL_REWARDS = 'referral_rewards';
 
 module.exports = _NotificationsManager;
 
-var CONFIG = require('app/common/config');
-var EVENTS = require('app/common/event_types');
-var Logger = require('app/common/logger');
-var RSX = require('app/data/resources');
-var Manager = require('./manager');
-var ChatManager = require('./chat_manager');
-var NavigationManager = require('./navigation_manager');
-var MainMenuItemView = require('app/ui/views/item/main_menu');
-var PlayLayout = require('app/ui/views/layouts/play');
-var NotificationModel = require('app/ui/models/notification');
-var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-var moment = require('moment');
-var ProfileManager = require("./profile_manager");
+const CONFIG = require('app/common/config');
+const EVENTS = require('app/common/event_types');
+const Logger = require('app/common/logger');
+const RSX = require('app/data/resources');
+const MainMenuItemView = require('app/ui/views/item/main_menu');
+const PlayLayout = require('app/ui/views/layouts/play');
+const NotificationModel = require('app/ui/models/notification');
+const DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
+const moment = require('moment');
+const NavigationManager = require('./navigation_manager');
+const ChatManager = require('./chat_manager');
+const Manager = require('./manager');
+const ProfileManager = require('./profile_manager');
 
 var NotificationsManager = Manager.extend({
 
   _notificationQueue: null,
 
-  mainNotifications:null,
-  buddyInviteNotifications:null,
-  questNotifications:null,
-  messageNotifications:null,
+  mainNotifications: null,
+  buddyInviteNotifications: null,
+  questNotifications: null,
+  messageNotifications: null,
 
-  remoteNotifications:null,
+  remoteNotifications: null,
 
   /* region INITIALIZE */
 
-  initialize: function(options) {
+  initialize(options) {
     Manager.prototype.initialize.call(this);
 
     this._notificationQueue = new Backbone.Collection();
@@ -59,22 +59,22 @@ var NotificationsManager = Manager.extend({
 
   /* region CONNECT */
 
-  onBeforeConnect: function() {
+  onBeforeConnect() {
     Manager.prototype.onBeforeConnect.call(this);
     ProfileManager.getInstance().onReady()
       .bind(this)
       .then(function () {
-        var userId = ProfileManager.getInstance().get('id')
-        var notificationsRef = new Firebase(process.env.FIREBASE_URL + "/user-notifications/" + userId);
+        const userId = ProfileManager.getInstance().get('id');
+        const notificationsRef = new Firebase(`${process.env.FIREBASE_URL}/user-notifications/${userId}`);
 
-        this.remoteNotifications = new DuelystFirebase.Collection(null,{firebase: notificationsRef.orderByChild('created_at').startAt(moment().utc().valueOf()) });
-        this.listenTo(this.remoteNotifications, "add", this.onRemoteNotificationAdded);
+        this.remoteNotifications = new DuelystFirebase.Collection(null, { firebase: notificationsRef.orderByChild('created_at').startAt(moment().utc().valueOf()) });
+        this.listenTo(this.remoteNotifications, 'add', this.onRemoteNotificationAdded);
 
         ChatManager.getInstance().on(EVENTS.status, this._onStatusChanged, this);
-      })
+      });
   },
 
-  onBeforeDisconnect: function() {
+  onBeforeDisconnect() {
     Manager.prototype.onBeforeDisconnect.call(this);
     ChatManager.getInstance().off(EVENTS.status, this._onStatusChanged, this);
     if (this.remoteNotifications != null) {
@@ -89,24 +89,24 @@ var NotificationsManager = Manager.extend({
 
   /* region GETTERS / SETTERS */
 
-  getMainNotifications: function () {
+  getMainNotifications() {
     return this.mainNotifications;
   },
 
-  getBuddyInviteNotifications: function () {
+  getBuddyInviteNotifications() {
     return this.buddyInviteNotifications;
   },
 
-  getBuddyMessageNotifications: function () {
+  getBuddyMessageNotifications() {
     return this.messageNotifications;
   },
 
-  getQuestProgressNotifications: function () {
+  getQuestProgressNotifications() {
     return this.questNotifications;
   },
 
-  getCollectionForNotification: function (notification) {
-    switch(notification.get("type")) {
+  getCollectionForNotification(notification) {
+    switch (notification.get('type')) {
     case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
       return this.getQuestProgressNotifications();
     case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
@@ -118,8 +118,8 @@ var NotificationsManager = Manager.extend({
     }
   },
 
-  getCanShowNotification: function (notification) {
-    switch(notification.get("type")) {
+  getCanShowNotification(notification) {
+    switch (notification.get('type')) {
     case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
       return this.getCanShowQuestProgressNotification();
     case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
@@ -131,11 +131,11 @@ var NotificationsManager = Manager.extend({
     }
   },
 
-  getCanShowMainNotification: function () {
+  getCanShowMainNotification() {
     return !ChatManager.getInstance().getStatusLoading();
   },
 
-  getCanShowQuestProgressNotification: function () {
+  getCanShowQuestProgressNotification() {
     // show quest progress when on landing/main
     // FIXME: this check is brittle
     return ChatManager.getInstance().getStatusOnline()
@@ -145,26 +145,26 @@ var NotificationsManager = Manager.extend({
         || NavigationManager.getInstance().getIsShowingContentViewClass(PlayLayout));
   },
 
-  getCanShowBuddyMessageNotification: function () {
+  getCanShowBuddyMessageNotification() {
     // show buddy messages when on landing/main
     // FIXME: this check is brittle
     return ChatManager.getInstance().getStatusOnline()
       && ProfileManager.getInstance().profile
-      && !ProfileManager.getInstance().profile.get("doNotDisturb")
+      && !ProfileManager.getInstance().profile.get('doNotDisturb')
       && !NavigationManager.getInstance().getIsShowingDialogView()
       && !NavigationManager.getInstance().getIsShowingModalView()
       && NavigationManager.getInstance().getIsShowingContentViewClass(MainMenuItemView);
   },
 
-  getCanShowBuddyInviteNotification: function () {
+  getCanShowBuddyInviteNotification() {
     // show buddy invites anywhere as long as we're not loading
     return !ChatManager.getInstance().getStatusLoading()
       && ProfileManager.getInstance().profile
-      && !ProfileManager.getInstance().profile.get("doNotDisturb");
+      && !ProfileManager.getInstance().profile.get('doNotDisturb');
   },
 
-  getCanQueueNotification: function (notification) {
-    switch(notification.get("type")) {
+  getCanQueueNotification(notification) {
+    switch (notification.get('type')) {
     case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
       return true;
     case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
@@ -180,7 +180,7 @@ var NotificationsManager = Manager.extend({
 
   /* region EVENTS */
 
-  _onStatusChanged: function() {
+  _onStatusChanged() {
     // when we switch status to online, show queued notifications
     if (ChatManager.getInstance().getStatusOnline()) {
       this.showQueuedNotificationsThatCanBeShown();
@@ -191,7 +191,7 @@ var NotificationsManager = Manager.extend({
 
   /* region SHOW */
 
-  showNotification: function(notification) {
+  showNotification(notification) {
     if (this.getCanShowNotification(notification)) {
       this._showNotification(notification);
     } else if (this.getCanQueueNotification(notification)) {
@@ -199,13 +199,13 @@ var NotificationsManager = Manager.extend({
     }
   },
 
-  _queueNotification: function (notification) {
+  _queueNotification(notification) {
     this._notificationQueue.add(notification);
   },
 
-  _showNotification: function (notification) {
+  _showNotification(notification) {
     // get the collection this will be shown in
-    var collection = this.getCollectionForNotification(notification);
+    const collection = this.getCollectionForNotification(notification);
     if (collection != null) {
       // remove from queue
       this._notificationQueue.remove(notification);
@@ -215,11 +215,11 @@ var NotificationsManager = Manager.extend({
     }
   },
 
-  showQueuedNotificationsThatCanBeShown: function () {
-    var notificationModels = this._notificationQueue.models.slice();
+  showQueuedNotificationsThatCanBeShown() {
+    const notificationModels = this._notificationQueue.models.slice();
 
-    for(var i=0; i<notificationModels.length; i++) {
-      var notificationModel = notificationModels[i];
+    for (let i = 0; i < notificationModels.length; i++) {
+      const notificationModel = notificationModels[i];
       if (this.getCanShowNotification(notificationModel)) {
         this._showNotification(notificationModel);
       }
@@ -230,36 +230,36 @@ var NotificationsManager = Manager.extend({
 
   /* region DISMISS */
 
-  dismissNotification: function(notification) {
+  dismissNotification(notification) {
     // trigger the dismiss event on the notification
-    notification.trigger("dismiss",notification);
+    notification.trigger('dismiss', notification);
 
     // remove
-    var collection = this.getCollectionForNotification(notification);
+    const collection = this.getCollectionForNotification(notification);
     collection.remove(notification);
   },
 
-  dismissAllNotifications: function () {
+  dismissAllNotifications() {
     this.dismissAllNotificationsForCollection(this.getMainNotifications());
     this.dismissAllBuddyNotifications();
     this.dismissAllNotificationsForCollection(this.getQuestProgressNotifications());
   },
 
-  dismissAllBuddyNotifications: function () {
+  dismissAllBuddyNotifications() {
     this.dismissAllNotificationsForCollection(this.getBuddyInviteNotifications());
     this.dismissAllNotificationsForCollection(this.getBuddyMessageNotifications());
   },
 
-  dismissAllNotificationsForCollection: function (collection) {
+  dismissAllNotificationsForCollection(collection) {
     if (collection) {
-      var notifications = collection.slice(0);
-      for (var i = 0, il = notifications.length; i < il; i++) {
+      const notifications = collection.slice(0);
+      for (let i = 0, il = notifications.length; i < il; i++) {
         this.dismissNotification(notifications[i]);
       }
     }
   },
 
-  dismissNotificationsThatCantBeShown: function () {
+  dismissNotificationsThatCantBeShown() {
     if (!this.getCanShowMainNotification()) {
       this.dismissAllNotificationsForCollection(this.getMainNotifications());
     }
@@ -274,16 +274,16 @@ var NotificationsManager = Manager.extend({
     }
   },
 
-  acceptCTAForNotification: function(notification) {
-    notification.set('ctaClicked',true);
-    notification.trigger("cta_accept",notification);
+  acceptCTAForNotification(notification) {
+    notification.set('ctaClicked', true);
+    notification.trigger('cta_accept', notification);
     this.dismissNotification(notification);
   },
 
   /* endregion DISMISS */
 
-  onRemoteNotificationAdded: function(remoteModel) {
+  onRemoteNotificationAdded(remoteModel) {
     this.mainNotifications.add(remoteModel.attributes);
-  }
+  },
 
 });

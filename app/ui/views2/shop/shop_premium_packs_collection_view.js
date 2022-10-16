@@ -1,78 +1,77 @@
-//pragma PKGS: shop
-'use strict'
-var _ = require('underscore')
-var moment = require('moment')
-var CONFIG = require('app/common/config')
-var RSX = require('app/data/resources')
-var ShopData = require('app/data/shop.json')
-var Logger = require('app/common/logger')
-//var PremiumShopData = require('app/data/premium_shop.json')
-var audio_engine = require('app/audio/audio_engine')
-var SDK = require('app/sdk')
-var NavigationManager = require('app/ui/managers/navigation_manager')
-var ProfileManager = require('app/ui/managers/profile_manager')
-var ShopManager = require('app/ui/managers/shop_manager')
-var InventoryManager = require('app/ui/managers/inventory_manager')
-var Template = require('./templates/shop_premium_packs_collection_view.hbs')
-var EventBus = require('app/common/eventbus')
-var EVENTS = require('app/common/event_types')
-var openUrl = require('app/common/openUrl')
+// pragma PKGS: shop
 
-var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
+const _ = require('underscore');
+const moment = require('moment');
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const ShopData = require('app/data/shop.json');
+const Logger = require('app/common/logger');
+// var PremiumShopData = require('app/data/premium_shop.json')
+const audio_engine = require('app/audio/audio_engine');
+const SDK = require('app/sdk');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const ProfileManager = require('app/ui/managers/profile_manager');
+const ShopManager = require('app/ui/managers/shop_manager');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const openUrl = require('app/common/openUrl');
+const Template = require('./templates/shop_premium_packs_collection_view.hbs');
 
-  className: "shop-premium-packs-container",
+const ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
+
+  className: 'shop-premium-packs-container',
   selectedSubCategory: null,
   initialSubCategory: null,
   template: Template,
   tooltipElement: null,
   events: {
-    "click button": "onSelectProduct"
+    'click button': 'onSelectProduct',
   },
 
   _premiumProductsData: null,
 
   /* ui selector cache */
   ui: {
-    "productForGoldButtons": ".product-for-gold .btn-buy",
-    "premiumPackProducts": ".shop-premium-packs",
-    "tabs": ".nav-tabs",
-    "tabBody": ".tab-body"
+    productForGoldButtons: '.product-for-gold .btn-buy',
+    premiumPackProducts: '.shop-premium-packs',
+    tabs: '.nav-tabs',
+    tabBody: '.tab-body',
   },
 
-  serializeModel:function(model) {
-    var data = model.toJSON.apply(model, _.rest(arguments));
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
     return data;
   },
 
-  initialize:function(opts) {
+  initialize(opts) {
   },
 
-  onRender:function() {
+  onRender() {
     this.onWalletChange();
   },
 
-  onShow:function() {
-    this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
+  onShow() {
+    this.listenTo(InventoryManager.getInstance().walletModel, 'change', this.onWalletChange);
     this.onWalletChange();
   },
 
-  onPrepareForDestroy: function () {
+  onPrepareForDestroy() {
   },
 
-  onWalletChange: function () {
+  onWalletChange() {
   },
-
 
   /* region PURCHASE */
 
-  onSelectProduct: function(e){
+  onSelectProduct(e) {
     if (window.isSteam) {
-      return this.onSelectProductSteam(e)
+      return this.onSelectProductSteam(e);
     }
   },
 
-  onSelectProductSteam: function(e) {
-    var productSkuId = $(e.currentTarget).data("productSkuId");
+  onSelectProductSteam(e) {
+    const productSkuId = $(e.currentTarget).data('productSkuId');
     // return InventoryManager.getInstance().purchaseProductSkuOnSteam([{sku_id: productSkuId, qty: 1}])
     // .then(function(steamUrl){
     //   // open [steam] browser then flash success
@@ -88,11 +87,11 @@ var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
     // })
   },
 
-  onPurchaseComplete: function(purchaseData) {
-  }
+  onPurchaseComplete(purchaseData) {
+  },
 
   /* endregion PURCHASE */
 
-})
+});
 
-module.exports = ShopPremiumPacksCollectionView
+module.exports = ShopPremiumPacksCollectionView;

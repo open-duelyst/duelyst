@@ -1,40 +1,39 @@
-//pragma PKGS: alwaysloaded
-'use strict';
+// pragma PKGS: alwaysloaded
 
-var EVENTS = require("app/common/event_types");
-var RSX = require('app/data/resources');
-var Animations = require('app/ui/views/animations');
-var audio_engine = require('app/audio/audio_engine');
-var Templ = require('app/ui/views2/profile/templates/profile_match_history_copy_replay_to_clipboard_dialog.hbs');
-var Clipboard = require('clipboard');
+const EVENTS = require('app/common/event_types');
+const RSX = require('app/data/resources');
+const Animations = require('app/ui/views/animations');
+const audio_engine = require('app/audio/audio_engine');
+const Templ = require('app/ui/views2/profile/templates/profile_match_history_copy_replay_to_clipboard_dialog.hbs');
+const Clipboard = require('clipboard');
 
-var CopyReplayDialogItemView = Backbone.Marionette.ItemView.extend({
+const CopyReplayDialogItemView = Backbone.Marionette.ItemView.extend({
 
-  id: "app-copy-replay-link-dialog",
-  className: "dialog prompt-modal",
+  id: 'app-copy-replay-link-dialog',
+  className: 'dialog prompt-modal',
 
   template: Templ,
 
   events: {
-    "click .cancel-dialog": "onCancel"
+    'click .cancel-dialog': 'onCancel',
   },
 
   animateIn: Animations.fadeIn,
   animateOut: Animations.fadeOut,
 
-  initialize: function() {
+  initialize() {
     this.model = new Backbone.Model({
-      replayUrl: this.options.replayUrl || "",
-      background: this.options.background
-    })
+      replayUrl: this.options.replayUrl || '',
+      background: this.options.background,
+    });
   },
 
-  onRender: function() {
+  onRender() {
     // clipboard
-    new Clipboard("#copy_replay_url_button")
+    new Clipboard('#copy_replay_url_button');
   },
 
-  onShow: function () {
+  onShow() {
     // listen to specific user attempted actions as this is a dialog and dialogs block user actions
     this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancel);
     this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_skip, this.onCancel);
@@ -44,11 +43,11 @@ var CopyReplayDialogItemView = Backbone.Marionette.ItemView.extend({
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
   },
 
-  onCancel: function() {
+  onCancel() {
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
     NavigationManager.getInstance().destroyDialogView();
-    this.trigger("cancel");
-  }
+    this.trigger('cancel');
+  },
 
 });
 

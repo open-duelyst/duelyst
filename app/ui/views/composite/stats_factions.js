@@ -1,16 +1,14 @@
-'use strict';
+const StatsFactionItemView = require('app/ui/views/item/stats_faction');
+const StatsFactionsCompositeViewTempl = require('app/ui/templates/composite/stats_factions.hbs');
 
-var StatsFactionItemView = require('app/ui/views/item/stats_faction');
-var StatsFactionsCompositeViewTempl = require('app/ui/templates/composite/stats_factions.hbs');
+const StatsFactionsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-var StatsFactionsCompositeView = Backbone.Marionette.CompositeView.extend({
-
-  className: "stats-factions",
+  className: 'stats-factions',
 
   template: StatsFactionsCompositeViewTempl,
 
   childView: StatsFactionItemView,
-  childViewContainer: ".factions"
+  childViewContainer: '.factions',
 
 });
 

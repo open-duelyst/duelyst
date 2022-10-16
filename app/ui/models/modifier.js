@@ -1,19 +1,17 @@
-'use strict';
+const Logger = require('app/common/logger');
 
-var Logger = require('app/common/logger');
-
-var ModifierModel = Backbone.Model.extend({
-  initialize: function() {
+const ModifierModel = Backbone.Model.extend({
+  initialize() {
   },
 
   defaults: {
-    name: "TDB Name",
-    description: "TDB Description",
-    source: "Undefined",
-    stackType: "Modifier",
+    name: 'TDB Name',
+    description: 'TDB Description',
+    source: 'Undefined',
+    stackType: 'Modifier',
     stacks: 1,
-    type: "Modifier"
-  }
+    type: 'Modifier',
+  },
 });
 
 // Expose the class either via CommonJS or the global object

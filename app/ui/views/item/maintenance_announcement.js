@@ -1,38 +1,36 @@
-'use strict';
+const ViewTempl = require('app/ui/templates/item/maintenance_announcement.hbs');
 
-var ViewTempl = require('app/ui/templates/item/maintenance_announcement.hbs');
-
-var MaintenanceAnnouncementItemView = Backbone.Marionette.ItemView.extend({
+const MaintenanceAnnouncementItemView = Backbone.Marionette.ItemView.extend({
 
   template: ViewTempl,
 
   events: {
-    "click .close": "dismiss"
+    'click .close': 'dismiss',
   },
 
-  initialize: function() {
-    this.listenTo(this.model,"change",this.render);
+  initialize() {
+    this.listenTo(this.model, 'change', this.render);
   },
 
   /* region MARIONETTE EVENTS */
 
-  onRender: function () {
-    if (this.model.get("message")) {
-      this.$el.removeClass("hide");
+  onRender() {
+    if (this.model.get('message')) {
+      this.$el.removeClass('hide');
     } else {
-      this.$el.addClass("hide");
+      this.$el.addClass('hide');
     }
   },
 
-  onShow: function () {
+  onShow() {
     // Animations.cssClassAnimation.call(this, "active");
   },
 
   /* endregion MARIONETTE EVENTS */
 
-  dismiss: function() {
-    this.$el.addClass("hide");
-  }
+  dismiss() {
+    this.$el.addClass('hide');
+  },
 
 });
 

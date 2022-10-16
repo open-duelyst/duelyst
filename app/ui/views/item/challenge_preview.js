@@ -1,40 +1,39 @@
-//pragma PKGS: nongame
-'use strict';
+// pragma PKGS: nongame
 
-var SDK = require('app/sdk');
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var ChallengePreviewTmpl = require('app/ui/templates/item/challenge_preview.hbs');
+const SDK = require('app/sdk');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const ChallengePreviewTmpl = require('app/ui/templates/item/challenge_preview.hbs');
 
-var ChallengePreviewItemView = Backbone.Marionette.ItemView.extend({
+const ChallengePreviewItemView = Backbone.Marionette.ItemView.extend({
 
   tagName: 'li',
-  className: "challenge-preview",
+  className: 'challenge-preview',
 
   template: ChallengePreviewTmpl,
 
   events: {
-    "mouseenter": "onMouseEnter",
-    "click": "onSelect"
+    mouseenter: 'onMouseEnter',
+    click: 'onSelect',
   },
 
-  onRender: function() {
-    if (!this.model.get("enabled")) {
-      this.$el.addClass("disabled");
+  onRender() {
+    if (!this.model.get('enabled')) {
+      this.$el.addClass('disabled');
     } else {
-      this.$el.removeClass("disabled");
+      this.$el.removeClass('disabled');
     }
   },
 
-  onMouseEnter: function(){
+  onMouseEnter() {
     audio_engine.current().play_effect(RSX.sfx_ui_menu_hover.audio);
   },
 
-  onSelect: function(){
-    if (this.model.get("enabled")) {
-      this.trigger("select");
+  onSelect() {
+    if (this.model.get('enabled')) {
+      this.trigger('select');
     }
-  }
+  },
 
 });
 

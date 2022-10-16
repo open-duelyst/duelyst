@@ -1,32 +1,31 @@
-//pragma PKGS: shop
-'use strict';
+// pragma PKGS: shop
 
-var RSX = require('app/data/resources');
-var CONFIG = require('app/common/config');
-var audio_engine = require('app/audio/audio_engine');
-var Animations = require("app/ui/views/animations");
-var InventoryManager = require('app/ui/managers/inventory_manager');
-var EVENTS = require('app/common/event_types');
-var ProfileManager = require('app/ui/managers/profile_manager');
-var Analytics = require('app/common/analytics');
-var moment = require('moment');
-var ShopSpiritOrbsCollectionView = require('./shop_spirit_orbs_collection_view')
-var Template = require('./templates/shop_spirit_orbs_modal.hbs')
+const RSX = require('app/data/resources');
+const CONFIG = require('app/common/config');
+const audio_engine = require('app/audio/audio_engine');
+const Animations = require('app/ui/views/animations');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const EVENTS = require('app/common/event_types');
+const ProfileManager = require('app/ui/managers/profile_manager');
+const Analytics = require('app/common/analytics');
+const moment = require('moment');
+const ShopSpiritOrbsCollectionView = require('./shop_spirit_orbs_collection_view');
+const Template = require('./templates/shop_spirit_orbs_modal.hbs');
 
-var ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
+const ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
 
-  className: "shop-spirit-orbs-modal",
+  className: 'shop-spirit-orbs-modal',
   template: Template,
   selectedCardSetTab: null,
 
   ui: {
-    "gold_amount": ".gold-amount",
-    "spirit_orb_count": ".spirit-orb-count",
-    "premium_amount": ".premium-amount"
+    gold_amount: '.gold-amount',
+    spirit_orb_count: '.spirit-orb-count',
+    premium_amount: '.premium-amount',
   },
 
   regions: {
-    productCollectionRegion: ".shop-product-collection-region"
+    productCollectionRegion: '.shop-product-collection-region',
   },
 
   animateIn: Animations.fadeIn,
@@ -34,33 +33,33 @@ var ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
 
   /* region INITIALIZE */
 
-  initialize: function(opts) {
+  initialize(opts) {
     // Listen for PayPal 'cancel' event if the user closes PayPal window
     if (window.isDesktop) {
       // window.ipcRenderer.on('paypal-cancel', this.onCancelConfirmPurchase.bind(this))
     }
 
-    this.selectedCardSetTab = opts.selectedCardSetTab
+    this.selectedCardSetTab = opts.selectedCardSetTab;
   },
 
   /* endregion INITIALIZE */
 
   /* region MARIONETTE EVENTS */
 
-  onRender: function() {
+  onRender() {
     this.onWalletChange();
   },
 
-  onShow: function() {
-    Analytics.page("Shop",{ path: "/#shop" });
+  onShow() {
+    Analytics.page('Shop', { path: '/#shop' });
 
-    this.listenTo(InventoryManager.getInstance().walletModel,"change",this.onWalletChange);
-    this.listenTo(InventoryManager.getInstance().boosterPacksCollection,"add remove",this.onWalletChange);
+    this.listenTo(InventoryManager.getInstance().walletModel, 'change', this.onWalletChange);
+    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, 'add remove', this.onWalletChange);
 
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
 
     // show spirit orbs shop
-    var orbsCollectionView = new ShopSpiritOrbsCollectionView({ model: new Backbone.Model({}), selectedCardSetTab:this.selectedCardSetTab })
+    const orbsCollectionView = new ShopSpiritOrbsCollectionView({ model: new Backbone.Model({}), selectedCardSetTab: this.selectedCardSetTab });
     this.productCollectionRegion.show(orbsCollectionView);
   },
 
@@ -68,11 +67,11 @@ var ShopSpiritOrbsModalView = Backbone.Marionette.LayoutView.extend({
 
   /* region EVENTS */
 
-  onWalletChange: function() {
-    this.ui.gold_amount.text(InventoryManager.getInstance().walletModel.get("gold_amount"));
+  onWalletChange() {
+    this.ui.gold_amount.text(InventoryManager.getInstance().walletModel.get('gold_amount'));
     this.ui.spirit_orb_count.text(InventoryManager.getInstance().boosterPacksCollection.length);
     this.ui.premium_amount.text(InventoryManager.getInstance().getWalletModelPremiumAmount());
-  }
+  },
 
   /* endregion EVENTS */
 

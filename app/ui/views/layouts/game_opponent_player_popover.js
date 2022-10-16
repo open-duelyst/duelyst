@@ -1,27 +1,26 @@
-//pragma PKGS: game
-'use strict';
+// pragma PKGS: game
 
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var CONFIG = require('app/common/config');
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var EmotesListCompositeView = require('app/ui/views/composite/emotes-list');
-var PlayerPopoverLayout = require('./game_player_popover');
-var OpponentPlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_opponent_player_popover.hbs');
-var TransitionRegion = require("app/ui/views/regions/transition");
-var InventoryManager = require("app/ui/managers/inventory_manager");
-var i18next = require('i18next');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const EmotesListCompositeView = require('app/ui/views/composite/emotes-list');
+const OpponentPlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_opponent_player_popover.hbs');
+const TransitionRegion = require('app/ui/views/regions/transition');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const i18next = require('i18next');
+const PlayerPopoverLayout = require('./game_player_popover');
 
-var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
+const MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
-  className: "player-popover opponent-player",
+  className: 'player-popover opponent-player',
 
   template: OpponentPlayerPopoverLayoutTempl,
 
   regions: {
-    emotesListRegion: {selector: ".emotes-list-region"},
-    emoteRegion: {selector: ".emote-region", regionClass: TransitionRegion}
+    emotesListRegion: { selector: '.emotes-list-region' },
+    emoteRegion: { selector: '.emote-region', regionClass: TransitionRegion },
   },
 
   _isMuted: false,
@@ -30,17 +29,17 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function() {
+  onShow() {
     // show opponent options
-    var opponentEmotes = [
+    const opponentEmotes = [
       new Backbone.Model({
-        title: i18next.t("common.mute_button_label"),
+        title: i18next.t('common.mute_button_label'),
         callback: this.onMute.bind(this),
-        _canUse: true
-      })
+        _canUse: true,
+      }),
     ];
-    var emotesListCompositeView = new EmotesListCompositeView({collection: new Backbone.Collection(opponentEmotes)});
-    emotesListCompositeView.listenTo(emotesListCompositeView, "childview:select", this.onSelectEmote.bind(this));
+    const emotesListCompositeView = new EmotesListCompositeView({ collection: new Backbone.Collection(opponentEmotes) });
+    emotesListCompositeView.listenTo(emotesListCompositeView, 'childview:select', this.onSelectEmote.bind(this));
     this.emotesListRegion.show(emotesListCompositeView);
 
     // listen for emotes
@@ -51,11 +50,11 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region MUTE */
 
-  onMute: function () {
+  onMute() {
     this._isMuted = true;
   },
 
-  getIsMuted: function () {
+  getIsMuted() {
     return this._isMuted;
   },
 
@@ -63,7 +62,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region SHOW / HIDE */
 
-  showOptions: function () {
+  showOptions() {
     // don't show options when muted
     if (!this._isMuted) {
       PlayerPopoverLayout.prototype.showOptions.call(this);
@@ -74,21 +73,19 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region EMOTES */
 
-  onEmoteReceived: function(event) {
-    var receivedTimestamp = Date.now();
+  onEmoteReceived(event) {
+    const receivedTimestamp = Date.now();
     if (this._emoteReceivedAt + CONFIG.EMOTE_DELAY * 1000.0 <= receivedTimestamp) {
       this._emoteReceivedAt = receivedTimestamp;
-      var emoteId = event.id;
-      if (event.playerId && event.playerId != this.model.get('playerId'))
-        return
-      else
-        this.showEmote(emoteId);
+      const emoteId = event.id;
+      if (event.playerId && event.playerId != this.model.get('playerId')) return;
+      this.showEmote(emoteId);
     }
   },
 
-  onSelectEmote: function (emoteView) {
-    var emoteModel = emoteView && emoteView.model;
-    var emoteCallback = emoteModel && emoteModel.get("callback");
+  onSelectEmote(emoteView) {
+    const emoteModel = emoteView && emoteView.model;
+    const emoteCallback = emoteModel && emoteModel.get('callback');
     if (emoteCallback != null) {
       // play effect
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_select.audio, CONFIG.SELECT_SFX_PRIORITY);
@@ -102,14 +99,14 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     }
   },
 
-  showEmote: function (emoteId) {
+  showEmote(emoteId) {
     // don't show emote when muted or my player has opponent options open
     if (!this._isMuted && !this.getIsShowingOptions()) {
       PlayerPopoverLayout.prototype.showEmote.call(this, emoteId);
     }
-  }
+  },
 
-  /* endregion EMOTES*/
+  /* endregion EMOTES */
 
 });
 

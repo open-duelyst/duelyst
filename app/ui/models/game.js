@@ -1,12 +1,10 @@
-'use strict';
+const Game = Backbone.Model.extend({
 
-var Game = Backbone.Model.extend({
-
-  initialize: function() {
+  initialize() {
   },
 
   defaults: {
-  }
+  },
 
 });
 

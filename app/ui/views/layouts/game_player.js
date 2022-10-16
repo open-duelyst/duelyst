@@ -1,57 +1,55 @@
-'use strict';
-
-var CONFIG = require('app/common/config');
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var SDK = require('app/sdk');
-var Scene = require('app/view/Scene');
-var BottomDeckCardNode = require('app/view/nodes/cards/BottomDeckCardNode');
-var UtilsPosition = require("app/common/utils/utils_position");
-var UtilsEngine = require("app/common/utils/utils_engine");
-var Animations = require("app/ui/views/animations");
-var MyPlayerPopoverLayout = require("./game_my_player_popover");
-var OpponentPlayerPopoverLayout = require("./game_opponent_player_popover");
-var GamePlayerTmpl = require('app/ui/templates/layouts/game_player.hbs');
-var Firebase = require('firebase');
-var ProfileManager = require("app/ui/managers/profile_manager");
-var i18next = require('i18next');
+const CONFIG = require('app/common/config');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const SDK = require('app/sdk');
+const Scene = require('app/view/Scene');
+const BottomDeckCardNode = require('app/view/nodes/cards/BottomDeckCardNode');
+const UtilsPosition = require('app/common/utils/utils_position');
+const UtilsEngine = require('app/common/utils/utils_engine');
+const Animations = require('app/ui/views/animations');
+const GamePlayerTmpl = require('app/ui/templates/layouts/game_player.hbs');
+const Firebase = require('firebase');
+const ProfileManager = require('app/ui/managers/profile_manager');
+const i18next = require('i18next');
+const OpponentPlayerPopoverLayout = require('./game_opponent_player_popover');
+const MyPlayerPopoverLayout = require('./game_my_player_popover');
 
 /**
  * Abstract player view, override and assign a playerId to the model.
  */
 
-var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
+const GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
   // region Properties
 
   template: GamePlayerTmpl,
 
-  className: "player",
+  className: 'player',
 
   regions: {
-    popoverRegion: {selector: ".popover-region"}
+    popoverRegion: { selector: '.popover-region' },
   },
 
   ui: {
-    $deck: ".deck",
-    $deckCountCurrent: ".deck-count-current",
-    $deckCountMax: ".deck-count-max",
-    $handCountCurrent: ".hand-count-current",
-    $handCountMax: ".hand-count-max",
-    $manaCountCurrent: ".mana-count-current",
-    $manaCountMax: ".mana-count-max",
-    $manaIcons: ".mana-icons",
-    $generalPortraitImage: ".general-portrait-image",
-    $generalHP: ".general-hp",
-    $username: ".user-name",
-    $rank: ".user-rank",
-    $connectionStatus: ".connection-status"
+    $deck: '.deck',
+    $deckCountCurrent: '.deck-count-current',
+    $deckCountMax: '.deck-count-max',
+    $handCountCurrent: '.hand-count-current',
+    $handCountMax: '.hand-count-max',
+    $manaCountCurrent: '.mana-count-current',
+    $manaCountMax: '.mana-count-max',
+    $manaIcons: '.mana-icons',
+    $generalPortraitImage: '.general-portrait-image',
+    $generalHP: '.general-hp',
+    $username: '.user-name',
+    $rank: '.user-rank',
+    $connectionStatus: '.connection-status',
   },
 
   events: {
-    "click .general-portrait" : "onGeneralPortraitClicked",
-    "mouseenter .general-portrait" : "onGeneralPortraitStartHover",
-    "mouseleave .general-portrait" : "onGeneralPortraitEndHover"
+    'click .general-portrait': 'onGeneralPortraitClicked',
+    'mouseenter .general-portrait': 'onGeneralPortraitStartHover',
+    'mouseleave .general-portrait': 'onGeneralPortraitEndHover',
   },
 
   animateIn: Animations.fadeIn,
@@ -61,20 +59,19 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   inspectingCard: null, // card inspected by this player
 
   templateHelpers: {
-    generalId: function() {
-      var general = this.getGeneral();
+    generalId() {
+      const general = this.getGeneral();
       if (general != null && general.getPortraitHexResource() != null) {
         return general.getId();
-      } else {
-        var playerSetupData = SDK.GameSession.getInstance().getPlayerSetupDataForPlayerId(this.model.get("playerId"));
-        return playerSetupData.generalId;
       }
-    }
+      const playerSetupData = SDK.GameSession.getInstance().getPlayerSetupDataForPlayerId(this.model.get('playerId'));
+      return playerSetupData.generalId;
+    },
   },
 
   // endregion Properties
 
-  initialize: function () {
+  initialize() {
   },
 
   // region Getters/Setters
@@ -82,33 +79,33 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   /**
    * @returns {Player} view player
    */
-  getViewPlayer: function () {
-    var gameLayer = Scene.getInstance().getGameLayer();
-    return gameLayer && gameLayer.getPlayerById(this.model.get("playerId"));
+  getViewPlayer() {
+    const gameLayer = Scene.getInstance().getGameLayer();
+    return gameLayer && gameLayer.getPlayerById(this.model.get('playerId'));
   },
 
   /**
    * @returns {Player} sdk player
    */
-  getSdkPlayer: function () {
-    return SDK.GameSession.getInstance().getPlayerById(this.model.get("playerId"));
+  getSdkPlayer() {
+    return SDK.GameSession.getInstance().getPlayerById(this.model.get('playerId'));
   },
 
   /**
    * @returns {Entity} general for player
    */
-  getGeneral: function () {
-    return SDK.GameSession.getInstance().getGeneralForPlayerId(this.model.get("playerId"));
+  getGeneral() {
+    return SDK.GameSession.getInstance().getGeneralForPlayerId(this.model.get('playerId'));
   },
 
   // endregion Getters/Setters
 
   /* region LAYOUT */
 
-  onResize: function () {
-    var sdkPlayer = this.getSdkPlayer();
-    var sdkPlayerId = sdkPlayer.getPlayerId();
-    var position;
+  onResize() {
+    const sdkPlayer = this.getSdkPlayer();
+    const sdkPlayerId = sdkPlayer.getPlayerId();
+    let position;
     if (sdkPlayerId === SDK.GameSession.getInstance().getPlayer2().getPlayerId()) {
       position = UtilsEngine.getPlayer2FramePositionForCSS();
     } else {
@@ -118,25 +115,25 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
     // when my player, show deck count under replace
     if (sdkPlayerId === SDK.GameSession.getInstance().getMyPlayerId()) {
-      var cardsStartPosition = UtilsEngine.getCardsInHandStartPositionForCSS();
-      var deckCountX = -position.x + cardsStartPosition.x - CONFIG.HAND_CARD_SIZE * 1.5 - 5.0;
-      var deckCountY = -position.y + UtilsEngine.getGSIWinHeight() - cardsStartPosition.y + 10.0;
+      const cardsStartPosition = UtilsEngine.getCardsInHandStartPositionForCSS();
+      const deckCountX = -position.x + cardsStartPosition.x - CONFIG.HAND_CARD_SIZE * 1.5 - 5.0;
+      const deckCountY = -position.y + UtilsEngine.getGSIWinHeight() - cardsStartPosition.y + 10.0;
       this.ui.$deck.css(
-        "transform",
-        "translate(" + deckCountX / 10.0 + "rem, " + deckCountY / 10.0 + "rem)"
+        'transform',
+        `translate(${deckCountX / 10.0}rem, ${deckCountY / 10.0}rem)`,
       );
     } else {
-      this.ui.$deck.css("transform", "");
+      this.ui.$deck.css('transform', '');
     }
   },
 
-  setPosition: function (position) {
+  setPosition(position) {
     if (!UtilsPosition.getPositionsAreEqual(this._position, position)) {
       this._position = position;
       if (position != null) {
-        this.$el.css("transform", "translate(" + position.x / 10.0 + "rem, " + position.y / 10.0 + "rem)");
+        this.$el.css('transform', `translate(${position.x / 10.0}rem, ${position.y / 10.0}rem)`);
       } else {
-        this.$el.css("transform", "");
+        this.$el.css('transform', '');
       }
     }
   },
@@ -145,7 +142,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onRender: function() {
+  onRender() {
     // rebind player properties that do not require action state
     this.bindPlayerNonActionProperties();
 
@@ -153,20 +150,20 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     this.bindPlayerByAction();
   },
 
-  onShow: function() {
+  onShow() {
     if (!SDK.GameSession.getInstance().isChallenge()) {
       // setup player popover
-      if ((!SDK.GameSession.getInstance().getIsSpectateMode() && this.model.get("playerId") === SDK.GameSession.getInstance().getMyPlayerId()) || SDK.GameSession.getInstance().isSandbox()) {
-        this.popoverView = new MyPlayerPopoverLayout({model: new Backbone.Model({playerId: this.model.get("playerId")})});
+      if ((!SDK.GameSession.getInstance().getIsSpectateMode() && this.model.get('playerId') === SDK.GameSession.getInstance().getMyPlayerId()) || SDK.GameSession.getInstance().isSandbox()) {
+        this.popoverView = new MyPlayerPopoverLayout({ model: new Backbone.Model({ playerId: this.model.get('playerId') }) });
       } else {
-        this.popoverView = new OpponentPlayerPopoverLayout({model: new Backbone.Model({playerId: this.model.get("playerId")})});
+        this.popoverView = new OpponentPlayerPopoverLayout({ model: new Backbone.Model({ playerId: this.model.get('playerId') }) });
       }
       this.popoverRegion.show(this.popoverView);
     }
 
     // listen to game events
-    var scene = Scene.getInstance();
-    var gameLayer = scene && scene.getGameLayer();
+    const scene = Scene.getInstance();
+    const gameLayer = scene && scene.getGameLayer();
     if (gameLayer != null) {
       this.listenTo(gameLayer.getEventBus(), EVENTS.show_start_turn, this.onShowStartTurn);
       this.listenTo(gameLayer.getEventBus(), EVENTS.show_rollback, this.onShowRollback);
@@ -178,7 +175,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
 
     // listen to global events
-    this.listenTo(ProfileManager.getInstance().profile, "change:showPlayerDetails", this.bindUser);
+    this.listenTo(ProfileManager.getInstance().profile, 'change:showPlayerDetails', this.bindUser);
     this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
     this.listenTo(SDK.NetworkManager.getInstance().getEventBus(), EVENTS.opponent_connection_status_changed, this.bindConnectionStatus);
 
@@ -189,7 +186,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     this.bindPlayerByAction();
   },
 
-  onDestroy: function() {
+  onDestroy() {
     // remove firebase models
     if (this._firebase_rank_model != null) {
       this._firebase_rank_model.off();
@@ -201,19 +198,19 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
   /* region EVENT LISTENERS */
 
-  onShowEndTurn: function (event) {
+  onShowEndTurn(event) {
     this.bindPlayerNonActionProperties();
   },
-  onShowStartTurn: function (event) {
+  onShowStartTurn(event) {
     this.bindPlayerNonActionProperties();
   },
-  onShowRollback: function (event) {
+  onShowRollback(event) {
     this.bindPlayerNonActionProperties();
     this.bindPlayerByAction();
   },
 
-  onBeforeShowAction: function(event) {
-    var action = event.action;
+  onBeforeShowAction(event) {
+    const { action } = event;
 
     // bind mana/deck before action for play card action
     if (action instanceof SDK.PlayCardAction) {
@@ -222,8 +219,8 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  onAfterShowAction: function(event) {
-    var action = event.action;
+  onAfterShowAction(event) {
+    const { action } = event;
 
     // rebind counts that update in response to actions
     this.bindGeneralHP();
@@ -235,12 +232,12 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  onInspectCardStart: function (event) {
-    var scene = Scene.getInstance();
-    var gameLayer = scene != null && scene.getGameLayer();
+  onInspectCardStart(event) {
+    const scene = Scene.getInstance();
+    const gameLayer = scene != null && scene.getGameLayer();
     if (gameLayer != null && gameLayer.getIsTurnForPlayer(this.getViewPlayer())) {
-      var card;
-      var isNewCard;
+      let card;
+      let isNewCard;
       if (event) {
         card = event.card;
         isNewCard = event.isNewCard;
@@ -260,7 +257,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  onInspectCardStop: function () {
+  onInspectCardStop() {
     if (this.inspectingCard != null) {
       this.inspectingCard = null;
 
@@ -271,14 +268,14 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  onSelectionChanged: function (event) {
-    var selection = event && event.selection;
-    var showingManaCost;
+  onSelectionChanged(event) {
+    const selection = event && event.selection;
+    let showingManaCost;
     if (selection instanceof BottomDeckCardNode) {
-      var card = selection.getSdkCard();
+      const card = selection.getSdkCard();
       if (card instanceof SDK.Card) {
-        var scene = Scene.getInstance();
-        var gameLayer = scene != null && scene.getGameLayer();
+        const scene = Scene.getInstance();
+        const gameLayer = scene != null && scene.getGameLayer();
         if (gameLayer != null && gameLayer.getIsTurnForPlayer(this.getViewPlayer())) {
           // card has not been played yet, so is in hand
           if (!selection.getIsPlayed() && selection.isOwnedBy(this.getSdkPlayer())) {
@@ -312,7 +309,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   /**
    * Binds all data to ui that doesn't need action state.
    */
-  bindPlayerNonActionProperties: function () {
+  bindPlayerNonActionProperties() {
     this.bindUser();
     this.bindGeneral();
     this.bindIsCurrentPlayer();
@@ -322,42 +319,40 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   /**
    * Binds all data to ui that MAY use action state.
    */
-  bindPlayerByAction: function () {
+  bindPlayerByAction() {
     this.bindGeneralHP();
     this.bindMana();
     this.bindDeck();
   },
 
-  bindIsCurrentPlayer: function() {
-    if (this.getSdkPlayer().getIsCurrentPlayer())
-      this.$el.addClass("current-player");
-    else
-      this.$el.removeClass("current-player");
+  bindIsCurrentPlayer() {
+    if (this.getSdkPlayer().getIsCurrentPlayer()) this.$el.addClass('current-player');
+    else this.$el.removeClass('current-player');
   },
 
   /**
    * Binds user data to ui.
    */
-  bindUser: function () {
-    var player = this.getSdkPlayer();
+  bindUser() {
+    const player = this.getSdkPlayer();
     // pull username from player or from my player
-    var username = player.getUsername() || SDK.GameSession.getInstance().getMyPlayer().getUsername();
+    const username = player.getUsername() || SDK.GameSession.getInstance().getMyPlayer().getUsername();
     this.ui.$username.text(username);
 
     // update my player or opponent player
     if (this.getSdkPlayer().getPlayerId() != SDK.GameSession.getInstance().getMyPlayerId()) {
-      this.$el.addClass("opponent-player");
-      this.$el.removeClass("my-player");
+      this.$el.addClass('opponent-player');
+      this.$el.removeClass('my-player');
     } else {
-      this.$el.removeClass("opponent-player");
-      this.$el.addClass("my-player");
+      this.$el.removeClass('opponent-player');
+      this.$el.addClass('my-player');
     }
 
     // show or hide player details
-    if (ProfileManager.getInstance().get("showPlayerDetails")) {
-      this.$el.addClass("show-player-details");
+    if (ProfileManager.getInstance().get('showPlayerDetails')) {
+      this.$el.addClass('show-player-details');
     } else {
-      this.$el.removeClass("show-player-details");
+      this.$el.removeClass('show-player-details');
     }
 
     // update rank
@@ -367,7 +362,7 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     this.bindConnectionStatus();
   },
 
-  bindRank: function () {
+  bindRank() {
     if (this._firebase_rank_model != null) {
       this._firebase_rank_model.off();
       this._firebase_rank_model = null;
@@ -375,46 +370,48 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
     if (SDK.GameSession.getInstance().isRanked()) {
       // show rank for ranked games
-      this._firebase_rank_model = new Firebase(process.env.FIREBASE_URL).child("user-ranking").child(this.model.get("playerId")).child("current").child("rank").once("value",function(snapshot){
-        try {
-          this.ui.$rank.text(snapshot.val());
-        } catch (error) {
+      this._firebase_rank_model = new Firebase(process.env.FIREBASE_URL).child('user-ranking').child(this.model.get('playerId')).child('current')
+        .child('rank')
+        .once('value', (snapshot) => {
+          try {
+            this.ui.$rank.text(snapshot.val());
+          } catch (error) {
           //
-          console.error("There was an error binding user ranking in-game.",error);
-        }
-      }.bind(this));
+            console.error('There was an error binding user ranking in-game.', error);
+          }
+        });
     } else {
       // remove rank
       this.ui.$rank.remove();
     }
   },
 
-  bindConnectionStatus: function () {
+  bindConnectionStatus() {
     // in non-multiplayer games or for my player, connection status is not relevant
     if (!SDK.GameType.isMultiplayerGameType(SDK.GameSession.getInstance().getGameType()) || SDK.GameSession.getInstance().getIsSpectateMode() || this.getSdkPlayer().getPlayerId() == SDK.GameSession.getInstance().getMyPlayerId()) {
       this.ui.$connectionStatus.remove();
-    }  else if (SDK.NetworkManager.getInstance().isOpponentConnected) {
-      this.ui.$connectionStatus.addClass("connected");
-      this.ui.$connectionStatus.attr("data-status-msg",i18next.t("game_ui.connected_label"))
+    } else if (SDK.NetworkManager.getInstance().isOpponentConnected) {
+      this.ui.$connectionStatus.addClass('connected');
+      this.ui.$connectionStatus.attr('data-status-msg', i18next.t('game_ui.connected_label'));
     } else {
-      this.ui.$connectionStatus.removeClass("connected");
-      this.ui.$connectionStatus.attr("data-status-msg",i18next.t("game_ui.disconnected_label"))
+      this.ui.$connectionStatus.removeClass('connected');
+      this.ui.$connectionStatus.attr('data-status-msg', i18next.t('game_ui.disconnected_label'));
     }
   },
 
   /**
    * Binds deck and hand data from sdk to ui.
    */
-  bindDeck: function () {
-    var scene = Scene.getInstance();
-    var gameLayer = scene && scene.getGameLayer();
-    var action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
-    var sdkPlayer = this.getSdkPlayer();
-    var stateAtAction = sdkPlayer.getActionStateRecord().getStateAtAction(action);
-    var currDeckSize = stateAtAction.numCards;
-    var currHandSize = stateAtAction.numCardsInHand;
-    var maxHandSize = CONFIG.MAX_HAND_SIZE;
-    var maxDeckSize = SDK.GameSession.getInstance().isGauntlet() ? CONFIG.MAX_DECK_SIZE_GAUNTLET : CONFIG.MAX_DECK_SIZE;
+  bindDeck() {
+    const scene = Scene.getInstance();
+    const gameLayer = scene && scene.getGameLayer();
+    const action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
+    const sdkPlayer = this.getSdkPlayer();
+    const stateAtAction = sdkPlayer.getActionStateRecord().getStateAtAction(action);
+    const currDeckSize = stateAtAction.numCards;
+    const currHandSize = stateAtAction.numCardsInHand;
+    const maxHandSize = CONFIG.MAX_HAND_SIZE;
+    const maxDeckSize = SDK.GameSession.getInstance().isGauntlet() ? CONFIG.MAX_DECK_SIZE_GAUNTLET : CONFIG.MAX_DECK_SIZE;
 
     this.ui.$deckCountCurrent.text(currDeckSize);
     this.ui.$deckCountMax.text(maxDeckSize);
@@ -425,13 +422,13 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   /**
    * Binds mana data from sdk to ui.
    */
-  bindMana: function() {
-    var sdkPlayer = this.getSdkPlayer();
+  bindMana() {
+    const sdkPlayer = this.getSdkPlayer();
     if (sdkPlayer) {
-      var currMana;
-      var currMaxMana;
-      var maxMana = CONFIG.MAX_MANA;
-      var isMyPlayer = sdkPlayer === SDK.GameSession.getInstance().getMyPlayer();
+      let currMana;
+      let currMaxMana;
+      const maxMana = CONFIG.MAX_MANA;
+      const isMyPlayer = sdkPlayer === SDK.GameSession.getInstance().getMyPlayer();
 
       if (isMyPlayer) {
         // for my player get mana direct from sdk
@@ -440,10 +437,10 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
         currMaxMana = sdkPlayer.getMaximumMana();
       } else {
         // for opponent player get mana from state at action
-        var scene = Scene.getInstance();
-        var gameLayer = scene && scene.getGameLayer();
-        var action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
-        var stateAtAction = sdkPlayer.getActionStateRecord().getStateAtAction(action);
+        const scene = Scene.getInstance();
+        const gameLayer = scene && scene.getGameLayer();
+        const action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
+        const stateAtAction = sdkPlayer.getActionStateRecord().getStateAtAction(action);
         currMana = stateAtAction.remainingMana;
         currMaxMana = stateAtAction.maximumMana;
       }
@@ -452,30 +449,30 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
       this.ui.$manaCountMax.text(sdkPlayer.getBaseMaximumMana());
 
       // show mana icons
-      var $icons = this.ui.$manaIcons;
-      var iconCount = $icons.children().length;
+      const $icons = this.ui.$manaIcons;
+      const iconCount = $icons.children().length;
       if (iconCount != maxMana) {
         $icons.empty();
         for (var i = 0; i < maxMana; i++) {
           if (i < currMana) {
-            $icons.append("<div class='mana-icon'></div>");
+            $icons.append('<div class=\'mana-icon\'></div>');
           } else {
-            $icons.append("<div class='mana-icon inactive'></div>");
+            $icons.append('<div class=\'mana-icon inactive\'></div>');
           }
         }
       }
 
       // only show mana icon states for my player
       if (isMyPlayer) {
-        var reverseManaIcons = $icons.children().toArray().reverse();
-        var missingMana = currMaxMana - currMana;
-        var missingMaxMana = maxMana - currMaxMana;
+        const reverseManaIcons = $icons.children().toArray().reverse();
+        const missingMana = currMaxMana - currMana;
+        const missingMaxMana = maxMana - currMaxMana;
         for (var i = 0; i < maxMana; i++) {
-          var $manaIcon = $(reverseManaIcons[i]);
+          const $manaIcon = $(reverseManaIcons[i]);
           if (i < missingMaxMana) {
-            $manaIcon.addClass("inactive");
+            $manaIcon.addClass('inactive');
           } else {
-            $manaIcon.removeClass("inactive");
+            $manaIcon.removeClass('inactive');
             if (i < missingMaxMana + missingMana) {
               $manaIcon.addClass('empty');
             } else {
@@ -487,29 +484,29 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  _showManaCost: function (card) {
-    var sdkPlayer = this.getSdkPlayer();
+  _showManaCost(card) {
+    const sdkPlayer = this.getSdkPlayer();
     if (sdkPlayer && sdkPlayer === SDK.GameSession.getInstance().getMyPlayer()) {
-      var currMaxMana = sdkPlayer.getMaximumMana();
-      var maxMana = CONFIG.MAX_MANA;
-      var manaCost = card.getManaCost();
-      var manaIcons = this.ui.$manaIcons.children().toArray().reverse();
-      var i;
+      const currMaxMana = sdkPlayer.getMaximumMana();
+      const maxMana = CONFIG.MAX_MANA;
+      const manaCost = card.getManaCost();
+      const manaIcons = this.ui.$manaIcons.children().toArray().reverse();
+      let i;
 
       this._removeManaCost();
 
       if (!card.getDoesOwnerHaveEnoughManaToPlay()) {
         // owner doesn't have enough mana
-        for(i = Math.max(0, maxMana - manaCost); i < maxMana; i++) {
+        for (i = Math.max(0, maxMana - manaCost); i < maxMana; i++) {
           var $icon = $(manaIcons[i]);
           $icon.addClass('invalid');
         }
       } else {
         // highlight mana
-        var manaToShow = manaCost;
-        for(i = maxMana - currMaxMana; i < maxMana && manaToShow > 0; i++) {
+        let manaToShow = manaCost;
+        for (i = maxMana - currMaxMana; i < maxMana && manaToShow > 0; i++) {
           var $icon = $(manaIcons[i]);
-          if (!$icon.hasClass("empty") && !$icon.hasClass("inactive")) {
+          if (!$icon.hasClass('empty') && !$icon.hasClass('inactive')) {
             $icon.addClass('select');
             manaToShow--;
           }
@@ -518,9 +515,9 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
     }
   },
 
-  _removeManaCost: function () {
-    var manaIcons = this.ui.$manaIcons.children().toArray();
-    for(var i = 0, il = manaIcons.length; i < il; i++) {
+  _removeManaCost() {
+    const manaIcons = this.ui.$manaIcons.children().toArray();
+    for (let i = 0, il = manaIcons.length; i < il; i++) {
       $(manaIcons[i]).removeClass('select invalid');
     }
   },
@@ -528,17 +525,17 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
   /**
    * Binds general data from sdk to ui.
    */
-  bindGeneral: function() {
+  bindGeneral() {
     // don't bind general HP here, only in response to an action
   },
 
-  bindGeneralHP: function () {
-    var scene = Scene.getInstance();
-    var gameLayer = scene && scene.getGameLayer();
-    var action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
-    var general = this.getGeneral();
+  bindGeneralHP() {
+    const scene = Scene.getInstance();
+    const gameLayer = scene && scene.getGameLayer();
+    const action = gameLayer && gameLayer.getLastShownSdkStateRecordingAction();
+    const general = this.getGeneral();
     if (general != null) {
-      var stateAtAction = general.getActionStateRecord().getStateAtAction(action);
+      const stateAtAction = general.getActionStateRecord().getStateAtAction(action);
       this.ui.$generalHP.text(stateAtAction.hp);
     } else {
       this.ui.$generalHP.text(0);
@@ -547,21 +544,21 @@ var GamePlayerLayout = Backbone.Marionette.LayoutView.extend({
 
   // endregion Binding Data
 
-  onGeneralPortraitClicked: function(event) {
+  onGeneralPortraitClicked(event) {
     if (!SDK.GameSession.current().getIsSpectateMode() && this.popoverView != null) {
       this.popoverView.show();
     }
   },
 
-  onGeneralPortraitStartHover: function(event) {
-    this.$el.addClass("show-player-details");
+  onGeneralPortraitStartHover(event) {
+    this.$el.addClass('show-player-details');
   },
 
-  onGeneralPortraitEndHover: function(event) {
-    if (!ProfileManager.getInstance().profile.get("showPlayerDetails")) {
-      this.$el.removeClass("show-player-details");
+  onGeneralPortraitEndHover(event) {
+    if (!ProfileManager.getInstance().profile.get('showPlayerDetails')) {
+      this.$el.removeClass('show-player-details');
     }
-  }
+  },
 
 });
 

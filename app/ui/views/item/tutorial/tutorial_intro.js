@@ -1,51 +1,50 @@
-'use strict';
-//pragma PKGS: tutorial_support
-var SDK = require('app/sdk');
-var TutorialSupportView = require('./tutorial_support');
-var TutorialIntroTmpl = require('app/ui/templates/item/tutorial/tutorial_intro.hbs');
-var ProgressionManager = require('app/ui/managers/progression_manager');
+// pragma PKGS: tutorial_support
+const SDK = require('app/sdk');
+const TutorialIntroTmpl = require('app/ui/templates/item/tutorial/tutorial_intro.hbs');
+const ProgressionManager = require('app/ui/managers/progression_manager');
+const TutorialSupportView = require('./tutorial_support');
 
-var TutorialIntroView = TutorialSupportView.extend({
+const TutorialIntroView = TutorialSupportView.extend({
 
-  id: "tutorial-intro",
+  id: 'tutorial-intro',
 
   template: TutorialIntroTmpl,
 
   events: {
-    "click .start": "onStartTutorial"
+    'click .start': 'onStartTutorial',
   },
 
-  initialize: function() {
+  initialize() {
     TutorialSupportView.prototype.initialize.call(this);
 
     // parse challenge
-    var challenge = this.model.get("challenge");
+    const challenge = this.model.get('challenge');
     if (challenge) {
-      var cardRewards = SDK.ChallengeFactory.getCardIdsRewardedForChallengeType(challenge.type);
-      var cardRewardNames = [];
+      const cardRewards = SDK.ChallengeFactory.getCardIdsRewardedForChallengeType(challenge.type);
+      const cardRewardNames = [];
       if (cardRewards) {
-        for (var i=0; i < cardRewards.length; i++) {
-          var card = SDK.CardFactory.cardForIdentifier(cardRewards[i]);
+        for (let i = 0; i < cardRewards.length; i++) {
+          const card = SDK.CardFactory.cardForIdentifier(cardRewards[i]);
           cardRewardNames.push(card.getName());
         }
       }
-      this.model.set("card_rewards",cardRewardNames);
-      var gold_reward = SDK.ChallengeFactory.getGoldRewardedForChallengeType(challenge.type);
+      this.model.set('card_rewards', cardRewardNames);
+      const gold_reward = SDK.ChallengeFactory.getGoldRewardedForChallengeType(challenge.type);
       if (gold_reward) {
-        this.model.set("gold_reward",gold_reward);
+        this.model.set('gold_reward', gold_reward);
       } else if (challenge.goldReward) {
-        this.model.set("gold_reward",challenge.goldReward);
+        this.model.set('gold_reward', challenge.goldReward);
       }
 
-      this.model.set("challenge_previously_completed", ProgressionManager.getInstance().hasCompletedChallengeOfType(this.model.get("challenge").type));
+      this.model.set('challenge_previously_completed', ProgressionManager.getInstance().hasCompletedChallengeOfType(this.model.get('challenge').type));
     }
   },
 
   /* region EVENTS */
 
-  onStartTutorial: function() {
-    this.trigger("start_tutorial");
-  }
+  onStartTutorial() {
+    this.trigger('start_tutorial');
+  },
 
   /* endregion EVENTS */
 

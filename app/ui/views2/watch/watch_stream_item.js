@@ -1,54 +1,52 @@
-'use strict'
+const Animations = require('app/ui/views/animations');
+const moment = require('moment');
+const Analytics = require('app/common/analytics');
+const openUrl = require('app/common/openUrl');
+const Template = require('./templates/watch_stream_item.hbs');
 
-var Animations = require('app/ui/views/animations')
-var moment = require('moment')
-var Analytics = require('app/common/analytics')
-var Template = require('./templates/watch_stream_item.hbs')
-var openUrl = require('app/common/openUrl')
+const WatchStreamItemView = Backbone.Marionette.ItemView.extend({
 
-var WatchStreamItemView = Backbone.Marionette.ItemView.extend({
-
-  className: "watch-stream-item",
+  className: 'watch-stream-item',
   template: Template,
 
   events: {
-    "click a": "onOpenStream",
-    "click button": "onOpenStream",
+    'click a': 'onOpenStream',
+    'click button': 'onOpenStream',
   },
 
-  init: function(){
+  init() {
   },
 
-  onRender: function() {
-    this.$el.find("[data-toggle='tooltip']").tooltip();
+  onRender() {
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip();
   },
 
-  onDestroy: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+  onDestroy() {
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
   },
 
-  animateReveal: function(duration, delay) {
+  animateReveal(duration, delay) {
     Animations.fadeZoomUpIn.call(this, duration, delay, 0, 0, 0.9);
   },
 
-  onOpenStream: function(e){
-    openUrl(this.model.get("url"));
+  onOpenStream(e) {
+    openUrl(this.model.get('url'));
 
-    var streamerName = "";
-    if (this.model != null && this.model.get("name") != null) {
-      streamerName = this.model.get("name");
+    let streamerName = '';
+    if (this.model != null && this.model.get('name') != null) {
+      streamerName = this.model.get('name');
     }
-    Analytics.track("watch stream", {
-      category:Analytics.EventCategory.Watch,
-      streamer_name:streamerName
-    },{
-      labelKey:"streamer_name"
+    Analytics.track('watch stream', {
+      category: Analytics.EventCategory.Watch,
+      streamer_name: streamerName,
+    }, {
+      labelKey: 'streamer_name',
     });
 
     e.preventDefault();
-    return false
-  }
+    return false;
+  },
 
-})
+});
 
-module.exports = WatchStreamItemView
+module.exports = WatchStreamItemView;

@@ -1,8 +1,8 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
 
 // See: https://coderwall.com/p/myzvmg for why managers are created this way
 
-var _NavigationManager = {};
+const _NavigationManager = {};
 _NavigationManager.instance = null;
 _NavigationManager.getInstance = function () {
   if (this.instance == null) {
@@ -14,28 +14,28 @@ _NavigationManager.current = _NavigationManager.getInstance;
 
 module.exports = _NavigationManager;
 
-var Promise = require("bluebird");
-var CONFIG = require('app/common/config');
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var Logger = require('app/common/logger');
-var UtilsJavascript = require('app/common/utils/utils_javascript');
-var UtilsUI = require('app/common/utils/utils_ui');
-var audio_engine = require('app/audio/audio_engine');
-var RSX = require('app/data/resources');
-var Scene = require('app/view/Scene');
-var Manager = require('./manager');
-var Animations = require('app/ui/views/animations');
-var NotificationsManager = require('./notifications_manager');
-var ChatManager = require('./chat_manager');
-var ServerStatusManager = require('./server_status_manager');
-var TransitionRegion = require('app/ui/views/regions/transition');
-var NotificationsLayout = require('app/ui/views/layouts/notifications');
-var ConfirmDialogItemView = require('app/ui/views/item/confirm_dialog');
-var ConfirmPurchaseDialogView = require('app/ui/views2/shop/confirm_purchase_dialog');
-var LoadingDialogItemView = require('app/ui/views/item/loading_dialog');
-var MaintenanceAnnouncementItemView = require('app/ui/views/item/maintenance_announcement');
-var _ = require('underscore');
+const Promise = require('bluebird');
+const CONFIG = require('app/common/config');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const Logger = require('app/common/logger');
+const UtilsJavascript = require('app/common/utils/utils_javascript');
+const UtilsUI = require('app/common/utils/utils_ui');
+const audio_engine = require('app/audio/audio_engine');
+const RSX = require('app/data/resources');
+const Scene = require('app/view/Scene');
+const Animations = require('app/ui/views/animations');
+const TransitionRegion = require('app/ui/views/regions/transition');
+const NotificationsLayout = require('app/ui/views/layouts/notifications');
+const ConfirmDialogItemView = require('app/ui/views/item/confirm_dialog');
+const ConfirmPurchaseDialogView = require('app/ui/views2/shop/confirm_purchase_dialog');
+const LoadingDialogItemView = require('app/ui/views/item/loading_dialog');
+const MaintenanceAnnouncementItemView = require('app/ui/views/item/maintenance_announcement');
+const _ = require('underscore');
+const ServerStatusManager = require('./server_status_manager');
+const ChatManager = require('./chat_manager');
+const NotificationsManager = require('./notifications_manager');
+const Manager = require('./manager');
 
 var NavigationManager = Manager.extend({
 
@@ -54,13 +54,13 @@ var NavigationManager = Manager.extend({
   _userTriggeredNavigationLocked: false,
   _userTriggeredNavigationLockId: -1,
   _userTriggeredNavigationLockRequests: null,
-  _userNavLockIdContent: "UserNavLockIdContent",
-  _userNavLockIdModal: "UserNavLockIdModal",
-  _userNavLockIdDialog: "UserNavLockIdDialog",
+  _userNavLockIdContent: 'UserNavLockIdContent',
+  _userNavLockIdModal: 'UserNavLockIdModal',
+  _userNavLockIdDialog: 'UserNavLockIdDialog',
   _majorRouteStack: null,
-  _minorRouteStack:  null,
+  _minorRouteStack: null,
 
-  initialize: function() {
+  initialize() {
     Manager.prototype.initialize.call(this);
 
     this._userTriggeredNavigationLockRequests = [];
@@ -68,82 +68,82 @@ var NavigationManager = Manager.extend({
     this._minorRouteStack = [];
 
     // initialize regions
-    this._appRegion = new TransitionRegion({el: CONFIG.APP_SELECTOR});
-    this._mainRegion = new TransitionRegion({el: CONFIG.MAIN_SELECTOR});
-    this._horizontalRegion = new TransitionRegion({el: CONFIG.HORIZONTAL_SELECTOR});
-    this._verticalRegion = new TransitionRegion({el: CONFIG.VERTICAL_SELECTOR});
-    this._overlayRegion = new TransitionRegion({el: CONFIG.OVERLAY_SELECTOR});
-    this._gamecanvasRegion = new TransitionRegion({el: CONFIG.GAMECANVAS_SELECTOR});
-    this._contentRegion = new TransitionRegion({el: CONFIG.CONTENT_SELECTOR});
-    this._modalRegion = new TransitionRegion({el: CONFIG.MODAL_SELECTOR});
-    this._utilityRegion = new TransitionRegion({el: CONFIG.UTILITY_SELECTOR});
-    this._notificationsRegion = new TransitionRegion({el: CONFIG.NOTIFICATIONS_SELECTOR});
-    this._maintenanceAnnouncementRegion = new Backbone.Marionette.Region({el: CONFIG.MAINTENANCE_ANNOUNCEMENTS_SELECTOR});
+    this._appRegion = new TransitionRegion({ el: CONFIG.APP_SELECTOR });
+    this._mainRegion = new TransitionRegion({ el: CONFIG.MAIN_SELECTOR });
+    this._horizontalRegion = new TransitionRegion({ el: CONFIG.HORIZONTAL_SELECTOR });
+    this._verticalRegion = new TransitionRegion({ el: CONFIG.VERTICAL_SELECTOR });
+    this._overlayRegion = new TransitionRegion({ el: CONFIG.OVERLAY_SELECTOR });
+    this._gamecanvasRegion = new TransitionRegion({ el: CONFIG.GAMECANVAS_SELECTOR });
+    this._contentRegion = new TransitionRegion({ el: CONFIG.CONTENT_SELECTOR });
+    this._modalRegion = new TransitionRegion({ el: CONFIG.MODAL_SELECTOR });
+    this._utilityRegion = new TransitionRegion({ el: CONFIG.UTILITY_SELECTOR });
+    this._notificationsRegion = new TransitionRegion({ el: CONFIG.NOTIFICATIONS_SELECTOR });
+    this._maintenanceAnnouncementRegion = new Backbone.Marionette.Region({ el: CONFIG.MAINTENANCE_ANNOUNCEMENTS_SELECTOR });
 
     // show ui
     this._notificationsRegion.show(new NotificationsLayout());
 
     // when server status manager connects, show the system status announcement item view that will auto-update based on system status
-    ServerStatusManager.getInstance().onReady().then(function(){
+    ServerStatusManager.getInstance().onReady().then(() => {
       // add maintenance announcement
-      this._maintenanceAnnouncementRegion.show(new MaintenanceAnnouncementItemView({model:ServerStatusManager.getInstance().serverStatusModel}));
-    }.bind(this))
+      this._maintenanceAnnouncementRegion.show(new MaintenanceAnnouncementItemView({ model: ServerStatusManager.getInstance().serverStatusModel }));
+    });
 
     // attach delegate listeners to the app for special buttons
-    $(CONFIG.APP_SELECTOR).on("click", ".btn-user-cancel", function (event) {
+    $(CONFIG.APP_SELECTOR).on('click', '.btn-user-cancel', (event) => {
       // request user triggered action
       this.requestUserTriggeredCancel();
-    }.bind(this));
-    $(CONFIG.APP_SELECTOR).on("click", ".btn-user-skip", function (event) {
+    });
+    $(CONFIG.APP_SELECTOR).on('click', '.btn-user-skip', (event) => {
       // request user triggered action
       this.requestUserTriggeredSkip();
-    }.bind(this));
-    $(CONFIG.APP_SELECTOR).on("click", ".btn-user-exit", function (event) {
+    });
+    $(CONFIG.APP_SELECTOR).on('click', '.btn-user-exit', (event) => {
       // request user triggered action
       this.requestUserTriggeredExit();
-    }.bind(this));
-    $(CONFIG.APP_SELECTOR).on("click", ".btn-user-confirm", function (event) {
+    });
+    $(CONFIG.APP_SELECTOR).on('click', '.btn-user-confirm', (event) => {
       // request user triggered action
       this.requestUserTriggeredConfirm();
-    }.bind(this));
+    });
 
     // attach delegate listeners to the app for button sounds
-    $(CONFIG.APP_SELECTOR).on("mouseenter", "a, button, .btn", function () {
+    $(CONFIG.APP_SELECTOR).on('mouseenter', 'a, button, .btn', () => {
       // play auto sound for hover
       audio_engine.current().play_effect(RSX.sfx_ui_menu_hover.audio);
-    }.bind(this));
-    $(CONFIG.APP_SELECTOR).on("mouseup", "a, button, .btn", function (event) {
+    });
+    $(CONFIG.APP_SELECTOR).on('mouseup', 'a, button, .btn', (event) => {
       // play auto sound for click
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_click.audio, CONFIG.CLICK_SFX_PRIORITY);
       // blur/un-focus target to remove ability for user to spam a button by pressing enter
       $(event.target).blur();
-    }.bind(this));
+    });
 
     // listen for specific key presses
-    $(document).on("keyup", function (event) {
-      var keyCode = event.which;
-      var $target = $(event.target);
-      if (keyCode == cc.KEY["escape"]) {
+    $(document).on('keyup', (event) => {
+      const keyCode = event.which;
+      const $target = $(event.target);
+      if (keyCode == cc.KEY.escape) {
         // play sound because key presses don't have auto sounds like buttons
         audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_click.audio, CONFIG.CLICK_SFX_PRIORITY);
         // request user triggered action
         this.requestUserTriggeredCancel();
-      } else if (keyCode == cc.KEY["space"]) {
-        if (!$target.is("input")) {
+      } else if (keyCode == cc.KEY.space) {
+        if (!$target.is('input')) {
           // play sound because key presses don't have auto sounds like buttons
           audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_click.audio, CONFIG.CLICK_SFX_PRIORITY);
           // request user triggered action
           this.requestUserTriggeredSkip();
         }
-      } else if (keyCode == cc.KEY["enter"]) {
-        if (!$target.is("a, button, .btn")) {
+      } else if (keyCode == cc.KEY.enter) {
+        if (!$target.is('a, button, .btn')) {
           // play sound because key presses don't have auto sounds like buttons
           audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_click.audio, CONFIG.CLICK_SFX_PRIORITY);
           // request user triggered action
           this.requestUserTriggeredConfirm();
         }
       }
-    }.bind(this));
+    });
 
     // listen for before resize
     this.listenTo(EventBus.getInstance(), EVENTS.before_resize, this.onBeforeResize);
@@ -155,15 +155,15 @@ var NavigationManager = Manager.extend({
 
   /* region LAYOUT */
 
-  onBeforeResize: function () {
+  onBeforeResize() {
     // overlay scrollbars on body
-    UtilsUI.overlayScrollbars("body");
+    UtilsUI.overlayScrollbars('body');
 
     // NOTE: this is really a bad place to put the zendesk widget BUT it's needed because their embed script sucks
     // zendesk setup
     if (!window.zendesk) {
-      window.zEmbed && window.zEmbed()
-      window.zendesk = true
+      window.zEmbed && window.zEmbed();
+      window.zendesk = true;
     }
   },
 
@@ -171,7 +171,7 @@ var NavigationManager = Manager.extend({
 
   /* region CONNECT */
 
-  onBeforeConnect: function() {
+  onBeforeConnect() {
     Manager.prototype.onBeforeConnect.call(this);
 
     // this manager is not tied to login
@@ -182,16 +182,16 @@ var NavigationManager = Manager.extend({
 
   /* endregion CONNECT */
 
-  getCurrentView: function(parentView) {
+  getCurrentView(parentView) {
     return parentView && parentView.currentView;
   },
 
-  getIsShowingView: function(parentView) {
-    var currentView = this.getCurrentView(parentView);
+  getIsShowingView(parentView) {
+    const currentView = this.getCurrentView(parentView);
     return currentView != null && !currentView.isDestroyed;
   },
 
-  getIsShowingViewClass: function(viewClass, parentView) {
+  getIsShowingViewClass(viewClass, parentView) {
     return this.getIsShowingView(parentView) && this.getCurrentView(parentView) instanceof viewClass;
   },
 
@@ -199,30 +199,30 @@ var NavigationManager = Manager.extend({
    * Destroys all views and layers, except for those in an optional list passed in.
    * @param {Array} [dontDestroy=null] array of views/layers to preserve and not destroy/unload
    */
-  destroyAllViewsAndLayers: function (dontDestroy) {
+  destroyAllViewsAndLayers(dontDestroy) {
     // unload content view
-    var contentView = this.getContentView();
-    var contentViewPromise = contentView != null && !_.contains(dontDestroy, contentView) ? this.destroyContentView() : Promise.resolve();
+    const contentView = this.getContentView();
+    const contentViewPromise = contentView != null && !_.contains(dontDestroy, contentView) ? this.destroyContentView() : Promise.resolve();
 
     // unload modal view
-    var modalView = this.getModalView();
-    var modalViewPromise = modalView != null && !_.contains(dontDestroy, modalView) ? this.destroyModalView() : Promise.resolve();
+    const modalView = this.getModalView();
+    const modalViewPromise = modalView != null && !_.contains(dontDestroy, modalView) ? this.destroyModalView() : Promise.resolve();
 
     // unload modal view
-    var dialogView = this.getDialogView();
-    var dialogViewPromise = dialogView != null && !_.contains(dontDestroy, dialogView) ? this.destroyDialogView() : Promise.resolve();
+    const dialogView = this.getDialogView();
+    const dialogViewPromise = dialogView != null && !_.contains(dontDestroy, dialogView) ? this.destroyDialogView() : Promise.resolve();
 
     // unload utility view
-    var utilityView = this.getUtilityView();
-    var utilityViewPromise = utilityView != null && !_.contains(dontDestroy, utilityView) ? this.destroyUtilityView() : Promise.resolve();
+    const utilityView = this.getUtilityView();
+    const utilityViewPromise = utilityView != null && !_.contains(dontDestroy, utilityView) ? this.destroyUtilityView() : Promise.resolve();
 
     // unload content layer
-    var contentLayer = Scene.getInstance().getContent();
-    var contentLayerPromise = contentLayer != null && !_.contains(dontDestroy, contentLayer) ? Scene.getInstance().destroyContent() : Promise.resolve();
+    const contentLayer = Scene.getInstance().getContent();
+    const contentLayerPromise = contentLayer != null && !_.contains(dontDestroy, contentLayer) ? Scene.getInstance().destroyContent() : Promise.resolve();
 
     // unload overlay layer
-    var overlayLayer = Scene.getInstance().getOverlay();
-    var overlayLayerPromise = overlayLayer != null && !_.contains(dontDestroy, overlayLayer) ? Scene.getInstance().destroyOverlay() : Promise.resolve();
+    const overlayLayer = Scene.getInstance().getOverlay();
+    const overlayLayerPromise = overlayLayer != null && !_.contains(dontDestroy, overlayLayer) ? Scene.getInstance().destroyOverlay() : Promise.resolve();
 
     return Promise.all([
       contentViewPromise,
@@ -230,22 +230,21 @@ var NavigationManager = Manager.extend({
       dialogViewPromise,
       utilityViewPromise,
       contentLayerPromise,
-      overlayLayerPromise
-    ])
+      overlayLayerPromise,
+    ]);
   },
 
   /* region CONTENT */
   // content views are major / horizontal navigation elements that retain flow
 
-  showContentViewByClass: function(viewClass, viewOptions) {
+  showContentViewByClass(viewClass, viewOptions) {
     if (!this.getIsShowingContentViewClass(viewClass)) {
-      return this.showContentView(new viewClass(viewOptions))
-    } else {
-      return Promise.resolve();
+      return this.showContentView(new viewClass(viewOptions));
     }
+    return Promise.resolve();
   },
 
-  showContentView: function (contentView) {
+  showContentView(contentView) {
     // dismiss notifications
     NotificationsManager.getInstance().dismissNotificationsThatCantBeShown();
 
@@ -255,17 +254,17 @@ var NavigationManager = Manager.extend({
     return Promise.all([
       this.destroyModalView(),
       this.destroyUtilityView(),
-      this._contentRegion.show(contentView)
-    ]).then(function () {
+      this._contentRegion.show(contentView),
+    ]).then(() => {
       // unlock user navigation
       this.requestUserTriggeredNavigationUnlocked(this._userNavLockIdContent);
 
       // show notifications
       NotificationsManager.getInstance().showQueuedNotificationsThatCanBeShown();
-    }.bind(this));
+    });
   },
 
-  destroyContentView: function() {
+  destroyContentView() {
     if (this.getContentView() != null) {
       // temporarily disable user navigation
       this.requestUserTriggeredNavigationLocked(this._userNavLockIdContent);
@@ -273,41 +272,39 @@ var NavigationManager = Manager.extend({
       return Promise.all([
         this.destroyModalView(),
         this.destroyUtilityView(),
-        this._contentRegion.empty()
-      ]).then(function () {
+        this._contentRegion.empty(),
+      ]).then(() => {
         // unlock user navigation
         this.requestUserTriggeredNavigationUnlocked(this._userNavLockIdContent);
-      }.bind(this));
-    } else {
-      return Promise.resolve();
+      });
     }
+    return Promise.resolve();
   },
 
-  toggleContentViewByClass: function(viewClass, viewOptions) {
+  toggleContentViewByClass(viewClass, viewOptions) {
     if (this.getIsShowingContentViewClass(viewClass)) {
       return this.destroyContentView(this._contentRegion);
-    } else {
-      return this.showContentViewByClass(viewClass, viewOptions);
     }
+    return this.showContentViewByClass(viewClass, viewOptions);
   },
 
-  getContentView: function () {
+  getContentView() {
     return this.getCurrentView(this._contentRegion);
   },
 
-  getIsShowingContentView: function() {
+  getIsShowingContentView() {
     return this.getIsShowingView(this._contentRegion);
   },
 
-  getIsShowingContentViewClass: function(viewClass) {
+  getIsShowingContentViewClass(viewClass) {
     return this.getIsShowingViewClass(viewClass, this._contentRegion);
   },
 
-  destroyNonContentViews: function () {
+  destroyNonContentViews() {
     return Promise.all([
       this.destroyDialogView(),
       this.destroyModalView(),
-      this.destroyUtilityView()
+      this.destroyUtilityView(),
     ]);
   },
 
@@ -316,15 +313,14 @@ var NavigationManager = Manager.extend({
   /* region MODAL */
   // modal views are minor / vertical navigation elements that interrupt flow
 
-  showModalViewByClass: function(viewClass, viewOptions) {
+  showModalViewByClass(viewClass, viewOptions) {
     if (!this.getIsShowingModalViewClass(viewClass)) {
       return this.showModalView(new viewClass(viewOptions));
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
-  showModalView: function (modalView) {
+  showModalView(modalView) {
     // dismiss notifications
     NotificationsManager.getInstance().dismissNotificationsThatCantBeShown();
 
@@ -335,48 +331,46 @@ var NavigationManager = Manager.extend({
     this.blurRegionsForModal();
 
     // show modal
-    return this._modalRegion.show(modalView).then(function () {
+    return this._modalRegion.show(modalView).then(() => {
       // unlock user navigation
       this.requestUserTriggeredNavigationUnlocked(this._userNavLockIdModal);
 
       // show notifications
       NotificationsManager.getInstance().showQueuedNotificationsThatCanBeShown();
-    }.bind(this));
+    });
   },
 
-  destroyModalView: function() {
+  destroyModalView() {
     if (this.getModalView() != null) {
       // unblur non-modal content
       this.unblurRegionsForModal();
 
       // temporarily disable user navigation
       this.requestUserTriggeredNavigationLocked(this._userNavLockIdModal);
-      return this._modalRegion.empty().then(function () {
+      return this._modalRegion.empty().then(() => {
         // unlock user navigation
         this.requestUserTriggeredNavigationUnlocked(this._userNavLockIdModal);
-      }.bind(this));
-    } else {
-      return Promise.resolve();
+      });
     }
+    return Promise.resolve();
   },
 
-  toggleModalViewByClass: function(viewClass, viewOptions) {
+  toggleModalViewByClass(viewClass, viewOptions) {
     if (this.getIsShowingModalViewClass(viewClass)) {
       return this.destroyModalView();
-    } else {
-      return this.showModalViewByClass(viewClass, viewOptions);
     }
+    return this.showModalViewByClass(viewClass, viewOptions);
   },
 
-  getModalView: function () {
+  getModalView() {
     return this.getCurrentView(this._modalRegion);
   },
 
-  getIsShowingModalView: function() {
+  getIsShowingModalView() {
     return this.getIsShowingView(this._modalRegion);
   },
 
-  getIsShowingModalViewClass: function(viewClass) {
+  getIsShowingModalViewClass(viewClass) {
     return this.getIsShowingViewClass(viewClass, this._modalRegion);
   },
 
@@ -385,35 +379,33 @@ var NavigationManager = Manager.extend({
   /* region UTILITY */
   // utility views are menus intended to overlay modals and provide access to other views (modals, content, etc) from anywhere
 
-  showUtilityViewByClass: function(viewClass, viewOptions) {
+  showUtilityViewByClass(viewClass, viewOptions) {
     if (!this.getIsShowingUtilityViewClass(viewClass)) {
       return this.showUtilityView(new viewClass(viewOptions));
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
-  showUtilityView: function (utilityView) {
+  showUtilityView(utilityView) {
     return this._utilityRegion.show(utilityView);
   },
 
-  destroyUtilityView: function() {
+  destroyUtilityView() {
     if (this.getUtilityView() != null) {
       return this._utilityRegion.empty();
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
-  getUtilityView: function () {
+  getUtilityView() {
     return this.getCurrentView(this._utilityRegion);
   },
 
-  getIsShowingUtilityView: function() {
+  getIsShowingUtilityView() {
     return this.getIsShowingView(this._utilityRegion);
   },
 
-  getIsShowingUtilityViewClass: function(viewClass) {
+  getIsShowingUtilityViewClass(viewClass) {
     return this.getIsShowingViewClass(viewClass, this._utilityRegion);
   },
 
@@ -422,15 +414,14 @@ var NavigationManager = Manager.extend({
   /* region DIALOGS */
   // dialog views circumvent routing locks and are used to take away control from the user while an activity completes
 
-  showDialogViewByClass: function(viewClass, viewOptions) {
+  showDialogViewByClass(viewClass, viewOptions) {
     if (!this.getIsShowingDialogViewClass(viewClass)) {
       return this.showDialogView(new viewClass(viewOptions));
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
-  showDialogView: function (dialogView) {
+  showDialogView(dialogView) {
     // dismiss all notifications
     NotificationsManager.getInstance().dismissNotificationsThatCantBeShown();
 
@@ -438,31 +429,30 @@ var NavigationManager = Manager.extend({
     this.requestUserTriggeredNavigationLocked(this._userNavLockIdDialog);
 
     // show dialog and return promise
-    return this._overlayRegion.show(dialogView).then(function () {
+    return this._overlayRegion.show(dialogView).then(() => {
       NotificationsManager.getInstance().showQueuedNotificationsThatCanBeShown();
     });
   },
 
-  destroyDialogView: function() {
-    var dialogView = this.getDialogView();
+  destroyDialogView() {
+    const dialogView = this.getDialogView();
     if (dialogView != null) {
       this.stopListening(dialogView);
       this.requestUserTriggeredNavigationUnlocked(this._userNavLockIdDialog);
       return this._overlayRegion.empty();
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
-  getDialogView: function () {
+  getDialogView() {
     return this.getCurrentView(this._overlayRegion);
   },
 
-  getIsShowingDialogView: function() {
+  getIsShowingDialogView() {
     return this.getIsShowingView(this._overlayRegion);
   },
 
-  getIsShowingDialogViewClass: function(viewClass) {
+  getIsShowingDialogViewClass(viewClass) {
     return this.getIsShowingViewClass(viewClass, this._overlayRegion);
   },
 
@@ -474,33 +464,32 @@ var NavigationManager = Manager.extend({
    * Special confirmation dialog to confirm or cancel an action. Resolves on confirm, rejects on cancel.
    * @returns {Promise}
    */
-  showDialogForConfirmation: function (confirmTitle,confirmMessage,buttonLabel) {
-    return new Promise(function(resolve,reject) {
+  showDialogForConfirmation(confirmTitle, confirmMessage, buttonLabel) {
+    return new Promise((resolve, reject) => {
       // ask for user confirmation
-      var confirmDialogItemView = new ConfirmDialogItemView({title:confirmTitle, message:confirmMessage, buttonLabel:buttonLabel});
-      this.listenToOnce(confirmDialogItemView,"confirm",function() {
+      const confirmDialogItemView = new ConfirmDialogItemView({ title: confirmTitle, message: confirmMessage, buttonLabel });
+      this.listenToOnce(confirmDialogItemView, 'confirm', function () {
         this.stopListening(confirmDialogItemView);
         resolve(arguments);
       }.bind(this));
-      this.listenToOnce(confirmDialogItemView,"cancel",function() {
+      this.listenToOnce(confirmDialogItemView, 'cancel', () => {
         this.stopListening(confirmDialogItemView);
         this.destroyDialogForConfirmation();
         reject();
-      }.bind(this));
+      });
       this.showDialogView(confirmDialogItemView);
-    }.bind(this))
+    });
   },
 
   /**
    * Destroys the special confirm dialog if it is currently showing.
    * @returns {Promise}
    */
-  destroyDialogForConfirmation: function () {
+  destroyDialogForConfirmation() {
     if (this.getIsShowingDialogViewClass(ConfirmDialogItemView)) {
       return this.destroyDialogView();
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
   /**
@@ -508,54 +497,52 @@ var NavigationManager = Manager.extend({
    * @param {Object} productData
    * @returns {Promise}
    */
-  showDialogForConfirmPurchase: function (productData,saleData) {
+  showDialogForConfirmPurchase(productData, saleData) {
     if (productData != null && !productData.is_purchased) {
-      return new Promise(function (resolve, reject) {
+      return new Promise((resolve, reject) => {
         // ask for user confirmation
-        var confirmPurchaseDialogView = new ConfirmPurchaseDialogView({model: new Backbone.Model(), productData: productData, saleData: saleData});
-        var completedPurchase = false;
-        this.listenToOnce(confirmPurchaseDialogView, "processing", function (purchaseData) {
+        const confirmPurchaseDialogView = new ConfirmPurchaseDialogView({ model: new Backbone.Model(), productData, saleData });
+        let completedPurchase = false;
+        this.listenToOnce(confirmPurchaseDialogView, 'processing', (purchaseData) => {
           // paypal and steam are assumed to be successful
-          if (!completedPurchase && purchaseData && (purchaseData.paymentType === "paypal")) {
+          if (!completedPurchase && purchaseData && (purchaseData.paymentType === 'paypal')) {
             completedPurchase = true;
             this.destroyDialogForConfirmPurchase();
             resolve(purchaseData);
           }
-        }.bind(this));
-        this.listenToOnce(confirmPurchaseDialogView, "complete", function (purchaseData) {
+        });
+        this.listenToOnce(confirmPurchaseDialogView, 'complete', (purchaseData) => {
           if (!completedPurchase) {
             completedPurchase = true;
             resolve(purchaseData);
           }
-        }.bind(this));
-        this.listenToOnce(confirmPurchaseDialogView, "success", function () {
+        });
+        this.listenToOnce(confirmPurchaseDialogView, 'success', () => {
           if (completedPurchase) {
             this.destroyDialogForConfirmPurchase();
           }
-        }.bind(this));
-        this.listenToOnce(confirmPurchaseDialogView, "cancel", function () {
+        });
+        this.listenToOnce(confirmPurchaseDialogView, 'cancel', () => {
           this.destroyDialogForConfirmPurchase();
           reject();
-        }.bind(this));
+        });
 
         // show confirm purchase
         this.showDialogView(confirmPurchaseDialogView);
-      }.bind(this));
-    } else {
-      return Promise.reject();
+      });
     }
+    return Promise.reject();
   },
 
   /**
    * Destroys the special confirm purchase dialog if it is currently showing.
    * @returns {Promise}
    */
-  destroyDialogForConfirmPurchase: function () {
+  destroyDialogForConfirmPurchase() {
     if (this.getIsShowingDialogViewClass(ConfirmPurchaseDialogView)) {
       return this.destroyDialogView();
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
   /* endregion CONFIRM */
@@ -567,42 +554,40 @@ var NavigationManager = Manager.extend({
    * @param {Array} [dontDestroy=null] array of views/layers to preserve and not destroy/unload
    * @returns {Promise}
    */
-  showDialogForLoad: function (dontDestroy) {
+  showDialogForLoad(dontDestroy) {
     if (!this.getIsShowingDialogViewClass(LoadingDialogItemView)) {
       // set user status temporarily to loading
-      var previousStatus = ChatManager.getInstance().getStatus();
+      const previousStatus = ChatManager.getInstance().getStatus();
       ChatManager.getInstance().setStatus(ChatManager.STATUS_LOADING);
 
       return Promise.all([
         this.destroyAllViewsAndLayers(dontDestroy),
-        this.showDialogViewByClass(LoadingDialogItemView)
-      ]).then(function () {
+        this.showDialogViewByClass(LoadingDialogItemView),
+      ]).then(() => {
         // restore previous status
         ChatManager.getInstance().setStatus(previousStatus);
       });
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
   /**
    * Destroys the special loading dialog if it is currently showing.
    * @returns {Promise}
    */
-  destroyDialogForLoad: function () {
+  destroyDialogForLoad() {
     // remove loading dialog
     if (this.getIsShowingDialogViewClass(LoadingDialogItemView)) {
       return this.destroyDialogView();
-    } else {
-      return Promise.resolve();
     }
+    return Promise.resolve();
   },
 
   /* endregion LOADING */
 
   /* region USER TRIGGERED NAVIGATION */
 
-  setUserTriggeredNavigationLocked: function(val) {
+  setUserTriggeredNavigationLocked(val) {
     if (this._userTriggeredNavigationLocked != val) {
       this._userTriggeredNavigationLocked = val;
 
@@ -610,16 +595,16 @@ var NavigationManager = Manager.extend({
     }
   },
 
-  getUserTriggeredNavigationLocked: function () {
+  getUserTriggeredNavigationLocked() {
     return this._userTriggeredNavigationLocked;
   },
 
-  requestUserTriggeredNavigationLocked: function(id) {
+  requestUserTriggeredNavigationLocked(id) {
     if (id == null) {
       id = this._userTriggeredNavigationLockId;
     }
     if (!_.contains(this._userTriggeredNavigationLockRequests, id)) {
-      var numRequests = this._userTriggeredNavigationLockRequests.length;
+      const numRequests = this._userTriggeredNavigationLockRequests.length;
       this._userTriggeredNavigationLockRequests.push(id);
       if (numRequests === 0 && this._userTriggeredNavigationLockRequests.length === 1) {
         this.setUserTriggeredNavigationLocked(true);
@@ -627,13 +612,13 @@ var NavigationManager = Manager.extend({
     }
   },
 
-  requestUserTriggeredNavigationUnlocked: function(id) {
+  requestUserTriggeredNavigationUnlocked(id) {
     if (id == null) {
       id = this._userTriggeredNavigationLockId;
     }
-    var indexOf = _.lastIndexOf(this._userTriggeredNavigationLockRequests, id);
+    const indexOf = _.lastIndexOf(this._userTriggeredNavigationLockRequests, id);
     if (indexOf !== -1) {
-      var numRequests = this._userTriggeredNavigationLockRequests.length;
+      const numRequests = this._userTriggeredNavigationLockRequests.length;
       this._userTriggeredNavigationLockRequests.splice(indexOf, 1);
       if (numRequests === 1 && this._userTriggeredNavigationLockRequests.length === 0) {
         this.setUserTriggeredNavigationLocked(false);
@@ -641,71 +626,71 @@ var NavigationManager = Manager.extend({
     }
   },
 
-  _updateRegionsForUserTriggeredNavigationLock: function () {
+  _updateRegionsForUserTriggeredNavigationLock() {
     // add/remove locked class app wide to disable buttons
     if (this._userTriggeredNavigationLocked) {
-      this._mainRegion.$el.addClass("user-triggered-navigation-locked");
+      this._mainRegion.$el.addClass('user-triggered-navigation-locked');
     } else {
-      this._mainRegion.$el.removeClass("user-triggered-navigation-locked");
+      this._mainRegion.$el.removeClass('user-triggered-navigation-locked');
     }
   },
 
-  requestUserTriggeredExit: function () {
+  requestUserTriggeredExit() {
     // when user triggered navigation is allowed
     if (this._throttled_requestUserTriggeredExit == null) {
       // throttle to prevent spamming
-      this._throttled_requestUserTriggeredExit = _.throttle(function () {
+      this._throttled_requestUserTriggeredExit = _.throttle(() => {
         if (!this.getUserTriggeredNavigationLocked()) {
-          this.trigger("user_triggered_exit");
+          this.trigger('user_triggered_exit');
         } else {
-          this.trigger("user_attempt_exit");
+          this.trigger('user_attempt_exit');
         }
-      }.bind(this), 300, {trailing: false});
+      }, 300, { trailing: false });
     }
     this._throttled_requestUserTriggeredExit();
   },
 
-  requestUserTriggeredSkip: function () {
+  requestUserTriggeredSkip() {
     // when user triggered navigation is allowed
     if (this._throttled_requestUserTriggeredSkip == null) {
       // throttle to prevent spamming
-      this._throttled_requestUserTriggeredSkip = _.throttle(function () {
+      this._throttled_requestUserTriggeredSkip = _.throttle(() => {
         if (!this.getUserTriggeredNavigationLocked()) {
-          this.trigger("user_triggered_skip");
+          this.trigger('user_triggered_skip');
         } else {
-          this.trigger("user_attempt_skip");
+          this.trigger('user_attempt_skip');
         }
-      }.bind(this), 300, {trailing: false});
+      }, 300, { trailing: false });
     }
     this._throttled_requestUserTriggeredSkip();
   },
 
-  requestUserTriggeredCancel: function () {
+  requestUserTriggeredCancel() {
     // when user triggered navigation is allowed
     if (this._throttled_requestUserTriggeredCancel == null) {
       // throttle to prevent spamming
-      this._throttled_requestUserTriggeredCancel = _.throttle(function () {
+      this._throttled_requestUserTriggeredCancel = _.throttle(() => {
         if (!this.getUserTriggeredNavigationLocked()) {
-          this.trigger("user_triggered_cancel");
+          this.trigger('user_triggered_cancel');
         } else {
-          this.trigger("user_attempt_cancel");
+          this.trigger('user_attempt_cancel');
         }
-      }.bind(this), 300, {trailing: false});
+      }, 300, { trailing: false });
     }
     this._throttled_requestUserTriggeredCancel();
   },
 
-  requestUserTriggeredConfirm: function () {
+  requestUserTriggeredConfirm() {
     // when user triggered navigation is allowed
     if (this._throttled_requestUserTriggeredConfirm == null) {
       // throttle to prevent spamming
-      this._throttled_requestUserTriggeredConfirm = _.throttle(function () {
+      this._throttled_requestUserTriggeredConfirm = _.throttle(() => {
         if (!this.getUserTriggeredNavigationLocked()) {
-          this.trigger("user_triggered_confirm");
+          this.trigger('user_triggered_confirm');
         } else {
-          this.trigger("user_attempt_confirm");
+          this.trigger('user_attempt_confirm');
         }
-      }.bind(this), 300, {trailing: false});
+      }, 300, { trailing: false });
     }
     this._throttled_requestUserTriggeredConfirm();
   },
@@ -714,20 +699,20 @@ var NavigationManager = Manager.extend({
 
   /* region HELPERS */
 
-  blurRegionsForModal: function () {
+  blurRegionsForModal() {
     this._previousBlurProgramKey = Scene.getInstance().getFX().surfaceBlurShaderProgramKey;
     this._blurringModal = true;
 
     if (this._screenBlurId == null) {
       this._screenBlurId = UtilsJavascript.generateIncrementalId();
     }
-    Scene.getInstance().getFX().screenBlurShaderProgramKey = "BlurFullScreenMega";
+    Scene.getInstance().getFX().screenBlurShaderProgramKey = 'BlurFullScreenMega';
     Scene.getInstance().getFX().requestBlurScreen(this._screenBlurId);
 
     this._updateRegionsForBlur();
   },
 
-  unblurRegionsForModal: function () {
+  unblurRegionsForModal() {
     this._blurringModal = false;
 
     Scene.getInstance().getFX().screenBlurShaderProgramKey = this._previousBlurProgramKey;
@@ -736,7 +721,7 @@ var NavigationManager = Manager.extend({
     this._updateRegionsForBlur();
   },
 
-  _updateRegionsForBlur: function () {
+  _updateRegionsForBlur() {
     if (this._blurringModal) {
       Animations.fadeOut.call(this._contentRegion.$el);
       Animations.fadeOut.call(this._utilityRegion.$el);
@@ -750,27 +735,27 @@ var NavigationManager = Manager.extend({
 
   /* region ROUTING */
 
-  getHasLastRoute: function () {
+  getHasLastRoute() {
     return this._majorRouteStack.length + this._minorRouteStack.length > 1;
   },
 
-  getCurrentRoute: function () {
+  getCurrentRoute() {
     return this.getCurrentMinorRoute() || this.getCurrentMajorRoute();
   },
 
-  getCurrentMajorRoute: function () {
+  getCurrentMajorRoute() {
     if (this._majorRouteStack.length) {
       return this._majorRouteStack.length[this._majorRouteStack.length - 1];
     }
   },
 
-  getCurrentMinorRoute: function () {
+  getCurrentMinorRoute() {
     if (this._minorRouteStack.length) {
       return this._minorRouteStack.length[this._minorRouteStack.length - 1];
     }
   },
 
-  showLastRoute: function () {
+  showLastRoute() {
     if (this.getHasLastRoute()) {
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
 
@@ -787,15 +772,15 @@ var NavigationManager = Manager.extend({
     }
   },
 
-  _showLastRouteFromStack: function (stack) {
+  _showLastRouteFromStack(stack) {
     if (stack.length > 1) {
       // remove last route from stack
       stack.pop();
 
       // get new route from top of stack
-      var route = stack[stack.length - 1];
-      Logger.module("UI").log("showLastRoute", route.id);
-      var context = route.context || this;
+      const route = stack[stack.length - 1];
+      Logger.module('UI').log('showLastRoute', route.id);
+      const context = route.context || this;
       if (route.parameters != null) {
         route.callback.apply(context, route.parameters);
       } else {
@@ -811,16 +796,16 @@ var NavigationManager = Manager.extend({
    * @param {Object} [context=null] context to call the route callback in
    * @param {Array} [parameters=null] parameters to pass to the route callback
    */
-  addMajorRoute: function (id, callback, context, parameters) {
+  addMajorRoute(id, callback, context, parameters) {
     if (_.isFunction(callback)) {
-      var lastRoute = this._majorRouteStack.length && this._majorRouteStack[this._majorRouteStack.length - 1];
+      const lastRoute = this._majorRouteStack.length && this._majorRouteStack[this._majorRouteStack.length - 1];
       if (lastRoute == null || lastRoute.id !== id) {
         // push route to top of stack
         this._majorRouteStack.push({
-          id: id,
-          callback: callback,
-          context: context,
-          parameters: parameters
+          id,
+          callback,
+          context,
+          parameters,
         });
 
         // reset minor routes
@@ -836,15 +821,15 @@ var NavigationManager = Manager.extend({
    * @param {Object} [context=null] context to call the route callback in
    * @param {Array} [parameters=null] parameters to pass to the route callback
    */
-  addMinorRoute: function (id, callback, context, parameters) {
+  addMinorRoute(id, callback, context, parameters) {
     if (_.isFunction(callback)) {
-      var lastRoute = this._minorRouteStack.length && this._minorRouteStack[this._minorRouteStack.length - 1];
+      const lastRoute = this._minorRouteStack.length && this._minorRouteStack[this._minorRouteStack.length - 1];
       if (lastRoute == null || lastRoute.id !== id) {
         this._minorRouteStack.push({
-          id: id,
-          callback: callback,
-          context: context,
-          parameters: parameters
+          id,
+          callback,
+          context,
+          parameters,
         });
       }
     }
@@ -854,10 +839,10 @@ var NavigationManager = Manager.extend({
    * Removes a route from the major route stack by id.
    * @param {String} id
    */
-  removeMajorRoute: function (id) {
-    var currentMajorRouteIndex = this._majorRouteStack.length - 1;
-    for (var i = currentMajorRouteIndex; i >= 0; i--) {
-      var route = this._majorRouteStack[i];
+  removeMajorRoute(id) {
+    const currentMajorRouteIndex = this._majorRouteStack.length - 1;
+    for (let i = currentMajorRouteIndex; i >= 0; i--) {
+      const route = this._majorRouteStack[i];
       if (route.id === id) {
         if (i === currentMajorRouteIndex) {
           this.resetMinorRoutes();
@@ -872,9 +857,9 @@ var NavigationManager = Manager.extend({
    * Removes a route from the minor route stack by id.
    * @param {String} id
    */
-  removeMinorRoute: function (id) {
-    for (var i = this._minorRouteStack.length - 1; i >= 0; i--) {
-      var route = this._minorRouteStack[i];
+  removeMinorRoute(id) {
+    for (let i = this._minorRouteStack.length - 1; i >= 0; i--) {
+      const route = this._minorRouteStack[i];
       if (route.id === id) {
         this._minorRouteStack.slice(i, 1);
         break;
@@ -885,7 +870,7 @@ var NavigationManager = Manager.extend({
   /**
    * Resets and clears all routes.
    */
-  resetRoutes: function () {
+  resetRoutes() {
     this.resetMinorRoutes();
     if (this._majorRouteStack.length > 0) {
       this._majorRouteStack.length = 0;
@@ -895,11 +880,11 @@ var NavigationManager = Manager.extend({
   /**
    * Resets and clears all minor routes.
    */
-  resetMinorRoutes: function () {
+  resetMinorRoutes() {
     if (this._minorRouteStack.length > 0) {
       this._minorRouteStack.length = 0;
     }
-  }
+  },
 
   /* endregion ROUTING */
 

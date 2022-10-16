@@ -1,109 +1,107 @@
-'use strict';
+const SDK = require('app/sdk');
+const audio_engine = require('app/audio/audio_engine');
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const Animations = require('app/ui/views/animations');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const DeckPreviewItemView = require('./deck_preview');
+const DeckCardBackSelectTmpl = require('./templates/deck_card_back_select.hbs');
 
-var SDK = require('app/sdk');
-var audio_engine = require('app/audio/audio_engine');
-var CONFIG = require('app/common/config');
-var RSX = require('app/data/resources');
-var Animations = require('app/ui/views/animations');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var InventoryManager = require('app/ui/managers/inventory_manager');
-var DeckPreviewItemView = require('./deck_preview');
-var DeckCardBackSelectTmpl = require('./templates/deck_card_back_select.hbs');
+const DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
 
-var DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
-
-  id: "app-deck-card-back-select",
+  id: 'app-deck-card-back-select',
   template: DeckCardBackSelectTmpl,
 
   regions: {
-    deckPreviewRegion: {selector: "#app-deck-preview-region"}
+    deckPreviewRegion: { selector: '#app-deck-preview-region' },
   },
 
   ui: {
-    "$cardBack" : ".deck-card-back",
-    "$cardBackImg" : ".deck-card-back-img",
-    "$selectButton" : ".select"
+    $cardBack: '.deck-card-back',
+    $cardBackImg: '.deck-card-back-img',
+    $selectButton: '.select',
   },
 
   events: {
-    "click .select" : "onSelect",
-    "click .cancel" : "onCancel"
+    'click .select': 'onSelect',
+    'click .cancel': 'onCancel',
   },
 
   _selectedDeckCardBackModel: null,
 
   /* region MARIONETTE */
 
-  onRender: function() {
+  onRender() {
     this.showSelectedDeckCardBack();
     this.showSelectedDeckCardBackUsability();
 
     // make this element a droppable area
-    this.$el.droppable( {
+    this.$el.droppable({
       drop: this.onCardDropped.bind(this),
-      scope: "add"
+      scope: 'add',
     });
   },
 
-  onShow: function() {
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add remove",this.onCosmeticsCollectionChange);
-    this.listenTo(this.model, "sync", this.onDeckSync);
+  onShow() {
+    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add remove', this.onCosmeticsCollectionChange);
+    this.listenTo(this.model, 'sync', this.onDeckSync);
 
     this.bindDeckModel();
   },
 
-  onDeckSync: function () {
+  onDeckSync() {
     if (this.model.hasChanged()) {
       this.bindDeckModel();
     }
   },
 
-  bindDeckModel: function () {
-    var deckPreviewItemView = new DeckPreviewItemView({model: this.model});
+  bindDeckModel() {
+    const deckPreviewItemView = new DeckPreviewItemView({ model: this.model });
     this.deckPreviewRegion.show(deckPreviewItemView);
 
     // show current deck card back
-    var cardBackId = this.model.get("card_back_id");
-    var cardBackData = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId);
-    var cardBackModel = new Backbone.Model(cardBackData);
+    const cardBackId = this.model.get('card_back_id');
+    const cardBackData = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId);
+    const cardBackModel = new Backbone.Model(cardBackData);
     this.selectCard(cardBackModel);
   },
 
-  bindSelectedDeckCardBack: function () {
+  bindSelectedDeckCardBack() {
     if (this._selectedDeckCardBackModel != null) {
       this.showSelectedDeckCardBack();
       this.bindSelectedDeckCardBackUsability();
     }
   },
 
-  bindSelectedDeckCardBackUsability: function () {
+  bindSelectedDeckCardBackUsability() {
     if (this._selectedDeckCardBackModel != null) {
-      var cardBackId = this._selectedDeckCardBackModel.get("id");
-      this._selectedDeckCardBackModel.set("_canUse", InventoryManager.getInstance().getCanUseCosmeticById(cardBackId));
-      this._selectedDeckCardBackModel.set("_canPurchase", InventoryManager.getInstance().getCanPurchaseCosmeticById(cardBackId));
+      const cardBackId = this._selectedDeckCardBackModel.get('id');
+      this._selectedDeckCardBackModel.set('_canUse', InventoryManager.getInstance().getCanUseCosmeticById(cardBackId));
+      this._selectedDeckCardBackModel.set('_canPurchase', InventoryManager.getInstance().getCanPurchaseCosmeticById(cardBackId));
       this.showSelectedDeckCardBackUsability();
     }
   },
 
-  showSelectedDeckCardBack: function () {
+  showSelectedDeckCardBack() {
     if (this._selectedDeckCardBackModel != null) {
-      var cardBackId = this._selectedDeckCardBackModel.get("id");
-      var cardBackImg = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId).img;
-      this.ui.$cardBackImg.attr("src", RSX.getResourcePathForScale(cardBackImg, CONFIG.resourceScaleCSS));
+      const cardBackId = this._selectedDeckCardBackModel.get('id');
+      const cardBackImg = SDK.CosmeticsFactory.cardBackForIdentifier(cardBackId).img;
+      this.ui.$cardBackImg.attr('src', RSX.getResourcePathForScale(cardBackImg, CONFIG.resourceScaleCSS));
     }
   },
 
-  showSelectedDeckCardBackUsability: function () {
+  showSelectedDeckCardBackUsability() {
     if (this._selectedDeckCardBackModel != null) {
-      if (this._selectedDeckCardBackModel.get("_canPurchase")) {
-        this.ui.$cardBack.addClass("purchasable");
-        this.ui.$selectButton.removeClass("disabled").text("Unlock");
+      if (this._selectedDeckCardBackModel.get('_canPurchase')) {
+        this.ui.$cardBack.addClass('purchasable');
+        this.ui.$selectButton.removeClass('disabled').text('Unlock');
       } else {
-        this.ui.$cardBack.removeClass("purchasable");
-        if (!this._selectedDeckCardBackModel.get("_canUse")) {
-          this.ui.$selectButton.addClass("disabled").text("Unavailable");
+        this.ui.$cardBack.removeClass('purchasable');
+        if (!this._selectedDeckCardBackModel.get('_canUse')) {
+          this.ui.$selectButton.addClass('disabled').text('Unavailable');
         } else {
-          this.ui.$selectButton.removeClass("disabled").text("Save");
+          this.ui.$selectButton.removeClass('disabled').text('Save');
         }
       }
     }
@@ -113,40 +111,40 @@ var DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
 
   /* region EVENTS */
 
-  onCardDropped: function (event, ui) {
+  onCardDropped(event, ui) {
     // don't respond to own cards
-    var $draggable = ui.draggable;
-    if ($draggable instanceof $ && !$draggable.hasClass("deck-card")) {
-      $draggable.trigger("click");
+    const $draggable = ui.draggable;
+    if ($draggable instanceof $ && !$draggable.hasClass('deck-card')) {
+      $draggable.trigger('click');
     }
   },
 
-  onCosmeticsCollectionChange: function(cosmeticModel) {
+  onCosmeticsCollectionChange(cosmeticModel) {
     if (this._selectedDeckCardBackModel != null) {
-      var cardBackId = this._selectedDeckCardBackModel.get("id");
-      if (cosmeticModel != null && cosmeticModel.get("cosmetic_id") === cardBackId) {
+      const cardBackId = this._selectedDeckCardBackModel.get('id');
+      if (cosmeticModel != null && cosmeticModel.get('cosmetic_id') === cardBackId) {
         this.bindSelectedDeckCardBackUsability();
       }
     }
   },
 
-  onSelect: function () {
+  onSelect() {
     if (this._selectedDeckCardBackModel != null) {
-      var cardBackId = this._selectedDeckCardBackModel.get("id");
-      if (this._selectedDeckCardBackModel.get("_canPurchase")) {
+      const cardBackId = this._selectedDeckCardBackModel.get('id');
+      if (this._selectedDeckCardBackModel.get('_canPurchase')) {
         // buy card back
-        var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cardBackId);
+        const productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cardBackId);
         return NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
-          .catch(function () {});
-      } else if (this._selectedDeckCardBackModel.get("_canUse")) {
+          .catch(() => {});
+      } if (this._selectedDeckCardBackModel.get('_canUse')) {
         // save card back
-        this.model.set("card_back_id", cardBackId);
-        this.trigger("select");
+        this.model.set('card_back_id', cardBackId);
+        this.trigger('select');
       }
     }
   },
 
-  onCancel: function () {
+  onCancel() {
     this.deselectCard();
   },
 
@@ -154,24 +152,24 @@ var DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
 
   /* region SELECT */
 
-  selectCard: function (cardBackModel) {
-    if (cardBackModel != null && (this._selectedDeckCardBackModel == null || this._selectedDeckCardBackModel.get("id") !== cardBackModel.get("id"))) {
+  selectCard(cardBackModel) {
+    if (cardBackModel != null && (this._selectedDeckCardBackModel == null || this._selectedDeckCardBackModel.get('id') !== cardBackModel.get('id'))) {
       this._selectedDeckCardBackModel = cardBackModel;
       this.bindSelectedDeckCardBack();
-      Animations.cssClassAnimation.call(this.ui.$cardBack, "active");
+      Animations.cssClassAnimation.call(this.ui.$cardBack, 'active');
       return true;
     }
     return false;
   },
 
-  selectCardView: function (cardView) {
-    var changed;
-    var cardModel = cardView && cardView.model;
+  selectCardView(cardView) {
+    let changed;
+    const cardModel = cardView && cardView.model;
     if (cardModel != null) {
       changed = this.selectCard(cardModel);
       if (changed) {
         // flash card in collection
-        Animations.cssClassAnimation.call(cardView, "flash-brightness");
+        Animations.cssClassAnimation.call(cardView, 'flash-brightness');
 
         audio_engine.current().play_effect_for_interaction(RSX.sfx_collection_next.audio, CONFIG.SELECT_SFX_PRIORITY);
       } else {
@@ -181,15 +179,15 @@ var DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
     return changed;
   },
 
-  deselectCard: function () {
+  deselectCard() {
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cardburn.audio, CONFIG.SELECT_SFX_PRIORITY);
-    this.trigger("cancel");
+    this.trigger('cancel');
     return true;
   },
 
-  deselectCardView: function () {
+  deselectCardView() {
     return this.deselectCard();
-  }
+  },
 
   /* endregion SELECT */
 

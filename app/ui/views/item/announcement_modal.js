@@ -1,32 +1,30 @@
-'use strict';
+const Templ = require('app/ui/templates/item/announcement_modal.hbs');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const NewsManager = require('app/ui/managers/news_manager');
+const Animations = require('app/ui/views/animations');
+const openUrl = require('app/common/openUrl');
 
-var Templ = require('app/ui/templates/item/announcement_modal.hbs');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var NewsManager = require('app/ui/managers/news_manager');
-var Animations = require("app/ui/views/animations");
-var openUrl = require('app/common/openUrl');
+const AnnouncementModalView = Backbone.Marionette.ItemView.extend({
 
-var AnnouncementModalView = Backbone.Marionette.ItemView.extend({
-
-  id: "app-announcement-modal",
-  className: "modal duelyst-modal announcement",
+  id: 'app-announcement-modal',
+  className: 'modal duelyst-modal announcement',
   template: Templ,
 
   animateIn: Animations.fadeIn,
   animateOut: Animations.fadeOut,
 
-  onDestroy: function() {
-    var itemId = this.model.get("id") || this.model.firebase.key();
+  onDestroy() {
+    const itemId = this.model.get('id') || this.model.firebase.key();
     NewsManager.getInstance().markNewsItemAsRead(itemId);
   },
 
-  onShow: function() {
-    this.$el.find(".modal-body").find("a").click(function(e){
-      openUrl($(e.currentTarget).attr("href"))
-      e.stopPropagation()
-      e.preventDefault()
-    })
-  }
+  onShow() {
+    this.$el.find('.modal-body').find('a').click((e) => {
+      openUrl($(e.currentTarget).attr('href'));
+      e.stopPropagation();
+      e.preventDefault();
+    });
+  },
 
 });
 

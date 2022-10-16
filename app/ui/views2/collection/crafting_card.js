@@ -1,24 +1,22 @@
-'use strict';
+const CONFIG = require('app/common/config');
+const CardCompositeView = require('app/ui/views/composite/card');
 
-var CONFIG = require('app/common/config');
-var CardCompositeView = require('app/ui/views/composite/card');
-
-var CraftingCardCompositeView = CardCompositeView.extend({
+const CraftingCardCompositeView = CardCompositeView.extend({
 
   draggable: true,
-  draggableScope: "remove",
+  draggableScope: 'remove',
 
-  onRender: function() {
-    CardCompositeView.prototype.onRender.apply(this,arguments);
+  onRender() {
+    CardCompositeView.prototype.onRender.apply(this, arguments);
 
     // crafting cards should always set read states to true
     this.setRead(true);
     this.setLoreRead(true);
   },
 
-  getCardClasses: function () {
-    return CardCompositeView.prototype.getCardClasses.apply(this,arguments) + " crafting-card";
-  }
+  getCardClasses() {
+    return `${CardCompositeView.prototype.getCardClasses.apply(this, arguments)} crafting-card`;
+  },
 
 });
 

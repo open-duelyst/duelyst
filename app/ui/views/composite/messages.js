@@ -1,22 +1,21 @@
-'use strict';
-var MessageItemView = require('app/ui/views/item/message');
-var MessagesTmpl = require('app/ui/templates/composite/messages.hbs');
-var ProfileManager = require("app/ui/managers/profile_manager");
+const MessageItemView = require('app/ui/views/item/message');
+const MessagesTmpl = require('app/ui/templates/composite/messages.hbs');
+const ProfileManager = require('app/ui/managers/profile_manager');
 
-var MessagesView = Backbone.Marionette.CompositeView.extend({
+const MessagesView = Backbone.Marionette.CompositeView.extend({
 
-  initialize: function() {
-    Logger.module("UI").log("initialize a Messages CompositeView");
+  initialize() {
+    Logger.module('UI').log('initialize a Messages CompositeView');
   },
 
   /* the item view which gets created */
   childView: MessageItemView,
   /* where are we appending the items views */
-  childViewContainer: ".chats",
+  childViewContainer: '.chats',
 
-  //Overriding appendHtml method to prepend new message divs instead of append
-  appendHtml: function(cv, iv, index){
-    var $container = this.getItemViewContainer(cv);
+  // Overriding appendHtml method to prepend new message divs instead of append
+  appendHtml(cv, iv, index) {
+    const $container = this.getItemViewContainer(cv);
     $container.prepend(iv.el);
   },
 
@@ -27,27 +26,29 @@ var MessagesView = Backbone.Marionette.CompositeView.extend({
 
   /* Ui events hash */
   events: {
-    "click button#chat-submit": "onSubmitClick",
-    "click .wclose": "onDestroy",
-    "click .wminimize": "onMinimize",
+    'click button#chat-submit': 'onSubmitClick',
+    'click .wclose': 'onDestroy',
+    'click .wminimize': 'onMinimize',
   },
 
   /* on render callback */
-  onRender: function() {},
+  onRender() {},
 
   /* event handlers */
-  onSubmitClick: function(e) {
+  onSubmitClick(e) {
     e.preventDefault();
-    var value = this.$('#chat-input').val().trim();
-    this.collection.add({ body: value,
+    const value = this.$('#chat-input').val().trim();
+    this.collection.add({
+      body: value,
       sender: ProfileManager.getInstance().profile.getFullName(),
-      timestamp: "now" });
+      timestamp: 'now',
+    });
     this.$('#chat-input').val('');
   },
 
-  onMinimize: function(e) {
+  onMinimize(e) {
     e.preventDefault();
-    var $wcontent = this.$('.widget-content');
+    const $wcontent = this.$('.widget-content');
     if ($wcontent.is(':visible')) {
       $(this).children('i').removeClass('icon-chevron-up');
       $(this).children('i').addClass('icon-chevron-down');
@@ -58,13 +59,13 @@ var MessagesView = Backbone.Marionette.CompositeView.extend({
     $wcontent.toggle(500);
   },
 
-  onDestroy: function(e) {
+  onDestroy(e) {
     /*
     e.preventDefault();
     var $wbox = this.$('.widget');
     $wbox.hide(100);
     */
-  }
+  },
 
 });
 

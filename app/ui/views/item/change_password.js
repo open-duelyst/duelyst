@@ -1,27 +1,26 @@
-'use strict';
-var Session = require('app/common/session2');
-var validator = require('validator');
-var Logger = require('app/common/logger');
-var Animations = require("app/ui/views/animations");
-var FormPromptDialogItemView = require('./form_prompt_dialog');
-var ChangePasswordTmpl = require('app/ui/templates/item/change_password.hbs');
+const Session = require('app/common/session2');
+const validator = require('validator');
+const Logger = require('app/common/logger');
+const Animations = require('app/ui/views/animations');
+const ChangePasswordTmpl = require('app/ui/templates/item/change_password.hbs');
+const FormPromptDialogItemView = require('./form_prompt_dialog');
 
-var ChangePasswordItemView = FormPromptDialogItemView.extend({
+const ChangePasswordItemView = FormPromptDialogItemView.extend({
 
   template: ChangePasswordTmpl,
 
-  id: "app-change-password",
+  id: 'app-change-password',
 
   ui: {
-    $form: ".prompt-form",
-    $password: ".password",
-    $passwordConfirm: ".password-confirm",
-    $passwordCurrent: ".password-current",
-    $submit: ".prompt-submit",
-    $submitted: ".prompt-submitted",
-    $error: ".prompt-error",
-    $errorMessage: ".error-message",
-    $success: ".prompt-success"
+    $form: '.prompt-form',
+    $password: '.password',
+    $passwordConfirm: '.password-confirm',
+    $passwordCurrent: '.password-current',
+    $submit: '.prompt-submit',
+    $submitted: '.prompt-submitted',
+    $error: '.prompt-error',
+    $errorMessage: '.error-message',
+    $success: '.prompt-success',
   },
 
   _hasModifiedPassword: false,
@@ -30,10 +29,9 @@ var ChangePasswordItemView = FormPromptDialogItemView.extend({
 
   /* region EVENTS */
 
-  onFormControlChangeContent: function (event) {
-
+  onFormControlChangeContent(event) {
     // update modified state
-    var $target = $(event.target);
+    const $target = $(event.target);
     if (this.ui.$password.is($target)) {
       this._hasModifiedPassword = true;
     } else if (this.ui.$passwordConfirm.is($target)) {
@@ -45,49 +43,49 @@ var ChangePasswordItemView = FormPromptDialogItemView.extend({
     FormPromptDialogItemView.prototype.onFormControlChangeContent.apply(this, arguments);
   },
 
-  onSubmit: function(e) {
+  onSubmit(e) {
     FormPromptDialogItemView.prototype.onSubmit.apply(this, arguments);
 
-    var passwordCurrent = this.ui.$passwordCurrent.val();
-    var password = this.ui.$password.val();
+    const passwordCurrent = this.ui.$passwordCurrent.val();
+    const password = this.ui.$password.val();
     Session.changePassword(passwordCurrent, password).bind(this)
       .then(function (res) {
-        this.onSuccess(res)
+        this.onSuccess(res);
       })
       .catch(function (e) {
       // onError expects a string not an actual error
-        this.onError(e.innerMessage || e.message)
-      })
+        this.onError(e.innerMessage || e.message);
+      });
   },
 
   /* endregion EVENTS */
 
   /* region STATE */
 
-  updateValidState: function () {
+  updateValidState() {
     FormPromptDialogItemView.prototype.updateValidState.apply(this, arguments);
 
-    var password = this.ui.$password.val();
-    var passwordConfirm = this.ui.$passwordConfirm.val();
-    var passwordCurrent = this.ui.$passwordCurrent.val();
-    var isValid = true;
+    const password = this.ui.$password.val();
+    const passwordConfirm = this.ui.$passwordConfirm.val();
+    const passwordCurrent = this.ui.$passwordCurrent.val();
+    let isValid = true;
 
     // check password
     if (this._hasModifiedPassword) {
       if (!this._hasModifiedPasswordCurrent) {
-        this.showInvalidFormControl(this.ui.$passwordCurrent, "Please enter current password");
+        this.showInvalidFormControl(this.ui.$passwordCurrent, 'Please enter current password');
         isValid = false;
       } else if (validator.equals(password, passwordCurrent)) {
         // password matches current
-        this.showInvalidFormControl(this.ui.$password, "Password cannot be the same");
+        this.showInvalidFormControl(this.ui.$password, 'Password cannot be the same');
         isValid = false;
-      } else if (!validator.isLength(password,8)) {
+      } else if (!validator.isLength(password, 8)) {
         // password is not long enough
-        this.showInvalidFormControl(this.ui.$password, "Minimum 8 characters");
+        this.showInvalidFormControl(this.ui.$password, 'Minimum 8 characters');
         isValid = false;
       } else if (this._hasModifiedPasswordConfirm && !validator.equals(password, passwordConfirm)) {
         // passwords don't match
-        this.showInvalidFormControl(this.ui.$passwordConfirm, "Passwords must match");
+        this.showInvalidFormControl(this.ui.$passwordConfirm, 'Passwords must match');
         isValid = false;
       }
     }
@@ -100,7 +98,7 @@ var ChangePasswordItemView = FormPromptDialogItemView.extend({
 
     // set valid state
     this.isValid = isValid && this._hasModifiedPassword && this._hasModifiedPasswordConfirm && this._hasModifiedPasswordCurrent;
-  }
+  },
 
   /* endregion STATE */
 

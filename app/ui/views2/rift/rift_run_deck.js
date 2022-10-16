@@ -1,21 +1,19 @@
-'use strict'
+const SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
+const Logger = require('app/common/logger');
+const RiftHelper = require('app/sdk/rift/riftHelper');
+const Templ = require('./templates/rift_run_deck.hbs');
 
-var Templ = require('./templates/rift_run_deck.hbs');
-var SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
-var Logger = require('app/common/logger');
-var RiftHelper = require('app/sdk/rift/riftHelper');
+const RiftRunDeck = SlidingPanelItemView.extend({
 
-var RiftRunDeck = SlidingPanelItemView.extend({
-
-  className: "sliding-panel deck-preview rift-run-deck",
+  className: 'sliding-panel deck-preview rift-run-deck',
 
   template: Templ,
 
-  serializeModel: function(model){
-    var data =  model.toJSON.apply(model, _.rest(arguments));
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
 
-    var levelUpRequirement = RiftHelper.pointsRequiredForLevel(data.rift_level + 1);
-    var pointsSoFar = data.rift_points - RiftHelper.totalPointsForLevel(data.rift_level);
+    const levelUpRequirement = RiftHelper.pointsRequiredForLevel(data.rift_level + 1);
+    const pointsSoFar = data.rift_points - RiftHelper.totalPointsForLevel(data.rift_level);
 
     data.level_up_points_required = levelUpRequirement;
     data.rift_points_so_far = pointsSoFar;
@@ -25,20 +23,20 @@ var RiftRunDeck = SlidingPanelItemView.extend({
       data.rift_rating = 400;
     }
 
-    return data
+    return data;
   },
 
-  onRender: function() {
+  onRender() {
     SlidingPanelItemView.prototype.onRender.call(this);
 
     // add faction class
-    var factionId = this.model.get("faction_id");
-    this.$el.addClass("f" + factionId);
+    const factionId = this.model.get('faction_id');
+    this.$el.addClass(`f${factionId}`);
   },
 
-  getIsEnabled: function () {
+  getIsEnabled() {
     return true;
-  }
+  },
 
 });
 

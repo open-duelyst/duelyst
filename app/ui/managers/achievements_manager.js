@@ -1,6 +1,6 @@
 // See: https://coderwall.com/p/myzvmg for why managers are created this way
 
-var _AchievementsManager = {};
+const _AchievementsManager = {};
 _AchievementsManager.instance = null;
 _AchievementsManager.getInstance = function () {
   if (this.instance == null) {
@@ -12,21 +12,21 @@ _AchievementsManager.current = _AchievementsManager.getInstance;
 
 module.exports = _AchievementsManager;
 
-var moment = require('moment');
-var CONFIG = require('app/common/config');
-var Logger = require('app/common/logger');
-var SDK = require('app/sdk');
-var Manager = require("./manager");
-var NotificationsManager = require("./notifications_manager");
-var ProfileManager = require("./profile_manager");
-var NavigationManager = require("./navigation_manager");
-var NotificationModel = require('app/ui/models/notification');
-var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-var DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
-var Analytics = require('app/common/analytics');
-var AnalyticsTracker = require('app/common/analyticsTracker');
-var AchievementsFactory = require('app/sdk/achievements/achievementsFactory');
-var i18next = require('i18next');
+const moment = require('moment');
+const CONFIG = require('app/common/config');
+const Logger = require('app/common/logger');
+const SDK = require('app/sdk');
+const NotificationModel = require('app/ui/models/notification');
+const DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
+const DuelystBackbone = require('app/ui/extensions/duelyst_backbone');
+const Analytics = require('app/common/analytics');
+const AnalyticsTracker = require('app/common/analyticsTracker');
+const AchievementsFactory = require('app/sdk/achievements/achievementsFactory');
+const i18next = require('i18next');
+const NavigationManager = require('./navigation_manager');
+const ProfileManager = require('./profile_manager');
+const NotificationsManager = require('./notifications_manager');
+const Manager = require('./manager');
 
 var AchievementsManager = Manager.extend({
 
@@ -39,53 +39,50 @@ var AchievementsManager = Manager.extend({
   _checkLoginAchievementsTimeout: null,
   _progressedAchievementsCollection: null, // Contains progress for achievements that players have progressed and are marked for tracking
 
-
-  initialize: function(options) {
+  initialize(options) {
     Manager.prototype.initialize.call(this);
-    this._unreadAchievementsQueue = []
+    this._unreadAchievementsQueue = [];
   },
-
 
   /* region CONNECT */
 
-  onBeforeConnect:function() {
+  onBeforeConnect() {
     Manager.prototype.onBeforeConnect.call(this);
     ProfileManager.getInstance().onReady()
       .bind(this)
       .then(function () {
-        var userId = ProfileManager.getInstance().get('id')
-        var username = ProfileManager.getInstance().get('username')
+        const userId = ProfileManager.getInstance().get('id');
+        const username = ProfileManager.getInstance().get('username');
 
-        this._achievementsStatusModel =  new DuelystFirebase.Model(null, {
-          firebase: new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId + "/status")
+        this._achievementsStatusModel = new DuelystFirebase.Model(null, {
+          firebase: new Firebase(`${process.env.FIREBASE_URL}/user-achievements/${userId}/status`),
         });
 
         this._completedAchievementsCollection = new DuelystFirebase.Collection(null, {
-          firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/completed"
+          firebase: `${process.env.FIREBASE_URL}user-achievements/${userId}/completed`,
         });
 
         this._progressedAchievementsCollection = new DuelystFirebase.Collection(null, {
-          firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/progress"
+          firebase: `${process.env.FIREBASE_URL}user-achievements/${userId}/progress`,
         });
 
-        this.onReady().then(function(){
+        this.onReady().then(() => {
         // listen to changes immediately so we don't miss anything
-        //this.listenTo(this._achievementsModel, "change",this._onNewPlayerChange);
-          this._completedAchievementsRef = new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId).child("completed");
+        // this.listenTo(this._achievementsModel, "change",this._onNewPlayerChange);
+          this._completedAchievementsRef = new Firebase(`${process.env.FIREBASE_URL}/user-achievements/${userId}`).child('completed');
           if (window.isSteam) {
             this._completedAchievementsRef.orderByChild('completed_at').once('value', this.syncSteamAchievements.bind(this));
           }
-          this._completedAchievementsRef.orderByChild("completed_at").startAt(this.getAchievementsLastReadAt()).on("child_added",this._onNewCompletedAchievement.bind(this));
+          this._completedAchievementsRef.orderByChild('completed_at').startAt(this.getAchievementsLastReadAt()).on('child_added', this._onNewCompletedAchievement.bind(this));
 
           return this._scheduleOrRequestLoginAchievements();
+        });
 
-        }.bind(this));
-
-        this._markAsReadyWhenModelsAndCollectionsSynced([this._achievementsStatusModel,this._completedAchievementsCollection,this._progressedAchievementsCollection]);
-      })
+        this._markAsReadyWhenModelsAndCollectionsSynced([this._achievementsStatusModel, this._completedAchievementsCollection, this._progressedAchievementsCollection]);
+      });
   },
 
-  onBeforeDisconnect: function() {
+  onBeforeDisconnect() {
     Manager.prototype.onBeforeDisconnect.call(this);
     if (this._completedAchievementsRef) {
       this._completedAchievementsRef.off();
@@ -95,168 +92,163 @@ var AchievementsManager = Manager.extend({
   },
 
   /* endregion CONNECT */
-  syncSteamAchievements: function (snapshot) {
-    var achievements = snapshot.val();
+  syncSteamAchievements(snapshot) {
+    const achievements = snapshot.val();
     if (!achievements) {
       return;
     }
-    Object.keys(achievements).map(function (achievement) {
+    Object.keys(achievements).map((achievement) => {
       // trigger steam achievement here
       // we don't care about error
-      steamworks.activateAchievement(achievement,
-        function () {},
-        function (err) {}
+      steamworks.activateAchievement(
+        achievement,
+        () => {},
+        (err) => {},
       );
-    })
+    });
   },
 
-  hasUnreadCompletedAchievements: function () {
-    return this._unreadAchievementsQueue.length != 0
+  hasUnreadCompletedAchievements() {
+    return this._unreadAchievementsQueue.length != 0;
   },
 
-  popNextUnreadAchievementModel: function () {
-
-    var nextUnread = this._unreadAchievementsQueue.shift();
+  popNextUnreadAchievementModel() {
+    const nextUnread = this._unreadAchievementsQueue.shift();
     this._setCompletedAchievementAsRead(nextUnread);
 
     // Build out the unread achievement model
-    var achievement = AchievementsFactory.achievementForIdentifier(nextUnread.achievement_id);
-    var achievementRewardModel = new Backbone.Model();
-    achievementRewardModel.set("_title", i18next.t("rewards.achievement_complete_title") + " " + achievement.title);
-    achievementRewardModel.set("_subTitle", achievement.description);
-    achievementRewardModel.set("_achievementId", nextUnread.achievement_id);
+    const achievement = AchievementsFactory.achievementForIdentifier(nextUnread.achievement_id);
+    const achievementRewardModel = new Backbone.Model();
+    achievementRewardModel.set('_title', `${i18next.t('rewards.achievement_complete_title')} ${achievement.title}`);
+    achievementRewardModel.set('_subTitle', achievement.description);
+    achievementRewardModel.set('_achievementId', nextUnread.achievement_id);
 
-    var reward = nextUnread.rewards[0];
+    const reward = nextUnread.rewards[0];
 
     if (reward.gold) {
-      achievementRewardModel.set("gold", reward.gold);
+      achievementRewardModel.set('gold', reward.gold);
     } else if (reward.spirit) {
-      achievementRewardModel.set("spirit", reward.spirit);
+      achievementRewardModel.set('spirit', reward.spirit);
     } else if (reward.cards) {
-      achievementRewardModel.set("cards",reward.cards);
+      achievementRewardModel.set('cards', reward.cards);
     } else if (reward.spirit_orbs) {
-      achievementRewardModel.set("spirit_orbs", reward.spirit_orbs);
+      achievementRewardModel.set('spirit_orbs', reward.spirit_orbs);
     } else if (reward.gauntlet_tickets) {
-      achievementRewardModel.set("gauntlet_tickets", reward.gauntlet_tickets);
+      achievementRewardModel.set('gauntlet_tickets', reward.gauntlet_tickets);
     } else if (reward.cosmetics) {
-      achievementRewardModel.set("cosmetics", reward.cosmetics);
+      achievementRewardModel.set('cosmetics', reward.cosmetics);
     } else if (reward.cosmetic_keys) {
-      achievementRewardModel.set("cosmetic_keys", reward.cosmetic_keys);
+      achievementRewardModel.set('cosmetic_keys', reward.cosmetic_keys);
     } else if (reward.gift_chests) {
-      achievementRewardModel.set("gift_chests", reward.gift_chests);
+      achievementRewardModel.set('gift_chests', reward.gift_chests);
     }
 
     // trigger steam achievement here
     // use same achievement_id
     // we don't care about error
     if (window.isSteam) {
-      steamworks.activateAchievement(nextUnread.achievement_id,
-        function () {},
-        function (err) {}
+      steamworks.activateAchievement(
+        nextUnread.achievement_id,
+        () => {},
+        (err) => {},
       );
     }
 
     return achievementRewardModel;
   },
 
-  _setCompletedAchievementAsRead: function(completedAchievement) {
-
+  _setCompletedAchievementAsRead(completedAchievement) {
     // If this achievement was completed after the current last_read_at in status then update status
     if (completedAchievement.completed_at + 1 > this.getAchievementsLastReadAt()) {
-      this._achievementsStatusModel.set("last_read_at", completedAchievement.completed_at + 1);
+      this._achievementsStatusModel.set('last_read_at', completedAchievement.completed_at + 1);
     }
 
     if (completedAchievement.is_unread != false) {
-      var request = $.ajax({
-        url: process.env.API_URL + '/api/me/achievements/' + completedAchievement.achievement_id + '/read_at',
+      const request = $.ajax({
+        url: `${process.env.API_URL}/api/me/achievements/${completedAchievement.achievement_id}/read_at`,
         type: 'PUT',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
     }
-
   },
 
-  getAchievementsLastReadAt: function() {
-    return this._achievementsStatusModel.get("last_read_at") || 0;
+  getAchievementsLastReadAt() {
+    return this._achievementsStatusModel.get('last_read_at') || 0;
   },
 
-  getUnlockMessageForAchievementId: function(achievementId) {
-    var sdkAchievement = AchievementsFactory.achievementForIdentifier(achievementId);
+  getUnlockMessageForAchievementId(achievementId) {
+    const sdkAchievement = AchievementsFactory.achievementForIdentifier(achievementId);
 
-    if (achievementId == null || sdkAchievement == null)
-      return "";
+    if (achievementId == null || sdkAchievement == null) return '';
 
-    var progressMade = 0;
-    var achievementProgressModel = this._progressedAchievementsCollection.get(achievementId);
-    if (achievementProgressModel != null && achievementProgressModel.get("progress")) {
-      progressMade = achievementProgressModel.get("progress")
+    let progressMade = 0;
+    const achievementProgressModel = this._progressedAchievementsCollection.get(achievementId);
+    if (achievementProgressModel != null && achievementProgressModel.get('progress')) {
+      progressMade = achievementProgressModel.get('progress');
     }
 
-    return sdkAchievement.rewardUnlockMessage(progressMade)
+    return sdkAchievement.rewardUnlockMessage(progressMade);
   },
 
-  _clearLoginAchievementsTimeout: function () {
+  _clearLoginAchievementsTimeout() {
     if (this._checkLoginAchievementsTimeout) {
       clearTimeout(this._checkLoginAchievementsTimeout);
       this._checkLoginAchievementsTimeout = null;
     }
   },
 
-  _scheduleOrRequestLoginAchievements: function () {
+  _scheduleOrRequestLoginAchievements() {
     this._clearLoginAchievementsTimeout();
 
-    var timeUntilNeedsLoginAchievementCheck = this.timeUntilNeedsLoginAchievementCheck();
+    const timeUntilNeedsLoginAchievementCheck = this.timeUntilNeedsLoginAchievementCheck();
 
     if (timeUntilNeedsLoginAchievementCheck == null) {
       return Promise.resolve();
-    }  else if (timeUntilNeedsLoginAchievementCheck <= 0) {
+    } if (timeUntilNeedsLoginAchievementCheck <= 0) {
       return this.requestLoginAchievements();
-    } else {
-      //var bufferAchievementCheck = 1000 * 60 * 5; // 5 minutes
-      var bufferAchievementCheck = 1000; // 5 minutes
-      var maxScheduleTime = 1000 * 60 * 60 * 2; // 2 hours
-      var scheduleWaitTime = Math.min(maxScheduleTime,timeUntilNeedsLoginAchievementCheck + bufferAchievementCheck);
-      this._checkLoginAchievementsTimeout = setTimeout(this._scheduleOrRequestLoginAchievements.bind(this),scheduleWaitTime);
-      return Promise.resolve();
     }
+    // var bufferAchievementCheck = 1000 * 60 * 5; // 5 minutes
+    const bufferAchievementCheck = 1000; // 5 minutes
+    const maxScheduleTime = 1000 * 60 * 60 * 2; // 2 hours
+    const scheduleWaitTime = Math.min(maxScheduleTime, timeUntilNeedsLoginAchievementCheck + bufferAchievementCheck);
+    this._checkLoginAchievementsTimeout = setTimeout(this._scheduleOrRequestLoginAchievements.bind(this), scheduleWaitTime);
+    return Promise.resolve();
   },
 
-  requestLoginAchievements: function () {
+  requestLoginAchievements() {
     this._clearLoginAchievementsTimeout();
 
-    return new Promise(function (resolve, reject) {
-      var request = $.ajax({
-        url: process.env.API_URL + '/api/me/achievements/login',
+    return new Promise((resolve, reject) => {
+      const request = $.ajax({
+        url: `${process.env.API_URL}/api/me/achievements/login`,
         type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
 
-      request.done(function (response) {
+      request.done((response) => {
         resolve(response);
       });
 
-      request.fail(function (response) {
-        var errorMessage = response.responseJSON != null ? response.responseJSON.message : 'Login Achievement check failed.';
+      request.fail((response) => {
+        const errorMessage = response.responseJSON != null ? response.responseJSON.message : 'Login Achievement check failed.';
         reject(errorMessage);
       });
-
-    }.bind(this));
+    });
   },
 
-
-  timeUntilNeedsLoginAchievementCheck: function () {
-    var enabledAchievementsMap = AchievementsFactory.getEnabledAchievementsMap();
-    var momentNowUtc = moment.utc();
-    var closestLoginAchievmentMs = null;
-    for (var achievementId in enabledAchievementsMap) {
-      var sdkAchievement = enabledAchievementsMap[achievementId];
+  timeUntilNeedsLoginAchievementCheck() {
+    const enabledAchievementsMap = AchievementsFactory.getEnabledAchievementsMap();
+    const momentNowUtc = moment.utc();
+    let closestLoginAchievmentMs = null;
+    for (const achievementId in enabledAchievementsMap) {
+      const sdkAchievement = enabledAchievementsMap[achievementId];
       if (!this._getHasCompletedAchievement(achievementId)) {
-        //if (sdkAchievement.getLoginAchievementStartsMoment() != null && sdkAchievement.getLoginAchievementStartsMoment().valueOf() > momentNowUtc.valueOf()) {
+        // if (sdkAchievement.getLoginAchievementStartsMoment() != null && sdkAchievement.getLoginAchievementStartsMoment().valueOf() > momentNowUtc.valueOf()) {
         if (sdkAchievement.getLoginAchievementStartsMoment() != null) {
-          var upcomingLoginAchievementStartMoment = sdkAchievement.getLoginAchievementStartsMoment();
-          if (sdkAchievement.progressForLoggingIn(upcomingLoginAchievementStartMoment.clone().add(1,"minute")) >= 1) {
+          const upcomingLoginAchievementStartMoment = sdkAchievement.getLoginAchievementStartsMoment();
+          if (sdkAchievement.progressForLoggingIn(upcomingLoginAchievementStartMoment.clone().add(1, 'minute')) >= 1) {
             if (closestLoginAchievmentMs == null || closestLoginAchievmentMs > (upcomingLoginAchievementStartMoment.valueOf() - momentNowUtc.valueOf())) {
               // Note: this may be negative or 0, meaning the login achievement has started
               closestLoginAchievmentMs = upcomingLoginAchievementStartMoment.valueOf() - momentNowUtc.valueOf();
@@ -266,14 +258,14 @@ var AchievementsManager = Manager.extend({
       }
     }
 
-    return closestLoginAchievmentMs
+    return closestLoginAchievmentMs;
   },
 
-  _getHasCompletedAchievement: function (achievementId) {
+  _getHasCompletedAchievement(achievementId) {
     if (this._completedAchievementsCollection != null && this._completedAchievementsCollection.models != null) {
-      for (var i=0; i < this._completedAchievementsCollection.models.length; i++) {
-        var model = this._completedAchievementsCollection.models[i];
-        if (model.get("achievement_id") == achievementId) {
+      for (let i = 0; i < this._completedAchievementsCollection.models.length; i++) {
+        const model = this._completedAchievementsCollection.models[i];
+        if (model.get('achievement_id') == achievementId) {
           return true;
         }
       }
@@ -282,50 +274,45 @@ var AchievementsManager = Manager.extend({
     return false;
   },
 
-
   /* region EVENT HANDLERS */
 
-  _onNewCompletedAchievement: function(snapshot) {
-
+  _onNewCompletedAchievement(snapshot) {
     if (!this._unreadAchievementsQueue) {
       this._unreadAchievementsQueue = [];
     }
 
     // start loading all rewards for the achievement
-    var achievement = snapshot.val();
+    const achievement = snapshot.val();
 
     // if for some reason a read achievement comes in as completed
-    if (achievement.is_unread == false){
+    if (achievement.is_unread == false) {
       this._setCompletedAchievementAsRead(achievement);
       return;
     }
 
-    var allRewardPromises = [];
+    const allRewardPromises = [];
     if (achievement && achievement.reward_ids) {
-      _.each(achievement.reward_ids,function(rewardId){
-        allRewardPromises.push(new Promise(function(resolve,reject){
-
-          var rewardModel = new DuelystBackbone.Model();
-          rewardModel.url = process.env.API_URL + "/api/me/rewards/" + rewardId;
+      _.each(achievement.reward_ids, (rewardId) => {
+        allRewardPromises.push(new Promise((resolve, reject) => {
+          const rewardModel = new DuelystBackbone.Model();
+          rewardModel.url = `${process.env.API_URL}/api/me/rewards/${rewardId}`;
           rewardModel.fetch();
-          rewardModel.onSyncOrReady().then(function(){
+          rewardModel.onSyncOrReady().then(() => {
             resolve(rewardModel.attributes);
-          }).catch(function(error){
+          }).catch((error) => {
             reject(error);
-          })
-
+          });
         }));
-      })
+      });
     }
 
     // when all the rewards are loaded, push the achievent onto the unread queue
-    Promise.all(allRewardPromises).then(function(rewards){
+    Promise.all(allRewardPromises).then((rewards) => {
       achievement.rewards = rewards;
       this._unreadAchievementsQueue.push(achievement);
-    }.bind(this));
-  }
+    });
+  },
 
   /* endregion EVENT HANDLERS */
-
 
 });

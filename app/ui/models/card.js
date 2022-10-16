@@ -1,81 +1,79 @@
-'use strict';
+const Logger = require('app/common/logger');
+const CONFIG = require('app/common/config');
+const SDK = require('app/sdk');
 
-var Logger = require('app/common/logger');
-var CONFIG = require('app/common/config');
-var SDK = require('app/sdk');
+const CardModel = Backbone.Model.extend({
 
-var CardModel = Backbone.Model.extend({
-
-  initialize: function() {
-    this.on("change:card", this.onCardChanged, this);
+  initialize() {
+    this.on('change:card', this.onCardChanged, this);
     this.onCardChanged();
   },
 
-  onCardChanged: function () {
+  onCardChanged() {
     // create basic searchable content
-    var searchableContent = this.get("name");
-    searchableContent += " " + this.get("description");
-    searchableContent += " " + this.get("raceName");
-    searchableContent += " " + this.get("rarityName");
-    if (this.get("isEntity")) {
-      searchableContent += " minion unit";
-      if (this.get("isGeneral")) {
-        searchableContent += " general";
+    let searchableContent = this.get('name');
+    searchableContent += ` ${this.get('description')}`;
+    searchableContent += ` ${this.get('raceName')}`;
+    searchableContent += ` ${this.get('rarityName')}`;
+    if (this.get('isEntity')) {
+      searchableContent += ' minion unit';
+      if (this.get('isGeneral')) {
+        searchableContent += ' general';
       }
-    } else if (this.get("isSpell")) {
-      searchableContent += " spell";
-    } else if (this.get("isArtifact")) {
-      searchableContent += " artifact";
+    } else if (this.get('isSpell')) {
+      searchableContent += ' spell';
+    } else if (this.get('isArtifact')) {
+      searchableContent += ' artifact';
     }
 
-    if (this.get("isPrismatic")) {
-      searchableContent += " prismatic";
+    if (this.get('isPrismatic')) {
+      searchableContent += ' prismatic';
     }
 
     // add card set data
-    var cardSetData = SDK.CardSetFactory.cardSetForIdentifier(this.get("cardSetId"));
+    const cardSetData = SDK.CardSetFactory.cardSetForIdentifier(this.get('cardSetId'));
     if (cardSetData != null) {
-      searchableContent += " " + (cardSetData.title || "") + " " + (cardSetData.name || "") + " " + (cardSetData.devName || "");
+      searchableContent += ` ${cardSetData.title || ''} ${cardSetData.name || ''} ${cardSetData.devName || ''}`;
 
       this.set({
-        cardSetName: cardSetData.name
+        cardSetName: cardSetData.name,
       });
     }
 
     // extract keywords from card
-    var card = this.get("card");
-    var keywordDescriptionsArray = [];
+    const card = this.get('card');
+    const keywordDescriptionsArray = [];
     if (card) {
-      var keywordClasses = card.getKeywordClasses();
-      for (var i=0; i<keywordClasses.length;i++) {
-        var keywordClass = keywordClasses[i];
-        var keywordName = keywordClass.getName();
-        var keywordDescription = keywordClass.getKeywordDefinition();
-        var keywordData = {
+      const keywordClasses = card.getKeywordClasses();
+      for (let i = 0; i < keywordClasses.length; i++) {
+        const keywordClass = keywordClasses[i];
+        const keywordName = keywordClass.getName();
+        const keywordDescription = keywordClass.getKeywordDefinition();
+        const keywordData = {
           name: keywordName,
-          description: keywordDescription
+          description: keywordDescription,
         };
-        searchableContent += " " + keywordName + " " + keywordDescription;
+        searchableContent += ` ${keywordName} ${keywordDescription}`;
         if (!keywordClass.isHiddenToUI) {
           keywordDescriptionsArray.push(keywordData);
-        }        
+        }
       }
     }
 
     // replace tabs and double spaces with single spaces
-    searchableContent = searchableContent.replace(/\t/g, " ").replace(/\s+/g, " ");
+    searchableContent = searchableContent.replace(/\t/g, ' ').replace(/\s+/g, ' ');
 
     // update model
     this.set({
       keywordDescriptions: keywordDescriptionsArray,
-      searchableContent: searchableContent
+      searchableContent,
     });
   },
 
-  getCardDataForDeck: function () {
+  getCardDataForDeck() {
     return {
-      id: this.get("id")
-    }
+      id: this.get('id'),
+    };
   },
 
   defaults: {
@@ -84,9 +82,9 @@ var CardModel = Backbone.Model.extend({
     card: null,
     count: 0,
     deckCount: 0,
-    description: "",
+    description: '',
     factionId: 0,
-    factionName: "Neutral",
+    factionName: 'Neutral',
     hp: null,
     id: 0,
     isArtifact: false,
@@ -110,20 +108,20 @@ var CardModel = Backbone.Model.extend({
     isUnlockableWithAchievement: false,
     keywordDescriptions: [],
     manaCost: 0,
-    name: "Card",
-    raceName: "",
+    name: 'Card',
+    raceName: '',
     rarityColor: null,
     rarityId: 0,
-    rarityName: "",
+    rarityName: '',
     rarityIsCraftable: false,
     showRarity: true,
-    searchableContent: "",
-    type: "Card",
+    searchableContent: '',
+    type: 'Card',
     unlockMessage: null,
     unlocksAtLevel: null,
     unlocksWithFaction: null,
-    unlocksWithFactionName: null
-  }
+    unlocksWithFactionName: null,
+  },
 });
 
 module.exports = CardModel;

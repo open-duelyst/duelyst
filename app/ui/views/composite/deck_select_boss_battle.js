@@ -1,67 +1,66 @@
-//pragma PKGS: game
-'use strict';
+// pragma PKGS: game
 
-var EventBus = require('app/common/eventbus');
-var EVENTS = require('app/common/event_types');
-var CONFIG = require('app/common/config');
-var SDK = require('app/sdk');
-var RSX = require('app/data/resources');
-var DeckSelectSinglePlayerCompositeView = require('./deck_select_single_player');
-var DeckSelectBossBattleTmpl = require('app/ui/templates/composite/deck_select_boss_battle.hbs');
-var _ = require("underscore");
-var moment = require('moment');
+const EventBus = require('app/common/eventbus');
+const EVENTS = require('app/common/event_types');
+const CONFIG = require('app/common/config');
+const SDK = require('app/sdk');
+const RSX = require('app/data/resources');
+const DeckSelectBossBattleTmpl = require('app/ui/templates/composite/deck_select_boss_battle.hbs');
+const _ = require('underscore');
+const moment = require('moment');
+const DeckSelectSinglePlayerCompositeView = require('./deck_select_single_player');
 
-var DeckSelectBossBattleCompositeView = DeckSelectSinglePlayerCompositeView.extend({
+const DeckSelectBossBattleCompositeView = DeckSelectSinglePlayerCompositeView.extend({
 
-  className: "sliding-panel-select deck-select deck-select-single-player deck-select-boss-battle",
+  className: 'sliding-panel-select deck-select deck-select-single-player deck-select-boss-battle',
 
-  _opponentClassPrefix: ".boss-opponent",
+  _opponentClassPrefix: '.boss-opponent',
 
   template: DeckSelectBossBattleTmpl,
 
-  onRender: function () {
+  onRender() {
     DeckSelectSinglePlayerCompositeView.prototype.onRender.apply(this, arguments);
 
     // remove all ai tools
-    $(".ai-tool").remove();
+    $('.ai-tool').remove();
   },
 
-  onShow: function () {
+  onShow() {
     DeckSelectSinglePlayerCompositeView.prototype.onShow.apply(this, arguments);
 
-    var opponents = this.getOpponents();
+    const opponents = this.getOpponents();
     if (opponents != null && opponents.length > 0) {
-      this.setSelectedOpponent(opponents[0].id,opponents[0].factionId)
+      this.setSelectedOpponent(opponents[0].id, opponents[0].factionId);
     }
   },
 
-  getRecommendedOpponentId: function () {
+  getRecommendedOpponentId() {
     // no recommended opponent
     return null;
   },
 
-  getOpponents: function () {
-    var opponents = [];
+  getOpponents() {
+    const opponents = [];
 
-    var progressionManager = ProgressionManager.getInstance();
-    var currentBossEventModels = progressionManager.getCurrentBossEventModels();
+    const progressionManager = ProgressionManager.getInstance();
+    const currentBossEventModels = progressionManager.getCurrentBossEventModels();
 
-    for (var i = 0, il = currentBossEventModels.length; i < il; i++) {
-      var bossEventModel = currentBossEventModels[i];
-      var generalId = bossEventModel.get("boss_id");
-      var generalCard = SDK.GameSession.getCardCaches().getCardById(generalId);
-      var factionId = SDK.Factions.Boss;
-      var bossEventId = bossEventModel.get("event_id");
-      var alreadyDefeated = progressionManager.getHasDefeatedBossForEvent(generalId,bossEventId);
+    for (let i = 0, il = currentBossEventModels.length; i < il; i++) {
+      const bossEventModel = currentBossEventModels[i];
+      const generalId = bossEventModel.get('boss_id');
+      const generalCard = SDK.GameSession.getCardCaches().getCardById(generalId);
+      const factionId = SDK.Factions.Boss;
+      const bossEventId = bossEventModel.get('event_id');
+      const alreadyDefeated = progressionManager.getHasDefeatedBossForEvent(generalId, bossEventId);
 
-      var opponentData = {
+      const opponentData = {
         name: generalCard.getName(),
         description: generalCard.getBossBattleDescription(),
-        factionId: factionId,
+        factionId,
         id: generalId,
         portraitImg: generalCard.getPortraitHexResource().img,
-        bossEventId: bossEventId,
-        defeated: alreadyDefeated
+        bossEventId,
+        defeated: alreadyDefeated,
       };
 
       opponents.push(opponentData);
@@ -70,9 +69,9 @@ var DeckSelectBossBattleCompositeView = DeckSelectSinglePlayerCompositeView.exte
     return opponents;
   },
 
-  getConfirmSelectionEvent: function () {
+  getConfirmSelectionEvent() {
     return EVENTS.start_boss_battle;
-  }
+  },
 
 });
 

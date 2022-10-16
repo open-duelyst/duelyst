@@ -1,28 +1,25 @@
-'use strict';
+const QuestsManager = require('app/ui/managers/quests_manager');
+const { QuestFactory } = require('app/sdk');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const Logger = require('app/common/logger');
+const QuestItemViewTempl = require('./templates/quest_item.hbs');
 
-var QuestItemViewTempl = require('./templates/quest_item.hbs');
-var QuestsManager = require('app/ui/managers/quests_manager');
-var QuestFactory = require('app/sdk').QuestFactory;
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var Logger = require('app/common/logger');
+const QuestItemView = Backbone.Marionette.ItemView.extend({
 
-var QuestItemView = Backbone.Marionette.ItemView.extend({
-
-  tagName: "li",
-  className: "quest",
+  tagName: 'li',
+  className: 'quest',
 
   template: QuestItemViewTempl,
 
   ui: {
-    "$outlinePath": ".path",
-    "$frameImage": ".frame-image",
-    "$questContent": ".quest-content",
+    $outlinePath: '.path',
+    $frameImage: '.frame-image',
+    $questContent: '.quest-content',
   },
 
-  serializeModel: function(model){
-
-    var data =  model.toJSON.apply(model, _.rest(arguments));
-    var quest = QuestFactory.questForIdentifier(data.quest_type_id);
+  serializeModel(model) {
+    const data = model.toJSON.apply(model, _.rest(arguments));
+    const quest = QuestFactory.questForIdentifier(data.quest_type_id);
 
     if (quest) {
       quest.params = data.params;
@@ -43,17 +40,17 @@ var QuestItemView = Backbone.Marionette.ItemView.extend({
     return data;
   },
 
-  onShow: function() {
+  onShow() {
     // model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
-    this.listenTo(this.model,"change",this.render);
+    this.listenTo(this.model, 'change', this.render);
 
-    this.$el.addClass("animateIn");
+    this.$el.addClass('animateIn');
     this.$el.find('[data-toggle="popover"]').popover({
-      container: $(".daily-quests-region"),
+      container: $('.daily-quests-region'),
       animation: true,
-      placement: 'right'
-    }).popover("show")
-  }
+      placement: 'right',
+    }).popover('show');
+  },
 
 });
 

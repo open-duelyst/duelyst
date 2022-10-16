@@ -1,84 +1,85 @@
-'use strict';
+const moment = require('moment');
+const Logger = require('app/common/logger');
+const CONFIG = require('app/common/config');
+const generatePushID = require('app/common/generate_push_id');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const SDK = require('app/sdk');
+const Scene = require('app/view/Scene');
+const UtilsUI = require('app/common/utils/utils_ui');
+const ResumeGameTmpl = require('app/ui/templates/item/resume_game.hbs');
+const GamesManager = require('app/ui/managers/games_manager');
+const NavigationManager = require('app/ui/managers/navigation_manager');
+const Animations = require('app/ui/views/animations');
 
-var moment = require("moment");
-var Logger = require('app/common/logger');
-var CONFIG = require('app/common/config');
-var generatePushID = require('app/common/generate_push_id');
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var SDK = require('app/sdk');
-var Scene = require('app/view/Scene');
-var UtilsUI = require('app/common/utils/utils_ui');
-var ResumeGameTmpl = require('app/ui/templates/item/resume_game.hbs');
-var GamesManager = require('app/ui/managers/games_manager');
-var NavigationManager = require('app/ui/managers/navigation_manager');
-var Animations = require('app/ui/views/animations');
+const ResumeGameItemView = Backbone.Marionette.ItemView.extend({
 
-var ResumeGameItemView = Backbone.Marionette.ItemView.extend({
-
-  id: "app-resume-game",
-  className: "status game-vs",
+  id: 'app-resume-game',
+  className: 'status game-vs',
   template: ResumeGameTmpl,
 
   /* ui selector cache */
 
   ui: {
-    $cancelButton: ".btn-user-cancel",
-    $resumeMode: ".resume-mode",
-    $continueMode: ".continue-mode",
-    $continueButton: ".continue",
-    "player1": ".player1",
-    "player1Name": ".player1 .user-name",
-    "player1General": ".player1 .player-general",
-    "player1GeneralPlatform": ".player1 .player-general-platform",
-    "player2": ".player2",
-    "player2Name": ".player2 .user-name",
-    "player2General": ".player2 .player-general",
-    "player2GeneralPlatform": ".player2 .player-general-platform",
-    "$gameCreatedAt":".game-created-at"
+    $cancelButton: '.btn-user-cancel',
+    $resumeMode: '.resume-mode',
+    $continueMode: '.continue-mode',
+    $continueButton: '.continue',
+    player1: '.player1',
+    player1Name: '.player1 .user-name',
+    player1General: '.player1 .player-general',
+    player1GeneralPlatform: '.player1 .player-general-platform',
+    player2: '.player2',
+    player2Name: '.player2 .user-name',
+    player2General: '.player2 .player-general',
+    player2GeneralPlatform: '.player2 .player-general-platform',
+    $gameCreatedAt: '.game-created-at',
   },
 
   _requestId: null,
 
-  initialize: function() {
+  initialize() {
     // generate unique id for requests
     this._requestId = generatePushID();
   },
 
-  onShow: function() {
+  onShow() {
     // change gradient color mapping
-    Scene.getInstance().getFX().showGradientColorMap(this._requestId, CONFIG.ANIMATE_FAST_DURATION, {r:194, g:203, b:240, a:255}, {r:20, g:25, b:60, a:255});
+    Scene.getInstance().getFX().showGradientColorMap(this._requestId, CONFIG.ANIMATE_FAST_DURATION, {
+      r: 194, g: 203, b: 240, a: 255,
+    }, {
+      r: 20, g: 25, b: 60, a: 255,
+    });
 
     // start in resume mode
     this.ui.$resumeMode.show();
     this.ui.$continueMode.hide();
 
     // listen for click on continue to swap to continue mode
-    this.ui.$continueButton.one("click", function () {
+    this.ui.$continueButton.one('click', () => {
       this.ui.$cancelButton.remove();
       this.ui.$resumeMode.remove();
       this.ui.$continueMode.show();
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
-      this.trigger("continue");
-    }.bind(this));
+      this.trigger('continue');
+    });
 
     // animate activation
-    Animations.cssClassAnimation.call(this, "active");
+    Animations.cssClassAnimation.call(this, 'active');
   },
 
-  onRender: function() {
-    var player1Id = this.model.get("player1Id");
-    var player1Username = this.model.get("player1Username");
-    var player2Id = this.model.get("player2Id");
-    var player2Username = this.model.get("player2Username");
+  onRender() {
+    const player1Id = this.model.get('player1Id');
+    const player1Username = this.model.get('player1Username');
+    const player2Id = this.model.get('player2Id');
+    const player2Username = this.model.get('player2Username');
 
-    if (this.model.get("myPlayerIsPlayer1")) {
-      this.ui.player1.addClass("friendly");
-      this.ui.player2.addClass("enemy");
-
+    if (this.model.get('myPlayerIsPlayer1')) {
+      this.ui.player1.addClass('friendly');
+      this.ui.player2.addClass('enemy');
     } else {
-      this.ui.player1.addClass("enemy");
-      this.ui.player2.addClass("friendly");
+      this.ui.player1.addClass('enemy');
+      this.ui.player2.addClass('friendly');
     }
 
     // set player names
@@ -86,12 +87,12 @@ var ResumeGameItemView = Backbone.Marionette.ItemView.extend({
     this.ui.player2Name.text(player2Username);
 
     // general sprites
-    var player1GeneralId = this.model.get("player1GeneralId");
-    var player2GeneralId = this.model.get("player2GeneralId");
-    var player1General;
-    var player1SpriteData;
-    var player2General;
-    var player2SpriteData;
+    const player1GeneralId = this.model.get('player1GeneralId');
+    const player2GeneralId = this.model.get('player2GeneralId');
+    let player1General;
+    let player1SpriteData;
+    let player2General;
+    let player2SpriteData;
     /*
     // for now, don't show general sprites
     if (player1GeneralId != null && player2GeneralId != null) {
@@ -120,18 +121,18 @@ var ResumeGameItemView = Backbone.Marionette.ItemView.extend({
       this.ui.player2GeneralPlatform.remove();
     }
 
-    this.ui.$gameCreatedAt.text(moment(this.model.get("createdAt")).format("ddd Do MMM HH:mm"));
+    this.ui.$gameCreatedAt.text(moment(this.model.get('createdAt')).format('ddd Do MMM HH:mm'));
   },
 
-  onPrepareForDestroy: function () {
+  onPrepareForDestroy() {
     // reset gradient color mapping
     Scene.getInstance().getFX().clearGradientColorMap(this._requestId, CONFIG.ANIMATE_MEDIUM_DURATION);
   },
 
-  onDestroy: function () {
+  onDestroy() {
     UtilsUI.releaseCocosSprite(this._player1GLData);
     UtilsUI.releaseCocosSprite(this._player2GLData);
-  }
+  },
 
 });
 

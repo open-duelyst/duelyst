@@ -1,29 +1,29 @@
-//pragma PKGS: nongame
-'use strict';
-var CONFIG = require('app/common/config');
-var RSX = require('app/data/resources');
-var audio_engine = require('app/audio/audio_engine');
-var SDK = require('app/sdk');
-var Scene = require('app/view/Scene');
-var Analytics = require('app/common/analytics');
-var Animations = require("app/ui/views/animations");
-var ProgressionManager = require("app/ui/managers/progression_manager");
-var SlidingPanelSelectCompositeView = require('./sliding_panel_select');
-var ChallengeSelectCompositeView = require('./challenge_select');
-var ChallengeCategorySelectTmpl = require('app/ui/templates/composite/challenge_category_select.hbs');
-var UtilsEnv = require('app/common/utils/utils_env');
-var PlayLayer = require('app/view/layers/pregame/PlayLayer');
+// pragma PKGS: nongame
 
-var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.extend({
+const CONFIG = require('app/common/config');
+const RSX = require('app/data/resources');
+const audio_engine = require('app/audio/audio_engine');
+const SDK = require('app/sdk');
+const Scene = require('app/view/Scene');
+const Analytics = require('app/common/analytics');
+const Animations = require('app/ui/views/animations');
+const ProgressionManager = require('app/ui/managers/progression_manager');
+const ChallengeCategorySelectTmpl = require('app/ui/templates/composite/challenge_category_select.hbs');
+const UtilsEnv = require('app/common/utils/utils_env');
+const PlayLayer = require('app/view/layers/pregame/PlayLayer');
+const ChallengeSelectCompositeView = require('./challenge_select');
+const SlidingPanelSelectCompositeView = require('./sliding_panel_select');
 
-  className: "sliding-panel-select challenge-category-select",
+const ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.extend({
+
+  className: 'sliding-panel-select challenge-category-select',
 
   template: ChallengeCategorySelectTmpl,
 
   childView: ChallengeSelectCompositeView,
-  childViewOptions: function(model, index) {
+  childViewOptions(model, index) {
     // each child view should have a collection as it is a composite view
-    return {collection: new Backbone.Collection()}
+    return { collection: new Backbone.Collection() };
   },
 
   animateIn: Animations.fadeIn,
@@ -35,41 +35,41 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
 
   /* region INITIALIZE */
 
-  initialize: function() {
+  initialize() {
     SlidingPanelSelectCompositeView.prototype.initialize.apply(this, arguments);
 
     // build models for each category
-    var challengeCategories = SDK.ChallengeFactory.getAllChallengeCategories();
+    let challengeCategories = SDK.ChallengeFactory.getAllChallengeCategories();
     if (UtilsEnv.getIsInProduction()) {
-      challengeCategories = _.without(challengeCategories,SDK.ChallengeCategory.tutorial); // remove tutorial
+      challengeCategories = _.without(challengeCategories, SDK.ChallengeCategory.tutorial); // remove tutorial
     }
-    var categoryModels = [];
-    var hasAttemptedTutorial = ProgressionManager.getInstance().hasAttemptedChallengeCategory(SDK.ChallengeCategory.tutorial.type);
-    _.each(challengeCategories, function (challengeCategory) {
-      var challenges = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory.type);
+    const categoryModels = [];
+    const hasAttemptedTutorial = ProgressionManager.getInstance().hasAttemptedChallengeCategory(SDK.ChallengeCategory.tutorial.type);
+    _.each(challengeCategories, (challengeCategory) => {
+      const challenges = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory.type);
       if (challenges && challenges.length) {
-        var enabled = true;
-        var unlockMessage = "";
+        let enabled = true;
+        let unlockMessage = '';
 
         // check if not tutorial category and has not attempted full tutorial
         if (challengeCategory.type !== SDK.ChallengeCategory.tutorial.type && !hasAttemptedTutorial) {
-          unlockMessage += "Complete the Tutorial Gate";
+          unlockMessage += 'Complete the Tutorial Gate';
           enabled = false;
         }
 
         // check if player has played enough games to unlock
-        var gameCount = ProgressionManager.getInstance().getGameCount();
-        var gameCountRequired = challengeCategory.gamesRequiredToUnlock;
+        const gameCount = ProgressionManager.getInstance().getGameCount();
+        const gameCountRequired = challengeCategory.gamesRequiredToUnlock;
         if (gameCountRequired != null && gameCountRequired > 0 && gameCount < gameCountRequired) {
-          var gamesNeeded = gameCountRequired - gameCount;
-          unlockMessage += (unlockMessage.length === 0 ? "" : " and ") + "Play " + gamesNeeded + " more online matches to unlock";
+          const gamesNeeded = gameCountRequired - gameCount;
+          unlockMessage += `${unlockMessage.length === 0 ? '' : ' and '}Play ${gamesNeeded} more online matches to unlock`;
           enabled = false;
         }
 
         // check user attempt and completion progress
-        var numChallengesAttempted = 0;
-        var numChallengesCompleted = 0;
-        _.each(challenges, function (challenge) {
+        let numChallengesAttempted = 0;
+        let numChallengesCompleted = 0;
+        _.each(challenges, (challenge) => {
           if (ProgressionManager.getInstance().hasAttemptedChallengeOfType(challenge.type)) {
             numChallengesAttempted++;
           }
@@ -79,12 +79,12 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
         });
 
         // create model for category
-        var categoryModel = new Backbone.Model(_.extend({}, challengeCategory, {
-          challenges: challenges,
-          numChallengesAttempted: numChallengesAttempted,
-          numChallengesCompleted: numChallengesCompleted,
-          enabled: enabled,
-          unlockMessage: unlockMessage + "."
+        const categoryModel = new Backbone.Model(_.extend({}, challengeCategory, {
+          challenges,
+          numChallengesAttempted,
+          numChallengesCompleted,
+          enabled,
+          unlockMessage: `${unlockMessage}.`,
         }));
         categoryModels.push(categoryModel);
       }
@@ -98,11 +98,11 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
 
   /* region EVENTS */
 
-  onShow: function () {
+  onShow() {
     SlidingPanelSelectCompositeView.prototype.onShow.call(this);
 
     // analytics call
-    Analytics.page("Select Tutorial Category",{ path: "/#tutorial_category_selection" });
+    Analytics.page('Select Tutorial Category', { path: '/#tutorial_category_selection' });
 
     // show play layer
     Scene.getInstance().showContentByClass(PlayLayer, true);
@@ -115,15 +115,15 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
 
   /* region SELECT */
 
-  setSelectedChildView: function () {
+  setSelectedChildView() {
     // get last selected
-    var selectedChildViewPrev = this.getSelectedChildView();
+    const selectedChildViewPrev = this.getSelectedChildView();
 
     // make selection
     SlidingPanelSelectCompositeView.prototype.setSelectedChildView.apply(this, arguments);
 
     // get new selected
-    var selectedChildView = this.getSelectedChildView();
+    const selectedChildView = this.getSelectedChildView();
 
     // reset last
     if (selectedChildViewPrev != null) {
@@ -138,7 +138,7 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
       // play audio
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_challenge_category_select.audio, CONFIG.SELECT_SFX_PRIORITY);
     }
-  }
+  },
 
   /* endregion SELECT */
 

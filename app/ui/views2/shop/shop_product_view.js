@@ -1,34 +1,34 @@
-//pragma PKGS: shop
-'use strict'
-var _ = require('underscore')
-var moment = require('moment')
-var SDK = require('app/sdk')
-var CONFIG = require('app/common/config')
-var UtilsJavascript = require('app/common/utils/utils_javascript')
-var RSX = require('app/data/resources')
-var PackageManager = require('app/ui/managers/package_manager')
-var GameDataManager = require('app/ui/managers/game_data_manager')
-var InventoryManager = require('app/ui/managers/inventory_manager')
-var ShopManager = require('app/ui/managers/shop_manager')
-var UtilsUI = require('app/common/utils/utils_ui')
+// pragma PKGS: shop
 
-var Template = require('./templates/shop_product_view.hbs')
+const _ = require('underscore');
+const moment = require('moment');
+const SDK = require('app/sdk');
+const CONFIG = require('app/common/config');
+const UtilsJavascript = require('app/common/utils/utils_javascript');
+const RSX = require('app/data/resources');
+const PackageManager = require('app/ui/managers/package_manager');
+const GameDataManager = require('app/ui/managers/game_data_manager');
+const InventoryManager = require('app/ui/managers/inventory_manager');
+const ShopManager = require('app/ui/managers/shop_manager');
+const UtilsUI = require('app/common/utils/utils_ui');
 
-var ShopProductItemView = Backbone.Marionette.ItemView.extend({
+const Template = require('./templates/shop_product_view.hbs');
 
-  tagName: "li",
-  className: "shop-product-item",
+const ShopProductItemView = Backbone.Marionette.ItemView.extend({
+
+  tagName: 'li',
+  className: 'shop-product-item',
   template: Template,
 
   ui: {
-    "product_item_container":".product-item-container",
-    "product_icon":".product-icon",
-    "product_animation":".product-animation",
-    "product_animation_sprite":".product-animation .sprite"
+    product_item_container: '.product-item-container',
+    product_icon: '.product-icon',
+    product_animation: '.product-animation',
+    product_animation_sprite: '.product-animation .sprite',
   },
 
   events: {
-    "click .product-item-container": "onProductSelected"
+    'click .product-item-container': 'onProductSelected',
   },
 
   _animationGLData: null,
@@ -37,29 +37,29 @@ var ShopProductItemView = Backbone.Marionette.ItemView.extend({
   _loadedPkgPromise: null,
   _loadedPkgValid: false,
 
-  serializeModel: function(model){
-    var data =  model.toJSON.apply(model, _.rest(arguments))
+  serializeModel(model) {
+    let data = model.toJSON.apply(model, _.rest(arguments));
     data.spirit_cost = data.rarity_id ? SDK.RarityFactory.rarityForIdentifier(data.rarity_id).spiritCostCosmetic : 0;
-    var saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(data.sku)
+    const saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(data.sku);
 
     // From here on, the sale information should operate only on passed through information, otherwise sales could expire mid flow
     if (saleModel != null) {
-      data = _.extend(data,saleModel.attributes);
+      data = _.extend(data, saleModel.attributes);
 
-      data.price = saleModel.get("sale_price")
+      data.price = saleModel.get('sale_price');
     }
-    return data
+    return data;
   },
 
-  onRender: function() {
+  onRender() {
     this.bindProductImage();
-    if (this.model.get("is_purchased") || this.isBundlePurchased()) {
-      this.$el.addClass("purchased")
+    if (this.model.get('is_purchased') || this.isBundlePurchased()) {
+      this.$el.addClass('purchased');
     }
   },
 
-  bindProductImage: function () {
-    var productCategoryId = this.model.get("category_id") || "";
+  bindProductImage() {
+    const productCategoryId = this.model.get('category_id') || '';
     this.ui.product_item_container.addClass(productCategoryId);
 
     this._releaseAnimation();
@@ -85,33 +85,33 @@ var ShopProductItemView = Backbone.Marionette.ItemView.extend({
       }.bind(this));
     } else {
     */
-    var iconImageResource = RSX[this.model.get("icon_image_resource_name")];
-    var iconImageUrl;
+    const iconImageResource = RSX[this.model.get('icon_image_resource_name')];
+    let iconImageUrl;
     if (iconImageResource != null) {
       iconImageUrl = iconImageResource.is16Bit ? iconImageResource.img : RSX.getResourcePathForScale(iconImageResource.img, CONFIG.resourceScaleCSS);
     } else {
-      iconImageUrl = RSX.getResourcePathForScale(this.model.get("icon_image_url") , CONFIG.resourceScaleCSS);
+      iconImageUrl = RSX.getResourcePathForScale(this.model.get('icon_image_url'), CONFIG.resourceScaleCSS);
     }
     this.$el.show();
     this.ui.product_animation.hide();
-    this.ui.product_icon.show().attr("src",iconImageUrl);
-    //}
+    this.ui.product_icon.show().attr('src', iconImageUrl);
+    // }
   },
 
-  onShow: function(){
-    var index = this.$el.index();
-    var delay = (index + (0.5 - Math.random()) * 2.0) / 10;
-    this.$el.css("animation-delay",delay+"s");
+  onShow() {
+    const index = this.$el.index();
+    const delay = (index + (0.5 - Math.random()) * 2.0) / 10;
+    this.$el.css('animation-delay', `${delay}s`);
 
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add",this.onCosmeticAddedToCollection);
+    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add', this.onCosmeticAddedToCollection);
   },
 
-  onDestroy: function () {
+  onDestroy() {
     this._invalidateAndUnloadLoadedPackages();
     this._releaseAnimation();
   },
 
-  _invalidateAndUnloadLoadedPackages: function () {
+  _invalidateAndUnloadLoadedPackages() {
     if (this._loadedPkgId != null) {
       this._loadedPkgValid = false;
       PackageManager.getInstance().unloadMajorMinorPackage(this._loadedPkgId);
@@ -119,50 +119,47 @@ var ShopProductItemView = Backbone.Marionette.ItemView.extend({
     }
   },
 
-  _releaseAnimation: function () {
+  _releaseAnimation() {
     if (this._animationGLData != null) {
       UtilsUI.resetCocosSprite(this._animationGLData);
       this._animationGLData = this._animationSpriteData = null;
     }
   },
 
-  onCosmeticAddedToCollection: function(cosmeticModel) {
+  onCosmeticAddedToCollection(cosmeticModel) {
     // if this product represents a single item that has just been added or the bundle isBundlePurchased method resolves true
-    if (cosmeticModel.get("cosmetic_id") === this.model.get("id") || this.isBundlePurchased()) {
-      this.model.set("is_purchased",true)
-      this.$el.addClass("purchased")
+    if (cosmeticModel.get('cosmetic_id') === this.model.get('id') || this.isBundlePurchased()) {
+      this.model.set('is_purchased', true);
+      this.$el.addClass('purchased');
     }
   },
 
-  isBundlePurchased: function() {
-    if (this.model.get("type") === "cosmetics_bundle") {
-      var cosmeticsInBundle = this.model.get("bundle_cosmetic_ids")
-      return _.reduce(cosmeticsInBundle,function(memo,bundleCosmeticId){
-        return memo && InventoryManager.getInstance().getCosmeticsCollection().find(function(c){ return c.get("cosmetic_id") === bundleCosmeticId })
-      },true)
-    } else {
-      return false
+  isBundlePurchased() {
+    if (this.model.get('type') === 'cosmetics_bundle') {
+      const cosmeticsInBundle = this.model.get('bundle_cosmetic_ids');
+      return _.reduce(cosmeticsInBundle, (memo, bundleCosmeticId) => memo && InventoryManager.getInstance().getCosmeticsCollection().find((c) => c.get('cosmetic_id') === bundleCosmeticId), true);
     }
+    return false;
   },
 
-  onProductSelected: function(e) {
-    var saleData = {}
-    var saleId = $(e.currentTarget).data("sale-id");
-    var salePriceStr = $(e.currentTarget).data("sale-price");
+  onProductSelected(e) {
+    const saleData = {};
+    const saleId = $(e.currentTarget).data('sale-id');
+    const salePriceStr = $(e.currentTarget).data('sale-price');
 
-    if (saleId != null && saleId != "") {
+    if (saleId != null && saleId != '') {
       saleData.saleId = saleId;
     }
-    if (salePriceStr != null && salePriceStr != "" && !_.isNaN(parseInt(salePriceStr))) {
+    if (salePriceStr != null && salePriceStr != '' && !_.isNaN(parseInt(salePriceStr))) {
       saleData.salePrice = parseInt(salePriceStr);
     }
     // var gold = parseInt($el.data("gold"));
 
-    if (!this.model.get("is_purchased") && !this.isBundlePurchased()) {
-      this.trigger("select_product",saleData);
+    if (!this.model.get('is_purchased') && !this.isBundlePurchased()) {
+      this.trigger('select_product', saleData);
     }
-  }
+  },
 
-})
+});
 
-module.exports = ShopProductItemView
+module.exports = ShopProductItemView;
