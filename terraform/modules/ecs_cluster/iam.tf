@@ -61,6 +61,7 @@ EOF
 
 # Create a policy for ECS tasks.
 resource "aws_iam_policy" "task_policy" {
+  name   = "ECSTask"
   policy = <<EOF
 {
   "Version": "2012-10-17",
