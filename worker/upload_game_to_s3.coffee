@@ -12,15 +12,16 @@ env = config.get('env')
 awsRegion = config.get('aws.region')
 replaysBucket = config.get('aws.replaysBucketName')
 
-s3Client = new S3Client({
-	region: awsRegion
+if env == 'development'
+	s3Opts =
+		region: awsRegion
+		accessKeyId: config.get('aws.accessKey')
+		secretAccessKey: config.get('aws.secretKey')
+else
+	s3Opts =
+		region: awsRegion
 
-	# These credentials are only used in development.
-	# In AWS, the task policy has s3:PutObject + s3:PutObjectAcl permissions.
-	#accessKey: config.get('aws.accessKey'),
-	#secretKey: config.get('aws.secretKey'),
-})
-
+s3Client = new S3Client(s3Opts)
 Logger.module("REPLAYS").log "Created S3 client with Region #{awsRegion} and Bucket #{replaysBucket}"
 
 Promise.promisifyAll(zlib)
