@@ -15,7 +15,7 @@ module "replays_bucket" {
 module "replays_iam_user" {
   source          = "../modules/iam_user"
   name            = "replay-uploader"
-  allowed_actions = "s3:PutObject"
+  allowed_actions = ["s3:PutObject", "s3:PutObjectAcl"]
 }
 
 module "cloudfront_cdn" {

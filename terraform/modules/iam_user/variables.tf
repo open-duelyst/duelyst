@@ -4,8 +4,8 @@ variable "name" {
 }
 
 variable "allowed_actions" {
-  type        = string
-  description = "Comma-separated list of permissions."
+  type        = list(string)
+  description = "List of IAM actions allowed for the user."
 }
 
 variable "allowed_resource" {

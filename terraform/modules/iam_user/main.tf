@@ -12,9 +12,7 @@ resource "aws_iam_user_policy" "policy" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": [
-        "${var.allowed_actions}"
-      ],
+      "Action": ${jsonencode(var.allowed_actions)},
       "Effect": "Allow",
       "Resource": "${var.allowed_resource}"
     }
