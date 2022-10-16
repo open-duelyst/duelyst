@@ -78,13 +78,13 @@ function getPublisher() {
     throw new Error('S3_ASSETS_BUCKET must be set');
   }
   return awspublish.create({
-    region: config.get('assetsBucket.region'),
+    region: config.get('aws.region'),
     params: {
-      Bucket: config.get('assetsBucket.name'),
+      Bucket: config.get('aws.assetsBucketName'),
     },
     credentials: {
-      accessKeyId: config.get('assetsBucket.accessKey'),
-      secretAccessKey: config.get('assetsBucket.secretKey'),
+      accessKeyId: config.get('aws.accessKey'),
+      secretAccessKey: config.get('aws.secretKey'),
       signatureVersion: 'v3',
     },
   });

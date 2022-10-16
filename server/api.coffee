@@ -17,7 +17,7 @@ server = require('http').createServer(app)
 # Configuration object
 config = require '../config/config.js'
 env = config.get('env')
-cdnDomain = config.get('assetsBucket.domainName')
+cdnDomain = config.get('aws.cdnDomainName')
 cdnUrl = "https://#{cdnDomain}/#{env}"
 apiPort = config.get('port')
 

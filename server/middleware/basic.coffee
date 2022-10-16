@@ -21,7 +21,7 @@ else
 	parser = bodyParser.json()
 
 # Enable CORS to CDN in staging/production.
-cdnDomain = config.get('assetsBucket.domainName')
+cdnDomain = config.get('aws.cdnDomainName')
 if cdnDomain && !config.isDevelopment()
 	# Same-Origin requests are already allowed; add CDN origin as well.
 	corsOptions = {origin: "https://#{cdnDomain}"}
