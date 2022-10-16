@@ -1,6 +1,3 @@
-# WIP
-app/tools
-
 # .gitignored files and code which imports them
 app/data/packages.js
 gulp/rsx.js
