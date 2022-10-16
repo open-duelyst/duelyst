@@ -3,7 +3,7 @@ module "ecs_cluster" {
   name           = "duelyst-staging"
   ssh_public_key = var.ssh_public_key
 
-  # Increase capacity by 1 to allow graceful deployments without stopping live containers.
+  # Set capacity to 3 to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
   min_spot_capacity = 2
