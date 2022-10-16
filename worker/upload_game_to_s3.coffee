@@ -1,11 +1,12 @@
-url 		= require 'url'
-_ 			= require "underscore"
-#AWS 		= require "aws-sdk"
-Promise 	= require "bluebird"
-Logger 		= require '../app/common/logger.coffee'
-config 		= require '../config/config.js'
-colors		= require 'colors'
-zlib 		= require 'zlib'
+#AWS = require "aws-sdk"
+Promise = require "bluebird"
+_ = require "underscore"
+colors = require 'colors'
+url = require 'url'
+zlib = require 'zlib'
+
+Logger = require '../app/common/logger.coffee'
+config = require '../config/config.js'
 
 #AWS.config.update
 #  accessKeyId: config.get("s3_archive.key")
@@ -13,8 +14,6 @@ zlib 		= require 'zlib'
 
 # create a S3 API client
 #s3 = new AWS.S3()
-
-env = config.get("env")
 
 # promisifyAll
 # Promise.promisifyAll(s3)
@@ -28,7 +27,7 @@ upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
 	# Logger.module("S3").debug "uploading game #{gameId} to S3"
 
 	# bucket = config.get("s3_archive.bucket")
-	# env = env
+	# env = config.get('env')
 	# filename = env + "/" + gameId + ".json"
 	# url = "https://s3-us-west-1.amazonaws.com/" + bucket + "/" + filename
 
