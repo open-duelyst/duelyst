@@ -11,31 +11,31 @@ var NotificationTmpl = require('app/ui/templates/item/notification.hbs');
 
 var NotificationItemView = Backbone.Marionette.ItemView.extend({
 
-	className: "notification",
+  className: "notification",
 
-	template: NotificationTmpl,
+  template: NotificationTmpl,
 
-	ui: {},
+  ui: {},
 
-	events: {
-		"click .dismiss": "onDismiss",
-		"click .cta-button": "onAcceptCTA"
-	},
+  events: {
+    "click .dismiss": "onDismiss",
+    "click .cta-button": "onAcceptCTA"
+  },
 
-	onShow: function() {
-		// play notification sound
-		if (this.model.get("audio")) {
-			audio_engine.current().play_effect(this.model.get("audio"), false);
-		}
-	},
+  onShow: function() {
+    // play notification sound
+    if (this.model.get("audio")) {
+      audio_engine.current().play_effect(this.model.get("audio"), false);
+    }
+  },
 
-	onDismiss: function() {
-		NotificationsManager.getInstance().dismissNotification(this.model);
-	},
+  onDismiss: function() {
+    NotificationsManager.getInstance().dismissNotification(this.model);
+  },
 
-	onAcceptCTA: function() {
-		NotificationsManager.getInstance().acceptCTAForNotification(this.model);
-	}
+  onAcceptCTA: function() {
+    NotificationsManager.getInstance().acceptCTAForNotification(this.model);
+  }
 
 });
 

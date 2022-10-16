@@ -8,11 +8,11 @@ var QuestNotificationItemTmpl = require('app/ui/templates/item/quest_notificatio
 var QuestNotificationItemView = NotificationItemView.extend({
 
 
-	className: "notification quest-notification",
-	template: QuestNotificationItemTmpl,
+  className: "notification quest-notification",
+  template: QuestNotificationItemTmpl,
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut
 
 });
 

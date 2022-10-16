@@ -11,24 +11,24 @@ var CodexChapterSelectTmpl = require('./templates/codex_chapter_select.hbs');
 
 var CodexChapterSelectCompositeView = SlidingPanelSelectCompositeView.extend({
 
-	className: "sliding-panel-select codex-chapter-select",
+  className: "sliding-panel-select codex-chapter-select",
 
-	template: CodexChapterSelectTmpl,
+  template: CodexChapterSelectTmpl,
 
-	childView: CodexChapterPreviewItemView,
+  childView: CodexChapterPreviewItemView,
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	slidingPanelsStack: false,
+  slidingPanelsStack: false,
 
-	setSelectedChildView: function () {
-		// make selection
-		SlidingPanelSelectCompositeView.prototype.setSelectedChildView.apply(this, arguments);
+  setSelectedChildView: function () {
+    // make selection
+    SlidingPanelSelectCompositeView.prototype.setSelectedChildView.apply(this, arguments);
 
-		// play audio
-		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
-	}
+    // play audio
+    audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
+  }
 
 });
 

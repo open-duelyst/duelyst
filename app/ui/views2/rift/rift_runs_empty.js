@@ -4,13 +4,13 @@ var Templ = require('./templates/rift_runs_empty.hbs')
 
 var RiftRunsEmpty = Backbone.Marionette.ItemView.extend({
 
-	tagName: "li",
-	template: Templ,
-	ui: {
-	},
+  tagName: "li",
+  template: Templ,
+  ui: {
+  },
 
-	onShow: function() {
-	}
+  onShow: function() {
+  }
 
 });
 

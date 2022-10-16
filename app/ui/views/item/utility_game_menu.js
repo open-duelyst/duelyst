@@ -13,33 +13,33 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
  */
 var UtilityGameMenuItemView = UtilityMenuItemView.extend({
 
-	id: "app-utility-game-menu",
+  id: "app-utility-game-menu",
 
-	template: UtilityGameMenuTmpl,
+  template: UtilityGameMenuTmpl,
 
-	events: {
-		"click button.menu"  : "toggleGameMenu"
-	},
+  events: {
+    "click button.menu"  : "toggleGameMenu"
+  },
 
-	/* region LAYOUT */
+  /* region LAYOUT */
 
-	onResize: function () {
-		var endPosition = UtilsEngine.getCardsInHandEndPositionForCSS();
-		this.$el.css(
-			"transform",
-			"translate(" + (endPosition.x - 40.0) / 10.0 + "rem, " + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.54) / 10.0 + "rem)"
-		);
-	},
+  onResize: function () {
+    var endPosition = UtilsEngine.getCardsInHandEndPositionForCSS();
+    this.$el.css(
+      "transform",
+      "translate(" + (endPosition.x - 40.0) / 10.0 + "rem, " + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.54) / 10.0 + "rem)"
+    );
+  },
 
-	/* endregion LAYOUT */
+  /* endregion LAYOUT */
 
-	toggleGameMenu: function() {
-		NavigationManager.getInstance().toggleModalViewByClass(GameMenuItemView);
-	}
+  toggleGameMenu: function() {
+    NavigationManager.getInstance().toggleModalViewByClass(GameMenuItemView);
+  }
 
-	/* region MARIONETTE EVENTS */
+  /* region MARIONETTE EVENTS */
 
-	/* endregion MARIONETTE EVENTS */
+  /* endregion MARIONETTE EVENTS */
 
 });
 

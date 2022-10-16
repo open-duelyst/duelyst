@@ -9,47 +9,47 @@ var DeckCardsTmpl = require('./templates/deck_cards.hbs');
 
 var DeckCardsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-	className: "deck-cards",
-	childView: DeckCardCompositeView,
-	childViewContainer: ".cards",
+  className: "deck-cards",
+  childView: DeckCardCompositeView,
+  childViewContainer: ".cards",
 
-	template: DeckCardsTmpl,
+  template: DeckCardsTmpl,
 
-	/* ui selector cache */
-	ui: {
-		"$cardsList": ".cards-list"
-	},
+  /* ui selector cache */
+  ui: {
+    "$cardsList": ".cards-list"
+  },
 
-	/* BACKBONE Events */
+  /* BACKBONE Events */
 
-	onRender: function() {
-		this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
-	},
+  onRender: function() {
+    this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
+  },
 
-	onAddChild: function(){
-		this.onResize();
-	},
+  onAddChild: function(){
+    this.onResize();
+  },
 
-	onRemoveChild: function(){
-		this.onResize();
-	},
+  onRemoveChild: function(){
+    this.onResize();
+  },
 
-	onShow: function() {
-		this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
-		this.onResize();
-	},
+  onShow: function() {
+    this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
+    this.onResize();
+  },
 
-	onResize: function () {
-		UtilsUI.overlayScrollbars(this.$el);
-	},
+  onResize: function () {
+    UtilsUI.overlayScrollbars(this.$el);
+  },
 
-	onDestroy: function () {
-		this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-	},
+  onDestroy: function () {
+    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+  },
 
-	onBeforeRender: function () {
-		this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-	}
+  onBeforeRender: function () {
+    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+  }
 });
 
 // Expose the class either via CommonJS or the global object

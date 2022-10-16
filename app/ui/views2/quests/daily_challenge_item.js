@@ -11,55 +11,55 @@ var EVENTS = require('app/common/event_types');
 
 var DailyChallengeItemView = Backbone.Marionette.ItemView.extend({
 
-	tagName: "li",
-	className: "quest daily-challenge",
+  tagName: "li",
+  className: "quest daily-challenge",
 
-	template: Template,
+  template: Template,
 
-	ui: {
-		"$outlinePath": ".path",
-		"$frameImage": ".frame-image",
-		"$questContent": ".quest-content"
-	},
+  ui: {
+    "$outlinePath": ".path",
+    "$frameImage": ".frame-image",
+    "$questContent": ".quest-content"
+  },
 
-	events: {
-		"click button.play-challenge": "onPlayPressed"
-	},
+  events: {
+    "click button.play-challenge": "onPlayPressed"
+  },
 
-	serializeModel: function(model){
+  serializeModel: function(model){
 
-		var data =  model.toJSON.apply(model, _.rest(arguments));
+    var data =  model.toJSON.apply(model, _.rest(arguments));
 
-		if (data) {
-			data.is_rewardable = QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'));
-			if (data.is_rewardable) {
-				data.progress = 0;
-			} else {
-				data.progress = 1;
-			}
+    if (data) {
+      data.is_rewardable = QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'));
+      if (data.is_rewardable) {
+        data.progress = 0;
+      } else {
+        data.progress = 1;
+      }
 
-		}
+    }
 
-		return data;
+    return data;
 
-	},
+  },
 
-	onShow: function() {
-		// model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
-		this.listenTo(this.model,"change",this.render);
-		if (QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'))) {
-			this.$el.addClass("animateInShake")
-		} else {
-			this.$el.addClass("animateIn")
-		}
-	},
+  onShow: function() {
+    // model changes do not auto render unless we listen for changes and listeners should only be added onShow to prevent zombie views
+    this.listenTo(this.model,"change",this.render);
+    if (QuestsManager.getInstance().getDailyChallengesLastCompletedAtMoment().isBefore(moment.utc().startOf('day'))) {
+      this.$el.addClass("animateInShake")
+    } else {
+      this.$el.addClass("animateIn")
+    }
+  },
 
-	onPlayPressed: function() {
-		SDK.ChallengeRemote.loadAndCreateFromModelData(this.model.attributes).then(function(challenge){
-			//App._startGameWithChallenge(challenge)
-			EventBus.getInstance().trigger(EVENTS.start_challenge, challenge);
-		})
-	}
+  onPlayPressed: function() {
+    SDK.ChallengeRemote.loadAndCreateFromModelData(this.model.attributes).then(function(challenge){
+      //App._startGameWithChallenge(challenge)
+      EventBus.getInstance().trigger(EVENTS.start_challenge, challenge);
+    })
+  }
 
 });
 

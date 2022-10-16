@@ -9,20 +9,20 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
 
 var LoadingDialogItemView = Backbone.Marionette.ItemView.extend({
 
-	id: "app-loading-dialog",
-	className: "dialog",
+  id: "app-loading-dialog",
+  className: "dialog",
 
-	template: LoadingDialogViewTempl,
+  template: LoadingDialogViewTempl,
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	initialize: function() {
-		this.model = new Backbone.Model({
-			tip: this.options.tip || GAME_TIPS.random_tip(),
-			background: this.options.background
-		});
-	}
+  initialize: function() {
+    this.model = new Backbone.Model({
+      tip: this.options.tip || GAME_TIPS.random_tip(),
+      background: this.options.background
+    });
+  }
 
 });
 

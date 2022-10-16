@@ -13,17 +13,17 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
  */
 var UtilityLoadingLoginMenuItemView = UtilityMenuItemView.extend({
 
-	id: "app-utility-desktop-menu",
+  id: "app-utility-desktop-menu",
 
-	template: UtilityLoadingLoginMenuTmpl,
+  template: UtilityLoadingLoginMenuTmpl,
 
-	events: {
-		"click button.menu"  : "toggleEscMainMenu"
-	},
+  events: {
+    "click button.menu"  : "toggleEscMainMenu"
+  },
 
-	toggleEscMainMenu: function() {
-		NavigationManager.getInstance().toggleModalViewByClass(EscMainMenuItemView);
-	}
+  toggleEscMainMenu: function() {
+    NavigationManager.getInstance().toggleModalViewByClass(EscMainMenuItemView);
+  }
 
 });
 

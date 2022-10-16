@@ -8,25 +8,25 @@ var openUrl = require('app/common/openUrl');
 
 var AnnouncementModalView = Backbone.Marionette.ItemView.extend({
 
-	id: "app-announcement-modal",
-	className: "modal duelyst-modal announcement",
-	template: Templ,
+  id: "app-announcement-modal",
+  className: "modal duelyst-modal announcement",
+  template: Templ,
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	onDestroy: function() {
-		var itemId = this.model.get("id") || this.model.firebase.key();
-		NewsManager.getInstance().markNewsItemAsRead(itemId);
-	},
+  onDestroy: function() {
+    var itemId = this.model.get("id") || this.model.firebase.key();
+    NewsManager.getInstance().markNewsItemAsRead(itemId);
+  },
 
-	onShow: function() {
-		this.$el.find(".modal-body").find("a").click(function(e){
-			openUrl($(e.currentTarget).attr("href"))
-			e.stopPropagation()
-			e.preventDefault()
-		})
-	}
+  onShow: function() {
+    this.$el.find(".modal-body").find("a").click(function(e){
+      openUrl($(e.currentTarget).attr("href"))
+      e.stopPropagation()
+      e.preventDefault()
+    })
+  }
 
 });
 

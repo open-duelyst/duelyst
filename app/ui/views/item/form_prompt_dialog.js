@@ -11,44 +11,44 @@ var FormPromptModalItemView = require('./form_prompt_modal');
  */
 var FormPromptDialogItemView = FormPromptModalItemView.extend({
 
-	onShow: function() {
-		FormPromptModalItemView.prototype.onShow.apply(this, arguments);
+  onShow: function() {
+    FormPromptModalItemView.prototype.onShow.apply(this, arguments);
 
-		// because this is a dialog and dialogs lock user triggered actions
-		// we can't listen to user triggered actions
-		this.stopListening(NavigationManager.getInstance(), EVENTS.user_triggered_confirm, this.onClickSubmit);
+    // because this is a dialog and dialogs lock user triggered actions
+    // we can't listen to user triggered actions
+    this.stopListening(NavigationManager.getInstance(), EVENTS.user_triggered_confirm, this.onClickSubmit);
 
-		// listen to user attempted actions
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancel);
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onClickSubmit);
+    // listen to user attempted actions
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancel);
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onClickSubmit);
 
-		this.$el.find("input").first().focus();
-	},
+    this.$el.find("input").first().focus();
+  },
 
-	onCancel: function () {
-		if (!this.getSubmitting()) {
-			audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
-			NavigationManager.getInstance().destroyDialogView();
-		}
-	},
+  onCancel: function () {
+    if (!this.getSubmitting()) {
+      audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
+      NavigationManager.getInstance().destroyDialogView();
+    }
+  },
 
-	onSubmit: function () {
-		FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
+  onSubmit: function () {
+    FormPromptModalItemView.prototype.onSubmit.apply(this, arguments);
 
-		this.$el.find(".btn-user-cancel").hide();
-	},
+    this.$el.find(".btn-user-cancel").hide();
+  },
 
-	onSuccessComplete: function () {
-		FormPromptModalItemView.prototype.onSuccessComplete.apply(this, arguments);
+  onSuccessComplete: function () {
+    FormPromptModalItemView.prototype.onSuccessComplete.apply(this, arguments);
 
-		NavigationManager.getInstance().destroyDialogView();
-	},
+    NavigationManager.getInstance().destroyDialogView();
+  },
 
-	onErrorComplete: function () {
-		FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
+  onErrorComplete: function () {
+    FormPromptModalItemView.prototype.onErrorComplete.apply(this, arguments);
 
-		this.$el.find(".btn-user-cancel").show();
-	}
+    this.$el.find(".btn-user-cancel").show();
+  }
 
 });
 

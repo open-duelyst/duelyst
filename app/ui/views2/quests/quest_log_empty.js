@@ -6,10 +6,10 @@ var Logger = require('app/common/logger');
 
 var QuestLogEmptyView = Backbone.Marionette.ItemView.extend({
 
-	template: Templ,
+  template: Templ,
 
-	initialize: function() {
-	}
+  initialize: function() {
+  }
 
 });
 

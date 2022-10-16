@@ -9,7 +9,7 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
  */
 var UtilityMatchmakingMenuItemView = UtilityMenuItemView.extend({
 
-	id: "app-utility-matchmaking-menu"
+  id: "app-utility-matchmaking-menu"
 
 });
 

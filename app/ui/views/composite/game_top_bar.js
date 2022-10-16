@@ -5,11 +5,11 @@ var ProfileManager = require("app/ui/managers/profile_manager");
 
 var GameTopBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
-	id: "app-game-topbar",
-	template: GameTopBarTmpl,
+  id: "app-game-topbar",
+  template: GameTopBarTmpl,
 
-	onShow: function() {
-	}
+  onShow: function() {
+  }
 
 });
 

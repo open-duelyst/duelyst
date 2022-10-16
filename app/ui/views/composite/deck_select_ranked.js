@@ -11,37 +11,37 @@ var NewPlayerManager = require('app/ui/managers/new_player_manager');
 
 var DeckSelectRankedCompositeView = DeckSelectCompositeView.extend({
 
-	filterLegacy:false,
+  filterLegacy:false,
 
-	_showNewPlayerUI: function () {
-		DeckSelectCompositeView.prototype._showNewPlayerUI.call(this);
+  _showNewPlayerUI: function () {
+    DeckSelectCompositeView.prototype._showNewPlayerUI.call(this);
 
-		if (NewPlayerManager.getInstance().getEmphasizeStarterDecksTab()) {
-			var item = this.ui.$deckGroups.children('[data-value="starter"]');
-			item.popover({
-				content: "Find your starter decks here.",
-				container: this.$el,
-				placement: "bottom"
-			});
-			item.popover('show');
-		}
+    if (NewPlayerManager.getInstance().getEmphasizeStarterDecksTab()) {
+      var item = this.ui.$deckGroups.children('[data-value="starter"]');
+      item.popover({
+        content: "Find your starter decks here.",
+        container: this.$el,
+        placement: "bottom"
+      });
+      item.popover('show');
+    }
 
-		var newPlayerManager = NewPlayerManager.getInstance();
+    var newPlayerManager = NewPlayerManager.getInstance();
 
-		// This currently shouldn't be reached and be disabled, but good safety
-		if (!newPlayerManager.canPlayQuickMatch()) {
-			this.ui.$deckSelectConfirmCasual.addClass("disabled");
-		} else {
-			this.ui.$deckSelectConfirmCasual.removeClass("disabled");
-		}
+    // This currently shouldn't be reached and be disabled, but good safety
+    if (!newPlayerManager.canPlayQuickMatch()) {
+      this.ui.$deckSelectConfirmCasual.addClass("disabled");
+    } else {
+      this.ui.$deckSelectConfirmCasual.removeClass("disabled");
+    }
 
-		if (!newPlayerManager.canPlayRanked()) {
-			// TODO: This needs to also grey out the button
-			this.ui.$deckSelectConfirm.addClass("disabled");
-		} else {
-			this.ui.$deckSelectConfirm.removeClass("disabled");
-		}
-	}
+    if (!newPlayerManager.canPlayRanked()) {
+      // TODO: This needs to also grey out the button
+      this.ui.$deckSelectConfirm.addClass("disabled");
+    } else {
+      this.ui.$deckSelectConfirm.removeClass("disabled");
+    }
+  }
 
 });
 

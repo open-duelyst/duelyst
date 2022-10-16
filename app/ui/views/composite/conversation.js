@@ -12,86 +12,86 @@ var ErrorDialogItemView = require('app/ui/views/item/error_dialog')
 
 var ConversationCompositeView = Backbone.Marionette.CompositeView.extend({
 
-	_scrollTop: 0,
+  _scrollTop: 0,
 
-	className: "conversation",
+  className: "conversation",
 
-	/* the item view which gets created */
-	childView: MessageView,
-	/* where are we appending the items views */
-	childViewContainer: ".messages-list",
+  /* the item view which gets created */
+  childView: MessageView,
+  /* where are we appending the items views */
+  childViewContainer: ".messages-list",
 
-	template: ConversationTemplate,
+  template: ConversationTemplate,
 
-	/* ui selector cache */
-	ui: {
-		"chatInput": ".chat-input",
-		"$messagesList": ".messages-list",
-		"$currentMessage": ".current-message"
-	},
+  /* ui selector cache */
+  ui: {
+    "chatInput": ".chat-input",
+    "$messagesList": ".messages-list",
+    "$currentMessage": ".current-message"
+  },
 
-	/* Ui events hash */
-	events: {
-		"keydown .chat-input": "onKeyPressed",
-		"click .send": "onSendCurrentMessage",
-		"click #share_replay": "onShareLastReplay"
-	},
+  /* Ui events hash */
+  events: {
+    "keydown .chat-input": "onKeyPressed",
+    "click .send": "onSendCurrentMessage",
+    "click #share_replay": "onShareLastReplay"
+  },
 
-	onAddChild: function() {
-		this._scrollToBottom();
-	},
+  onAddChild: function() {
+    this._scrollToBottom();
+  },
 
-	onBeforeRender: function() {
-		this._scrollTop = this.ui.$messagesList instanceof $ ? this.ui.$messagesList.scrollTop() : 0;
-	},
+  onBeforeRender: function() {
+    this._scrollTop = this.ui.$messagesList instanceof $ ? this.ui.$messagesList.scrollTop() : 0;
+  },
 
-	onRender: function() {
-		this.ui.$messagesList.scrollTop(this._scrollTop);
-		if (!ChatManager.getInstance().getConnected() || !ChatManager.getInstance().getBuddiesCollection().getIsBuddyOnlineById(this.model.get("userId"))) {
-			this.ui.$currentMessage.addClass("disabled");
-		}
-	},
+  onRender: function() {
+    this.ui.$messagesList.scrollTop(this._scrollTop);
+    if (!ChatManager.getInstance().getConnected() || !ChatManager.getInstance().getBuddiesCollection().getIsBuddyOnlineById(this.model.get("userId"))) {
+      this.ui.$currentMessage.addClass("disabled");
+    }
+  },
 
-	onShow: function() {
-		this._scrollToBottom();
-	},
+  onShow: function() {
+    this._scrollToBottom();
+  },
 
-	_scrollToBottom: function () {
-		this._scrollTop = this.ui.$messagesList.get(0).scrollHeight;
-		this.ui.$messagesList.scrollTop(this._scrollTop);
-	},
+  _scrollToBottom: function () {
+    this._scrollTop = this.ui.$messagesList.get(0).scrollHeight;
+    this.ui.$messagesList.scrollTop(this._scrollTop);
+  },
 
-	onKeyPressed: function(e) {
-		if(e.which === cc.KEY["enter"]) {
-			e.preventDefault();
-			this.onSendCurrentMessage();
-		}
-	},
+  onKeyPressed: function(e) {
+    if(e.which === cc.KEY["enter"]) {
+      e.preventDefault();
+      this.onSendCurrentMessage();
+    }
+  },
 
-	onSendCurrentMessage: function () {
-		var message = this.ui.chatInput.val();
+  onSendCurrentMessage: function () {
+    var message = this.ui.chatInput.val();
 
-		if (message) {
-			// clear chat input
-			this.ui.chatInput.val("");
+    if (message) {
+      // clear chat input
+      this.ui.chatInput.val("");
 
-			// send message
-			this.model.sendMessage(message);
-		}
-	},
+      // send message
+      this.model.sendMessage(message);
+    }
+  },
 
-	onShareLastReplay: function() {
-		var lastGame = GamesManager.getInstance().playerGames.last()
-		if (lastGame && lastGame.get("game_id") && lastGame.get("game_id")) {
-			var diff = semver.diff(process.env.VERSION, lastGame.get("game_version"))
-			if (!diff || (diff != "major" && diff != "minor")) {
-				var message = this.ui.chatInput.val()
-				this.model.sendReplay(lastGame.get("game_id"),lastGame.get("general_id"),message)
-			} else {
-				NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({title:'This game is too old to share :('}))
-			}
-		}
-	}
+  onShareLastReplay: function() {
+    var lastGame = GamesManager.getInstance().playerGames.last()
+    if (lastGame && lastGame.get("game_id") && lastGame.get("game_id")) {
+      var diff = semver.diff(process.env.VERSION, lastGame.get("game_version"))
+      if (!diff || (diff != "major" && diff != "minor")) {
+        var message = this.ui.chatInput.val()
+        this.model.sendReplay(lastGame.get("game_id"),lastGame.get("general_id"),message)
+      } else {
+        NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({title:'This game is too old to share :('}))
+      }
+    }
+  }
 
 });
 

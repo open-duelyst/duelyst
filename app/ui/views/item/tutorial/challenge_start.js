@@ -5,17 +5,17 @@ var TutorialChallengeStartTmpl = require('app/ui/templates/item/tutorial/challen
 
 var TutorialChallengeStartView = TutorialSupportView.extend({
 
-	id: "tutorial-challenge-start",
+  id: "tutorial-challenge-start",
 
-	template: TutorialChallengeStartTmpl,
+  template: TutorialChallengeStartTmpl,
 
-	events: {
-		"click .start": "onStartChallenge"
-	},
+  events: {
+    "click .start": "onStartChallenge"
+  },
 
-	onStartChallenge: function() {
-		this.trigger("start_challenge");
-	}
+  onStartChallenge: function() {
+    this.trigger("start_challenge");
+  }
 
 });
 

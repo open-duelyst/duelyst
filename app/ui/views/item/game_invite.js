@@ -12,42 +12,42 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
 
 var GameInviteItemView = Backbone.Marionette.ItemView.extend({
 
-	id: "app-game-invite",
-	className: "modal duelyst-modal",
+  id: "app-game-invite",
+  className: "modal duelyst-modal",
 
-	template: GameInviteViewTempl,
+  template: GameInviteViewTempl,
 
-	events: {
-		"click .cancel": "onCancel",
-		"click .cta-button": "onCTAAccept"
-	},
+  events: {
+    "click .cancel": "onCancel",
+    "click .cta-button": "onCTAAccept"
+  },
 
-	animateIn: Animations.fadeIn,
-	animateOut: Animations.fadeOut,
+  animateIn: Animations.fadeIn,
+  animateOut: Animations.fadeOut,
 
-	onShow: function () {
-		// listen to user triggered actions
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_triggered_cancel, this.onCancel);
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_triggered_confirm, this.onClickSubmit);
+  onShow: function () {
+    // listen to user triggered actions
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_triggered_cancel, this.onCancel);
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_triggered_confirm, this.onClickSubmit);
 
-		// listen to user attempted actions
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancel);
-		this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onClickSubmit);
+    // listen to user attempted actions
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_cancel, this.onCancel);
+    this.listenTo(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onClickSubmit);
 
-		// play notification sound
-		audio_engine.current().play_effect(RSX.sfx_ui_yourturn.audio, false);
-	},
+    // play notification sound
+    audio_engine.current().play_effect(RSX.sfx_ui_yourturn.audio, false);
+  },
 
-	onCancel: function () {
-		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
-		GamesManager.getInstance().cancelMatchmaking();
-		this.trigger("dismiss");
-	},
+  onCancel: function () {
+    audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
+    GamesManager.getInstance().cancelMatchmaking();
+    this.trigger("dismiss");
+  },
 
-	onCTAAccept: function () {
-		audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
-		this.trigger("cta_accept");
-	}
+  onCTAAccept: function () {
+    audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
+    this.trigger("cta_accept");
+  }
 
 });
 

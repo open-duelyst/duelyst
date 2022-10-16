@@ -5,9 +5,9 @@ var MainNotificationItemView = require('app/ui/views/item/main_notification');
 
 var MainNotificationsView = NotificationsCompositeView.extend({
 
-	id: "app-main-notifications",
+  id: "app-main-notifications",
 
-	childView: MainNotificationItemView
+  childView: MainNotificationItemView
 
 });
 
