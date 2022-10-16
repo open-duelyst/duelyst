@@ -2,7 +2,6 @@
 app/tools/
 app/ui/
 app/view/
-scripts/generate_packages.js
 
 # Ignore .gitignored files and code which imports them
 app/data/packages.js

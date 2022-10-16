@@ -69,6 +69,22 @@
       "rules": {"import/no-unresolved": ["warn"]}
     },
     {
+      "files": ["scripts/generate_packages.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "camelcase": ["warn"],
+        "eqeqeq": ["warn"],
+        "guard-for-in": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-useless-concat": ["warn"],
+        "no-var": ["warn"],
+        "prefer-regex-literals": ["warn"],
+        "radix": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
       "files": ["server/ai/**/*.js"],
       "rules": {
         "block-scoped-var": ["warn"],
