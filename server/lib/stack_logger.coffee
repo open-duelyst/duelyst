@@ -40,7 +40,7 @@ if config.get('env') != 'development'
 # - https://github.com/AriaMinaei/RenderKid/pull/30
 # - https://github.com/AriaMinaei/pretty-error/pull/68
 pe.appendStyle({
-  'pretty-error > trace > item > header': { display: 'none' },
+	'pretty-error > trace > item > header': { display: 'none' },
 })
 
 # Usage:
