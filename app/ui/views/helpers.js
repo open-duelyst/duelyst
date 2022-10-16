@@ -121,17 +121,17 @@ Handlebars.registerHelper('ifUTCDayPassedSince', function(valueIn, options) {
 });
 
 Handlebars.registerHelper('times', function(n, block) {
-    var accum = '';
-    for(var i = 0; i < n; ++i)
-        accum += block.fn(i);
-    return accum;
+  var accum = '';
+  for(var i = 0; i < n; ++i)
+    accum += block.fn(i);
+  return accum;
 });
 
 Handlebars.registerHelper('fromTo', function(n1,n2, block) {
-    var accum = '';
-    for(var i = n1; i < n2; ++i)
-        accum += block.fn(i);
-    return accum;
+  var accum = '';
+  for(var i = n1; i < n2; ++i)
+    accum += block.fn(i);
+  return accum;
 });
 
 //Handlebars.registerHelper('monthName',function(item) {
@@ -203,16 +203,16 @@ Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
 // Iterate over an object, setting 'key' and 'value' for each property in
 // the object.
 Handlebars.registerHelper("key_value", function(obj, hash) {
-    var buffer = "",
-        key;
+  var buffer = "",
+    key;
 
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) {
-            buffer += hash.fn({key: key, value: obj[key]});
-        }
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      buffer += hash.fn({key: key, value: obj[key]});
     }
+  }
 
-    return buffer;
+  return buffer;
 });
 
 Handlebars.registerHelper("markdown",function(markdownContent) {

@@ -178,21 +178,21 @@ var ProfileLayout = Backbone.Marionette.LayoutView.extend({
     if (this.selectedTabValue != null) {
       this.ui.$profileTabs.find("[data-value='" + this.selectedTabValue + "']").addClass("active");
       switch (this.selectedTabValue) {
-        case "summary":
-          this.showSummary();
-          break;
-        case "rank_history":
-          this.showRankHistory();
-          break;
-        case "match_history":
-          this.showMatchHistory();
-          break;
-        case "faction_levels":
-          this.showFactionLevels();
-          break;
-        case "rift_summary":
-          this.showRiftSummary();
-          break;
+      case "summary":
+        this.showSummary();
+        break;
+      case "rank_history":
+        this.showRankHistory();
+        break;
+      case "match_history":
+        this.showMatchHistory();
+        break;
+      case "faction_levels":
+        this.showFactionLevels();
+        break;
+      case "rift_summary":
+        this.showRiftSummary();
+        break;
       }
     }
   },

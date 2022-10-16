@@ -28,9 +28,9 @@ var FXFbmNoiseGradientMaskedSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

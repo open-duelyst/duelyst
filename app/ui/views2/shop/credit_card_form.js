@@ -51,14 +51,14 @@ var CreditCardFormView = Backbone.Marionette.ItemView.extend({
     NavigationManager.getInstance().showDialogView(new ActivityDialogItemView());
 
     this.submit()
-    .bind(this)
-    .then(function(){
-      NavigationManager.getInstance().destroyDialogView();
-      this.trigger("complete");
-    })
-    .catch(function(errorMessage){
-      NavigationManager.getInstance().showDialogView(new ErrorDialogItemView ({title: errorMessage}));
-    });
+      .bind(this)
+      .then(function(){
+        NavigationManager.getInstance().destroyDialogView();
+        this.trigger("complete");
+      })
+      .catch(function(errorMessage){
+        NavigationManager.getInstance().showDialogView(new ErrorDialogItemView ({title: errorMessage}));
+      });
   },
 
   submit: function() {

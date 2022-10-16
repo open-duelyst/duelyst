@@ -90,13 +90,13 @@ var ChangePortraitItemView = FormPromptDialogItemView.extend({
       }
 
       return NavigationManager.getInstance().showDialogForConfirmPurchase(productData,saleData)
-      .bind(this)
-      .then(function () {
-        NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
-      })
-      .catch(function () {
-        NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
-      });
+        .bind(this)
+        .then(function () {
+          NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
+        })
+        .catch(function () {
+          NavigationManager.getInstance().showDialogView(new ChangePortraitItemView({model: new Backbone.Model()}));
+        });
     } else if (InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId)) {
       this._cosmeticId = cosmeticId;
       FormPromptDialogItemView.prototype.onClickSubmit.apply(this, arguments);
@@ -106,14 +106,14 @@ var ChangePortraitItemView = FormPromptDialogItemView.extend({
   onSubmit: function() {
     FormPromptDialogItemView.prototype.onSubmit.apply(this, arguments);
     Session.changePortrait(this._cosmeticId)
-    .bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .bind(this)
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   }
 
 });

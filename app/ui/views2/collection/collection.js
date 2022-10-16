@@ -731,12 +731,12 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
             template:'<div class="popover disenchant-duplicates-popover" role="tooltip"><div class="arrow"></div><div class="popover-content"></div></div>'
           }).popover('show');
 
-          // hide popover after 4
-          this._craftingDuplicatesTimeout = setTimeout(function(){
-            if (this.ui.$startCraftingModeButton.popover) {
-              this.ui.$startCraftingModeButton.popover('destroy');
-            }
-          }.bind(this),4000);
+        // hide popover after 4
+        this._craftingDuplicatesTimeout = setTimeout(function(){
+          if (this.ui.$startCraftingModeButton.popover) {
+            this.ui.$startCraftingModeButton.popover('destroy');
+          }
+        }.bind(this),4000);
       }.bind(this),1000);
     } else {
       this.ui.$startCraftingModeButton.removeClass('highlight');

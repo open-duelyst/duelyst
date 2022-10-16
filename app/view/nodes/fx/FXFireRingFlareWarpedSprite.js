@@ -46,15 +46,15 @@ var FXFireRingFlareWarpedSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'phase':
-        this.phase = this._phaseTarget * value;
-        break;
-      case 'timeScale':
-        this.timeScale = value;
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'phase':
+      this.phase = this._phaseTarget * value;
+      break;
+    case 'timeScale':
+      this.timeScale = value;
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

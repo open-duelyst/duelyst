@@ -40,8 +40,8 @@ var MessagesView = Backbone.Marionette.CompositeView.extend({
     e.preventDefault();
     var value = this.$('#chat-input').val().trim();
     this.collection.add({ body: value,
-                          sender: ProfileManager.getInstance().profile.getFullName(),
-                          timestamp: "now" });
+      sender: ProfileManager.getInstance().profile.getFullName(),
+      timestamp: "now" });
     this.$('#chat-input').val('');
   },
 

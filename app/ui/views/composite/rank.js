@@ -129,10 +129,10 @@ var RankCompositeView = Backbone.Marionette.CompositeView.extend({
 
     for (var i=data.divisions.length-1; i>=0; i--) {
       var division = data.divisions[i];
-        if (data.rank <= division.rank) {
-          data.divisionName = division.name;
-          break;
-        }
+      if (data.rank <= division.rank) {
+        data.divisionName = division.name;
+        break;
+      }
     }
 
     return data;

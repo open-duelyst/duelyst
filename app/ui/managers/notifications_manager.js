@@ -62,16 +62,16 @@ var NotificationsManager = Manager.extend({
   onBeforeConnect: function() {
     Manager.prototype.onBeforeConnect.call(this);
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
-      var notificationsRef = new Firebase(process.env.FIREBASE_URL + "/user-notifications/" + userId);
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
+        var notificationsRef = new Firebase(process.env.FIREBASE_URL + "/user-notifications/" + userId);
 
-      this.remoteNotifications = new DuelystFirebase.Collection(null,{firebase: notificationsRef.orderByChild('created_at').startAt(moment().utc().valueOf()) });
-      this.listenTo(this.remoteNotifications, "add", this.onRemoteNotificationAdded);
+        this.remoteNotifications = new DuelystFirebase.Collection(null,{firebase: notificationsRef.orderByChild('created_at').startAt(moment().utc().valueOf()) });
+        this.listenTo(this.remoteNotifications, "add", this.onRemoteNotificationAdded);
 
-      ChatManager.getInstance().on(EVENTS.status, this._onStatusChanged, this);
-    })
+        ChatManager.getInstance().on(EVENTS.status, this._onStatusChanged, this);
+      })
   },
 
   onBeforeDisconnect: function() {
@@ -107,27 +107,27 @@ var NotificationsManager = Manager.extend({
 
   getCollectionForNotification: function (notification) {
     switch(notification.get("type")) {
-      case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
-        return this.getQuestProgressNotifications();
-      case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
-        return this.getBuddyMessageNotifications();
-      case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
-        return this.getBuddyInviteNotifications();
-      default:
-        return this.getMainNotifications();
+    case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
+      return this.getQuestProgressNotifications();
+    case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
+      return this.getBuddyMessageNotifications();
+    case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
+      return this.getBuddyInviteNotifications();
+    default:
+      return this.getMainNotifications();
     }
   },
 
   getCanShowNotification: function (notification) {
     switch(notification.get("type")) {
-      case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
-        return this.getCanShowQuestProgressNotification();
-      case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
-        return this.getCanShowBuddyMessageNotification();
-      case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
-        return this.getCanShowBuddyInviteNotification();
-      default:
-        return this.getCanShowMainNotification();
+    case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
+      return this.getCanShowQuestProgressNotification();
+    case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
+      return this.getCanShowBuddyMessageNotification();
+    case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
+      return this.getCanShowBuddyInviteNotification();
+    default:
+      return this.getCanShowMainNotification();
     }
   },
 
@@ -165,14 +165,14 @@ var NotificationsManager = Manager.extend({
 
   getCanQueueNotification: function (notification) {
     switch(notification.get("type")) {
-      case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
-        return true;
-      case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
-        return false;
-      case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
-        return true;
-      default:
-        return true;
+    case _NotificationsManager.NOTIFICATION_QUEST_PROGRESS:
+      return true;
+    case _NotificationsManager.NOTIFICATION_BUDDY_MESSAGE:
+      return false;
+    case _NotificationsManager.NOTIFICATION_BUDDY_INVITE:
+      return true;
+    default:
+      return true;
     }
   },
 

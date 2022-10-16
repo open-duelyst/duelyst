@@ -145,27 +145,27 @@ var DeckSelectCompositeView = SlidingPanelSelectCompositeView.extend({
 
     // set decks in collection
     this.getDecks()
-    .then(function (decks) {
-      this.collection.reset(decks);
+      .then(function (decks) {
+        this.collection.reset(decks);
 
-      // set starting selected deck group
-      if (InventoryManager.getInstance().hasValidCustomDecks()) {
-        this.selectedDeckGroup = "custom";
-      } else {
-        this.selectedDeckGroup = "starter";
-      }
+        // set starting selected deck group
+        if (InventoryManager.getInstance().hasValidCustomDecks()) {
+          this.selectedDeckGroup = "custom";
+        } else {
+          this.selectedDeckGroup = "starter";
+        }
 
-      // set starting selected deck model
-      this.setStartingSelectedDeckModel();
+        // set starting selected deck model
+        this.setStartingSelectedDeckModel();
 
-      // update virtual collection filter
-      if (this.collection instanceof VirtualCollection) {
-        this.collection.updateFilter(this.filterDecks.bind(this));
-      }
+        // update virtual collection filter
+        if (this.collection instanceof VirtualCollection) {
+          this.collection.updateFilter(this.filterDecks.bind(this));
+        }
 
-      this.render();
-      this._showSlidingPanels();
-    }.bind(this))
+        this.render();
+        this._showSlidingPanels();
+      }.bind(this))
 
   },
 
@@ -272,9 +272,9 @@ var DeckSelectCompositeView = SlidingPanelSelectCompositeView.extend({
     }
 
     return Promise.all(gatherDecksPromises)
-    .then(function () {
-      return Promise.resolve(decks);
-    })
+      .then(function () {
+        return Promise.resolve(decks);
+      })
   },
 
   /* endregion INITIALIZE */

@@ -12,7 +12,7 @@ var ModifierModel = Backbone.Model.extend({
     source: "Undefined",
     stackType: "Modifier",
     stacks: 1,
-        type: "Modifier"
+    type: "Modifier"
   }
 });
 

@@ -279,16 +279,16 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 
     } else {
     */
-      var iconImageResource = RSX[this.productData.icon_image_resource_name];
-      var iconImageUrl;
-      if (iconImageResource != null) {
-        iconImageUrl = iconImageResource.is16Bit ? iconImageResource.img : RSX.getResourcePathForScale(iconImageResource.img, CONFIG.resourceScaleCSS);
-      } else {
-        iconImageUrl = RSX.getResourcePathForScale(this.productData.icon_image_url , CONFIG.resourceScaleCSS);
-      }
-      this.ui.product_animation.hide();
-      this.ui.product_icon.show();
-      this.ui.product_icon.attr("src",iconImageUrl);
+    var iconImageResource = RSX[this.productData.icon_image_resource_name];
+    var iconImageUrl;
+    if (iconImageResource != null) {
+      iconImageUrl = iconImageResource.is16Bit ? iconImageResource.img : RSX.getResourcePathForScale(iconImageResource.img, CONFIG.resourceScaleCSS);
+    } else {
+      iconImageUrl = RSX.getResourcePathForScale(this.productData.icon_image_url , CONFIG.resourceScaleCSS);
+    }
+    this.ui.product_animation.hide();
+    this.ui.product_icon.show();
+    this.ui.product_icon.attr("src",iconImageUrl);
     //}
 
     // cover image
@@ -603,12 +603,12 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       if (this.creditCardFormRegion != null && this.creditCardFormRegion.currentView != null) {
         // submit credit card and wait for response
         submitCreditCardPromise = this.creditCardFormRegion.currentView.submit()
-        .bind(this)
-        .then(function(cardFormResponse){
-          this.creditCardFormRegion.empty();
-          this.ui.card_info.removeClass('hide');
-          return cardFormResponse.stored ? null : cardFormResponse.token;
-        });
+          .bind(this)
+          .then(function(cardFormResponse){
+            this.creditCardFormRegion.empty();
+            this.ui.card_info.removeClass('hide');
+            return cardFormResponse.stored ? null : cardFormResponse.token;
+          });
       } else {
         // use saved credit card
         if (InventoryManager.getInstance().walletModel.get("card_last_four_digits")) {
@@ -618,47 +618,47 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       }
 
       purchasePromise = submitCreditCardPromise
-      .bind(this)
-      .then(function(cardToken) {
-        this.trigger("processing", {
-          sku: sku,
-          paymentType: 'stripe'
-        });
+        .bind(this)
+        .then(function(cardToken) {
+          this.trigger("processing", {
+            sku: sku,
+            paymentType: 'stripe'
+          });
 
-        return InventoryManager.getInstance().purchaseProductSku(sku, cardToken);
-      });
+          return InventoryManager.getInstance().purchaseProductSku(sku, cardToken);
+        });
     }
 
     if (purchasePromise == null) {
       return Promise.resolve()
-      .bind(this)
-      .then(function () {
-        this.showError("Invalid purchase!");
-      });
+        .bind(this)
+        .then(function () {
+          this.showError("Invalid purchase!");
+        });
     } else {
       return purchasePromise
-      .then(function () {
+        .then(function () {
         // track monetization in analytics
-        Analytics.track("premium product purchased", {
-          category: Analytics.EventCategory.Shop,
-          sku: sku,
-          price: price
-        }, {
-          labelKey: "sku",
-          valueKey: "price"
-        });
-        //Analytics.trackMonetizationEvent(sku, price);
+          Analytics.track("premium product purchased", {
+            category: Analytics.EventCategory.Shop,
+            sku: sku,
+            price: price
+          }, {
+            labelKey: "sku",
+            valueKey: "price"
+          });
+          //Analytics.trackMonetizationEvent(sku, price);
 
-        this.trigger("complete", {
-          sku: sku,
-          paymentType: 'stripe'
-        });
+          this.trigger("complete", {
+            sku: sku,
+            paymentType: 'stripe'
+          });
 
-        this.flashSuccessInDialog("SUCCESS!");
-      })
-      .catch(function(errorMessage){
-        this.showError(errorMessage);
-      });
+          this.flashSuccessInDialog("SUCCESS!");
+        })
+        .catch(function(errorMessage){
+          this.showError(errorMessage);
+        });
     }
   },
 
@@ -763,24 +763,24 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 
     if (purchasePromise == null) {
       return Promise.resolve()
-      .bind(this)
-      .then(function () {
-        this.showError("Invalid purchase!");
-      });
+        .bind(this)
+        .then(function () {
+          this.showError("Invalid purchase!");
+        });
     } else {
       return purchasePromise
-      .bind(this)
-      .then(function () {
-        this.trigger("complete", {
-          sku: sku,
-          paymentType: 'gold'
-        });
+        .bind(this)
+        .then(function () {
+          this.trigger("complete", {
+            sku: sku,
+            paymentType: 'gold'
+          });
 
-        this.flashSuccessInDialog(i18next.t("common.success_title"));
-      })
-      .catch(function (errorMessage) {
-        this.showError(errorMessage);
-      });
+          this.flashSuccessInDialog(i18next.t("common.success_title"));
+        })
+        .catch(function (errorMessage) {
+          this.showError(errorMessage);
+        });
     }
   },
 
@@ -812,26 +812,26 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     });
 
     return InventoryManager.getInstance().purchaseProductSkuOnSteam(sku, Storage.get('steam_ticket'))
-    .bind(this)
-    .then(function(res) {
+      .bind(this)
+      .then(function(res) {
       // open [steam] browser then flash success
       // check platform here to determine if to use steam browser
-      if (window.steamworksOverlayEnabled) {
-        window.steamworks.activateGameOverlayToWebPage(res.steamurl)
-      } else {
-        openUrl(res.steamurl)
-      }
+        if (window.steamworksOverlayEnabled) {
+          window.steamworks.activateGameOverlayToWebPage(res.steamurl)
+        } else {
+          openUrl(res.steamurl)
+        }
 
-      this.trigger("complete",{
-        sku: sku,
-        paymentType: 'steam'
+        this.trigger("complete",{
+          sku: sku,
+          paymentType: 'steam'
+        });
+
+        this.flashSuccessInDialog("Complete the transaction in the browser...")
+      })
+      .catch(function(errorMessage){
+        this.showError(errorMessage);
       });
-
-      this.flashSuccessInDialog("Complete the transaction in the browser...")
-    })
-    .catch(function(errorMessage){
-      this.showError(errorMessage);
-    });
   },
 
   /* endregion STEAM CHECKOUT */
@@ -881,19 +881,19 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     this.ui.product_craft_button.addClass("hide");
     this.ui.card_form_error.addClass("hide");
     InventoryManager.getInstance().craftCosmetic(productId)
-    .bind(this)
-    .then(function(){
-      this.trigger("complete",{
-        sku: sku,
-        paymentType: 'spirit'
-      })
+      .bind(this)
+      .then(function(){
+        this.trigger("complete",{
+          sku: sku,
+          paymentType: 'spirit'
+        })
 
-      this.flashSuccessInDialog(i18next.t("common.success_title"))
-    })
-    .catch(function(errorMessage){
-      this.ui.product_craft_button.removeClass("hide");
-      this.showError(errorMessage, false, true);
-    })
+        this.flashSuccessInDialog(i18next.t("common.success_title"))
+      })
+      .catch(function(errorMessage){
+        this.ui.product_craft_button.removeClass("hide");
+        this.showError(errorMessage, false, true);
+      })
   },
 
   /* endregion CRAFT */
@@ -923,14 +923,14 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       contentType: 'application/json',
       dataType: 'json'
     }))
-    .bind(this)
-    .then(function(){
-      this.flashSuccessInDialog(i18next.t("common.success_title"), true);
-    })
-    .catch(function(err){
-      var errorMessage = response.responseJSON && response.responseJSON.message || "There was a problem deleting your card.";
-      this.showError(errorMessage);
-    });
+      .bind(this)
+      .then(function(){
+        this.flashSuccessInDialog(i18next.t("common.success_title"), true);
+      })
+      .catch(function(err){
+        var errorMessage = response.responseJSON && response.responseJSON.message || "There was a problem deleting your card.";
+        this.showError(errorMessage);
+      });
   },
 
   /* endregion CARD */

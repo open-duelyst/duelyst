@@ -175,15 +175,15 @@ var LoginMenuItemView = Backbone.Marionette.ItemView.extend({
       // lockdown user triggered navigation while we login
       NavigationManager.getInstance().requestUserTriggeredNavigationLocked(this._userNavLockId);
       Session.login(username, password)
-      .bind(this)
-      .catch(function (e) {
+        .bind(this)
+        .catch(function (e) {
         // onError expects a string not an actual error
-        this.onError(e.codeMessage || e.innerMessage || e.message)
-      })
-      .finally(function () {
+          this.onError(e.codeMessage || e.innerMessage || e.message)
+        })
+        .finally(function () {
         // unlock user triggered navigation
-        NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
-      })
+          NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
+        })
     } else {
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
     }

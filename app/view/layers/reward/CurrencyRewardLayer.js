@@ -50,15 +50,15 @@ const CurrencyRewardLayer = RewardLayer.extend({
 
       // Play sfx for this reward
       switch (type) {
-        case 'gold':
-          audio_engine.current().play_effect(RSX.sfx_gold_reward_long.audio, false);
-          break;
-        case 'spirit':
-          audio_engine.current().play_effect(RSX.sfx_spirit_reward_long.audio, false);
-          break;
-        default:
-          audio_engine.current().play_effect(RSX.sfx_gold_reward_long.audio, false);
-          break;
+      case 'gold':
+        audio_engine.current().play_effect(RSX.sfx_gold_reward_long.audio, false);
+        break;
+      case 'spirit':
+        audio_engine.current().play_effect(RSX.sfx_spirit_reward_long.audio, false);
+        break;
+      default:
+        audio_engine.current().play_effect(RSX.sfx_gold_reward_long.audio, false);
+        break;
       }
 
       amount = amount || 0;
@@ -93,15 +93,15 @@ const CurrencyRewardLayer = RewardLayer.extend({
       // glow ring sprite
       let glowringSpriteImage = null;
       switch (type) {
-        case 'gold':
-          glowringSpriteImage = RSX.gold_reward_glow_ring.img;
-          break;
-        case 'spirit':
-          glowringSpriteImage = RSX.spirit_reward_glow_hex.img;
-          break;
-        default:
-          glowringSpriteImage = RSX.gold_reward_glow_ring.img;
-          break;
+      case 'gold':
+        glowringSpriteImage = RSX.gold_reward_glow_ring.img;
+        break;
+      case 'spirit':
+        glowringSpriteImage = RSX.spirit_reward_glow_hex.img;
+        break;
+      default:
+        glowringSpriteImage = RSX.gold_reward_glow_ring.img;
+        break;
       }
       const glow_ring = LensNoiseSprite.create(glowringSpriteImage);
       glow_ring.setPosition(centerAnchorPosition);
@@ -113,15 +113,15 @@ const CurrencyRewardLayer = RewardLayer.extend({
       // bg sprite
       let bgSpriteImage = null;
       switch (type) {
-        case 'gold':
-          bgSpriteImage = RSX.gold_reward_bg.img;
-          break;
-        case 'spirit':
-          bgSpriteImage = RSX.spirit_reward_bg.img;
-          break;
-        default:
-          bgSpriteImage = RSX.gold_reward_bg.img;
-          break;
+      case 'gold':
+        bgSpriteImage = RSX.gold_reward_bg.img;
+        break;
+      case 'spirit':
+        bgSpriteImage = RSX.spirit_reward_bg.img;
+        break;
+      default:
+        bgSpriteImage = RSX.gold_reward_bg.img;
+        break;
       }
       const bg = BaseSprite.create(bgSpriteImage);
       bg.setPosition(centerAnchorPosition);
@@ -132,18 +132,18 @@ const CurrencyRewardLayer = RewardLayer.extend({
       // metal ring sprite
       let metal_ring = null;
       switch (type) {
-        case 'gold':
-          metal_ring = BaseSprite.create(RSX.gold_reward_metal_ring.img);
-          metal_ring.setPosition(goldIconPosition);
-          break;
-        case 'spirit':
-          metal_ring = BaseSprite.create(RSX.spirit_reward_metal_ring.img);
-          metal_ring.setPosition(cc.p(centerAnchorPosition.x, centerAnchorPosition.y + 50));
-          break;
-        default:
-          metal_ring = BaseSprite.create(RSX.gold_reward_metal_ring.img);
-          metal_ring.setPosition(goldIconPosition);
-          break;
+      case 'gold':
+        metal_ring = BaseSprite.create(RSX.gold_reward_metal_ring.img);
+        metal_ring.setPosition(goldIconPosition);
+        break;
+      case 'spirit':
+        metal_ring = BaseSprite.create(RSX.spirit_reward_metal_ring.img);
+        metal_ring.setPosition(cc.p(centerAnchorPosition.x, centerAnchorPosition.y + 50));
+        break;
+      default:
+        metal_ring = BaseSprite.create(RSX.gold_reward_metal_ring.img);
+        metal_ring.setPosition(goldIconPosition);
+        break;
       }
       // start as anti-aliased and swap to aliased after animation is done
       metal_ring.getTexture().setAntiAliasTexParameters();
@@ -152,16 +152,16 @@ const CurrencyRewardLayer = RewardLayer.extend({
       // gold icon sprite
       let currency_icon = null;
       switch (type) {
-        case 'gold':
-          currency_icon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
-          break;
-        case 'spirit':
-          goldIconPosition.y += 5;
-          currency_icon = BaseSprite.create(RSX.spirit_reward_spirit_icon.img);
-          break;
-        default:
-          currency_icon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
-          break;
+      case 'gold':
+        currency_icon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
+        break;
+      case 'spirit':
+        goldIconPosition.y += 5;
+        currency_icon = BaseSprite.create(RSX.spirit_reward_spirit_icon.img);
+        break;
+      default:
+        currency_icon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
+        break;
       }
       currency_icon.setPosition(goldIconPosition);
       this.addChild(currency_icon);
@@ -169,18 +169,18 @@ const CurrencyRewardLayer = RewardLayer.extend({
       // gold AMOUNT # label
       const currency_amount_label = new cc.LabelTTF(amount.toString(), RSX.font_regular.name, 20, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
       switch (type) {
-        case 'gold':
-          currency_amount_label.setFontFillColor({ r: 121, g: 66, b: 0 });
-          currency_amount_label.setPosition(goldIconPosition);
-          break;
-        case 'spirit':
-          currency_amount_label.setFontFillColor({ r: 28, g: 35, b: 57 });
-          currency_amount_label.setPosition(goldIconPosition);
-          break;
-        default:
-          currency_amount_label.setFontFillColor({ r: 255, g: 255, b: 255 });
-          currency_amount_label.setPosition(goldIconPosition);
-          break;
+      case 'gold':
+        currency_amount_label.setFontFillColor({ r: 121, g: 66, b: 0 });
+        currency_amount_label.setPosition(goldIconPosition);
+        break;
+      case 'spirit':
+        currency_amount_label.setFontFillColor({ r: 28, g: 35, b: 57 });
+        currency_amount_label.setPosition(goldIconPosition);
+        break;
+      default:
+        currency_amount_label.setFontFillColor({ r: 255, g: 255, b: 255 });
+        currency_amount_label.setPosition(goldIconPosition);
+        break;
       }
       this.addChild(currency_amount_label);
 
@@ -188,15 +188,15 @@ const CurrencyRewardLayer = RewardLayer.extend({
       const currencyTypeLocalized = i18next.t(`common.currency_${type.toLowerCase()}`);
       const reward_label = new cc.LabelTTF(`+${amount.toString()} ${currencyTypeLocalized}`, RSX.font_light.name, 20, cc.size(300, 24), cc.TEXT_ALIGNMENT_CENTER);
       switch (type) {
-        case 'gold':
-          reward_label.setFontFillColor({ r: 247, g: 228, b: 154 });
-          break;
-        case 'spirit':
-          reward_label.setFontFillColor({ r: 190, g: 252, b: 255 });
-          break;
-        default:
-          reward_label.setFontFillColor({ r: 255, g: 255, b: 255 });
-          break;
+      case 'gold':
+        reward_label.setFontFillColor({ r: 247, g: 228, b: 154 });
+        break;
+      case 'spirit':
+        reward_label.setFontFillColor({ r: 190, g: 252, b: 255 });
+        break;
+      default:
+        reward_label.setFontFillColor({ r: 255, g: 255, b: 255 });
+        break;
       }
       reward_label.setPosition(labelPosition);
       this.addChild(reward_label);

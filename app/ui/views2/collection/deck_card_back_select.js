@@ -137,7 +137,7 @@ var DeckCardBackSelectView = Backbone.Marionette.LayoutView.extend({
         // buy card back
         var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cardBackId);
         return NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
-        .catch(function () {});
+          .catch(function () {});
       } else if (this._selectedDeckCardBackModel.get("_canUse")) {
         // save card back
         this.model.set("card_back_id", cardBackId);

@@ -76,13 +76,13 @@ var ShopSpecialsView = Backbone.Marionette.ItemView.extend({
     })
 
     return NavigationManager.getInstance().showDialogForConfirmPurchase(packProductData)
-    .bind(this)
-    .then(function (purchaseData) {
-      this.onPurchaseComplete(purchaseData);
-    })
-    .catch(function () {
+      .bind(this)
+      .then(function (purchaseData) {
+        this.onPurchaseComplete(purchaseData);
+      })
+      .catch(function () {
       // do nothing on cancel
-    });
+      });
   },
 
   onPurchaseComplete: function(purchaseData) {

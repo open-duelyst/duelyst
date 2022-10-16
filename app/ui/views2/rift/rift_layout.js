@@ -74,12 +74,12 @@ var RiftDeckSelectLayout = Backbone.Marionette.LayoutView.extend({
       this._activeRiftRequest = this._purchaseRiftRunTicketWithGold().then(function (ticketData) {
         return this._startRiftRunWithTicketId(ticketData.id);
       }.bind(this))
-      .then(function (runData) {
-        this._beginRiftRun(runData);
-      }.bind(this))
-      .catch(function (e) {
-        this._activeRiftRequest = null;
-      }.bind(this))
+        .then(function (runData) {
+          this._beginRiftRun(runData);
+        }.bind(this))
+        .catch(function (e) {
+          this._activeRiftRequest = null;
+        }.bind(this))
     }
   },
 
@@ -89,15 +89,15 @@ var RiftDeckSelectLayout = Backbone.Marionette.LayoutView.extend({
       this._activeRiftRequest = this._purchaseRiftRunTicketWithCurrency().then(function (ticketData) {
         return this._startRiftRunWithTicketId(ticketData.id);
       }.bind(this))
-      .then(function (runData) {
-        this._activeRiftRequest = null;
-        var runLayout = new RiftRunLayout({model: new DuelystBackbone.Model(runData)})
-        this.contentRegion.show(runLayout)
-      }.bind(this))
-      .catch(function (e) {
+        .then(function (runData) {
+          this._activeRiftRequest = null;
+          var runLayout = new RiftRunLayout({model: new DuelystBackbone.Model(runData)})
+          this.contentRegion.show(runLayout)
+        }.bind(this))
+        .catch(function (e) {
         // do nothing on cancel
-        this._activeRiftRequest = null;
-      }.bind(this));
+          this._activeRiftRequest = null;
+        }.bind(this));
     }
   },
 
@@ -124,15 +124,15 @@ var RiftDeckSelectLayout = Backbone.Marionette.LayoutView.extend({
       }
 
       this._activeRiftRequest
-      .bind(this)
-      .then(function (runData) {
-        this._activeRiftRequest = null;
-        var runLayout = new RiftRunLayout({model: new DuelystBackbone.Model(runData)})
-        this.contentRegion.show(runLayout)
-      }.bind(this))
-      .catch(function (e) {
-        this._activeRiftRequest = null;
-      }.bind(this));
+        .bind(this)
+        .then(function (runData) {
+          this._activeRiftRequest = null;
+          var runLayout = new RiftRunLayout({model: new DuelystBackbone.Model(runData)})
+          this.contentRegion.show(runLayout)
+        }.bind(this))
+        .catch(function (e) {
+          this._activeRiftRequest = null;
+        }.bind(this));
     }
 
     return this._activeRiftRequest;
@@ -177,28 +177,28 @@ var RiftDeckSelectLayout = Backbone.Marionette.LayoutView.extend({
   _purchaseRiftRunTicketWithCurrency: function () {
     var productData = ShopData["rift"]["RIFT_TICKET"];
     return NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
-    .bind(this)
-    .then(function (purchaseData) {
-      Analytics.track("buy rift ticket with currency", {
-        category: Analytics.EventCategory.Rift
-      });
-      if (InventoryManager.getInstance().riftTicketsCollection.length == 0) {
+      .bind(this)
+      .then(function (purchaseData) {
+        Analytics.track("buy rift ticket with currency", {
+          category: Analytics.EventCategory.Rift
+        });
+        if (InventoryManager.getInstance().riftTicketsCollection.length == 0) {
         // wait until has a rift ticket
-        return new Promise(function (resolve,reject) {
-          this.listenToOnce(InventoryManager.getInstance().riftTicketsCollection,"add",function(){
+          return new Promise(function (resolve,reject) {
+            this.listenToOnce(InventoryManager.getInstance().riftTicketsCollection,"add",function(){
 
-            NavigationManager.getInstance().destroyDialogView();
-            return Promise.resolve()
-          })
-        }.bind(this))
-      } else {
+              NavigationManager.getInstance().destroyDialogView();
+              return Promise.resolve()
+            })
+          }.bind(this))
+        } else {
         // Ticket arrived in inventory before we got here
-        return Promise.resolve()
-      }
-    })
-    .catch(function (e) {
+          return Promise.resolve()
+        }
+      })
+      .catch(function (e) {
       // do nothing on cancel
-    });
+      });
   },
 
   _startRiftRunWithTicketId: function(ticketId) {

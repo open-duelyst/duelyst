@@ -44,41 +44,41 @@ var CrateManager = Manager.extend({
     Manager.prototype.onBeforeConnect.call(this);
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id');
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id');
 
-      this._cosmeticChestCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-chests"
-      });
+        this._cosmeticChestCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-chests"
+        });
 
-      this._cosmeticChestKeyCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-chest-keys"
-      });
+        this._cosmeticChestKeyCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-chest-keys"
+        });
 
-      this._giftCrateCollection = new DuelystBackbone.Collection();
-      this._giftCrateCollection.url = process.env.API_URL + '/api/me/crates/gift_crates';
-      this._giftCrateCollection.fetch();
+        this._giftCrateCollection = new DuelystBackbone.Collection();
+        this._giftCrateCollection.url = process.env.API_URL + '/api/me/crates/gift_crates';
+        this._giftCrateCollection.fetch();
 
-      this._markAsReadyWhenModelsAndCollectionsSynced([
-        this._cosmeticChestCollection,
-        this._cosmeticChestKeyCollection,
-        this._giftCrateCollection
-      ]);
+        this._markAsReadyWhenModelsAndCollectionsSynced([
+          this._cosmeticChestCollection,
+          this._cosmeticChestKeyCollection,
+          this._giftCrateCollection
+        ]);
 
-      this.onReady().then(function(){
-        this.listenTo(this._cosmeticChestCollection, "change add remove",this.onCosmeticChestCollectionChange);
-        this.listenTo(this._cosmeticChestKeyCollection, "change add remove",this.onCosmeticChestKeyCollectionChange);
+        this.onReady().then(function(){
+          this.listenTo(this._cosmeticChestCollection, "change add remove",this.onCosmeticChestCollectionChange);
+          this.listenTo(this._cosmeticChestKeyCollection, "change add remove",this.onCosmeticChestKeyCollectionChange);
 
-        if (this._giftCrateCollection && this._giftCrateCollection.length > 0 ||
+          if (this._giftCrateCollection && this._giftCrateCollection.length > 0 ||
           this._cosmeticChestCollection && this._cosmeticChestCollection.length > 0 ||
           this._cosmeticChestKeyCollection && this._cosmeticChestKeyCollection.length > 0) {
-          NewPlayerManager.getInstance().onReady().then(function () {
-            NewPlayerManager.getInstance().setHasReceivedCrateProduct();
-          });
-        }
-      }.bind(this));
-    });
+            NewPlayerManager.getInstance().onReady().then(function () {
+              NewPlayerManager.getInstance().setHasReceivedCrateProduct();
+            });
+          }
+        }.bind(this));
+      });
   },
 
   onBeforeDisconnect: function() {
@@ -432,16 +432,16 @@ var CrateManager = Manager.extend({
         // gift crates don't live in firebase
         // so we need to manually refresh
         this.refreshGiftCrates()
-        .then(function () {
+          .then(function () {
           // convert rewards to backbone models
-          var rewardModels = [];
-          for (var i=0; i < response.length; i++) {
-            rewardModels.push(new Backbone.Model(response[i]));
-          }
+            var rewardModels = [];
+            for (var i=0; i < response.length; i++) {
+              rewardModels.push(new Backbone.Model(response[i]));
+            }
 
-          // resolve with rewards
-          resolve(rewardModels);
-        }.bind(this));
+            // resolve with rewards
+            resolve(rewardModels);
+          }.bind(this));
       }.bind(this));
 
       request.fail(function(response){

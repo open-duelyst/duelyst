@@ -30,12 +30,12 @@ var LensNoiseSprite = BaseSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'flareAmount':
-        this._flareAmount = value;
-        break;
-      default:
-        BaseSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'flareAmount':
+      this._flareAmount = value;
+      break;
+    default:
+      BaseSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

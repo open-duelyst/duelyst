@@ -47,14 +47,14 @@ var SelectUsernameItemView = FormPromptDialogItemView.extend({
 
     var username = this.ui.$username.val();
     Session.changeUsername(username)
-    .bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .bind(this)
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   },
 
   // do nothing in onCancel as we want to block them from cancelling

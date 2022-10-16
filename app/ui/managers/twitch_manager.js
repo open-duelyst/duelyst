@@ -45,24 +45,24 @@ var TwitchManager = Manager.extend({
   onBeforeConnect:function() {
     Manager.prototype.onBeforeConnect.call(this);
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
-      var username = ProfileManager.getInstance().get('username')
-      this._twitchStatusModel =  new DuelystFirebase.Model(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL + "/user-twitch-rewards/" + userId + "/status")
-      });
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
+        var username = ProfileManager.getInstance().get('username')
+        this._twitchStatusModel =  new DuelystFirebase.Model(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL + "/user-twitch-rewards/" + userId + "/status")
+        });
 
-      this._markAsReadyWhenModelsAndCollectionsSynced([this._twitchStatusModel]);
+        this._markAsReadyWhenModelsAndCollectionsSynced([this._twitchStatusModel]);
 
-      this.onReady().then(function(){
+        this.onReady().then(function(){
 
-        this._twitchStatusModel.on("change",this.onTwitchStatusChange,this)
+          this._twitchStatusModel.on("change",this.onTwitchStatusChange,this)
 
-        return this.onTwitchStatusChange();
+          return this.onTwitchStatusChange();
 
-      }.bind(this));
-    })
+        }.bind(this));
+      })
   },
 
   onBeforeDisconnect: function() {
@@ -153,11 +153,11 @@ var TwitchManager = Manager.extend({
           rewardModel.fetch();
 
           rewardModel.onSyncOrReady()
-          .then(function(){
-            resolve(rewardModel.attributes);
-          }).catch(function(error){
-            reject(error);
-          })
+            .then(function(){
+              resolve(rewardModel.attributes);
+            }).catch(function(error){
+              reject(error);
+            })
 
         }));
       })

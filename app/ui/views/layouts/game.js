@@ -97,8 +97,8 @@ var GameLayout = Backbone.Marionette.LayoutView.extend({
     var endX = endPosition.x;
 
     this.ui.$turnTimerContainer.css({
-        "transform": "translate(" + (startX) / 10.0 + "rem, " + (-startPosition.y - CONFIG.HAND_CARD_SIZE * 0.5) / 10.0 + "rem)",
-        "width": (endX - startX) / 10.0 + "rem"
+      "transform": "translate(" + (startX) / 10.0 + "rem, " + (-startPosition.y - CONFIG.HAND_CARD_SIZE * 0.5) / 10.0 + "rem)",
+      "width": (endX - startX) / 10.0 + "rem"
     });
   },
 
@@ -288,16 +288,16 @@ var GameLayout = Backbone.Marionette.LayoutView.extend({
     if (CONFIG.razerChromaEnabled) {
       if (Scene.getInstance().getGameLayer().getIsMyTurn()) {
         Chroma.flashActionThrottled(CONFIG.razerChromaIdleColor, 50, 2)
-        .then(()=>{
-          Chroma.setAll(CONFIG.razerChromaIdleColor)
-        })
+          .then(()=>{
+            Chroma.setAll(CONFIG.razerChromaIdleColor)
+          })
       } else {
         // enemy color just white, we might want to make this dynamic based on enemy faction
         const color = new Chroma.Color('FFFFFF')
         Chroma.flashActionThrottled(color, 50, 2)
-        .then(()=>{
-          Chroma.setAll(color)
-        })
+          .then(()=>{
+            Chroma.setAll(color)
+          })
       }
     }
     if (CONFIG.showInGameTips

@@ -269,14 +269,14 @@ var BoosterPackCollectionLayout = Backbone.Marionette.LayoutView.extend({
       // unlock pack immediately
       var unlockedBoosterPackCards;
       var requestUnlockPromise = InventoryManager.getInstance().unlockBoosterPack(boosterPackId)
-      .bind(this)
-      .then(function (response) {
-        var unlockedBoosterPackModel = new Backbone.Model(response);
-        unlockedBoosterPackCards = unlockedBoosterPackModel.get("cards");
-      })
-      .catch(function (errorMessage) {
-        EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
-      });
+        .bind(this)
+        .then(function (response) {
+          var unlockedBoosterPackModel = new Backbone.Model(response);
+          unlockedBoosterPackCards = unlockedBoosterPackModel.get("cards");
+        })
+        .catch(function (errorMessage) {
+          EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
+        });
 
       // show pre-unlock immediately
       var animateUnlockPromise;

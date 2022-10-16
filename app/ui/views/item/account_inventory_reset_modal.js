@@ -81,14 +81,14 @@ var AccountInventoryResetModalView = FormPromptModalItemView.extend({
       contentType: 'application/json',
       dataType: 'json'
     }))
-    .then(this.onSuccess.bind(this))
-    .catch(function(response){
-      var message;
-      if (response && response.responseJSON)
-        message = response.responseJSON.message;
-      message = message || "unknown error"
-      this.onError(message)
-    }.bind(this))
+      .then(this.onSuccess.bind(this))
+      .catch(function(response){
+        var message;
+        if (response && response.responseJSON)
+          message = response.responseJSON.message;
+        message = message || "unknown error"
+        this.onError(message)
+      }.bind(this))
   },
 
   onSuccessComplete: function (registration) {

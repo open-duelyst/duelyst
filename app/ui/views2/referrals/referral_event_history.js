@@ -19,15 +19,15 @@ var ReferralEventHistoryView = Backbone.Marionette.ItemView.extend({
     _.each(data.eventHistory,function(row){
       row.updated_at = row.updated_at || row.created_at
       switch (row.level_reached) {
-        case 1:
-          row.level_reached = "silver"
-          break;
-        case 2:
-          row.level_reached = "gold"
-          break;
-        default:
-          row.level_reached = "registered"
-          break;
+      case 1:
+        row.level_reached = "silver"
+        break;
+      case 2:
+        row.level_reached = "gold"
+        break;
+      default:
+        row.level_reached = "registered"
+        break;
       }
     })
     return data

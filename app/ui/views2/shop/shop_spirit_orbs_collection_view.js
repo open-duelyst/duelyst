@@ -255,7 +255,7 @@ var ShopSpiritOrbsCollectionView = Backbone.Marionette.ItemView.extend({
     //  var $bloodbornPurchaseButtons = this.$el.find('[data-card-set='+ SDK.CardSet.Bloodborn +']');
     //  $bloodbornPurchaseButtons.addClass("disabled");
     //}
-        //
+    //
     //if (!InventoryManager.getInstance().canBuyAncientBondsPacks()) {
     //  // Typical UI Flow is players should only disable this way, should not need to enable
     //  var $unityPurchaseButtons = this.$el.find('[data-card-set='+ SDK.CardSet.Unity +']');
@@ -334,13 +334,13 @@ var ShopSpiritOrbsCollectionView = Backbone.Marionette.ItemView.extend({
     console.log(saleData)
 
     return NavigationManager.getInstance().showDialogForConfirmPurchase(packProductData, saleData)
-    .bind(this)
-    .then(function (purchaseData) {
-      this.onPurchaseComplete(purchaseData);
-    })
-    .catch(function () {
+      .bind(this)
+      .then(function (purchaseData) {
+        this.onPurchaseComplete(purchaseData);
+      })
+      .catch(function () {
       // do nothing on cancel
-    });
+      });
   },
 
   onPurchaseComplete: function(purchaseData) {

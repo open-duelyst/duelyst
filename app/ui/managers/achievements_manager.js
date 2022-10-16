@@ -51,38 +51,38 @@ var AchievementsManager = Manager.extend({
   onBeforeConnect:function() {
     Manager.prototype.onBeforeConnect.call(this);
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
-      var username = ProfileManager.getInstance().get('username')
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
+        var username = ProfileManager.getInstance().get('username')
 
-      this._achievementsStatusModel =  new DuelystFirebase.Model(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId + "/status")
-      });
+        this._achievementsStatusModel =  new DuelystFirebase.Model(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId + "/status")
+        });
 
-      this._completedAchievementsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/completed"
-      });
+        this._completedAchievementsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/completed"
+        });
 
-      this._progressedAchievementsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/progress"
-      });
+        this._progressedAchievementsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-achievements/" + userId + "/progress"
+        });
 
-      this.onReady().then(function(){
+        this.onReady().then(function(){
         // listen to changes immediately so we don't miss anything
         //this.listenTo(this._achievementsModel, "change",this._onNewPlayerChange);
-        this._completedAchievementsRef = new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId).child("completed");
-        if (window.isSteam) {
-          this._completedAchievementsRef.orderByChild('completed_at').once('value', this.syncSteamAchievements.bind(this));
-        }
-        this._completedAchievementsRef.orderByChild("completed_at").startAt(this.getAchievementsLastReadAt()).on("child_added",this._onNewCompletedAchievement.bind(this));
+          this._completedAchievementsRef = new Firebase(process.env.FIREBASE_URL + "/user-achievements/" + userId).child("completed");
+          if (window.isSteam) {
+            this._completedAchievementsRef.orderByChild('completed_at').once('value', this.syncSteamAchievements.bind(this));
+          }
+          this._completedAchievementsRef.orderByChild("completed_at").startAt(this.getAchievementsLastReadAt()).on("child_added",this._onNewCompletedAchievement.bind(this));
 
-        return this._scheduleOrRequestLoginAchievements();
+          return this._scheduleOrRequestLoginAchievements();
 
-      }.bind(this));
+        }.bind(this));
 
-      this._markAsReadyWhenModelsAndCollectionsSynced([this._achievementsStatusModel,this._completedAchievementsCollection,this._progressedAchievementsCollection]);
-    })
+        this._markAsReadyWhenModelsAndCollectionsSynced([this._achievementsStatusModel,this._completedAchievementsCollection,this._progressedAchievementsCollection]);
+      })
   },
 
   onBeforeDisconnect: function() {

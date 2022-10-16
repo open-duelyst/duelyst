@@ -102,12 +102,12 @@ const CurrencyRewardNode = RewardNode.extend({
         // bg sprite
         let bgSpriteImage = null;
         switch (type) {
-          case 'spirit':
-            bgSpriteImage = RSX.spirit_reward_bg_small.img;
-            break;
-          default:
-            bgSpriteImage = RSX.gold_reward_bg_small.img;
-            break;
+        case 'spirit':
+          bgSpriteImage = RSX.spirit_reward_bg_small.img;
+          break;
+        default:
+          bgSpriteImage = RSX.gold_reward_bg_small.img;
+          break;
         }
 
         const bgSprite = GlowSprite.create(bgSpriteImage);
@@ -119,15 +119,15 @@ const CurrencyRewardNode = RewardNode.extend({
         // metal ring sprite
         let metalRingSprite;
         switch (type) {
-          case 'spirit':
-            metalRingSprite = BaseSprite.create(RSX.spirit_reward_metal_ring.img);
-            metalRingSprite.setPosition(cc.p(centerAnchorPosition.x, centerAnchorPosition.y));
-            metalRingSprite.setVisible(false);
-            break;
-          default:
-            metalRingSprite = BaseSprite.create(RSX.gold_reward_metal_ring.img);
-            metalRingSprite.setPosition(goldIconPosition);
-            break;
+        case 'spirit':
+          metalRingSprite = BaseSprite.create(RSX.spirit_reward_metal_ring.img);
+          metalRingSprite.setPosition(cc.p(centerAnchorPosition.x, centerAnchorPosition.y));
+          metalRingSprite.setVisible(false);
+          break;
+        default:
+          metalRingSprite = BaseSprite.create(RSX.gold_reward_metal_ring.img);
+          metalRingSprite.setPosition(goldIconPosition);
+          break;
         }
 
         metalRingSprite.setVisible(false);
@@ -138,12 +138,12 @@ const CurrencyRewardNode = RewardNode.extend({
         // gold icon sprite
         let currencyIcon;
         switch (type) {
-          case 'spirit':
-            currencyIcon = BaseSprite.create(RSX.spirit_reward_spirit_icon.img);
-            break;
-          default:
-            currencyIcon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
-            break;
+        case 'spirit':
+          currencyIcon = BaseSprite.create(RSX.spirit_reward_spirit_icon.img);
+          break;
+        default:
+          currencyIcon = BaseSprite.create(RSX.gold_reward_gold_icon.img);
+          break;
         }
         currencyIcon.setPosition(goldIconPosition);
         currencyIcon.setVisible(false);
@@ -154,14 +154,14 @@ const CurrencyRewardNode = RewardNode.extend({
         // gold AMOUNT # label
         const currencyAmountLabel = new cc.LabelTTF(amount.toString(), RSX.font_regular.name, 20, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
         switch (type) {
-          case 'spirit':
-            currencyAmountLabel.setFontFillColor({ r: 28, g: 35, b: 57 });
-            currencyAmountLabel.setPosition(goldIconPosition);
-            break;
-          default:
-            currencyAmountLabel.setFontFillColor({ r: 121, g: 66, b: 0 });
-            currencyAmountLabel.setPosition(goldIconPosition);
-            break;
+        case 'spirit':
+          currencyAmountLabel.setFontFillColor({ r: 28, g: 35, b: 57 });
+          currencyAmountLabel.setPosition(goldIconPosition);
+          break;
+        default:
+          currencyAmountLabel.setFontFillColor({ r: 121, g: 66, b: 0 });
+          currencyAmountLabel.setPosition(goldIconPosition);
+          break;
         }
         currencyAmountLabel.setVisible(false);
         currencyAmountLabel.setOpacity(0);
@@ -172,12 +172,12 @@ const CurrencyRewardNode = RewardNode.extend({
           const labelText = _.isString(showLabel) ? showLabel : `+${amount.toString()} ${i18next.t(`common.currency_${type}`)} ${this.getAdditionalText()}`;
           var rewardNameLabel = new cc.LabelTTF(labelText.toUpperCase(), RSX.font_regular.name, 20, cc.size(300, 24), cc.TEXT_ALIGNMENT_CENTER);
           switch (type) {
-            case 'spirit':
-              rewardNameLabel.setFontFillColor({ r: 120, g: 252, b: 255 });
-              break;
-            default:
-              rewardNameLabel.setFontFillColor({ r: 247, g: 228, b: 154 });
-              break;
+          case 'spirit':
+            rewardNameLabel.setFontFillColor({ r: 120, g: 252, b: 255 });
+            break;
+          default:
+            rewardNameLabel.setFontFillColor({ r: 247, g: 228, b: 154 });
+            break;
           }
           rewardNameLabel.setPosition(labelPosition);
           this.addChild(rewardNameLabel);

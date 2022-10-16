@@ -303,14 +303,14 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
    */
   cls.prototype._executeResourceRequest = function (request) {
     request.loadPromise = _PackageManager.getInstance().loadMinorPackage(request.id, request.resources)
-    .then(function () {
+      .then(function () {
       // resolve with request id
-      request.resolve(request.id);
-    })
-    .catch(function (error) {
+        request.resolve(request.id);
+      })
+      .catch(function (error) {
       // pass on error
-      request.reject(error);
-    });
+        request.reject(error);
+      });
 
     return request.loadPromise;
   };
@@ -1496,12 +1496,12 @@ var NonAllocatingLoader = {
           console.log(errorMessage);
         });
       }.bind(this), { concurrency: 10000 })
-      .then(function(){
+        .then(function(){
         // for now, we want to complete the load whether all resources get loaded or not
         // we don't need to retry on errors because this is loading without allocation
         // i.e. something is better than nothing
-        if (completionCallback) { completionCallback(); }
-      });
+          if (completionCallback) { completionCallback(); }
+        });
     }
   },
   loadUrl: function (url) {
@@ -1739,32 +1739,32 @@ cc.Texture2D.prototype.handleLoadedTexture = function (options) {
   var format = gl.RGBA;
   var type = gl.UNSIGNED_BYTE;
   switch (pixelFormat) {
-    case cc.Texture2D.PIXEL_FORMAT_RGBA8888:
-      format = gl.RGBA;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_RGB888:
-      format = gl.RGB;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_RGBA4444:
-      type = gl.UNSIGNED_SHORT_4_4_4_4;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_RGB5A1:
-      type = gl.UNSIGNED_SHORT_5_5_5_1;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_RGB565:
-      type = gl.UNSIGNED_SHORT_5_6_5;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_AI88:
-      format = gl.LUMINANCE_ALPHA;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_A8:
-      format = gl.ALPHA;
-      break;
-    case cc.Texture2D.PIXEL_FORMAT_I8:
-      format = gl.LUMINANCE;
-      break;
-    default:
-      cc.assert(0, cc._LogInfos.Texture2D_initWithData);
+  case cc.Texture2D.PIXEL_FORMAT_RGBA8888:
+    format = gl.RGBA;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_RGB888:
+    format = gl.RGB;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_RGBA4444:
+    type = gl.UNSIGNED_SHORT_4_4_4_4;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_RGB5A1:
+    type = gl.UNSIGNED_SHORT_5_5_5_1;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_RGB565:
+    type = gl.UNSIGNED_SHORT_5_6_5;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_AI88:
+    format = gl.LUMINANCE_ALPHA;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_A8:
+    format = gl.ALPHA;
+    break;
+  case cc.Texture2D.PIXEL_FORMAT_I8:
+    format = gl.LUMINANCE;
+    break;
+  default:
+    cc.assert(0, cc._LogInfos.Texture2D_initWithData);
   }
 
   // Specify OpenGL texture image

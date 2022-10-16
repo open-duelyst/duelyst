@@ -82,10 +82,10 @@ var RedeemGiftCodeModalView = FormPromptModalItemView.extend({
       contentType: 'application/json',
       dataType: 'json'
     }))
-    .then(this.onSuccess.bind(this))
-    .catch(function(response){
-      this.onError(response && response.responseJSON && (response.responseJSON.message || response.responseJSON.error) || i18next.t("redeem_gift_code_modal.failed_to_redeem_error"));
-    }.bind(this))
+      .then(this.onSuccess.bind(this))
+      .catch(function(response){
+        this.onError(response && response.responseJSON && (response.responseJSON.message || response.responseJSON.error) || i18next.t("redeem_gift_code_modal.failed_to_redeem_error"));
+      }.bind(this))
   },
 
   onSuccessComplete: function (registration) {

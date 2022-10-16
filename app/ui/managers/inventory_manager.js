@@ -68,111 +68,111 @@ var InventoryManager = Manager.extend({
     Manager.prototype.onBeforeConnect.call(this);
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
 
-      this.walletModel = new DuelystFirebase.Model(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/wallet"
-      });
+        this.walletModel = new DuelystFirebase.Model(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/wallet"
+        });
 
-      this.boosterPacksCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/spirit-orbs"
-      });
+        this.boosterPacksCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/spirit-orbs"
+        });
 
-      this.arenaTicketsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/gauntlet-tickets"
-      });
+        this.arenaTicketsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/gauntlet-tickets"
+        });
 
-      this.riftTicketsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/rift-tickets"
-      });
+        this.riftTicketsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/rift-tickets"
+        });
 
-      this.cardsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/card-collection"
-      });
+        this.cardsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/card-collection"
+        });
 
-      this.cardLoreCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/card-lore"
-      });
-      this.cardLoreReadRequests = [];
+        this.cardLoreCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/card-lore"
+        });
+        this.cardLoreReadRequests = [];
 
-      this.decksCollection = new UserDecksCollection();
-      this.decksCollection.fetch();
+        this.decksCollection = new UserDecksCollection();
+        this.decksCollection.fetch();
 
-      this.cosmeticsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-inventory"
-      });
+        this.cosmeticsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/cosmetic-inventory"
+        });
 
-      this.portraitsCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/portraits"
-      });
+        this.portraitsCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/portraits"
+        });
 
-      this.codexChaptersCollection = new DuelystFirebase.Collection(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/codex"
-      });
+        this.codexChaptersCollection = new DuelystFirebase.Collection(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/codex"
+        });
 
-      this.totalOrbCountModel = new DuelystFirebase.Model(null, {
-        firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/spirit-orb-total"
-      });
+        this.totalOrbCountModel = new DuelystFirebase.Model(null, {
+          firebase: process.env.FIREBASE_URL + "user-inventory/" + userId + "/spirit-orb-total"
+        });
 
-      this.onReady().then(function(){
+        this.onReady().then(function(){
         // listen to changes immediately so we don't miss anything
-        this.listenTo(this.walletModel, "change",this.onWalletChange);
-        this.listenTo(this.boosterPacksCollection, "change add remove",this.onBoosterPackCollectionChange);
-        this.listenTo(this.cardsCollection, "add",this.onCardsCollectionCardAdded);
-        this.listenTo(this.cardsCollection, "remove",this.onCardsCollectionCardRemoved);
-        this.listenTo(this.cardsCollection, "change",this.onCardsCollectionChange);
-        this.listenTo(this.cardLoreCollection, "change add remove",this.onCardLoreCollectionChange);
-        this.listenTo(this.decksCollection, "change add remove",this.onDecksCollectionChange);
-        this.listenTo(this.cosmeticsCollection, "add remove",this.onCosmeticsCollectionChange);
-        this.listenTo(this.totalOrbCountModel, "change",this.onOrbCountCollectionChange);
+          this.listenTo(this.walletModel, "change",this.onWalletChange);
+          this.listenTo(this.boosterPacksCollection, "change add remove",this.onBoosterPackCollectionChange);
+          this.listenTo(this.cardsCollection, "add",this.onCardsCollectionCardAdded);
+          this.listenTo(this.cardsCollection, "remove",this.onCardsCollectionCardRemoved);
+          this.listenTo(this.cardsCollection, "change",this.onCardsCollectionChange);
+          this.listenTo(this.cardLoreCollection, "change add remove",this.onCardLoreCollectionChange);
+          this.listenTo(this.decksCollection, "change add remove",this.onDecksCollectionChange);
+          this.listenTo(this.cosmeticsCollection, "add remove",this.onCosmeticsCollectionChange);
+          this.listenTo(this.totalOrbCountModel, "change",this.onOrbCountCollectionChange);
 
-        // update decks when game data is ready
-        Promise.all([
-          GameDataManager.getInstance().onReady(),
-          ProgressionManager.getInstance().onReady(),
-          NewPlayerManager.getInstance().onReady()
-        ]).then(function () {
+          // update decks when game data is ready
+          Promise.all([
+            GameDataManager.getInstance().onReady(),
+            ProgressionManager.getInstance().onReady(),
+            NewPlayerManager.getInstance().onReady()
+          ]).then(function () {
 
-          // Check if player is missing codex chapters they should have earned once progression manager is ready
-          this.checkForMissingCodexChapters();
+            // Check if player is missing codex chapters they should have earned once progression manager is ready
+            this.checkForMissingCodexChapters();
 
-          var invalidDeckModels = [];
-          this.decksCollection.each(function (deckModel) {
-            var deckFactionId = deckModel.get("faction_id");
-            if (deckFactionId == null
+            var invalidDeckModels = [];
+            this.decksCollection.each(function (deckModel) {
+              var deckFactionId = deckModel.get("faction_id");
+              if (deckFactionId == null
               || !ProgressionManager.getInstance().isFactionUnlocked(deckModel.get("faction_id"))) {
               // no faction or faction not unlocked
-              invalidDeckModels.push(deckModel);
-            } else {
+                invalidDeckModels.push(deckModel);
+              } else {
               // decks at this point have all properties
               // except their card models (these are not serialized)
               // so we need to update the card models from the list of card ids
-              deckModel.updateCardModelsFromCardsData();
+                deckModel.updateCardModelsFromCardsData();
 
-              // deck must have general
-              if (!deckModel.hasGeneral()) {
-                invalidDeckModels.push(deckModel);
+                // deck must have general
+                if (!deckModel.hasGeneral()) {
+                  invalidDeckModels.push(deckModel);
+                }
               }
-            }
+            }.bind(this));
+
+            // remove all invalid decks
+            this.decksCollection.remove(invalidDeckModels);
           }.bind(this));
-
-          // remove all invalid decks
-          this.decksCollection.remove(invalidDeckModels);
         }.bind(this));
-      }.bind(this));
 
-      this._markAsReadyWhenModelsAndCollectionsSynced([
-        this.walletModel,
-        this.boosterPacksCollection,
-        this.cardsCollection,
-        this.decksCollection,
-        this.cardLoreCollection,
-        this.codexChaptersCollection,
-        this.cosmeticsCollection
-      ]);
-    })
+        this._markAsReadyWhenModelsAndCollectionsSynced([
+          this.walletModel,
+          this.boosterPacksCollection,
+          this.cardsCollection,
+          this.decksCollection,
+          this.cardLoreCollection,
+          this.codexChaptersCollection,
+          this.cosmeticsCollection
+        ]);
+      })
   },
 
   onBeforeDisconnect: function() {

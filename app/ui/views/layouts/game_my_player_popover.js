@@ -361,9 +361,9 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
           saleData.salePrice = emoteModel.get("sale_price");
         }
         return NavigationManager.getInstance().showDialogForConfirmPurchase(productData,saleData)
-        .catch(function () {
+          .catch(function () {
           // do nothing on cancel
-        });
+          });
       } else if (InventoryManager.getInstance().getCanUseCosmeticById(emoteId)) {
         // broadcast emote
         var emoteTimestamp = Date.now();

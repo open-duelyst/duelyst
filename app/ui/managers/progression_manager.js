@@ -57,79 +57,79 @@ var ProgressionManager = Manager.extend({
     Manager.prototype.onBeforeConnect.call(this);
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
+      .bind(this)
+      .then(function () {
 
-      this.checkForReferralRewards()
+        this.checkForReferralRewards()
 
-      var userId = ProfileManager.getInstance().get('id');
-      var neededToBeReady = [];
+        var userId = ProfileManager.getInstance().get('id');
+        var neededToBeReady = [];
 
-      this.unreadChallengeProgressionRewards = [];
+        this.unreadChallengeProgressionRewards = [];
 
-      this.gameCounterRewardsCollection = new DuelystFirebase.Collection(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL)
-          .child("user-progression")
-          .child(userId)
-          .child("game-counter-rewards")
-      });
-      neededToBeReady.push(this.gameCounterRewardsCollection);
-
-      this.gameCounterModel = new DuelystFirebase.Model(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL)
-          .child("user-progression")
-          .child(userId)
-          .child("game-counter")
-      });
-      neededToBeReady.push(this.gameCounterModel);
-
-      this.bossesDefeatedCollection = new DuelystFirebase.Collection(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL)
-          .child("user-bosses-defeated")
-          .child(userId)
-      });
-      neededToBeReady.push(this.bossesDefeatedCollection);
-
-      this.bossEventsCollection = new DuelystFirebase.Collection(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL)
-          .child("boss-events")
-      });
-      this.bossEventsCollection.comparator = "event_start"
-      neededToBeReady.push(this.bossEventsCollection);
-
-      this._factionProgressionStats = {};
-      _.each(SDK.FactionFactory.getAllPlayableFactions(),function(faction) {
-        var factionId = faction.id.toString();
-        var factionProgressionModel = new DuelystFirebase.Model(null, {
+        this.gameCounterRewardsCollection = new DuelystFirebase.Collection(null, {
           firebase: new Firebase(process.env.FIREBASE_URL)
-            .child("user-faction-progression")
+            .child("user-progression")
             .child(userId)
-            .child(factionId)
-            .child("stats")
+            .child("game-counter-rewards")
         });
-        this._factionProgressionStats[factionId] = factionProgressionModel;
-        neededToBeReady.push(factionProgressionModel);
-      }.bind(this));
+        neededToBeReady.push(this.gameCounterRewardsCollection);
 
-      this.challengeProgressionCollection = new DuelystBackbone.Collection();
-      this.challengeProgressionCollection.model = ChallengeModel;
-      this.challengeProgressionCollection.url = process.env.API_URL + '/api/me/challenges/gated';
-      this.challengeProgressionCollection.fetch();
-      neededToBeReady.push(this.challengeProgressionCollection);
+        this.gameCounterModel = new DuelystFirebase.Model(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL)
+            .child("user-progression")
+            .child(userId)
+            .child("game-counter")
+        });
+        neededToBeReady.push(this.gameCounterModel);
 
-      // this.challengeProgressionCollection = new DuelystFirebase.Model(null, {
-      //   firebase: new Firebase(process.env.FIREBASE_URL).child("user-challenge-progression").child(userId)
-      // });
-      // neededToBeReady.push(this.challengeProgressionCollection);
+        this.bossesDefeatedCollection = new DuelystFirebase.Collection(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL)
+            .child("user-bosses-defeated")
+            .child(userId)
+        });
+        neededToBeReady.push(this.bossesDefeatedCollection);
 
-      // what to do when we're ready
-      this.onReady()
-      .then(function(){
-        this.listenTo(this.gameCounterRewardsCollection, "add", this.ongameCounterRewardReceived);
-      }.bind(this));
+        this.bossEventsCollection = new DuelystFirebase.Collection(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL)
+            .child("boss-events")
+        });
+        this.bossEventsCollection.comparator = "event_start"
+        neededToBeReady.push(this.bossEventsCollection);
 
-      this._markAsReadyWhenModelsAndCollectionsSynced(neededToBeReady);
-    })
+        this._factionProgressionStats = {};
+        _.each(SDK.FactionFactory.getAllPlayableFactions(),function(faction) {
+          var factionId = faction.id.toString();
+          var factionProgressionModel = new DuelystFirebase.Model(null, {
+            firebase: new Firebase(process.env.FIREBASE_URL)
+              .child("user-faction-progression")
+              .child(userId)
+              .child(factionId)
+              .child("stats")
+          });
+          this._factionProgressionStats[factionId] = factionProgressionModel;
+          neededToBeReady.push(factionProgressionModel);
+        }.bind(this));
+
+        this.challengeProgressionCollection = new DuelystBackbone.Collection();
+        this.challengeProgressionCollection.model = ChallengeModel;
+        this.challengeProgressionCollection.url = process.env.API_URL + '/api/me/challenges/gated';
+        this.challengeProgressionCollection.fetch();
+        neededToBeReady.push(this.challengeProgressionCollection);
+
+        // this.challengeProgressionCollection = new DuelystFirebase.Model(null, {
+        //   firebase: new Firebase(process.env.FIREBASE_URL).child("user-challenge-progression").child(userId)
+        // });
+        // neededToBeReady.push(this.challengeProgressionCollection);
+
+        // what to do when we're ready
+        this.onReady()
+          .then(function(){
+            this.listenTo(this.gameCounterRewardsCollection, "add", this.ongameCounterRewardReceived);
+          }.bind(this));
+
+        this._markAsReadyWhenModelsAndCollectionsSynced(neededToBeReady);
+      })
   },
 
   checkForReferralRewards: function() {

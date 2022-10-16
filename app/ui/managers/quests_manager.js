@@ -50,54 +50,54 @@ var QuestsManager = Manager.extend({
     Manager.prototype.onBeforeConnect.call(this);
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
-      this._unreadQuestProgressNotificationModels = [];
-      this.dailyQuestsGeneratedAtModel = null;
-      this.dailyQuestsCollection = null;
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
+        this._unreadQuestProgressNotificationModels = [];
+        this.dailyQuestsGeneratedAtModel = null;
+        this.dailyQuestsCollection = null;
 
-      NewPlayerManager.getInstance().onReady().then(function(){
+        NewPlayerManager.getInstance().onReady().then(function(){
         // on first connect/session start request new daily quests
-        this.requestNewDailyQuests().finally(function() {
+          this.requestNewDailyQuests().finally(function() {
 
-          var dailyquestsFirebaseReference = new Firebase(process.env.FIREBASE_URL + "user-quests/" + userId + "/daily/current/generated_at")
-          this.dailyQuestsGeneratedAtModel = new DuelystFirebase.Model(null, {
-            firebase: dailyquestsFirebaseReference
-          })
+            var dailyquestsFirebaseReference = new Firebase(process.env.FIREBASE_URL + "user-quests/" + userId + "/daily/current/generated_at")
+            this.dailyQuestsGeneratedAtModel = new DuelystFirebase.Model(null, {
+              firebase: dailyquestsFirebaseReference
+            })
 
-          //var dailyChallengesLastCompletedAtModelFirebaseReference = new Firebase(process.env.FIREBASE_URL + "user-challenges-daily/" + userId + "/last_completed_at")
-          //this.dailyChallengesLastCompletedAtModel = new DuelystFirebase.Model(null, {
-          //  firebase: dailyChallengesLastCompletedAtModelFirebaseReference
-          //})
+            //var dailyChallengesLastCompletedAtModelFirebaseReference = new Firebase(process.env.FIREBASE_URL + "user-challenges-daily/" + userId + "/last_completed_at")
+            //this.dailyChallengesLastCompletedAtModel = new DuelystFirebase.Model(null, {
+            //  firebase: dailyChallengesLastCompletedAtModelFirebaseReference
+            //})
 
-          this.dailyChallengesLastCompletedAtModel = new DuelystBackbone.Model();
-          this.dailyChallengesLastCompletedAtModel.url = process.env.API_URL  + '/api/me/challenges/daily/completed_at';
-          this.dailyChallengesLastCompletedAtModel.fetch();
+            this.dailyChallengesLastCompletedAtModel = new DuelystBackbone.Model();
+            this.dailyChallengesLastCompletedAtModel.url = process.env.API_URL  + '/api/me/challenges/daily/completed_at';
+            this.dailyChallengesLastCompletedAtModel.fetch();
 
-          var dailyQuestsPath = process.env.FIREBASE_URL + "user-quests/" + userId + "/daily/current/quests";
-          var dailyquestsFirebaseReference = new Firebase(dailyQuestsPath);
+            var dailyQuestsPath = process.env.FIREBASE_URL + "user-quests/" + userId + "/daily/current/quests";
+            var dailyquestsFirebaseReference = new Firebase(dailyQuestsPath);
 
-          this.dailyQuestsCollection = new DuelystFirebase.Collection(null, {
-            firebase: dailyquestsFirebaseReference
-          });
+            this.dailyQuestsCollection = new DuelystFirebase.Collection(null, {
+              firebase: dailyquestsFirebaseReference
+            });
 
-          // what to do when we're ready
-          this.onReady().then(function(){
+            // what to do when we're ready
+            this.onReady().then(function(){
 
-            this.listenTo(this.dailyQuestsCollection, "add", this.onQuestAdded);
-            this.listenTo(this.dailyQuestsCollection, "remove", this.onQuestRemoved);
-            this.listenTo(this.dailyQuestsCollection, "change", this.onQuestsChanged);
-            this.dailyQuestsCollection.each(this.onQuestAdded.bind(this));
+              this.listenTo(this.dailyQuestsCollection, "add", this.onQuestAdded);
+              this.listenTo(this.dailyQuestsCollection, "remove", this.onQuestRemoved);
+              this.listenTo(this.dailyQuestsCollection, "change", this.onQuestsChanged);
+              this.dailyQuestsCollection.each(this.onQuestAdded.bind(this));
 
-          }.bind(this));
+            }.bind(this));
 
-          this._markAsReadyWhenModelsAndCollectionsSynced([this.dailyQuestsGeneratedAtModel,this.dailyQuestsCollection]);
+            this._markAsReadyWhenModelsAndCollectionsSynced([this.dailyQuestsGeneratedAtModel,this.dailyQuestsCollection]);
+
+          }.bind(this))
 
         }.bind(this))
-
-      }.bind(this))
-    })
+      })
   },
 
   onBeforeDisconnect: function() {

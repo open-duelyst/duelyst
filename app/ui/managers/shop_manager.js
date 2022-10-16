@@ -43,58 +43,58 @@ var ShopManager = Manager.extend({
     this.availableSpecials = new DuelystBackbone.Collection()
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
-      this.productPurchaseCountsModel = new DuelystFirebase.Model(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL).child("user-purchase-counts").child(userId)
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
+        this.productPurchaseCountsModel = new DuelystFirebase.Model(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL).child("user-purchase-counts").child(userId)
+        })
+
+        this._userPremiumReceiptsRef = new Firebase(process.env.FIREBASE_URL).child('user-premium-receipts').child(userId).orderByChild('created_at').startAt(moment().utc().valueOf());
+        this._userPremiumReceiptsRef.on('child_added', this._onUserReceiptAdded.bind(this));
+
+        // this._shopSalesCollection = new Firebase(process.env.FIREBASE_URL).child('shop-sales');
+        // this._shopSalesCollection.on('child_added', this._onUserReceiptAdded.bind(this));
+        this._shopSalesCollection = new DuelystBackbone.Collection();
+        this._shopSalesCollection.url = process.env.API_URL + '/api/me/shop/sales';
+        this._shopSalesCollection.fetch();
+
+        this._shopProductsModel = new DuelystBackbone.Model();
+        this._shopProductsModel.url = process.env.API_URL + '/api/me/shop/products';
+        this._shopProductsModel.fetch();
+
+        this._premiumProductsModel = new DuelystBackbone.Model();
+        this._premiumProductsModel.url = process.env.API_URL + '/api/me/shop/premium_pack_products';
+        this._premiumProductsModel.fetch();
+
+        this._shopSalesLastUpdatedAtModel = new DuelystFirebase.Model(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL).child("shop-sales")
+        })
+
+        this._markAsReadyWhenModelsAndCollectionsSynced([
+          this.productPurchaseCountsModel,
+          this._shopProductsModel,
+          this._shopSalesLastUpdatedAtModel,
+          this._premiumProductsModel
+        ])
       })
-
-      this._userPremiumReceiptsRef = new Firebase(process.env.FIREBASE_URL).child('user-premium-receipts').child(userId).orderByChild('created_at').startAt(moment().utc().valueOf());
-      this._userPremiumReceiptsRef.on('child_added', this._onUserReceiptAdded.bind(this));
-
-      // this._shopSalesCollection = new Firebase(process.env.FIREBASE_URL).child('shop-sales');
-      // this._shopSalesCollection.on('child_added', this._onUserReceiptAdded.bind(this));
-      this._shopSalesCollection = new DuelystBackbone.Collection();
-      this._shopSalesCollection.url = process.env.API_URL + '/api/me/shop/sales';
-      this._shopSalesCollection.fetch();
-
-      this._shopProductsModel = new DuelystBackbone.Model();
-      this._shopProductsModel.url = process.env.API_URL + '/api/me/shop/products';
-      this._shopProductsModel.fetch();
-
-      this._premiumProductsModel = new DuelystBackbone.Model();
-      this._premiumProductsModel.url = process.env.API_URL + '/api/me/shop/premium_pack_products';
-      this._premiumProductsModel.fetch();
-
-      this._shopSalesLastUpdatedAtModel = new DuelystFirebase.Model(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL).child("shop-sales")
-      })
-
-      this._markAsReadyWhenModelsAndCollectionsSynced([
-        this.productPurchaseCountsModel,
-        this._shopProductsModel,
-        this._shopSalesLastUpdatedAtModel,
-        this._premiumProductsModel
-      ])
-    })
 
     // what to do when we're ready
     Promise.all([
       this.onReady(),
       ProgressionManager.getInstance().onReady()
     ])
-    .bind(this)
-    .then(function(){
+      .bind(this)
+      .then(function(){
       // whenever a purchase count changes, fire off a method that can clear out specials
-      this.listenTo(this.productPurchaseCountsModel, "change", this.onPurchaseCountsChanged.bind(this))
-      // after everything is ready, update the available specials with the new requirements
-      this.updateAvailableSpecialsWithNewRequirements()
-      this.listenTo(ProgressionManager.getInstance().gameCounterModel,"change",this.updateAvailableSpecialsWithNewRequirements)
-      this.listenTo(this._shopSalesLastUpdatedAtModel,"change",this.onSalesUpdatedChanged.bind(this));
-      this.listenTo(this.availableSpecials,"add",this.onNewSpecialHasBecomeAvailable)
-      this.isNewSpecialAvailable = false
-    })
+        this.listenTo(this.productPurchaseCountsModel, "change", this.onPurchaseCountsChanged.bind(this))
+        // after everything is ready, update the available specials with the new requirements
+        this.updateAvailableSpecialsWithNewRequirements()
+        this.listenTo(ProgressionManager.getInstance().gameCounterModel,"change",this.updateAvailableSpecialsWithNewRequirements)
+        this.listenTo(this._shopSalesLastUpdatedAtModel,"change",this.onSalesUpdatedChanged.bind(this));
+        this.listenTo(this.availableSpecials,"add",this.onNewSpecialHasBecomeAvailable)
+        this.isNewSpecialAvailable = false
+      })
   },
 
   _retrievePremiumProductsData: function () {

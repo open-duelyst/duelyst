@@ -82,12 +82,12 @@ var FXTimerSprite = BaseSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'progress':
-        this.progress = value;
-        break;
-      default:
-        BaseSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'progress':
+      this.progress = value;
+      break;
+    default:
+      BaseSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

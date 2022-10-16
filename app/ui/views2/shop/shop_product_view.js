@@ -85,16 +85,16 @@ var ShopProductItemView = Backbone.Marionette.ItemView.extend({
       }.bind(this));
     } else {
     */
-      var iconImageResource = RSX[this.model.get("icon_image_resource_name")];
-      var iconImageUrl;
-      if (iconImageResource != null) {
-        iconImageUrl = iconImageResource.is16Bit ? iconImageResource.img : RSX.getResourcePathForScale(iconImageResource.img, CONFIG.resourceScaleCSS);
-      } else {
-        iconImageUrl = RSX.getResourcePathForScale(this.model.get("icon_image_url") , CONFIG.resourceScaleCSS);
-      }
-      this.$el.show();
-      this.ui.product_animation.hide();
-      this.ui.product_icon.show().attr("src",iconImageUrl);
+    var iconImageResource = RSX[this.model.get("icon_image_resource_name")];
+    var iconImageUrl;
+    if (iconImageResource != null) {
+      iconImageUrl = iconImageResource.is16Bit ? iconImageResource.img : RSX.getResourcePathForScale(iconImageResource.img, CONFIG.resourceScaleCSS);
+    } else {
+      iconImageUrl = RSX.getResourcePathForScale(this.model.get("icon_image_url") , CONFIG.resourceScaleCSS);
+    }
+    this.$el.show();
+    this.ui.product_animation.hide();
+    this.ui.product_icon.show().attr("src",iconImageUrl);
     //}
   },
 

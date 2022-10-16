@@ -51,13 +51,13 @@ var ChangePasswordItemView = FormPromptDialogItemView.extend({
     var passwordCurrent = this.ui.$passwordCurrent.val();
     var password = this.ui.$password.val();
     Session.changePassword(passwordCurrent, password).bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   },
 
   /* endregion EVENTS */

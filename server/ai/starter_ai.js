@@ -1160,502 +1160,502 @@ StarterAI.prototype = {
       // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent -> target positions length after immunity filter = " + validTargetPositions.length + " for card ID =" + cardId);
       // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent -> card intent = " + CARD_INTENT[cardId] + " for card ID =" + cardId);
       switch (CARD_INTENT[cardId]) {
-        case 'draw':
-        case 'draw_bbs':
-          var cardsInHand = this.getGameSession().getCurrentPlayer().getDeck().getNumCardsInHand();
-          if (CARD_INTENT[cardId].indexOf('bbs') !== -1) {
-            if (cardsInHand > CONFIG.MAX_HAND_SIZE - CONFIG.CARD_DRAW_PER_TURN) { // don't cast if we have full hand or will after end-turn draw
-              validTargetPositions = [];
-            }
-          } else if (cardsInHand > (CONFIG.MAX_HAND_SIZE - (CONFIG.CARD_DRAW_PER_TURN + 1))) { // don't cast if we have full hand -2 (4) or more cards
+      case 'draw':
+      case 'draw_bbs':
+        var cardsInHand = this.getGameSession().getCurrentPlayer().getDeck().getNumCardsInHand();
+        if (CARD_INTENT[cardId].indexOf('bbs') !== -1) {
+          if (cardsInHand > CONFIG.MAX_HAND_SIZE - CONFIG.CARD_DRAW_PER_TURN) { // don't cast if we have full hand or will after end-turn draw
             validTargetPositions = [];
           }
-          break;
-        case 'hand_improve_minion_mass':
-        case 'hand_improve_minion_mass_bbs':
-          // cast as long as we have at least one minion in hand
-          var cardsInHand = this.getGameSession().getCurrentPlayer().getDeck().getCardsInHand();
-          var minionsInHand = _.filter(cardsInHand, (card) => card instanceof SDK.Unit);
-          if (minionsInHand.length < 1) {
-            validTargetPositions = [];
-          }
-          break;
-        case 'stun':
-          var myGeneral = this.getMyGeneral();
-          validTargetPositions = _.reject(validTargetPositions, (validPos) => {
-            // reject empty positions
-            const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            if (unitAtPosition == null) return true;
-            // reject friendly units
-            if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
-            return false;
-          });
-
-          // beam shock.  only use it to stun high value minions and not generals (but don't stun a minion that's already stunned)
-          validTargetPositions = _.filter(validTargetPositions, (validPos) => {
-            const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            return unitAtPos.getATK() > THRESHOLD_HIGH_ATTACK_UNIT && !unitAtPos.getIsGeneral() && !unitAtPos.hasActiveModifierClass(SDK.ModifierStunned);
-          });
-
-          if (validTargetPositions.length > 0) {
-            validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
-          }
-          break;
-        case 'burn_stun_minion':
-          var myGeneral = this.getMyGeneral();
-          validTargetPositions = _.reject(validTargetPositions, (validPos) => {
-            // reject empty positions
-            const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            if (unitAtPosition == null) return true;
-            // reject friendly units
-            if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
-            return false;
-          });
-
-          // flash freeze. we prefer to use as stun on high bounty units that are not already stunned and are not generals, but will use for lethal burn in some cases
-          validTargetPositions = _.filter(validTargetPositions, (validPos) => {
-            const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            return unitAtPos.getHP() <= card.damageAmount || (unitAtPos.getATK() > THRESHOLD_HIGH_ATTACK_UNIT && !unitAtPos.hasActiveModifierClass(SDK.ModifierStunned) && !unitAtPos.getIsGeneral());
-          });
-
-          if (validTargetPositions.length > 0) {
-            validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
-          }
-          break;
-        case 'burn':
-        case 'burn_minion':
-        case 'burn_dispel':
-          var myGeneral = this.getMyGeneral();
-          validTargetPositions = _.reject(validTargetPositions, (validPos) => {
-            // reject empty positions
-            const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            if (unitAtPosition == null) return true;
-            // reject friendly units
-            if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
-            return false;
-          });
-
-          // chromatic cold. we prefer to use as dispel on high bounty, buffed units, but will use for lethal burn in some cases
-          if (!card.getIsFollowup()) {
-            validTargetPositions = _.filter(validTargetPositions, (validPos) => {
-              const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-              return unitAtPos.getHP() <= card.damageAmount || ((!unitAtPos.getIsGeneral() && ScoreForModifiers(unitAtPos) >= THRESHOLD_DISPEL));
-            });
-          }
-
-          if (validTargetPositions.length > 0) {
-            validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnitDamage(this.getGameSession().getBoard().getUnitAtPosition(validPos), card.damageAmount)).reverse();
-          }
-          break;
-        case 'burn_move_enemy_minion':
-          var myGeneral = this.getMyGeneral();
-          var validTargetPositions_copy = validTargetPositions.slice(0);
-          validTargetPositions = _.reject(validTargetPositions, (validPos) => {
-            // reject empty positions
-            const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-            if (unitAtPosition == null) return true;
-            // reject friendly units
-            if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
-            return false;
-          });
-          if (cardId == SDK.Cards.Spell.DaemonicLure) {
-            // daemonic lure. we prefer to use as relocate on high bounty units, but will use for lethal burn in some cases
-            validTargetPositions = _.reject(validTargetPositions, (validPos) => {
-              const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-              return (unitAtPos.getHP() - (card.damageAmount || 0) > 0) || unitAtPos.hasModifierClass(SDK.ModifierRanged);
-            });
-          }
-          if (!this._hasLethalOnEnemyGeneral) {
-            // allow burn spell targeting for non-lethal damage when generalLethal is triggered
-            validTargetPositions = _.filter(validTargetPositions, (validPos) => {
-              const potentialTarget = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-              return potentialTarget.getHP() <= card.damageAmount;
-            });
-          }
-          if (validTargetPositions.length > 0) {
-            validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
-            const generalLethal = _.find(validTargetPositions, (validPos) => {
-              const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-              return unitAtPos instanceof SDK.Unit && unitAtPos.getIsGeneral();
-            });
-            if (generalLethal != null) {
-              validTargetPositions[0] = generalLethal;
-            }
-          } else if (CARD_INTENT[cardId].indexOf('move') > -1) {
-            // only move units with ATK of at least 4 or provokers or ranged units
-            validTargetPositions = _.reject(validTargetPositions_copy, (validPos) => {
-              const enemy = this.getGameSession().getBoard().getUnitAtPosition(validPos);
-              return (enemy.getATK() < THRESHOLD.HIGH_ATK && !enemy.hasModifierClass(SDK.ModifierProvoke) && !enemy.hasModifierClass(SDK.ModifierRanged));
-            });
-            // if a high value move target exists, choose the one with the highest distance bounty
-            if (validTargetPositions.length > 0) {
-              validTargetPositions[0] = this._highestPositionObjectiveAndScoreFromPositions(card, validTargetPositions).targetPosition;
-            }
-          }
-          break;
-        case 'removal':
-        case 'removal_buff_minion':
-          if (cardId == SDK.Cards.Spell.Martyrdom && this._hasLethalOnEnemyGeneral) // dont cast martyrdom when enemy general within lethal
-          { return []; } // NOTE: the expected response is an ARRAY so don't return NULL
-          var myGeneral = this.getMyGeneral();
-          // reject friendly units
-          validTargetPositions = _.reject(validTargetPositions, (validPos) => this.getGameSession().getBoard().getUnitAtPosition(validPos).getIsSameTeamAs(myGeneral));
-          validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
-          // drawback considerations
-          if (cardId == SDK.Cards.Spell.AspectOfTheWolf) // aspect of the fox replace with 3/3
-          { validTargetPositions = _.reject(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 14); } else if (cardId == SDK.Cards.Spell.Martyrdom) // heal enemy general by unit's hp
-          { validTargetPositions = _.reject(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 12); } else validTargetPositions = _.reject(validTargetPositions, (validPos) => (ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 10));
-          break;
-
-        case 'shadownova':
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 1");
-          var myGeneral = this.getMyGeneral();
-          var enemies = this.getGameSession().getBoard().getEnemyEntitiesForEntity(myGeneral, SDK.CardType.Unit);
-          var shadownovaDamage = 1;
-          var shadowTiles = _.filter(this.getGameSession().getBoard().getTiles(true), (tile) => tile.hasModifierClass(SDK.ModifierStackingShadows));
-          // target enemies not already standing on shadow creep
-          // this means we never intentionally use shadownova to amplify damage to enemies already standing on shadow creep...
-          enemies = _.reject(enemies, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
-          // reject immune units
-          enemies = _.reject(enemies, (enemy) => this._isTargetImmuneToSource(enemy, card));
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 2 enemies.length = " + enemies.length + ". shadownovadamage = " + shadownovaDamage);
-          if (_.some(enemies, (enemy) => enemy.getHP() <= shadownovaDamage)) {
-            // if we can kill something with shadownova, pick highest bounty target
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 3 enemy can be killed");
-            const enemiesWithinLethalRange = _.filter(enemies, (enemy) => enemy.getHP() <= shadownovaDamage);
-            const primaryTarget = _.max(enemiesWithinLethalRange, (enemy) => ScoreForUnitDamage(enemy, shadownovaDamage));
-            enemies = _.without(enemies, primaryTarget); // remove primary target from remaining enemies
-            // get enemies adjacent to primary target and select one with highest damage bounty
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 3.5 primary target = " + primaryTarget.getLogName());
-            let secondaryTargetsArray = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(primaryTarget, SDK.CardType.Unit);
-            // reject enemies already standing on shadow creep...?
-            secondaryTargetsArray = _.reject(secondaryTargetsArray, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
-            if (secondaryTargetsArray.length == 0 && ScoreForUnitDamage(primaryTarget, shadownovaDamage) < 99) {
-              // overrides secondry target requirement when general lethal possible
-              //* **TODO - SELECT ALTERNATIVE PRIMARY TARGET
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova - no SECONDARY lethal targets. not casting.");
-              validTargetPositions = []; // do not cast if we can't affect at least 2 enemies or we're not killing general
-            } else {
-              let secondaryTarget;
-              if (ScoreForUnitDamage(primaryTarget, shadownovaDamage) >= 99) {
-                // overrides secondary target requirement when general lethal possible
-                secondaryTarget = primaryTarget;
-              } else {
-                secondaryTarget = _.max(secondaryTargetsArray, (secondaryTarget) => ScoreForUnitDamage(secondaryTarget, shadownovaDamage));
-              }
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4 enemy can be killed, secondary target affected. primary = " + primaryTarget.getLogName() + ". secondary = " + secondaryTarget.getLogName());
-
-              // allow 3rd "auxiliary" target
-              // get enemies adjacent to primary AND secondary targets and select one with highest damage bounty
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4.1 seeking 3rd target");
-              let unitsAroundPrimaryTarget = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(primaryTarget, SDK.CardType.Unit);
-              // exclude secondary
-              unitsAroundPrimaryTarget = _.reject(unitsAroundPrimaryTarget, (target) => target == secondaryTarget);
-              let unitsAroundSecondaryTarget = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(secondaryTarget, SDK.CardType.Unit);
-              // exclude primary
-              unitsAroundSecondaryTarget = _.reject(unitsAroundSecondaryTarget, (target) => target == primaryTarget);
-              // find new units who are adjacent to both our primary and secondary targets by intersecting the adjacent arrays
-              let auxiliaryTargetsArray = _.intersection(unitsAroundPrimaryTarget, unitsAroundSecondaryTarget);
-              // reject enemies already standing on shadow creep...?
-              auxiliaryTargetsArray = _.reject(auxiliaryTargetsArray, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
-              if (auxiliaryTargetsArray.length > 0) {
-                var auxiliaryTarget = _.max(auxiliaryTargetsArray, (auxTarget) => ScoreForUnitDamage(auxTarget, shadownovaDamage));
-                // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4.2 3rd target acquired: " + auxiliaryTarget.name);
-              } else {
-                auxiliaryTarget = primaryTarget;
-              }
-
-              // position to affect all targets - if no auxiliaryTarget, auxiliaryTarget will be same as primary target and will simply be redundant targeting
-              const affectPattern = card.getAffectPattern();
-              const positionsToMatch = [primaryTarget.getPosition()];
-              if (primaryTarget !== secondaryTarget) { positionsToMatch.push(secondaryTarget.getPosition()); }
-              if (primaryTarget !== auxiliaryTarget) { positionsToMatch.push(auxiliaryTarget.getPosition()); }
-              const positionThatAffectsAllTargets = _.find(validTargetPositions, (pos) => {
-                // find position that contains all targets
-                const bx = pos.x;
-                const by = pos.y;
-                let numMatches = 0;
-                for (let a = 0, al = affectPattern.length; a < al; a++) {
-                  const offset = affectPattern[a];
-                  if (UtilsPosition.getIsPositionInPositions(positionsToMatch, { x: bx + offset.x, y: by + offset.y })) {
-                    numMatches++;
-                    if (numMatches === positionsToMatch.length) {
-                      break;
-                    }
-                  }
-                }
-
-                // position must also ensure that area of effect remains on board
-                return numMatches === positionsToMatch.length && card.isAreaOfEffectOnBoard(pos);
-              });
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] done finding target pos.");
-              validTargetPositions = [positionThatAffectsAllTargets];
-              // flag targets as marked for death - do not allow targets or attacks against them
-              // TODO: any other incidental deaths?
-              this._markedForDeath.push(primaryTarget);
-              this._markedForDeath.push(secondaryTarget);
-              this._markedForDeath.push(auxiliaryTarget);
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 5 position to affect both targets = " + positionThatAffectsAllTargets.x + ", " + positionThatAffectsAllTargets.y);
-              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 6 primary = " + this._markedForDeath[0].getLogName() + " secondary = " + this._markedForDeath[1].getLogName() + " auxiliary = " + this._markedForDeath[2].getLogName());
-              /// /DEBUGGING START
-              /// /disable cast
-              // validTargetPositions = [];
-              /// /DEBUGGING END
-            }
-          } else { // no lethal targets - don't cast.
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova - no lethal targets. not casting.");
-            validTargetPositions = [];
-          }
-          break;
-        case 'burn_mass_minion':
-        case 'burn_mass_enemy_minion':
-        case 'burn_mass':
-        case 'removal_mass_minion':
-        case 'burn_mass_enemy':
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] burn mass detected.");
-          var damageAmount = 0;
-          if (CARD_INTENT[cardId].indexOf('burn') > -1) damageAmount = card.damageAmount;
-          else damageAmount = 999;
-          var enemyDamageBounty = 0;
-          var myDamageBounty = 0;
-          var enemiesKilled = 0;
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] cardid = " + cardId);
-          if (cardId == SDK.Cards.Spell.Warbird) {
-            // threshold for casting - 23.3 is base dmg to general, so at 3+ cards in hand, requires dmg to at least something else to cast, otherwise we hold. this threshold declines as number of cards in hand declines because saving cards has value
-            myDamageBounty += 20 + (this.getMyPlayer().getDeck().getNumCardsInHand() * 1.5);
-            enemiesKilled++; // allows warbird to be cast without lethal
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] warbird detected. mybounty = " + myDamageBounty);
-          }
-          var myGeneral = this.getMyGeneral();
-          _.each(this.getGameSession().getBoard().getUnits(), (unit) => {
-            if (this._isTargetImmuneToSource(unit, card)) return; // don't count immune units
-            if (CARD_INTENT[cardId].indexOf('minion') > -1 && unit.getIsGeneral()) return; // don't count generals if spell effects only minions (i.e. burn_mass_minion)
-            if (cardId == SDK.Cards.Spell.Avalanche && this._isOnMySideOfBoard(card, unit.getPosition()) == false) return; // avalanche only deal dmg to units on starting side of field
-            if (cardId == SDK.Cards.Spell.Warbird && unit.getPosition().x !== this.getOpponentGeneral().getPosition().x) return; // warbird only deals damage in column of
-            if (cardId == SDK.Cards.Spell.PlasmaStorm && unit.getATK() > 3) return; // plasma storm only minions with 3 or less attack
-            if (unit.getIsSameTeamAs(myGeneral) && CARD_INTENT[cardId].indexOf('enemy') == -1) {
-              myDamageBounty += ScoreForUnitDamage(unit, damageAmount);
-            } else if (!unit.getIsSameTeamAs(myGeneral)) {
-              enemyDamageBounty += ScoreForUnitDamage(unit, damageAmount);
-              if (damageAmount >= unit.getHP()) {
-                enemiesKilled++;
-              }
-            }
-          });
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] enemydamagebounty = " + enemyDamageBounty + ". myDamageBounty = " + myDamageBounty);
-          if (enemyDamageBounty < myDamageBounty || enemiesKilled == 0) {
-            // clear targets (don't cast) as burn spell doesn't meet criteria
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] criteria not met. clearing targets.");
-            validTargetPositions = [];
-          }
-          break;
-        case 'burn_mass_column':
-          // warbird - DEPRECATED. old design, no longer used
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] burn_mass_column warbird entered.");
+        } else if (cardsInHand > (CONFIG.MAX_HAND_SIZE - (CONFIG.CARD_DRAW_PER_TURN + 1))) { // don't cast if we have full hand -2 (4) or more cards
           validTargetPositions = [];
-          var { damageAmount } = card;
-          var enemiesKilled = 0;
-          var score = 0;
-          var myGeneral = this.getMyGeneral();
-          var columnCount = this.getGameSession().getBoard().getColumnCount();
-          var bestColumn = { columnNumber: null, score: 1, enemiesKilled: 0 };
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] looping through " + columnCount + " columns.");
-          for (i = 0; i < columnCount; i++) {
-            // loop through each column
-            enemiesKilled = 0;
-            score = 0;
-            const unitsInColumn = this.getGameSession().getBoard().getEntitiesInColumn(i, SDK.CardType.Unit);
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] " + unitsInColumn.length + " units in column " + i);
-            // for each column, loop through each affected unit
-            if (unitsInColumn.length > 0) {
-              _.each(unitsInColumn, (unit) => {
-                if (this._isTargetImmuneToSource(unit, card)) return; // don't count immune units
-                // if (CARD_INTENT[cardId].indexOf("minion") > -1 && unit.getIsGeneral()) return; //don't count generals if spell effects only minions (i.e. burn_mass_minion)
-                if (unit.getIsSameTeamAs(myGeneral) && CARD_INTENT[cardId].indexOf('enemy') == -1) {
-                  score -= ScoreForUnitDamage(unit, damageAmount);
-                } else if (!unit.getIsSameTeamAs(myGeneral)) {
-                  score += ScoreForUnitDamage(unit, damageAmount);
-                  if (damageAmount >= unit.getHP()) {
-                    enemiesKilled++;
-                  }
-                }
-                // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] score for column " + i + " = " + score + ". enemiesKilled= " + enemiesKilled);
-                if (score > bestColumn.score && enemiesKilled > bestColumn.enemiesKilled) {
-                  // check if best column
-                  // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] +++++++++++ best column is now column " + i);
-                  bestColumn.score = score;
-                  bestColumn.enemiesKilled = enemiesKilled;
-                  bestColumn.columnNumber = i;
-                }
-              });
-            }
-          }
+        }
+        break;
+      case 'hand_improve_minion_mass':
+      case 'hand_improve_minion_mass_bbs':
+        // cast as long as we have at least one minion in hand
+        var cardsInHand = this.getGameSession().getCurrentPlayer().getDeck().getCardsInHand();
+        var minionsInHand = _.filter(cardsInHand, (card) => card instanceof SDK.Unit);
+        if (minionsInHand.length < 1) {
+          validTargetPositions = [];
+        }
+        break;
+      case 'stun':
+        var myGeneral = this.getMyGeneral();
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+          // reject empty positions
+          const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          if (unitAtPosition == null) return true;
+          // reject friendly units
+          if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
+          return false;
+        });
 
-          if (bestColumn.columnNumber != null) {
-            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] ==========best column is column " + bestColumn.columnNumber);
-            validTargetPositions[0] = { x: bestColumn.columnNumber, y: 1 };
-          }
-          break;
-        case 'move':
-          if (validTargetPositions.length > 0) {
-            var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
-            if (bestTargetPosition != null) {
-              validTargetPositions[0] = bestTargetPosition;
-            } else {
-              validTargetPositions = [];
-            }
-          }
-          break;
-        case 'move_enemy_minion':
-          // only move units with ATK of at least 4 or provokers or ranged units
+        // beam shock.  only use it to stun high value minions and not generals (but don't stun a minion that's already stunned)
+        validTargetPositions = _.filter(validTargetPositions, (validPos) => {
+          const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          return unitAtPos.getATK() > THRESHOLD_HIGH_ATTACK_UNIT && !unitAtPos.getIsGeneral() && !unitAtPos.hasActiveModifierClass(SDK.ModifierStunned);
+        });
+
+        if (validTargetPositions.length > 0) {
+          validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
+        }
+        break;
+      case 'burn_stun_minion':
+        var myGeneral = this.getMyGeneral();
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+          // reject empty positions
+          const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          if (unitAtPosition == null) return true;
+          // reject friendly units
+          if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
+          return false;
+        });
+
+        // flash freeze. we prefer to use as stun on high bounty units that are not already stunned and are not generals, but will use for lethal burn in some cases
+        validTargetPositions = _.filter(validTargetPositions, (validPos) => {
+          const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          return unitAtPos.getHP() <= card.damageAmount || (unitAtPos.getATK() > THRESHOLD_HIGH_ATTACK_UNIT && !unitAtPos.hasActiveModifierClass(SDK.ModifierStunned) && !unitAtPos.getIsGeneral());
+        });
+
+        if (validTargetPositions.length > 0) {
+          validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
+        }
+        break;
+      case 'burn':
+      case 'burn_minion':
+      case 'burn_dispel':
+        var myGeneral = this.getMyGeneral();
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+          // reject empty positions
+          const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          if (unitAtPosition == null) return true;
+          // reject friendly units
+          if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
+          return false;
+        });
+
+        // chromatic cold. we prefer to use as dispel on high bounty, buffed units, but will use for lethal burn in some cases
+        if (!card.getIsFollowup()) {
+          validTargetPositions = _.filter(validTargetPositions, (validPos) => {
+            const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+            return unitAtPos.getHP() <= card.damageAmount || ((!unitAtPos.getIsGeneral() && ScoreForModifiers(unitAtPos) >= THRESHOLD_DISPEL));
+          });
+        }
+
+        if (validTargetPositions.length > 0) {
+          validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnitDamage(this.getGameSession().getBoard().getUnitAtPosition(validPos), card.damageAmount)).reverse();
+        }
+        break;
+      case 'burn_move_enemy_minion':
+        var myGeneral = this.getMyGeneral();
+        var validTargetPositions_copy = validTargetPositions.slice(0);
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+          // reject empty positions
+          const unitAtPosition = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          if (unitAtPosition == null) return true;
+          // reject friendly units
+          if (unitAtPosition.getIsSameTeamAs(myGeneral)) return true;
+          return false;
+        });
+        if (cardId == SDK.Cards.Spell.DaemonicLure) {
+          // daemonic lure. we prefer to use as relocate on high bounty units, but will use for lethal burn in some cases
           validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+            const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+            return (unitAtPos.getHP() - (card.damageAmount || 0) > 0) || unitAtPos.hasModifierClass(SDK.ModifierRanged);
+          });
+        }
+        if (!this._hasLethalOnEnemyGeneral) {
+          // allow burn spell targeting for non-lethal damage when generalLethal is triggered
+          validTargetPositions = _.filter(validTargetPositions, (validPos) => {
+            const potentialTarget = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+            return potentialTarget.getHP() <= card.damageAmount;
+          });
+        }
+        if (validTargetPositions.length > 0) {
+          validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
+          const generalLethal = _.find(validTargetPositions, (validPos) => {
+            const unitAtPos = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+            return unitAtPos instanceof SDK.Unit && unitAtPos.getIsGeneral();
+          });
+          if (generalLethal != null) {
+            validTargetPositions[0] = generalLethal;
+          }
+        } else if (CARD_INTENT[cardId].indexOf('move') > -1) {
+          // only move units with ATK of at least 4 or provokers or ranged units
+          validTargetPositions = _.reject(validTargetPositions_copy, (validPos) => {
             const enemy = this.getGameSession().getBoard().getUnitAtPosition(validPos);
             return (enemy.getATK() < THRESHOLD.HIGH_ATK && !enemy.hasModifierClass(SDK.ModifierProvoke) && !enemy.hasModifierClass(SDK.ModifierRanged));
           });
           // if a high value move target exists, choose the one with the highest distance bounty
           if (validTargetPositions.length > 0) {
-            var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
-            if (bestTargetPosition != null) {
-              validTargetPositions[0] = bestTargetPosition;
+            validTargetPositions[0] = this._highestPositionObjectiveAndScoreFromPositions(card, validTargetPositions).targetPosition;
+          }
+        }
+        break;
+      case 'removal':
+      case 'removal_buff_minion':
+        if (cardId == SDK.Cards.Spell.Martyrdom && this._hasLethalOnEnemyGeneral) // dont cast martyrdom when enemy general within lethal
+        { return []; } // NOTE: the expected response is an ARRAY so don't return NULL
+        var myGeneral = this.getMyGeneral();
+        // reject friendly units
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => this.getGameSession().getBoard().getUnitAtPosition(validPos).getIsSameTeamAs(myGeneral));
+        validTargetPositions = _.sortBy(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos))).reverse();
+        // drawback considerations
+        if (cardId == SDK.Cards.Spell.AspectOfTheWolf) // aspect of the fox replace with 3/3
+        { validTargetPositions = _.reject(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 14); } else if (cardId == SDK.Cards.Spell.Martyrdom) // heal enemy general by unit's hp
+        { validTargetPositions = _.reject(validTargetPositions, (validPos) => ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 12); } else validTargetPositions = _.reject(validTargetPositions, (validPos) => (ScoreForUnit(this.getGameSession().getBoard().getUnitAtPosition(validPos)) < 10));
+        break;
+
+      case 'shadownova':
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 1");
+        var myGeneral = this.getMyGeneral();
+        var enemies = this.getGameSession().getBoard().getEnemyEntitiesForEntity(myGeneral, SDK.CardType.Unit);
+        var shadownovaDamage = 1;
+        var shadowTiles = _.filter(this.getGameSession().getBoard().getTiles(true), (tile) => tile.hasModifierClass(SDK.ModifierStackingShadows));
+        // target enemies not already standing on shadow creep
+        // this means we never intentionally use shadownova to amplify damage to enemies already standing on shadow creep...
+        enemies = _.reject(enemies, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
+        // reject immune units
+        enemies = _.reject(enemies, (enemy) => this._isTargetImmuneToSource(enemy, card));
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 2 enemies.length = " + enemies.length + ". shadownovadamage = " + shadownovaDamage);
+        if (_.some(enemies, (enemy) => enemy.getHP() <= shadownovaDamage)) {
+          // if we can kill something with shadownova, pick highest bounty target
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 3 enemy can be killed");
+          const enemiesWithinLethalRange = _.filter(enemies, (enemy) => enemy.getHP() <= shadownovaDamage);
+          const primaryTarget = _.max(enemiesWithinLethalRange, (enemy) => ScoreForUnitDamage(enemy, shadownovaDamage));
+          enemies = _.without(enemies, primaryTarget); // remove primary target from remaining enemies
+          // get enemies adjacent to primary target and select one with highest damage bounty
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 3.5 primary target = " + primaryTarget.getLogName());
+          let secondaryTargetsArray = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(primaryTarget, SDK.CardType.Unit);
+          // reject enemies already standing on shadow creep...?
+          secondaryTargetsArray = _.reject(secondaryTargetsArray, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
+          if (secondaryTargetsArray.length == 0 && ScoreForUnitDamage(primaryTarget, shadownovaDamage) < 99) {
+            // overrides secondry target requirement when general lethal possible
+            //* **TODO - SELECT ALTERNATIVE PRIMARY TARGET
+            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova - no SECONDARY lethal targets. not casting.");
+            validTargetPositions = []; // do not cast if we can't affect at least 2 enemies or we're not killing general
+          } else {
+            let secondaryTarget;
+            if (ScoreForUnitDamage(primaryTarget, shadownovaDamage) >= 99) {
+              // overrides secondary target requirement when general lethal possible
+              secondaryTarget = primaryTarget;
             } else {
-              validTargetPositions = [];
+              secondaryTarget = _.max(secondaryTargetsArray, (secondaryTarget) => ScoreForUnitDamage(secondaryTarget, shadownovaDamage));
+            }
+            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4 enemy can be killed, secondary target affected. primary = " + primaryTarget.getLogName() + ". secondary = " + secondaryTarget.getLogName());
+
+            // allow 3rd "auxiliary" target
+            // get enemies adjacent to primary AND secondary targets and select one with highest damage bounty
+            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4.1 seeking 3rd target");
+            let unitsAroundPrimaryTarget = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(primaryTarget, SDK.CardType.Unit);
+            // exclude secondary
+            unitsAroundPrimaryTarget = _.reject(unitsAroundPrimaryTarget, (target) => target == secondaryTarget);
+            let unitsAroundSecondaryTarget = this.getGameSession().getBoard().getFriendlyEntitiesAroundEntity(secondaryTarget, SDK.CardType.Unit);
+            // exclude primary
+            unitsAroundSecondaryTarget = _.reject(unitsAroundSecondaryTarget, (target) => target == primaryTarget);
+            // find new units who are adjacent to both our primary and secondary targets by intersecting the adjacent arrays
+            let auxiliaryTargetsArray = _.intersection(unitsAroundPrimaryTarget, unitsAroundSecondaryTarget);
+            // reject enemies already standing on shadow creep...?
+            auxiliaryTargetsArray = _.reject(auxiliaryTargetsArray, (enemy) => _.intersection([enemy.getPosition()], shadowTiles) > 0);
+            if (auxiliaryTargetsArray.length > 0) {
+              var auxiliaryTarget = _.max(auxiliaryTargetsArray, (auxTarget) => ScoreForUnitDamage(auxTarget, shadownovaDamage));
+              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 4.2 3rd target acquired: " + auxiliaryTarget.name);
+            } else {
+              auxiliaryTarget = primaryTarget;
+            }
+
+            // position to affect all targets - if no auxiliaryTarget, auxiliaryTarget will be same as primary target and will simply be redundant targeting
+            const affectPattern = card.getAffectPattern();
+            const positionsToMatch = [primaryTarget.getPosition()];
+            if (primaryTarget !== secondaryTarget) { positionsToMatch.push(secondaryTarget.getPosition()); }
+            if (primaryTarget !== auxiliaryTarget) { positionsToMatch.push(auxiliaryTarget.getPosition()); }
+            const positionThatAffectsAllTargets = _.find(validTargetPositions, (pos) => {
+              // find position that contains all targets
+              const bx = pos.x;
+              const by = pos.y;
+              let numMatches = 0;
+              for (let a = 0, al = affectPattern.length; a < al; a++) {
+                const offset = affectPattern[a];
+                if (UtilsPosition.getIsPositionInPositions(positionsToMatch, { x: bx + offset.x, y: by + offset.y })) {
+                  numMatches++;
+                  if (numMatches === positionsToMatch.length) {
+                    break;
+                  }
+                }
+              }
+
+              // position must also ensure that area of effect remains on board
+              return numMatches === positionsToMatch.length && card.isAreaOfEffectOnBoard(pos);
+            });
+              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] done finding target pos.");
+            validTargetPositions = [positionThatAffectsAllTargets];
+            // flag targets as marked for death - do not allow targets or attacks against them
+            // TODO: any other incidental deaths?
+            this._markedForDeath.push(primaryTarget);
+            this._markedForDeath.push(secondaryTarget);
+            this._markedForDeath.push(auxiliaryTarget);
+            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 5 position to affect both targets = " + positionThatAffectsAllTargets.x + ", " + positionThatAffectsAllTargets.y);
+            // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova 6 primary = " + this._markedForDeath[0].getLogName() + " secondary = " + this._markedForDeath[1].getLogName() + " auxiliary = " + this._markedForDeath[2].getLogName());
+            /// /DEBUGGING START
+            /// /disable cast
+            // validTargetPositions = [];
+            /// /DEBUGGING END
+          }
+        } else { // no lethal targets - don't cast.
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] shadownova - no lethal targets. not casting.");
+          validTargetPositions = [];
+        }
+        break;
+      case 'burn_mass_minion':
+      case 'burn_mass_enemy_minion':
+      case 'burn_mass':
+      case 'removal_mass_minion':
+      case 'burn_mass_enemy':
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] burn mass detected.");
+        var damageAmount = 0;
+        if (CARD_INTENT[cardId].indexOf('burn') > -1) damageAmount = card.damageAmount;
+        else damageAmount = 999;
+        var enemyDamageBounty = 0;
+        var myDamageBounty = 0;
+        var enemiesKilled = 0;
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] cardid = " + cardId);
+        if (cardId == SDK.Cards.Spell.Warbird) {
+          // threshold for casting - 23.3 is base dmg to general, so at 3+ cards in hand, requires dmg to at least something else to cast, otherwise we hold. this threshold declines as number of cards in hand declines because saving cards has value
+          myDamageBounty += 20 + (this.getMyPlayer().getDeck().getNumCardsInHand() * 1.5);
+          enemiesKilled++; // allows warbird to be cast without lethal
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] warbird detected. mybounty = " + myDamageBounty);
+        }
+        var myGeneral = this.getMyGeneral();
+        _.each(this.getGameSession().getBoard().getUnits(), (unit) => {
+          if (this._isTargetImmuneToSource(unit, card)) return; // don't count immune units
+          if (CARD_INTENT[cardId].indexOf('minion') > -1 && unit.getIsGeneral()) return; // don't count generals if spell effects only minions (i.e. burn_mass_minion)
+          if (cardId == SDK.Cards.Spell.Avalanche && this._isOnMySideOfBoard(card, unit.getPosition()) == false) return; // avalanche only deal dmg to units on starting side of field
+          if (cardId == SDK.Cards.Spell.Warbird && unit.getPosition().x !== this.getOpponentGeneral().getPosition().x) return; // warbird only deals damage in column of
+          if (cardId == SDK.Cards.Spell.PlasmaStorm && unit.getATK() > 3) return; // plasma storm only minions with 3 or less attack
+          if (unit.getIsSameTeamAs(myGeneral) && CARD_INTENT[cardId].indexOf('enemy') == -1) {
+            myDamageBounty += ScoreForUnitDamage(unit, damageAmount);
+          } else if (!unit.getIsSameTeamAs(myGeneral)) {
+            enemyDamageBounty += ScoreForUnitDamage(unit, damageAmount);
+            if (damageAmount >= unit.getHP()) {
+              enemiesKilled++;
             }
           }
-          break;
-        case 'summon_move_enemy_minion':
-          // GOAL: move high atk enemies away or move ranged units close or provokers away
-          // find all enemies adjacent to potential spawn locations
-          var potentialEnemiesToMove = [];
-          var unitsAroundPos = [];
-          var enemiesAroundPos = [];
-          var original_validTargetPositions = validTargetPositions;
+        });
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] enemydamagebounty = " + enemyDamageBounty + ". myDamageBounty = " + myDamageBounty);
+        if (enemyDamageBounty < myDamageBounty || enemiesKilled == 0) {
+          // clear targets (don't cast) as burn spell doesn't meet criteria
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] criteria not met. clearing targets.");
           validTargetPositions = [];
-          _.each(original_validTargetPositions, (pos) => {
-            unitsAroundPos = this.getGameSession().getBoard().getCardsAroundPosition(pos, SDK.CardType.Unit);
-            if (unitsAroundPos.length > 0) {
-              const myGeneral = this.getMyGeneral();
-              enemiesAroundPos = _.reject(unitsAroundPos, (unit) => unit.getIsSameTeamAs(myGeneral));
-              potentialEnemiesToMove = _.union(potentialEnemiesToMove, enemiesAroundPos); // returns array of unique items in one or more arrays, no duplicates
-            }
-          });
-          // can't move generals
-          potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => enemy.getIsGeneral());
-          // reject immune units
-          potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => this._isTargetImmuneToSource(enemy, card));
-          if (potentialEnemiesToMove.length > 0) {
-            // then reject if atk < THRESHOLD.HIGH_ATK && not provoke (this means atk > 4 and provokers pass)
-            potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => (enemy.getATK() < THRESHOLD.HIGH_ATK && !enemy.hasModifierClass(SDK.ModifierProvoke)));
-            if (potentialEnemiesToMove.length > 0) {
-              // sort by bounty
-              potentialEnemiesToMove = _.sortBy(potentialEnemiesToMove, (enemy) => ScoreForUnit(enemy)).reverse();
-              // take top enemy on list
-              const targetEnemyToMove = potentialEnemiesToMove[0];
-              // find available spawn location adjacent to it
-              const validTargetPositionsAdjacentToTargetEnemyToMove = _.filter(original_validTargetPositions, (pos) => arePositionsEqualOrAdjacent(pos, targetEnemyToMove.position));
-              // if more than one available, sort it by bounty
-              if (validTargetPositionsAdjacentToTargetEnemyToMove.length > 0) {
-                var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositionsAdjacentToTargetEnemyToMove).targetPosition;
-                if (bestTargetPosition != null) {
-                  validTargetPositionsAdjacentToTargetEnemyToMove[0] = bestTargetPosition;
-                  // we now have spawn location, followup target (the enemy to move), and a way to quickly get the target destination
-                  // add followup_followTarget as optional paramete to _findPlayCardActionsForCard() for this as it's a triple-target spell.
-                  // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => about to play repulsor beast to " + validTargetPositionsAdjacentToTargetEnemyToMove[0].x + ", " + validTargetPositionsAdjacentToTargetEnemyToMove[0].y + " and then target this enemy to teleport away: " + targetEnemyToMove.getLogName() + " at " + targetEnemyToMove.position.x + ", " + targetEnemyToMove.position.y);
-                  // since we already calculated it, we can save some time and save it here
-                  this._followupTargets.unshift(targetEnemyToMove.position); // The unshift() method adds a new element to an array (at the beginning), and "unshifts" older elements:
-                  validTargetPositions[0] = validTargetPositionsAdjacentToTargetEnemyToMove[0];
-                } else {
-                  validTargetPositions = [];
+        }
+        break;
+      case 'burn_mass_column':
+        // warbird - DEPRECATED. old design, no longer used
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] burn_mass_column warbird entered.");
+        validTargetPositions = [];
+        var { damageAmount } = card;
+        var enemiesKilled = 0;
+        var score = 0;
+        var myGeneral = this.getMyGeneral();
+        var columnCount = this.getGameSession().getBoard().getColumnCount();
+        var bestColumn = { columnNumber: null, score: 1, enemiesKilled: 0 };
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] looping through " + columnCount + " columns.");
+        for (i = 0; i < columnCount; i++) {
+          // loop through each column
+          enemiesKilled = 0;
+          score = 0;
+          const unitsInColumn = this.getGameSession().getBoard().getEntitiesInColumn(i, SDK.CardType.Unit);
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] " + unitsInColumn.length + " units in column " + i);
+          // for each column, loop through each affected unit
+          if (unitsInColumn.length > 0) {
+            _.each(unitsInColumn, (unit) => {
+              if (this._isTargetImmuneToSource(unit, card)) return; // don't count immune units
+              // if (CARD_INTENT[cardId].indexOf("minion") > -1 && unit.getIsGeneral()) return; //don't count generals if spell effects only minions (i.e. burn_mass_minion)
+              if (unit.getIsSameTeamAs(myGeneral) && CARD_INTENT[cardId].indexOf('enemy') == -1) {
+                score -= ScoreForUnitDamage(unit, damageAmount);
+              } else if (!unit.getIsSameTeamAs(myGeneral)) {
+                score += ScoreForUnitDamage(unit, damageAmount);
+                if (damageAmount >= unit.getHP()) {
+                  enemiesKilled++;
                 }
+              }
+              // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] score for column " + i + " = " + score + ". enemiesKilled= " + enemiesKilled);
+              if (score > bestColumn.score && enemiesKilled > bestColumn.enemiesKilled) {
+                // check if best column
+                // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] +++++++++++ best column is now column " + i);
+                bestColumn.score = score;
+                bestColumn.enemiesKilled = enemiesKilled;
+                bestColumn.columnNumber = i;
+              }
+            });
+          }
+        }
+
+        if (bestColumn.columnNumber != null) {
+          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] ==========best column is column " + bestColumn.columnNumber);
+          validTargetPositions[0] = { x: bestColumn.columnNumber, y: 1 };
+        }
+        break;
+      case 'move':
+        if (validTargetPositions.length > 0) {
+          var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
+          if (bestTargetPosition != null) {
+            validTargetPositions[0] = bestTargetPosition;
+          } else {
+            validTargetPositions = [];
+          }
+        }
+        break;
+      case 'move_enemy_minion':
+        // only move units with ATK of at least 4 or provokers or ranged units
+        validTargetPositions = _.reject(validTargetPositions, (validPos) => {
+          const enemy = this.getGameSession().getBoard().getUnitAtPosition(validPos);
+          return (enemy.getATK() < THRESHOLD.HIGH_ATK && !enemy.hasModifierClass(SDK.ModifierProvoke) && !enemy.hasModifierClass(SDK.ModifierRanged));
+        });
+        // if a high value move target exists, choose the one with the highest distance bounty
+        if (validTargetPositions.length > 0) {
+          var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
+          if (bestTargetPosition != null) {
+            validTargetPositions[0] = bestTargetPosition;
+          } else {
+            validTargetPositions = [];
+          }
+        }
+        break;
+      case 'summon_move_enemy_minion':
+        // GOAL: move high atk enemies away or move ranged units close or provokers away
+        // find all enemies adjacent to potential spawn locations
+        var potentialEnemiesToMove = [];
+        var unitsAroundPos = [];
+        var enemiesAroundPos = [];
+        var original_validTargetPositions = validTargetPositions;
+        validTargetPositions = [];
+        _.each(original_validTargetPositions, (pos) => {
+          unitsAroundPos = this.getGameSession().getBoard().getCardsAroundPosition(pos, SDK.CardType.Unit);
+          if (unitsAroundPos.length > 0) {
+            const myGeneral = this.getMyGeneral();
+            enemiesAroundPos = _.reject(unitsAroundPos, (unit) => unit.getIsSameTeamAs(myGeneral));
+            potentialEnemiesToMove = _.union(potentialEnemiesToMove, enemiesAroundPos); // returns array of unique items in one or more arrays, no duplicates
+          }
+        });
+        // can't move generals
+        potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => enemy.getIsGeneral());
+        // reject immune units
+        potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => this._isTargetImmuneToSource(enemy, card));
+        if (potentialEnemiesToMove.length > 0) {
+          // then reject if atk < THRESHOLD.HIGH_ATK && not provoke (this means atk > 4 and provokers pass)
+          potentialEnemiesToMove = _.reject(potentialEnemiesToMove, (enemy) => (enemy.getATK() < THRESHOLD.HIGH_ATK && !enemy.hasModifierClass(SDK.ModifierProvoke)));
+          if (potentialEnemiesToMove.length > 0) {
+            // sort by bounty
+            potentialEnemiesToMove = _.sortBy(potentialEnemiesToMove, (enemy) => ScoreForUnit(enemy)).reverse();
+            // take top enemy on list
+            const targetEnemyToMove = potentialEnemiesToMove[0];
+            // find available spawn location adjacent to it
+            const validTargetPositionsAdjacentToTargetEnemyToMove = _.filter(original_validTargetPositions, (pos) => arePositionsEqualOrAdjacent(pos, targetEnemyToMove.position));
+            // if more than one available, sort it by bounty
+            if (validTargetPositionsAdjacentToTargetEnemyToMove.length > 0) {
+              var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositionsAdjacentToTargetEnemyToMove).targetPosition;
+              if (bestTargetPosition != null) {
+                validTargetPositionsAdjacentToTargetEnemyToMove[0] = bestTargetPosition;
+                // we now have spawn location, followup target (the enemy to move), and a way to quickly get the target destination
+                // add followup_followTarget as optional paramete to _findPlayCardActionsForCard() for this as it's a triple-target spell.
+                // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => about to play repulsor beast to " + validTargetPositionsAdjacentToTargetEnemyToMove[0].x + ", " + validTargetPositionsAdjacentToTargetEnemyToMove[0].y + " and then target this enemy to teleport away: " + targetEnemyToMove.getLogName() + " at " + targetEnemyToMove.position.x + ", " + targetEnemyToMove.position.y);
+                // since we already calculated it, we can save some time and save it here
+                this._followupTargets.unshift(targetEnemyToMove.position); // The unshift() method adds a new element to an array (at the beginning), and "unshifts" older elements:
+                validTargetPositions[0] = validTargetPositionsAdjacentToTargetEnemyToMove[0];
+              } else {
+                validTargetPositions = [];
               }
             }
           }
-          break;
-        case 'summon':
-        case 'summon_heal':
-        case 'summon_burn':
-        case 'summon_grow':
-        case 'summon_watcher':
-        case 'summon_ranged_bbs':
-          // just find best spawn location for unit
-          if (validTargetPositions.length > 0) {
-            var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
-            if (bestTargetPosition != null) {
-              validTargetPositions[0] = bestTargetPosition;
-            } else {
-              validTargetPositions = [];
-            }
-          }
-          break;
-        case 'refresh':
-          validTargetPositions = _.filter(validTargetPositions, (validPos) => this.getGameSession().getBoard().getUnitAtPosition(validPos).attacksMade > 0);
-          break;
-        case 'teleport_destination':
-          // determine source pos
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination being selected");
-          var followupSourcePos = card.getFollowupSourcePosition();
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination. source pos = " + followupSourcePos.x + ", " + followupSourcePos.y);
-          var cardBeingTeleported = this.getGameSession().getBoard().getUnitAtPosition(followupSourcePos);
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination. card @ source pos = " + cardBeingTeleported.getLogName());
-          if (validTargetPositions.length > 0) {
-            var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(cardBeingTeleported, validTargetPositions).targetPosition;
-            if (bestTargetPosition != null) {
-              validTargetPositions[0] = bestTargetPosition;
-            } else {
-              validTargetPositions = [];
-            }
-          }
-          // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination = " + validTargetPositions[0].x + ", " + validTargetPositions[0].y);
-          break;
-        case 'heal_bbs':
-        case 'heal_followup':
-          // find most damaged friendly unit
-          var myGeneral = this.getMyGeneral();
-          var board = this.getGameSession().getBoard();
-          var mostDamagedUnit;
-          _.each(validTargetPositions, (pos) => {
-            const unit = board.getUnitAtPosition(pos);
-            if (unit != null && unit.getIsSameTeamAs(myGeneral) && (mostDamagedUnit == null || unit.getDamage() > mostDamagedUnit.getDamage())) {
-              mostDamagedUnit = unit;
-            }
-          });
-          if (CARD_INTENT[cardId].indexOf('followup') == -1
-            && (mostDamagedUnit == null || (mostDamagedUnit.getDamage() < ((card.healModifier || 0) - 1)))) {
-            // if it's not a followup, save the heal until we have a target that will be healed for at least most of the heal value
-            validTargetPositions = [];
+        }
+        break;
+      case 'summon':
+      case 'summon_heal':
+      case 'summon_burn':
+      case 'summon_grow':
+      case 'summon_watcher':
+      case 'summon_ranged_bbs':
+        // just find best spawn location for unit
+        if (validTargetPositions.length > 0) {
+          var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(card, validTargetPositions).targetPosition;
+          if (bestTargetPosition != null) {
+            validTargetPositions[0] = bestTargetPosition;
           } else {
-            validTargetPositions = [mostDamagedUnit.getPosition()];
-          }
-          break;
-        case 'buff':
-        case 'buff_endOfTurn':
-        case 'buff_mass_minion_endOfTurn':
-        case 'debuff':
-        case 'debuff_minion':
-        case 'debuff_mass_minion':
-        case 'summon_buff_minion':
-        case 'buff_general_endOfTurn':
-          validTargetPositions = []; // don't cast buffs/debuffs here - save for attack()
-          break;
-        case 'buff_minion':
-          // normally, don't cast buffs/debuffs here - save for attacks.
-          if (!card.isSignatureCard() || !this._getCanUseSignatureCard()) {
             validTargetPositions = [];
           }
+        }
+        break;
+      case 'refresh':
+        validTargetPositions = _.filter(validTargetPositions, (validPos) => this.getGameSession().getBoard().getUnitAtPosition(validPos).attacksMade > 0);
+        break;
+      case 'teleport_destination':
+        // determine source pos
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination being selected");
+        var followupSourcePos = card.getFollowupSourcePosition();
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination. source pos = " + followupSourcePos.x + ", " + followupSourcePos.y);
+        var cardBeingTeleported = this.getGameSession().getBoard().getUnitAtPosition(followupSourcePos);
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination. card @ source pos = " + cardBeingTeleported.getLogName());
+        if (validTargetPositions.length > 0) {
+          var bestTargetPosition = this._highestOrLowestPositionObjectiveAndScoreForUnitFromPositions(cardBeingTeleported, validTargetPositions).targetPosition;
+          if (bestTargetPosition != null) {
+            validTargetPositions[0] = bestTargetPosition;
+          } else {
+            validTargetPositions = [];
+          }
+        }
+        // Logger.module("AI").debug("[G:" + this.getGameSession().gameId + "] _findFilteredTargetPositionsForCardByOldIntent() => teleport destination = " + validTargetPositions[0].x + ", " + validTargetPositions[0].y);
+        break;
+      case 'heal_bbs':
+      case 'heal_followup':
+        // find most damaged friendly unit
+        var myGeneral = this.getMyGeneral();
+        var board = this.getGameSession().getBoard();
+        var mostDamagedUnit;
+        _.each(validTargetPositions, (pos) => {
+          const unit = board.getUnitAtPosition(pos);
+          if (unit != null && unit.getIsSameTeamAs(myGeneral) && (mostDamagedUnit == null || unit.getDamage() > mostDamagedUnit.getDamage())) {
+            mostDamagedUnit = unit;
+          }
+        });
+        if (CARD_INTENT[cardId].indexOf('followup') == -1
+            && (mostDamagedUnit == null || (mostDamagedUnit.getDamage() < ((card.healModifier || 0) - 1)))) {
+          // if it's not a followup, save the heal until we have a target that will be healed for at least most of the heal value
+          validTargetPositions = [];
+        } else {
+          validTargetPositions = [mostDamagedUnit.getPosition()];
+        }
+        break;
+      case 'buff':
+      case 'buff_endOfTurn':
+      case 'buff_mass_minion_endOfTurn':
+      case 'debuff':
+      case 'debuff_minion':
+      case 'debuff_mass_minion':
+      case 'summon_buff_minion':
+      case 'buff_general_endOfTurn':
+        validTargetPositions = []; // don't cast buffs/debuffs here - save for attack()
+        break;
+      case 'buff_minion':
+        // normally, don't cast buffs/debuffs here - save for attacks.
+        if (!card.isSignatureCard() || !this._getCanUseSignatureCard()) {
+          validTargetPositions = [];
+        }
 
-          break;
-        case 'buff_mass':
-        case 'buff_mass_minion':
-          var myGeneral = this.getMyGeneral();
-          if (this.getGameSession().getBoard().getFriendlyEntitiesForEntity(myGeneral, SDK.CardType.Unit).length < 3) {
-            validTargetPositions = [];
-          }
-          break;
-        case 'buff_general':
-          // normally, don't cast buffs/debuffs here - save for attacks
-          if (!card.isSignatureCard() || !this._getCanUseSignatureCard()) {
-            validTargetPositions = [];
-          }
-          break;
+        break;
+      case 'buff_mass':
+      case 'buff_mass_minion':
+        var myGeneral = this.getMyGeneral();
+        if (this.getGameSession().getBoard().getFriendlyEntitiesForEntity(myGeneral, SDK.CardType.Unit).length < 3) {
+          validTargetPositions = [];
+        }
+        break;
+      case 'buff_general':
+        // normally, don't cast buffs/debuffs here - save for attacks
+        if (!card.isSignatureCard() || !this._getCanUseSignatureCard()) {
+          validTargetPositions = [];
+        }
+        break;
       } // end switch
     } // end spell intent definition check
     else if (card.getType() == SDK.CardType.Unit) {
@@ -1717,15 +1717,15 @@ StarterAI.prototype = {
           } else if (buffCard.constructor.name == 'SpellBuffAttributeByOtherAttribute' && buffCard.attributeTarget == 'atk') {
             // special case: swap atk and hp
             switch (buffCard.attributeSource) {
-              case 'hp':
-                atkBuff = unit.getHP();
-                break;
-              case 'maxHP':
-                atkBuff = unit.getMaxHP();
-                break;
-              case 'atk':
-                atkBuff = baseAtk;
-                break;
+            case 'hp':
+              atkBuff = unit.getHP();
+              break;
+            case 'maxHP':
+              atkBuff = unit.getMaxHP();
+              break;
+            case 'atk':
+              atkBuff = baseAtk;
+              break;
             }
           } else if (buffCardId == SDK.Cards.Spell.Amplification) {
             // hardcoded: amplification

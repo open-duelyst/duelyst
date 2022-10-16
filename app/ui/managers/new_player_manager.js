@@ -438,33 +438,33 @@ var NewPlayerManager = Manager.extend({
       contentType: 'application/json',
       dataType: 'json'
     }))
-    .bind({})
-    .then(function(progressionData){
-      Analytics.track("module stage reached", {
-        category: Analytics.EventCategory.FTUE,
-        module_and_stage:moduleName + ":" + stage
-      },{
-        labelKey:"module_and_stage",
-        sendUTMData:true
-      });
+      .bind({})
+      .then(function(progressionData){
+        Analytics.track("module stage reached", {
+          category: Analytics.EventCategory.FTUE,
+          module_and_stage:moduleName + ":" + stage
+        },{
+          labelKey:"module_and_stage",
+          sendUTMData:true
+        });
 
-      if (moduleName == NewPlayerProgressionModuleLookup.Core) {
-        var newModuleStageIndex = _.indexOf(_.map(NewPlayerProgressionStageEnum.enums,function(val) { return val.key}),stage);
-        if (newModuleStageIndex > 0) {
-          var completedModuleStage = NewPlayerProgressionStageEnum.enums[newModuleStageIndex-1];
-          Analytics.track("completed ftue stage", {
-            category: Analytics.EventCategory.Marketing,
-            stage_name: completedModuleStage.key
-          },{
-            labelKey:"stage_name",
-            sendUTMData:true
-          })
+        if (moduleName == NewPlayerProgressionModuleLookup.Core) {
+          var newModuleStageIndex = _.indexOf(_.map(NewPlayerProgressionStageEnum.enums,function(val) { return val.key}),stage);
+          if (newModuleStageIndex > 0) {
+            var completedModuleStage = NewPlayerProgressionStageEnum.enums[newModuleStageIndex-1];
+            Analytics.track("completed ftue stage", {
+              category: Analytics.EventCategory.Marketing,
+              stage_name: completedModuleStage.key
+            },{
+              labelKey:"stage_name",
+              sendUTMData:true
+            })
+          }
         }
-      }
 
-      this.progressionData = progressionData;
-      return this
-    })
+        this.progressionData = progressionData;
+        return this
+      })
   },
 
   /* endregion Module Player Progress */
@@ -506,50 +506,50 @@ var NewPlayerManager = Manager.extend({
           contentType: 'application/json',
           dataType: 'json'
         }))
-        .then(function(response){
-          if (response && response.progressionData) {
-            var progressionData = response.progressionData;
-            var module = this.newPlayerModulesCollection.get(SDK.NewPlayerProgressionModuleLookup.Core);
-            if (module && module.get('stage') != progressionData.stage) {
-              module.set("stage",progressionData.stage);
-              // Analytics for core state since we're not going through setCurrentCoreStage
-              var secondsSinceRegistration = Math.floor((new Date().getTime() - ProfileManager.getInstance().profile.getRegistrationDate()) / 1000.0);
-              // TODO: Revalidate these values by stepping through
-              Analytics.track("module stage reached", {
-                category: Analytics.EventCategory.FTUE,
-                module_and_stage:"core" + ":" + progressionData.stage
-              },{
-                labelKey:"module_and_stage",
-                sendUTMData:true
-              });
-
-              var newModuleStageIndex = _.indexOf(_.map(NewPlayerProgressionStageEnum.enums,function(val) { return val.key}),progressionData.stage);
-              if (newModuleStageIndex > 0) {
-                var completedModuleStage = NewPlayerProgressionStageEnum.enums[newModuleStageIndex-1];
-                Analytics.track("completed ftue stage", {
-                  category: Analytics.EventCategory.Marketing,
-                  stage_name: completedModuleStage.key
+          .then(function(response){
+            if (response && response.progressionData) {
+              var progressionData = response.progressionData;
+              var module = this.newPlayerModulesCollection.get(SDK.NewPlayerProgressionModuleLookup.Core);
+              if (module && module.get('stage') != progressionData.stage) {
+                module.set("stage",progressionData.stage);
+                // Analytics for core state since we're not going through setCurrentCoreStage
+                var secondsSinceRegistration = Math.floor((new Date().getTime() - ProfileManager.getInstance().profile.getRegistrationDate()) / 1000.0);
+                // TODO: Revalidate these values by stepping through
+                Analytics.track("module stage reached", {
+                  category: Analytics.EventCategory.FTUE,
+                  module_and_stage:"core" + ":" + progressionData.stage
                 },{
-                  labelKey:"stage_name",
+                  labelKey:"module_and_stage",
                   sendUTMData:true
-                })
-              }
-            }
-            return response
-          } else {
-            return { progressionData: null }
-          }
-        }.bind(this))
-        .then(function(response) {
-          // Check if this is the core stage where codex becomes available and retrieve starter chapters if so
-          var coreStageCodexUnlocks = NewPlayerProgressionHelper.featureToCoreStageMapping[NewPlayerFeatureLookup.MainMenuCodex];
-          if (this.getCurrentCoreStage().value == coreStageCodexUnlocks.value) {
-            // No need to wait up on this before progressing promise
-            InventoryManager.getInstance().checkForMissingCodexChapters()
-          }
+                });
 
-          // Maintain resolving to ajax response
-          return Promise.resolve(response);
+                var newModuleStageIndex = _.indexOf(_.map(NewPlayerProgressionStageEnum.enums,function(val) { return val.key}),progressionData.stage);
+                if (newModuleStageIndex > 0) {
+                  var completedModuleStage = NewPlayerProgressionStageEnum.enums[newModuleStageIndex-1];
+                  Analytics.track("completed ftue stage", {
+                    category: Analytics.EventCategory.Marketing,
+                    stage_name: completedModuleStage.key
+                  },{
+                    labelKey:"stage_name",
+                    sendUTMData:true
+                  })
+                }
+              }
+              return response
+            } else {
+              return { progressionData: null }
+            }
+          }.bind(this))
+          .then(function(response) {
+          // Check if this is the core stage where codex becomes available and retrieve starter chapters if so
+            var coreStageCodexUnlocks = NewPlayerProgressionHelper.featureToCoreStageMapping[NewPlayerFeatureLookup.MainMenuCodex];
+            if (this.getCurrentCoreStage().value == coreStageCodexUnlocks.value) {
+            // No need to wait up on this before progressing promise
+              InventoryManager.getInstance().checkForMissingCodexChapters()
+            }
+
+            // Maintain resolving to ajax response
+            return Promise.resolve(response);
           }.bind(this))
       }
     }

@@ -59,13 +59,13 @@ var ChangeUsernameItemView = FormPromptDialogItemView.extend({
 
     var username = this.ui.$username.val();
     Session.changeUsername(username).bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   },
 
   /* endregion EVENTS */

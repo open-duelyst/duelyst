@@ -109,12 +109,12 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 
         // attempt to check whether username is available, but don't block registration for it
         Session.isUsernameAvailable(username)
-        .then(function (available) {
-          if (!available) {
-            this._usernameUnavailable = true;
-            this.showInvalidFormControl(this.ui.$username, i18next.t("registration.registration_validation_username_exists"));
-          }
-        }.bind(this));
+          .then(function (available) {
+            if (!available) {
+              this._usernameUnavailable = true;
+              this.showInvalidFormControl(this.ui.$username, i18next.t("registration.registration_validation_username_exists"));
+            }
+          }.bind(this));
       }
     }
 
@@ -167,14 +167,14 @@ var RegistrationItemView = FormPromptModalItemView.extend({
       friend_referral_code: friendReferralCode.length > 0 ? friendReferralCode : undefined,
       captcha: captcha
     })
-    .bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .bind(this)
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   },
 
   onSuccessComplete: function (registration) {
@@ -185,11 +185,11 @@ var RegistrationItemView = FormPromptModalItemView.extend({
 
     // log user in
     Session.login(registration.username, registration.password)
-    .finally(function () {
+      .finally(function () {
       // unlock user triggered navigation
-      NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
+        NavigationManager.getInstance().requestUserTriggeredNavigationUnlocked(this._userNavLockId);
 
-    }.bind(this));
+      }.bind(this));
   },
 
   onErrorComplete: function (errorMessage) {

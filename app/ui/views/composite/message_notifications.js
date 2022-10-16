@@ -15,8 +15,8 @@ var MessageNotificationsView = NotificationsCompositeView.extend({
   childView: MessageItemView,
 
   initialize: function (opts) {
-        NotificationsCompositeView.prototype.initialize.call(this,opts);
-        this.listenTo(this,"childview:select",this.onNotificationSelected);
+    NotificationsCompositeView.prototype.initialize.call(this,opts);
+    this.listenTo(this,"childview:select",this.onNotificationSelected);
   },
 
   onAddChild: function (childView) {

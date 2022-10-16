@@ -140,20 +140,20 @@ var WatchLayout = Backbone.Marionette.LayoutView.extend({
   showSelectedWatchTypeTab: function () {
 
     switch (this._selectedWatchTypeTabValue) {
-      case "live":
-        this.contentRegion.show(new WatchGamesLoadingView())
-        StreamManager.getInstance().loadStreamStatusFromTwitch().then(function(){
-          if (this.isDestroyed) return; // this view was destroyed
-          this.contentRegion.show(new WatchStreamsCompositeView({ collection:StreamManager.getInstance().liveStreamCollection }))
-        }.bind(this))
-        this._selectedDivisionTabValue = null
-        this.ui.$watch_tabs_division.children().removeClass("active")
-        break
-      case "replays":
-        this.setSelectedDivisionTab('bronze')
-        break
-      default:
-        break
+    case "live":
+      this.contentRegion.show(new WatchGamesLoadingView())
+      StreamManager.getInstance().loadStreamStatusFromTwitch().then(function(){
+        if (this.isDestroyed) return; // this view was destroyed
+        this.contentRegion.show(new WatchStreamsCompositeView({ collection:StreamManager.getInstance().liveStreamCollection }))
+      }.bind(this))
+      this._selectedDivisionTabValue = null
+      this.ui.$watch_tabs_division.children().removeClass("active")
+      break
+    case "replays":
+      this.setSelectedDivisionTab('bronze')
+      break
+    default:
+      break
     }
 
   },
@@ -183,21 +183,21 @@ var WatchLayout = Backbone.Marionette.LayoutView.extend({
   showSelectedDivisionTab: function () {
     var gamesCollectionURL;
     switch (this._selectedDivisionTabValue) {
-      case "elite":
-        gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/elite';
-        break;
-      case "diamond":
-        gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/diamond';
-        break;
-      case "gold":
-        gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/gold';
-        break;
-      case "silver":
-        gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/silver';
-        break;
-      default:
-        gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/bronze';
-        break;
+    case "elite":
+      gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/elite';
+      break;
+    case "diamond":
+      gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/diamond';
+      break;
+    case "gold":
+      gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/gold';
+      break;
+    case "silver":
+      gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/silver';
+      break;
+    default:
+      gamesCollectionURL = process.env.API_URL + '/api/me/games/watchable/bronze';
+      break;
     }
 
     if (this._selectedGamesCollection == null || this._selectedGamesCollection.url !== gamesCollectionURL) {

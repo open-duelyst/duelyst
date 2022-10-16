@@ -51,12 +51,12 @@ var FXRarityFlareSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'phase':
-        this.setPhase(value);
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'phase':
+      this.setPhase(value);
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

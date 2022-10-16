@@ -38,35 +38,35 @@ var NewsManager = Manager.extend({
     Manager.prototype.onBeforeConnect.call(this);
 
     ProfileManager.getInstance().onReady()
-    .bind(this)
-    .then(function () {
-      var userId = ProfileManager.getInstance().get('id')
+      .bind(this)
+      .then(function () {
+        var userId = ProfileManager.getInstance().get('id')
 
-      this.newsItemsIndexCollection = new DuelystFirebase.Collection(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL).child("news").child("index").limitToLast(10)
-      });
+        this.newsItemsIndexCollection = new DuelystFirebase.Collection(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL).child("news").child("index").limitToLast(10)
+        });
 
-      this.readNewsItemsCollection = new DuelystFirebase.Collection(null, {
-        firebase: new Firebase(process.env.FIREBASE_URL).child("user-news").child(userId).child("read").limitToLast(20)
-      });
+        this.readNewsItemsCollection = new DuelystFirebase.Collection(null, {
+          firebase: new Firebase(process.env.FIREBASE_URL).child("user-news").child(userId).child("read").limitToLast(20)
+        });
 
-      // what to do when we're ready
-      this.onReady().then(function(){
+        // what to do when we're ready
+        this.onReady().then(function(){
 
-        if (this.readNewsItemsCollection.last()) {
-          this.lastReadItemAt = this.readNewsItemsCollection.last().get("read_at");
-        }
+          if (this.readNewsItemsCollection.last()) {
+            this.lastReadItemAt = this.readNewsItemsCollection.last().get("read_at");
+          }
 
-        var unreadItems = this.newsItemsIndexCollection.filter(function(newsItem) {
-          return !this.readNewsItemsCollection.get(newsItem.get("id"));
+          var unreadItems = this.newsItemsIndexCollection.filter(function(newsItem) {
+            return !this.readNewsItemsCollection.get(newsItem.get("id"));
+          }.bind(this));
+
+          this.unreadNewsItems = new Backbone.Collection(unreadItems);
+
         }.bind(this));
 
-        this.unreadNewsItems = new Backbone.Collection(unreadItems);
-
-      }.bind(this));
-
-      this._markAsReadyWhenModelsAndCollectionsSynced([this.newsItemsIndexCollection,this.readNewsItemsCollection]);
-    })
+        this._markAsReadyWhenModelsAndCollectionsSynced([this.newsItemsIndexCollection,this.readNewsItemsCollection]);
+      })
   },
 
   /* endregion CONNECT */

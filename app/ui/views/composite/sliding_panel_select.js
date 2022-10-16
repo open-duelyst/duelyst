@@ -490,13 +490,13 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
   _getSlidingPanelDataForId: function (id) {
     return this._dataById[id] || (this._dataById[id] = {
-        x: 0, y: 0,
-        source_x: 0, target_x: 0,
-        animation: null,
-        animation_duration: 1,
-        width: 0, height: 0,
-        outerWidth: 0, outerHeight: 0
-      });
+      x: 0, y: 0,
+      source_x: 0, target_x: 0,
+      animation: null,
+      animation_duration: 1,
+      width: 0, height: 0,
+      outerWidth: 0, outerHeight: 0
+    });
   },
 
   _stopSlidingPanelAnimations: function () {

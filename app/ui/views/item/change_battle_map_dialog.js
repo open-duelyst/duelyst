@@ -98,13 +98,13 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
       // buy profile icon
       var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cosmeticId);
       return NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
-      .bind(this)
-      .then(function () {
-        NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
-      })
-      .catch(function () {
-        NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
-      });
+        .bind(this)
+        .then(function () {
+          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
+        })
+        .catch(function () {
+          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
+        });
     } else if (InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId)) {
       this._cosmeticId = cosmeticId;
       FormPromptDialogItemView.prototype.onClickSubmit.apply(this, arguments);
@@ -122,14 +122,14 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
     this.stopShowingTooltip();
 
     Session.changeBattlemap(this._cosmeticId)
-    .bind(this)
-    .then(function (res) {
-      this.onSuccess(res)
-    })
-    .catch(function (e) {
+      .bind(this)
+      .then(function (res) {
+        this.onSuccess(res)
+      })
+      .catch(function (e) {
       // onError expects a string not an actual error
-      this.onError(e.innerMessage || e.message)
-    })
+        this.onError(e.innerMessage || e.message)
+      })
   },
 
   showTooltip:function(element) {

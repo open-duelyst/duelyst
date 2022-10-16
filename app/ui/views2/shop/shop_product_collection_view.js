@@ -123,13 +123,13 @@ var ShopProductCollectionView = Backbone.Marionette.CompositeView.extend({
       })
     }
     return NavigationManager.getInstance().showDialogForConfirmPurchase(productData,saleData)
-    .bind(this)
-    .then(function (purchaseData) {
-      this.onPurchaseComplete(purchaseData);
-    })
-    .catch(function () {
+      .bind(this)
+      .then(function (purchaseData) {
+        this.onPurchaseComplete(purchaseData);
+      })
+      .catch(function () {
       // do nothing on cancel
-    });
+      });
   },
 
   onPurchaseComplete: function(purchaseData) {

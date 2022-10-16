@@ -160,7 +160,7 @@ var NavigationManager = Manager.extend({
     UtilsUI.overlayScrollbars("body");
 
     // NOTE: this is really a bad place to put the zendesk widget BUT it's needed because their embed script sucks
-     // zendesk setup
+    // zendesk setup
     if (!window.zendesk) {
       window.zEmbed && window.zEmbed()
       window.zendesk = true

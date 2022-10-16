@@ -362,7 +362,7 @@ var CraftingCompositeView = Backbone.Marionette.CompositeView.extend({
         .catch(function(errorMessage) {
           NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({title:"Oops... there was a problem disenchanting your cards.", message:errorMessage}));
         }.bind(this));
-      }.bind(this))
+    }.bind(this))
   },
 
   onSkinUnlock: function () {
@@ -372,10 +372,10 @@ var CraftingCompositeView = Backbone.Marionette.CompositeView.extend({
       // buy skin
       var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(skinId);
       NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
-      .bind(this)
-      .catch(function () {
+        .bind(this)
+        .catch(function () {
         // do nothing on cancel
-      });
+        });
     }
   },
 

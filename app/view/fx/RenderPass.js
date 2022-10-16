@@ -97,14 +97,14 @@ var RenderPass = cc.Class.extend({
     // check framebuffer status
     const status = gl.checkFramebufferStatus(gl.FRAMEBUFFER);
     switch (status) {
-      case gl.FRAMEBUFFER_UNSUPPORTED:
-        throw 'RenderPass: Framebuffer is unsupported';
-      case gl.FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-        throw 'RenderPass: Framebuffer incomplete attachment';
-      case gl.FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
-        throw 'RenderPass: Framebuffer incomplete dimensions';
-      case gl.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-        throw 'RenderPass: Framebuffer incomplete missing attachment';
+    case gl.FRAMEBUFFER_UNSUPPORTED:
+      throw 'RenderPass: Framebuffer is unsupported';
+    case gl.FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+      throw 'RenderPass: Framebuffer incomplete attachment';
+    case gl.FRAMEBUFFER_INCOMPLETE_DIMENSIONS:
+      throw 'RenderPass: Framebuffer incomplete dimensions';
+    case gl.FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+      throw 'RenderPass: Framebuffer incomplete missing attachment';
     }
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, frameBufferLast);

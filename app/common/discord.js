@@ -4,26 +4,26 @@ const EVENTS = require('./event_types');
 
 window.ipcRenderer.on('discord', (event, type, ...args) => {
   switch (type) {
-    case 'ready':
-      discordOnReady(...args);
-      break;
-    case 'disconnected':
-      discordOnDisconnected(...args);
-      break;
-    case 'error':
-      discordOnError(...args);
-      break;
-    case 'spectateGame':
-      discordOnSpectateGame(...args);
-      break;
-    case 'joinGame':
-      discordOnJoinGame(...args);
-      break;
-    case 'tick':
-      discordOnTick(...args);
-      break;
-    default:
-      break;
+  case 'ready':
+    discordOnReady(...args);
+    break;
+  case 'disconnected':
+    discordOnDisconnected(...args);
+    break;
+  case 'error':
+    discordOnError(...args);
+    break;
+  case 'spectateGame':
+    discordOnSpectateGame(...args);
+    break;
+  case 'joinGame':
+    discordOnJoinGame(...args);
+    break;
+  case 'tick':
+    discordOnTick(...args);
+    break;
+  default:
+    break;
   }
 });
 

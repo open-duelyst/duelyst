@@ -71,18 +71,18 @@ var FXLensFlareSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'armLength':
-        this.armLength = this._armLengthTarget * value;
-        break;
-      case 'wispSize':
-        this.wispSize = this._wispSizeTarget * value;
-        break;
-      case 'flareSize':
-        this.flareSize = this._flareSizeTarget * value;
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'armLength':
+      this.armLength = this._armLengthTarget * value;
+      break;
+    case 'wispSize':
+      this.wispSize = this._wispSizeTarget * value;
+      break;
+    case 'flareSize':
+      this.flareSize = this._flareSizeTarget * value;
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });
