@@ -14,7 +14,7 @@ pe.skipPath('node:internal/modules/cjs/loader')
 pe.skipPath('node:internal/modules/run_main')
 
 # Don't print stack frames from CoffeeScript translation.
-pe.skipPackage('coffee-script')
+pe.skipPackage('coffeescript')
 
 # Don't print stack frames from inside Express.js source code.
 pe.skipPackage('express')

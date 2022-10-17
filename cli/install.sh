@@ -8,6 +8,6 @@ scp -o IdentitiesOnly=yes -o StrictHostKeyChecking=no ~/.npmrc $USER@$HOST:/$USE
 
 ssh -o IdentitiesOnly=yes -o StrictHostKeyChecking=no -T $USER@$HOST << EOF
 cd $FOLDER
-npm i -g coffee-script@1.7.0
+npm i -g coffeescript@1.12.7
 npm install
 EOF

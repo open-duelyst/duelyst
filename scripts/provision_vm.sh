@@ -63,7 +63,7 @@ echo 'Redis install completed."'
 
 # Install npm packages (can lock versions here)
 echo "Install npm packages (global depends)"
-sudo npm install -g coffee-script 
+sudo npm install -g coffeescript@1.12.7
 sudo npm install -g grunt-cli 
 sudo npm install -g yarn 
 sudo npm install -g forever
