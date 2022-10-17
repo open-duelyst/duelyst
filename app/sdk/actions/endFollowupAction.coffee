@@ -1,15 +1,15 @@
-Logger = 		require 'app/common/logger'
-StopBufferingEventsAction = 		require './stopBufferingEventsAction'
+Logger =     require 'app/common/logger'
+StopBufferingEventsAction =     require './stopBufferingEventsAction'
 
 class EndFollowupAction extends StopBufferingEventsAction
 
-	@type:"EndFollowupAction"
+  @type:"EndFollowupAction"
 
-	constructor: () ->
-		@type ?= EndFollowupAction.type
-		super
+  constructor: () ->
+    @type ?= EndFollowupAction.type
+    super
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
 module.exports = EndFollowupAction

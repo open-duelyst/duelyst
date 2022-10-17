@@ -6,18 +6,18 @@ _ = require 'underscore'
 
 class ModifierStartTurnWatchTeleportRandomSpace extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchTeleportRandomSpace"
-	@type:"ModifierStartTurnWatchTeleportRandomSpace"
+  type:"ModifierStartTurnWatchTeleportRandomSpace"
+  @type:"ModifierStartTurnWatchTeleportRandomSpace"
 
-	@description: "At the start of your turn, teleport to a random location"
+  @description: "At the start of your turn, teleport to a random location"
 
-	onTurnWatch: (action) ->
-		super(action)
+  onTurnWatch: (action) ->
+    super(action)
 
-		randomTeleportAction = new RandomTeleportAction(@getGameSession())
-		randomTeleportAction.setOwnerId(@getCard().getOwnerId())
-		randomTeleportAction.setSource(@getCard())
-		randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
-		@getGameSession().executeAction(randomTeleportAction)
+    randomTeleportAction = new RandomTeleportAction(@getGameSession())
+    randomTeleportAction.setOwnerId(@getCard().getOwnerId())
+    randomTeleportAction.setSource(@getCard())
+    randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
+    @getGameSession().executeAction(randomTeleportAction)
 
 module.exports = ModifierStartTurnWatchTeleportRandomSpace

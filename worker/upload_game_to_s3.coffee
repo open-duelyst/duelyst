@@ -20,50 +20,50 @@ Promise.promisifyAll(zlib)
 # returns promise for s3 upload
 # takes *serialized* game data
 upload = (gameId, serializedGameSession, serializedMouseUIEventData) ->
-	Logger.module("REPLAYS").log "uploading game #{gameId} to S3"
+  Logger.module("REPLAYS").log "uploading game #{gameId} to S3"
 
-	allDeflatePromises = [
-		zlib.gzipAsync(serializedGameSession)
-	]
+  allDeflatePromises = [
+    zlib.gzipAsync(serializedGameSession)
+  ]
 
-	if serializedMouseUIEventData?
-		allDeflatePromises.push(zlib.gzipAsync(serializedMouseUIEventData))
+  if serializedMouseUIEventData?
+    allDeflatePromises.push(zlib.gzipAsync(serializedMouseUIEventData))
 
-	filename = env + "/" + gameId + ".json"
+  filename = env + "/" + gameId + ".json"
 
-	return Promise.all(allDeflatePromises)
-	.spread (gzipGameSessionData, gzipMouseUIEventData)->
-		Logger.module("REPLAYS").log "done compressing game #{gameId} for upload"
-		allPromises = []
+  return Promise.all(allDeflatePromises)
+  .spread (gzipGameSessionData, gzipMouseUIEventData)->
+    Logger.module("REPLAYS").log "done compressing game #{gameId} for upload"
+    allPromises = []
 
-		if gzipGameSessionData?
-			params =
-				Bucket: replaysBucket
-				Key: filename
-				Body: gzipGameSessionData
-				ACL: 'public-read'
-				ContentEncoding: "gzip"
-				ContentType: "text/json"
-			cmd = new PutObjectCommand(params)
-			allPromises.push(s3Client.send(cmd))
+    if gzipGameSessionData?
+      params =
+        Bucket: replaysBucket
+        Key: filename
+        Body: gzipGameSessionData
+        ACL: 'public-read'
+        ContentEncoding: "gzip"
+        ContentType: "text/json"
+      cmd = new PutObjectCommand(params)
+      allPromises.push(s3Client.send(cmd))
 
-		if gzipMouseUIEventData?
-			params =
-				Bucket: replaysBucket
-				Key: env + "/ui_events/" + gameId + ".json"
-				Body: gzipMouseUIEventData
-				ACL: 'public-read'
-				ContentEncoding: "gzip"
-				ContentType: "text/json"
-			cmd = new PutObjectCommand(params)
-			allPromises.push(s3Client.send(cmd))
+    if gzipMouseUIEventData?
+      params =
+        Bucket: replaysBucket
+        Key: env + "/ui_events/" + gameId + ".json"
+        Body: gzipMouseUIEventData
+        ACL: 'public-read'
+        ContentEncoding: "gzip"
+        ContentType: "text/json"
+      cmd = new PutObjectCommand(params)
+      allPromises.push(s3Client.send(cmd))
 
-		return Promise.all(allPromises)
-	.spread (gameDataPutResp, mouseDataPutResp) ->
-		url = "https://s3.#{awsRegion}.amazonaws.com/" + replaysBucket + "/" + filename
-		return url
-	.catch (e)->
-		Logger.module("REPLAYS").error "ERROR uploading game #{gameId} to S3: #{e.message}"
-		throw e
+    return Promise.all(allPromises)
+  .spread (gameDataPutResp, mouseDataPutResp) ->
+    url = "https://s3.#{awsRegion}.amazonaws.com/" + replaysBucket + "/" + filename
+    return url
+  .catch (e)->
+    Logger.module("REPLAYS").error "ERROR uploading game #{gameId} to S3: #{e.message}"
+    throw e
 
 module.exports = upload

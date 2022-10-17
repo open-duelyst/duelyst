@@ -5,17 +5,17 @@ GameStatus = require 'app/sdk/gameStatus'
 
 class ResignAction extends DieAction
 
-	@type:"ResignAction"
+  @type:"ResignAction"
 
-	constructor: () ->
-		@type ?= ResignAction.type
-		super
+  constructor: () ->
+    @type ?= ResignAction.type
+    super
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	_execute: () ->
-		super()
-		@getGameSession().getPlayerById(@getOwnerId()).hasResigned = true
+  _execute: () ->
+    super()
+    @getGameSession().getPlayerById(@getOwnerId()).hasResigned = true
 
 module.exports = ResignAction

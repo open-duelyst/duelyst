@@ -2,19 +2,19 @@ ModifierSynergize = require './modifierSynergize'
 
 class ModifierSynergizeBuffSelf extends ModifierSynergize
 
-	type:"ModifierSynergizeBuffSelf"
-	@type:"ModifierSynergizeBuffSelf"
+  type:"ModifierSynergizeBuffSelf"
+  @type:"ModifierSynergizeBuffSelf"
 
-	fxResource: ["FX.Modifiers.ModifierSynergize"]
+  fxResource: ["FX.Modifiers.ModifierSynergize"]
 
-	modifiers: null
+  modifiers: null
 
-	@createContextObject: (modifiers, options=undefined) ->
-		contextObject = super(options)
-		contextObject.modifiers = modifiers
-		return contextObject
+  @createContextObject: (modifiers, options=undefined) ->
+    contextObject = super(options)
+    contextObject.modifiers = modifiers
+    return contextObject
 
-	onSynergize: (action) ->
-		@applyManagedModifiersFromModifiersContextObjects(@modifiers, @getCard())
+  onSynergize: (action) ->
+    @applyManagedModifiersFromModifiersContextObjects(@modifiers, @getCard())
 
 module.exports = ModifierSynergizeBuffSelf

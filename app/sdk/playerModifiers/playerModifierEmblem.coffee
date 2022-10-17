@@ -2,12 +2,12 @@ PlayerModifier = require 'app/sdk/playerModifiers/playerModifier'
 
 class PlayerModifierEmblem extends PlayerModifier
 
-	type:"PlayerModifierEmblem"
-	@type:"PlayerModifierEmblem"
+  type:"PlayerModifierEmblem"
+  @type:"PlayerModifierEmblem"
 
-	# emblems should be visible
-	@isHiddenToUI: false
+  # emblems should be visible
+  @isHiddenToUI: false
 
-	fxResource: ["FX.Modifiers.ModifierEmblem"]
+  fxResource: ["FX.Modifiers.ModifierEmblem"]
 
 module.exports = PlayerModifierEmblem

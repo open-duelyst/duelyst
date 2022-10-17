@@ -3,20 +3,20 @@ CardType = require 'app/sdk/cards/cardType'
 
 class SetDamageAction extends Action
 
-	@type:"SetDamageAction"
-	damageValue: 0
+  @type:"SetDamageAction"
+  damageValue: 0
 
-	constructor: () ->
-		@type ?= SetDamageAction.type
-		super
+  constructor: () ->
+    @type ?= SetDamageAction.type
+    super
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		source = @getSource()
-		target = @getTarget()
+    source = @getSource()
+    target = @getTarget()
 
-		if target?
-			target.setDamage(@damageValue)
+    if target?
+      target.setDamage(@damageValue)
 
 module.exports = SetDamageAction

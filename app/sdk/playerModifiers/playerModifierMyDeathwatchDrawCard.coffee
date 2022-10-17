@@ -5,24 +5,24 @@ CardType = require 'app/sdk/cards/cardType'
 
 class PlayerModifierMyDeathwatchDrawCard extends PlayerModifier
 
-	type:"PlayerModifierMyDeathwatchDrawCard"
-	@type:"PlayerModifierMyDeathwatchDrawCard"
+  type:"PlayerModifierMyDeathwatchDrawCard"
+  @type:"PlayerModifierMyDeathwatchDrawCard"
 
-	@createContextObject: (duration=1, options) ->
-		contextObject = super(options)
-		contextObject.durationEndTurn = duration
-		return contextObject
+  @createContextObject: (duration=1, options) ->
+    contextObject = super(options)
+    contextObject.durationEndTurn = duration
+    return contextObject
 
-	onAfterCleanupAction: (e) ->
-		super(e)
+  onAfterCleanupAction: (e) ->
+    super(e)
 
-		action = e.action
-		target = action.getTarget()
-		# watch for a friendly unit dying
-		if action instanceof DieAction and target?.type is CardType.Unit and target?.getOwnerId() is @getPlayerId() and target != @getCard()
-			# draw a card
-			deck = @getGameSession().getPlayerById(@getPlayerId()).getDeck()
-			@getGameSession().executeAction(deck.actionDrawCard())
+    action = e.action
+    target = action.getTarget()
+    # watch for a friendly unit dying
+    if action instanceof DieAction and target?.type is CardType.Unit and target?.getOwnerId() is @getPlayerId() and target != @getCard()
+      # draw a card
+      deck = @getGameSession().getPlayerById(@getPlayerId()).getDeck()
+      @getGameSession().executeAction(deck.actionDrawCard())
 
 
 module.exports = PlayerModifierMyDeathwatchDrawCard

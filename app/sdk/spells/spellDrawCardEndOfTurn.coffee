@@ -3,10 +3,10 @@ PlayerModifierCardDrawModifier = require 'app/sdk/playerModifiers/playerModifier
 
 class SpellDrawCardEndOfTurn extends Spell
 
-	onApplyOneEffectToBoard: (board,x,y,sourceAction) ->
+  onApplyOneEffectToBoard: (board,x,y,sourceAction) ->
 
-		ownerId = @getOwnerId()
-		general = @getGameSession().getGeneralForPlayerId(ownerId)
-		@getGameSession().applyModifierContextObject(PlayerModifierCardDrawModifier.createContextObject(1,1), general)
+    ownerId = @getOwnerId()
+    general = @getGameSession().getGeneralForPlayerId(ownerId)
+    @getGameSession().applyModifierContextObject(PlayerModifierCardDrawModifier.createContextObject(1,1), general)
 
 module.exports = SpellDrawCardEndOfTurn

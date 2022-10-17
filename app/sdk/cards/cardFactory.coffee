@@ -89,128 +89,128 @@ CardFactory_CoreshatterSet_Neutral = require './factory/coreshatter/neutral.coff
 
 class CardFactory
 
-	###*
+  ###*
    * Returns a card that matches the identifier.
    * @param {Number|String} cardId
    * @param {GameSession} gameSession
    * @returns {Card}
    ###
-	@cardForIdentifier: (cardId,gameSession) ->
+  @cardForIdentifier: (cardId,gameSession) ->
 
-		#Logger.module("SDK").debug("[G:#{gameSession.gameId}]", "CardFactory ::generate card with id: #{cardId}")
+    #Logger.module("SDK").debug("[G:#{gameSession.gameId}]", "CardFactory ::generate card with id: #{cardId}")
 
-		# check for invalid id
-		card = null
-		if !cardId? || cardId <= 0
-			return card
+    # check for invalid id
+    card = null
+    if !cardId? || cardId <= 0
+      return card
 
-		# get base card identifier
-		identifier = Cards.getBaseCardId(cardId)
+    # get base card identifier
+    identifier = Cards.getBaseCardId(cardId)
 
-		# core set
+    # core set
 
-		if !card? then card = CardFactory_CoreSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreSet_Neutral.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# shimzar set
+    # shimzar set
 
-		if !card? then card = CardFactory_ShimzarSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_ShimzarSet_Neutral.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_ShimzarSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# first watch set
+    # first watch set
 
-		if !card? then card = CardFactory_FirstWatchSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_FirstWatchSet_Neutral.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_FirstWatchSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# monthly
+    # monthly
 
-		if !card? then card = CardFactory_Monthly_Sisters.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M1_Movement.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M2_Reactive.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M3_OpeningGambitBuff.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M4_Replace.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M5_Provoke.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M6_Forcefield.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M7_Warmasters.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M8_Rexx.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M9_Streamers.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M10_GeneralDamage.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M11_PennyArcade.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M12_OctoberMonthlies.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Monthly_M13_NovemberMonthlies.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_Sisters.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M1_Movement.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M2_Reactive.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M3_OpeningGambitBuff.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M4_Replace.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M5_Provoke.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M6_Forcefield.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M7_Warmasters.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M8_Rexx.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M9_Streamers.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M10_GeneralDamage.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M11_PennyArcade.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M12_OctoberMonthlies.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Monthly_M13_NovemberMonthlies.cardForIdentifier(identifier, gameSession)
 
-		# misc
+    # misc
 
-		if !card? then card = CardFactory_Generic.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Tiles.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Bosses.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Tutorial.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_Gauntlet_Specials.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Generic.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Tiles.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Bosses.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Tutorial.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_Gauntlet_Specials.cardForIdentifier(identifier, gameSession)
 
-		# bloodstorm
-		if !card? then card = CardFactory_BloodstormSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_BloodstormSet_Neutral.cardForIdentifier(identifier, gameSession)
+    # bloodstorm
+    if !card? then card = CardFactory_BloodstormSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_BloodstormSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# unity
-		if !card? then card = CardFactory_UnitySet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_UnitySet_Neutral.cardForIdentifier(identifier, gameSession)
+    # unity
+    if !card? then card = CardFactory_UnitySet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_UnitySet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# wartech
-		if !card? then card = CardFactory_WartechSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_WartechSet_Neutral.cardForIdentifier(identifier, gameSession)
+    # wartech
+    if !card? then card = CardFactory_WartechSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_WartechSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		# coreshatter
-		if !card? then card = CardFactory_CoreshatterSet_Faction1.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Faction2.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Faction3.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Faction4.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Faction5.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Faction6.cardForIdentifier(identifier, gameSession)
-		if !card? then card = CardFactory_CoreshatterSet_Neutral.cardForIdentifier(identifier, gameSession)
+    # coreshatter
+    if !card? then card = CardFactory_CoreshatterSet_Faction1.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Faction2.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Faction3.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Faction4.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Faction5.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Faction6.cardForIdentifier(identifier, gameSession)
+    if !card? then card = CardFactory_CoreshatterSet_Neutral.cardForIdentifier(identifier, gameSession)
 
-		if card?
-			# set the card id to what was passed in
-			# this ensures we preserve prismatic and skins
-			card.id = cardId
+    if card?
+      # set the card id to what was passed in
+      # this ensures we preserve prismatic and skins
+      card.id = cardId
 
-			# apply skin as needed
-			skinId = Cards.getCardSkinIdForCardId(cardId)
-			if skinId?
-				CosmeticsFactory.injectSkinPropertiesIntoCard(card, skinId)
+      # apply skin as needed
+      skinId = Cards.getCardSkinIdForCardId(cardId)
+      if skinId?
+        CosmeticsFactory.injectSkinPropertiesIntoCard(card, skinId)
 
-			return card
+      return card
 
-	###*
+  ###*
    * Returns one copy of every card, with optional filtering for faction, card type, and exclusion of hidden cards.
    * NOTE: this method is very expensive, so use the card caches whenever possible!
    * @param {GameSession} gameSession
@@ -220,17 +220,17 @@ class CardFactory
    * @param {Boolean} [includeGenerals=true] whether to include generals when the card is a unit card
    * @returns {Array}
    ###
-	@getAllCards: (gameSession, factionId, cardType, includeHidden=true, includeGenerals=true) ->
-		cards = []
-		for groupName of Cards
-			group = Cards[groupName]
-			if _.isObject(group)
-				for cardName of group
-					identifier = group[cardName]
-					card = @cardForIdentifier(identifier, gameSession)
-					if card? and (!factionId? or card.getFactionId() == factionId) and (!cardType? or card.getType() == cardType) and (includeHidden or (!card.getIsHiddenInCollection() and card.getIsAvailable())) and (includeGenerals or !(card.getIsGeneral? && card.getIsGeneral()))
-						cards.push(card)
+  @getAllCards: (gameSession, factionId, cardType, includeHidden=true, includeGenerals=true) ->
+    cards = []
+    for groupName of Cards
+      group = Cards[groupName]
+      if _.isObject(group)
+        for cardName of group
+          identifier = group[cardName]
+          card = @cardForIdentifier(identifier, gameSession)
+          if card? and (!factionId? or card.getFactionId() == factionId) and (!cardType? or card.getType() == cardType) and (includeHidden or (!card.getIsHiddenInCollection() and card.getIsAvailable())) and (includeGenerals or !(card.getIsGeneral? && card.getIsGeneral()))
+            cards.push(card)
 
-		return cards
+    return cards
 
 module.exports = CardFactory

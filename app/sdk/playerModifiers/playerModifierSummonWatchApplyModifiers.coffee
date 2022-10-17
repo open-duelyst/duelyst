@@ -5,19 +5,19 @@ PlayerModifierSummonWatch = require './playerModifierSummonWatch'
 ###
 class PlayerModifierSummonWatchApplyModifiers extends PlayerModifierSummonWatch
 
-	type:"PlayerModifierSummonWatchApplyModifiers"
-	@type:"PlayerModifierSummonWatchApplyModifiers"
+  type:"PlayerModifierSummonWatchApplyModifiers"
+  @type:"PlayerModifierSummonWatchApplyModifiers"
 
-	@createContextObject: (modifiersContextObjects, buffDescription, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		contextObject.buffDescription = buffDescription
-		return contextObject
+  @createContextObject: (modifiersContextObjects, buffDescription, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    contextObject.buffDescription = buffDescription
+    return contextObject
 
-	onSummonWatch: (action) ->
-		entity = action.getTarget()
-		if entity?
-			for modifierContextObject in @modifiersContextObjects
-				@getGameSession().applyModifierContextObject(modifierContextObject, entity)
+  onSummonWatch: (action) ->
+    entity = action.getTarget()
+    if entity?
+      for modifierContextObject in @modifiersContextObjects
+        @getGameSession().applyModifierContextObject(modifierContextObject, entity)
 
 module.exports = PlayerModifierSummonWatchApplyModifiers

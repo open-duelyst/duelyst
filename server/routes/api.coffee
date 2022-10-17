@@ -60,31 +60,31 @@ router.use '/replays', replaysRoutes
 
 # QA / Testing
 if config.isDevelopment() || config.isStaging()
-	router.use '/api/me/qa', meRoutes.qa
+  router.use '/api/me/qa', meRoutes.qa
 
-	# Just a route for secure testing
-	router.get "/api/me/securetest", (req, res, next) ->
-		Logger.module("API").log "user calling api/securetest #{req.user}"
-		return res.status(200).end()
+  # Just a route for secure testing
+  router.get "/api/me/securetest", (req, res, next) ->
+    Logger.module("API").log "user calling api/securetest #{req.user}"
+    return res.status(200).end()
 
 # REPORTING
 router.post "/api/me/report_player", (req, res, next) ->
-	result = t.validate(req.body, validators.reportPlayerInput)
-	if not result.isValid()
-		return res.status(400).json(result.errors)
+  result = t.validate(req.body, validators.reportPlayerInput)
+  if not result.isValid()
+    return res.status(400).json(result.errors)
 
-	user_id = req.user.d.id
-	other_user_id = result.value.user_id
-	message = result.value.message
-	res.status(404).send('Player reporting is not currently implemented.')
+  user_id = req.user.d.id
+  other_user_id = result.value.user_id
+  message = result.value.message
+  res.status(404).send('Player reporting is not currently implemented.')
 
-	#DuelystFirebase.connect().getRootRef()
-	#.then (rootRef) ->
-	#	return FirebasePromises.once(rootRef.child('users').child(other_user_id).child('username'),'value')
-	#.then (snapshot) ->
-	#	username = snapshot.val()
-	#	# TODO: Do something with player reports.
-	#.catch (error) ->
-	#	Logger.module("API").error "Failed to send player report."
+  #DuelystFirebase.connect().getRootRef()
+  #.then (rootRef) ->
+  #  return FirebasePromises.once(rootRef.child('users').child(other_user_id).child('username'),'value')
+  #.then (snapshot) ->
+  #  username = snapshot.val()
+  #  # TODO: Do something with player reports.
+  #.catch (error) ->
+  #  Logger.module("API").error "Failed to send player report."
 
 module.exports = router

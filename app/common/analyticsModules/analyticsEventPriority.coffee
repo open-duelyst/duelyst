@@ -4,11 +4,11 @@
 
 class AnalyticsEventPriority
 
-	@Critical: 5
-	@High: 4
-	@Medium: 3
-	@Low: 2
-	@Optional: 1
+  @Critical: 5
+  @High: 4
+  @Medium: 3
+  @Low: 2
+  @Optional: 1
 
 
 module.exports = AnalyticsEventPriority

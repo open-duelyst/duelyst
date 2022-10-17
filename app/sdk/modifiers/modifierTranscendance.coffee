@@ -5,27 +5,27 @@ i18next = require('i18next')
 
 class ModifierTranscendance extends Modifier
 
-	type:"ModifierTranscendance"
-	@type:"ModifierTranscendance"
+  type:"ModifierTranscendance"
+  @type:"ModifierTranscendance"
 
 
-	@isKeyworded: true
-	@keywordDefinition:i18next.t("modifiers.celerity_def")
+  @isKeyworded: true
+  @keywordDefinition:i18next.t("modifiers.celerity_def")
 
-	@modifierName:i18next.t("modifiers.celerity_name")
-	@description: ""
+  @modifierName:i18next.t("modifiers.celerity_name")
+  @description: ""
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	maxStacks: 1
+  maxStacks: 1
 
-	attributeBuffs:
-		attacks: 1
-		moves: 1
+  attributeBuffs:
+    attacks: 1
+    moves: 1
 
-	fxResource: ["FX.Modifiers.ModifierCelerity"]
+  fxResource: ["FX.Modifiers.ModifierCelerity"]
 
 module.exports = ModifierTranscendance

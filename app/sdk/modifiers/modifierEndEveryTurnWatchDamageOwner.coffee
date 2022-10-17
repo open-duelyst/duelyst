@@ -4,37 +4,37 @@ DamageAction = require 'app/sdk/actions/damageAction'
 
 class ModifierEndEveryTurnWatchDamageOwner extends ModifierEndEveryTurnWatch
 
-	type:"ModifierEndEveryTurnWatchDamageOwner"
-	@type:"ModifierEndEveryTurnWatchDamageOwner"
+  type:"ModifierEndEveryTurnWatchDamageOwner"
+  @type:"ModifierEndEveryTurnWatchDamageOwner"
 
-	@modifierName:"Turn Watch"
-	@description:"At end of EACH turn, deal %X damage to your General"
+  @modifierName:"Turn Watch"
+  @description:"At end of EACH turn, deal %X damage to your General"
 
-	fxResource: ["FX.Modifiers.ModifierEndTurnWatch", "FX.Modifiers.ModifierGenericDamageEnergySmall"]
+  fxResource: ["FX.Modifiers.ModifierEndTurnWatch", "FX.Modifiers.ModifierGenericDamageEnergySmall"]
 
-	@createContextObject: (damageAmount=0, options) ->
-		contextObject = super(options)
-		contextObject.damageAmount = damageAmount
-		return contextObject
+  @createContextObject: (damageAmount=0, options) ->
+    contextObject = super(options)
+    contextObject.damageAmount = damageAmount
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			replaceText = @description.replace /%X/, modifierContextObject.damageAmount
-			return replaceText
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      replaceText = @description.replace /%X/, modifierContextObject.damageAmount
+      return replaceText
+    else
+      return @description
 
-	onTurnWatch: (action) ->
-		super(action)
+  onTurnWatch: (action) ->
+    super(action)
 
-		myGeneral = @getGameSession().getGeneralForPlayer(@getCard().getOwner())
+    myGeneral = @getGameSession().getGeneralForPlayer(@getCard().getOwner())
 
-		if myGeneral?
-			damageAction = new DamageAction(this.getGameSession())
-			damageAction.setOwnerId(@getCard().getOwnerId())
-			damageAction.setSource(@getCard())
-			damageAction.setTarget(myGeneral)
-			damageAction.setDamageAmount(@damageAmount)
-			@getGameSession().executeAction(damageAction)
+    if myGeneral?
+      damageAction = new DamageAction(this.getGameSession())
+      damageAction.setOwnerId(@getCard().getOwnerId())
+      damageAction.setSource(@getCard())
+      damageAction.setTarget(myGeneral)
+      damageAction.setDamageAmount(@damageAmount)
+      @getGameSession().executeAction(damageAction)
 
 module.exports = ModifierEndEveryTurnWatchDamageOwner

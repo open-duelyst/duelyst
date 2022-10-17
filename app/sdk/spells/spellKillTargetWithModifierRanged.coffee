@@ -4,16 +4,16 @@ ModifierRanged = require 'app/sdk/modifiers/modifierRanged'
 
 class SpellKillTargetWithModifierRanged extends SpellKillTarget
 
-	_postFilterPlayPositions: (validPositions) ->
-		# use super filter play positions
-		validPositions = super(validPositions)
-		filteredValidPositions = []
+  _postFilterPlayPositions: (validPositions) ->
+    # use super filter play positions
+    validPositions = super(validPositions)
+    filteredValidPositions = []
 
-		for position in validPositions
-			unit = @getGameSession().getBoard().getUnitAtPosition(position)
-			if unit? and unit.hasActiveModifierClass(ModifierRanged)
-				filteredValidPositions.push(position)
+    for position in validPositions
+      unit = @getGameSession().getBoard().getUnitAtPosition(position)
+      if unit? and unit.hasActiveModifierClass(ModifierRanged)
+        filteredValidPositions.push(position)
 
-		return filteredValidPositions
+    return filteredValidPositions
 
 module.exports = SpellKillTargetWithModifierRanged

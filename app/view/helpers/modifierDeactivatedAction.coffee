@@ -5,7 +5,7 @@ ModifierAction = require './modifierAction'
 ###
 class ModifierDeactivatedAction extends ModifierAction
 
-	@type: "ModifierDeactivatedAction"
-	type: "ModifierDeactivatedAction"
+  @type: "ModifierDeactivatedAction"
+  type: "ModifierDeactivatedAction"
 
 module.exports = ModifierDeactivatedAction

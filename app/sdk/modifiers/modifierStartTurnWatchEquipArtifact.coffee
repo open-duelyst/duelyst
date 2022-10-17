@@ -12,26 +12,26 @@ i18next = require 'i18next'
 
 class ModifierStartTurnWatchEquipArtifact extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchEquipArtifact"
-	@type:"ModifierStartTurnWatchEquipArtifact"
+  type:"ModifierStartTurnWatchEquipArtifact"
+  @type:"ModifierStartTurnWatchEquipArtifact"
 
-	@description:i18next.t("modifiers.start_turn_watch_equip_artifact_def")
+  @description:i18next.t("modifiers.start_turn_watch_equip_artifact_def")
 
-	amount: 1 # number of artifacts to equip
+  amount: 1 # number of artifacts to equip
 
-	@createContextObject: (amount=1, includedCards, options) ->
-		contextObject = super(options)
-		contextObject.amount = amount
-		contextObject.includedCards = includedCards
-		return contextObject
+  @createContextObject: (amount=1, includedCards, options) ->
+    contextObject = super(options)
+    contextObject.amount = amount
+    contextObject.includedCards = includedCards
+    return contextObject
 
-	onTurnWatch: (action) ->
-		if @getGameSession().getIsRunningAsAuthoritative()
-			for i in [0...@amount]
-				artifactCard = @includedCards[@getGameSession().getRandomIntegerForExecution(@includedCards.length)] # random artifact
-				cardDataOrIndexToPutInHand = artifactCard
-				playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, cardDataOrIndexToPutInHand)
-				playCardAction.setSource(@getCard())
-				@getGameSession().executeAction(playCardAction)
+  onTurnWatch: (action) ->
+    if @getGameSession().getIsRunningAsAuthoritative()
+      for i in [0...@amount]
+        artifactCard = @includedCards[@getGameSession().getRandomIntegerForExecution(@includedCards.length)] # random artifact
+        cardDataOrIndexToPutInHand = artifactCard
+        playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, cardDataOrIndexToPutInHand)
+        playCardAction.setSource(@getCard())
+        @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierStartTurnWatchEquipArtifact

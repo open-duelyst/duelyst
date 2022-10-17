@@ -5,35 +5,35 @@ _ = require("underscore")
 
 class PlayerModifierEndTurnRespawnEntityWithBuff extends PlayerModifier
 
-	type:"PlayerModifierEndTurnRespawnEntityWithBuff"
-	@type:"PlayerModifierEndTurnRespawnEntityWithBuff"
+  type:"PlayerModifierEndTurnRespawnEntityWithBuff"
+  @type:"PlayerModifierEndTurnRespawnEntityWithBuff"
 
-	@isHiddenToUI: true
-	durationEndTurn: 1
-	cardDataOrIndexToSpawn: null
+  @isHiddenToUI: true
+  durationEndTurn: 1
+  cardDataOrIndexToSpawn: null
 
-	@createContextObject: (cardDataOrIndexToSpawn, modifiersContextObjects, position, options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		contextObject.position = position
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, modifiersContextObjects, position, options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    contextObject.position = position
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    return contextObject
 
-	onEndTurn: (action) ->
-		super(action)
+  onEndTurn: (action) ->
+    super(action)
 
-		# add modifiers
-		cardDataOrIndexToSpawn = @cardDataOrIndexToSpawn
-		if cardDataOrIndexToSpawn?
-			if _.isObject(cardDataOrIndexToSpawn)
-				cardDataOrIndexToSpawn = UtilsJavascript.fastExtend({}, cardDataOrIndexToSpawn)
-			else
-				cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
-			cardDataOrIndexToSpawn.additionalModifiersContextObjects ?= []
-			cardDataOrIndexToSpawn.additionalModifiersContextObjects = cardDataOrIndexToSpawn.additionalModifiersContextObjects.concat(UtilsJavascript.deepCopy(@modifiersContextObjects))
+    # add modifiers
+    cardDataOrIndexToSpawn = @cardDataOrIndexToSpawn
+    if cardDataOrIndexToSpawn?
+      if _.isObject(cardDataOrIndexToSpawn)
+        cardDataOrIndexToSpawn = UtilsJavascript.fastExtend({}, cardDataOrIndexToSpawn)
+      else
+        cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
+      cardDataOrIndexToSpawn.additionalModifiersContextObjects ?= []
+      cardDataOrIndexToSpawn.additionalModifiersContextObjects = cardDataOrIndexToSpawn.additionalModifiersContextObjects.concat(UtilsJavascript.deepCopy(@modifiersContextObjects))
 
-			playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getPlayer().getPlayerId(), @position.x, @position.y, cardDataOrIndexToSpawn)
-			playCardAction.setSource(@getCard())
-			@getGameSession().executeAction(playCardAction)
+      playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getPlayer().getPlayerId(), @position.x, @position.y, cardDataOrIndexToSpawn)
+      playCardAction.setSource(@getCard())
+      @getGameSession().executeAction(playCardAction)
 
 module.exports = PlayerModifierEndTurnRespawnEntityWithBuff

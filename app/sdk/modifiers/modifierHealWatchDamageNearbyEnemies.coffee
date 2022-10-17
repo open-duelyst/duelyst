@@ -5,26 +5,26 @@ DamageAction = require 'app/sdk/actions/damageAction'
 
 class ModifierHealWatchDamageNearbyEnemies extends ModifierHealWatch
 
-	type:"ModifierHealWatchDamageNearbyEnemies"
-	@type:"ModifierHealWatchDamageNearbyEnemies"
+  type:"ModifierHealWatchDamageNearbyEnemies"
+  @type:"ModifierHealWatchDamageNearbyEnemies"
 
-	damageAmount: 0
+  damageAmount: 0
 
-	fxResource: ["FX.Modifiers.ModifierHealWatch", "FX.Modifiers.ModifierGenericDamageNearby"]
+  fxResource: ["FX.Modifiers.ModifierHealWatch", "FX.Modifiers.ModifierGenericDamageNearby"]
 
-	@createContextObject: (damageAmount, options) ->
-		contextObject = super()
-		contextObject.damageAmount = damageAmount
-		return contextObject
+  @createContextObject: (damageAmount, options) ->
+    contextObject = super()
+    contextObject.damageAmount = damageAmount
+    return contextObject
 
-	onHealWatch: (action) ->
-		entities = @getGameSession().getBoard().getEnemyEntitiesAroundEntity(@getCard(), CardType.Unit, 1)
-		for entity in entities
-			damageAction = new DamageAction(@getGameSession())
-			damageAction.setOwnerId(@getCard().getOwnerId())
-			damageAction.setSource(@getCard())
-			damageAction.setTarget(entity)
-			damageAction.setDamageAmount(@damageAmount)
-			@getGameSession().executeAction(damageAction)
+  onHealWatch: (action) ->
+    entities = @getGameSession().getBoard().getEnemyEntitiesAroundEntity(@getCard(), CardType.Unit, 1)
+    for entity in entities
+      damageAction = new DamageAction(@getGameSession())
+      damageAction.setOwnerId(@getCard().getOwnerId())
+      damageAction.setSource(@getCard())
+      damageAction.setTarget(entity)
+      damageAction.setDamageAmount(@damageAmount)
+      @getGameSession().executeAction(damageAction)
 
 module.exports = ModifierHealWatchDamageNearbyEnemies

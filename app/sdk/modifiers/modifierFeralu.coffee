@@ -5,13 +5,13 @@ ModifierBelongsToAllRaces = require 'app/sdk/modifiers/modifierBelongsToAllRaces
 
 class ModifierFeralu extends Modifier
 
-	type:"ModifierFeralu"
-	@type:"ModifierFeralu"
+  type:"ModifierFeralu"
+  @type:"ModifierFeralu"
 
-	@modifierName:"Feralu"
-	@description:""
+  @modifierName:"Feralu"
+  @description:""
 
-	_filterPotentialCardInAura: (card) ->
-		return (card.getRaceId() isnt Races.Neutral or card.hasModifierClass(ModifierBelongsToAllRaces)) and super(card)
+  _filterPotentialCardInAura: (card) ->
+    return (card.getRaceId() isnt Races.Neutral or card.hasModifierClass(ModifierBelongsToAllRaces)) and super(card)
 
 module.exports = ModifierFeralu

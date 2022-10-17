@@ -7,19 +7,19 @@ _ = require 'underscore'
 
 class SpellWindShroud extends SpellSpawnEntity
 
-	targetType: CardType.Unit
-	spawnSilently: true
-	cardDataOrIndexToSpawn: {id: Cards.Faction3.IronDervish} # spawns dervishes
+  targetType: CardType.Unit
+  spawnSilently: true
+  cardDataOrIndexToSpawn: {id: Cards.Faction3.IronDervish} # spawns dervishes
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		card = @getEntityToSpawn()
-		generalPosition = @getGameSession().getGeneralForPlayerId(@ownerId).getPosition()
-		applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, CONFIG.PATTERN_3x3, card, @, 1)
+  _findApplyEffectPositions: (position, sourceAction) ->
+    card = @getEntityToSpawn()
+    generalPosition = @getGameSession().getGeneralForPlayerId(@ownerId).getPosition()
+    applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, CONFIG.PATTERN_3x3, card, @, 1)
 
-		return applyEffectPositions
+    return applyEffectPositions
 
-	# Wind Shroud picks its apply location by itself, so don't set limits on where it can be cast
-	_postFilterPlayPositions: (validPositions) ->
-		return validPositions
+  # Wind Shroud picks its apply location by itself, so don't set limits on where it can be cast
+  _postFilterPlayPositions: (validPositions) ->
+    return validPositions
 
 module.exports = SpellWindShroud

@@ -4,31 +4,31 @@ CardType = require 'app/sdk/cards/cardType'
 
 class RemoveCardFromHandAction extends Action
 
-	@type:"RemoveCardFromHandAction"
+  @type:"RemoveCardFromHandAction"
 
-	targetPlayerId: null
-	indexOfCardInHand: null
+  targetPlayerId: null
+  indexOfCardInHand: null
 
-	constructor: (gameSession, indexOfCardInHand, targetPlayerId) ->
-		@type ?= RemoveCardFromHandAction.type
-		super(gameSession)
+  constructor: (gameSession, indexOfCardInHand, targetPlayerId) ->
+    @type ?= RemoveCardFromHandAction.type
+    super(gameSession)
 
-		@indexOfCardInHand = indexOfCardInHand
-		@targetPlayerId = targetPlayerId
+    @indexOfCardInHand = indexOfCardInHand
+    @targetPlayerId = targetPlayerId
 
-	_execute: () ->
-		super()
-		#Logger.module("SDK").debug "RemoveCardFromHandAction::execute"
+  _execute: () ->
+    super()
+    #Logger.module("SDK").debug "RemoveCardFromHandAction::execute"
 
-		if @indexOfCardInHand?
-			deck = @getGameSession().getPlayerById(@targetPlayerId).getDeck()
-			cardIndex = deck.getCardIndexInHandAtIndex(@indexOfCardInHand)
-			@getGameSession().removeCardByIndexFromHand(deck, cardIndex, @getGameSession().getCardByIndex(cardIndex), @)
+    if @indexOfCardInHand?
+      deck = @getGameSession().getPlayerById(@targetPlayerId).getDeck()
+      cardIndex = deck.getCardIndexInHandAtIndex(@indexOfCardInHand)
+      @getGameSession().removeCardByIndexFromHand(deck, cardIndex, @getGameSession().getCardByIndex(cardIndex), @)
 
-	getIndexOfCardInHand: () ->
-		return @indexOfCardInHand
+  getIndexOfCardInHand: () ->
+    return @indexOfCardInHand
 
-	getTargetPlayerId: () ->
-		return @targetPlayerId
+  getTargetPlayerId: () ->
+    return @targetPlayerId
 
 module.exports = RemoveCardFromHandAction

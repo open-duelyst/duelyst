@@ -12,27 +12,27 @@ _ = require 'underscore'
 
 class ModifierStartTurnWatchPlaySpell extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchPlaySpell"
-	@type:"ModifierStartTurnWatchPlaySpell"
+  type:"ModifierStartTurnWatchPlaySpell"
+  @type:"ModifierStartTurnWatchPlaySpell"
 
-	@description: "At the start of your turn, cast %X"
+  @description: "At the start of your turn, cast %X"
 
-	@createContextObject: (cardDataOrIndexToCast, cardDescription,options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndexToCast = cardDataOrIndexToCast
-		contextObject.cardDescription = cardDescription
-		return contextObject
+  @createContextObject: (cardDataOrIndexToCast, cardDescription,options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndexToCast = cardDataOrIndexToCast
+    contextObject.cardDescription = cardDescription
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.cardDescription
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.cardDescription
+    else
+      return @description
 
-	onTurnWatch: (action) ->
-		if @getGameSession().getIsRunningAsAuthoritative()
-			playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, @cardDataOrIndexToCast)
-			playCardAction.setSource(@getCard())
-			@getGameSession().executeAction(playCardAction)
+  onTurnWatch: (action) ->
+    if @getGameSession().getIsRunningAsAuthoritative()
+      playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, @cardDataOrIndexToCast)
+      playCardAction.setSource(@getCard())
+      @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierStartTurnWatchPlaySpell

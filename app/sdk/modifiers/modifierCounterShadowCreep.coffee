@@ -9,25 +9,25 @@ i18next = require('i18next')
 ###
 class ModifierCounterShadowCreep extends ModifierCounter
 
-	type:"ModifierCounterShadowCreep"
-	@type:"ModifierCounterShadowCreep"
+  type:"ModifierCounterShadowCreep"
+  @type:"ModifierCounterShadowCreep"
 
-	maxStacks: 1
+  maxStacks: 1
 
-	@createContextObject: (modTypeToTrack) ->
-		contextObject = super()
-		contextObject.modTypeToTrack = modTypeToTrack
-		return contextObject
+  @createContextObject: (modTypeToTrack) ->
+    contextObject = super()
+    contextObject.modTypeToTrack = modTypeToTrack
+    return contextObject
 
-	getModifierContextObjectToApply: () ->
-		modContextObject = ModifierCounterShadowCreepDescription.createContextObject(@getCurrentCount())
-		modContextObject.appliedName = i18next.t("modifiers.shadowcreep_counter_applied_name")
+  getModifierContextObjectToApply: () ->
+    modContextObject = ModifierCounterShadowCreepDescription.createContextObject(@getCurrentCount())
+    modContextObject.appliedName = i18next.t("modifiers.shadowcreep_counter_applied_name")
 
-		return modContextObject
+    return modContextObject
 
-	getCurrentCount: () ->
-		modifierStackingShadows = @getGameSession().getModifierClassForType(@modTypeToTrack)
-		return modifierStackingShadows.getNumStacksForPlayer(@getGameSession().getBoard(), @getCard().getOwner())
+  getCurrentCount: () ->
+    modifierStackingShadows = @getGameSession().getModifierClassForType(@modTypeToTrack)
+    return modifierStackingShadows.getNumStacksForPlayer(@getGameSession().getBoard(), @getCard().getOwner())
 
 
 module.exports = ModifierCounterShadowCreep

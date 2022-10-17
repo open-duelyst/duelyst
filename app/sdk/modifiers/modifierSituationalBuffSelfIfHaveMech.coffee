@@ -4,26 +4,26 @@ CardType = require 'app/sdk/cards/cardType'
 
 class ModifierSituationalBuffSelfIfHaveMech extends ModifierSituationalBuffSelf
 
-	type:"ModifierSituationalBuffSelfIfHaveMech"
-	@type:"ModifierSituationalBuffSelfIfHaveMech"
+  type:"ModifierSituationalBuffSelfIfHaveMech"
+  @type:"ModifierSituationalBuffSelfIfHaveMech"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	@createContextObject: (modifierContextObjects, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifierContextObjects
-		return contextObject
+  @createContextObject: (modifierContextObjects, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifierContextObjects
+    return contextObject
 
-	getIsSituationActiveForCache: () ->
+  getIsSituationActiveForCache: () ->
 
-		friendlyMinions = @getGameSession().getBoard().getFriendlyEntitiesForEntity(@getCard(), CardType.Unit, true, false)
-		if friendlyMinions?
-			for minion in friendlyMinions
-				if minion? and minion.getBelongsToTribe(Races.Mech)
-					return true
-		return false
+    friendlyMinions = @getGameSession().getBoard().getFriendlyEntitiesForEntity(@getCard(), CardType.Unit, true, false)
+    if friendlyMinions?
+      for minion in friendlyMinions
+        if minion? and minion.getBelongsToTribe(Races.Mech)
+          return true
+    return false
 
 module.exports = ModifierSituationalBuffSelfIfHaveMech

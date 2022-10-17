@@ -5,23 +5,23 @@ ModifierStrikeback = require 'app/sdk/modifiers/modifierStrikeback'
 
 class ModifierMyAttackOrCounterattackWatch extends Modifier
 
-	type:"ModifierMyAttackOrCounterattackWatch"
-	@type:"ModifierMyAttackOrCounterattackWatch"
+  type:"ModifierMyAttackOrCounterattackWatch"
+  @type:"ModifierMyAttackOrCounterattackWatch"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierMyAttackWatch"]
+  fxResource: ["FX.Modifiers.ModifierMyAttackWatch"]
 
-	onAction: (event) ->
-		super(event)
-		action = event.action
-		if action.getSource() == @getCard() and ( action instanceof AttackAction and (!action.getIsImplicit() or action.getTriggeringModifier() instanceof ModifierStrikeback) or action instanceof ForcedAttackAction)
-			@onMyAttackOrCounterattackWatch(action)
+  onAction: (event) ->
+    super(event)
+    action = event.action
+    if action.getSource() == @getCard() and ( action instanceof AttackAction and (!action.getIsImplicit() or action.getTriggeringModifier() instanceof ModifierStrikeback) or action instanceof ForcedAttackAction)
+      @onMyAttackOrCounterattackWatch(action)
 
-	onMyAttackOrCounterattackWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onMyAttackOrCounterattackWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierMyAttackOrCounterattackWatch

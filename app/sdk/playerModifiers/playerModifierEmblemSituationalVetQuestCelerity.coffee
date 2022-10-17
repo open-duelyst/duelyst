@@ -3,59 +3,59 @@ ModifierTranscendance = require 'app/sdk/modifiers/modifierTranscendance'
 
 class PlayerModifierEmblemSituationalVetQuestCelerity extends PlayerModifierEmblem
 
-	type:"PlayerModifierEmblemSituationalVetQuestCelerity"
-	@type:"PlayerModifierEmblemSituationalVetQuestCelerity"
+  type:"PlayerModifierEmblemSituationalVetQuestCelerity"
+  @type:"PlayerModifierEmblemSituationalVetQuestCelerity"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	maxStacks: 1
+  maxStacks: 1
 
-	numArtifactsRequired: 0
+  numArtifactsRequired: 0
 
-	@createContextObject: (numArtifactsRequired, options) ->
-		contextObject = super(options)
-		contextObject.numArtifactsRequired = numArtifactsRequired
-		return contextObject
+  @createContextObject: (numArtifactsRequired, options) ->
+    contextObject = super(options)
+    contextObject.numArtifactsRequired = numArtifactsRequired
+    return contextObject
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
 
-		p.cachedIsSituationActive = false
-		p.cachedWasSituationActive = false
+    p.cachedIsSituationActive = false
+    p.cachedWasSituationActive = false
 
-		return p
+    return p
 
-	onApplyToCardBeforeSyncState: () ->
-		super()
+  onApplyToCardBeforeSyncState: () ->
+    super()
 
-		# apply situational modifiers once and retain them on self
-		# this way we can enable/disable based on whether the situation is active
-		# rather than constantly adding and removing modifiers
-		@applyManagedModifiersFromModifiersContextObjectsOnce([ModifierTranscendance.createContextObject()], @getCard())
+    # apply situational modifiers once and retain them on self
+    # this way we can enable/disable based on whether the situation is active
+    # rather than constantly adding and removing modifiers
+    @applyManagedModifiersFromModifiersContextObjectsOnce([ModifierTranscendance.createContextObject()], @getCard())
 
-	updateCachedStateAfterActive: () ->
-		@_private.cachedWasSituationActive = @_private.cachedIsSituationActive
-		@_private.cachedIsSituationActive = @_private.cachedIsActive and @getIsSituationActiveForCache()
+  updateCachedStateAfterActive: () ->
+    @_private.cachedWasSituationActive = @_private.cachedIsSituationActive
+    @_private.cachedIsSituationActive = @_private.cachedIsActive and @getIsSituationActiveForCache()
 
-		# call super after updating whether situation is active
-		# because we need to know if situation is active to know whether sub modifiers are disabled
-		super()
+    # call super after updating whether situation is active
+    # because we need to know if situation is active to know whether sub modifiers are disabled
+    super()
 
-	getAreSubModifiersActiveForCache: () ->
-		return @_private.cachedIsSituationActive
+  getAreSubModifiersActiveForCache: () ->
+    return @_private.cachedIsSituationActive
 
-	getIsAura: () ->
-		# situational modifiers act as auras but do not use the default aura behavior
-		return true
+  getIsAura: () ->
+    # situational modifiers act as auras but do not use the default aura behavior
+    return true
 
-	getIsSituationActiveForCache: () ->
+  getIsSituationActiveForCache: () ->
 
-		modifiersByArtifact = @getCard().getArtifactModifiersGroupedByArtifactCard()
-		if modifiersByArtifact.length >= @numArtifactsRequired
-			return true
-		return false
+    modifiersByArtifact = @getCard().getArtifactModifiersGroupedByArtifactCard()
+    if modifiersByArtifact.length >= @numArtifactsRequired
+      return true
+    return false
 
 module.exports = PlayerModifierEmblemSituationalVetQuestCelerity

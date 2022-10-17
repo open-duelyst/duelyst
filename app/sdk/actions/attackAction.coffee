@@ -1,45 +1,45 @@
-CONFIG = 		require 'app/common/config'
-DamageAction = 	require './damageAction'
-CardType = 			require 'app/sdk/cards/cardType'
+CONFIG =     require 'app/common/config'
+DamageAction =   require './damageAction'
+CardType =       require 'app/sdk/cards/cardType'
 _ = require 'underscore'
 
 class AttackAction extends DamageAction
 
-	@type:"AttackAction"
+  @type:"AttackAction"
 
-	constructor: (gameSession) ->
-		@type ?= AttackAction.type
-		super(gameSession)
+  constructor: (gameSession) ->
+    @type ?= AttackAction.type
+    super(gameSession)
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
 
-		# cache
-		p.isStrikebackAllowed = true # normally target of attack actions will strike back, but in some cases strike back should be supressed
+    # cache
+    p.isStrikebackAllowed = true # normally target of attack actions will strike back, but in some cases strike back should be supressed
 
-		return p
+    return p
 
-	getDamageAmount: () ->
-		# attack damage amount is always source's atk value
-		source = @getSource()
-		if source? then return source.getATK() else return 0
+  getDamageAmount: () ->
+    # attack damage amount is always source's atk value
+    source = @getSource()
+    if source? then return source.getATK() else return 0
 
-	setDamageAmount: () ->
-		# does nothing for attacks
+  setDamageAmount: () ->
+    # does nothing for attacks
 
-	setIsStrikebackAllowed: (isStrikebackAllowed) ->
-		@_private.isStrikebackAllowed = isStrikebackAllowed
+  setIsStrikebackAllowed: (isStrikebackAllowed) ->
+    @_private.isStrikebackAllowed = isStrikebackAllowed
 
-	getIsStrikebackAllowed: () ->
-		return @_private.isStrikebackAllowed
+  getIsStrikebackAllowed: () ->
+    return @_private.isStrikebackAllowed
 
-	_execute: () ->
+  _execute: () ->
 
-		super()
+    super()
 
-		attacker = @getSource()
+    attacker = @getSource()
 
-		if attacker?
-			if !@getIsImplicit() then attacker.setAttacksMade(attacker.getAttacksMade() + 1)
+    if attacker?
+      if !@getIsImplicit() then attacker.setAttacksMade(attacker.getAttacksMade() + 1)
 
 module.exports = AttackAction

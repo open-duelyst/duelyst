@@ -6,18 +6,18 @@ _ = require 'underscore'
 
 class ModifierTakeDamageWatchRandomTeleport extends ModifierTakeDamageWatch
 
-	type:"ModifierTakeDamageWatchRandomTeleport"
-	@type:"ModifierTakeDamageWatchRandomTeleport"
+  type:"ModifierTakeDamageWatchRandomTeleport"
+  @type:"ModifierTakeDamageWatchRandomTeleport"
 
-	@description:"Whenever this minion takes damage, it randomly teleports"
+  @description:"Whenever this minion takes damage, it randomly teleports"
 
-	onDamageTaken: (action) ->
-		super(action)
+  onDamageTaken: (action) ->
+    super(action)
 
-		randomTeleportAction = new RandomTeleportAction(@getGameSession())
-		randomTeleportAction.setOwnerId(@getCard().getOwnerId())
-		randomTeleportAction.setSource(@getCard())
-		randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
-		@getGameSession().executeAction(randomTeleportAction)
+    randomTeleportAction = new RandomTeleportAction(@getGameSession())
+    randomTeleportAction.setOwnerId(@getCard().getOwnerId())
+    randomTeleportAction.setSource(@getCard())
+    randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
+    @getGameSession().executeAction(randomTeleportAction)
 
 module.exports = ModifierTakeDamageWatchRandomTeleport

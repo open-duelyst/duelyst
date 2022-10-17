@@ -6,34 +6,34 @@ ModifierOverwatch = require 'app/sdk/modifiers/modifierOverwatch'
 ###
 class SpellOverwatch extends Spell
 
-	name: "Overwatch"
+  name: "Overwatch"
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
 
-		p.description = "Give a minion Overwatch: A hidden effect that costs %X mana."
-		p.keywordClassesToInclude.push(ModifierOverwatch)
+    p.description = "Give a minion Overwatch: A hidden effect that costs %X mana."
+    p.keywordClassesToInclude.push(ModifierOverwatch)
 
-		return p
+    return p
 
-	getDescription: (options) ->
-		description = super(options)
+  getDescription: (options) ->
+    description = super(options)
 
-		description = description.replace /%X/, @manaCost
+    description = description.replace /%X/, @manaCost
 
-		return description
+    return description
 
-	createCardData: (cardData) ->
-		cardData = super(cardData)
+  createCardData: (cardData) ->
+    cardData = super(cardData)
 
-		cardData.manaCost = @getBaseManaCost()
+    cardData.manaCost = @getBaseManaCost()
 
-		return cardData
+    return cardData
 
-	onCreatedToHide: (source) ->
-		super(source)
+  onCreatedToHide: (source) ->
+    super(source)
 
-		# copy mana cost
-		@setBaseManaCost(source.getBaseManaCost())
+    # copy mana cost
+    @setBaseManaCost(source.getBaseManaCost())
 
 module.exports = SpellOverwatch

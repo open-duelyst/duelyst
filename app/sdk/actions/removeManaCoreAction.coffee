@@ -2,30 +2,30 @@ Action = require './action'
 
 class RemoveManaCoreAction extends Action
 
-	# Removes a mana core
+  # Removes a mana core
 
-	@type:"RemoveManaCoreAction"
+  @type:"RemoveManaCoreAction"
 
-	manaAmount: 0
+  manaAmount: 0
 
-	constructor: (gameSession, manaAmount=0) ->
-		@type ?= RemoveManaCoreAction.type
-		@manaAmount = manaAmount
-		super(gameSession)
+  constructor: (gameSession, manaAmount=0) ->
+    @type ?= RemoveManaCoreAction.type
+    @manaAmount = manaAmount
+    super(gameSession)
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		owner = @getOwner()
-		if owner?
-			for i in [0...@manaAmount]
-				if owner.getMaximumMana() > 0
-					owner.maximumMana--
-	
-	getManaAmount: () ->
-		return @manaAmount
+    owner = @getOwner()
+    if owner?
+      for i in [0...@manaAmount]
+        if owner.getMaximumMana() > 0
+          owner.maximumMana--
+  
+  getManaAmount: () ->
+    return @manaAmount
 
-	setManaAmount: (manaAmount) ->
-		@manaAmount = Math.max(manaAmount, 0)
+  setManaAmount: (manaAmount) ->
+    @manaAmount = Math.max(manaAmount, 0)
 
 module.exports = RemoveManaCoreAction

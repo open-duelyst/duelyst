@@ -17,44 +17,44 @@ QuestBeginnerWinOneSeasonGame = require 'app/sdk/quests/questBeginnerWinOneSeaso
 
 class NewPlayerProgression
 
-	@featureToCoreStageMapping:{}
+  @featureToCoreStageMapping:{}
 
-	@FinalStage: NewPlayerProgressionStageEnum.FirstFactionLevelingDone
-	@DailyQuestsStartToGenerateStage: NewPlayerProgressionStageEnum.FirstGameDone
-	@FirstWinOfTheDayAvailableStage: NewPlayerProgressionStageEnum.FirstGameDone
+  @FinalStage: NewPlayerProgressionStageEnum.FirstFactionLevelingDone
+  @DailyQuestsStartToGenerateStage: NewPlayerProgressionStageEnum.FirstGameDone
+  @FirstWinOfTheDayAvailableStage: NewPlayerProgressionStageEnum.FirstGameDone
 
-	###*
-	# Check if a feature is available at a certain stage in new player guided progression.
-	# @param	feature		Number(NewPlayerFeatureLookup)			Which feature.
-	# @param	stage		Enum(NewPlayerProgressionStageEnum)		Which stage.
-	# @returns 				Boolean		Is it available.
-	###
-	@isFeatureAvailableAtStage: (feature,stage)->
-		# make sure to cast any stringts to enum
-		stage = NewPlayerProgressionStageEnum[stage]
-		stageWhenFeatureIsAvailable = NewPlayerProgression.featureToCoreStageMapping[feature]
+  ###*
+  # Check if a feature is available at a certain stage in new player guided progression.
+  # @param  feature    Number(NewPlayerFeatureLookup)      Which feature.
+  # @param  stage    Enum(NewPlayerProgressionStageEnum)    Which stage.
+  # @returns         Boolean    Is it available.
+  ###
+  @isFeatureAvailableAtStage: (feature,stage)->
+    # make sure to cast any stringts to enum
+    stage = NewPlayerProgressionStageEnum[stage]
+    stageWhenFeatureIsAvailable = NewPlayerProgression.featureToCoreStageMapping[feature]
 
-		if !stageWhenFeatureIsAvailable?
-			return true
+    if !stageWhenFeatureIsAvailable?
+      return true
 
-		# return if the current stage is greater or equal to the stage when this feature becomes available
-		return stage.value >= stageWhenFeatureIsAvailable.value
+    # return if the current stage is greater or equal to the stage when this feature becomes available
+    return stage.value >= stageWhenFeatureIsAvailable.value
 
-	###*
-	# Get quests for the current stage in new user guided progression.
-	# @returns 		Array		array of quest object instances.
-	###
-	@questsForStage: (stage)->
-		stage = NewPlayerProgressionStageEnum[stage]
-		switch stage
-			when NewPlayerProgressionStageEnum.TutorialDone
-				return [ new QuestBeginnerWinPracticeGames() ]
-			when NewPlayerProgressionStageEnum.FirstPracticeDuelDone
-				return [ new QuestBeginnerWinTwoPracticeGames() ]
-			when NewPlayerProgressionStageEnum.ExtendedPracticeDone
-				return [ new QuestBeginnerWinOneSeasonGame() ]
-			when NewPlayerProgressionStageEnum.FirstGameDone
-				return [ new QuestBeginnerCompleteSoloChallenges(), new QuestBeginnerFactionLevel() ]
+  ###*
+  # Get quests for the current stage in new user guided progression.
+  # @returns     Array    array of quest object instances.
+  ###
+  @questsForStage: (stage)->
+    stage = NewPlayerProgressionStageEnum[stage]
+    switch stage
+      when NewPlayerProgressionStageEnum.TutorialDone
+        return [ new QuestBeginnerWinPracticeGames() ]
+      when NewPlayerProgressionStageEnum.FirstPracticeDuelDone
+        return [ new QuestBeginnerWinTwoPracticeGames() ]
+      when NewPlayerProgressionStageEnum.ExtendedPracticeDone
+        return [ new QuestBeginnerWinOneSeasonGame() ]
+      when NewPlayerProgressionStageEnum.FirstGameDone
+        return [ new QuestBeginnerCompleteSoloChallenges(), new QuestBeginnerFactionLevel() ]
 
 # feature to stage mapping
 fMap = NewPlayerProgression.featureToCoreStageMapping

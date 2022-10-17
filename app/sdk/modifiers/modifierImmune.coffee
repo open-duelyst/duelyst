@@ -6,19 +6,19 @@ Modifier = require './modifier'
 
 class ModifierImmune extends Modifier
 
-	type: "ModifierImmune"
-	@type: "ModifierImmune"
+  type: "ModifierImmune"
+  @type: "ModifierImmune"
 
-	@modifierName: "Immune"
-	@description: ""
+  @modifierName: "Immune"
+  @description: ""
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	maxStacks: 1
+  maxStacks: 1
 
-	fxResource: ["FX.Modifiers.ModifierImmunity"]
+  fxResource: ["FX.Modifiers.ModifierImmunity"]
 
 module.exports = ModifierImmune

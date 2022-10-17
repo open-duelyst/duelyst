@@ -7,22 +7,22 @@ _ = require 'underscore'
 
 class ModifierBondDrawCards extends ModifierBond
 
-	type:"ModifierBondDrawCards"
-	@type:"ModifierBondDrawCards"
+  type:"ModifierBondDrawCards"
+  @type:"ModifierBondDrawCards"
 
-	@description: "Draw some cards from the deck"
+  @description: "Draw some cards from the deck"
 
-	fxResource: ["FX.Modifiers.ModifierBond"]
+  fxResource: ["FX.Modifiers.ModifierBond"]
 
-	@createContextObject: (numCards) ->
-		contextObject = super()
-		contextObject.numCards = numCards
-		return contextObject
+  @createContextObject: (numCards) ->
+    contextObject = super()
+    contextObject.numCards = numCards
+    return contextObject
 
-	onBond: () ->
+  onBond: () ->
 
-		for i in [0...@numCards]
-			deck = @getGameSession().getPlayerById(@getCard().getOwnerId()).getDeck()
-			@getCard().getGameSession().executeAction(deck.actionDrawCard())
+    for i in [0...@numCards]
+      deck = @getGameSession().getPlayerById(@getCard().getOwnerId()).getDeck()
+      @getCard().getGameSession().executeAction(deck.actionDrawCard())
 
 module.exports = ModifierBondDrawCards

@@ -3,15 +3,15 @@ ModifierStunned = require './modifierStunned'
 
 class ModifierKillWatchRefreshExhaustionIfTargetStunned extends ModifierKillWatchRefreshExhaustion
 
-	type:"ModifierKillWatchRefreshExhaustionIfTargetStunned"
-	@type:"ModifierKillWatchRefreshExhaustionIfTargetStunned"
+  type:"ModifierKillWatchRefreshExhaustionIfTargetStunned"
+  @type:"ModifierKillWatchRefreshExhaustionIfTargetStunned"
 
-	fxResource: ["FX.Modifiers.ModifierKillWatch"]
+  fxResource: ["FX.Modifiers.ModifierKillWatch"]
 
-	onKillWatch: (action) ->
+  onKillWatch: (action) ->
 
-		target = action.getTarget()
-		if target? and target.hasActiveModifierClass(ModifierStunned)
-			super()
+    target = action.getTarget()
+    if target? and target.hasActiveModifierClass(ModifierStunned)
+      super()
 
 module.exports = ModifierKillWatchRefreshExhaustionIfTargetStunned

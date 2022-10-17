@@ -13,22 +13,22 @@ fbUtil = require '../app/common/utils/utils_firebase.js'
 
 if process.argv[2]
 
-	console.log process.argv
+  console.log process.argv
 
-	username = process.argv[2]
-	console.log "searching for user: " + username
+  username = process.argv[2]
+  console.log "searching for user: " + username
 
-	UsersModule.userIdForUsername(username)
-	.then (userId) ->
-		if !userId
-			throw new Error("userid not found")
-		else
-			console.log "found user ... #{userId}"
-			process.exit(1)
-	.catch (error) ->
-		console.log(error)
-		process.exit(1)
+  UsersModule.userIdForUsername(username)
+  .then (userId) ->
+    if !userId
+      throw new Error("userid not found")
+    else
+      console.log "found user ... #{userId}"
+      process.exit(1)
+  .catch (error) ->
+    console.log(error)
+    process.exit(1)
 
 else
-	throw new Error("no username provided")
-	process.exit(1)
+  throw new Error("no username provided")
+  process.exit(1)

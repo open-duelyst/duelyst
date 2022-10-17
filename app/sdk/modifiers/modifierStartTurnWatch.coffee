@@ -5,27 +5,27 @@ Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierStartTurnWatch extends Modifier
 
-	type:"ModifierStartTurnWatch"
-	@type:"ModifierStartTurnWatch"
+  type:"ModifierStartTurnWatch"
+  @type:"ModifierStartTurnWatch"
 
-	@modifierName:"Start Turn Watch"
-	@description: "Start Turn Watch"
+  @modifierName:"Start Turn Watch"
+  @description: "Start Turn Watch"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierStartTurnWatch"]
+  fxResource: ["FX.Modifiers.ModifierStartTurnWatch"]
 
-	onStartTurn: (e) ->
-		super(e)
+  onStartTurn: (e) ->
+    super(e)
 
-		if @getCard().isOwnersTurn()
-			action = @getGameSession().getExecutingAction()
-			@onTurnWatch(action)
+    if @getCard().isOwnersTurn()
+      action = @getGameSession().getExecutingAction()
+      @onTurnWatch(action)
 
-	onTurnWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onTurnWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierStartTurnWatch

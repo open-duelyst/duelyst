@@ -6,29 +6,29 @@ Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierSpellWatch extends Modifier
 
-	type:"ModifierSpellWatch"
-	@type:"ModifierSpellWatch"
+  type:"ModifierSpellWatch"
+  @type:"ModifierSpellWatch"
 
-	@modifierName:"Spell Watch"
-	@description: "Spell Watch"
+  @modifierName:"Spell Watch"
+  @description: "Spell Watch"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierSpellWatch"]
+  fxResource: ["FX.Modifiers.ModifierSpellWatch"]
 
-	onBeforeAction: (e) ->
-		super(e)
+  onBeforeAction: (e) ->
+    super(e)
 
-		action = e.action
+    action = e.action
 
-		# watch for a spell (but not a followup) being cast by player who owns this entity
-		if (action instanceof PlayCardFromHandAction or action instanceof PlaySignatureCardAction) and action.getOwnerId() is @getCard().getOwnerId() and action.getCard()?.type is CardType.Spell
-			@onSpellWatch(action)
+    # watch for a spell (but not a followup) being cast by player who owns this entity
+    if (action instanceof PlayCardFromHandAction or action instanceof PlaySignatureCardAction) and action.getOwnerId() is @getCard().getOwnerId() and action.getCard()?.type is CardType.Spell
+      @onSpellWatch(action)
 
-	onSpellWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onSpellWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierSpellWatch

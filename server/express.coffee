@@ -42,8 +42,8 @@ app.use(middleware.not_found)
 app.use(middleware.errors.logError)
 
 if config.isDevelopment()
-	app.use(middleware.errors.development)
+  app.use(middleware.errors.development)
 else
-	app.use(middleware.errors.production)
+  app.use(middleware.errors.production)
 
 module.exports = app

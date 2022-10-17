@@ -9,36 +9,36 @@ CardType = require 'app/sdk/cards/cardType'
 
 class ModifierDyingWishCorpseCombustion extends ModifierDyingWish
 
-	type:"ModifierDyingWishCorpseCombustion"
-	@type:"ModifierDyingWishCorpseCombustion"
+  type:"ModifierDyingWishCorpseCombustion"
+  @type:"ModifierDyingWishCorpseCombustion"
 
-	@modifierName:"Dying Wish"
-	@description: "Resummon this minion and deal 3 damage to all nearby enemies"
+  @modifierName:"Dying Wish"
+  @description: "Resummon this minion and deal 3 damage to all nearby enemies"
 
-	damageAmount: 3
+  damageAmount: 3
 
-	fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn", "FX.Modifiers.ModifierGenericDamage"]
-	cardDataOrIndexToSpawn: null
+  fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn", "FX.Modifiers.ModifierGenericDamage"]
+  cardDataOrIndexToSpawn: null
 
-	onDyingWish: (action) ->
-		super(action)
+  onDyingWish: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			# deal damage to nearby enemies
-			@getGameSession().executeAction(playCardAction)
-			entities = @getGameSession().getBoard().getEnemyEntitiesAroundEntity(@getCard(), CardType.Unit, 1)
-			for entity in entities
-				damageAction = new DamageAction(@getGameSession())
-				damageAction.setOwnerId(@getCard().getOwnerId())
-				damageAction.setSource(@getCard())
-				damageAction.setTarget(entity)
-				damageAction.setDamageAmount(@damageAmount)
-				@getGameSession().executeAction(damageAction)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      # deal damage to nearby enemies
+      @getGameSession().executeAction(playCardAction)
+      entities = @getGameSession().getBoard().getEnemyEntitiesAroundEntity(@getCard(), CardType.Unit, 1)
+      for entity in entities
+        damageAction = new DamageAction(@getGameSession())
+        damageAction.setOwnerId(@getCard().getOwnerId())
+        damageAction.setSource(@getCard())
+        damageAction.setTarget(entity)
+        damageAction.setDamageAmount(@damageAmount)
+        @getGameSession().executeAction(damageAction)
 
-			# respawn original card
-			cardData = {id: @getCard().getId()}
-			playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, cardData)
-			playCardAction.setSource(@getCard())
-			@getGameSession().executeAction(playCardAction)
+      # respawn original card
+      cardData = {id: @getCard().getId()}
+      playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), @getCard().getPosition().x, @getCard().getPosition().y, cardData)
+      playCardAction.setSource(@getCard())
+      @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierDyingWishCorpseCombustion

@@ -5,34 +5,34 @@ PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 
 class ModifierOnRemoveSpawnEntities extends Modifier
 
-	type:"ModifierOnRemoveSpawnEntities"
-	@type:"ModifierOnRemoveSpawnEntities"
+  type:"ModifierOnRemoveSpawnEntities"
+  @type:"ModifierOnRemoveSpawnEntities"
 
-	activeInDeck: false
-	activeInHand: false
-	activeInSignatureCards: false
+  activeInDeck: false
+  activeInHand: false
+  activeInSignatureCards: false
 
-	numSpawns: 0
-	cardDataOrIndexToSpawn: null
+  numSpawns: 0
+  cardDataOrIndexToSpawn: null
 
-	fxResource: ["FX.Modifiers.ModifierGenericSpawn"]
+  fxResource: ["FX.Modifiers.ModifierGenericSpawn"]
 
-	@createContextObject: (cardDataOrIndexToSpawn, numSpawns, options) ->
-		contextObject = super(options)
-		contextObject.numSpawns = numSpawns
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, numSpawns, options) ->
+    contextObject = super(options)
+    contextObject.numSpawns = numSpawns
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    return contextObject
 
-	onRemoveFromCard: (action) ->
+  onRemoveFromCard: (action) ->
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			cardToSpawn = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
-			spawnPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getCard().getPosition(), CONFIG.PATTERN_3x3, cardToSpawn, @getCard(), @numSpawns)
-			for spawnPosition in spawnPositions
-				spawnAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), spawnPosition.x, spawnPosition.y, @cardDataOrIndexToSpawn)
-				spawnAction.setSource(@getCard())
-				@getGameSession().executeAction(spawnAction)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      cardToSpawn = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
+      spawnPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getCard().getPosition(), CONFIG.PATTERN_3x3, cardToSpawn, @getCard(), @numSpawns)
+      for spawnPosition in spawnPositions
+        spawnAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), spawnPosition.x, spawnPosition.y, @cardDataOrIndexToSpawn)
+        spawnAction.setSource(@getCard())
+        @getGameSession().executeAction(spawnAction)
 
-		super(action)
+    super(action)
 
 module.exports = ModifierOnRemoveSpawnEntities

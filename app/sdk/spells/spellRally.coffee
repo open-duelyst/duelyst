@@ -6,28 +6,28 @@ ModifierImmuneToSpellsByEnemy = require 'app/sdk/modifiers/modifierImmuneToSpell
 
 class SpellRally extends Spell
 
-	buffName: null
+  buffName: null
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		targetGeneral = @getGameSession().getGeneralForPlayerId(@getOwnerId())
-		targetGeneralPosition = targetGeneral.getPosition()
+  _findApplyEffectPositions: (position, sourceAction) ->
+    targetGeneral = @getGameSession().getGeneralForPlayerId(@getOwnerId())
+    targetGeneralPosition = targetGeneral.getPosition()
 
-		applyEffectPositions = []
-		if @getGameSession().getBoard().getUnitAtPosition({x: targetGeneralPosition.x + 1, y: targetGeneralPosition.y})
-			applyEffectPositions.push({x: targetGeneralPosition.x + 1, y: targetGeneralPosition.y})
-		if @getGameSession().getBoard().getUnitAtPosition({x: targetGeneralPosition.x - 1, y: targetGeneralPosition.y})
-			applyEffectPositions.push({x: targetGeneralPosition.x - 1, y: targetGeneralPosition.y})
-		return applyEffectPositions
+    applyEffectPositions = []
+    if @getGameSession().getBoard().getUnitAtPosition({x: targetGeneralPosition.x + 1, y: targetGeneralPosition.y})
+      applyEffectPositions.push({x: targetGeneralPosition.x + 1, y: targetGeneralPosition.y})
+    if @getGameSession().getBoard().getUnitAtPosition({x: targetGeneralPosition.x - 1, y: targetGeneralPosition.y})
+      applyEffectPositions.push({x: targetGeneralPosition.x - 1, y: targetGeneralPosition.y})
+    return applyEffectPositions
 
-	onApplyEffectToBoardTile: (board, x, y, sourceAction) ->
-		super(board, x, y, sourceAction)
+  onApplyEffectToBoardTile: (board, x, y, sourceAction) ->
+    super(board, x, y, sourceAction)
 
-		entity = board.getUnitAtPosition({x: x, y: y})
-		if entity? and !entity.getIsGeneral() and entity.getOwnerId() is @getOwnerId()
-			buff = Modifier.createContextObjectWithAttributeBuffs(2, 2)
-			buff.appliedName = @buffName
-			@getGameSession().applyModifierContextObject(buff, entity)
-			if entity.hasActiveModifierClass(ModifierBanding)
-				@getGameSession().applyModifierContextObject(ModifierImmuneToSpellsByEnemy.createContextObject(), entity)
+    entity = board.getUnitAtPosition({x: x, y: y})
+    if entity? and !entity.getIsGeneral() and entity.getOwnerId() is @getOwnerId()
+      buff = Modifier.createContextObjectWithAttributeBuffs(2, 2)
+      buff.appliedName = @buffName
+      @getGameSession().applyModifierContextObject(buff, entity)
+      if entity.hasActiveModifierClass(ModifierBanding)
+        @getGameSession().applyModifierContextObject(ModifierImmuneToSpellsByEnemy.createContextObject(), entity)
 
 module.exports = SpellRally

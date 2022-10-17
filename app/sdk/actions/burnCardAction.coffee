@@ -2,12 +2,12 @@ DrawCardAction = require './drawCardAction'
 
 class BurnCardAction extends DrawCardAction
 
-	@type:"BurnCardAction"
+  @type:"BurnCardAction"
 
-	burnCard: true
+  burnCard: true
 
-	constructor: () ->
-		@type ?= BurnCardAction.type
-		super
+  constructor: () ->
+    @type ?= BurnCardAction.type
+    super
 
 module.exports = BurnCardAction

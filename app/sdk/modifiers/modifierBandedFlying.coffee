@@ -4,9 +4,9 @@ ModifierFlying = require './modifierFlying'
 
 class ModifierBandedFlying extends ModifierFlying
 
-	type: "ModifierBandedFlying"
-	@type: "ModifierBandedFlying"
+  type: "ModifierBandedFlying"
+  @type: "ModifierBandedFlying"
 
-	fxResource: ["FX.Modifiers.ModifierZealed"]
+  fxResource: ["FX.Modifiers.ModifierZealed"]
 
 module.exports = ModifierBandedFlying

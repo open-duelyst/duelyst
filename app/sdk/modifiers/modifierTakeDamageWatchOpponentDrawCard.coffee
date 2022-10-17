@@ -4,19 +4,19 @@ DrawCardAction = require 'app/sdk/actions/drawCardAction'
 
 class ModifierTakeDamageWatchOpponentDrawCard extends ModifierTakeDamageWatch
 
-	type:"ModifierTakeDamageWatchOpponentDrawCard"
-	@type:"ModifierTakeDamageWatchOpponentDrawCard"
+  type:"ModifierTakeDamageWatchOpponentDrawCard"
+  @type:"ModifierTakeDamageWatchOpponentDrawCard"
 
 
-	@createContextObject: (options) ->
-		contextObject = super(options)
+  @createContextObject: (options) ->
+    contextObject = super(options)
 
-		return contextObject
+    return contextObject
 
-	onDamageTaken: (action) ->
-		super(action)
+  onDamageTaken: (action) ->
+    super(action)
 
-		enemyGeneral = @getCard().getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId())
-		@getGameSession().executeAction(new DrawCardAction(this.getGameSession(), enemyGeneral.getOwnerId()))
+    enemyGeneral = @getCard().getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId())
+    @getGameSession().executeAction(new DrawCardAction(this.getGameSession(), enemyGeneral.getOwnerId()))
 
 module.exports = ModifierTakeDamageWatchOpponentDrawCard

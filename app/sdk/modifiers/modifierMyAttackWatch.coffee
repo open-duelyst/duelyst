@@ -7,26 +7,26 @@ Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierMyAttackWatch extends Modifier
 
-	type:"ModifierMyAttackWatch"
-	@type:"ModifierMyAttackWatch"
+  type:"ModifierMyAttackWatch"
+  @type:"ModifierMyAttackWatch"
 
-	@modifierName:"Attack Watch: Self"
-	@description:"Attack Watch: Self"
+  @modifierName:"Attack Watch: Self"
+  @description:"Attack Watch: Self"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierMyAttackWatch"]
+  fxResource: ["FX.Modifiers.ModifierMyAttackWatch"]
 
-	onAction: (event) ->
-		super(event)
-		action = event.action
-		if action.getSource() == @getCard() and ((action instanceof AttackAction and (!action.getIsImplicit() or action.getIsAutomatic())) or action instanceof ForcedAttackAction)
-			@onMyAttackWatch(action)
+  onAction: (event) ->
+    super(event)
+    action = event.action
+    if action.getSource() == @getCard() and ((action instanceof AttackAction and (!action.getIsImplicit() or action.getIsAutomatic())) or action instanceof ForcedAttackAction)
+      @onMyAttackWatch(action)
 
-	onMyAttackWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onMyAttackWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierMyAttackWatch

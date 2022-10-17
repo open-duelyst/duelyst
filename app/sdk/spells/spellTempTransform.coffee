@@ -7,27 +7,27 @@ _ = require("underscore")
 
 class SpellTempTransform extends SpellRemoveAndReplaceEntity
 
-	durationEndTurn: 0
-	durationStartTurn: 0
+  durationEndTurn: 0
+  durationStartTurn: 0
 
-	getCardDataOrIndexToSpawn: (x, y) ->
-		cardDataOrIndexToSpawn = super(x, y)
+  getCardDataOrIndexToSpawn: (x, y) ->
+    cardDataOrIndexToSpawn = super(x, y)
 
-		existingEntity = @getGameSession().getBoard().getCardAtPosition({x: x, y: y}, CardType.Entity)
-		if existingEntity?
-			# create modifier from existing entity
-			existingEntityCardData = existingEntity.createNewCardData()
+    existingEntity = @getGameSession().getBoard().getCardAtPosition({x: x, y: y}, CardType.Entity)
+    if existingEntity?
+      # create modifier from existing entity
+      existingEntityCardData = existingEntity.createNewCardData()
 
-			# create modifier to transform this entity back to its original form
-			transformBackModifierContextObject = ModifierRemoveAndReplaceEntity.createContextObject(existingEntityCardData, existingEntity.getBaseCardId())
-			transformBackModifierContextObject.durationEndTurn = @durationEndTurn
-			transformBackModifierContextObject.durationStartTurn = @durationStartTurn
-			transformBackModifierContextObject.isInherent = true
-			if cardDataOrIndexToSpawn? and !_.isObject(cardDataOrIndexToSpawn) then cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
-			cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects ?= []
-			cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(ModifierTransformed.createContextObject(existingEntity.getExhausted(), existingEntity.getMovesMade(), existingEntity.getAttacksMade()))
-			cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(transformBackModifierContextObject)
+      # create modifier to transform this entity back to its original form
+      transformBackModifierContextObject = ModifierRemoveAndReplaceEntity.createContextObject(existingEntityCardData, existingEntity.getBaseCardId())
+      transformBackModifierContextObject.durationEndTurn = @durationEndTurn
+      transformBackModifierContextObject.durationStartTurn = @durationStartTurn
+      transformBackModifierContextObject.isInherent = true
+      if cardDataOrIndexToSpawn? and !_.isObject(cardDataOrIndexToSpawn) then cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
+      cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects ?= []
+      cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(ModifierTransformed.createContextObject(existingEntity.getExhausted(), existingEntity.getMovesMade(), existingEntity.getAttacksMade()))
+      cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(transformBackModifierContextObject)
 
-		return cardDataOrIndexToSpawn
+    return cardDataOrIndexToSpawn
 
 module.exports = SpellTempTransform

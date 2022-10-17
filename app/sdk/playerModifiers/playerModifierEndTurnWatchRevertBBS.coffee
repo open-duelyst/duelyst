@@ -2,20 +2,20 @@ PlayerModifier = require './playerModifier'
 
 class PlayerModifierEndTurnWatchRevertBBS extends PlayerModifier
 
-	type:"PlayerModifierEndTurnWatchRevertBBS"
-	@type:"PlayerModifierEndTurnWatchRevertBBS"
+  type:"PlayerModifierEndTurnWatchRevertBBS"
+  @type:"PlayerModifierEndTurnWatchRevertBBS"
 
-	bbsToRevertTo: null
+  bbsToRevertTo: null
 
-	@createContextObject: (bbsToRevertTo) ->
-		contextObject = super()
-		contextObject.bbsToRevertTo = bbsToRevertTo
-		return contextObject
+  @createContextObject: (bbsToRevertTo) ->
+    contextObject = super()
+    contextObject.bbsToRevertTo = bbsToRevertTo
+    return contextObject
 
-	onEndTurn: (action) ->
-		super(action)
-		if @bbsToRevertTo?
-			@getCard().setSignatureCardData(@bbsToRevertTo)
-			@getGameSession().executeAction(@getCard().getOwner().actionGenerateSignatureCard())
+  onEndTurn: (action) ->
+    super(action)
+    if @bbsToRevertTo?
+      @getCard().setSignatureCardData(@bbsToRevertTo)
+      @getGameSession().executeAction(@getCard().getOwner().actionGenerateSignatureCard())
 
 module.exports = PlayerModifierEndTurnWatchRevertBBS

@@ -5,46 +5,46 @@ Action = require 'app/sdk/actions/action'
 ###
 class ModifierAction extends Action
 
-	@type: "ModifierAction"
-	type: "ModifierAction"
-	_modifier: null
-	modifierIndex: null
-	_parentModifier: null
-	parentModifierIndex: null
+  @type: "ModifierAction"
+  type: "ModifierAction"
+  _modifier: null
+  modifierIndex: null
+  _parentModifier: null
+  parentModifierIndex: null
 
-	constructor: (gameSession, modifier) ->
-		super(gameSession)
-		@setModifier(modifier)
+  constructor: (gameSession, modifier) ->
+    super(gameSession)
+    @setModifier(modifier)
 
-	getLogName: ()->
-		return super() + "_#{@getModifier()?.getLogName()}"
+  getLogName: ()->
+    return super() + "_#{@getModifier()?.getLogName()}"
 
-	setModifier: (modifier) ->
-		if modifier?
-			@modifierIndex = modifier.getIndex()
+  setModifier: (modifier) ->
+    if modifier?
+      @modifierIndex = modifier.getIndex()
 
-			# TODO: stop extracting card from modifier
-			card = modifier.getCardAffected()
-			@setOwnerId(card?.getOwnerId())
-			@setSource(card)
-			@setTarget(card)
+      # TODO: stop extracting card from modifier
+      card = modifier.getCardAffected()
+      @setOwnerId(card?.getOwnerId())
+      @setSource(card)
+      @setTarget(card)
 
-	getModifierIndex: () ->
-		return @modifierIndex
+  getModifierIndex: () ->
+    return @modifierIndex
 
-	getModifier: () ->
-		@_modifier ?= @getGameSession().getModifierByIndex(@modifierIndex)
-		return @_modifier
+  getModifier: () ->
+    @_modifier ?= @getGameSession().getModifierByIndex(@modifierIndex)
+    return @_modifier
 
-	setParentModifier: (parentModifier) ->
-		if parentModifier?
-			@parentModifierIndex = parentModifier.getIndex()
+  setParentModifier: (parentModifier) ->
+    if parentModifier?
+      @parentModifierIndex = parentModifier.getIndex()
 
-	getParentModifierIndex: () ->
-		return @parentModifierIndex
+  getParentModifierIndex: () ->
+    return @parentModifierIndex
 
-	getParentModifier: () ->
-		@_parentModifier ?= @getGameSession().getModifierByIndex(@parentModifierIndex)
-		return @_parentModifier
+  getParentModifier: () ->
+    @_parentModifier ?= @getGameSession().getModifierByIndex(@parentModifierIndex)
+    return @_parentModifier
 
 module.exports = ModifierAction

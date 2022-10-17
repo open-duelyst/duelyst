@@ -8,27 +8,27 @@ _ = require 'underscore'
 
 class ModifierBondHealMyGeneral extends ModifierBond
 
-	type:"ModifierBondHealMyGeneral"
-	@type:"ModifierBondHealMyGeneral"
+  type:"ModifierBondHealMyGeneral"
+  @type:"ModifierBondHealMyGeneral"
 
-	@description: "Heal your General"
+  @description: "Heal your General"
 
-	fxResource: ["FX.Modifiers.ModifierBond"]
+  fxResource: ["FX.Modifiers.ModifierBond"]
 
-	healAmount: 0
+  healAmount: 0
 
-	@createContextObject: (healAmount) ->
-		contextObject = super()
-		contextObject.healAmount = healAmount
-		return contextObject
+  @createContextObject: (healAmount) ->
+    contextObject = super()
+    contextObject.healAmount = healAmount
+    return contextObject
 
-	onBond: () ->
+  onBond: () ->
 
-		healAction = new HealAction(@getGameSession())
-		healAction.setOwnerId(@getCard().getOwnerId())
-		healAction.setTarget(@getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()))
-		healAction.setHealAmount(@healAmount)
+    healAction = new HealAction(@getGameSession())
+    healAction.setOwnerId(@getCard().getOwnerId())
+    healAction.setTarget(@getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()))
+    healAction.setHealAmount(@healAmount)
 
-		@getGameSession().executeAction(healAction)
+    @getGameSession().executeAction(healAction)
 
 module.exports = ModifierBondHealMyGeneral

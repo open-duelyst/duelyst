@@ -3,16 +3,16 @@ RestoreChargeToAllArtifactsAction = require 'app/sdk/actions/restoreChargeToAllA
 
 class ModifierStartTurnWatchRestoreChargeToArtifacts extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchRestoreChargeToArtifacts"
-	@type:"ModifierStartTurnWatchRestoreChargeToArtifacts"
+  type:"ModifierStartTurnWatchRestoreChargeToArtifacts"
+  @type:"ModifierStartTurnWatchRestoreChargeToArtifacts"
 
-	onTurnWatch: (action) ->
-		super(action)
+  onTurnWatch: (action) ->
+    super(action)
 
-		myGeneral = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
+    myGeneral = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 
-		restoreDurabilityAction = new RestoreChargeToAllArtifactsAction(@getGameSession())
-		restoreDurabilityAction.setTarget(myGeneral)
-		@getCard().getGameSession().executeAction(restoreDurabilityAction)
+    restoreDurabilityAction = new RestoreChargeToAllArtifactsAction(@getGameSession())
+    restoreDurabilityAction.setTarget(myGeneral)
+    @getCard().getGameSession().executeAction(restoreDurabilityAction)
 
 module.exports = ModifierStartTurnWatchRestoreChargeToArtifacts

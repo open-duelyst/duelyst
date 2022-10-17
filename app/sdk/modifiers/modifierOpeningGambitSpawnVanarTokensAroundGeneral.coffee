@@ -9,31 +9,31 @@ Factions = require 'app/sdk/cards/factionsLookup.coffee'
 
 class ModifierOpeningGambitSpawnVanarTokensAroundGeneral extends ModifierOpeningGambit
 
-	type:"ModifierOpeningGambitSpawnVanarTokensAroundGeneral"
-	@type:"ModifierOpeningGambitSpawnVanarTokensAroundGeneral"
+  type:"ModifierOpeningGambitSpawnVanarTokensAroundGeneral"
+  @type:"ModifierOpeningGambitSpawnVanarTokensAroundGeneral"
 
-	@description:"Surround the enemy General with random Walls"
+  @description:"Surround the enemy General with random Walls"
 
-	cardDataOrIndexToSpawn: null
+  cardDataOrIndexToSpawn: null
 
-	fxResource: ["FX.Modifiers.ModifierSpellWatch", "FX.Modifiers.ModifierGenericSpawn"]
+  fxResource: ["FX.Modifiers.ModifierSpellWatch", "FX.Modifiers.ModifierGenericSpawn"]
 
-	onOpeningGambit: (action) ->
-		super(action)
+  onOpeningGambit: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()).getPosition(), CONFIG.PATTERN_3x3, @getCard(), @getCard(), 8)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()).getPosition(), CONFIG.PATTERN_3x3, @getCard(), @getCard(), 8)
 
-			for position in spawnLocations
-				possibleTokens = [
-					{id: Cards.Faction6.BlazingSpines},
-					{id: Cards.Faction6.BonechillBarrier},
-					{id: Cards.Faction6.GravityWell},
-					{id: Cards.Faction6.FrostBomb}
-				]
-				card = @getGameSession().getExistingCardFromIndexOrCreateCardFromData(possibleTokens[@getGameSession().getRandomIntegerForExecution(possibleTokens.length)])
-				playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, card.createNewCardData())
-				playCardAction.setSource(@getCard())
-				@getGameSession().executeAction(playCardAction)
+      for position in spawnLocations
+        possibleTokens = [
+          {id: Cards.Faction6.BlazingSpines},
+          {id: Cards.Faction6.BonechillBarrier},
+          {id: Cards.Faction6.GravityWell},
+          {id: Cards.Faction6.FrostBomb}
+        ]
+        card = @getGameSession().getExistingCardFromIndexOrCreateCardFromData(possibleTokens[@getGameSession().getRandomIntegerForExecution(possibleTokens.length)])
+        playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, card.createNewCardData())
+        playCardAction.setSource(@getCard())
+        @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierOpeningGambitSpawnVanarTokensAroundGeneral

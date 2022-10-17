@@ -2,12 +2,12 @@ PlayerModifier = require './playerModifier'
 
 class PlayerModifierMechazorSummoned extends PlayerModifier
 
-	type:"PlayerModifierMechazorSummoned"
-	@type:"PlayerModifierMechazorSummoned"
+  type:"PlayerModifierMechazorSummoned"
+  @type:"PlayerModifierMechazorSummoned"
 
-	@modifierName:"MECHAZ0R Built"
-	@description: "MECHAZ0R"
+  @modifierName:"MECHAZ0R Built"
+  @description: "MECHAZ0R"
 
-	isRemovable: false
+  isRemovable: false
 
 module.exports = PlayerModifierMechazorSummoned

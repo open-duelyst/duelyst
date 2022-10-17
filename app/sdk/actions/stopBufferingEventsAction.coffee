@@ -1,20 +1,20 @@
-Logger = 		require 'app/common/logger'
-Action = 		require './action'
+Logger =     require 'app/common/logger'
+Action =     require './action'
 
 class StopBufferingEventsAction extends Action
 
-	@type:"StopBufferingEventsAction"
+  @type:"StopBufferingEventsAction"
 
-	constructor: () ->
-		@type ?= StopBufferingEventsAction.type
-		super
+  constructor: () ->
+    @type ?= StopBufferingEventsAction.type
+    super
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		@getGameSession().p_stopBufferingEvents()
+    @getGameSession().p_stopBufferingEvents()
 
 module.exports = StopBufferingEventsAction

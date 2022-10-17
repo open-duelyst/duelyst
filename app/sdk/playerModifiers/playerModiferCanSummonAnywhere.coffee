@@ -4,16 +4,16 @@ ModifierAirdrop = require 'app/sdk/modifiers/modifierAirdrop'
 
 class PlayerModiferCanSummonAnywhere extends PlayerModifier
 
-	type:"PlayerModiferCanSummonAnywhere"
-	@type:"PlayerModiferCanSummonAnywhere"
+  type:"PlayerModiferCanSummonAnywhere"
+  @type:"PlayerModiferCanSummonAnywhere"
 
-	isAura: true
-	auraIncludeAlly: true
-	auraIncludeBoard: false
-	auraIncludeEnemy: false
-	auraIncludeGeneral: false
-	auraIncludeHand: true
-	auraIncludeSelf: false
-	modifiersContextObjects: [ModifierAirdrop.createContextObject()]
+  isAura: true
+  auraIncludeAlly: true
+  auraIncludeBoard: false
+  auraIncludeEnemy: false
+  auraIncludeGeneral: false
+  auraIncludeHand: true
+  auraIncludeSelf: false
+  modifiersContextObjects: [ModifierAirdrop.createContextObject()]
 
 module.exports = PlayerModiferCanSummonAnywhere

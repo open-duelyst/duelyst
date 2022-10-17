@@ -18,47 +18,47 @@ WartechGeneralFaction6Achievement = require '../../../../app/sdk/achievements/wa
 router = express.Router()
 
 router.put "/:achievement_id/read_at", (req, res, next) ->
-	result = t.validate(req.params.achievement_id, t.Str)
-	if not result.isValid()
-		return res.status(400).json(result.errors)
+  result = t.validate(req.params.achievement_id, t.Str)
+  if not result.isValid()
+    return res.status(400).json(result.errors)
 
-	user_id = req.user.d.id
-	achievement_id = result.value
+  user_id = req.user.d.id
+  achievement_id = result.value
 
-	AchievementsModule.markAchievementAsRead(user_id,achievement_id)
-	.then (value) ->
-		res.status(200).json(value)
-	.catch (error) ->
-		Logger.module("API").error "Failed to mark achievement #{achievement_id} as read for #{user_id.blue}".red + " ERROR: "+error.message
-		next(error)
+  AchievementsModule.markAchievementAsRead(user_id,achievement_id)
+  .then (value) ->
+    res.status(200).json(value)
+  .catch (error) ->
+    Logger.module("API").error "Failed to mark achievement #{achievement_id} as read for #{user_id.blue}".red + " ERROR: "+error.message
+    next(error)
 
 router.post "/login/", (req, res, next) ->
-	user_id = req.user.d.id
+  user_id = req.user.d.id
 
-	AchievementsModule.updateAchievementsProgressWithLogin(user_id,moment.utc())
-	.then (value) ->
-		res.status(200).json(value)
-	.catch (error) ->
-		Logger.module("API").error "Failed to update login achievements for #{user_id.blue}".red + " ERROR: "+error.message
-		next(error)
+  AchievementsModule.updateAchievementsProgressWithLogin(user_id,moment.utc())
+  .then (value) ->
+    res.status(200).json(value)
+  .catch (error) ->
+    Logger.module("API").error "Failed to update login achievements for #{user_id.blue}".red + " ERROR: "+error.message
+    next(error)
 
 router.get "/wartech_generals/progress", (req, res, next) ->
-	user_id = req.user.d.id
+  user_id = req.user.d.id
 
-	userAchievementsColumns = ['user_id','achievement_id','progress','progress_required']
+  userAchievementsColumns = ['user_id','achievement_id','progress','progress_required']
 
-	return Promise.all([
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction1Achievement.id),
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction2Achievement.id),
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction3Achievement.id),
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction4Achievement.id),
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction5Achievement.id),
-		knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction6Achievement.id)
-	]).spread (userWartechAchievementRows)->
-		userWartechAchievementRows = DataAccessHelpers.restifyData(userWartechAchievementRows)
-		res.status(200).json(userWartechAchievementRows)
-	.catch (error) ->
-		Logger.module("API").error "Failed to retrieve general achievement progress for #{user_id.blue}".red + " ERROR: "+error.message
-		next(error)
+  return Promise.all([
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction1Achievement.id),
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction2Achievement.id),
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction3Achievement.id),
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction4Achievement.id),
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction5Achievement.id),
+    knex("user_achievements").first(userAchievementsColumns).where('user_id',user_id).andWhere('achievement_id',WartechGeneralFaction6Achievement.id)
+  ]).spread (userWartechAchievementRows)->
+    userWartechAchievementRows = DataAccessHelpers.restifyData(userWartechAchievementRows)
+    res.status(200).json(userWartechAchievementRows)
+  .catch (error) ->
+    Logger.module("API").error "Failed to retrieve general achievement progress for #{user_id.blue}".red + " ERROR: "+error.message
+    next(error)
 
 module.exports = router

@@ -6,36 +6,36 @@ CloneEntityAsTransformAction = require 'app/sdk/actions/cloneEntityAsTransformAc
 
 class ModifierSummonWatch extends Modifier
 
-	type:"ModifierSummonWatch"
-	@type:"ModifierSummonWatch"
+  type:"ModifierSummonWatch"
+  @type:"ModifierSummonWatch"
 
-	@modifierName:"Summon Watch"
-	@description: "Summon Watch"
+  @modifierName:"Summon Watch"
+  @description: "Summon Watch"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierSummonWatch"]
+  fxResource: ["FX.Modifiers.ModifierSummonWatch"]
 
-	onAfterCleanupAction: (e) ->
-		super(e)
+  onAfterCleanupAction: (e) ->
+    super(e)
 
-		action = e.action
+    action = e.action
 
-		# watch for a unit being summoned in any way by the player who owns this entity, but don't react to transforms
-		if @getIsActionRelevant(action) and @getIsCardRelevantToWatcher(action.getCard())
-			@onSummonWatch(action)
+    # watch for a unit being summoned in any way by the player who owns this entity, but don't react to transforms
+    if @getIsActionRelevant(action) and @getIsCardRelevantToWatcher(action.getCard())
+      @onSummonWatch(action)
 
-	getIsActionRelevant: (action) ->
-		return action instanceof ApplyCardToBoardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard()?.type is CardType.Unit and action.getCard() isnt @getCard() and !(action instanceof PlayCardAsTransformAction or action instanceof CloneEntityAsTransformAction)
+  getIsActionRelevant: (action) ->
+    return action instanceof ApplyCardToBoardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard()?.type is CardType.Unit and action.getCard() isnt @getCard() and !(action instanceof PlayCardAsTransformAction or action instanceof CloneEntityAsTransformAction)
 
-	onSummonWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onSummonWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
-	getIsCardRelevantToWatcher: (card) ->
-		return true # override me in sub classes to implement special behavior
+  getIsCardRelevantToWatcher: (card) ->
+    return true # override me in sub classes to implement special behavior
 
 
 module.exports = ModifierSummonWatch

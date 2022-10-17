@@ -5,19 +5,19 @@ _ = require 'underscore'
 
 class SpellFollowupTeleportNearMyGeneral extends SpellFollowupTeleport
 
-	_postFilterPlayPositions: (spellPositions) ->
-		# make sure that there is something to teleport at the source position
-		if @getTeleportSource(@getApplyEffectPosition())?
-			validPositions = []
+  _postFilterPlayPositions: (spellPositions) ->
+    # make sure that there is something to teleport at the source position
+    if @getTeleportSource(@getApplyEffectPosition())?
+      validPositions = []
 
-			general = @getGameSession().getGeneralForPlayerId(@getOwnerId())
-			if general?
-				teleportLocations = UtilsGameSession.getValidBoardPositionsFromPattern(@getGameSession().getBoard(), general.getPosition(), CONFIG.PATTERN_3x3, false)
-				for position in teleportLocations
-					validPositions.push(position)
+      general = @getGameSession().getGeneralForPlayerId(@getOwnerId())
+      if general?
+        teleportLocations = UtilsGameSession.getValidBoardPositionsFromPattern(@getGameSession().getBoard(), general.getPosition(), CONFIG.PATTERN_3x3, false)
+        for position in teleportLocations
+          validPositions.push(position)
 
-			return validPositions
-		else
-			return []
+      return validPositions
+    else
+      return []
 
 module.exports = SpellFollowupTeleportNearMyGeneral

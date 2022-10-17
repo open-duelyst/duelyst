@@ -4,17 +4,17 @@ ModifierBandedFlying = require './modifierBandedFlying'
 
 class ModifierBandingFlying extends ModifierBanding
 
-	type:"ModifierBandingFlying"
-	@type:"ModifierBandingFlying"
+  type:"ModifierBandingFlying"
+  @type:"ModifierBandingFlying"
 
-	fxResource: ["FX.Modifiers.ModifierZeal", "FX.Modifiers.ModifierFlying"]
+  fxResource: ["FX.Modifiers.ModifierZeal", "FX.Modifiers.ModifierFlying"]
 
-	@createContextObject: (options = undefined) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = [ModifierBandedFlying.createContextObject()]
-		return contextObject
+  @createContextObject: (options = undefined) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = [ModifierBandedFlying.createContextObject()]
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		return @description
+  @getDescription: (modifierContextObject) ->
+    return @description
 
 module.exports = ModifierBandingFlying

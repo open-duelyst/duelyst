@@ -10,30 +10,30 @@ ModifierRanged = require './modifierRanged'
 
 class ModifierSpiritScribe extends ModifierSummonWatch
 
-	type:"ModifierSpiritScribe"
-	@type:"ModifierSpiritScribe"
+  type:"ModifierSpiritScribe"
+  @type:"ModifierSpiritScribe"
 
-	@description: "Whenever you summon a minion, this minion gains a random keyword ability"
+  @description: "Whenever you summon a minion, this minion gains a random keyword ability"
 
-	@createContextObject: () ->
-		contextObject = super()
-		contextObject.allModifierContextObjects = [
-			ModifierFrenzy.createContextObject(),
-			ModifierFlying.createContextObject(),
-			ModifierTranscendance.createContextObject(),
-			ModifierProvoke.createContextObject(),
-			ModifierRanged.createContextObject()
-		]
-		return contextObject
+  @createContextObject: () ->
+    contextObject = super()
+    contextObject.allModifierContextObjects = [
+      ModifierFrenzy.createContextObject(),
+      ModifierFlying.createContextObject(),
+      ModifierTranscendance.createContextObject(),
+      ModifierProvoke.createContextObject(),
+      ModifierRanged.createContextObject()
+    ]
+    return contextObject
 
-	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierGenericBuff"]
 
-	onSummonWatch: (action) ->
-		super(action)
+  onSummonWatch: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative() and @allModifierContextObjects.length > 0
-			# pick one modifier from the remaining list and splice it out of the set of choices
-			modifierContextObject = @allModifierContextObjects.splice(@getGameSession().getRandomIntegerForExecution(@allModifierContextObjects.length), 1)[0]
-			@getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
+    if @getGameSession().getIsRunningAsAuthoritative() and @allModifierContextObjects.length > 0
+      # pick one modifier from the remaining list and splice it out of the set of choices
+      modifierContextObject = @allModifierContextObjects.splice(@getGameSession().getRandomIntegerForExecution(@allModifierContextObjects.length), 1)[0]
+      @getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
 
 module.exports = ModifierSpiritScribe

@@ -5,21 +5,21 @@ PutCardInHandAction = require 'app/sdk/actions/putCardInHandAction'
 
 class ModifierStartTurnWatchBounceToActionBar extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchBounceToActionBar"
-	@type:"ModifierStartTurnWatchBounceToActionBar"
+  type:"ModifierStartTurnWatchBounceToActionBar"
+  @type:"ModifierStartTurnWatchBounceToActionBar"
 
-	maxStacks: 1
+  maxStacks: 1
 
-	onTurnWatch: (action) ->
-		thisEntity = @getCard()
-		if @getCard()?.getIsActive()
-			removeOriginalEntityAction = new RemoveAction(@getGameSession())
-			removeOriginalEntityAction.setOwnerId(thisEntity.getOwnerId())
-			removeOriginalEntityAction.setTarget(thisEntity)
-			@getGameSession().executeAction(removeOriginalEntityAction)
+  onTurnWatch: (action) ->
+    thisEntity = @getCard()
+    if @getCard()?.getIsActive()
+      removeOriginalEntityAction = new RemoveAction(@getGameSession())
+      removeOriginalEntityAction.setOwnerId(thisEntity.getOwnerId())
+      removeOriginalEntityAction.setTarget(thisEntity)
+      @getGameSession().executeAction(removeOriginalEntityAction)
 
-			# put a fresh card matching the original unit into hand
-			putCardInHandAction = new PutCardInHandAction(@getGameSession(), thisEntity.getOwnerId(), thisEntity.createNewCardData())
-			@getGameSession().executeAction(putCardInHandAction)
+      # put a fresh card matching the original unit into hand
+      putCardInHandAction = new PutCardInHandAction(@getGameSession(), thisEntity.getOwnerId(), thisEntity.createNewCardData())
+      @getGameSession().executeAction(putCardInHandAction)
 
 module.exports = ModifierStartTurnWatchBounceToActionBar

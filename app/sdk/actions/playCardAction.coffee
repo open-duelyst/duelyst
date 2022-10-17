@@ -1,6 +1,6 @@
-CONFIG = 		require 'app/common/config'
-Logger = 		require 'app/common/logger'
-ApplyCardToBoardAction = 		require './applyCardToBoardAction'
+CONFIG =     require 'app/common/config'
+Logger =     require 'app/common/logger'
+ApplyCardToBoardAction =     require './applyCardToBoardAction'
 CardType = require 'app/sdk/cards/cardType'
 _ = require 'underscore'
 
@@ -10,10 +10,10 @@ Play a card to board and allow it to enact the full play card flow (followups, s
 
 class PlayCardAction extends ApplyCardToBoardAction
 
-	@type:"PlayCardAction"
+  @type:"PlayCardAction"
 
-	constructor: () ->
-		@type ?= PlayCardAction.type
-		super
+  constructor: () ->
+    @type ?= PlayCardAction.type
+    super
 
 module.exports = PlayCardAction

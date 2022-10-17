@@ -20,37 +20,37 @@ console.log "loading gauntlet runs..."
 knex("user_gauntlet_run").select('user_id','deck','is_resigned','created_at').whereNotNull('deck')
 .then (gauntletRuns)->
 
-	console.log "loaded #{gauntletRuns.length} gauntlet runs"
-	# bar = new ProgressBar('processing [:bar] :percent :etas', {
-	# 	complete: '=',
-	# 	incomplete: ' ',
-	# 	width: 20,
-	# 	total: parseInt(gauntletRuns.length)
-	# })
+  console.log "loaded #{gauntletRuns.length} gauntlet runs"
+  # bar = new ProgressBar('processing [:bar] :percent :etas', {
+  #   complete: '=',
+  #   incomplete: ' ',
+  #   width: 20,
+  #   total: parseInt(gauntletRuns.length)
+  # })
 
-	gauntletRuns = _.filter gauntletRuns, (run)->
-		return _.find run.deck, (cardId)-> parseInt(cardId) == SDK.Cards.Neutral.BloodTaura
+  gauntletRuns = _.filter gauntletRuns, (run)->
+    return _.find run.deck, (cardId)-> parseInt(cardId) == SDK.Cards.Neutral.BloodTaura
 
-	console.log "#{gauntletRuns.length} gauntlet runs have TAURA"
+  console.log "#{gauntletRuns.length} gauntlet runs have TAURA"
 
-	return Promise.map gauntletRuns, (gauntletRun)->
-		# bar.tick()
-		hasTaura = _.find gauntletRun.deck, (cardId)-> parseInt(cardId) == SDK.Cards.Neutral.BloodTaura
-		if hasTaura
-			console.log "HAS TAURA! #{gauntletRun.user_id} started on #{gauntletRun.created_at}"
-			if not gauntletRun.is_resigned
-				console.log "resigning run for #{gauntletRun.user_id}"
-				return GauntletModule.resignRun(gauntletRun.user_id).then ()->
-					console.log "Resigned. Adding gauntlet ticket to #{gauntletRun.user_id}"
-					return knex.transaction (tx)-> GauntletModule.addArenaTicketToUser(Promise.resolve(),tx,gauntletRun.user_id,"crm")
-		else
-			return Promise.resolve()
-	,{concurrency: 1}
+  return Promise.map gauntletRuns, (gauntletRun)->
+    # bar.tick()
+    hasTaura = _.find gauntletRun.deck, (cardId)-> parseInt(cardId) == SDK.Cards.Neutral.BloodTaura
+    if hasTaura
+      console.log "HAS TAURA! #{gauntletRun.user_id} started on #{gauntletRun.created_at}"
+      if not gauntletRun.is_resigned
+        console.log "resigning run for #{gauntletRun.user_id}"
+        return GauntletModule.resignRun(gauntletRun.user_id).then ()->
+          console.log "Resigned. Adding gauntlet ticket to #{gauntletRun.user_id}"
+          return knex.transaction (tx)-> GauntletModule.addArenaTicketToUser(Promise.resolve(),tx,gauntletRun.user_id,"crm")
+    else
+      return Promise.resolve()
+  ,{concurrency: 1}
 .then ()->
-	console.log "done"
-	# process.exit(0)
+  console.log "done"
+  # process.exit(0)
 .catch (e)->
-	console.log "ERROR! #{e.message}"
-	console.log prettyError.render(e)
-	throw e
-	process.exit(1)
+  console.log "ERROR! #{e.message}"
+  console.log prettyError.render(e)
+  throw e
+  process.exit(1)

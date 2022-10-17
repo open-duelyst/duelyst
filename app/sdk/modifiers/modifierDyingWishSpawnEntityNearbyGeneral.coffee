@@ -7,44 +7,44 @@ PlayCardAction = require 'app/sdk/actions/playCardAction'
 
 class ModifierDyingWishSpawnEntityNearbyGeneral extends ModifierDyingWish
 
-	type:"ModifierDyingWishSpawnEntityNearbyGeneral"
-	@type:"ModifierDyingWishSpawnEntityNearbyGeneral"
+  type:"ModifierDyingWishSpawnEntityNearbyGeneral"
+  @type:"ModifierDyingWishSpawnEntityNearbyGeneral"
 
-	@modifierName:"Dying Wish"
-	@description: "Summon %X nearby your General"
+  @modifierName:"Dying Wish"
+  @description: "Summon %X nearby your General"
 
-	fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn"]
-	cardDataOrIndexToSpawn: null
+  fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn"]
+  cardDataOrIndexToSpawn: null
 
-	@createContextObject: (cardDataOrIndexToSpawn, spawnDescription = "", spawnCount=1, spawnPattern=CONFIG.PATTERN_3x3, spawnSilently=true,options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		contextObject.spawnDescription = spawnDescription
-		contextObject.spawnPattern = spawnPattern
-		contextObject.spawnCount = spawnCount
-		contextObject.spawnSilently = spawnSilently
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, spawnDescription = "", spawnCount=1, spawnPattern=CONFIG.PATTERN_3x3, spawnSilently=true,options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    contextObject.spawnDescription = spawnDescription
+    contextObject.spawnPattern = spawnPattern
+    contextObject.spawnCount = spawnCount
+    contextObject.spawnSilently = spawnSilently
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.spawnDescription
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.spawnDescription
+    else
+      return @description
 
-	onDyingWish: (action) ->
-		super(action)
+  onDyingWish: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
-			generalPosition = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()).getPosition()
-			spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, @spawnPattern, card, @getCard(), @spawnCount)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
+      generalPosition = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()).getPosition()
+      spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, @spawnPattern, card, @getCard(), @spawnCount)
 
-			for position in spawnLocations
-				if !@spawnSilently
-					playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
-				else
-					playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
-				playCardAction.sourcePosition = @getCard().getPosition()
-				@getGameSession().executeAction(playCardAction)
+      for position in spawnLocations
+        if !@spawnSilently
+          playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
+        else
+          playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
+        playCardAction.sourcePosition = @getCard().getPosition()
+        @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierDyingWishSpawnEntityNearbyGeneral
