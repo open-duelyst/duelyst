@@ -4,10 +4,10 @@
   "camel_case_classes": {"level": "ignore"},
   "coffeescript_error": {"level": "ignore", "_comment": "Avoids failing on CoffeeScript 1.x super() calls"},
   "colon_assignment_spacing": {"level": "ignore"},
-  "indentation": {"level": "error", "value": 1},
+  "indentation": {"level": "error", "value": 2},
   "line_endings": {"value": "unix", "level": "error"},
   "max_line_length": {"level": "ignore"},
-  "no_tabs": {"level": "ignore"},
+  "no_tabs": {"level": "error"},
   "no_trailing_whitespace": {"level": "error"},
   "space_operators": {"level": "ignore"},
   "spacing_after_comma": {"level": "ignore"}
