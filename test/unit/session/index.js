@@ -1,6 +1,6 @@
 const path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../../../'));
-require('coffee-script/register');
+require('coffeescript/register');
 const assert = require('power-assert');
 const jwtDecode = require('jwt-decode');
 

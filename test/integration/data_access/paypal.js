@@ -2,7 +2,7 @@
 
 var path = require('path')
 require('app-module-path').addPath(path.join(__dirname, '../../../'))
-require('coffee-script/register')
+require('coffeescript/register')
 var chai = require('chai');
 var expect = chai.expect;
 var DuelystFirebase = require('../../../server/lib/duelyst_firebase_module.coffee');

@@ -1,4 +1,4 @@
-require('coffee-script/register');
+require('coffeescript/register');
 
 const fs = require('fs');
 const { expect } = require('chai');

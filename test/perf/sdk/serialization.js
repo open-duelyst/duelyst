@@ -1,6 +1,6 @@
 const path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../../../'));
-require('coffee-script/register');
+require('coffeescript/register');
 const Promise = require('bluebird');
 const Benchmark = require('benchmark');
 const Logger = require('../../../app/common/logger.coffee');

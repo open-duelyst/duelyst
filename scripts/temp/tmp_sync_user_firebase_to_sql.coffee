@@ -1,6 +1,6 @@
 # env $(cat .env_for_alpha | xargs) coffee ./scripts/temp/tmp_sync_user_firebase_to_sql.coffee 
 
-require('coffee-script/register')
+require('coffeescript/register')
 knex = require("../../server/lib/data_access/knex")
 SyncModule = require("../../server/lib/data_access/sync")
 DuelystFirebase= require("../../server/lib/duelyst_firebase_module")

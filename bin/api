@@ -3,7 +3,7 @@
 
 const path = require('path')
 require('app-module-path').addPath(path.join(__dirname, '..'))
-require('coffee-script/register')
+require('coffeescript/register')
 
 // Load config first so it has chance to synchronously validate .json config files
 // *before* any other code executes

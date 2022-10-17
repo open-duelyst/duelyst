@@ -1,7 +1,7 @@
 /*
 // run with
 $ mocha --recursive \
-      --compilers coffee:coffee-script/register \
+      --compilers coffee:coffeescript/register \
       --require ./test/coffee-coverage-loader.js
       test
 
