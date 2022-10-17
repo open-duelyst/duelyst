@@ -1,41 +1,41 @@
 Spell = require './spell'
 CardType = require 'app/sdk/cards/cardType'
-SpellFilterType =	require './spellFilterType'
+SpellFilterType =  require './spellFilterType'
 
 class SpellApplyModifiers extends Spell
 
-	targetType: CardType.Unit
-	spellFilterType: SpellFilterType.NeutralDirect
-	numModifiersToApply: 0 # when 0 applies all targetModifiersContextObjects, when > 0 this is the number of random modifiers to apply
+  targetType: CardType.Unit
+  spellFilterType: SpellFilterType.NeutralDirect
+  numModifiersToApply: 0 # when 0 applies all targetModifiersContextObjects, when > 0 this is the number of random modifiers to apply
 
-	setNumModifiersToApply: (val) ->
-		@numModifiersToApply = val
+  setNumModifiersToApply: (val) ->
+    @numModifiersToApply = val
 
-	getNumModifiersToApply: () ->
-		return @numModifiersToApply
+  getNumModifiersToApply: () ->
+    return @numModifiersToApply
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
-		super(board,x,y,sourceAction)
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+    super(board,x,y,sourceAction)
 
-		applyEffectPosition = {x: x, y: y}
-		entity = board.getCardAtPosition(applyEffectPosition, @targetType)
-		if entity?
-			for modifierContextObject in @getAppliedTargetModifiersContextObjects()
-				@getGameSession().applyModifierContextObject(modifierContextObject, entity)
+    applyEffectPosition = {x: x, y: y}
+    entity = board.getCardAtPosition(applyEffectPosition, @targetType)
+    if entity?
+      for modifierContextObject in @getAppliedTargetModifiersContextObjects()
+        @getGameSession().applyModifierContextObject(modifierContextObject, entity)
 
-	getAppliedTargetModifiersContextObjects: () ->
-		appliedModifiersContextObjects = @getTargetModifiersContextObjects()
-		numModifiersToPick = @numModifiersToApply
-		if numModifiersToPick > 0 and numModifiersToPick < appliedModifiersContextObjects.length
-			# pick modifiers at random
-			modifierContextObjectsToPickFrom = appliedModifiersContextObjects.slice(0)
-			appliedModifiersContextObjects = []
-			while numModifiersToPick > 0
-				# pick a modifier and remove it from the list to avoid picking duplicates
-				modifierContextObject = modifierContextObjectsToPickFrom.splice(@getGameSession().getRandomIntegerForExecution(modifierContextObjectsToPickFrom.length), 1)[0]
-				appliedModifiersContextObjects.push(modifierContextObject)
-				numModifiersToPick--
+  getAppliedTargetModifiersContextObjects: () ->
+    appliedModifiersContextObjects = @getTargetModifiersContextObjects()
+    numModifiersToPick = @numModifiersToApply
+    if numModifiersToPick > 0 and numModifiersToPick < appliedModifiersContextObjects.length
+      # pick modifiers at random
+      modifierContextObjectsToPickFrom = appliedModifiersContextObjects.slice(0)
+      appliedModifiersContextObjects = []
+      while numModifiersToPick > 0
+        # pick a modifier and remove it from the list to avoid picking duplicates
+        modifierContextObject = modifierContextObjectsToPickFrom.splice(@getGameSession().getRandomIntegerForExecution(modifierContextObjectsToPickFrom.length), 1)[0]
+        appliedModifiersContextObjects.push(modifierContextObject)
+        numModifiersToPick--
 
-		return appliedModifiersContextObjects
+    return appliedModifiersContextObjects
 
 module.exports = SpellApplyModifiers

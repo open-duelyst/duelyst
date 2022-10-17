@@ -8,24 +8,24 @@ _ = require 'underscore'
 
 class ModifierOpeningGambitRazorback extends ModifierOpeningGambitApplyModifiers
 
-	###
-	OpeningGambitApplyModifers - but specifically exclude walls minions
-	###
+  ###
+  OpeningGambitApplyModifers - but specifically exclude walls minions
+  ###
 
-	type:"ModifierOpeningGambitRazorback"
-	@type:"ModifierOpeningGambitRazorback"
+  type:"ModifierOpeningGambitRazorback"
+  @type:"ModifierOpeningGambitRazorback"
 
-	@createContextObject: (modifiersContextObjects, managedByCard, description, options) ->
-		contextObject = super(modifiersContextObjects, managedByCard, false, true, false, false, CONFIG.WHOLE_BOARD_RADIUS, description, options)
-		return contextObject
+  @createContextObject: (modifiersContextObjects, managedByCard, description, options) ->
+    contextObject = super(modifiersContextObjects, managedByCard, false, true, false, false, CONFIG.WHOLE_BOARD_RADIUS, description, options)
+    return contextObject
 
-	getAffectedEntities: () ->
-		entityList = super()
-		affectedEntities = []
-		for entity in entityList
-			if !entity.hasModifierType(ModifierWall.type)
-				affectedEntities.push(entity)
-		return affectedEntities
+  getAffectedEntities: () ->
+    entityList = super()
+    affectedEntities = []
+    for entity in entityList
+      if !entity.hasModifierType(ModifierWall.type)
+        affectedEntities.push(entity)
+    return affectedEntities
 
 
 module.exports = ModifierOpeningGambitRazorback

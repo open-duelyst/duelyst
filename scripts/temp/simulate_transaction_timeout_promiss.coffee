@@ -17,27 +17,27 @@ prettyError.skipNodeFiles()
 prettyError.skipPackage('bluebird')
 
 p = knex.transaction (tx)->
-	Promise.resolve(tx("users").first().forUpdate())
-	.then (userRow)->
-		return tx("user_progression").first()
-	.delay(1000)
-	.then (progression)->
-		return tx("user_faction_progression").first()
-	.then (progression)-> console.log("after delay")
-	.timeout(500)
-	.catch (e)->
-		console.log("EXCEPTION: #{e.message}")
-		throw e
-	.finally ()->
-		console.log("FINALLY")
-		return Promise.resolve(true)
+  Promise.resolve(tx("users").first().forUpdate())
+  .then (userRow)->
+    return tx("user_progression").first()
+  .delay(1000)
+  .then (progression)->
+    return tx("user_faction_progression").first()
+  .then (progression)-> console.log("after delay")
+  .timeout(500)
+  .catch (e)->
+    console.log("EXCEPTION: #{e.message}")
+    throw e
+  .finally ()->
+    console.log("FINALLY")
+    return Promise.resolve(true)
 .then ()->
-	console.log("ALL DONE")
+  console.log("ALL DONE")
 .catch (e)->
-	console.log("ERROR: #{e.message}")
+  console.log("ERROR: #{e.message}")
 .finally ()->
-	console.log knex.client?.pool?.stats()
+  console.log knex.client?.pool?.stats()
 
 p.then ()->
-	console.log("exiting...")
-	process.exit(0)
+  console.log("exiting...")
+  process.exit(0)

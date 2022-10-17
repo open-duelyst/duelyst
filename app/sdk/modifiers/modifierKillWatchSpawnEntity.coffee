@@ -7,41 +7,41 @@ PlayCardAction = require 'app/sdk/actions/playCardAction'
 
 class ModifierKillWatchSpawnEntity extends ModifierKillWatch
 
-	type:"ModifierKillWatchSpawnEntity"
-	@type:"ModifierKillWatchSpawnEntity"
+  type:"ModifierKillWatchSpawnEntity"
+  @type:"ModifierKillWatchSpawnEntity"
 
-	fxResource: ["FX.Modifiers.ModifierKillWatch", "FX.Modifiers.ModifierGenericSpawn"]
+  fxResource: ["FX.Modifiers.ModifierKillWatch", "FX.Modifiers.ModifierGenericSpawn"]
 
-	cardDataOrIndexToSpawn: null
+  cardDataOrIndexToSpawn: null
 
-	@createContextObject: (cardDataOrIndexToSpawn, includeAllies=true, includeGenerals=true, spawnCount=1, spawnPattern=CONFIG.PATTERN_1x1, spawnSilently=true, options) ->
-		contextObject = super(includeAllies, includeGenerals, options)
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		contextObject.spawnCount = spawnCount
-		contextObject.spawnPattern = spawnPattern
-		contextObject.spawnSilently = spawnSilently
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, includeAllies=true, includeGenerals=true, spawnCount=1, spawnPattern=CONFIG.PATTERN_1x1, spawnSilently=true, options) ->
+    contextObject = super(includeAllies, includeGenerals, options)
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    contextObject.spawnCount = spawnCount
+    contextObject.spawnPattern = spawnPattern
+    contextObject.spawnSilently = spawnSilently
+    return contextObject
 
-	onKillWatch: (action) ->
-		super(action)
+  onKillWatch: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			ownerId = @getSpawnOwnerId(action)
-			cardToSpawn = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
-			spawnPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), action.getTargetPosition(), @spawnPattern, cardToSpawn, @getCard(), @spawnCount)
-			for spawnPosition in spawnPositions
-				cardDataOrIndexToSpawn = @getCardDataOrIndexToSpawn()
-				if @spawnSilently
-					spawnAction = new PlayCardSilentlyAction(@getGameSession(), ownerId, spawnPosition.x, spawnPosition.y, cardDataOrIndexToSpawn)
-				else
-					spawnAction = new PlayCardAction(@getGameSession(), ownerId, spawnPosition.x, spawnPosition.y, cardDataOrIndexToSpawn)
-				spawnAction.setSource(@getCard())
-				@getGameSession().executeAction(spawnAction)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      ownerId = @getSpawnOwnerId(action)
+      cardToSpawn = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
+      spawnPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), action.getTargetPosition(), @spawnPattern, cardToSpawn, @getCard(), @spawnCount)
+      for spawnPosition in spawnPositions
+        cardDataOrIndexToSpawn = @getCardDataOrIndexToSpawn()
+        if @spawnSilently
+          spawnAction = new PlayCardSilentlyAction(@getGameSession(), ownerId, spawnPosition.x, spawnPosition.y, cardDataOrIndexToSpawn)
+        else
+          spawnAction = new PlayCardAction(@getGameSession(), ownerId, spawnPosition.x, spawnPosition.y, cardDataOrIndexToSpawn)
+        spawnAction.setSource(@getCard())
+        @getGameSession().executeAction(spawnAction)
 
-	getCardDataOrIndexToSpawn: () ->
-		return @cardDataOrIndexToSpawn
+  getCardDataOrIndexToSpawn: () ->
+    return @cardDataOrIndexToSpawn
 
-	getSpawnOwnerId: (action) ->
-		return @getCard().getOwnerId()
+  getSpawnOwnerId: (action) ->
+    return @getCard().getOwnerId()
 
 module.exports = ModifierKillWatchSpawnEntity

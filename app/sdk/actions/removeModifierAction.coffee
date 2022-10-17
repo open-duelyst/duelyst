@@ -3,60 +3,60 @@ Action = require './action'
 
 class RemoveModifierAction extends Action
 
-	@type:"RemoveModifierAction"
+  @type:"RemoveModifierAction"
 
-	isDepthFirst: true # modifier actions should execute immediately
-	modifierIndex: null # index of modifier to remove
+  isDepthFirst: true # modifier actions should execute immediately
+  modifierIndex: null # index of modifier to remove
 
-	constructor: (gameSession, modifier) ->
-		@type ?= RemoveModifierAction.type
-		super(gameSession)
-		@setModifier(modifier)
+  constructor: (gameSession, modifier) ->
+    @type ?= RemoveModifierAction.type
+    super(gameSession)
+    @setModifier(modifier)
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
 
-		p.cachedModifier = null
+    p.cachedModifier = null
 
-		return p
+    return p
 
-	getLogName: () ->
-		return super() + "_" + @getModifier()?.getLogName()
+  getLogName: () ->
+    return super() + "_" + @getModifier()?.getLogName()
 
-	setModifierIndex: (val) ->
-		@modifierIndex = val
+  setModifierIndex: (val) ->
+    @modifierIndex = val
 
-	getModifierIndex: () ->
-		return @modifierIndex
+  getModifierIndex: () ->
+    return @modifierIndex
 
-	setModifier: (modifier) ->
-		@setModifierIndex(modifier?.getIndex())
+  setModifier: (modifier) ->
+    @setModifierIndex(modifier?.getIndex())
 
-	getModifier: () ->
-		if @modifierIndex?
-			@_private.cachedModifier ?= @getGameSession().getModifierByIndex(@modifierIndex)
-			return @_private.cachedModifier
+  getModifier: () ->
+    if @modifierIndex?
+      @_private.cachedModifier ?= @getGameSession().getModifierByIndex(@modifierIndex)
+      return @_private.cachedModifier
 
-	getTargetIndex:() ->
-		return @getModifier()?.getCardAffectedIndex()
+  getTargetIndex:() ->
+    return @getModifier()?.getCardAffectedIndex()
 
-	getTarget: () ->
-		if !@_private.target? and @modifierIndex?
-			@_private.target = @getModifier()?.getCardAffected()
-		return @_private.target
+  getTarget: () ->
+    if !@_private.target? and @modifierIndex?
+      @_private.target = @getModifier()?.getCardAffected()
+    return @_private.target
 
-	getCard: @::getTarget
+  getCard: @::getTarget
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		modifier = @getModifier()
-		if modifier?
-			#Logger.module("SDK").debug("#{@getGameSession().gameId} RemoveModifierAction._execute -> modifier #{modifier?.getLogName()}")
-			# set modifier as removed by this action
-			modifier.setRemovedByAction(@)
+    modifier = @getModifier()
+    if modifier?
+      #Logger.module("SDK").debug("#{@getGameSession().gameId} RemoveModifierAction._execute -> modifier #{modifier?.getLogName()}")
+      # set modifier as removed by this action
+      modifier.setRemovedByAction(@)
 
-			# remove modifier
-			@getGameSession().p_removeModifier(modifier)
+      # remove modifier
+      @getGameSession().p_removeModifier(modifier)
 
 module.exports = RemoveModifierAction

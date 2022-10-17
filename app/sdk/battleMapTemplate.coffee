@@ -1,6 +1,6 @@
 SDKObject = require './object'
 CONFIG = require 'app/common/config'
-UtilsJavascript = 		require 'app/common/utils/utils_javascript'
+UtilsJavascript =     require 'app/common/utils/utils_javascript'
 _ = require 'underscore'
 
 ###
@@ -8,115 +8,115 @@ _ = require 'underscore'
 ###
 class BattleMapTemplate extends SDKObject
 
-	mapTemplate: {
-		map: 0
-		weatherChance: 0.0
-		rainChance: 0.0
-		snowChance: 0.0
-		blueDustChance: 0.0
-		blueDustColor: null
-		sunRaysChance: 0.0
-		clouds: []
-	}
-	hasWeather: false
-	hasRain: false
-	hasSnow: false
-	hasBlueDust: false
-	hasSunRays: false
+  mapTemplate: {
+    map: 0
+    weatherChance: 0.0
+    rainChance: 0.0
+    snowChance: 0.0
+    blueDustChance: 0.0
+    blueDustColor: null
+    sunRaysChance: 0.0
+    clouds: []
+  }
+  hasWeather: false
+  hasRain: false
+  hasSnow: false
+  hasBlueDust: false
+  hasSunRays: false
 
-	# region INITIALIZATION
+  # region INITIALIZATION
 
-	constructor: (gameSession,templateIndex) ->
-		super(gameSession)
+  constructor: (gameSession,templateIndex) ->
+    super(gameSession)
 
-		# define public properties here that must be always be serialized
-		# do not define properties here that should only serialize if different from the default
-		# if no templateIndex provided, choose a map at random
-		templateIndex ?= _.sample(CONFIG.BATTLEMAP_DEFAULT_INDICES)
-		# get a random battlemap template from the list of available maps
-		@mapTemplate = CONFIG.BATTLEMAP_TEMPLATES[templateIndex]
+    # define public properties here that must be always be serialized
+    # do not define properties here that should only serialize if different from the default
+    # if no templateIndex provided, choose a map at random
+    templateIndex ?= _.sample(CONFIG.BATTLEMAP_DEFAULT_INDICES)
+    # get a random battlemap template from the list of available maps
+    @mapTemplate = CONFIG.BATTLEMAP_TEMPLATES[templateIndex]
 
-		# each map may have custom weather
-		@updateWeather()
+    # each map may have custom weather
+    @updateWeather()
 
-	# endregion INITIALIZATION
+  # endregion INITIALIZATION
 
-	# region GETTERS
+  # region GETTERS
 
-	getMapTemplate: () ->
-		return @mapTemplate
+  getMapTemplate: () ->
+    return @mapTemplate
 
-	getMap: () ->
-		return if @mapTemplate? then @mapTemplate.map else BattleMapTemplate.prototype.mapTemplate.map
+  getMap: () ->
+    return if @mapTemplate? then @mapTemplate.map else BattleMapTemplate.prototype.mapTemplate.map
 
-	getClouds: () ->
-		return if @mapTemplate? then @mapTemplate.clouds else BattleMapTemplate.prototype.mapTemplate.clouds
+  getClouds: () ->
+    return if @mapTemplate? then @mapTemplate.clouds else BattleMapTemplate.prototype.mapTemplate.clouds
 
-	getBlueDustColor: () ->
-		return if @mapTemplate? then @mapTemplate.blueDustColor else BattleMapTemplate.prototype.mapTemplate.blueDustColor
+  getBlueDustColor: () ->
+    return if @mapTemplate? then @mapTemplate.blueDustColor else BattleMapTemplate.prototype.mapTemplate.blueDustColor
 
-	getHasWeather: () ->
-		return @hasWeather
+  getHasWeather: () ->
+    return @hasWeather
 
-	getHasRain: () ->
-		return @hasRain
+  getHasRain: () ->
+    return @hasRain
 
-	getHasSnow: () ->
-		return @hasSnow
+  getHasSnow: () ->
+    return @hasSnow
 
-	getHasBlueDust: () ->
-		return @hasBlueDust
+  getHasBlueDust: () ->
+    return @hasBlueDust
 
-	getHasSunRays: () ->
-		return @hasSunRays
+  getHasSunRays: () ->
+    return @hasSunRays
 
-	# endregion GETTERS
+  # endregion GETTERS
 
-	# region WEATHER
+  # region WEATHER
 
-	updateWeather: () ->
-		# reset map
-		@hasSnow = false
-		@hasRain = false
-		@hasBlueDust = false
-		@hasSunRays = false
-		@hasWeather = false
+  updateWeather: () ->
+    # reset map
+    @hasSnow = false
+    @hasRain = false
+    @hasBlueDust = false
+    @hasSunRays = false
+    @hasWeather = false
 
-		# setup map
-		mapTemplate = @getMapTemplate()
-		weatherChance = if mapTemplate.weatherChance? then mapTemplate.weatherChance else BattleMapTemplate.prototype.mapTemplate.weatherChance
-		rainChance = if mapTemplate.rainChance then mapTemplate.rainChance else BattleMapTemplate.prototype.mapTemplate.rainChance
-		snowChance = if mapTemplate.snowChance then mapTemplate.snowChance else BattleMapTemplate.prototype.mapTemplate.snowChance
-		blueDustChance = if mapTemplate.blueDustChance then mapTemplate.blueDustChance else BattleMapTemplate.prototype.mapTemplate.blueDustChance
-		sunRaysChance = if mapTemplate.sunRaysChance then mapTemplate.sunRaysChance else BattleMapTemplate.prototype.mapTemplate.sunRaysChance
+    # setup map
+    mapTemplate = @getMapTemplate()
+    weatherChance = if mapTemplate.weatherChance? then mapTemplate.weatherChance else BattleMapTemplate.prototype.mapTemplate.weatherChance
+    rainChance = if mapTemplate.rainChance then mapTemplate.rainChance else BattleMapTemplate.prototype.mapTemplate.rainChance
+    snowChance = if mapTemplate.snowChance then mapTemplate.snowChance else BattleMapTemplate.prototype.mapTemplate.snowChance
+    blueDustChance = if mapTemplate.blueDustChance then mapTemplate.blueDustChance else BattleMapTemplate.prototype.mapTemplate.blueDustChance
+    sunRaysChance = if mapTemplate.sunRaysChance then mapTemplate.sunRaysChance else BattleMapTemplate.prototype.mapTemplate.sunRaysChance
 
-		# check the weather
-		@hasWeather = Math.random() <= weatherChance
-		if @hasWeather
-			totalChances = (snowChance * snowChance + rainChance * rainChance)
-			if totalChances != 0.0
-				# all individual weather chances will be normalized to add up to 100%
-				# ex: if we can have rain, snow, and storm, but rain and storm have 0% chance, snow will be 100%
-				totalChances = 1.0 / totalChances
-				snowChance *= totalChances
-				rainChance *= totalChances
+    # check the weather
+    @hasWeather = Math.random() <= weatherChance
+    if @hasWeather
+      totalChances = (snowChance * snowChance + rainChance * rainChance)
+      if totalChances != 0.0
+        # all individual weather chances will be normalized to add up to 100%
+        # ex: if we can have rain, snow, and storm, but rain and storm have 0% chance, snow will be 100%
+        totalChances = 1.0 / totalChances
+        snowChance *= totalChances
+        rainChance *= totalChances
 
-				weatherTypeChance = Math.random()
-				if weatherTypeChance <= snowChance
-					@hasSnow = true
-				else if weatherTypeChance <= snowChance + rainChance
-					@hasRain = true
-		else
-			@hasBlueDust = Math.random() <= blueDustChance
-			@hasSunRays = Math.random() <= sunRaysChance
+        weatherTypeChance = Math.random()
+        if weatherTypeChance <= snowChance
+          @hasSnow = true
+        else if weatherTypeChance <= snowChance + rainChance
+          @hasRain = true
+    else
+      @hasBlueDust = Math.random() <= blueDustChance
+      @hasSunRays = Math.random() <= sunRaysChance
 
-	# endregion WEATHER
+  # endregion WEATHER
 
-	# region SERIALIZATION
+  # region SERIALIZATION
 
-	deserialize: (data) ->
-		UtilsJavascript.fastExtend(this,data)
+  deserialize: (data) ->
+    UtilsJavascript.fastExtend(this,data)
 
-	# endregion SERIALIZATION
+  # endregion SERIALIZATION
 
 module.exports = BattleMapTemplate

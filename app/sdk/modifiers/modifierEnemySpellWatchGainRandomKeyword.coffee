@@ -15,35 +15,35 @@ ModifierBackstab = require './modifierBackstab'
 
 class ModifierSpellWatchGainRandomKeyword extends ModifierEnemySpellWatch
 
-	type:"ModifierSpellWatchGainRandomKeyword"
-	@type:"ModifierSpellWatchGainRandomKeyword"
+  type:"ModifierSpellWatchGainRandomKeyword"
+  @type:"ModifierSpellWatchGainRandomKeyword"
 
-	@description: "Whenever you cast a spell, this gains a random keyword ability"
+  @description: "Whenever you cast a spell, this gains a random keyword ability"
 
-	@createContextObject: () ->
-		contextObject = super()
-		contextObject.allModifierContextObjects = [
-			ModifierFrenzy.createContextObject(),
-			ModifierFlying.createContextObject(),
-			ModifierTranscendance.createContextObject(),
-			ModifierProvoke.createContextObject(),
-			ModifierRanged.createContextObject(),
-			ModifierBlastAttack.createContextObject(),
-			ModifierForcefield.createContextObject(),
-			ModifierGrow.createContextObject(2),
-			ModifierFirstBlood.createContextObject(),
-			ModifierBackstab.createContextObject(2)
-		]
-		return contextObject
+  @createContextObject: () ->
+    contextObject = super()
+    contextObject.allModifierContextObjects = [
+      ModifierFrenzy.createContextObject(),
+      ModifierFlying.createContextObject(),
+      ModifierTranscendance.createContextObject(),
+      ModifierProvoke.createContextObject(),
+      ModifierRanged.createContextObject(),
+      ModifierBlastAttack.createContextObject(),
+      ModifierForcefield.createContextObject(),
+      ModifierGrow.createContextObject(2),
+      ModifierFirstBlood.createContextObject(),
+      ModifierBackstab.createContextObject(2)
+    ]
+    return contextObject
 
-	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierGenericBuff"]
 
-	onEnemySpellWatch: (action) ->
-		super(action)
+  onEnemySpellWatch: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative() and @allModifierContextObjects.length > 0
-			# pick one modifier from the remaining list and splice it out of the set of choices
-			modifierContextObject = @allModifierContextObjects.splice(@getGameSession().getRandomIntegerForExecution(@allModifierContextObjects.length), 1)[0]
-			@getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
+    if @getGameSession().getIsRunningAsAuthoritative() and @allModifierContextObjects.length > 0
+      # pick one modifier from the remaining list and splice it out of the set of choices
+      modifierContextObject = @allModifierContextObjects.splice(@getGameSession().getRandomIntegerForExecution(@allModifierContextObjects.length), 1)[0]
+      @getGameSession().applyModifierContextObject(modifierContextObject, @getCard())
 
 module.exports = ModifierSpellWatchGainRandomKeyword

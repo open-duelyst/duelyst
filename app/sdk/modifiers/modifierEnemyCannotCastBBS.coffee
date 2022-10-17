@@ -5,23 +5,23 @@ CardType = require 'app/sdk/cards/cardType'
 
 class ModifierEnemyCannotCastBBS extends ModifierCannot
 
-	type: "ModifierEnemyCannotCastBBS"
-	@type: "ModifierEnemyCannotCastBBS"
+  type: "ModifierEnemyCannotCastBBS"
+  @type: "ModifierEnemyCannotCastBBS"
 
 
-	manaCostPrevented: 0
+  manaCostPrevented: 0
 
-	fxResource: ["FX.Modifiers.ModifierCannotCastSpellsByCost"]
+  fxResource: ["FX.Modifiers.ModifierCannotCastSpellsByCost"]
 
-	@createContextObject: () ->
-		contextObject = super()
-		return contextObject
+  @createContextObject: () ->
+    contextObject = super()
+    return contextObject
 
-	onValidateAction:(actionEvent) ->
-		a = actionEvent.action
+  onValidateAction:(actionEvent) ->
+    a = actionEvent.action
 
-		# prevents owner from casting BBS
-		if (a instanceof PlaySignatureCardAction and a.getOwner() isnt @getOwner()) and a.getIsValid() and !a.getIsImplicit() and a.getCard()?.getType() is CardType.Spell
-			@invalidateAction(a, @getCard().getPosition(), "You can't cast that!")
+    # prevents owner from casting BBS
+    if (a instanceof PlaySignatureCardAction and a.getOwner() isnt @getOwner()) and a.getIsValid() and !a.getIsImplicit() and a.getCard()?.getType() is CardType.Spell
+      @invalidateAction(a, @getCard().getPosition(), "You can't cast that!")
 
 module.exports = ModifierEnemyCannotCastBBS

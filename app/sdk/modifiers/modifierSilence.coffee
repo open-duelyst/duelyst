@@ -4,33 +4,33 @@ i18next = require 'i18next'
 
 class ModifierSilence extends Modifier
 
-	type: "ModifierSilence"
-	@type: "ModifierSilence"
+  type: "ModifierSilence"
+  @type: "ModifierSilence"
 
-	@modifierName:i18next.t("modifiers.silence_name")
-	@description:i18next.t("modifiers.silence_def")
+  @modifierName:i18next.t("modifiers.silence_name")
+  @description:i18next.t("modifiers.silence_def")
 
-	fxResource: ["FX.Modifiers.ModifierDispel"]
+  fxResource: ["FX.Modifiers.ModifierDispel"]
 
-	onApplyToCard: (card) ->
-		allowableSilenceTarget = true
-		if card.getType() == CardType.Unit and !card.getIsTargetable()
-			allowableSilenceTarget = false
+  onApplyToCard: (card) ->
+    allowableSilenceTarget = true
+    if card.getType() == CardType.Unit and !card.getIsTargetable()
+      allowableSilenceTarget = false
 
-		# temporarily make self unremovable
-		wasRemovable = @isRemovable
-		@isRemovable = false
+    # temporarily make self unremovable
+    wasRemovable = @isRemovable
+    @isRemovable = false
 
-		if allowableSilenceTarget
-			# silence card and remove all other modifiers
-			card.silence()
+    if allowableSilenceTarget
+      # silence card and remove all other modifiers
+      card.silence()
 
-		super(card)
+    super(card)
 
-		# restore removable state
-		@isRemovable = wasRemovable
+    # restore removable state
+    @isRemovable = wasRemovable
 
-		if !allowableSilenceTarget # remove modifier immediately after attempting to slience
-			@getGameSession().removeModifier(@)
+    if !allowableSilenceTarget # remove modifier immediately after attempting to slience
+      @getGameSession().removeModifier(@)
 
 module.exports = ModifierSilence

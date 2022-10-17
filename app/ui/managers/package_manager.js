@@ -1663,10 +1663,12 @@ cc.textureCache.addImage = function (url, cb, target) {
   loadFunc.call(cc.loader, url, function (err, img) {
     if (err)
       return cb && cb.call(target, err);
-    if (!pixelFormat) {
-      pixelFormat = cc.Texture2D.PIXEL_FORMAT_RGBA8888;
+
+    if (typeof pixelFormat === 'undefined') {
+      cc.textureCache.handleLoadedTexture(url, cc.Texture2D.PIXEL_FORMAT_RGBA8888);
+    } else {
+      cc.textureCache.handleLoadedTexture(url, pixelFormat);
     }
-    cc.textureCache.handleLoadedTexture(url, pixelFormat);
 
     var texResult = locTexs[url];
     cb && cb.call(target, texResult);

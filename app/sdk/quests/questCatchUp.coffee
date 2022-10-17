@@ -6,26 +6,26 @@ i18next = require 'i18next'
 
 class QuestCatchUp extends Quest
 
-	@Identifier: 20000 # ID to use for this quest
+  @Identifier: 20000 # ID to use for this quest
 
-	isReplaceable:false # whether a player can replace this quest
-	isCatchUp:true # defines this as a catchup quest
-	goldReward: undefined # This is a changing quantity updated to the database when users gain charges
+  isReplaceable:false # whether a player can replace this quest
+  isCatchUp:true # defines this as a catchup quest
+  goldReward: undefined # This is a changing quantity updated to the database when users gain charges
 
-	constructor:()->
-		super(QuestCatchUp.Identifier,i18next.t("quests.quest_welcome_back_title"),[QuestType.CatchUp])
-		@params["completionProgress"] = 3
+  constructor:()->
+    super(QuestCatchUp.Identifier,i18next.t("quests.quest_welcome_back_title"),[QuestType.CatchUp])
+    @params["completionProgress"] = 3
 
-	_progressForGameDataForPlayerId:(gameData,playerId)->
-		# Gain progress for any games played
-		for player in gameData.players
-			playerSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameData, player.playerId)
-			if player.playerId == playerId and GameType.isCompetitiveGameType(gameData.gameType)
-				return 1
-		return 0
+  _progressForGameDataForPlayerId:(gameData,playerId)->
+    # Gain progress for any games played
+    for player in gameData.players
+      playerSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameData, player.playerId)
+      if player.playerId == playerId and GameType.isCompetitiveGameType(gameData.gameType)
+        return 1
+    return 0
 
-	getDescription:()->
-		return i18next.t("quests.quest_welcome_back_desc",{count:@params["completionProgress"]})
-		#return "Play #{@params["completionProgress"]} Games."
+  getDescription:()->
+    return i18next.t("quests.quest_welcome_back_desc",{count:@params["completionProgress"]})
+    #return "Play #{@params["completionProgress"]} Games."
 
 module.exports = QuestCatchUp

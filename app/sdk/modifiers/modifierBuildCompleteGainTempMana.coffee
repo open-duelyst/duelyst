@@ -3,25 +3,25 @@ BonusManaAction = require 'app/sdk/actions/bonusManaAction'
 
 class ModifierBuildCompleteGainTempMana extends ModifierBuilding
 
-	type:"ModifierBuildCompleteGainTempMana"
-	@type:"ModifierBuildCompleteGainTempMana"
+  type:"ModifierBuildCompleteGainTempMana"
+  @type:"ModifierBuildCompleteGainTempMana"
 
-	bonusMana: 0
+  bonusMana: 0
 
-	@createContextObject: (bonusMana, description, transformCardData, turnsToBuild, options) ->
-		contextObject = super(description, transformCardData, turnsToBuild, options)
-		contextObject.bonusMana = bonusMana
-		return contextObject
+  @createContextObject: (bonusMana, description, transformCardData, turnsToBuild, options) ->
+    contextObject = super(description, transformCardData, turnsToBuild, options)
+    contextObject.bonusMana = bonusMana
+    return contextObject
 
-	onBuildComplete: () ->
-		super()
+  onBuildComplete: () ->
+    super()
 
-		general = @getCard().getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
-		action = @getGameSession().createActionForType(BonusManaAction.type)
-		action.setSource(@getCard())
-		action.setTarget(general)
-		action.bonusMana = @bonusMana
-		action.bonusDuration = 1
-		@getGameSession().executeAction(action)
+    general = @getCard().getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
+    action = @getGameSession().createActionForType(BonusManaAction.type)
+    action.setSource(@getCard())
+    action.setTarget(general)
+    action.bonusMana = @bonusMana
+    action.bonusDuration = 1
+    @getGameSession().executeAction(action)
 
 module.exports = ModifierBuildCompleteGainTempMana

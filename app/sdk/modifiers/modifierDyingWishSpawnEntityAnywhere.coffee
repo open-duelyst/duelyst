@@ -8,38 +8,38 @@ _ = require 'underscore'
 
 class ModifierDyingWishSpawnEntityAnywhere extends ModifierDyingWish
 
-	type:"ModifierDyingWishSpawnEntityAnywhere"
-	@type:"ModifierDyingWishSpawnEntityAnywhere"
+  type:"ModifierDyingWishSpawnEntityAnywhere"
+  @type:"ModifierDyingWishSpawnEntityAnywhere"
 
-	fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn"]
+  fxResource: ["FX.Modifiers.ModifierDyingWish", "FX.Modifiers.ModifierGenericSpawn"]
 
-	cardDataOrIndexToSpawn: null
-	spawnCount: 1
-	spawnSilently: true
+  cardDataOrIndexToSpawn: null
+  spawnCount: 1
+  spawnSilently: true
 
-	@createContextObject: (cardDataOrIndexToSpawn, spawnCount=1, spawnSilently=true, options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		contextObject.spawnCount = spawnCount
-		contextObject.spawnSilently = spawnSilently
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, spawnCount=1, spawnSilently=true, options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    contextObject.spawnCount = spawnCount
+    contextObject.spawnSilently = spawnSilently
+    return contextObject
 
-	onDyingWish: (action) ->
-		super(action)
+  onDyingWish: (action) ->
+    super(action)
 
-		if @getGameSession().getIsRunningAsAuthoritative()
-			wholeBoardPattern = CONFIG.ALL_BOARD_POSITIONS
-			card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
-			thisEntityPosition = @getCard().getPosition()
-			validPositions = _.reject(wholeBoardPattern, (position) -> UtilsPosition.getPositionsAreEqual(position, thisEntityPosition))
-			spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), {x:0, y:0}, validPositions, card, @getCard(), @spawnCount)
+    if @getGameSession().getIsRunningAsAuthoritative()
+      wholeBoardPattern = CONFIG.ALL_BOARD_POSITIONS
+      card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
+      thisEntityPosition = @getCard().getPosition()
+      validPositions = _.reject(wholeBoardPattern, (position) -> UtilsPosition.getPositionsAreEqual(position, thisEntityPosition))
+      spawnLocations = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), {x:0, y:0}, validPositions, card, @getCard(), @spawnCount)
 
-			for position in spawnLocations
-				if !@spawnSilently
-					playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
-				else
-					playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
-				playCardAction.setSource(@getCard())
-				@getGameSession().executeAction(playCardAction)
+      for position in spawnLocations
+        if !@spawnSilently
+          playCardAction = new PlayCardAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
+        else
+          playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getCard().getOwnerId(), position.x, position.y, @cardDataOrIndexToSpawn)
+        playCardAction.setSource(@getCard())
+        @getGameSession().executeAction(playCardAction)
 
 module.exports = ModifierDyingWishSpawnEntityAnywhere

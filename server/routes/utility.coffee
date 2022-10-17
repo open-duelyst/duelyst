@@ -30,13 +30,13 @@ config = require '../../config/config.js'
 
 # async promise to get client template
 loadClientLogsHandlebarsTemplateAsync = new Promise (resolve,reject) ->
-	readFile = Promise.promisify(require("fs").readFile)
-	readFile(__dirname + '/../templates/client-logs.hbs')
-	.then (template)->
-		hbs_template = handlebars.compile(template.toString())
-		resolve(hbs_template)
-	.catch (err) ->
-		reject(err)
+  readFile = Promise.promisify(require("fs").readFile)
+  readFile(__dirname + '/../templates/client-logs.hbs')
+  .then (template)->
+    hbs_template = handlebars.compile(template.toString())
+    resolve(hbs_template)
+  .catch (err) ->
+    reject(err)
 
 ## Require authentication
 router.use '/utility', isSignedIn
@@ -44,39 +44,39 @@ router.use '/utility', isSignedIn
 # Unused handler to facilitate uploading logs to S3.
 # Stub the handler so we can remove the AWS SDK dependency.
 router.post "/utility/client_logs", (req, res, next) ->
-	return res.status(403).json({
-		'status': 'error',
-		'code': 403,
-		'message': 'This endpoint is deprecated.',
-	})
-	###
-	user_id = req.user.d.id
-	log_id = "#{moment().utc().format("YYYY-MM-DD---hh-mm-ss")}.#{uuid.v4()}"
+  return res.status(403).json({
+    'status': 'error',
+    'code': 403,
+    'message': 'This endpoint is deprecated.',
+  })
+  ###
+  user_id = req.user.d.id
+  log_id = "#{moment().utc().format("YYYY-MM-DD---hh-mm-ss")}.#{uuid.v4()}"
 
-	bucket = config.get("s3_client_logs.bucket")
-	env = config.get("env")
-	filename = env + "/#{user_id}/#{log_id}.html"
-	url = "https://s3-us-west-1.amazonaws.com/" + bucket + "/" + filename
+  bucket = config.get("s3_client_logs.bucket")
+  env = config.get("env")
+  filename = env + "/#{user_id}/#{log_id}.html"
+  url = "https://s3-us-west-1.amazonaws.com/" + bucket + "/" + filename
 
-	loadClientLogsHandlebarsTemplateAsync.then (template) ->
-		# render client log as HTML
-		html = template(req.body)
+  loadClientLogsHandlebarsTemplateAsync.then (template) ->
+    # render client log as HTML
+    html = template(req.body)
 
-		# upload parameters
-		params =
-			Bucket: bucket
-			Key: filename
-			Body: html
-			ACL:'public-read'
-			ContentType:'text/html'
+    # upload parameters
+    params =
+      Bucket: bucket
+      Key: filename
+      Body: html
+      ACL:'public-read'
+      ContentType:'text/html'
 
-		return s3.putObjectAsync(params)
-	.then () ->
-		Logger.module("EXPRESS").debug "User #{user_id.blue} Client Logs Submitted to: #{url}"
-		res.status(200).json({ logs_url: url })
-	.catch (err) ->
-		Logger.module("EXPRESS").error "ERROR UPLOADING #{user_id.blue} CLIENT LOGS to #{url} : #{err.message}".red
-		next(err)
-	###
+    return s3.putObjectAsync(params)
+  .then () ->
+    Logger.module("EXPRESS").debug "User #{user_id.blue} Client Logs Submitted to: #{url}"
+    res.status(200).json({ logs_url: url })
+  .catch (err) ->
+    Logger.module("EXPRESS").error "ERROR UPLOADING #{user_id.blue} CLIENT LOGS to #{url} : #{err.message}".red
+    next(err)
+  ###
 
 module.exports = router

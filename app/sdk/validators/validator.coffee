@@ -2,60 +2,60 @@ EVENTS = require 'app/common/event_types'
 
 class Validator
 
-	type:"Validator"
-	@type:"Validator"
+  type:"Validator"
+  @type:"Validator"
 
-	_gameSession: null
+  _gameSession: null
 
-	# region INITIALIZE
+  # region INITIALIZE
 
-	constructor: (gameSession) ->
-		@_gameSession = gameSession
+  constructor: (gameSession) ->
+    @_gameSession = gameSession
 
-	# endregion INITIALIZE
+  # endregion INITIALIZE
 
-	# region EVENTS
+  # region EVENTS
 
-	###*
+  ###*
    * SDK event handler. Do not call this method manually.
    ###
-	onEvent: (event) ->
-		if event.type == EVENTS.terminate
-			@_onTerminate(event)
-		else if event.type == EVENTS.validate_action
-			@onValidateAction(event)
+  onEvent: (event) ->
+    if event.type == EVENTS.terminate
+      @_onTerminate(event)
+    else if event.type == EVENTS.validate_action
+      @onValidateAction(event)
 
-	# endregion EVENTS
+  # endregion EVENTS
 
-	# region GETTERS / SETTERS
+  # region GETTERS / SETTERS
 
-	getGameSession: () ->
-		@_gameSession
+  getGameSession: () ->
+    @_gameSession
 
-	getType: () ->
-		return @type
+  getType: () ->
+    return @type
 
-	# endregion GETTERS / SETTERS
+  # endregion GETTERS / SETTERS
 
-	# region VALIDATION
+  # region VALIDATION
 
-	invalidateAction: (action, position, message="Invalid Action!") ->
-		# helper method for invalidating an action at a position with a message
-		action.setIsValid(false)
-		action.setValidationMessage(message)
-		action.setValidationMessagePosition(position)
-		action.setValidatorType(@getType())
+  invalidateAction: (action, position, message="Invalid Action!") ->
+    # helper method for invalidating an action at a position with a message
+    action.setIsValid(false)
+    action.setValidationMessage(message)
+    action.setValidationMessagePosition(position)
+    action.setValidatorType(@getType())
 
-	# endregion VALIDATION
+  # endregion VALIDATION
 
-	# region EVENTS
+  # region EVENTS
 
-	_onTerminate: () ->
-		# this method is automatically called when this object will never be used again
+  _onTerminate: () ->
+    # this method is automatically called when this object will never be used again
 
-	onValidateAction:(event) ->
-		# override in sub-class and set action's isValid state
+  onValidateAction:(event) ->
+    # override in sub-class and set action's isValid state
 
-	# endregion EVENTS
+  # endregion EVENTS
 
 module.exports = Validator

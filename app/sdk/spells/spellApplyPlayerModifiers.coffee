@@ -1,35 +1,35 @@
 SpellApplyModifiers = require './spellApplyModifiers'
 CardType = require 'app/sdk/cards/cardType'
-SpellFilterType =	require './spellFilterType'
+SpellFilterType =  require './spellFilterType'
 
 class SpellApplyPlayerModifiers extends SpellApplyModifiers
 
-	targetType: CardType.Unit
-	spellFilterType: SpellFilterType.NeutralDirect
-	applyToOwnGeneral: false
-	applyToOpponentGeneral: false
+  targetType: CardType.Unit
+  spellFilterType: SpellFilterType.NeutralDirect
+  applyToOwnGeneral: false
+  applyToOpponentGeneral: false
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
-		p.targetsSpace = true # does not target any unit directly
-		return p
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
+    p.targetsSpace = true # does not target any unit directly
+    return p
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		applyEffectPositions = []
+  _findApplyEffectPositions: (position, sourceAction) ->
+    applyEffectPositions = []
 
-		if @targetModifiersContextObjects? and @targetModifiersContextObjects.length > 0
-			ownerId = @getOwnerId()
+    if @targetModifiersContextObjects? and @targetModifiersContextObjects.length > 0
+      ownerId = @getOwnerId()
 
-			if @applyToOwnGeneral
-				# target own General
-				ownGeneral = @getGameSession().getGeneralForPlayerId(ownerId)
-				applyEffectPositions.push(ownGeneral.getPosition())
+      if @applyToOwnGeneral
+        # target own General
+        ownGeneral = @getGameSession().getGeneralForPlayerId(ownerId)
+        applyEffectPositions.push(ownGeneral.getPosition())
 
-			if @applyToOpponentGeneral
-				# target opponent's General
-				opponentGeneral = @getGameSession().getGeneralForOpponentOfPlayerId(ownerId)
-				applyEffectPositions.push(opponentGeneral.getPosition())
+      if @applyToOpponentGeneral
+        # target opponent's General
+        opponentGeneral = @getGameSession().getGeneralForOpponentOfPlayerId(ownerId)
+        applyEffectPositions.push(opponentGeneral.getPosition())
 
-		return applyEffectPositions
+    return applyEffectPositions
 
 module.exports = SpellApplyPlayerModifiers

@@ -5,26 +5,26 @@ DrawCardAction = require 'app/sdk/actions/drawCardAction'
 
 class SpellDamageEnemyGeneralBothDrawCard extends SpellDamage
 
-	targetType: CardType.Unit
-	spellFilterType: SpellFilterType.None
+  targetType: CardType.Unit
+  spellFilterType: SpellFilterType.None
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		applyEffectPositions = []
+  _findApplyEffectPositions: (position, sourceAction) ->
+    applyEffectPositions = []
 
-		# can only target enemy general
-		general = @getGameSession().getGeneralForOpponentOfPlayerId(@getOwnerId())
-		if general?
-			# apply spell on enemy General
-			applyEffectPositions.push(general.getPosition())
+    # can only target enemy general
+    general = @getGameSession().getGeneralForOpponentOfPlayerId(@getOwnerId())
+    if general?
+      # apply spell on enemy General
+      applyEffectPositions.push(general.getPosition())
 
-		return applyEffectPositions
+    return applyEffectPositions
 
-	onApplyOneEffectToBoard: (board,x,y,sourceAction) ->
-		# enemy draws a card
-		deck = @getGameSession().getOpponentPlayerOfPlayerId(@getOwnerId()).getDeck()
-		@getGameSession().executeAction(deck.actionDrawCard())
+  onApplyOneEffectToBoard: (board,x,y,sourceAction) ->
+    # enemy draws a card
+    deck = @getGameSession().getOpponentPlayerOfPlayerId(@getOwnerId()).getDeck()
+    @getGameSession().executeAction(deck.actionDrawCard())
 
-		# caster draws a card
-		@getGameSession().executeAction(@getOwner().getDeck().actionDrawCard())
+    # caster draws a card
+    @getGameSession().executeAction(@getOwner().getDeck().actionDrawCard())
 
 module.exports = SpellDamageEnemyGeneralBothDrawCard

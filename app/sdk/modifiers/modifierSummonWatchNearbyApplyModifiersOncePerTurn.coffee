@@ -4,40 +4,40 @@ Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierSummonWatchNearbyApplyModifiersOncePerTurn extends ModifierSummonWatchNearbyApplyModifiers
 
-	type:"ModifierSummonWatchNearbyApplyModifiersOncePerTurn"
-	@type:"ModifierSummonWatchNearbyApplyModifiersOncePerTurn"
+  type:"ModifierSummonWatchNearbyApplyModifiersOncePerTurn"
+  @type:"ModifierSummonWatchNearbyApplyModifiersOncePerTurn"
 
-	@description: "The first friendly minion summoned nearby this minion each turn %X"
+  @description: "The first friendly minion summoned nearby this minion each turn %X"
 
-	canApplyModifier: true # can apply modifier once per turn
+  canApplyModifier: true # can apply modifier once per turn
 
-	fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
 
-	@createContextObject: (modifiersContextObjects, buffDescription, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		contextObject.buffDescription = buffDescription
-		return contextObject
+  @createContextObject: (modifiersContextObjects, buffDescription, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    contextObject.buffDescription = buffDescription
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.buffDescription
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.buffDescription
+    else
+      return @description
 
-	getIsValidBuffPosition: (summonedUnitPosition) ->
-		if @canApplyModifier
-			entityPosition = @getCard().getPosition()
-			if (Math.abs(summonedUnitPosition.x - entityPosition.x) <= 1) and (Math.abs(summonedUnitPosition.y - entityPosition.y) <= 1)
-				@canApplyModifier = false
-				return true
-			else
-				return false
-		return false
+  getIsValidBuffPosition: (summonedUnitPosition) ->
+    if @canApplyModifier
+      entityPosition = @getCard().getPosition()
+      if (Math.abs(summonedUnitPosition.x - entityPosition.x) <= 1) and (Math.abs(summonedUnitPosition.y - entityPosition.y) <= 1)
+        @canApplyModifier = false
+        return true
+      else
+        return false
+    return false
 
-	onStartTurn: (actionEvent) ->
-		super(actionEvent)
-		@canApplyModifier = true
+  onStartTurn: (actionEvent) ->
+    super(actionEvent)
+    @canApplyModifier = true
 
 
 module.exports = ModifierSummonWatchNearbyApplyModifiersOncePerTurn

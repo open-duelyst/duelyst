@@ -4,16 +4,16 @@ i18next = require 'i18next'
 
 class ModifierCannotBeRemovedFromHand extends ModifierCannot
 
-	type: "ModifierCannotBeRemovedFromHand"
-	@type: "ModifierCannotBeRemovedFromHand"
+  type: "ModifierCannotBeRemovedFromHand"
+  @type: "ModifierCannotBeRemovedFromHand"
 
-	activeInHand: true
+  activeInHand: true
 
-	onValidateAction:(actionEvent) ->
-		a = actionEvent.action
+  onValidateAction:(actionEvent) ->
+    a = actionEvent.action
 
-		if a instanceof RemoveCardFromHandAction and a.getIsValid() and @getCard().getIsLocatedInHand()
-			if @getCard().getOwner().getDeck().getCardInHandAtIndex(a.indexOfCardInHand)?.getIndex() is @getCard().getIndex()
-				@invalidateAction(a, @getCard().getPosition())
+    if a instanceof RemoveCardFromHandAction and a.getIsValid() and @getCard().getIsLocatedInHand()
+      if @getCard().getOwner().getDeck().getCardInHandAtIndex(a.indexOfCardInHand)?.getIndex() is @getCard().getIndex()
+        @invalidateAction(a, @getCard().getPosition())
 
 module.exports = ModifierCannotBeRemovedFromHand

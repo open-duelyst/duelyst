@@ -3,19 +3,19 @@ CardType = require 'app/sdk/cards/cardType'
 
 class PlayerModifierCardDrawModifier extends PlayerModifier
 
-	type:"PlayerModifierCardDrawModifier"
-	@type:"PlayerModifierCardDrawModifier"
+  type:"PlayerModifierCardDrawModifier"
+  @type:"PlayerModifierCardDrawModifier"
 
-	@createContextObject: (cardDrawChange, duration=0, options) ->
-		contextObject = super(options)
-		contextObject.cardDrawChange = cardDrawChange
-		contextObject.durationStartTurn = duration
-		return contextObject
+  @createContextObject: (cardDrawChange, duration=0, options) ->
+    contextObject = super(options)
+    contextObject.cardDrawChange = cardDrawChange
+    contextObject.durationStartTurn = duration
+    return contextObject
 
-	getCardDrawChange: () ->
-		if @getIsActive()
-			return @cardDrawChange
-		else
-			return 0
+  getCardDrawChange: () ->
+    if @getIsActive()
+      return @cardDrawChange
+    else
+      return 0
 
 module.exports = PlayerModifierCardDrawModifier

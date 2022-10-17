@@ -8,35 +8,35 @@ Generates a new signature card if signature card slot was active when this actio
 
 class UpdateSignatureCardAction extends Action
 
-	@type:"UpdateSignatureCardAction"
+  @type:"UpdateSignatureCardAction"
 
-	targetPlayerId: null
+  targetPlayerId: null
 
-	constructor: (gameSession, targetPlayerId) ->
-		@type ?= UpdateSignatureCardAction.type
-		super(gameSession)
-		if targetPlayerId?
-			@targetPlayerId = targetPlayerId
-		else
-			@targetPlayerId = @getOwnerId()
+  constructor: (gameSession, targetPlayerId) ->
+    @type ?= UpdateSignatureCardAction.type
+    super(gameSession)
+    if targetPlayerId?
+      @targetPlayerId = targetPlayerId
+    else
+      @targetPlayerId = @getOwnerId()
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	getTargetPlayer: () ->
-		return @getGameSession().getPlayerById(@getTargetPlayerId())
+  getTargetPlayer: () ->
+    return @getGameSession().getPlayerById(@getTargetPlayerId())
 
-	getTargetPlayerId: () ->
-		return @targetPlayerId
+  getTargetPlayerId: () ->
+    return @targetPlayerId
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		activeSignatureCard = @getTargetPlayer().getCurrentSignatureCard()
-		if activeSignatureCard
-			@getGameSession().executeAction(@getTargetPlayer().actionGenerateSignatureCard())
-		else
-			@getTargetPlayer().flushCachedReferenceSignatureCard()
-			@getGameSession().getGeneralForPlayerId(@getTargetPlayerId()).flushCachedReferenceSignatureCard()
+    activeSignatureCard = @getTargetPlayer().getCurrentSignatureCard()
+    if activeSignatureCard
+      @getGameSession().executeAction(@getTargetPlayer().actionGenerateSignatureCard())
+    else
+      @getTargetPlayer().flushCachedReferenceSignatureCard()
+      @getGameSession().getGeneralForPlayerId(@getTargetPlayerId()).flushCachedReferenceSignatureCard()
 
 module.exports = UpdateSignatureCardAction

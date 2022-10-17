@@ -9,24 +9,24 @@ _ = require 'underscore'
 
 class SpellPandaJail extends SpellSpawnEntity
 
-	cardDataOrIndexToSpawn: {id: Cards.Faction2.OnyxBear}
+  cardDataOrIndexToSpawn: {id: Cards.Faction2.OnyxBear}
 
-	getCardDataOrIndexToSpawn: (x, y) ->
-		cardDataOrIndexToSpawn = super(x,y)
-		if cardDataOrIndexToSpawn? and !_.isObject(cardDataOrIndexToSpawn) then cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
-		cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects ?= []
-		removalModifierContextObject = ModifierStartTurnWatchRemoveEntity.createContextObject()
-		removalModifierContextObject.isHiddenToUI = true
-		cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(removalModifierContextObject)
-		return cardDataOrIndexToSpawn
+  getCardDataOrIndexToSpawn: (x, y) ->
+    cardDataOrIndexToSpawn = super(x,y)
+    if cardDataOrIndexToSpawn? and !_.isObject(cardDataOrIndexToSpawn) then cardDataOrIndexToSpawn = @getGameSession().getCardByIndex(cardDataOrIndexToSpawn).createNewCardData()
+    cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects ?= []
+    removalModifierContextObject = ModifierStartTurnWatchRemoveEntity.createContextObject()
+    removalModifierContextObject.isHiddenToUI = true
+    cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects.push(removalModifierContextObject)
+    return cardDataOrIndexToSpawn
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		card = @getEntityToSpawn()
-		applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getGameSession().getGeneralForOpponentOfPlayerId(@getOwnerId()).getPosition(), CONFIG.PATTERN_3x3, card, @, 8)
+  _findApplyEffectPositions: (position, sourceAction) ->
+    card = @getEntityToSpawn()
+    applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), @getGameSession().getGeneralForOpponentOfPlayerId(@getOwnerId()).getPosition(), CONFIG.PATTERN_3x3, card, @, 8)
 
-		return applyEffectPositions
+    return applyEffectPositions
 
-	getAppliesSameEffectToMultipleTargets: () ->
-		return true
+  getAppliesSameEffectToMultipleTargets: () ->
+    return true
 
 module.exports = SpellPandaJail

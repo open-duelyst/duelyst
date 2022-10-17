@@ -17,55 +17,55 @@ i18next = require 'i18next'
 
 class SpellForgeArtifact extends Spell
 
-	magmarModifierAppliedName: null
+  magmarModifierAppliedName: null
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
 
-		target = board.getCardAtPosition({x:x, y:y}, CardType.Unit)
-		if target?
-			cardDataToEquip = null
-			attack = target.getATK()
-			faction = target.getFactionId()
+    target = board.getCardAtPosition({x:x, y:y}, CardType.Unit)
+    if target?
+      cardDataToEquip = null
+      attack = target.getATK()
+      faction = target.getFactionId()
 
-			killAction = new KillAction(@getGameSession())
-			killAction.setOwnerId(@getOwnerId())
-			killAction.setTarget(target)
-			@getGameSession().executeAction(killAction)
+      killAction = new KillAction(@getGameSession())
+      killAction.setOwnerId(@getOwnerId())
+      killAction.setTarget(target)
+      @getGameSession().executeAction(killAction)
 
-			artifactModifiers = []
-			if faction is 1
-				cardDataToEquip = {id: Cards.Artifact.LyonarRelic}
-				artifactModifiers.push(ModifierTakeDamageWatchHealMyGeneral.createContextObject(attack))
-			else if faction is 2
-				cardDataToEquip = {id: Cards.Artifact.SonghaiRelic}
-				artifactModifiers.push(ModifierMyAttackOrCounterattackWatchDamageRandomEnemy.createContextObject(attack))
-			else if faction is 3
-				cardDataToEquip = {id: Cards.Artifact.VetruvianRelic}
-				artifactModifiers.push(ModifierMyAttackWatchSummonDeadMinions.createContextObject(attack))
-			else if faction is 4
-				cardDataToEquip = {id: Cards.Artifact.AbyssianRelic}
-				artifactModifiers.push(ModifierMyAttackMinionWatchStealGeneralHealth.createContextObject(attack))
-			else if faction is 5
-				cardDataToEquip = {id: Cards.Artifact.MagmarRelic}
-				statsBuff = Modifier.createContextObjectWithAttributeBuffs(attack,attack)
-				statsBuff.appliedName = @magmarModifierAppliedName
-				attackWatchModifier = ModifierDealDamageWatchApplyModifiersToAllies.createContextObject([statsBuff], false)
-				artifactModifiers.push(attackWatchModifier)
-			else if faction is 6
-				cardDataToEquip = {id: Cards.Artifact.VanarRelic}
-				artifactModifiers.push(ModifierMyAttackWatchSpawnMinionNearby.createContextObject({id: Cards.Faction6.ShadowVespyr}, i18next.t("cards.faction_6_unit_night_howler_name"), attack))
-			else
-				cardDataToEquip = {id: Cards.Artifact.NeutralRelic}
+      artifactModifiers = []
+      if faction is 1
+        cardDataToEquip = {id: Cards.Artifact.LyonarRelic}
+        artifactModifiers.push(ModifierTakeDamageWatchHealMyGeneral.createContextObject(attack))
+      else if faction is 2
+        cardDataToEquip = {id: Cards.Artifact.SonghaiRelic}
+        artifactModifiers.push(ModifierMyAttackOrCounterattackWatchDamageRandomEnemy.createContextObject(attack))
+      else if faction is 3
+        cardDataToEquip = {id: Cards.Artifact.VetruvianRelic}
+        artifactModifiers.push(ModifierMyAttackWatchSummonDeadMinions.createContextObject(attack))
+      else if faction is 4
+        cardDataToEquip = {id: Cards.Artifact.AbyssianRelic}
+        artifactModifiers.push(ModifierMyAttackMinionWatchStealGeneralHealth.createContextObject(attack))
+      else if faction is 5
+        cardDataToEquip = {id: Cards.Artifact.MagmarRelic}
+        statsBuff = Modifier.createContextObjectWithAttributeBuffs(attack,attack)
+        statsBuff.appliedName = @magmarModifierAppliedName
+        attackWatchModifier = ModifierDealDamageWatchApplyModifiersToAllies.createContextObject([statsBuff], false)
+        artifactModifiers.push(attackWatchModifier)
+      else if faction is 6
+        cardDataToEquip = {id: Cards.Artifact.VanarRelic}
+        artifactModifiers.push(ModifierMyAttackWatchSpawnMinionNearby.createContextObject({id: Cards.Faction6.ShadowVespyr}, i18next.t("cards.faction_6_unit_night_howler_name"), attack))
+      else
+        cardDataToEquip = {id: Cards.Artifact.NeutralRelic}
 
-			attackBuff = Modifier.createContextObjectWithAttributeBuffs(attack,0)
-			attackBuff.appliedName = "Forged"
-			artifactModifiers.push(attackBuff)
+      attackBuff = Modifier.createContextObjectWithAttributeBuffs(attack,0)
+      attackBuff.appliedName = "Forged"
+      artifactModifiers.push(attackBuff)
 
-			cardDataToEquip.targetModifiersContextObjects = artifactModifiers
-			cardDataToEquip.additionalInherentModifiersContextObjects = [ModifierForgedArtifactDescription.createContextObject(faction, attack)]
+      cardDataToEquip.targetModifiersContextObjects = artifactModifiers
+      cardDataToEquip.additionalInherentModifiersContextObjects = [ModifierForgedArtifactDescription.createContextObject(faction, attack)]
 
-			playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getOwnerId(), x, y, cardDataToEquip)
-			playCardAction.setSource(@)
-			@getGameSession().executeAction(playCardAction)
+      playCardAction = new PlayCardSilentlyAction(@getGameSession(), @getOwnerId(), x, y, cardDataToEquip)
+      playCardAction.setSource(@)
+      @getGameSession().executeAction(playCardAction)
 
 module.exports = SpellForgeArtifact

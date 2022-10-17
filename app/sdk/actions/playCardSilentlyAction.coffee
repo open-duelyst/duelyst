@@ -1,6 +1,6 @@
-Logger = 		require 'app/common/logger'
-ApplyCardToBoardAction = 		require './applyCardToBoardAction'
-ModifierOpeningGambit = 		require 'app/sdk/modifiers/modifierOpeningGambit'
+Logger =     require 'app/common/logger'
+ApplyCardToBoardAction =     require './applyCardToBoardAction'
+ModifierOpeningGambit =     require 'app/sdk/modifiers/modifierOpeningGambit'
 _ = require 'underscore'
 
 ###
@@ -9,21 +9,21 @@ Play a card on the board and bypass the active card flow (i.e. followups and ope
 
 class PlayCardSilentlyAction extends ApplyCardToBoardAction
 
-	@type:"PlayCardSilentlyAction"
+  @type:"PlayCardSilentlyAction"
 
-	constructor: () ->
-		@type ?= PlayCardSilentlyAction.type
-		super
+  constructor: () ->
+    @type ?= PlayCardSilentlyAction.type
+    super
 
-	getCard: () ->
-		if !@_private.cachedCard?
-			# create and cache card
-			super()
+  getCard: () ->
+    if !@_private.cachedCard?
+      # create and cache card
+      super()
 
-			if @_private.cachedCard?
-				# clear the card's followups
-				@_private.cachedCard.clearFollowups()
+      if @_private.cachedCard?
+        # clear the card's followups
+        @_private.cachedCard.clearFollowups()
 
-		return @_private.cachedCard
+    return @_private.cachedCard
 
 module.exports = PlayCardSilentlyAction

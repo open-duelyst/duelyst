@@ -5,13 +5,13 @@ ModifierOverwatchHidden = require './modifierOverwatchHidden'
 ###
 class ModifierSentinelHidden extends ModifierOverwatchHidden
 
-	type:"ModifierSentinelHidden"
-	@type:"ModifierSentinelHidden"
+  type:"ModifierSentinelHidden"
+  @type:"ModifierSentinelHidden"
 
-	@isKeyworded: true
-	@keywordDefinition:"Hidden condition is one of: the opponent summons a minion, casts a spell, or attacks with General."
+  @isKeyworded: true
+  @keywordDefinition:"Hidden condition is one of: the opponent summons a minion, casts a spell, or attacks with General."
 
-	@modifierName:"Sentinel"
-	@description: "%X"
+  @modifierName:"Sentinel"
+  @description: "%X"
 
 module.exports = ModifierSentinelHidden

@@ -12,35 +12,35 @@ Enemy General gains -2 Attack
 ###
 class ModifierOpeningGambitApplyModifiersToGeneral extends ModifierOpeningGambit
 
-	type:"ModifierOpeningGambitApplyModifiersToGeneral"
-	@type:"ModifierOpeningGambitApplyModifiersToGeneral"
+  type:"ModifierOpeningGambitApplyModifiersToGeneral"
+  @type:"ModifierOpeningGambitApplyModifiersToGeneral"
 
-	@description: ""
+  @description: ""
 
-	modifiersContextObjects: null # modifier context objects for modifiers to apply
+  modifiersContextObjects: null # modifier context objects for modifiers to apply
 
-	fxResource: ["FX.Modifiers.ModifierOpeningGambit", "FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierOpeningGambit", "FX.Modifiers.ModifierGenericBuff"]
 
-	@createContextObject: (modifiersContextObjects, applyToOwnGeneral=false, applyToEnemyGeneral=false, description, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		contextObject.applyToOwnGeneral = applyToOwnGeneral
-		contextObject.applyToEnemyGeneral = applyToEnemyGeneral
-		contextObject.description = description
-		return contextObject
+  @createContextObject: (modifiersContextObjects, applyToOwnGeneral=false, applyToEnemyGeneral=false, description, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    contextObject.applyToOwnGeneral = applyToOwnGeneral
+    contextObject.applyToEnemyGeneral = applyToEnemyGeneral
+    contextObject.description = description
+    return contextObject
 
-	onOpeningGambit: () ->
-		if @modifiersContextObjects?
-			for entity in @getAffectedEntities()
-				for modifierContextObject in @modifiersContextObjects
-					@getGameSession().applyModifierContextObject(modifierContextObject, entity)
+  onOpeningGambit: () ->
+    if @modifiersContextObjects?
+      for entity in @getAffectedEntities()
+        for modifierContextObject in @modifiersContextObjects
+          @getGameSession().applyModifierContextObject(modifierContextObject, entity)
 
-	getAffectedEntities: () ->
-		affectedEntities = []
-		if @applyToOwnGeneral
-			affectedEntities.push(@getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()))
-		if @applyToEnemyGeneral
-			affectedEntities.push(@getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()))
-		return affectedEntities
+  getAffectedEntities: () ->
+    affectedEntities = []
+    if @applyToOwnGeneral
+      affectedEntities.push(@getGameSession().getGeneralForPlayerId(@getCard().getOwnerId()))
+    if @applyToEnemyGeneral
+      affectedEntities.push(@getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()))
+    return affectedEntities
 
 module.exports = ModifierOpeningGambitApplyModifiersToGeneral

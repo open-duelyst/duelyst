@@ -12,5 +12,5 @@ config = require '../config/config.js'
 # @param {Error} err
 ###
 module.exports.errorShutdown = (err) ->
-	Logger.module("SHUTDOWN").error StackLogger.render(err)
-	process.exit(1)
+  Logger.module("SHUTDOWN").error StackLogger.render(err)
+  process.exit(1)

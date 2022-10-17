@@ -3,23 +3,23 @@ PutCardInHandAction = require 'app/sdk/actions/putCardInHandAction'
 
 class ModifierStartTurnWatchPutCardInOpponentsHand extends ModifierStartTurnWatch
 
-	type:"ModifierStartTurnWatchPutCardInOpponentsHand"
-	@type:"ModifierStartTurnWatchPutCardInOpponentsHand"
+  type:"ModifierStartTurnWatchPutCardInOpponentsHand"
+  @type:"ModifierStartTurnWatchPutCardInOpponentsHand"
 
-	cardDataOrIndexToSpawn: null
+  cardDataOrIndexToSpawn: null
 
-	@description: "Add a card to your opponent's hand at start of turn"
+  @description: "Add a card to your opponent's hand at start of turn"
 
-	@createContextObject: (cardDataOrIndexToSpawn, options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
-		return contextObject
+  @createContextObject: (cardDataOrIndexToSpawn, options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndexToSpawn = cardDataOrIndexToSpawn
+    return contextObject
 
-	onTurnWatch: (action) ->
-		if @getGameSession().getIsRunningAsAuthoritative()
-			card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
-			general = @getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()).getOwnerId()
-			putCardInHandAction = new PutCardInHandAction(@getGameSession(), general, card)
-			@getGameSession().executeAction(putCardInHandAction)
+  onTurnWatch: (action) ->
+    if @getGameSession().getIsRunningAsAuthoritative()
+      card = @getGameSession().getExistingCardFromIndexOrCachedCardFromData(@cardDataOrIndexToSpawn)
+      general = @getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId()).getOwnerId()
+      putCardInHandAction = new PutCardInHandAction(@getGameSession(), general, card)
+      @getGameSession().executeAction(putCardInHandAction)
 
 module.exports = ModifierStartTurnWatchPutCardInOpponentsHand

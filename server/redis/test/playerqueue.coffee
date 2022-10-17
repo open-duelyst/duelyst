@@ -31,20 +31,20 @@ queueUp2 = Promise.all([count,search,grab]).then((results)->console.log results)
 
 # mark a bunch of matches as made
 markHits = Promise.all([queueUp1,queueUp2]).then () ->
-	# mark 100 matches as 'hits' for random divisions
-	for i in [1..100]
-		q.matchMade(_.sample(divisions), randomDurationMs())
+  # mark 100 matches as 'hits' for random divisions
+  for i in [1..100]
+    q.matchMade(_.sample(divisions), randomDurationMs())
 
 markHits.then () ->
-	console.log('marking hits done')
-	Promise.map divisions, (division) ->
-		console.log("getting queue velocity for #{division}")
-		return q.velocity(division)
-		# .then (result) ->
-		# 	console.log result
-		# 	return result
-	.then (results) ->
-		# console.log results
-		minutes = _.map results, (value) ->
-			value / 60000
-		# console.log minutes
+  console.log('marking hits done')
+  Promise.map divisions, (division) ->
+    console.log("getting queue velocity for #{division}")
+    return q.velocity(division)
+    # .then (result) ->
+    #   console.log result
+    #   return result
+  .then (results) ->
+    # console.log results
+    minutes = _.map results, (value) ->
+      value / 60000
+    # console.log minutes

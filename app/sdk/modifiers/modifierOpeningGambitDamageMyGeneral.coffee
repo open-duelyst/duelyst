@@ -7,35 +7,35 @@ CONFIG = require 'app/common/config'
 
 class ModifierOpeningGambitDamageMyGeneral extends ModifierOpeningGambit
 
-	type: "ModifierOpeningGambitDamageMyGeneral"
-	@type: "ModifierOpeningGambitDamageMyGeneral"
+  type: "ModifierOpeningGambitDamageMyGeneral"
+  @type: "ModifierOpeningGambitDamageMyGeneral"
 
-	@modifierName: "Opening Gambit"
-	@description: "Deal %X damage to your General"
+  @modifierName: "Opening Gambit"
+  @description: "Deal %X damage to your General"
 
-	damageAmount: 0
+  damageAmount: 0
 
-	fxResource: ["FX.Modifiers.ModifierOpeningGambit", "FX.Modifiers.ModifierGenericChainLightning"]
+  fxResource: ["FX.Modifiers.ModifierOpeningGambit", "FX.Modifiers.ModifierGenericChainLightning"]
 
-	@createContextObject: (damageAmount, options) ->
-		contextObject = super()
-		contextObject.damageAmount = damageAmount
-		return contextObject
+  @createContextObject: (damageAmount, options) ->
+    contextObject = super()
+    contextObject.damageAmount = damageAmount
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.damageAmount
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.damageAmount
+    else
+      return @description
 
-	onOpeningGambit: () ->
-		general = @getCard().getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
+  onOpeningGambit: () ->
+    general = @getCard().getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 
-		damageAction = new DamageAction(this.getGameSession())
-		damageAction.setOwnerId(@getCard().getOwnerId())
-		damageAction.setSource(@getCard())
-		damageAction.setTarget(general)
-		damageAction.setDamageAmount(@damageAmount)
-		@getGameSession().executeAction(damageAction)
+    damageAction = new DamageAction(this.getGameSession())
+    damageAction.setOwnerId(@getCard().getOwnerId())
+    damageAction.setSource(@getCard())
+    damageAction.setTarget(general)
+    damageAction.setDamageAmount(@damageAmount)
+    @getGameSession().executeAction(damageAction)
 
 module.exports = ModifierOpeningGambitDamageMyGeneral

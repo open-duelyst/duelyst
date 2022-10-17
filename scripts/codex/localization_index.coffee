@@ -5,24 +5,24 @@ Promise = require 'bluebird'
 translation_en = require "../../app/localization/locales/en/index.json"
 
 options = {
-	lng: 'en',
-	fallbackLng: 'en',
-	contextSeparator: '$',
-	defaultNS: 'translation',
-	resources: {
-		en: {
-	      translation: translation_en
-	    }
-	}
+  lng: 'en',
+  fallbackLng: 'en',
+  contextSeparator: '$',
+  defaultNS: 'translation',
+  resources: {
+    en: {
+        translation: translation_en
+      }
+  }
 }
 
 p = new Promise (resolve,reject)->
-	i18next
-		.init options, (err,t)->
-			if (err)
-				reject(err)
-			else
-				resolve(t)
+  i18next
+    .init options, (err,t)->
+      if (err)
+        reject(err)
+      else
+        resolve(t)
 
 
 module.exports = p

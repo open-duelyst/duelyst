@@ -3,21 +3,21 @@ SwapUnitAllegianceAction = require 'app/sdk/actions/swapUnitAllegianceAction.cof
 
 class ModifierEndTurnWatchSwapAllegiance extends ModifierEndTurnWatch
 
-	type:"ModifierEndTurnWatchSwapAllegiance"
-	@type:"ModifierEndTurnWatchSwapAllegiance"
+  type:"ModifierEndTurnWatchSwapAllegiance"
+  @type:"ModifierEndTurnWatchSwapAllegiance"
 
-	@modifierName:"Turn Watch"
-	@description:"At the end of your turn, swap owner"
+  @modifierName:"Turn Watch"
+  @description:"At the end of your turn, swap owner"
 
-	isHiddenToUI: true # don't show this modifier by default
+  isHiddenToUI: true # don't show this modifier by default
 
-	fxResource: ["FX.Modifiers.ModifierEndTurnWatch"]
+  fxResource: ["FX.Modifiers.ModifierEndTurnWatch"]
 
-	onTurnWatch: (action) ->
-		super(action)
+  onTurnWatch: (action) ->
+    super(action)
 
-		a = new SwapUnitAllegianceAction(@getCard().getGameSession())
-		a.setTarget(@getCard())
-		this.getGameSession().executeAction(a)
+    a = new SwapUnitAllegianceAction(@getCard().getGameSession())
+    a.setTarget(@getCard())
+    this.getGameSession().executeAction(a)
 
 module.exports = ModifierEndTurnWatchSwapAllegiance

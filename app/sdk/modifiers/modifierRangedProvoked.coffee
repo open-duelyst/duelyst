@@ -5,17 +5,17 @@ i18next = require 'i18next'
 
 class ModifierRangedProvoked extends Modifier
 
-	type: "ModifierRangedProvoked"
-	@type: "ModifierRangedProvoked"
+  type: "ModifierRangedProvoked"
+  @type: "ModifierRangedProvoked"
 
-	@modifierName:i18next.t("modifiers.ranged_provoked_name")
-	@description:i18next.t("modifiers.ranged_provoked_def")
+  @modifierName:i18next.t("modifiers.ranged_provoked_name")
+  @description:i18next.t("modifiers.ranged_provoked_def")
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierProvoked"]
+  fxResource: ["FX.Modifiers.ModifierProvoked"]
 
 module.exports = ModifierRangedProvoked

@@ -8,23 +8,23 @@ _ = require 'underscore'
 
 class SpellFollowupSwapPositions extends Spell
 
-	targetType: CardType.Unit
-	spellFilterType: SpellFilterType.None
+  targetType: CardType.Unit
+  spellFilterType: SpellFilterType.None
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
-		super(board,x,y,sourceAction)
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+    super(board,x,y,sourceAction)
 
-		#Logger.module("SDK").debug "[G:#{@.getGameSession().gameId}]", "SpellFollowupSwapPositions::onApplyEffectToBoardTile "
-		applyEffectPosition = {x: x, y: y}
+    #Logger.module("SDK").debug "[G:#{@.getGameSession().gameId}]", "SpellFollowupSwapPositions::onApplyEffectToBoardTile "
+    applyEffectPosition = {x: x, y: y}
 
-		source = board.getCardAtPosition(@getFollowupSourcePosition(), @targetType)
-		target = board.getCardAtPosition(applyEffectPosition, @targetType)
+    source = board.getCardAtPosition(@getFollowupSourcePosition(), @targetType)
+    target = board.getCardAtPosition(applyEffectPosition, @targetType)
 
-		swapAction = new SwapUnitsAction(@getGameSession())
-		swapAction.setOwnerId(@getOwnerId())
-		swapAction.setSource(source)
-		swapAction.setTarget(target)
-		swapAction.setFXResource(_.union(swapAction.getFXResource(), @getFXResource()))
-		@getGameSession().executeAction(swapAction)
+    swapAction = new SwapUnitsAction(@getGameSession())
+    swapAction.setOwnerId(@getOwnerId())
+    swapAction.setSource(source)
+    swapAction.setTarget(target)
+    swapAction.setFXResource(_.union(swapAction.getFXResource(), @getFXResource()))
+    @getGameSession().executeAction(swapAction)
 
 module.exports = SpellFollowupSwapPositions

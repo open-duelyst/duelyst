@@ -4,12 +4,12 @@ _ = require 'underscore'
 
 class SpellDamageAndPutCardInHand extends SpellDamage
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
-		applyEffectPosition = {x: x, y: y}
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+    applyEffectPosition = {x: x, y: y}
 
-		a = new PutCardInHandAction(@getGameSession(), @getOwnerId(), @cardDataOrIndexToPutInHand)
-		this.getGameSession().executeAction(a)
+    a = new PutCardInHandAction(@getGameSession(), @getOwnerId(), @cardDataOrIndexToPutInHand)
+    this.getGameSession().executeAction(a)
 
-		super(board,x,y,sourceAction)
+    super(board,x,y,sourceAction)
 
 module.exports = SpellDamageAndPutCardInHand

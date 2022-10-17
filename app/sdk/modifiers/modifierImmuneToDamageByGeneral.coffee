@@ -1,5 +1,5 @@
-ModifierImmuneToDamage = 	require './modifierImmuneToDamage'
-AttackAction = 	require 'app/sdk/actions/attackAction'
+ModifierImmuneToDamage =   require './modifierImmuneToDamage'
+AttackAction =   require 'app/sdk/actions/attackAction'
 i18next = require 'i18next'
 
 ###
@@ -8,13 +8,13 @@ i18next = require 'i18next'
 
 class ModifierImmuneToDamageByGeneral extends ModifierImmuneToDamage
 
-	type:"ModifierImmuneToDamageByGeneral"
-	@type:"ModifierImmuneToDamageByGeneral"
+  type:"ModifierImmuneToDamageByGeneral"
+  @type:"ModifierImmuneToDamageByGeneral"
 
-	@modifierName:i18next.t("modifiers.immune_to_damage_by_general_name")
-	@description:i18next.t("modifiers.immune_to_damage_by_general_def")
+  @modifierName:i18next.t("modifiers.immune_to_damage_by_general_name")
+  @description:i18next.t("modifiers.immune_to_damage_by_general_def")
 
-	getIsActionRelevant: (a) ->
-		return @getCard()? and a instanceof AttackAction and a.getIsValid() and @getCard() is a.getTarget() and a.getSource()?.getIsGeneral()
+  getIsActionRelevant: (a) ->
+    return @getCard()? and a instanceof AttackAction and a.getIsValid() and @getCard() is a.getTarget() and a.getSource()?.getIsGeneral()
 
 module.exports = ModifierImmuneToDamageByGeneral

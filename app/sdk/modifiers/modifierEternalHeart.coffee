@@ -5,54 +5,54 @@ i18next = require 'i18next'
 
 class ModifierEternalHeart extends Modifier
 
-	type:"ModifierEternalHeart"
-	@type:"ModifierEternalHeart"
+  type:"ModifierEternalHeart"
+  @type:"ModifierEternalHeart"
 
-	@modifierName:"Eternal Heart"
-	@description: "Can't die"
+  @modifierName:"Eternal Heart"
+  @description: "Can't die"
 
-	activeInDeck: false
-	activeInHand: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInDeck: false
+  activeInHand: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	maxStacks: 1
+  maxStacks: 1
 
-	fxResource: ["FX.Modifiers.EternalHeart"]
+  fxResource: ["FX.Modifiers.EternalHeart"]
 
-	getPrivateDefaults: (gameSession) ->
-		p = super(gameSession)
+  getPrivateDefaults: (gameSession) ->
+    p = super(gameSession)
 
-		p.eternalHeartAtActionIndexActionIndex = -1 # index of action triggering eternal heart
+    p.eternalHeartAtActionIndexActionIndex = -1 # index of action triggering eternal heart
 
-		return p
+    return p
 
-	onAfterCleanupAction: (event) ->
-		super(event)
+  onAfterCleanupAction: (event) ->
+    super(event)
 
-		action = event.action
-		if @getGameSession().getIsRunningAsAuthoritative() and @_private.eternalHeartAtActionIndexActionIndex == action.getIndex()
-			# after cleaning up action, set HP to 1
-			setDamageAction = new SetDamageAction(@getGameSession())
-			setDamageAction.setOwnerId(@getOwnerId())
-			setDamageAction.setTarget(@getCard())
-			setDamageAction.damageValue = @getCard().getMaxHP() - 1
-			@getGameSession().executeAction(setDamageAction)
+    action = event.action
+    if @getGameSession().getIsRunningAsAuthoritative() and @_private.eternalHeartAtActionIndexActionIndex == action.getIndex()
+      # after cleaning up action, set HP to 1
+      setDamageAction = new SetDamageAction(@getGameSession())
+      setDamageAction.setOwnerId(@getOwnerId())
+      setDamageAction.setTarget(@getCard())
+      setDamageAction.damageValue = @getCard().getMaxHP() - 1
+      @getGameSession().executeAction(setDamageAction)
 
 
-	onValidateAction: (event) ->
-		super(event)
+  onValidateAction: (event) ->
+    super(event)
 
-		action = event.action
+    action = event.action
 
-		# when this would die, invalidate the death
-		if action instanceof DieAction and action.getTarget() is @getCard()
-			# record index of parent action of die action, so we know when to trigger eternal heart
-			if action.getParentAction()?
-				@_private.eternalHeartAtActionIndexActionIndex = action.getParentActionIndex()
-			else
-				@_private.eternalHeartAtActionIndexActionIndex = action.getIndex()
-			@invalidateAction(action, @getCard().getPosition(), i18next.t("modifiers.eternal_heart_error"))
+    # when this would die, invalidate the death
+    if action instanceof DieAction and action.getTarget() is @getCard()
+      # record index of parent action of die action, so we know when to trigger eternal heart
+      if action.getParentAction()?
+        @_private.eternalHeartAtActionIndexActionIndex = action.getParentActionIndex()
+      else
+        @_private.eternalHeartAtActionIndexActionIndex = action.getIndex()
+      @invalidateAction(action, @getCard().getPosition(), i18next.t("modifiers.eternal_heart_error"))
 
 
 module.exports = ModifierEternalHeart

@@ -4,13 +4,13 @@ ModifierDeathWatch = require './modifierDeathWatch'
 
 class ModifierOnOpponentDeathWatch extends ModifierDeathWatch
 
-	type:"ModifierOnOpponentDeathWatch"
-	@type:"ModifierOnOpponentDeathWatch"
+  type:"ModifierOnOpponentDeathWatch"
+  @type:"ModifierOnOpponentDeathWatch"
 
-	@modifierName:"ModifierOnOpponentDeathWatch"
-	@description:"Summon a %X on a random nearby space"
+  @modifierName:"ModifierOnOpponentDeathWatch"
+  @description:"Summon a %X on a random nearby space"
 
-	getIsActionRelevant: (action) ->
-		return super(action) and !action.getTarget().getIsSameTeamAs(@getCard())
+  getIsActionRelevant: (action) ->
+    return super(action) and !action.getTarget().getIsSameTeamAs(@getCard())
 
 module.exports = ModifierOnOpponentDeathWatch

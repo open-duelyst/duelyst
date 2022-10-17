@@ -3,27 +3,27 @@ DamageAction = require 'app/sdk/actions/damageAction'
 
 class ModifierIntensifyDamageEnemyGeneral extends ModifierIntensify
 
-	type:"ModifierIntensifyDamageEnemyGeneral"
-	@type:"ModifierIntensifyDamageEnemyGeneral"
+  type:"ModifierIntensifyDamageEnemyGeneral"
+  @type:"ModifierIntensifyDamageEnemyGeneral"
 
-	damageAmount: 0
+  damageAmount: 0
 
-	@createContextObject: (damageAmount, options) ->
-		contextObject = super(options)
-		contextObject.damageAmount = damageAmount
-		return contextObject
+  @createContextObject: (damageAmount, options) ->
+    contextObject = super(options)
+    contextObject.damageAmount = damageAmount
+    return contextObject
 
-	onIntensify: () ->
+  onIntensify: () ->
 
-		totalDamageAmount = @getIntensifyAmount() * @damageAmount
+    totalDamageAmount = @getIntensifyAmount() * @damageAmount
 
-		enemyGeneral = @getCard().getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId())
+    enemyGeneral = @getCard().getGameSession().getGeneralForOpponentOfPlayerId(@getCard().getOwnerId())
 
-		enemyDamageAction = new DamageAction(@getGameSession())
-		enemyDamageAction.setOwnerId(@getCard().getOwnerId())
-		enemyDamageAction.setSource(@getCard())
-		enemyDamageAction.setTarget(enemyGeneral)
-		enemyDamageAction.setDamageAmount(totalDamageAmount)
-		@getGameSession().executeAction(enemyDamageAction)
+    enemyDamageAction = new DamageAction(@getGameSession())
+    enemyDamageAction.setOwnerId(@getCard().getOwnerId())
+    enemyDamageAction.setSource(@getCard())
+    enemyDamageAction.setTarget(enemyGeneral)
+    enemyDamageAction.setDamageAmount(totalDamageAmount)
+    @getGameSession().executeAction(enemyDamageAction)
 
 module.exports = ModifierIntensifyDamageEnemyGeneral

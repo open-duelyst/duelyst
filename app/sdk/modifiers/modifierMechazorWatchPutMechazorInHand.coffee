@@ -9,29 +9,29 @@ PutCardInHandAction = require 'app/sdk/actions/putCardInHandAction'
 
 class ModifierMechazorWatchPutMechazorInHand extends Modifier
 
-	type:"ModifierMechazorWatchPutMechazorInHand"
-	@type:"ModifierMechazorWatchPutMechazorInHand"
+  type:"ModifierMechazorWatchPutMechazorInHand"
+  @type:"ModifierMechazorWatchPutMechazorInHand"
 
-	@modifierName:"Spawn Another Mechazor"
-	@description:"Whenever you summon MECHAZ0R, put a MECHAZ0R in your action bar"
+  @modifierName:"Spawn Another Mechazor"
+  @description:"Whenever you summon MECHAZ0R, put a MECHAZ0R in your action bar"
 
-	cardDataOrIndexToSpawn: null
+  cardDataOrIndexToSpawn: null
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	onAction: (e) ->
-		super(e)
+  onAction: (e) ->
+    super(e)
 
-		action = e.action
+    action = e.action
 
-		if (
-			(action instanceof PlayCardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Spell.DeployMechaz0r) or
-			(action instanceof PlayCardFromHandAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Neutral.Mechaz0r)
-		)
-			a = new PutCardInHandAction(this.getGameSession(), @getCard().getOwnerId(), {id: Cards.Neutral.Mechaz0r})
-			this.getGameSession().executeAction(a)
+    if (
+      (action instanceof PlayCardAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Spell.DeployMechaz0r) or
+      (action instanceof PlayCardFromHandAction and action.getOwnerId() is @getCard().getOwnerId() and action.getCard().getBaseCardId() is Cards.Neutral.Mechaz0r)
+    )
+      a = new PutCardInHandAction(this.getGameSession(), @getCard().getOwnerId(), {id: Cards.Neutral.Mechaz0r})
+      this.getGameSession().executeAction(a)
 
 module.exports = ModifierMechazorWatchPutMechazorInHand

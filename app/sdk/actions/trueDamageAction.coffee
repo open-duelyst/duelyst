@@ -1,4 +1,4 @@
-DamageAction = 		require './damageAction'
+DamageAction =     require './damageAction'
 _ = require 'underscore'
 
 ###
@@ -6,13 +6,13 @@ _ = require 'underscore'
 ###
 class TrueDamageAction extends DamageAction
 
-	@type:"TrueDamageAction"
+  @type:"TrueDamageAction"
 
-	constructor: () ->
-		@type ?= TrueDamageAction.type
-		super
+  constructor: () ->
+    @type ?= TrueDamageAction.type
+    super
 
-	getTotalDamageAmount: () ->
-		return @getDamageAmount()
+  getTotalDamageAmount: () ->
+    return @getDamageAmount()
 
 module.exports = TrueDamageAction

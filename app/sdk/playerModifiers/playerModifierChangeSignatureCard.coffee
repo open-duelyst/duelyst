@@ -2,25 +2,25 @@ PlayerModifier = require 'app/sdk/playerModifiers/playerModifier'
 
 class PlayerModifierChangeSignatureCard extends PlayerModifier
 
-	type:"PlayerModifierChangeSignatureCard"
-	@type:"PlayerModifierChangeSignatureCard"
+  type:"PlayerModifierChangeSignatureCard"
+  @type:"PlayerModifierChangeSignatureCard"
 
-	@createContextObject: (cardDataOrIndex, options) ->
-		contextObject = super(options)
-		contextObject.cardDataOrIndex = cardDataOrIndex
-		return contextObject
+  @createContextObject: (cardDataOrIndex, options) ->
+    contextObject = super(options)
+    contextObject.cardDataOrIndex = cardDataOrIndex
+    return contextObject
 
-	getSignatureCardData: () ->
-		return @cardDataOrIndex
+  getSignatureCardData: () ->
+    return @cardDataOrIndex
 
-	onActivate: ()  ->
-		super()
+  onActivate: ()  ->
+    super()
 
-		@getGameSession().executeAction(@getPlayer().actionGenerateSignatureCard())
+    @getGameSession().executeAction(@getPlayer().actionGenerateSignatureCard())
 
-	onDeactivate: ()  ->
-		super()
+  onDeactivate: ()  ->
+    super()
 
-		@getGameSession().executeAction(@getPlayer().actionGenerateSignatureCard())
+    @getGameSession().executeAction(@getPlayer().actionGenerateSignatureCard())
 
 module.exports = PlayerModifierChangeSignatureCard

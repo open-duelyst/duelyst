@@ -3,17 +3,17 @@ CardSet = require 'app/sdk/cards/cardSetLookup'
 i18next = require('i18next')
 
 class MythronOrb4Achievement extends Achievement
-	@id: "mythron4"
-	@title: "Fourth Trial"
-	@description: "You've opened 31 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs."
-	@progressRequired: 31
-	@rewards:
-		mythronCard: 1
+  @id: "mythron4"
+  @title: "Fourth Trial"
+  @description: "You've opened 31 Mythron Orbs, here's a brand new Mythron card. You'll get another after opening 10 more orbs."
+  @progressRequired: 31
+  @rewards:
+    mythronCard: 1
 
-	@progressForOpeningSpiritOrb: (orbSet) ->
-		if (orbSet == CardSet.Coreshatter)
-			return 1
-		else
-			return 0
+  @progressForOpeningSpiritOrb: (orbSet) ->
+    if (orbSet == CardSet.Coreshatter)
+      return 1
+    else
+      return 0
 
 module.exports = MythronOrb4Achievement

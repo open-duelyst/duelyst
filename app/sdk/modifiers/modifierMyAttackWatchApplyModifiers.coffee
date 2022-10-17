@@ -2,23 +2,23 @@ ModifierMyAttackWatch = require './modifierMyAttackWatch'
 
 class ModifierMyAttackWatchApplyModifiers extends ModifierMyAttackWatch
 
-	type:"ModifierMyAttackWatchApplyModifiers"
-	@type:"ModifierMyAttackWatchApplyModifiers"
+  type:"ModifierMyAttackWatchApplyModifiers"
+  @type:"ModifierMyAttackWatchApplyModifiers"
 
-	modifiersContextObjects: null
+  modifiersContextObjects: null
 
-	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierGenericBuff"]
 
-	@createContextObject: (modifiersContextObjects, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		return contextObject
+  @createContextObject: (modifiersContextObjects, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    return contextObject
 
-	onMyAttackWatch: (action) ->
+  onMyAttackWatch: (action) ->
 
-		if @modifiersContextObjects?
-			for modifier in @modifiersContextObjects
-				if modifier?
-					@getGameSession().applyModifierContextObject(modifier, @getCard())
+    if @modifiersContextObjects?
+      for modifier in @modifiersContextObjects
+        if modifier?
+          @getGameSession().applyModifierContextObject(modifier, @getCard())
 
 module.exports = ModifierMyAttackWatchApplyModifiers

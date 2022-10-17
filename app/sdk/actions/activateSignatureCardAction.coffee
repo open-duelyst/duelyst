@@ -6,30 +6,30 @@ Action that activates a player's signature card.
 
 class ActivateSignatureCardAction extends Action
 
-	@type:"ActivateSignatureCardAction"
+  @type:"ActivateSignatureCardAction"
 
-	targetPlayerId: null
+  targetPlayerId: null
 
-	constructor: (gameSession, targetPlayerId) ->
-		@type ?= ActivateSignatureCardAction.type
-		super(gameSession)
-		if targetPlayerId?
-			@targetPlayerId = targetPlayerId
-		else
-			@targetPlayerId = @getOwnerId()
+  constructor: (gameSession, targetPlayerId) ->
+    @type ?= ActivateSignatureCardAction.type
+    super(gameSession)
+    if targetPlayerId?
+      @targetPlayerId = targetPlayerId
+    else
+      @targetPlayerId = @getOwnerId()
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	getTargetPlayer: () ->
-		return @getGameSession().getPlayerById(@getTargetPlayerId())
+  getTargetPlayer: () ->
+    return @getGameSession().getPlayerById(@getTargetPlayerId())
 
-	getTargetPlayerId: () ->
-		return @targetPlayerId
+  getTargetPlayerId: () ->
+    return @targetPlayerId
 
-	_execute: () ->
-		super()
+  _execute: () ->
+    super()
 
-		@getTargetPlayer().setIsSignatureCardActive(true)
+    @getTargetPlayer().setIsSignatureCardActive(true)
 
 module.exports = ActivateSignatureCardAction

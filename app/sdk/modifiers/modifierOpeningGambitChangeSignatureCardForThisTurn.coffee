@@ -3,32 +3,32 @@ PlayerModifierEndTurnWatchRevertBBS = require 'app/sdk/playerModifiers/playerMod
 
 class ModifierOpeningGambitChangeSignatureCardForThisTurn extends ModifierOpeningGambit
 
-	type:"ModifierOpeningGambitChangeSignatureCardForThisTurn"
-	@type:"ModifierOpeningGambitChangeSignatureCardForThisTurn"
+  type:"ModifierOpeningGambitChangeSignatureCardForThisTurn"
+  @type:"ModifierOpeningGambitChangeSignatureCardForThisTurn"
 
-	fxResource: ["FX.Modifiers.ModifierOpeningGambit"]
+  fxResource: ["FX.Modifiers.ModifierOpeningGambit"]
 
-	cardData: null
+  cardData: null
 
-	@createContextObject: (cardData) ->
-		contextObject = super()
-		contextObject.cardData = cardData
-		return contextObject
+  @createContextObject: (cardData) ->
+    contextObject = super()
+    contextObject.cardData = cardData
+    return contextObject
 
-	onOpeningGambit: (action) ->
-		super(action)
+  onOpeningGambit: (action) ->
+    super(action)
 
-		general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
+    general = @getGameSession().getGeneralForPlayerId(@getCard().getOwnerId())
 
-		#only add modifier to revert if one doesn't already exist, so we don't revert to a temp BBS
-		if !general.hasActiveModifierClass(PlayerModifierEndTurnWatchRevertBBS)
+    #only add modifier to revert if one doesn't already exist, so we don't revert to a temp BBS
+    if !general.hasActiveModifierClass(PlayerModifierEndTurnWatchRevertBBS)
 
-			currentBBS = general.getSignatureCardData()
-			revertBBSModifier = PlayerModifierEndTurnWatchRevertBBS.createContextObject(currentBBS)
-			revertBBSModifier.durationEndTurn = 1
-			@getGameSession().applyModifierContextObject(revertBBSModifier, general)
+      currentBBS = general.getSignatureCardData()
+      revertBBSModifier = PlayerModifierEndTurnWatchRevertBBS.createContextObject(currentBBS)
+      revertBBSModifier.durationEndTurn = 1
+      @getGameSession().applyModifierContextObject(revertBBSModifier, general)
 
-		general.setSignatureCardData(@cardData)
-		@getGameSession().executeAction(general.getOwner().actionGenerateSignatureCard())
+    general.setSignatureCardData(@cardData)
+    @getGameSession().executeAction(general.getOwner().actionGenerateSignatureCard())
 
 module.exports = ModifierOpeningGambitChangeSignatureCardForThisTurn

@@ -5,21 +5,21 @@ i18next = require('i18next')
 
 class ModifierHasBackstab extends ModifierBackstab
 
-	type:"ModifierHasBackstab"
-	@type:"ModifierHasBackstab"
+  type:"ModifierHasBackstab"
+  @type:"ModifierHasBackstab"
 
-	@isKeyworded: true
-	@keywordDefinition:i18next.t("modifiers.backstab_def")
-	@description:"Has Backstab (%X)"
+  @isKeyworded: true
+  @keywordDefinition:i18next.t("modifiers.backstab_def")
+  @description:"Has Backstab (%X)"
 
-	maxStacks: 1
+  maxStacks: 1
 
-	fxResource: ["FX.Modifiers.ModifierBackstab"]
+  fxResource: ["FX.Modifiers.ModifierBackstab"]
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.backstabBonus
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.backstabBonus
+    else
+      return @description
 
 module.exports = ModifierHasBackstab

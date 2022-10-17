@@ -19,41 +19,41 @@ ModifierFirstBlood = require 'app/sdk/modifiers/modifierFirstBlood'
 
 class SpellMoldingEarth extends SpellSpawnEntity
 
-	spawnSilently: true
-	numUnits: 3
+  spawnSilently: true
+  numUnits: 3
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
 
-		modifiersToObtain = [
-			ModifierFrenzy.createContextObject(),
-			ModifierFlying.createContextObject(),
-			ModifierTranscendance.createContextObject(),
-			ModifierProvoke.createContextObject(),
-			ModifierRanged.createContextObject(),
-			ModifierFirstBlood.createContextObject(),
-			ModifierRebirth.createContextObject(),
-			ModifierForcefield.createContextObject()
-		]
+    modifiersToObtain = [
+      ModifierFrenzy.createContextObject(),
+      ModifierFlying.createContextObject(),
+      ModifierTranscendance.createContextObject(),
+      ModifierProvoke.createContextObject(),
+      ModifierRanged.createContextObject(),
+      ModifierFirstBlood.createContextObject(),
+      ModifierRebirth.createContextObject(),
+      ModifierForcefield.createContextObject()
+    ]
 
-		modifierContextObject = modifiersToObtain[@getGameSession().getRandomIntegerForExecution(modifiersToObtain.length)]
+    modifierContextObject = modifiersToObtain[@getGameSession().getRandomIntegerForExecution(modifiersToObtain.length)]
 
-		@cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects = [modifierContextObject]
+    @cardDataOrIndexToSpawn.additionalInherentModifiersContextObjects = [modifierContextObject]
 
-		super(board,x,y,sourceAction)
+    super(board,x,y,sourceAction)
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		card = @getEntityToSpawn()
-		generalPosition = @getGameSession().getGeneralForPlayerId(@ownerId).getPosition()
-		numberOfApplyPositions = @numUnits
+  _findApplyEffectPositions: (position, sourceAction) ->
+    card = @getEntityToSpawn()
+    generalPosition = @getGameSession().getGeneralForPlayerId(@ownerId).getPosition()
+    numberOfApplyPositions = @numUnits
 
-		if numberOfApplyPositions > 0
-			applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, CONFIG.PATTERN_3x3, card, @, numberOfApplyPositions)
-		else
-			applyEffectPositions = []
+    if numberOfApplyPositions > 0
+      applyEffectPositions = UtilsGameSession.getRandomSmartSpawnPositionsFromPattern(@getGameSession(), generalPosition, CONFIG.PATTERN_3x3, card, @, numberOfApplyPositions)
+    else
+      applyEffectPositions = []
 
-		return applyEffectPositions
+    return applyEffectPositions
 
-	_postFilterPlayPositions: (validPositions) ->
-		return validPositions
+  _postFilterPlayPositions: (validPositions) ->
+    return validPositions
 
 module.exports = SpellMoldingEarth

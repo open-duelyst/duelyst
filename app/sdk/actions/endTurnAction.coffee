@@ -1,19 +1,19 @@
-CONFIG = 		require 'app/common/config'
-Action = 		require './action'
-Logger = 		require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Action =     require './action'
+Logger =     require 'app/common/logger'
 
 class EndTurnAction extends Action
 
-	@type:"EndTurnAction"
+  @type:"EndTurnAction"
 
-	constructor: () ->
-		@type ?= EndTurnAction.type
-		super
+  constructor: () ->
+    @type ?= EndTurnAction.type
+    super
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	_execute: () ->
-		@getGameSession().p_endTurn()
+  _execute: () ->
+    @getGameSession().p_endTurn()
 
 module.exports = EndTurnAction

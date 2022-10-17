@@ -10,201 +10,201 @@ i18next = require 'i18next'
 
 class FactionFactory
 
-	@factionMap: {}
+  @factionMap: {}
 
-	@factionForPlayer1: (gameSession) ->
-		return @factionForPlayer(gameSession, gameSession.getPlayer1())
+  @factionForPlayer1: (gameSession) ->
+    return @factionForPlayer(gameSession, gameSession.getPlayer1())
 
-	@factionForPlayer2: (gameSession) ->
-		return @factionForPlayer(gameSession, gameSession.getPlayer2())
+  @factionForPlayer2: (gameSession) ->
+    return @factionForPlayer(gameSession, gameSession.getPlayer2())
 
-	@factionForMyPlayer: (gameSession) ->
-		return @factionForPlayer(gameSession, gameSession.getMyPlayer())
+  @factionForMyPlayer: (gameSession) ->
+    return @factionForPlayer(gameSession, gameSession.getMyPlayer())
 
-	@factionForOpponentPlayer: (gameSession) ->
-		return @factionForPlayer(gameSession, gameSession.getOpponentPlayer())
+  @factionForOpponentPlayer: (gameSession) ->
+    return @factionForPlayer(gameSession, gameSession.getOpponentPlayer())
 
-	@factionForPlayer: (gameSession, player) ->
-		return @factionForPlayerId(gameSession, player.getPlayerId())
+  @factionForPlayer: (gameSession, player) ->
+    return @factionForPlayerId(gameSession, player.getPlayerId())
 
-	@factionForPlayerId: (gameSession, playerId) ->
-		playerSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameSession, playerId)
-		playerFactionId = playerSetupData.factionId
-		return @factionForIdentifier(playerFactionId)
+  @factionForPlayerId: (gameSession, playerId) ->
+    playerSetupData = UtilsGameSession.getPlayerSetupDataForPlayerId(gameSession, playerId)
+    playerFactionId = playerSetupData.factionId
+    return @factionForIdentifier(playerFactionId)
 
-	@factionForIdentifier: (identifier) ->
-		faction = @factionMap[identifier]
-		if faction
-			return faction
-		else
-			# no faction found
-			console.error "FactionFactory.factionForIdentifier - Unknown faction identifier: #{identifier}".red
+  @factionForIdentifier: (identifier) ->
+    faction = @factionMap[identifier]
+    if faction
+      return faction
+    else
+      # no faction found
+      console.error "FactionFactory.factionForIdentifier - Unknown faction identifier: #{identifier}".red
 
-	@_allFactions: null
-	@getAllFactions: () ->
-		if !@_allFactions?
-			@_allFactions = []
-			for factionId in _.chain(Factions).values().uniq().value()
-				faction = FactionFactory.factionForIdentifier(factionId)
-				if faction
-					@_allFactions.push(faction)
+  @_allFactions: null
+  @getAllFactions: () ->
+    if !@_allFactions?
+      @_allFactions = []
+      for factionId in _.chain(Factions).values().uniq().value()
+        faction = FactionFactory.factionForIdentifier(factionId)
+        if faction
+          @_allFactions.push(faction)
 
-		return @_allFactions
+    return @_allFactions
 
-	@_playableFactions: null
-	@getAllPlayableFactions: () ->
-		if !@_playableFactions?
-			@_playableFactions = []
-			for factionId in _.chain(Factions).values().uniq().value()
-				faction = FactionFactory.factionForIdentifier(factionId)
-				if faction and faction.enabled and not faction.isNeutral and not faction.isInDevelopment
-					@_playableFactions.push(faction)
+  @_playableFactions: null
+  @getAllPlayableFactions: () ->
+    if !@_playableFactions?
+      @_playableFactions = []
+      for factionId in _.chain(Factions).values().uniq().value()
+        faction = FactionFactory.factionForIdentifier(factionId)
+        if faction and faction.enabled and not faction.isNeutral and not faction.isInDevelopment
+          @_playableFactions.push(faction)
 
-		return @_playableFactions
+    return @_playableFactions
 
-	@_enabledFactions: null
-	@getAllEnabledFactions: () ->
-		if !@_enabledFactions?
-			@_enabledFactions = []
-			for factionId in _.chain(Factions).values().uniq().value()
-				faction = FactionFactory.factionForIdentifier(factionId)
-				if faction and faction.enabled
-					@_enabledFactions.push(faction)
+  @_enabledFactions: null
+  @getAllEnabledFactions: () ->
+    if !@_enabledFactions?
+      @_enabledFactions = []
+      for factionId in _.chain(Factions).values().uniq().value()
+        faction = FactionFactory.factionForIdentifier(factionId)
+        if faction and faction.enabled
+          @_enabledFactions.push(faction)
 
-		return @_enabledFactions
+    return @_enabledFactions
 
-	@starterDeckForFactionLevel: (factionId,factionLevel=0)->
-		starterDeck = @.factionForIdentifier(factionId).starterDeck.slice()
-		if factionLevel > 0
-			unlockedCardIds = FactionProgression.unlockedCardsUpToLevel(factionLevel, factionId)
-			for cardId in unlockedCardIds
-				if FactionFactory.unlockedCardIsValidForStarterDeck(cardId)
-					for i in [0...CONFIG.MAX_DECK_DUPLICATES]
-						starterDeck.push({id: cardId})
+  @starterDeckForFactionLevel: (factionId,factionLevel=0)->
+    starterDeck = @.factionForIdentifier(factionId).starterDeck.slice()
+    if factionLevel > 0
+      unlockedCardIds = FactionProgression.unlockedCardsUpToLevel(factionLevel, factionId)
+      for cardId in unlockedCardIds
+        if FactionFactory.unlockedCardIsValidForStarterDeck(cardId)
+          for i in [0...CONFIG.MAX_DECK_DUPLICATES]
+            starterDeck.push({id: cardId})
 
-		return starterDeck
+    return starterDeck
 
-	@cardIdIsGeneral: (cardId) ->
-		return @factionForGeneralId(cardId)?
+  @cardIdIsGeneral: (cardId) ->
+    return @factionForGeneralId(cardId)?
 
-	@unlockedCardIsValidForStarterDeck: (cardId) ->
-		# if card is not prismatic, it is valid for starter decks
-		if Cards.getIsPrismaticCardId(cardId) then return false
+  @unlockedCardIsValidForStarterDeck: (cardId) ->
+    # if card is not prismatic, it is valid for starter decks
+    if Cards.getIsPrismaticCardId(cardId) then return false
 
-		# search for faction for this card id
-		# if card id is a general, it will return a faction
-		# if card is not a general, it is valid for starter deck
-		# if card id is primary general, it is valid for starter deck
-		factionData = @factionForGeneralId(cardId)
-		return !factionData? or cardId == factionData.generalIdsByOrder[FactionFactory.GeneralOrder.Primary]
+    # search for faction for this card id
+    # if card id is a general, it will return a faction
+    # if card is not a general, it is valid for starter deck
+    # if card id is primary general, it is valid for starter deck
+    factionData = @factionForGeneralId(cardId)
+    return !factionData? or cardId == factionData.generalIdsByOrder[FactionFactory.GeneralOrder.Primary]
 
-	@generalIdForFactionByOrder: (factionId, order) ->
-		return @factionForIdentifier(factionId)?.generalIdsByOrder[order]
+  @generalIdForFactionByOrder: (factionId, order) ->
+    return @factionForIdentifier(factionId)?.generalIdsByOrder[order]
 
-	@generalOrderForFactionById: (factionId, generalId) ->
-		generalId = Cards.getBaseCardId(parseInt(generalId))
-		return @factionForIdentifier(factionId)?.generalOrderByIds[generalId]
+  @generalOrderForFactionById: (factionId, generalId) ->
+    generalId = Cards.getBaseCardId(parseInt(generalId))
+    return @factionForIdentifier(factionId)?.generalOrderByIds[generalId]
 
-	@factionForGeneralId: (generalId) ->
-		generalId = Cards.getBaseCardId(parseInt(generalId))
-		factionIds = Object.keys(@factionMap)
-		for factionId in factionIds
-			faction = @factionMap[factionId]
-			if faction.generalIds? and _.contains(faction.generalIds, generalId)
-				return faction
+  @factionForGeneralId: (generalId) ->
+    generalId = Cards.getBaseCardId(parseInt(generalId))
+    factionIds = Object.keys(@factionMap)
+    for factionId in factionIds
+      faction = @factionMap[factionId]
+      if faction.generalIds? and _.contains(faction.generalIds, generalId)
+        return faction
 
-	@generalIdsForFaction: (factionId) ->
-		return @factionForIdentifier(factionId)?.generalIds or []
+  @generalIdsForFaction: (factionId) ->
+    return @factionForIdentifier(factionId)?.generalIds or []
 
-	@factionIdForGeneralId: (generalId) ->
-		return @factionForGeneralId(generalId)?.id
+  @factionIdForGeneralId: (generalId) ->
+    return @factionForGeneralId(generalId)?.id
 
-	@getCrestResourceForFactionId: (factionId) ->
-		faction = @factionForIdentifier(factionId)
-		return faction?.crestResource
+  @getCrestResourceForFactionId: (factionId) ->
+    faction = @factionForIdentifier(factionId)
+    return faction?.crestResource
 
-	@getCrestShadowResourceForFactionId: (factionId) ->
-		faction = @factionForIdentifier(factionId)
-		return faction?.crestShadowResource
+  @getCrestShadowResourceForFactionId: (factionId) ->
+    faction = @factionForIdentifier(factionId)
+    return faction?.crestShadowResource
 
-	@getCrestDeckSelectResourceForFactionId: (factionId) ->
-		faction = @factionForIdentifier(factionId)
-		return faction?.crestDeckSelectResource
+  @getCrestDeckSelectResourceForFactionId: (factionId) ->
+    faction = @factionForIdentifier(factionId)
+    return faction?.crestDeckSelectResource
 
-	@getTauntCallout: (myGeneralId, opponentGeneralId) ->
-		callout = "Are you ready for this?"
-		myGeneralId = Cards.getBaseCardId(parseInt(myGeneralId))
-		myFaction = @factionForGeneralId(myGeneralId)
-		if myFaction?
-			opponentGeneralId = Cards.getBaseCardId(parseInt(opponentGeneralId))
-			# check if there is a callout map defined for my general
-			calloutDataForMyGeneral = myFaction.generalTauntCallouts[myGeneralId]
-			if _.isObject(calloutDataForMyGeneral)
-				# check if there is a callout defined for the opponent general
-				calloutDataForOpponentGeneral = calloutDataForMyGeneral[opponentGeneralId]
-				if _.isString(calloutDataForOpponentGeneral)
-					callout = calloutDataForOpponentGeneral
-				else
-					opponentFaction = @factionForGeneralId(opponentGeneralId)
-					if opponentFaction?
-						# check if there is a callout defined for the opponent faction
-						calloutDataForOpponentFaction = calloutDataForMyGeneral[opponentFaction.id] || calloutDataForMyGeneral[Factions.Neutral]
-						if _.isString(calloutDataForOpponentFaction)
-							callout = calloutDataForOpponentFaction
-			else
-				opponentFaction = @factionForGeneralId(opponentGeneralId)
-				if opponentFaction?
-					# check if there is a callout defined for the opponent faction
-					calloutDataForOpponentFaction = myFaction.generalTauntCallouts[opponentFaction.id] || myFaction.generalTauntCallouts[Factions.Neutral]
-					if _.isString(calloutDataForOpponentFaction)
-						callout = calloutDataForOpponentFaction
-					else if _.isObject(calloutDataForOpponentFaction)
-						calloutDataForOpponentGeneral = calloutDataForOpponentFaction[opponentGeneralId]
-						if _.isString(calloutDataForOpponentGeneral)
-							callout = calloutDataForOpponentGeneral
+  @getTauntCallout: (myGeneralId, opponentGeneralId) ->
+    callout = "Are you ready for this?"
+    myGeneralId = Cards.getBaseCardId(parseInt(myGeneralId))
+    myFaction = @factionForGeneralId(myGeneralId)
+    if myFaction?
+      opponentGeneralId = Cards.getBaseCardId(parseInt(opponentGeneralId))
+      # check if there is a callout map defined for my general
+      calloutDataForMyGeneral = myFaction.generalTauntCallouts[myGeneralId]
+      if _.isObject(calloutDataForMyGeneral)
+        # check if there is a callout defined for the opponent general
+        calloutDataForOpponentGeneral = calloutDataForMyGeneral[opponentGeneralId]
+        if _.isString(calloutDataForOpponentGeneral)
+          callout = calloutDataForOpponentGeneral
+        else
+          opponentFaction = @factionForGeneralId(opponentGeneralId)
+          if opponentFaction?
+            # check if there is a callout defined for the opponent faction
+            calloutDataForOpponentFaction = calloutDataForMyGeneral[opponentFaction.id] || calloutDataForMyGeneral[Factions.Neutral]
+            if _.isString(calloutDataForOpponentFaction)
+              callout = calloutDataForOpponentFaction
+      else
+        opponentFaction = @factionForGeneralId(opponentGeneralId)
+        if opponentFaction?
+          # check if there is a callout defined for the opponent faction
+          calloutDataForOpponentFaction = myFaction.generalTauntCallouts[opponentFaction.id] || myFaction.generalTauntCallouts[Factions.Neutral]
+          if _.isString(calloutDataForOpponentFaction)
+            callout = calloutDataForOpponentFaction
+          else if _.isObject(calloutDataForOpponentFaction)
+            calloutDataForOpponentGeneral = calloutDataForOpponentFaction[opponentGeneralId]
+            if _.isString(calloutDataForOpponentGeneral)
+              callout = calloutDataForOpponentGeneral
 
-		return callout
+    return callout
 
-	@getTauntResponse: (myGeneralId, opponentGeneralId) ->
-		response = "Enough! To battle!"
-		myGeneralId = Cards.getBaseCardId(parseInt(myGeneralId))
-		myFaction = @factionForGeneralId(myGeneralId)
-		if myFaction?
-			opponentGeneralId = Cards.getBaseCardId(parseInt(opponentGeneralId))
-			# check if there is a response map defined for my general
-			responseDataForMyGeneral = myFaction.generalTauntResponses[myGeneralId]
-			if _.isObject(responseDataForMyGeneral)
-				# check if there is a response defined for the opponent general
-				responseDataForOpponentGeneral = responseDataForMyGeneral[opponentGeneralId]
-				if _.isString(responseDataForOpponentGeneral)
-					response = responseDataForOpponentGeneral
-				else
-					opponentFaction = @factionForGeneralId(opponentGeneralId)
-					if opponentFaction?
-						# check if there is a response defined for the opponent faction
-						responseDataForOpponentFaction = responseDataForMyGeneral[opponentFaction.id] || responseDataForMyGeneral[Factions.Neutral]
-						if _.isString(responseDataForOpponentFaction)
-							response = responseDataForOpponentFaction
-			else
-				# check if there is a response defined for the opponent general
-				responseDataForOpponentGeneral = myFaction.generalTauntResponses[opponentGeneralId]
-				if _.isString(responseDataForOpponentGeneral)
-					response = responseDataForOpponentGeneral
-				else
-					opponentFaction = @factionForGeneralId(opponentGeneralId)
-					if opponentFaction?
-						# check if there is a response defined for the opponent faction
-						responseDataForOpponentFaction = myFaction.generalTauntResponses[opponentFaction.id] || myFaction.generalTauntResponses[Factions.Neutral]
-						if _.isString(responseDataForOpponentFaction)
-							response = responseDataForOpponentFaction
+  @getTauntResponse: (myGeneralId, opponentGeneralId) ->
+    response = "Enough! To battle!"
+    myGeneralId = Cards.getBaseCardId(parseInt(myGeneralId))
+    myFaction = @factionForGeneralId(myGeneralId)
+    if myFaction?
+      opponentGeneralId = Cards.getBaseCardId(parseInt(opponentGeneralId))
+      # check if there is a response map defined for my general
+      responseDataForMyGeneral = myFaction.generalTauntResponses[myGeneralId]
+      if _.isObject(responseDataForMyGeneral)
+        # check if there is a response defined for the opponent general
+        responseDataForOpponentGeneral = responseDataForMyGeneral[opponentGeneralId]
+        if _.isString(responseDataForOpponentGeneral)
+          response = responseDataForOpponentGeneral
+        else
+          opponentFaction = @factionForGeneralId(opponentGeneralId)
+          if opponentFaction?
+            # check if there is a response defined for the opponent faction
+            responseDataForOpponentFaction = responseDataForMyGeneral[opponentFaction.id] || responseDataForMyGeneral[Factions.Neutral]
+            if _.isString(responseDataForOpponentFaction)
+              response = responseDataForOpponentFaction
+      else
+        # check if there is a response defined for the opponent general
+        responseDataForOpponentGeneral = myFaction.generalTauntResponses[opponentGeneralId]
+        if _.isString(responseDataForOpponentGeneral)
+          response = responseDataForOpponentGeneral
+        else
+          opponentFaction = @factionForGeneralId(opponentGeneralId)
+          if opponentFaction?
+            # check if there is a response defined for the opponent faction
+            responseDataForOpponentFaction = myFaction.generalTauntResponses[opponentFaction.id] || myFaction.generalTauntResponses[Factions.Neutral]
+            if _.isString(responseDataForOpponentFaction)
+              response = responseDataForOpponentFaction
 
-		return response
+    return response
 
 # setup map for general order
 FactionFactory.GeneralOrder = {
-	Primary: 1
-	Secondary: 2
-	Tertiary: 3
+  Primary: 1
+  Secondary: 2
+  Tertiary: 3
 }
 
 # generate factions once in a map
@@ -212,57 +212,57 @@ fmap = FactionFactory.factionMap
 
 # f1
 fmap[Factions.Faction1] =
-	id: Factions.Faction1
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction1"]
-	name: i18next.t("factions.faction_1_name")
-	short_name: i18next.t("factions.faction_1_abbreviated_name")
-	description: i18next.t("factions.faction_1_description")
-	devName: "lyonar"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction1.General, Cards.Faction1.AltGeneral, Cards.Faction1.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f1
-	crestShadowResource: RSX.crest_f1_shadow
-	crestDeckSelectResource: RSX.crest_f1_deck_select
-	gradientColorMapWhite: {r: 250, g: 200, b: 80, a: 255}
-	gradientColorMapBlack: {r: 40, g: 33, b: 4, a: 255}
+  id: Factions.Faction1
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction1"]
+  name: i18next.t("factions.faction_1_name")
+  short_name: i18next.t("factions.faction_1_abbreviated_name")
+  description: i18next.t("factions.faction_1_description")
+  devName: "lyonar"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction1.General, Cards.Faction1.AltGeneral, Cards.Faction1.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f1
+  crestShadowResource: RSX.crest_f1_shadow
+  crestDeckSelectResource: RSX.crest_f1_deck_select
+  gradientColorMapWhite: {r: 250, g: 200, b: 80, a: 255}
+  gradientColorMapBlack: {r: 40, g: 33, b: 4, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction1.General},
-		{id: Cards.Artifact.SunstoneBracers},
-		{id: Cards.Artifact.SunstoneBracers},
-		{id: Cards.Artifact.SunstoneBracers},
-		{id: Cards.Spell.TrueStrike},
-		{id: Cards.Spell.TrueStrike},
-		{id: Cards.Spell.TrueStrike},
-		{id: Cards.Spell.WarSurge},
-		{id: Cards.Spell.WarSurge},
-		{id: Cards.Spell.WarSurge},
-		{id: Cards.Faction1.WindbladeAdept},
-		{id: Cards.Faction1.WindbladeAdept},
-		{id: Cards.Faction1.WindbladeAdept},
-		{id: Cards.Neutral.BloodshardGolem},
-		{id: Cards.Neutral.PutridMindflayer},
-		{id: Cards.Neutral.SaberspineTiger},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Faction1.LysianBrawler},
-		{id: Cards.Faction1.LysianBrawler},
-		{id: Cards.Faction1.LysianBrawler},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction1.General},
+    {id: Cards.Artifact.SunstoneBracers},
+    {id: Cards.Artifact.SunstoneBracers},
+    {id: Cards.Artifact.SunstoneBracers},
+    {id: Cards.Spell.TrueStrike},
+    {id: Cards.Spell.TrueStrike},
+    {id: Cards.Spell.TrueStrike},
+    {id: Cards.Spell.WarSurge},
+    {id: Cards.Spell.WarSurge},
+    {id: Cards.Spell.WarSurge},
+    {id: Cards.Faction1.WindbladeAdept},
+    {id: Cards.Faction1.WindbladeAdept},
+    {id: Cards.Faction1.WindbladeAdept},
+    {id: Cards.Neutral.BloodshardGolem},
+    {id: Cards.Neutral.PutridMindflayer},
+    {id: Cards.Neutral.SaberspineTiger},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Faction1.LysianBrawler},
+    {id: Cards.Faction1.LysianBrawler},
+    {id: Cards.Faction1.LysianBrawler},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f1 general data
 f1GO = fmap[Factions.Faction1].generalIdsByOrder
@@ -303,57 +303,57 @@ f1R[Factions.Boss] = i18next.t("factions.faction_1_response_boss")
 
 # f2
 fmap[Factions.Faction2] =
-	id: Factions.Faction2
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction2"]
-	name: i18next.t("factions.faction_2_name")
-	short_name: i18next.t("factions.faction_2_abbreviated_name")
-	description: i18next.t("factions.faction_2_description")
-	devName: "songhai"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction2.General, Cards.Faction2.AltGeneral, Cards.Faction2.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f2
-	crestShadowResource: RSX.crest_f2_shadow
-	crestDeckSelectResource: RSX.crest_f2_deck_select
-	gradientColorMapWhite: {r: 254, g: 80, b: 100, a: 255}
-	gradientColorMapBlack: {r: 70, g: 5, b: 1, a: 255}
+  id: Factions.Faction2
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction2"]
+  name: i18next.t("factions.faction_2_name")
+  short_name: i18next.t("factions.faction_2_abbreviated_name")
+  description: i18next.t("factions.faction_2_description")
+  devName: "songhai"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction2.General, Cards.Faction2.AltGeneral, Cards.Faction2.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f2
+  crestShadowResource: RSX.crest_f2_shadow
+  crestDeckSelectResource: RSX.crest_f2_deck_select
+  gradientColorMapWhite: {r: 254, g: 80, b: 100, a: 255}
+  gradientColorMapBlack: {r: 70, g: 5, b: 1, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction2.General},
-		{id: Cards.Artifact.MaskOfBloodLeech},
-		{id: Cards.Artifact.MaskOfBloodLeech},
-		{id: Cards.Artifact.MaskOfBloodLeech},
-		{id: Cards.Spell.KillingEdge},
-		{id: Cards.Spell.KillingEdge},
-		{id: Cards.Spell.KillingEdge},
-		{id: Cards.Faction2.KaidoAssassin},
-		{id: Cards.Faction2.KaidoAssassin},
-		{id: Cards.Faction2.KaidoAssassin},
-		{id: Cards.Spell.PhoenixFire},
-		{id: Cards.Spell.PhoenixFire},
-		{id: Cards.Spell.PhoenixFire},
-		{id: Cards.Neutral.SaberspineTiger},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Faction2.Widowmaker},
-		{id: Cards.Faction2.Widowmaker},
-		{id: Cards.Faction2.Widowmaker},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.ThornNeedler},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction2.General},
+    {id: Cards.Artifact.MaskOfBloodLeech},
+    {id: Cards.Artifact.MaskOfBloodLeech},
+    {id: Cards.Artifact.MaskOfBloodLeech},
+    {id: Cards.Spell.KillingEdge},
+    {id: Cards.Spell.KillingEdge},
+    {id: Cards.Spell.KillingEdge},
+    {id: Cards.Faction2.KaidoAssassin},
+    {id: Cards.Faction2.KaidoAssassin},
+    {id: Cards.Faction2.KaidoAssassin},
+    {id: Cards.Spell.PhoenixFire},
+    {id: Cards.Spell.PhoenixFire},
+    {id: Cards.Spell.PhoenixFire},
+    {id: Cards.Neutral.SaberspineTiger},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Faction2.Widowmaker},
+    {id: Cards.Faction2.Widowmaker},
+    {id: Cards.Faction2.Widowmaker},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.ThornNeedler},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f2 general data
 f2GO = fmap[Factions.Faction2].generalIdsByOrder
@@ -394,57 +394,57 @@ f2R[Factions.Boss] = i18next.t("factions.faction_2_response_boss")
 
 # f3
 fmap[Factions.Faction3] =
-	id: Factions.Faction3
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction3"]
-	name: i18next.t("factions.faction_3_name")
-	short_name: i18next.t("factions.faction_3_abbreviated_name")
-	description: i18next.t("factions.faction_3_description")
-	devName: "vetruvian"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction3.General, Cards.Faction3.AltGeneral, Cards.Faction3.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f3
-	crestShadowResource: RSX.crest_f3_shadow
-	crestDeckSelectResource: RSX.crest_f3_deck_select
-	gradientColorMapWhite: {r: 250, g: 160, b: 0, a: 255}
-	gradientColorMapBlack: {r: 39, g: 33, b: 21, a: 255}
+  id: Factions.Faction3
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction3"]
+  name: i18next.t("factions.faction_3_name")
+  short_name: i18next.t("factions.faction_3_abbreviated_name")
+  description: i18next.t("factions.faction_3_description")
+  devName: "vetruvian"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction3.General, Cards.Faction3.AltGeneral, Cards.Faction3.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f3
+  crestShadowResource: RSX.crest_f3_shadow
+  crestDeckSelectResource: RSX.crest_f3_deck_select
+  gradientColorMapWhite: {r: 250, g: 160, b: 0, a: 255}
+  gradientColorMapBlack: {r: 39, g: 33, b: 21, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction3.General},
-		{id: Cards.Spell.ScionsFirstWish},
-		{id: Cards.Spell.ScionsFirstWish},
-		{id: Cards.Spell.ScionsFirstWish},
-		{id: Cards.Faction3.Pyromancer},
-		{id: Cards.Faction3.Pyromancer},
-		{id: Cards.Faction3.Pyromancer},
-		{id: Cards.Artifact.StaffOfYKir},
-		{id: Cards.Artifact.StaffOfYKir},
-		{id: Cards.Artifact.StaffOfYKir},
-		{id: Cards.Neutral.BloodshardGolem},
-		{id: Cards.Neutral.SaberspineTiger},
-		{id: Cards.Neutral.PutridMindflayer},
-		{id: Cards.Spell.EntropicDecay},
-		{id: Cards.Spell.EntropicDecay},
-		{id: Cards.Spell.EntropicDecay},
-		{id: Cards.Faction3.WindShrike},
-		{id: Cards.Faction3.WindShrike},
-		{id: Cards.Faction3.WindShrike},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction3.General},
+    {id: Cards.Spell.ScionsFirstWish},
+    {id: Cards.Spell.ScionsFirstWish},
+    {id: Cards.Spell.ScionsFirstWish},
+    {id: Cards.Faction3.Pyromancer},
+    {id: Cards.Faction3.Pyromancer},
+    {id: Cards.Faction3.Pyromancer},
+    {id: Cards.Artifact.StaffOfYKir},
+    {id: Cards.Artifact.StaffOfYKir},
+    {id: Cards.Artifact.StaffOfYKir},
+    {id: Cards.Neutral.BloodshardGolem},
+    {id: Cards.Neutral.SaberspineTiger},
+    {id: Cards.Neutral.PutridMindflayer},
+    {id: Cards.Spell.EntropicDecay},
+    {id: Cards.Spell.EntropicDecay},
+    {id: Cards.Spell.EntropicDecay},
+    {id: Cards.Faction3.WindShrike},
+    {id: Cards.Faction3.WindShrike},
+    {id: Cards.Faction3.WindShrike},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f3 general data
 f3GO = fmap[Factions.Faction3].generalIdsByOrder
@@ -485,57 +485,57 @@ f3R[Factions.Boss] = i18next.t("factions.faction_3_response_boss")
 
 # f4
 fmap[Factions.Faction4] =
-	id: Factions.Faction4
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction4"]
-	name: i18next.t("factions.faction_4_name")
-	short_name: i18next.t("factions.faction_4_abbreviated_name")
-	description: i18next.t("factions.faction_4_description")
-	devName: "abyssian"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction4.General, Cards.Faction4.AltGeneral, Cards.Faction4.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f4
-	crestShadowResource: RSX.crest_f4_shadow
-	crestDeckSelectResource: RSX.crest_f4_deck_select
-	gradientColorMapWhite: {r: 247, g: 151, b: 254, a: 255}
-	gradientColorMapBlack: {r: 45, g: 50, b: 167, a: 255}
+  id: Factions.Faction4
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction4"]
+  name: i18next.t("factions.faction_4_name")
+  short_name: i18next.t("factions.faction_4_abbreviated_name")
+  description: i18next.t("factions.faction_4_description")
+  devName: "abyssian"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction4.General, Cards.Faction4.AltGeneral, Cards.Faction4.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f4
+  crestShadowResource: RSX.crest_f4_shadow
+  crestDeckSelectResource: RSX.crest_f4_deck_select
+  gradientColorMapWhite: {r: 247, g: 151, b: 254, a: 255}
+  gradientColorMapBlack: {r: 45, g: 50, b: 167, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction4.General},
-		{id: Cards.Artifact.HornOfTheForsaken},
-		{id: Cards.Artifact.HornOfTheForsaken},
-		{id: Cards.Artifact.HornOfTheForsaken},
-		{id: Cards.Faction4.GloomChaser},
-		{id: Cards.Faction4.GloomChaser},
-		{id: Cards.Faction4.GloomChaser},
-		{id: Cards.Faction4.ShadowWatcher},
-		{id: Cards.Faction4.ShadowWatcher},
-		{id: Cards.Faction4.ShadowWatcher},
-		{id: Cards.Spell.WraithlingSwarm},
-		{id: Cards.Spell.WraithlingSwarm},
-		{id: Cards.Spell.WraithlingSwarm},
-		{id: Cards.Neutral.PutridMindflayer},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.ThornNeedler},
-		{id: Cards.Neutral.ThornNeedler},
-		{id: Cards.Spell.DarkTransformation},
-		{id: Cards.Spell.DarkTransformation},
-		{id: Cards.Spell.DarkTransformation},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction4.General},
+    {id: Cards.Artifact.HornOfTheForsaken},
+    {id: Cards.Artifact.HornOfTheForsaken},
+    {id: Cards.Artifact.HornOfTheForsaken},
+    {id: Cards.Faction4.GloomChaser},
+    {id: Cards.Faction4.GloomChaser},
+    {id: Cards.Faction4.GloomChaser},
+    {id: Cards.Faction4.ShadowWatcher},
+    {id: Cards.Faction4.ShadowWatcher},
+    {id: Cards.Faction4.ShadowWatcher},
+    {id: Cards.Spell.WraithlingSwarm},
+    {id: Cards.Spell.WraithlingSwarm},
+    {id: Cards.Spell.WraithlingSwarm},
+    {id: Cards.Neutral.PutridMindflayer},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.ThornNeedler},
+    {id: Cards.Neutral.ThornNeedler},
+    {id: Cards.Spell.DarkTransformation},
+    {id: Cards.Spell.DarkTransformation},
+    {id: Cards.Spell.DarkTransformation},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f4 general data
 f4GO = fmap[Factions.Faction4].generalIdsByOrder
@@ -576,57 +576,57 @@ f4R[Factions.Boss] = i18next.t("factions.faction_4_response_boss")
 
 # f5
 fmap[Factions.Faction5] =
-	id: Factions.Faction5
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction5"]
-	name: i18next.t("factions.faction_5_name")
-	short_name: i18next.t("factions.faction_5_abbreviated_name")
-	description: i18next.t("factions.faction_5_description")
-	devName: "magmar"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction5.General, Cards.Faction5.AltGeneral, Cards.Faction5.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f5
-	crestShadowResource: RSX.crest_f5_shadow
-	crestDeckSelectResource: RSX.crest_f5_deck_select
-	gradientColorMapWhite: {r: 0, g: 252, b: 250, a: 255}
-	gradientColorMapBlack: {r: 0, g: 62, b: 66, a: 255}
+  id: Factions.Faction5
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction5"]
+  name: i18next.t("factions.faction_5_name")
+  short_name: i18next.t("factions.faction_5_abbreviated_name")
+  description: i18next.t("factions.faction_5_description")
+  devName: "magmar"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction5.General, Cards.Faction5.AltGeneral, Cards.Faction5.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f5
+  crestShadowResource: RSX.crest_f5_shadow
+  crestDeckSelectResource: RSX.crest_f5_deck_select
+  gradientColorMapWhite: {r: 0, g: 252, b: 250, a: 255}
+  gradientColorMapBlack: {r: 0, g: 62, b: 66, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction5.General},
-		{id: Cards.Spell.GreaterFortitude},
-		{id: Cards.Spell.GreaterFortitude},
-		{id: Cards.Spell.GreaterFortitude},
-		{id: Cards.Spell.NaturalSelection},
-		{id: Cards.Spell.NaturalSelection},
-		{id: Cards.Spell.NaturalSelection},
-		{id: Cards.Faction5.Phalanxar},
-		{id: Cards.Faction5.Phalanxar},
-		{id: Cards.Faction5.Phalanxar},
-		{id: Cards.Neutral.BloodshardGolem},
-		{id: Cards.Neutral.PutridMindflayer},
-		{id: Cards.Faction5.EarthWalker},
-		{id: Cards.Faction5.EarthWalker},
-		{id: Cards.Faction5.EarthWalker},
-		{id: Cards.Neutral.SaberspineTiger},
-		{id: Cards.Artifact.AdamantineClaws},
-		{id: Cards.Artifact.AdamantineClaws},
-		{id: Cards.Artifact.AdamantineClaws},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.BrightmossGolem},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction5.General},
+    {id: Cards.Spell.GreaterFortitude},
+    {id: Cards.Spell.GreaterFortitude},
+    {id: Cards.Spell.GreaterFortitude},
+    {id: Cards.Spell.NaturalSelection},
+    {id: Cards.Spell.NaturalSelection},
+    {id: Cards.Spell.NaturalSelection},
+    {id: Cards.Faction5.Phalanxar},
+    {id: Cards.Faction5.Phalanxar},
+    {id: Cards.Faction5.Phalanxar},
+    {id: Cards.Neutral.BloodshardGolem},
+    {id: Cards.Neutral.PutridMindflayer},
+    {id: Cards.Faction5.EarthWalker},
+    {id: Cards.Faction5.EarthWalker},
+    {id: Cards.Faction5.EarthWalker},
+    {id: Cards.Neutral.SaberspineTiger},
+    {id: Cards.Artifact.AdamantineClaws},
+    {id: Cards.Artifact.AdamantineClaws},
+    {id: Cards.Artifact.AdamantineClaws},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.BrightmossGolem},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f5 general data
 f5GO = fmap[Factions.Faction5].generalIdsByOrder
@@ -667,57 +667,57 @@ f5R[Factions.Boss] = i18next.t("factions.faction_5_response_boss")
 
 # f6
 fmap[Factions.Faction6] =
-	id: Factions.Faction6
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction6"]
-	name: i18next.t("factions.faction_6_name")
-	short_name: i18next.t("factions.faction_6_abbreviated_name")
-	description: i18next.t("factions.faction_6_description")
-	devName: "vanar"
-	isNeutral: false
-	enabled: true
-	isInDevelopment: false
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [Cards.Faction6.General, Cards.Faction6.AltGeneral, Cards.Faction6.ThirdGeneral]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.faction_1_resign_statement")
-	crestResource: RSX.crest_f6
-	crestShadowResource: RSX.crest_f6_shadow
-	crestDeckSelectResource: RSX.crest_f6_deck_select
-	gradientColorMapWhite: {r: 185, g: 208, b: 226, a: 255}
-	gradientColorMapBlack: {r: 9, g: 12, b: 55, a: 255}
+  id: Factions.Faction6
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Faction6"]
+  name: i18next.t("factions.faction_6_name")
+  short_name: i18next.t("factions.faction_6_abbreviated_name")
+  description: i18next.t("factions.faction_6_description")
+  devName: "vanar"
+  isNeutral: false
+  enabled: true
+  isInDevelopment: false
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [Cards.Faction6.General, Cards.Faction6.AltGeneral, Cards.Faction6.ThirdGeneral]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.faction_1_resign_statement")
+  crestResource: RSX.crest_f6
+  crestShadowResource: RSX.crest_f6_shadow
+  crestDeckSelectResource: RSX.crest_f6_deck_select
+  gradientColorMapWhite: {r: 185, g: 208, b: 226, a: 255}
+  gradientColorMapBlack: {r: 9, g: 12, b: 55, a: 255}
 
-	starterDeck: [
-		{id: Cards.Faction6.General},
-		{id: Cards.Spell.FlashFreeze},
-		{id: Cards.Spell.FlashFreeze},
-		{id: Cards.Spell.FlashFreeze},
-		{id: Cards.Faction6.CrystalCloaker},
-		{id: Cards.Faction6.CrystalCloaker},
-		{id: Cards.Faction6.CrystalCloaker},
-		{id: Cards.Spell.PermafrostShield},
-		{id: Cards.Spell.PermafrostShield},
-		{id: Cards.Spell.PermafrostShield},
-		{id: Cards.Artifact.Snowpiercer},
-		{id: Cards.Artifact.Snowpiercer},
-		{id: Cards.Artifact.Snowpiercer},
-		{id: Cards.Neutral.PutridMindflayer},
-		{id: Cards.Neutral.FlameWing},
-		{id: Cards.Neutral.FlameWing},
-		{id: Cards.Neutral.HailstoneGolem},
-		{id: Cards.Neutral.PrimusShieldmaster},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Neutral.Necroseer},
-		{id: Cards.Faction6.ArcticDisplacer},
-		{id: Cards.Faction6.ArcticDisplacer},
-		{id: Cards.Faction6.ArcticDisplacer},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.StormmetalGolem},
-		{id: Cards.Neutral.Bloodletter},
-		{id: Cards.Neutral.DragoneboneGolem},
-		{id: Cards.Neutral.DragoneboneGolem}
-	]
+  starterDeck: [
+    {id: Cards.Faction6.General},
+    {id: Cards.Spell.FlashFreeze},
+    {id: Cards.Spell.FlashFreeze},
+    {id: Cards.Spell.FlashFreeze},
+    {id: Cards.Faction6.CrystalCloaker},
+    {id: Cards.Faction6.CrystalCloaker},
+    {id: Cards.Faction6.CrystalCloaker},
+    {id: Cards.Spell.PermafrostShield},
+    {id: Cards.Spell.PermafrostShield},
+    {id: Cards.Spell.PermafrostShield},
+    {id: Cards.Artifact.Snowpiercer},
+    {id: Cards.Artifact.Snowpiercer},
+    {id: Cards.Artifact.Snowpiercer},
+    {id: Cards.Neutral.PutridMindflayer},
+    {id: Cards.Neutral.FlameWing},
+    {id: Cards.Neutral.FlameWing},
+    {id: Cards.Neutral.HailstoneGolem},
+    {id: Cards.Neutral.PrimusShieldmaster},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Neutral.Necroseer},
+    {id: Cards.Faction6.ArcticDisplacer},
+    {id: Cards.Faction6.ArcticDisplacer},
+    {id: Cards.Faction6.ArcticDisplacer},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.StormmetalGolem},
+    {id: Cards.Neutral.Bloodletter},
+    {id: Cards.Neutral.DragoneboneGolem},
+    {id: Cards.Neutral.DragoneboneGolem}
+  ]
 
 # f6 general data
 f6GO = fmap[Factions.Faction6].generalIdsByOrder
@@ -758,101 +758,101 @@ f6R[Factions.Boss] = i18next.t("factions.faction_6_response_boss")
 
 # neutral
 fmap[Factions.Neutral] =
-	id: Factions.Neutral
-	fxResource: ["FX.Factions.Neutral"]
-	name: i18next.t("factions.faction_neutral_name")
-	short_name: i18next.t("factions.faction_neutral_abbreviated_name")
-	devName: "neutral"
-	description: ""
-	isNeutral: true
-	enabled: true
-	isInDevelopment: false
+  id: Factions.Neutral
+  fxResource: ["FX.Factions.Neutral"]
+  name: i18next.t("factions.faction_neutral_name")
+  short_name: i18next.t("factions.faction_neutral_abbreviated_name")
+  devName: "neutral"
+  description: ""
+  isNeutral: true
+  enabled: true
+  isInDevelopment: false
 
 # tutorial faction
 fmap[Factions.Tutorial] =
-	id: Factions.Tutorial
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Tutorial"]
-	name: "Tutorial Teacher"
-	devName: "tutorial"
-	description: "The Teacher of Duelyst"
-	gameCountFlavorText: "N/A"
-	isNeutral: false
-	enabled: false
-	isInDevelopment: false
-	generalIds: [
-		Cards.Tutorial.TutorialGeneral,
-		Cards.Tutorial.TutorialSignatureGeneral,
-		Cards.Tutorial.TutorialOpponentGeneral1,
-		Cards.Tutorial.TutorialOpponentGeneral2,
-		Cards.Tutorial.TutorialOpponentGeneral4
-	]
-	announcerFirst: null # TODO: audio
-	announcerSecond: null # TODO: audio
-	gradientColorMapWhite: {r: 255, g: 255, b: 255, a: 255}
-	gradientColorMapBlack: {r: 0, g: 0, b: 0, a: 255}
+  id: Factions.Tutorial
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Tutorial"]
+  name: "Tutorial Teacher"
+  devName: "tutorial"
+  description: "The Teacher of Duelyst"
+  gameCountFlavorText: "N/A"
+  isNeutral: false
+  enabled: false
+  isInDevelopment: false
+  generalIds: [
+    Cards.Tutorial.TutorialGeneral,
+    Cards.Tutorial.TutorialSignatureGeneral,
+    Cards.Tutorial.TutorialOpponentGeneral1,
+    Cards.Tutorial.TutorialOpponentGeneral2,
+    Cards.Tutorial.TutorialOpponentGeneral4
+  ]
+  announcerFirst: null # TODO: audio
+  announcerSecond: null # TODO: audio
+  gradientColorMapWhite: {r: 255, g: 255, b: 255, a: 255}
+  gradientColorMapBlack: {r: 0, g: 0, b: 0, a: 255}
 
 # bosses faction
 fmap[Factions.Boss] =
-	id: Factions.Boss
-	fxResource: ["FX.Factions.Neutral", "FX.Factions.Boss"]
-	name: "Boss"
-	devName: "bosses"
-	description: "Mysterious Challengers"
-	isNeutral: false
-	enabled: false
-	isInDevelopment: false
+  id: Factions.Boss
+  fxResource: ["FX.Factions.Neutral", "FX.Factions.Boss"]
+  name: "Boss"
+  devName: "bosses"
+  description: "Mysterious Challengers"
+  isNeutral: false
+  enabled: false
+  isInDevelopment: false
 
-	generalTauntCallouts: {}
-	generalTauntResponses: {}
-	generalIds: [
-		Cards.Boss.Boss38,
-		Cards.Boss.Boss37,
-		Cards.Boss.Boss36,
-		Cards.Boss.Boss35,
-		Cards.Boss.Boss34,
-		Cards.Boss.Boss33,
-		Cards.Boss.Boss32,
-		Cards.Boss.Boss31,
-		Cards.Boss.Boss30,
-		Cards.Boss.Boss29,
-		Cards.Boss.Boss28,
-		Cards.Boss.Boss27,
-		Cards.Boss.Boss26,
-		Cards.Boss.Boss25,
-		Cards.Boss.Boss24,
-		Cards.Boss.Boss23,
-		Cards.Boss.Boss22,
-		Cards.Boss.Boss21,
-		Cards.Boss.Boss20,
-		Cards.Boss.Boss19,
-		Cards.Boss.Boss18,
-		Cards.Boss.Boss17,
-		Cards.Boss.Boss16,
-		Cards.Boss.Boss15,
-		Cards.Boss.Boss14,
-		Cards.Boss.Boss13,
-		Cards.Boss.Boss12,
-		Cards.Boss.Boss11,
-		Cards.Boss.Boss10,
-		Cards.Boss.Boss6,
-		Cards.Boss.Boss9,
-		Cards.Boss.Boss2,
-		Cards.Boss.Boss4,
-		Cards.Boss.Boss5,
-		Cards.Boss.Boss1,
-		Cards.Boss.Boss7,
-		Cards.Boss.Boss8,
-		Cards.Boss.Boss3
-	]
-	generalIdsByOrder: {}
-	generalOrderByIds: {}
-	resignStatement: i18next.t("factions.generic_concede")
-	gameCountFlavorText: "N/A"
-	crestImg: null
-	crestShadowImg: null
-	crestDeckSelectImg: null
-	gradientColorMapWhite: {r: 255, g: 255, b: 255, a: 255}
-	gradientColorMapBlack: {r: 0, g: 0, b: 0, a: 255}
+  generalTauntCallouts: {}
+  generalTauntResponses: {}
+  generalIds: [
+    Cards.Boss.Boss38,
+    Cards.Boss.Boss37,
+    Cards.Boss.Boss36,
+    Cards.Boss.Boss35,
+    Cards.Boss.Boss34,
+    Cards.Boss.Boss33,
+    Cards.Boss.Boss32,
+    Cards.Boss.Boss31,
+    Cards.Boss.Boss30,
+    Cards.Boss.Boss29,
+    Cards.Boss.Boss28,
+    Cards.Boss.Boss27,
+    Cards.Boss.Boss26,
+    Cards.Boss.Boss25,
+    Cards.Boss.Boss24,
+    Cards.Boss.Boss23,
+    Cards.Boss.Boss22,
+    Cards.Boss.Boss21,
+    Cards.Boss.Boss20,
+    Cards.Boss.Boss19,
+    Cards.Boss.Boss18,
+    Cards.Boss.Boss17,
+    Cards.Boss.Boss16,
+    Cards.Boss.Boss15,
+    Cards.Boss.Boss14,
+    Cards.Boss.Boss13,
+    Cards.Boss.Boss12,
+    Cards.Boss.Boss11,
+    Cards.Boss.Boss10,
+    Cards.Boss.Boss6,
+    Cards.Boss.Boss9,
+    Cards.Boss.Boss2,
+    Cards.Boss.Boss4,
+    Cards.Boss.Boss5,
+    Cards.Boss.Boss1,
+    Cards.Boss.Boss7,
+    Cards.Boss.Boss8,
+    Cards.Boss.Boss3
+  ]
+  generalIdsByOrder: {}
+  generalOrderByIds: {}
+  resignStatement: i18next.t("factions.generic_concede")
+  gameCountFlavorText: "N/A"
+  crestImg: null
+  crestShadowImg: null
+  crestDeckSelectImg: null
+  gradientColorMapWhite: {r: 255, g: 255, b: 255, a: 255}
+  gradientColorMapBlack: {r: 0, g: 0, b: 0, a: 255}
 
 #boss callouts
 # adding a sub map keyed by general id to this map

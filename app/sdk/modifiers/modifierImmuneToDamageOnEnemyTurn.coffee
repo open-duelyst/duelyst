@@ -1,4 +1,4 @@
-ModifierImmuneToDamage = 	require './modifierImmuneToDamage'
+ModifierImmuneToDamage =   require './modifierImmuneToDamage'
 DamageAction = require 'app/sdk/actions/damageAction'
 
 ###
@@ -7,13 +7,13 @@ DamageAction = require 'app/sdk/actions/damageAction'
 
 class ModifierImmuneToDamageOnEnemyTurn extends ModifierImmuneToDamage
 
-	type:"ModifierImmuneToDamageOnEnemyTurn"
-	@type:"ModifierImmModifierImmuneToDamageOnEnemyTurnuneToDamageByGeneral"
+  type:"ModifierImmuneToDamageOnEnemyTurn"
+  @type:"ModifierImmModifierImmuneToDamageOnEnemyTurnuneToDamageByGeneral"
 
-	@modifierName:"Enemy Turn Immunity"
-	@description: "Takes no damage on enemy's turn"
+  @modifierName:"Enemy Turn Immunity"
+  @description: "Takes no damage on enemy's turn"
 
-	getIsActionRelevant: (a) ->
-		return @getCard()? and @getGameSession().getCurrentTurn().getPlayerId() isnt @getCard().getOwnerId() and a instanceof DamageAction and a.getIsValid() and @getCard() is a.getTarget()
+  getIsActionRelevant: (a) ->
+    return @getCard()? and @getGameSession().getCurrentTurn().getPlayerId() isnt @getCard().getOwnerId() and a instanceof DamageAction and a.getIsValid() and @getCard() is a.getTarget()
 
 module.exports = ModifierImmuneToDamageOnEnemyTurn

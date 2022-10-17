@@ -7,31 +7,31 @@ t = require 'tcomb-validation'
 router = express.Router()
 
 router.get '/', (req, res, next) ->
-	# user id is set by a middleware
-	user_id = req.user_id
+  # user id is set by a middleware
+  user_id = req.user_id
 
-	knex("user_faction_progression").where('user_id',user_id).select()
-	.then (progressionRows) ->
-		progressionRows = DataAccessHelpers.restifyData(progressionRows)
-		responseData = {}
-		for row in progressionRows
-			responseData[row.faction_id] = row
-		res.status(200).json(responseData)
-	.catch (error) -> next(error)
+  knex("user_faction_progression").where('user_id',user_id).select()
+  .then (progressionRows) ->
+    progressionRows = DataAccessHelpers.restifyData(progressionRows)
+    responseData = {}
+    for row in progressionRows
+      responseData[row.faction_id] = row
+    res.status(200).json(responseData)
+  .catch (error) -> next(error)
 
 router.get '/:faction_id', (req, res, next) ->
-	result = t.validate(parseInt(req.params.faction_id, 10), t.Number)
-	if not result.isValid()
-		return next()
+  result = t.validate(parseInt(req.params.faction_id, 10), t.Number)
+  if not result.isValid()
+    return next()
 
-	# user id is set by a middleware
-	user_id = req.user_id
-	faction_id = result.value
+  # user id is set by a middleware
+  user_id = req.user_id
+  faction_id = result.value
 
-	knex("user_faction_progression").where('user_id',user_id).andWhere('faction_id',faction_id).first()
-	.then (row) ->
-		row = DataAccessHelpers.restifyData(row)
-		res.status(200).json(row)
-	.catch (error) -> next(error)
+  knex("user_faction_progression").where('user_id',user_id).andWhere('faction_id',faction_id).first()
+  .then (row) ->
+    row = DataAccessHelpers.restifyData(row)
+    res.status(200).json(row)
+  .catch (error) -> next(error)
 
 module.exports = router

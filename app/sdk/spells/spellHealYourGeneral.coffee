@@ -6,17 +6,17 @@ DamageAction = require 'app/sdk/actions/damageAction'
 
 class SpellHealYourGeneral extends SpellHeal
 
-	targetType: CardType.Unit
-	spellFilterType: SpellFilterType.None
-	healModifier: 0
+  targetType: CardType.Unit
+  spellFilterType: SpellFilterType.None
+  healModifier: 0
 
-	_findApplyEffectPositions: (position, sourceAction) ->
-		applyEffectPositions = []
+  _findApplyEffectPositions: (position, sourceAction) ->
+    applyEffectPositions = []
 
-		# can only target enemy general
-		general = @getGameSession().getGeneralForPlayerId(@getOwnerId())
-		if general? then applyEffectPositions.push(general.getPosition())
+    # can only target enemy general
+    general = @getGameSession().getGeneralForPlayerId(@getOwnerId())
+    if general? then applyEffectPositions.push(general.getPosition())
 
-		return applyEffectPositions
+    return applyEffectPositions
 
 module.exports = SpellHealYourGeneral

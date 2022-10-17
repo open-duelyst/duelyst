@@ -5,17 +5,17 @@ Modifier = require './modifier'
 ###
 class ModifierCannot extends Modifier
 
-	type: "ModifierCannot"
-	@type: "ModifierCannot"
+  type: "ModifierCannot"
+  @type: "ModifierCannot"
 
-	@modifierName: "Cannot"
-	@description: ""
+  @modifierName: "Cannot"
+  @description: ""
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierCannot"]
+  fxResource: ["FX.Modifiers.ModifierCannot"]
 
 module.exports = ModifierCannot

@@ -4,30 +4,30 @@ BurnCardAction = require 'app/sdk/actions/burnCardAction'
 
 class ModifierOpponentDrawCardWatch extends Modifier
 
-	type:"ModifierOpponentDrawCardWatch"
-	@type:"ModifierOpponentDrawCardWatch"
+  type:"ModifierOpponentDrawCardWatch"
+  @type:"ModifierOpponentDrawCardWatch"
 
-	@modifierName:"ModifierOpponentDrawCardWatch"
-	@description: "Whenever your opponent draws a card ..."
+  @modifierName:"ModifierOpponentDrawCardWatch"
+  @description: "Whenever your opponent draws a card ..."
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierOpponentDrawCardWatch"]
+  fxResource: ["FX.Modifiers.ModifierOpponentDrawCardWatch"]
 
-	onAction: (e) ->
-		super(e)
+  onAction: (e) ->
+    super(e)
 
-		action = e.action
+    action = e.action
 
-		# watch for opponent player drawing a card
-		if @getGameSession().getIsRunningAsAuthoritative()
-			if action instanceof DrawCardAction and !(action instanceof BurnCardAction) and action.getOwnerId() isnt @getCard().getOwnerId()
-				@onDrawCardWatch(action)
+    # watch for opponent player drawing a card
+    if @getGameSession().getIsRunningAsAuthoritative()
+      if action instanceof DrawCardAction and !(action instanceof BurnCardAction) and action.getOwnerId() isnt @getCard().getOwnerId()
+        @onDrawCardWatch(action)
 
-	onDrawCardWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onDrawCardWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierOpponentDrawCardWatch

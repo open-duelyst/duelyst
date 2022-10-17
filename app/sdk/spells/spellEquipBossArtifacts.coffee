@@ -6,36 +6,36 @@ PlayCardSilentlyAction = require 'app/sdk/actions/playCardSilentlyAction'
 
 class SpellEquipBossArtifacts extends Spell
 
-	_filterApplyPositions: (validPositions) ->
-		finalPositions = []
-		ownGeneral = @getGameSession().getGeneralForPlayerId(@getOwnerId())
-		finalPositions.push(ownGeneral.getPosition())
+  _filterApplyPositions: (validPositions) ->
+    finalPositions = []
+    ownGeneral = @getGameSession().getGeneralForPlayerId(@getOwnerId())
+    finalPositions.push(ownGeneral.getPosition())
 
-		return finalPositions
+    return finalPositions
 
-	onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
-		super(board,x,y,sourceAction)
-		gameSession = @getGameSession()
+  onApplyEffectToBoardTile: (board,x,y,sourceAction) ->
+    super(board,x,y,sourceAction)
+    gameSession = @getGameSession()
 
-		bossArtifacts = [
-			{id: Cards.BossArtifact.FlyingBells},
-			{id: Cards.BossArtifact.Coal},
-			{id: Cards.BossArtifact.CostReducer},
-			{id: Cards.BossArtifact.Snowball}
-		]
-		artifactData = []
-		for artifact in bossArtifacts
-			artifactData.push(artifact)
+    bossArtifacts = [
+      {id: Cards.BossArtifact.FlyingBells},
+      {id: Cards.BossArtifact.Coal},
+      {id: Cards.BossArtifact.CostReducer},
+      {id: Cards.BossArtifact.Snowball}
+    ]
+    artifactData = []
+    for artifact in bossArtifacts
+      artifactData.push(artifact)
 
-		cardDataToPlay = []
-		artifact1 = artifactData.splice(@getGameSession().getRandomIntegerForExecution(artifactData.length),1)[0] # random artifact
-		cardDataToPlay.push(artifact1)
+    cardDataToPlay = []
+    artifact1 = artifactData.splice(@getGameSession().getRandomIntegerForExecution(artifactData.length),1)[0] # random artifact
+    cardDataToPlay.push(artifact1)
 
-		# equip the random artifact
-		if cardDataToPlay? and cardDataToPlay.length > 0
-			for cardData in cardDataToPlay
-				playCardAction = new PlayCardSilentlyAction(gameSession, @getOwnerId(), x, y, cardData)
-				playCardAction.setSource(@)
-				gameSession.executeAction(playCardAction)
+    # equip the random artifact
+    if cardDataToPlay? and cardDataToPlay.length > 0
+      for cardData in cardDataToPlay
+        playCardAction = new PlayCardSilentlyAction(gameSession, @getOwnerId(), x, y, cardData)
+        playCardAction.setSource(@)
+        gameSession.executeAction(playCardAction)
 
 module.exports = SpellEquipBossArtifacts

@@ -1,18 +1,18 @@
 Action = require './action'
-CardType = 			require 'app/sdk/cards/cardType'
+CardType =       require 'app/sdk/cards/cardType'
 
 class ApplyExhaustionAction extends Action
 
-	@type:"ApplyExhaustionAction"
+  @type:"ApplyExhaustionAction"
 
-	constructor: (gameSession) ->
-		@type ?= ApplyExhaustionAction.type
-		super
+  constructor: (gameSession) ->
+    @type ?= ApplyExhaustionAction.type
+    super
 
-	_execute: () ->
-		super()
-		target = @getTarget()
-		if target?
-			target.applyExhaustion()
+  _execute: () ->
+    super()
+    target = @getTarget()
+    if target?
+      target.applyExhaustion()
 
 module.exports = ApplyExhaustionAction

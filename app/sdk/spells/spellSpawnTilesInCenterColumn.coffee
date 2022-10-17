@@ -4,21 +4,21 @@ UtilsGameSession = require 'app/common/utils/utils_game_session'
 
 class SpellSpawnTilesInCenterColumn extends SpellSpawnEntity
 
-	cardDataOrIndexToSpawn: null
+  cardDataOrIndexToSpawn: null
 
-	_findApplyEffectPositions: (position, sourceAction) ->
+  _findApplyEffectPositions: (position, sourceAction) ->
 
-		board = @getGameSession().getBoard()
-		centerPosition = {x: 4, y: 2}
-		applyEffectPositions = []
-		validSpawnLocations = UtilsGameSession.getValidBoardPositionsFromPattern(board, centerPosition, CONFIG.PATTERN_WHOLE_COLUMN, true)
-		if validSpawnLocations?.length > 0
-			for i in [0...validSpawnLocations.length]
-				applyEffectPositions.push(validSpawnLocations[i])
+    board = @getGameSession().getBoard()
+    centerPosition = {x: 4, y: 2}
+    applyEffectPositions = []
+    validSpawnLocations = UtilsGameSession.getValidBoardPositionsFromPattern(board, centerPosition, CONFIG.PATTERN_WHOLE_COLUMN, true)
+    if validSpawnLocations?.length > 0
+      for i in [0...validSpawnLocations.length]
+        applyEffectPositions.push(validSpawnLocations[i])
 
-		return applyEffectPositions
+    return applyEffectPositions
 
-	getAppliesSameEffectToMultipleTargets: () ->
-		return true
+  getAppliesSameEffectToMultipleTargets: () ->
+    return true
 
 module.exports = SpellSpawnTilesInCenterColumn

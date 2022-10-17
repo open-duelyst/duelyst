@@ -1,19 +1,19 @@
-CONFIG = 		require 'app/common/config'
-Action = 		require './action'
-Logger = 		require 'app/common/logger'
+CONFIG =     require 'app/common/config'
+Action =     require './action'
+Logger =     require 'app/common/logger'
 
 class StartTurnAction extends Action
 
-	@type:"StartTurnAction"
+  @type:"StartTurnAction"
 
-	constructor: () ->
-		@type ?= StartTurnAction.type
-		super
+  constructor: () ->
+    @type ?= StartTurnAction.type
+    super
 
-	isRemovableDuringScrubbing: () ->
-		return false
+  isRemovableDuringScrubbing: () ->
+    return false
 
-	_execute: () ->
-		@getGameSession().p_startTurn()
+  _execute: () ->
+    @getGameSession().p_startTurn()
 
 module.exports = StartTurnAction

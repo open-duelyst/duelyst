@@ -2,9 +2,9 @@ ModifierStackingShadowsBonusDamage = require './modifierStackingShadowsBonusDama
 
 class ModifierStackingShadowsBonusDamageUnique extends ModifierStackingShadowsBonusDamage
 
-	type: "ModifierStackingShadowsBonusDamageUnique"
-	@type: "ModifierStackingShadowsBonusDamageUnique"
+  type: "ModifierStackingShadowsBonusDamageUnique"
+  @type: "ModifierStackingShadowsBonusDamageUnique"
 
-	maxStacks: 1
+  maxStacks: 1
 
 module.exports = ModifierStackingShadowsBonusDamageUnique

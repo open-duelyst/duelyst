@@ -8,25 +8,25 @@ _ = require 'underscore'
 
 class ModifierBondPutCardsInHand extends ModifierBond
 
-	type:"ModifierBondPutCardsInHand"
-	@type:"ModifierBondPutCardsInHand"
+  type:"ModifierBondPutCardsInHand"
+  @type:"ModifierBondPutCardsInHand"
 
-	@description: "Draw some cards"
+  @description: "Draw some cards"
 
-	fxResource: ["FX.Modifiers.ModifierBond"]
+  fxResource: ["FX.Modifiers.ModifierBond"]
 
-	@createContextObject: (cardIds, options) ->
-		contextObject = super(options)
-		contextObject.cardIds = cardIds
-		return contextObject
+  @createContextObject: (cardIds, options) ->
+    contextObject = super(options)
+    contextObject.cardIds = cardIds
+    return contextObject
 
-	onBond: () ->
-		if @getGameSession().getIsRunningAsAuthoritative()
-			cardIds = @cardIds
-			while cardIds?.length > 0
-				id = cardIds.splice(@getGameSession().getRandomIntegerForExecution(cardIds.length), 1)[0]
-				if id?
-					a = new PutCardInHandAction(@getGameSession(), @getCard().getOwnerId(), {id: id} )
-					@getGameSession().executeAction(a)
+  onBond: () ->
+    if @getGameSession().getIsRunningAsAuthoritative()
+      cardIds = @cardIds
+      while cardIds?.length > 0
+        id = cardIds.splice(@getGameSession().getRandomIntegerForExecution(cardIds.length), 1)[0]
+        if id?
+          a = new PutCardInHandAction(@getGameSession(), @getCard().getOwnerId(), {id: id} )
+          @getGameSession().executeAction(a)
 
 module.exports = ModifierBondPutCardsInHand

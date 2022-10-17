@@ -4,31 +4,31 @@ Stringifiers = require 'app/sdk/helpers/stringifiers'
 
 class ModifierSummonWatchNearbyApplyModifiers extends ModifierSummonWatchApplyModifiers
 
-	type:"ModifierSummonWatchNearbyApplyModifiers"
-	@type:"ModifierSummonWatchNearbyApplyModifiers"
+  type:"ModifierSummonWatchNearbyApplyModifiers"
+  @type:"ModifierSummonWatchNearbyApplyModifiers"
 
-	@description: "Friendly minions summoned nearby this minion %X"
+  @description: "Friendly minions summoned nearby this minion %X"
 
-	fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierSummonWatch", "FX.Modifiers.ModifierGenericBuff"]
 
-	@createContextObject: (modifiersContextObjects, buffDescription, options) ->
-		contextObject = super(options)
-		contextObject.modifiersContextObjects = modifiersContextObjects
-		contextObject.buffDescription = buffDescription
-		return contextObject
+  @createContextObject: (modifiersContextObjects, buffDescription, options) ->
+    contextObject = super(options)
+    contextObject.modifiersContextObjects = modifiersContextObjects
+    contextObject.buffDescription = buffDescription
+    return contextObject
 
-	@getDescription: (modifierContextObject) ->
-		if modifierContextObject
-			return @description.replace /%X/, modifierContextObject.buffDescription
-		else
-			return @description
+  @getDescription: (modifierContextObject) ->
+    if modifierContextObject
+      return @description.replace /%X/, modifierContextObject.buffDescription
+    else
+      return @description
 
-	getIsValidBuffPosition: (summonedUnitPosition) ->
-		entityPosition = @getCard().getPosition()
-		if (Math.abs(summonedUnitPosition.x - entityPosition.x) <= 1) and (Math.abs(summonedUnitPosition.y - entityPosition.y) <= 1)
-			return true
-		else
-			return false
+  getIsValidBuffPosition: (summonedUnitPosition) ->
+    entityPosition = @getCard().getPosition()
+    if (Math.abs(summonedUnitPosition.x - entityPosition.x) <= 1) and (Math.abs(summonedUnitPosition.y - entityPosition.y) <= 1)
+      return true
+    else
+      return false
 
 
 module.exports = ModifierSummonWatchNearbyApplyModifiers

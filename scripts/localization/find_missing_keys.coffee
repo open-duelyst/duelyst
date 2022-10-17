@@ -18,17 +18,17 @@ UtilsLocalization = require 'scripts/localization/utils_localization'
 Promise.resolve()
 .bind {}
 .then ()->
-	return Promise.all([
-		UtilsLocalization.readFileToJsonData(UtilsLocalization.PATH_TO_LOCALES + "/en/index.json")
-		# UtilsLocalization.readFileToJsonData(UtilsLocalization.PATH_TO_LOCALES + "/de/index.json")
-	])
+  return Promise.all([
+    UtilsLocalization.readFileToJsonData(UtilsLocalization.PATH_TO_LOCALES + "/en/index.json")
+    # UtilsLocalization.readFileToJsonData(UtilsLocalization.PATH_TO_LOCALES + "/de/index.json")
+  ])
 # .spread (englishData, germanData)->
-# 	@.englishData = englishData
-# 	@.germanData = germanData
+#   @.englishData = englishData
+#   @.germanData = germanData
 
-# 	return UtilsLocalization.writeMissingTranslationFiles("de",@.englishData,@.germanData)
+#   return UtilsLocalization.writeMissingTranslationFiles("de",@.englishData,@.germanData)
 
 .then ()->
 
-	console.log("Complete.")
-	process.exit(1)
+  console.log("Complete.")
+  process.exit(1)

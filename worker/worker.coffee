@@ -5,9 +5,9 @@ config = require '../config/config.js'
 Promise = require 'bluebird'
 
 if config.isDevelopment()
-	Logger.module("WORKER").log "DEV MODE: enabling long stack support"
-	process.env.BLUEBIRD_DEBUG = 1
-	Promise.longStackTraces()
+  Logger.module("WORKER").log "DEV MODE: enabling long stack support"
+  process.env.BLUEBIRD_DEBUG = 1
+  Promise.longStackTraces()
 
 # Increase the number of event listeners in Node.js.
 # The default is 10, but we listen to 14 events in the worker process.
@@ -28,20 +28,20 @@ worker = require '../server/redis/r-jobs'
 
 # job failed
 worker.on "job failed", (id, errorMessage) ->
-	Logger.module("WORKER").error "[J:#{id}] has failed: #{errorMessage}".red
-	kue.Job.get id, (err, job) ->
-		if err then return
+  Logger.module("WORKER").error "[J:#{id}] has failed: #{errorMessage}".red
+  kue.Job.get id, (err, job) ->
+    if err then return
 
 ###
 Kue Shutdown Event
 Finishes current job, 10s timeout before shutting down.
 ###
 cleanShutdown = () ->
-	worker.shutdown 10000, (err) ->
-		if err
-			Logger.module("WORKER").error "Shutdown error occured: #{err.message}"
-		Logger.module("WORKER").log "Shutting down."
-		process.exit(0)
+  worker.shutdown 10000, (err) ->
+    if err
+      Logger.module("WORKER").error "Shutdown error occured: #{err.message}"
+    Logger.module("WORKER").log "Shutting down."
+    process.exit(0)
 
 process.on "SIGTERM", cleanShutdown
 process.on "SIGINT", cleanShutdown
@@ -82,5 +82,5 @@ worker.process('update-user-seen-on', 1, updateUserSeenOn )
 
 # Don't attempt S3 uploads in local development.
 if config.get('env') != 'development'
-	archiveGame = require './jobs/archive-game.coffee'
-	worker.process('archive-game', 1, archiveGame)
+  archiveGame = require './jobs/archive-game.coffee'
+  worker.process('archive-game', 1, archiveGame)

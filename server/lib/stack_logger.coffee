@@ -22,7 +22,7 @@ pe.skipPackage('express')
 # Disable colors outside of local development.
 # Avoids '[0m' spam in CloudWatch Logs.
 if config.get('env') != 'development'
-	pe.withoutColors()
+  pe.withoutColors()
 
 # Set style config to make the logs more compact.
 #
@@ -40,7 +40,7 @@ if config.get('env') != 'development'
 # - https://github.com/AriaMinaei/RenderKid/pull/30
 # - https://github.com/AriaMinaei/pretty-error/pull/68
 pe.appendStyle({
-	'pretty-error > trace > item > header': { display: 'none' },
+  'pretty-error > trace > item > header': { display: 'none' },
 })
 
 # Usage:

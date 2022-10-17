@@ -12,43 +12,43 @@ on beforeAction, rather than onAction
 
 class ModifierSelfDamageAreaAttack extends Modifier
 
-	type:"ModifierSelfDamageAreaAttack"
-	@type:"ModifierSelfDamageAreaAttack"
+  type:"ModifierSelfDamageAreaAttack"
+  @type:"ModifierSelfDamageAreaAttack"
 
-	@modifierName:i18next.t("modifiers.self_damage_area_attack_name")
-	@description:i18next.t("modifiers.self_damage_area_attack_def")
+  @modifierName:i18next.t("modifiers.self_damage_area_attack_name")
+  @description:i18next.t("modifiers.self_damage_area_attack_def")
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	maxStacks: 1
+  maxStacks: 1
 
-	onBeforeAction: (actionEvent) ->
-		super(actionEvent)
+  onBeforeAction: (actionEvent) ->
+    super(actionEvent)
 
-		a = actionEvent.action
-		if a instanceof AttackAction and a.getSource() == @getCard()
-			selfDamage = @getCard().getATK()
+    a = actionEvent.action
+    if a instanceof AttackAction and a.getSource() == @getCard()
+      selfDamage = @getCard().getATK()
 
-			#damage the area too
-			entities = @getGameSession().getBoard().getFriendlyEntitiesAroundEntity(a.getTarget(), CardType.Unit, 1)
-			for entity in entities
-				damageAction = new DamageAction(@getGameSession())
-				damageAction.setOwnerId(@getCard().getOwnerId())
-				damageAction.setSource(@getCard())
-				damageAction.setTarget(entity)
-				damageAction.setDamageAmount(@getCard().getATK())
-				@getGameSession().executeAction(damageAction)
-				selfDamage = selfDamage + @getCard().getATK()
+      #damage the area too
+      entities = @getGameSession().getBoard().getFriendlyEntitiesAroundEntity(a.getTarget(), CardType.Unit, 1)
+      for entity in entities
+        damageAction = new DamageAction(@getGameSession())
+        damageAction.setOwnerId(@getCard().getOwnerId())
+        damageAction.setSource(@getCard())
+        damageAction.setTarget(entity)
+        damageAction.setDamageAmount(@getCard().getATK())
+        @getGameSession().executeAction(damageAction)
+        selfDamage = selfDamage + @getCard().getATK()
 
-			#then damage self a proportional amount
-			damageAction = new DamageAction(@getGameSession())
-			damageAction.setOwnerId(@getCard().getOwnerId())
-			damageAction.setSource(@getCard())
-			damageAction.setTarget(@getCard())
-			damageAction.setDamageAmount(selfDamage)
-			@getGameSession().executeAction(damageAction)
+      #then damage self a proportional amount
+      damageAction = new DamageAction(@getGameSession())
+      damageAction.setOwnerId(@getCard().getOwnerId())
+      damageAction.setSource(@getCard())
+      damageAction.setTarget(@getCard())
+      damageAction.setDamageAmount(selfDamage)
+      @getGameSession().executeAction(damageAction)
 
 module.exports = ModifierSelfDamageAreaAttack

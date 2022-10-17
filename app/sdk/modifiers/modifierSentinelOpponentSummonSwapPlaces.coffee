@@ -7,18 +7,18 @@ _ = require 'underscore'
 
 class ModifierSentinelOpponentSummonSwapPlaces extends ModifierSentinelOpponentSummon
 
-	type:"ModifierSentinelOpponentSummonSwapPlaces"
-	@type:"ModifierSentinelOpponentSummonSwapPlaces"
+  type:"ModifierSentinelOpponentSummonSwapPlaces"
+  @type:"ModifierSentinelOpponentSummonSwapPlaces"
 
-	onOverwatch: (action) ->
-		# damage unit that was just summoned by enemy
-		transformedUnit = super(action) # transform unit
-		if action.getTarget()? and @getGameSession().getCanCardBeScheduledForRemoval(transformedUnit, true)
-			swapAction = new SwapUnitsAction(@getGameSession())
-			swapAction.setOwnerId(@getOwnerId())
-			swapAction.setSource(transformedUnit)
-			swapAction.setTarget(action.getTarget())
-			swapAction.setFXResource(_.union(swapAction.getFXResource(), @getFXResource()))
-			@getGameSession().executeAction(swapAction)
+  onOverwatch: (action) ->
+    # damage unit that was just summoned by enemy
+    transformedUnit = super(action) # transform unit
+    if action.getTarget()? and @getGameSession().getCanCardBeScheduledForRemoval(transformedUnit, true)
+      swapAction = new SwapUnitsAction(@getGameSession())
+      swapAction.setOwnerId(@getOwnerId())
+      swapAction.setSource(transformedUnit)
+      swapAction.setTarget(action.getTarget())
+      swapAction.setFXResource(_.union(swapAction.getFXResource(), @getFXResource()))
+      @getGameSession().executeAction(swapAction)
 
 module.exports = ModifierSentinelOpponentSummonSwapPlaces

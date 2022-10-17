@@ -4,15 +4,15 @@ i18next = require('i18next')
 
 class ModifierToken extends Modifier
 
-	type:"ModifierToken"
-	@type:"ModifierToken"
+  type:"ModifierToken"
+  @type:"ModifierToken"
 
-	@isKeyworded: true
-	@keywordDefinition: "Card not collectible"
+  @isKeyworded: true
+  @keywordDefinition: "Card not collectible"
 
-	@modifierName: "Token"
+  @modifierName: "Token"
 
-	isRemovable: false
+  isRemovable: false
 
 
 module.exports = ModifierToken

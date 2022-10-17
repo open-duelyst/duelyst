@@ -5,30 +5,30 @@ PlayCardAsTransformAction = require 'app/sdk/actions/playCardAsTransformAction'
 
 class ModifierApplyMinionToBoardWatch extends Modifier
 
-	type:"ModifierApplyMinionToBoardWatch"
-	@type:"ModifierApplyMinionToBoardWatch"
+  type:"ModifierApplyMinionToBoardWatch"
+  @type:"ModifierApplyMinionToBoardWatch"
 
-	@modifierName:"Any ApplyToBoard Watch"
-	@description: "Any ApplyToBoard Watch"
+  @modifierName:"Any ApplyToBoard Watch"
+  @description: "Any ApplyToBoard Watch"
 
-	activeInHand: false
-	activeInDeck: false
-	activeInSignatureCards: false
-	activeOnBoard: true
+  activeInHand: false
+  activeInDeck: false
+  activeInSignatureCards: false
+  activeOnBoard: true
 
-	fxResource: ["FX.Modifiers.ModifierApplyMinionToBoardWatch"]
+  fxResource: ["FX.Modifiers.ModifierApplyMinionToBoardWatch"]
 
-	onAction: (e) ->
-		super(e)
+  onAction: (e) ->
+    super(e)
 
-		action = e.action
+    action = e.action
 
-		# watch for a unit being applied to board in any way by any player (except transforms)
-		if action instanceof ApplyCardToBoardAction and action.getCard()?.type is CardType.Unit and action.getCard() isnt @getCard()
-			if !(action instanceof PlayCardAsTransformAction)
-				@onApplyToBoardWatch(action)
+    # watch for a unit being applied to board in any way by any player (except transforms)
+    if action instanceof ApplyCardToBoardAction and action.getCard()?.type is CardType.Unit and action.getCard() isnt @getCard()
+      if !(action instanceof PlayCardAsTransformAction)
+        @onApplyToBoardWatch(action)
 
-	onApplyToBoardWatch: (action) ->
-		# override me in sub classes to implement special behavior
+  onApplyToBoardWatch: (action) ->
+    # override me in sub classes to implement special behavior
 
 module.exports = ModifierApplyMinionToBoardWatch

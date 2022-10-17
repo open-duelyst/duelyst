@@ -2,20 +2,20 @@ Modifier = require './modifier'
 
 class ModifierDoubleHealthStat extends Modifier
 
-	type: "ModifierDoubleHealthStat"
-	@type: "ModifierDoubleHealthStat"
+  type: "ModifierDoubleHealthStat"
+  @type: "ModifierDoubleHealthStat"
 
-	fxResource: ["FX.Modifiers.ModifierGenericBuff"]
+  fxResource: ["FX.Modifiers.ModifierGenericBuff"]
 
-	@description: "Doubled Health"
+  @description: "Doubled Health"
 
-	constructor: (gameSession) ->
-		@attributeBuffs = {}
-		@attributeBuffs["maxHP"] = 0
-		super(gameSession)
+  constructor: (gameSession) ->
+    @attributeBuffs = {}
+    @attributeBuffs["maxHP"] = 0
+    super(gameSession)
 
-	onApplyToCardBeforeSyncState: () ->
-		super()
-		@attributeBuffs["maxHP"] = @getCard().getHP()
+  onApplyToCardBeforeSyncState: () ->
+    super()
+    @attributeBuffs["maxHP"] = @getCard().getHP()
 
 module.exports = ModifierDoubleHealthStat

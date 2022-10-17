@@ -5,24 +5,24 @@ _ = require 'underscore'
 
 class ModifierEndTurnWatchTeleportCorner extends ModifierEndTurnWatch
 
-	type:"ModifierEndTurnWatchTeleportCorner"
-	@type:"ModifierEndTurnWatchTeleportCorner"
+  type:"ModifierEndTurnWatchTeleportCorner"
+  @type:"ModifierEndTurnWatchTeleportCorner"
 
-	@modifierName:"Turn Watch"
-	@description:"At the end of your turn, teleport to a random corner"
+  @modifierName:"Turn Watch"
+  @description:"At the end of your turn, teleport to a random corner"
 
-	isHiddenToUI: true # don't show this modifier by default
+  isHiddenToUI: true # don't show this modifier by default
 
-	fxResource: ["FX.Modifiers.ModifierEndTurnWatch"]
+  fxResource: ["FX.Modifiers.ModifierEndTurnWatch"]
 
-	onTurnWatch: (action) ->
-		super(action)
+  onTurnWatch: (action) ->
+    super(action)
 
-		randomTeleportAction = new RandomTeleportAction(@getGameSession())
-		randomTeleportAction.setOwnerId(@getCard().getOwnerId())
-		randomTeleportAction.setSource(@getCard())
-		randomTeleportAction.setTeleportPattern(CONFIG.PATTERN_CORNERS)
-		randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
-		@getGameSession().executeAction(randomTeleportAction)
+    randomTeleportAction = new RandomTeleportAction(@getGameSession())
+    randomTeleportAction.setOwnerId(@getCard().getOwnerId())
+    randomTeleportAction.setSource(@getCard())
+    randomTeleportAction.setTeleportPattern(CONFIG.PATTERN_CORNERS)
+    randomTeleportAction.setFXResource(_.union(randomTeleportAction.getFXResource(), @getFXResource()))
+    @getGameSession().executeAction(randomTeleportAction)
 
 module.exports = ModifierEndTurnWatchTeleportCorner
