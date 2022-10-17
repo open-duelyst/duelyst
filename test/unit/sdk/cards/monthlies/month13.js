@@ -1,6 +1,6 @@
 const path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../../../../../'));
-require('coffee-script/register');
+require('coffeescript/register');
 const expect = require('chai').expect;
 const ModifierTranscendance = require('app/sdk/modifiers/modifierTranscendance');
 const ModifierForcefield = require('app/sdk/modifiers/modifierForcefield');

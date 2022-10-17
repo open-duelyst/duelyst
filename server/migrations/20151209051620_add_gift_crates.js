@@ -1,4 +1,4 @@
-require('coffee-script/register');
+require('coffeescript/register');
 const _ = require('underscore');
 const moment = require('moment');
 

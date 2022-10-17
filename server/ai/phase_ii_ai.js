@@ -4,7 +4,7 @@ process.on('uncaughtException', (err) => {
 
 const path = require('path');
 require('app-module-path').addPath(path.join(__dirname, '../../'));
-require('coffee-script/register');
+require('coffeescript/register');
 const Logger = require('app/common/logger');
 const SDK = require('app/sdk');
 const CONFIG = require('app/common/config');

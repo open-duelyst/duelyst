@@ -24,7 +24,7 @@
   const _ = require('underscore');
   const j2j = require('j2j');
   const helpers = require('./helpers');
-  const coffeScript = require('coffee-script/register');
+  const coffeScript = require('coffeescript/register');
   const Cards = require('app/sdk/cards/cardsLookupComplete.coffee');
   const FactionsLookup = require('app/sdk/cards/factionsLookup.coffee');
   const FactionFactory = require('app/sdk/cards/factionFactory.coffee');

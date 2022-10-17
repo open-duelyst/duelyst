@@ -1,5 +1,5 @@
 // fix for EMFILE issues on windows, linux, and mac
-import 'coffee-script/register';
+import 'coffeescript/register';
 import 'app-module-path/register';
 
 import gulp from 'gulp';
