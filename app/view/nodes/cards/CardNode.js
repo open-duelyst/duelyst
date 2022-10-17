@@ -609,21 +609,21 @@ var CardNode = SdkNode.extend({
             }
 
             switch (sdkCard.rarityId) {
-              case SDK.Rarity.Common:
-                this.raritySprite = this._raritySpriteCommon;
-                break;
-              case SDK.Rarity.Rare:
-                this.raritySprite = this._raritySpriteRare;
-                break;
-              case SDK.Rarity.Epic:
-                this.raritySprite = this._raritySpriteEpic;
-                break;
-              case SDK.Rarity.Legendary:
-                this.raritySprite = this._raritySpriteLegendary;
-                break;
-              case SDK.Rarity.Mythron:
-                this.raritySprite = this._raritySpriteMythron;
-                break;
+            case SDK.Rarity.Common:
+              this.raritySprite = this._raritySpriteCommon;
+              break;
+            case SDK.Rarity.Rare:
+              this.raritySprite = this._raritySpriteRare;
+              break;
+            case SDK.Rarity.Epic:
+              this.raritySprite = this._raritySpriteEpic;
+              break;
+            case SDK.Rarity.Legendary:
+              this.raritySprite = this._raritySpriteLegendary;
+              break;
+            case SDK.Rarity.Mythron:
+              this.raritySprite = this._raritySpriteMythron;
+              break;
             }
 
             if (this.raritySprite != null) {

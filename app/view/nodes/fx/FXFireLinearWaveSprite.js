@@ -40,12 +40,12 @@ var FXFireLinearWaveSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'phase':
-        this.phase = value;
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'phase':
+      this.phase = value;
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

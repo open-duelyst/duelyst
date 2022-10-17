@@ -54,12 +54,12 @@ var FXRipplingGlowImageMapSprite = BaseSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'timeScale':
-        this.setTimeScale(value);
-        break;
-      default:
-        BaseSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'timeScale':
+      this.setTimeScale(value);
+      break;
+    default:
+      BaseSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

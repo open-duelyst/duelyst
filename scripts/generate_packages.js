@@ -30,12 +30,12 @@
   const FactionFactory = require('app/sdk/cards/factionFactory.coffee');
   const CodexChapters = require('app/sdk/codex/codexChapterLookup.coffee');
   const CosmeticsLookup = require('app/sdk/cosmetics/cosmeticsLookup.coffee');
-  const CONFIG = require('app/common/config.js');
-  const UtilsJavascript = require('app/common/utils/utils_javascript.js');
+  const CONFIG = require('app/common/config');
+  const UtilsJavascript = require('app/common/utils/utils_javascript');
   const DATA = require('app/data.coffee');
-  const FX = require('app/data/fx.js');
-  const RSX = require('app/data/resources.js');
-  const PKGS_DEF = require('app/data/packages_predefined.js');
+  const FX = require('app/data/fx');
+  const RSX = require('app/data/resources');
+  const PKGS_DEF = require('app/data/packages_predefined');
   const PKGS = {};
 
   const getResources = function (resourceIdentifier) {

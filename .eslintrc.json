@@ -27,7 +27,8 @@
   "rules": {
     "global-require": ["warn"],
     "implicit-arrow-linebreak": ["warn"],
-    "linebreak-style": "off",
+    "indent": ["error", 2],
+    "linebreak-style": "warn",
     "lines-between-class-members": ["error", "always", {"exceptAfterSingleLine": true}],
     "max-len": ["warn"],
     "new-cap": ["warn"],
@@ -37,9 +38,10 @@
     "no-param-reassign": ["warn"],
     "no-plusplus": ["warn"],
     "no-restricted-syntax": ["warn"],
-    "no-shadow": "off",
+    "no-shadow": "warn",
+    "no-tabs": ["error"],
     "no-underscore-dangle": ["warn"],
-    "no-unused-vars": "off",
+    "no-unused-vars": "warn",
     "no-use-before-define": ["warn"],
     "no-useless-escape": ["warn"],
     "prefer-destructuring": ["warn"],
@@ -59,16 +61,172 @@
       "rules": {"camelcase": ["warn"]}
     },
     {
-      "files": ["test/**/*.js"],
-      "rules": {"no-unused-expressions": ["off"]}
+      "files": ["app/tools/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "consistent-return": ["warn"],
+        "eqeqeq": ["warn"],
+        "guard-for-in": ["warn"],
+        "no-cond-assign": ["warn"],
+        "no-inner-declarations": ["warn"],
+        "no-mixed-operators": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-return-assign": ["warn"],
+        "no-self-compare": ["warn"],
+        "no-sequences": ["warn"],
+        "no-throw-literal": ["warn"],
+        "no-undef": ["warn"],
+        "no-unused-expressions": ["warn"],
+        "no-var": ["warn"],
+        "no-void": ["warn"],
+        "radix": ["warn"],
+        "import/no-amd": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["app/ui/**/*.js"],
+      "rules": {
+        "array-callback-return": ["warn"],
+        "block-scoped-var": ["warn"],
+        "consistent-return": ["warn"],
+        "curly": ["warn"],
+        "default-case": ["warn"],
+        "eqeqeq": ["warn"],
+        "guard-for-in": ["warn"],
+        "no-else-return": ["warn"],
+        "no-empty": ["warn"],
+        "no-extra-bind": ["warn"],
+        "no-extra-boolean-cast": ["warn"],
+        "no-floating-decimal": ["warn"],
+        "no-lonely-if": ["warn"],
+        "no-loop-func": ["warn"],
+        "no-mixed-operators": ["warn"],
+        "no-multi-str": ["warn"],
+        "no-new": ["warn"],
+        "no-prototype-builtins": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-return-assign": ["warn"],
+        "no-undef": ["warn"],
+        "no-unused-expressions": ["warn"],
+        "no-useless-concat": ["warn"],
+        "no-useless-return": ["warn"],
+        "no-var": ["warn"],
+        "nonblock-statement-body-position": ["warn"],
+        "object-shorthand": ["warn"],
+        "operator-assignment": ["warn"],
+        "prefer-arrow-callback": ["warn"],
+        "prefer-promise-reject-errors": ["warn"],
+        "prefer-spread": ["warn"],
+        "prefer-template": ["warn"],
+        "radix": ["warn"],
+        "strict": ["warn"],
+        "valid-typeof": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["app/view/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "consistent-return": ["warn"],
+        "default-case": ["warn"],
+        "eqeqeq": ["warn"],
+        "guard-for-in": ["warn"],
+        "no-empty": ["warn"],
+        "no-inner-declarations": ["warn"],
+        "no-lonely-if": ["warn"],
+        "no-loop-func": ["warn"],
+        "no-mixed-operators": ["warn"],
+        "no-nested-ternary": ["warn"],
+        "no-prototype-builtins": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-return-assign": ["warn"],
+        "no-sequences": ["warn"],
+        "no-throw-literal": ["warn"],
+        "no-undef": ["warn"],
+        "no-unused-expressions": ["warn"],
+        "no-useless-concat": ["warn"],
+        "no-var": ["warn"],
+        "operator-assignment": ["warn"],
+        "prefer-const": ["warn"],
+        "prefer-spread": ["warn"],
+        "radix": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
     },
     {
       "files": ["desktop/gulp/shared.js"],
-      "rules": {"import/no-relative-packages": ["off"]}
+      "rules": {"import/no-relative-packages": ["warn"]}
     },
     {
       "files": ["desktop/**/*.js"],
-      "rules": {"import/no-unresolved": ["off"]}
+      "rules": {"import/no-unresolved": ["warn"]}
+    },
+    {
+      "files": ["scripts/generate_packages.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "camelcase": ["warn"],
+        "eqeqeq": ["warn"],
+        "guard-for-in": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-useless-concat": ["warn"],
+        "no-var": ["warn"],
+        "prefer-regex-literals": ["warn"],
+        "radix": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["server/ai/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "brace-style": ["warn"],
+        "camelcase": ["warn"],
+        "consistent-return": ["warn"],
+        "default-case": ["warn"],
+        "eqeqeq": ["warn"],
+        "no-lonely-if": ["warn"],
+        "no-mixed-operators": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-undef": ["warn"],
+        "no-var": ["warn"],
+        "no-restricted-globals": ["warn"],
+        "no-loop-func": ["warn"],
+        "prefer-spread": ["warn"],
+        "radix": ["warn"],
+        "prefer-promise-reject-errors": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["test/**/*.js"],
+      "rules": {"no-unused-expressions": ["warn"]}
+    },
+    {
+      "files": ["test/unit/sdk/ai/card_intent_scoring.js"],
+      "rules": {
+        "camelcase": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-var": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
+    },
+    {
+      "files": ["test/unit/sdk/cards/**/*.js"],
+      "rules": {
+        "block-scoped-var": ["warn"],
+        "eqeqeq": ["warn"],
+        "no-redeclare": ["warn"],
+        "no-undef": ["warn"],
+        "no-var": ["warn"],
+        "import/no-unresolved": ["warn"]
+      }
     }
   ]
 }

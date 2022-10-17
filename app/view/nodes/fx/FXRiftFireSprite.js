@@ -39,12 +39,12 @@ var FXRiftFireSprite = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'timeScale':
-        this.timeScale = this._timeScaleTarget * value;
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'timeScale':
+      this.timeScale = this._timeScaleTarget * value;
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

@@ -1222,8 +1222,8 @@ var ai_preProc_filterProtoActionTargets = function (protoAction) {
   // objective filtering first
   // rejects any PlayCardFromHandAction action that scores below qualitythreshold
   if (protoAction.actionType == 'PlayCardFromHandAction') {
-    filteredProtoActionTargetsAndScores = _.filter(filteredProtoActionTargetsAndScores, (targetAndScore) => targetAndScore.score > preProc_qualityThreshold_playCard, // -2 TODO: unexpected behavior with summon spells - consider excluding summons or diff. threshold for summons?
-    );
+    // TODO: unexpected behavior with summon spells - consider excluding summons or diff. threshold for summons?
+    filteredProtoActionTargetsAndScores = _.filter(filteredProtoActionTargetsAndScores, (targetAndScore) => targetAndScore.score > preProc_qualityThreshold_playCard);
   }
 
   // relative filtering next
@@ -1257,19 +1257,19 @@ var ai_getScoreForAction = function (card, target, actionType, gameSession) {
   // ai_getScoreForAction(protoAction.card, target, protoAction.actionType);
   let score = 0;
   switch (actionType) {
-    case SDK.MoveAction.type:
-      score = ScoreForCardAtTargetPosition(card, target, gameSession);
-      break;
-    case SDK.AttackAction.type:
-      var targetedEnemyUnit = gameSession.getBoard().getUnitAtPosition(target);
-      score += ScoreForUnitDamage(gameSession, targetedEnemyUnit, card.getATK());
-      score -= ScoreForUnitDamage(gameSession, card, targetedEnemyUnit.getATK());
-      break;
-    case SDK.PlayCardAction.type:
-    case SDK.PlayCardFromHandAction.type:
-    case SDK.PlaySignatureCardAction.type:
-      score = ai_getScoreForPlayCardAction(card, target, gameSession);
-      break;
+  case SDK.MoveAction.type:
+    score = ScoreForCardAtTargetPosition(card, target, gameSession);
+    break;
+  case SDK.AttackAction.type:
+    var targetedEnemyUnit = gameSession.getBoard().getUnitAtPosition(target);
+    score += ScoreForUnitDamage(gameSession, targetedEnemyUnit, card.getATK());
+    score -= ScoreForUnitDamage(gameSession, card, targetedEnemyUnit.getATK());
+    break;
+  case SDK.PlayCardAction.type:
+  case SDK.PlayCardFromHandAction.type:
+  case SDK.PlaySignatureCardAction.type:
+    score = ai_getScoreForPlayCardAction(card, target, gameSession);
+    break;
   }
   return score;
 };
@@ -1879,22 +1879,22 @@ var generatePseudoActionFromAction = function (action) {
   // Logger.module("AI").debug("[G:" + getGameId(root) + "] generatePseudoActionFromAction( ) -> action = ", action);
   // Logger.module("AI").debug("[G:" + getGameId(root) + "] generatePseudoActionFromAction( ) -> actionType = ", action.getType());
   switch (action.getType()) {
-    case SDK.MoveAction.type:
-      return new MovePseudoAction(action);
-    case SDK.AttackAction.type:
-      return new AttackPseudoAction(action);
-    case SDK.PlayCardFromHandAction.type:
-      return new PlayCardFromHandPseudoAction(action);
-    case SDK.ReplaceCardFromHandAction.type:
-      return new ReplaceCardFromHandPseudoAction(action);
-    case SDK.EndTurnAction.type:
-      return new PseudoAction(action);
-    case SDK.PlayCardAction.type:
-      return new PlayFollowupPseudoAction(action);
-    case SDK.PlaySignatureCardAction.type:
-      return new PlaySignatureCardPseudoAction(action);
-    case SDK.DrawStartingHandAction.type:
-      return new DrawStartingHandPseudoAction(action);
+  case SDK.MoveAction.type:
+    return new MovePseudoAction(action);
+  case SDK.AttackAction.type:
+    return new AttackPseudoAction(action);
+  case SDK.PlayCardFromHandAction.type:
+    return new PlayCardFromHandPseudoAction(action);
+  case SDK.ReplaceCardFromHandAction.type:
+    return new ReplaceCardFromHandPseudoAction(action);
+  case SDK.EndTurnAction.type:
+    return new PseudoAction(action);
+  case SDK.PlayCardAction.type:
+    return new PlayFollowupPseudoAction(action);
+  case SDK.PlaySignatureCardAction.type:
+    return new PlaySignatureCardPseudoAction(action);
+  case SDK.DrawStartingHandAction.type:
+    return new DrawStartingHandPseudoAction(action);
   }
 
   throw new Error(`Cannot generate pseudo action for action type ${action.getType()}`);
@@ -1902,36 +1902,36 @@ var generatePseudoActionFromAction = function (action) {
 
 var generateActionFromPseudoAction = function (gameSession, pseudoAction) {
   switch (pseudoAction.actionType) {
-    case SDK.MoveAction.type:
-      var sourceCard = gameSession.getBoard().getUnitAtPosition(pseudoAction.sourcePosition);
-      var { targetPosition } = pseudoAction;
-      return sourceCard.actionMove(targetPosition);
-    case SDK.AttackAction.type:
-      var sourceCard = gameSession.getBoard().getUnitAtPosition(pseudoAction.sourcePosition);
-      var { targetPosition } = pseudoAction;
-      return sourceCard.actionAttackEntityAtPosition(targetPosition);
-    case SDK.PlayCardFromHandAction.type:
-      var player = gameSession.getPlayerById(pseudoAction.playerId);
-      var { targetPosition } = pseudoAction;
-      return player.actionPlayCardFromHand(pseudoAction.handIndex, targetPosition.x, targetPosition.y);
-    case SDK.PlaySignatureCardAction.type:
-      var player = gameSession.getPlayerById(pseudoAction.playerId);
-      var { targetPosition } = pseudoAction;
-      return player.actionPlaySignatureCard(targetPosition.x, targetPosition.y);
-    case SDK.ReplaceCardFromHandAction.type:
-      var player = gameSession.getPlayerById(pseudoAction.playerId);
-      return player.actionReplaceCardFromHand(pseudoAction.handIndex);
-    case SDK.EndTurnAction.type:
-      return gameSession.actionEndTurn();
-    case SDK.PlayCardAction.type:
-      var player = gameSession.getPlayerById(pseudoAction.playerId);
-      var cardWaitingForFollowups = gameSession.getValidatorFollowup().getCardWaitingForFollowups();
-      var currentFollowupCard = cardWaitingForFollowups.getCurrentFollowupCard();
-      var { targetPosition } = pseudoAction;
-      return player.actionPlayFollowup(currentFollowupCard, targetPosition.x, targetPosition.y);
-    case SDK.DrawStartingHandAction.type:
-      var player = gameSession.getPlayerById(pseudoAction.playerId);
-      return player.actionDrawStartingHand(pseudoAction.mulliganIndices);
+  case SDK.MoveAction.type:
+    var sourceCard = gameSession.getBoard().getUnitAtPosition(pseudoAction.sourcePosition);
+    var { targetPosition } = pseudoAction;
+    return sourceCard.actionMove(targetPosition);
+  case SDK.AttackAction.type:
+    var sourceCard = gameSession.getBoard().getUnitAtPosition(pseudoAction.sourcePosition);
+    var { targetPosition } = pseudoAction;
+    return sourceCard.actionAttackEntityAtPosition(targetPosition);
+  case SDK.PlayCardFromHandAction.type:
+    var player = gameSession.getPlayerById(pseudoAction.playerId);
+    var { targetPosition } = pseudoAction;
+    return player.actionPlayCardFromHand(pseudoAction.handIndex, targetPosition.x, targetPosition.y);
+  case SDK.PlaySignatureCardAction.type:
+    var player = gameSession.getPlayerById(pseudoAction.playerId);
+    var { targetPosition } = pseudoAction;
+    return player.actionPlaySignatureCard(targetPosition.x, targetPosition.y);
+  case SDK.ReplaceCardFromHandAction.type:
+    var player = gameSession.getPlayerById(pseudoAction.playerId);
+    return player.actionReplaceCardFromHand(pseudoAction.handIndex);
+  case SDK.EndTurnAction.type:
+    return gameSession.actionEndTurn();
+  case SDK.PlayCardAction.type:
+    var player = gameSession.getPlayerById(pseudoAction.playerId);
+    var cardWaitingForFollowups = gameSession.getValidatorFollowup().getCardWaitingForFollowups();
+    var currentFollowupCard = cardWaitingForFollowups.getCurrentFollowupCard();
+    var { targetPosition } = pseudoAction;
+    return player.actionPlayFollowup(currentFollowupCard, targetPosition.x, targetPosition.y);
+  case SDK.DrawStartingHandAction.type:
+    var player = gameSession.getPlayerById(pseudoAction.playerId);
+    return player.actionDrawStartingHand(pseudoAction.mulliganIndices);
   }
 
   throw new Error(`Cannot generate action for pseudo action type ${pseudoAction.actionType}`);
@@ -2126,30 +2126,30 @@ var _buildActionsAndBranchFromProtoAction = function (gameSession, protoAction, 
     }
 
     switch (protoAction.actionType) {
-      case SDK.AttackAction.type:
-        // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building attack action for card " + cardInBranchedSession.getLogName() + " attacking unit " + gameSessionBranched.getBoard().getUnitAtPosition(position).getLogName());
-        actions.push(cardInBranchedSession.actionAttackEntityAtPosition(position));
-        break;
-      case SDK.MoveAction.type:
-        // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building move action for card " + cardInBranchedSession.getLogName() + " moving to " + position.x + ", " + position.y);
-        actions.push(cardInBranchedSession.actionMove(position));
-        break;
-      case SDK.PlayCardFromHandAction.type:
-        var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
-        var indexOfCard = myPlayerBranched.getDeck().getCardsInHand().indexOf(cardInBranchedSession);
-        // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayCardFromHand for card at index " + indexOfCard + " to " + position.x + ", " + position.y + ". Card is " + myPlayerBranched.getDeck().getCardInHandAtIndex(indexOfCard).getLogName());
-        actions.push(myPlayerBranched.actionPlayCardFromHand(indexOfCard, position.x, position.y));
-        break;
-      case SDK.PlayCardAction.type:
-        var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
-        // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayFollowup for followupcard " + cardInBranchedSession.getLogName() + " to " + position.x + ", " + position.y);
-        actions.push(myPlayerBranched.actionPlayFollowup(cardInBranchedSession, position.x, position.y));
-        break;
-      case SDK.PlaySignatureCardAction.type:
-        var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
-        // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayFollowup for followupcard " + cardInBranchedSession.getLogName() + " to " + position.x + ", " + position.y);
-        actions.push(myPlayerBranched.actionPlaySignatureCard(position.x, position.y));
-        break;
+    case SDK.AttackAction.type:
+      // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building attack action for card " + cardInBranchedSession.getLogName() + " attacking unit " + gameSessionBranched.getBoard().getUnitAtPosition(position).getLogName());
+      actions.push(cardInBranchedSession.actionAttackEntityAtPosition(position));
+      break;
+    case SDK.MoveAction.type:
+      // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building move action for card " + cardInBranchedSession.getLogName() + " moving to " + position.x + ", " + position.y);
+      actions.push(cardInBranchedSession.actionMove(position));
+      break;
+    case SDK.PlayCardFromHandAction.type:
+      var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
+      var indexOfCard = myPlayerBranched.getDeck().getCardsInHand().indexOf(cardInBranchedSession);
+      // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayCardFromHand for card at index " + indexOfCard + " to " + position.x + ", " + position.y + ". Card is " + myPlayerBranched.getDeck().getCardInHandAtIndex(indexOfCard).getLogName());
+      actions.push(myPlayerBranched.actionPlayCardFromHand(indexOfCard, position.x, position.y));
+      break;
+    case SDK.PlayCardAction.type:
+      var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
+      // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayFollowup for followupcard " + cardInBranchedSession.getLogName() + " to " + position.x + ", " + position.y);
+      actions.push(myPlayerBranched.actionPlayFollowup(cardInBranchedSession, position.x, position.y));
+      break;
+    case SDK.PlaySignatureCardAction.type:
+      var myPlayerBranched = gameSessionBranched.getCurrentPlayer();
+      // Logger.module("AI").debug("[G:" + gameSessionBranched.gameId + "] _buildActionsAndBranchFromProtoAction() => building actionPlayFollowup for followupcard " + cardInBranchedSession.getLogName() + " to " + position.x + ", " + position.y);
+      actions.push(myPlayerBranched.actionPlaySignatureCard(position.x, position.y));
+      break;
     }
   });
   return actions;

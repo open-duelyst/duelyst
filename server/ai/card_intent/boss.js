@@ -1,3 +1,4 @@
+const CONFIG = require('app/common/config');
 const Cards = require('app/sdk/cards/cardsLookupComplete');
 const CardIntentType = require('./card_intent_type');
 const CardTargetType = require('./card_target_type');
@@ -5,7 +6,6 @@ const CardPhaseType = require('./card_phase_type');
 const CardImmunity = require('./card_immunity');
 
 const Boss = {};
-const CONFIG = require('app/common/config');
 
 Boss[Cards.BossSpell.LaceratingFrost] = [
   {

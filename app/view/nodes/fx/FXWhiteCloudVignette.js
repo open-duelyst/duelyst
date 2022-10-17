@@ -45,15 +45,15 @@ var FXWhiteCloudVignette = FXSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'timeScale':
-        this.timeScale = value;
-        break;
-      case 'vignetteAmount':
-        this.vignetteAmount = value;
-        break;
-      default:
-        FXSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'timeScale':
+      this.timeScale = value;
+      break;
+    case 'vignetteAmount':
+      this.vignetteAmount = value;
+      break;
+    default:
+      FXSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });

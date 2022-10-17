@@ -108,23 +108,23 @@ var FXGlowImageMap = BaseSprite.extend({
 
   updateTweenAction(value, key) {
     switch (key) {
-      case 'timeScale':
-        this.setTimeScale(value);
-        break;
-      case 'glowColor':
-        var invValue = 1.0 - value;
-        var src = this._sourceGlowColor;
-        var tgt = this._targetGlowColor;
-        var glowColor = {
-          r: src.r * invValue + tgt.r * value,
-          g: src.g * invValue + tgt.g * value,
-          b: src.b * invValue + tgt.b * value,
-        };
-        this.setGlowColor(glowColor);
-        break;
-      default:
-        BaseSprite.prototype.updateTweenAction.call(this, value, key);
-        break;
+    case 'timeScale':
+      this.setTimeScale(value);
+      break;
+    case 'glowColor':
+      var invValue = 1.0 - value;
+      var src = this._sourceGlowColor;
+      var tgt = this._targetGlowColor;
+      var glowColor = {
+        r: src.r * invValue + tgt.r * value,
+        g: src.g * invValue + tgt.g * value,
+        b: src.b * invValue + tgt.b * value,
+      };
+      this.setGlowColor(glowColor);
+      break;
+    default:
+      BaseSprite.prototype.updateTweenAction.call(this, value, key);
+      break;
     }
   },
 });
