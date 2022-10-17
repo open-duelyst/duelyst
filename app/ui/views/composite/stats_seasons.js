@@ -5,12 +5,12 @@ var StatsSeasonsCompositeViewTempl = require('app/ui/templates/composite/stats_s
 
 var StatsSeasonsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  className: "stats-seasons",
+  className: 'stats-seasons',
 
   template: StatsSeasonsCompositeViewTempl,
 
   childView: StatsSeasonRankItemView,
-  childViewContainer: ".seasons"
+  childViewContainer: '.seasons',
 
 });
 

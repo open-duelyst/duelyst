@@ -1,4 +1,5 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
+
 'use strict';
 
 var Logger = require('app/common/logger');
@@ -12,19 +13,19 @@ var QuestsManager = require('app/ui/managers/quests_manager');
 var InventoryManager = require('app/ui/managers/inventory_manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
 var NotificationsManager = require('app/ui/managers/notifications_manager');
-var Animations = require("app/ui/views/animations");
-var BuddiesLayout = require('./../layouts/buddies');
-var SettingsMenuView = require('./settings_menu');
+var Animations = require('app/ui/views/animations');
 var ProgressionManager = require('app/ui/managers/progression_manager');
-var ProfileManager = require("app/ui/managers/profile_manager");
+var ProfileManager = require('app/ui/managers/profile_manager');
+var BuddiesLayout = require('../layouts/buddies');
+var SettingsMenuView = require('./settings_menu');
 
 /**
  * Basic utility menu that shows buttons for settings and buddies/chat.
  */
 var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
 
-  id: "app-utility-menu",
-  className: "utility-menu",
+  id: 'app-utility-menu',
+  className: 'utility-menu',
 
   template: UtilityMenuTmpl,
 
@@ -40,26 +41,26 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
   /* endregion LAYOUT */
 
   onBeforeRender: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-    this.$el.find("[data-toggle='popover']").popover("destroy");
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
+    this.$el.find('[data-toggle=\'popover\']').popover('destroy');
   },
 
-  onRender: function() {
+  onRender: function () {
     // check login state
-    if (ProfileManager.getInstance().get("id")) {
+    if (ProfileManager.getInstance().get('id')) {
       this.onLoggedInRender();
     } else {
       this.onLoggedOutRender();
     }
 
-    this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip({ container: CONFIG.OVERLAY_SELECTOR, trigger: 'hover' });
 
     this.onResize();
   },
 
-  onShow: function() {
+  onShow: function () {
     // check login state
-    if (ProfileManager.getInstance().get("id")) {
+    if (ProfileManager.getInstance().get('id')) {
       this.onLoggedInShow();
     } else {
       this.onLoggedOutShow();
@@ -76,27 +77,27 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
     this.animateReveal();
   },
 
-  animateReveal: function() {
-    var buttons = this.$el.find(".animate-reveal:visible");
-    var delay = 400
-    for (var i=0; i<buttons.length; i++) {
-      $(buttons[i]).css('opacity',0)
+  animateReveal: function () {
+    var buttons = this.$el.find('.animate-reveal:visible');
+    var delay = 400;
+    for (var i = 0; i < buttons.length; i++) {
+      $(buttons[i]).css('opacity', 0);
       buttons[i].animate([
-        {"opacity": 0.0, transform: "translateY(10px)"},
-        {"opacity": 1.0, transform: "translateY(0px)"}
+        { opacity: 0.0, transform: 'translateY(10px)' },
+        { opacity: 1.0, transform: 'translateY(0px)' },
       ], {
         duration: 200,
         delay: delay,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
-      })
-      delay += 100
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
+      });
+      delay += 100;
     }
   },
 
   onDestroy: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
-    this.$el.find("[data-toggle='popover']").popover("destroy");
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
+    this.$el.find('[data-toggle=\'popover\']').popover('destroy');
   },
 
   onLoggedIn: function () {
@@ -114,11 +115,11 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
       if (this.isDestroyed) return; // this view was destroyed
 
       // listen for unread messages
-      this.listenTo(ChatManager.getInstance().conversations, "change:unread remove", this.onUpdateUnreadConversations);
-      this.listenTo(ChatManager.getInstance().getBuddiesCollection(), "presence_change", this.onUpdateFriendCount);
+      this.listenTo(ChatManager.getInstance().conversations, 'change:unread remove', this.onUpdateUnreadConversations);
+      this.listenTo(ChatManager.getInstance().getBuddiesCollection(), 'presence_change', this.onUpdateFriendCount);
 
       // listen for chat manager disconnect
-      this.listenToOnce(ChatManager.getInstance(), "before_disconnect", function () {
+      this.listenToOnce(ChatManager.getInstance(), 'before_disconnect', function () {
         this.stopListening(ChatManager.getInstance().conversations);
         this.stopListening(ChatManager.getInstance().getBuddiesCollection());
       });
@@ -131,23 +132,23 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
   },
 
   onLoggedInRender: function () {
-    ChatManager.getInstance().onReady(function(){
+    ChatManager.getInstance().onReady(function () {
       if (this.isDestroyed) return; // this view was destroyed
 
       if (ChatManager.getInstance().getConnected()) {
         this.onUpdateUnreadConversations();
         this.onUpdateFriendCount();
       }
-    }.bind(this))
-    this.$el.find(".buddy-list").on("click", this.toggleBuddyList.bind(this));
-    this.$el.find(".settings").on("click", this.toggleSettingsMenu.bind(this));
+    }.bind(this));
+    this.$el.find('.buddy-list').on('click', this.toggleBuddyList.bind(this));
+    this.$el.find('.settings').on('click', this.toggleSettingsMenu.bind(this));
   },
 
   onLoggedOutRender: function () {
     this.updateUnreadConversations(0);
     this.updateFriendCount(0);
-    this.$el.find(".buddy-list").addClass("disabled");
-    this.$el.find(".settings").addClass("disabled");
+    this.$el.find('.buddy-list').addClass('disabled');
+    this.$el.find('.settings').addClass('disabled');
   },
 
   onUpdateUnreadConversations: function () {
@@ -156,11 +157,11 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
 
   updateUnreadConversations: function (unreadConversationsCount) {
     if (unreadConversationsCount == null) { unreadConversationsCount = 0; }
-    this.$el.find(".unread-conversation-count").text(unreadConversationsCount);
+    this.$el.find('.unread-conversation-count').text(unreadConversationsCount);
     if (unreadConversationsCount > 0) {
-      this.$el.find(".unread-conversation-block").removeClass("hide");
+      this.$el.find('.unread-conversation-block').removeClass('hide');
     } else {
-      this.$el.find(".unread-conversation-block").addClass("hide");
+      this.$el.find('.unread-conversation-block').addClass('hide');
     }
   },
 
@@ -169,16 +170,16 @@ var UtilityMenuItemView = Backbone.Marionette.CompositeView.extend({
   },
 
   updateFriendCount: function (onlineBuddyCount) {
-    this.$el.find(".buddy-count").text(onlineBuddyCount);
+    this.$el.find('.buddy-count').text(onlineBuddyCount);
   },
 
-  toggleBuddyList: function() {
+  toggleBuddyList: function () {
     NavigationManager.getInstance().toggleModalViewByClass(BuddiesLayout, null);
   },
 
-  toggleSettingsMenu: function() {
-    NavigationManager.getInstance().toggleModalViewByClass(SettingsMenuView, {model: ProfileManager.getInstance().profile});
-  }
+  toggleSettingsMenu: function () {
+    NavigationManager.getInstance().toggleModalViewByClass(SettingsMenuView, { model: ProfileManager.getInstance().profile });
+  },
 
 });
 

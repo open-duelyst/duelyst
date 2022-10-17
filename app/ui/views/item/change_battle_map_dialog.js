@@ -6,13 +6,13 @@ var SDK = require('app/sdk');
 var InventoryManager = require('app/ui/managers/inventory_manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
 var ProfileManager = require('app/ui/managers/profile_manager');
-var FormPromptDialogItemView = require('./form_prompt_dialog');
 var ChangeBattleMapItemViewTempl = require('app/ui/templates/item/change_battle_map_dialog.hbs');
-var i18next = require("i18next")
+var i18next = require('i18next');
+var FormPromptDialogItemView = require('./form_prompt_dialog');
 
 var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
 
-  id: "app-change-battlemap",
+  id: 'app-change-battlemap',
 
   template: ChangeBattleMapItemViewTempl,
 
@@ -20,35 +20,35 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
   tooltipElement: null,
   _tooltipTimeoutId: null,
 
-  events: function(){
-    return _.extend(FormPromptDialogItemView.prototype.events,{
-      "click .clear-selection": "onClearSelectedBattleMap"
-    })
+  events: function () {
+    return _.extend(FormPromptDialogItemView.prototype.events, {
+      'click .clear-selection': 'onClearSelectedBattleMap',
+    });
   },
 
   initialize: function () {
     this._bindCosmetics();
   },
 
-  onShow: function() {
+  onShow: function () {
     FormPromptDialogItemView.prototype.onShow.apply(this, arguments);
 
     // listen to events
-    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(),"add remove",this.onCosmeticsCollectionChange);
+    this.listenTo(InventoryManager.getInstance().getCosmeticsCollection(), 'add remove', this.onCosmeticsCollectionChange);
 
     // show tooltip
-    this.showTooltip(this.$el.find(".cosmetic:first"));
+    this.showTooltip(this.$el.find('.cosmetic:first'));
   },
 
   onRender: function () {
     FormPromptDialogItemView.prototype.onRender.apply(this, arguments);
 
     // highlight selected battlemap
-    var battlemapId = ProfileManager.getInstance().get("battle_map_id");
+    var battlemapId = ProfileManager.getInstance().get('battle_map_id');
     if (battlemapId != null) {
-      this.$el.find(".cosmetic[data-cosmetic-id='" + battlemapId + "']").addClass("active");
+      this.$el.find('.cosmetic[data-cosmetic-id=\'' + battlemapId + '\']').addClass('active');
     } else {
-      this.$el.find(".clear-selection").addClass("active");
+      this.$el.find('.clear-selection').addClass('active');
     }
   },
 
@@ -56,8 +56,8 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
     this.stopShowingTooltip();
   },
 
-  onCosmeticsCollectionChange: function(cosmeticModel) {
-    var cosmeticId = cosmeticModel != null && cosmeticModel.get("cosmetic_id");
+  onCosmeticsCollectionChange: function (cosmeticModel) {
+    var cosmeticId = cosmeticModel != null && cosmeticModel.get('cosmetic_id');
     var cosmeticData = SDK.CosmeticsFactory.cosmeticForIdentifier(cosmeticId);
     if (cosmeticData != null && cosmeticData.typeId === SDK.CosmeticsTypeLookup.BattleMap) {
       this._bindCosmetics();
@@ -85,25 +85,25 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
     }
 
     // set as non-serialized property of model in case model is firebase
-    this.model.set("_cosmetics", visibleCosmetics);
+    this.model.set('_cosmetics', visibleCosmetics);
   },
 
   updateValidState: function () {
     this.isValid = this._cosmeticId != null;
   },
 
-  onClickSubmit: function(event) {
-    var cosmeticId = $(event.currentTarget).data("cosmetic-id");
+  onClickSubmit: function (event) {
+    var cosmeticId = $(event.currentTarget).data('cosmetic-id');
     if (InventoryManager.getInstance().getCanPurchaseCosmeticById(cosmeticId)) {
       // buy profile icon
       var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(cosmeticId);
       return NavigationManager.getInstance().showDialogForConfirmPurchase(productData)
         .bind(this)
         .then(function () {
-          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
+          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({ model: new Backbone.Model() }));
         })
         .catch(function () {
-          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({model: new Backbone.Model()}));
+          NavigationManager.getInstance().showDialogView(new ChangeBattleMapItemView({ model: new Backbone.Model() }));
         });
     } else if (InventoryManager.getInstance().getCanUseCosmeticById(cosmeticId)) {
       this._cosmeticId = cosmeticId;
@@ -111,12 +111,12 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
     }
   },
 
-  onClearSelectedBattleMap: function() {
+  onClearSelectedBattleMap: function () {
     this._cosmeticId = null;
     this.onSubmit();
   },
 
-  onSubmit: function() {
+  onSubmit: function () {
     FormPromptDialogItemView.prototype.onSubmit.apply(this, arguments);
 
     this.stopShowingTooltip();
@@ -124,31 +124,31 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
     Session.changeBattlemap(this._cosmeticId)
       .bind(this)
       .then(function (res) {
-        this.onSuccess(res)
+        this.onSuccess(res);
       })
       .catch(function (e) {
       // onError expects a string not an actual error
-        this.onError(e.innerMessage || e.message)
-      })
+        this.onError(e.innerMessage || e.message);
+      });
   },
 
-  showTooltip:function(element) {
+  showTooltip: function (element) {
     if (this.tooltipElement) {
-      this.tooltipElement.tooltip("destroy");
+      this.tooltipElement.tooltip('destroy');
     }
     this.tooltipElement = element;
     this._tooltipTimeoutId = setTimeout(function () {
       this._tooltipTimeoutId = null;
       this.tooltipElement.tooltip({
-        container: "#app-change-battlemap",
+        container: '#app-change-battlemap',
         animation: false,
         html: true,
-        title: "<p>"+i18next.t("game_setup.battle_map_choose_tooltip")+"</p>",
-        template: "<div class='tooltip change-battlemap-popover'><div class='tooltip-arrow'></div><div class='tooltip-inner'></div></div>",
-        placement: "left",
-        trigger: "manual"
+        title: '<p>' + i18next.t('game_setup.battle_map_choose_tooltip') + '</p>',
+        template: '<div class=\'tooltip change-battlemap-popover\'><div class=\'tooltip-arrow\'></div><div class=\'tooltip-inner\'></div></div>',
+        placement: 'left',
+        trigger: 'manual',
       });
-      this.tooltipElement.tooltip("show");
+      this.tooltipElement.tooltip('show');
     }.bind(this), 1000);
   },
 
@@ -158,9 +158,9 @@ var ChangeBattleMapItemView = FormPromptDialogItemView.extend({
       this._tooltipTimeoutId = null;
     }
     if (this.tooltipElement) {
-      this.tooltipElement.tooltip("destroy")
+      this.tooltipElement.tooltip('destroy');
     }
-  }
+  },
 
 });
 

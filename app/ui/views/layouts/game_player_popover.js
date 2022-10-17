@@ -1,4 +1,5 @@
-//pragma PKGS: game
+// pragma PKGS: game
+
 'use strict';
 
 var SDK = require('app/sdk');
@@ -7,8 +8,8 @@ var CONFIG = require('app/common/config');
 var RSX = require('app/data/resources');
 var EmotesListCompositeView = require('app/ui/views/composite/emotes-list');
 var EmoteItemView = require('app/ui/views/item/emote');
-var TransitionRegion = require("app/ui/views/regions/transition");
-var InventoryManager = require("app/ui/managers/inventory_manager");
+var TransitionRegion = require('app/ui/views/regions/transition');
+var InventoryManager = require('app/ui/managers/inventory_manager');
 var PlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_player_popover.hbs');
 
 /**
@@ -17,17 +18,17 @@ var PlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_player_pop
  */
 var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
 
-  className: "player-popover",
+  className: 'player-popover',
 
   template: PlayerPopoverLayoutTempl,
 
   regions: {
-    emotesListRegion: {selector: ".emotes-list-region", regionClass: TransitionRegion},
-    emoteRegion: {selector: ".emote-region", regionClass: TransitionRegion}
+    emotesListRegion: { selector: '.emotes-list-region', regionClass: TransitionRegion },
+    emoteRegion: { selector: '.emote-region', regionClass: TransitionRegion },
   },
 
   ui: {
-    $playerPopoverContainer: ".player-popover-container"
+    $playerPopoverContainer: '.player-popover-container',
   },
 
   /* region MARIONETTE EVENTS */
@@ -43,7 +44,7 @@ var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
    * @returns {Player} sdk player
    */
   getSdkPlayer: function () {
-    return SDK.GameSession.getInstance().getPlayerById(this.model.get("playerId"));
+    return SDK.GameSession.getInstance().getPlayerById(this.model.get('playerId'));
   },
 
   /* endregion GETTERS / SETTERS */
@@ -57,19 +58,19 @@ var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
 
   showOptions: function () {
     if (!this.getIsShowingOptions()) {
-      this.ui.$playerPopoverContainer.addClass("active");
+      this.ui.$playerPopoverContainer.addClass('active');
       // defer adding click anywhere listener to avoid reacting to click that may have caused this to show
       if (this.onClickAnywhereToHideOptionsBound == null) {
         this.onClickAnywhereToHideOptionsBound = this.onClickAnywhereToHideOptions.bind(this);
       }
       _.defer(function () {
-        $(CONFIG.GAME_SELECTOR + ", " + CONFIG.GAMECANVAS_SELECTOR).on("click", this.onClickAnywhereToHideOptionsBound);
+        $(CONFIG.GAME_SELECTOR + ', ' + CONFIG.GAMECANVAS_SELECTOR).on('click', this.onClickAnywhereToHideOptionsBound);
       }.bind(this));
     }
   },
 
   getIsShowingOptions: function () {
-    return this.ui.$playerPopoverContainer instanceof $ && this.ui.$playerPopoverContainer.hasClass("active");
+    return this.ui.$playerPopoverContainer instanceof $ && this.ui.$playerPopoverContainer.hasClass('active');
   },
 
   hide: function () {
@@ -79,11 +80,11 @@ var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
 
   hideOptions: function () {
     if (this.onClickAnywhereToHideOptionsBound != null) {
-      $(CONFIG.GAME_SELECTOR + ", " + CONFIG.GAMECANVAS_SELECTOR).off("click", this.onClickAnywhereToHideOptionsBound);
+      $(CONFIG.GAME_SELECTOR + ', ' + CONFIG.GAMECANVAS_SELECTOR).off('click', this.onClickAnywhereToHideOptionsBound);
       this.onClickAnywhereToHideOptionsBound = null;
     }
     if (this.ui.$playerPopoverContainer instanceof $) {
-      this.ui.$playerPopoverContainer.removeClass("active");
+      this.ui.$playerPopoverContainer.removeClass('active');
     }
   },
 
@@ -108,10 +109,10 @@ var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
     if (emotesData != null && emotesData.enabled) {
       // create emote view
       var emoteModel = new Backbone.Model(emotesData);
-      emoteModel.set("_canUse", true);
-      emoteModel.set("_canPurchase", false);
-      var emoteView = new EmoteItemView({model: emoteModel});
-      emoteView.listenTo(emoteView, "select", this.stopShowingEmote.bind(this));
+      emoteModel.set('_canUse', true);
+      emoteModel.set('_canPurchase', false);
+      var emoteView = new EmoteItemView({ model: emoteModel });
+      emoteView.listenTo(emoteView, 'select', this.stopShowingEmote.bind(this));
       this.emoteRegion.show(emoteView);
 
       // delay and then stop showing
@@ -129,9 +130,9 @@ var PlayerPopoverLayout = Backbone.Marionette.LayoutView.extend({
         this.emoteRegion.empty();
       }
     }
-  }
+  },
 
-  /* endregion EMOTES*/
+  /* endregion EMOTES */
 
 });
 

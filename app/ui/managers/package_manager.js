@@ -56,7 +56,6 @@ _PackageManager.current = _PackageManager.getInstance;
  * myInstance.disableAndRemoveResourceRequests();
  */
 _PackageManager.injectClassWithResourceRequests = function (cls) {
-
   // properties
   cls.prototype._requiredResourcesRequestId = null;
   cls.prototype._requiredResources = null;
@@ -128,7 +127,7 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
    */
   cls.prototype.getRequiredResourcesRequestId = function () {
     if (this._requiredResourcesRequestId == null) {
-      this._requiredResourcesRequestId = "require_resources_" + UtilsJavascript.generateIncrementalId();
+      this._requiredResourcesRequestId = 'require_resources_' + UtilsJavascript.generateIncrementalId();
     }
     return this._requiredResourcesRequestId;
   };
@@ -161,7 +160,7 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
    * @returns {Promise} resolve called when load completes with request id or false if request removed before loading
    */
   cls.prototype.addResourceRequest = function (requestId, packageId, resources) {
-    if (requestId == null) { throw new Error("addResourceRequest -> invalid requestId"); }
+    if (requestId == null) { throw new Error('addResourceRequest -> invalid requestId'); }
     if (packageId == null) { packageId = requestId; }
 
     var resourceRequest = this._getOrCreateResourceRequest(requestId);
@@ -180,7 +179,7 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
         this._queuedResourceRequestsById[requestId] = resourceRequest;
       }
     } else {
-      Logger.module("RESOURCES").warn("addResourceRequest -> duplicate resource request: " + requestId + " w/ packageId " + packageId);
+      Logger.module('RESOURCES').warn('addResourceRequest -> duplicate resource request: ' + requestId + ' w/ packageId ' + packageId);
     }
 
     return resourceRequest.promise;
@@ -202,7 +201,7 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
         promise: null,
         resolve: null,
         resources: [],
-        reject: null
+        reject: null,
       };
       resourceRequest.promise = new Promise(function (resolve, reject) {
         resourceRequest.resolve = resolve;
@@ -336,17 +335,17 @@ _PackageManager.injectClassWithResourceRequests = function (cls) {
 
 module.exports = _PackageManager;
 
-var _ = require("underscore");
-var Promise = require("bluebird");
-var CONFIG = require("app/common/config");
+var _ = require('underscore');
+var Promise = require('bluebird');
+var CONFIG = require('app/common/config');
 var EventBus = require('app/common/eventbus');
 var EVENTS = require('app/common/event_types');
 var UtilsResources = require('app/common/utils/utils_resources');
-var audio_engine = require("app/audio/audio_engine");
+var audio_engine = require('app/audio/audio_engine');
 var CCInjections = require('app/view/extensions/CCInjections');
 var NodeInjections = require('app/view/extensions/NodeInjections');
 var RenderingInjections = require('app/view/extensions/RenderingInjections');
-var PKGS = require("app/data/packages");
+var PKGS = require('app/data/packages');
 var Factions = require('app/sdk/cards/factionsLookup');
 var Manager = require('app/ui/managers/manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
@@ -371,7 +370,7 @@ var PackageManager = Manager.extend({
 
   /* region INITIALIZE */
 
-  initialize: function(options) {
+  initialize: function (options) {
     this._activeMajorMinorIds = [];
     this._ids = [];
     this._loadingMajorMinorIds = [];
@@ -391,7 +390,7 @@ var PackageManager = Manager.extend({
 
   /* region CONNECT */
 
-  onBeforeConnect: function() {
+  onBeforeConnect: function () {
     Manager.prototype.onBeforeConnect.call(this);
     // this manager is not tied to login
     this.stopListening(EventBus.getInstance(), EVENTS.session_logged_out, this.disconnect);
@@ -407,7 +406,7 @@ var PackageManager = Manager.extend({
    * @param {Integer} id
    * @returns {LoadPackage|null}
    */
-  getPackageById: function(id) {
+  getPackageById: function (id) {
     return this._packagesById[id];
   },
 
@@ -503,8 +502,8 @@ var PackageManager = Manager.extend({
                   resourceOptions.type = UtilsResources.getExt(resourcePath);
                   resourceOptions.referencePath = resourcePath;
                   if (resourceOptions.resourceScale != null && resourceOptions.resourceScale !== 1.0) {
-                    var indexOfExt = resourcePath.lastIndexOf(".");
-                    resourceOptions.src = resourcePath.substring(0, indexOfExt) + "@" + resourceOptions.resourceScale + "x" + resourcePath.substring(indexOfExt);
+                    var indexOfExt = resourcePath.lastIndexOf('.');
+                    resourceOptions.src = resourcePath.substring(0, indexOfExt) + '@' + resourceOptions.resourceScale + 'x' + resourcePath.substring(indexOfExt);
                   } else {
                     resourceOptions.src = resourcePath;
                   }
@@ -600,7 +599,7 @@ var PackageManager = Manager.extend({
 
           // setup promise for all other packages loading these resources
           var loadPromiseForResources = Promise.all(loadPromisesForResources);
-          //console.log("LOAD", pkg, "(", loadPromisesForResources.length, "other packages loading some/all of resources) -> resourcesToLoad", resourcesToLoad, "resourcePathsToLoad", resourcePathsToLoad);
+          // console.log("LOAD", pkg, "(", loadPromisesForResources.length, "other packages loading some/all of resources) -> resourcesToLoad", resourcesToLoad, "resourcePathsToLoad", resourcePathsToLoad);
           // setup load parameters
           var loadCompleted = false;
           var onLoadComplete = function () {
@@ -682,7 +681,7 @@ var PackageManager = Manager.extend({
 
         // wait for resolve then unload all resources
         return pkgPromise.then(function () {
-          //console.log("UNLOAD", pkg);
+          // console.log("UNLOAD", pkg);
           // unload package
 
           var unmapResourcePath = function (resourcePath) {
@@ -834,7 +833,7 @@ var PackageManager = Manager.extend({
       if (img != null) {
         var texture = cc.textureCache.getTextureForKey(img);
         if (texture == null) {
-          throw new Error("PackageManager._addResourcesToCachesByResourceData -> images must be loaded before adding to cache: " + img);
+          throw new Error('PackageManager._addResourcesToCachesByResourceData -> images must be loaded before adding to cache: ' + img);
         }
       }
 
@@ -1344,7 +1343,7 @@ var PackageManager = Manager.extend({
           // activate new major package as soon as new load begins
           this.activateLoadingMajorPackage(),
           // unload previous major package as soon as new load begins
-          this.unloadUnusedMajorMinorPackages()
+          this.unloadUnusedMajorMinorPackages(),
         ]);
       }.bind(this))
         .then(function () {
@@ -1361,9 +1360,9 @@ var PackageManager = Manager.extend({
     return loadPromise;
   },
 
-  _removePreloadingUI: function() {
+  _removePreloadingUI: function () {
     if (this._$preloading == null) {
-      this._$preloading = $("#app-preloading").addClass("out").one("transitionend", function () { this._$preloading.remove(); }.bind(this));
+      this._$preloading = $('#app-preloading').addClass('out').one('transitionend', function () { this._$preloading.remove(); }.bind(this));
     }
   },
 
@@ -1397,7 +1396,7 @@ var PackageManager = Manager.extend({
     }
 
     // load major game package with all minor packages
-    return this.loadMajorPackage("game", gameMinorPkgIds);
+    return this.loadMajorPackage('game', gameMinorPkgIds);
   },
 
   /**
@@ -1406,21 +1405,21 @@ var PackageManager = Manager.extend({
    * @returns {Promise}
    */
   activateGamePackage: function () {
-    if (this.getLoadingMajorPackageId() == "game") {
+    if (this.getLoadingMajorPackageId() == 'game') {
       return Promise.all([
         // activate new major package and unload previous
         // activating flags all previously active major/minor packages as unused
         this.activateLoadingMajorPackage(),
-        this.unloadUnusedMajorMinorPackages()
+        this.unloadUnusedMajorMinorPackages(),
       ]);
     } else {
-      return Promise.reject("Loading major package is not game!");
+      return Promise.reject('Loading major package is not game!');
     }
   },
 
   injectClassWithResourceRequests: function (cls) {
 
-  }
+  },
 
   /* endregion UTILITY */
 
@@ -1455,7 +1454,7 @@ LoadPackage.prototype = {
   },
   getResources: function () {
     return this._resources;
-  }
+  },
 };
 
 /* endregion LOAD PACKAGE */
@@ -1483,7 +1482,7 @@ var NonAllocatingLoader = {
       Promise.map(resources, function (resource) {
         var url;
         if (resource.type) {
-          url = resource.src ? resource.src : (resource.name + "." + resource.type.toLowerCase());
+          url = resource.src ? resource.src : (resource.name + '.' + resource.type.toLowerCase());
         } else {
           url = resource;
         }
@@ -1491,12 +1490,12 @@ var NonAllocatingLoader = {
           // update progress as soon as get request resolves
           numLoaded++;
           if (progressCallback) { progressCallback(url, numLoading, numLoaded); }
-        }).catch(function(errorMessage){
+        }).catch(function (errorMessage) {
           // log errors for now and do nothing
           console.log(errorMessage);
         });
       }.bind(this), { concurrency: 10000 })
-        .then(function(){
+        .then(function () {
         // for now, we want to complete the load whether all resources get loaded or not
         // we don't need to retry on errors because this is loading without allocation
         // i.e. something is better than nothing
@@ -1505,30 +1504,30 @@ var NonAllocatingLoader = {
     }
   },
   loadUrl: function (url) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
-      xhr.responseType = UtilsResources.getExtIsForAudio(url) ? "arraybuffer" : "blob";
+      xhr.responseType = UtilsResources.getExtIsForAudio(url) ? 'arraybuffer' : 'blob';
 
-      xhr.onload = function() {
+      xhr.onload = function () {
         // this is called even on 404 etc so check the status
         if (xhr.status == 200) {
           // status is okay
           resolve();
         } else {
           // not okay, reject with the status text
-          reject("[LOAD ERROR] " + url + " -> " + xhr.statusText);
+          reject('[LOAD ERROR] ' + url + ' -> ' + xhr.statusText);
         }
       };
 
       // handle network errors
-      xhr.onerror = function() {
-        reject("[NETWORK ERROR] " + url);
+      xhr.onerror = function () {
+        reject('[NETWORK ERROR] ' + url);
       };
 
       xhr.send();
     });
-  }
+  },
 };
 
 /* endregion NON-ALLOCATING LOADER */
@@ -1570,13 +1569,13 @@ Backbone.Marionette.View.prototype.destroy = function () {
  * Cocos image loader.
  */
 var ImageLoader = {
-  load : function(realUrl, url, options, cb){
+  load: function (realUrl, url, options, cb) {
     // get reference path
     var referencePath = (options && options.referencePath) || url;
 
     // load url
-    cc.loader.loadImg(realUrl, function(err, img){
-      if(err) return cb(err);
+    cc.loader.loadImg(realUrl, function (err, img) {
+      if (err) return cb(err);
       // add to loader cache
       cc.loader.cache[url] = img;
 
@@ -1597,9 +1596,9 @@ var ImageLoader = {
         cc.textureCache.releaseImageFromCPU(referencePath);
       }
     });
-  }
+  },
 };
-cc.loader.register(["png", "jpg", "bmp","jpeg","gif", "ico"], ImageLoader);
+cc.loader.register(['png', 'jpg', 'bmp', 'jpeg', 'gif', 'ico'], ImageLoader);
 
 /* endregion COCOS2D LOADERS */
 
@@ -1612,7 +1611,7 @@ cc.loader.register(["png", "jpg", "bmp","jpeg","gif", "ico"], ImageLoader);
 cc.textureCache.releaseImageFromCPU = function (resourcePath) {
   var texture = cc.textureCache._textures[resourcePath];
   if (texture != null && texture._htmlElementObj != null) {
-    texture._htmlElementObj.src = "";
+    texture._htmlElementObj.src = '';
     texture._htmlElementObj = null;
   }
   cc.loader.release(resourcePath);
@@ -1657,7 +1656,7 @@ cc.textureCache.addImage = function (url, cb, target) {
   // this should never be the case for us, so we'll throw an error
   // TODO: appears loader is not loading correctly
   // throw new Error("cc.textureCache.addImage -> images must be loaded before adding to cache: " + url);
-  
+
   tex = locTexs[url] = new cc.Texture2D();
   tex.url = url;
   var loadFunc = cc.loader._checkIsImageURL(url) ? cc.loader.load : cc.loader.loadImg;
@@ -1787,8 +1786,8 @@ cc.Texture2D.prototype.handleLoadedTexture = function (options) {
   this._hasPremultipliedAlpha = false;
   this._hasMipmaps = false;
 
-  //dispatch load event to listener.
-  this.dispatchEvent("load");
+  // dispatch load event to listener.
+  this.dispatchEvent('load');
 };
 
 cc.Texture2D.prototype.getGLTexture = function () {
@@ -1887,7 +1886,7 @@ var CubemapTexture = cc.Texture2D.extend({
       this._webTextureObj = null;
     }
     cc.loader.release(this.url);
-  }
+  },
 });
 
 /* endregion TEXTURE */
@@ -2011,7 +2010,6 @@ cc.Sprite.prototype.setTexture = function () {
       }
     }
   }
-
 };
 
 /* endregion SPRITE */
@@ -2019,7 +2017,7 @@ cc.Sprite.prototype.setTexture = function () {
 /* region AUDIO */
 
 cc.Audio.prototype._super_play_fromResources = cc.Audio.prototype.play;
-cc.Audio.prototype.play = function(){
+cc.Audio.prototype.play = function () {
   // make a strong reference to the audio resource so it doesn't get unloaded too early
   _PackageManager.getInstance().addStrongReferenceToResourcePath(this.src, this.__instanceId);
 
@@ -2027,7 +2025,7 @@ cc.Audio.prototype.play = function(){
 
   if (this._currentSource) {
     var super_onended = this._currentSource.onended;
-    this._currentSource.onended = function(){
+    this._currentSource.onended = function () {
       // remove strong reference to the audio resource so it can be unloaded
       _PackageManager.getInstance().removeStrongReferenceToResourcePath(this.src, this.__instanceId);
 
@@ -2037,7 +2035,7 @@ cc.Audio.prototype.play = function(){
 };
 
 cc.Audio.prototype._super_stop_fromResources = cc.Audio.prototype.stop;
-cc.Audio.prototype.stop = function(){
+cc.Audio.prototype.stop = function () {
   cc.Audio.prototype._super_stop_fromResources.apply(this, arguments);
 
   // remove strong reference to the audio resource so it can be unloaded

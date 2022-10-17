@@ -1,7 +1,8 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
+
 'use strict';
 
-var EVENTS = require("app/common/event_types");
+var EVENTS = require('app/common/event_types');
 var RSX = require('app/data/resources');
 var Animations = require('app/ui/views/animations');
 var audio_engine = require('app/audio/audio_engine');
@@ -10,28 +11,28 @@ var Clipboard = require('clipboard');
 
 var CopyReplayDialogItemView = Backbone.Marionette.ItemView.extend({
 
-  id: "app-copy-replay-link-dialog",
-  className: "dialog prompt-modal",
+  id: 'app-copy-replay-link-dialog',
+  className: 'dialog prompt-modal',
 
   template: Templ,
 
   events: {
-    "click .cancel-dialog": "onCancel"
+    'click .cancel-dialog': 'onCancel',
   },
 
   animateIn: Animations.fadeIn,
   animateOut: Animations.fadeOut,
 
-  initialize: function() {
+  initialize: function () {
     this.model = new Backbone.Model({
-      replayUrl: this.options.replayUrl || "",
-      background: this.options.background
-    })
+      replayUrl: this.options.replayUrl || '',
+      background: this.options.background,
+    });
   },
 
-  onRender: function() {
+  onRender: function () {
     // clipboard
-    new Clipboard("#copy_replay_url_button")
+    new Clipboard('#copy_replay_url_button');
   },
 
   onShow: function () {
@@ -44,11 +45,11 @@ var CopyReplayDialogItemView = Backbone.Marionette.ItemView.extend({
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
   },
 
-  onCancel: function() {
+  onCancel: function () {
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
     NavigationManager.getInstance().destroyDialogView();
-    this.trigger("cancel");
-  }
+    this.trigger('cancel');
+  },
 
 });
 

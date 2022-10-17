@@ -1,4 +1,5 @@
-//pragma PKGS: game
+// pragma PKGS: game
+
 'use strict';
 
 var EventBus = require('app/common/eventbus');
@@ -11,14 +12,14 @@ var audio_engine = require('app/audio/audio_engine');
 var GameDataManager = require('app/ui/managers/game_data_manager');
 var ProfileManager = require('app/ui/managers/profile_manager');
 var ProgressionManager = require('app/ui/managers/progression_manager');
-var DeckSelectCompositeView = require('./deck_select');
 var DeckSelectSinglePlayerTmpl = require('app/ui/templates/composite/deck_select_single_player.hbs');
-var _ = require("underscore");
-var i18next = require("i18next");
+var _ = require('underscore');
+var i18next = require('i18next');
+var DeckSelectCompositeView = require('./deck_select');
 
 var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
 
-  className: "sliding-panel-select deck-select deck-select-single-player",
+  className: 'sliding-panel-select deck-select deck-select-single-player',
 
   template: DeckSelectSinglePlayerTmpl,
 
@@ -28,30 +29,30 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
 
   _aiDifficulty: -0.1,
   _aiNumRandomCards: -1,
-  _opponentClassPrefix: ".ai-opponent",
+  _opponentClassPrefix: '.ai-opponent',
 
   initialize: function () {
     DeckSelectCompositeView.prototype.initialize.call(this);
 
     // get opponents
-    this.model.set("opponents", this.getOpponents());
+    this.model.set('opponents', this.getOpponents());
 
     // set parameters for ai tools
     if (process.env.AI_TOOLS_ENABLED) {
-      this.model.set("maxNumRandomCards", CONFIG.MAX_DECK_SIZE);
+      this.model.set('maxNumRandomCards', CONFIG.MAX_DECK_SIZE);
     }
   },
 
   getRecommendedOpponentId: function () {
-    if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction5).get("level") == null) {
+    if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction5).get('level') == null) {
       return SDK.Cards.Faction5.General;
-    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction3).get("level") == null) {
+    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction3).get('level') == null) {
       return SDK.Cards.Faction3.General;
-    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction4).get("level") == null) {
+    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction4).get('level') == null) {
       return SDK.Cards.Faction4.General;
-    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction2).get("level") == null) {
+    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction2).get('level') == null) {
       return SDK.Cards.Faction2.General;
-    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction6).get("level") == null) {
+    } else if (ProgressionManager.getInstance().getFactionProgressionStatsModel(SDK.Factions.Faction6).get('level') == null) {
       return SDK.Cards.Faction6.General;
     }
   },
@@ -63,20 +64,20 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
     var recommendedOpponentId = this.getRecommendedOpponentId();
 
     // for each faction
-    var factionModels = GameDataManager.getInstance().visibleFactionsCollection.where({isNeutral:false, enabled:true});
+    var factionModels = GameDataManager.getInstance().visibleFactionsCollection.where({ isNeutral: false, enabled: true });
     for (var i = 0, il = factionModels.length; i < il; i++) {
       var factionModel = factionModels[i];
-      var factionId = factionModel.get("id");
+      var factionId = factionModel.get('id');
 
       // opponent should be primary general from faction
       var generalId = SDK.FactionFactory.generalIdForFactionByOrder(factionId, SDK.FactionFactory.GeneralOrder.Primary);
       var generalCard = SDK.GameSession.getCardCaches().getCardById(generalId);
 
       var opponentData = {
-        name: factionModel.get("name"),
+        name: factionModel.get('name'),
         factionId: factionId,
         id: generalId,
-        portraitImg: generalCard.getPortraitHexResource().img
+        portraitImg: generalCard.getPortraitHexResource().img,
       };
 
       // recommend opponent
@@ -107,7 +108,7 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
   },
 
   onBeforeRender: function () {
-    var opponentChoices = this.$el.find(this._opponentClassPrefix + "-select-choices");
+    var opponentChoices = this.$el.find(this._opponentClassPrefix + '-select-choices');
     this._opponentScrollTop = opponentChoices.scrollTop();
   },
 
@@ -116,41 +117,41 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
 
     if (process.env.AI_TOOLS_ENABLED) {
       // update ai tools
-      this.$el.find(".setting-difficulty input").val(this._aiDifficulty);
-      this.$el.find(".setting-num-random-cards input").val(this._aiNumRandomCards);
+      this.$el.find('.setting-difficulty input').val(this._aiDifficulty);
+      this.$el.find('.setting-num-random-cards input').val(this._aiNumRandomCards);
       this.onChangeDifficulty();
       this.onChangeNumRandomCards();
 
       // listen for change in ai tools
-      this.$el.find(".setting-difficulty input").on("change", this.onChangeDifficulty.bind(this));
-      this.$el.find(".setting-num-random-cards input").on("change", this.onChangeNumRandomCards.bind(this));
+      this.$el.find('.setting-difficulty input').on('change', this.onChangeDifficulty.bind(this));
+      this.$el.find('.setting-num-random-cards input').on('change', this.onChangeNumRandomCards.bind(this));
     } else {
       // remove ai dev tools
-      this.$el.find(".ai-tool").remove();
+      this.$el.find('.ai-tool').remove();
     }
 
     // show selected opponent faction as active
     if (this._selectedOpponentId != null) {
-      this.$el.find(this._opponentClassPrefix + "[data-opponent-id='" + this._selectedOpponentId + "']").addClass("active");
+      this.$el.find(this._opponentClassPrefix + '[data-opponent-id=\'' + this._selectedOpponentId + '\']').addClass('active');
     }
 
     // restore opponent choices scroll
-    this.$el.find(this._opponentClassPrefix + "-select-choices").scrollTop(this._opponentScrollTop);
+    this.$el.find(this._opponentClassPrefix + '-select-choices').scrollTop(this._opponentScrollTop);
   },
 
   onShow: function () {
     DeckSelectCompositeView.prototype.onShow.apply(this, arguments);
 
     // delegate listen for click on ai opponent
-    this.$el.on("click", this._opponentClassPrefix, this.onSelectOpponent.bind(this));
+    this.$el.on('click', this._opponentClassPrefix, this.onSelectOpponent.bind(this));
   },
 
   /* region SELECTION */
 
   onSelectOpponent: function (event) {
     var $target = $(event.currentTarget);
-    var opponentId = $target.data("opponent-id");
-    var factionId = $target.data("faction-id");
+    var opponentId = $target.data('opponent-id');
+    var factionId = $target.data('faction-id');
 
     this.setSelectedOpponent(opponentId, factionId);
   },
@@ -158,20 +159,20 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
   setSelectedOpponent: function (opponentId, factionId) {
     if (opponentId != null && this._selectedOpponentId !== opponentId) {
       // clear previous showing as active
-      this.$el.find(this._opponentClassPrefix + "[data-opponent-id='" + this._selectedOpponentId + "']").removeClass("active");
+      this.$el.find(this._opponentClassPrefix + '[data-opponent-id=\'' + this._selectedOpponentId + '\']').removeClass('active');
 
       // store new
       this._selectedOpponentId = opponentId;
       this._selectedOpponentFactionId = factionId;
 
       // show new as active
-      this.$el.find(this._opponentClassPrefix + "[data-opponent-id='" + opponentId + "']").addClass("active");
+      this.$el.find(this._opponentClassPrefix + '[data-opponent-id=\'' + opponentId + '\']').addClass('active');
 
       // play select sound
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_select.audio, CONFIG.SELECT_SFX_PRIORITY);
 
       // emit select event
-      this.trigger("select_opponent", opponentId);
+      this.trigger('select_opponent', opponentId);
     }
   },
 
@@ -183,7 +184,7 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
     var selectedDeckModel = this._selectedDeckModel;
     var selectedOpponentId = this._selectedOpponentId;
     if (selectedDeckModel != null && selectedOpponentId != null) {
-      this.ui.$deckSelectConfirm.addClass("disabled");
+      this.ui.$deckSelectConfirm.addClass('disabled');
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_confirm.audio, CONFIG.CONFIRM_SFX_PRIORITY);
       var aiDifficulty;
       var aiNumRandomCards;
@@ -198,24 +199,24 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
       }
       EventBus.getInstance().trigger(
         this.getConfirmSelectionEvent(),
-        UtilsJavascript.deepCopy(selectedDeckModel.get("cards")),
-        selectedDeckModel.get("faction_id"),
-        selectedDeckModel.get("cards")[0].id,
-        selectedDeckModel.get("card_back_id"),
+        UtilsJavascript.deepCopy(selectedDeckModel.get('cards')),
+        selectedDeckModel.get('faction_id'),
+        selectedDeckModel.get('cards')[0].id,
+        selectedDeckModel.get('card_back_id'),
         ProfileManager.getInstance().get('battle_map_id'),
         selectedOpponentId,
         aiDifficulty,
-        aiNumRandomCards
+        aiNumRandomCards,
       );
     } else if (selectedDeckModel != null) {
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
-      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t("game_setup.must_select_opponent_message"));
+      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t('game_setup.must_select_opponent_message'));
     } else if (selectedOpponentId != null) {
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
-      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t("game_setup.must_select_deck_message"));
+      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t('game_setup.must_select_deck_message'));
     } else {
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_error.audio, CONFIG.ERROR_SFX_PRIORITY);
-      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t("game_setup.must_select_deck_and_opponent_message"));
+      this._showSelectDeckWarningPopover(this.ui.$deckSelectConfirm, i18next.t('game_setup.must_select_deck_and_opponent_message'));
     }
   },
 
@@ -228,22 +229,22 @@ var DeckSelectSinglePlayerCompositeView = DeckSelectCompositeView.extend({
   /* region AI TOOLS */
 
   onChangeDifficulty: function () {
-    this._aiDifficulty = parseFloat(this.$el.find(".setting-difficulty input").val());
+    this._aiDifficulty = parseFloat(this.$el.find('.setting-difficulty input').val());
     if (_.isNumber(this._aiDifficulty) && this._aiDifficulty >= 0.0) {
-      this.$el.find(".setting-difficulty output").text(this._aiDifficulty * 100.0 + "%");
+      this.$el.find('.setting-difficulty output').text(this._aiDifficulty * 100.0 + '%');
     } else {
-      this.$el.find(".setting-difficulty output").text("auto");
+      this.$el.find('.setting-difficulty output').text('auto');
     }
   },
 
   onChangeNumRandomCards: function () {
-    this._aiNumRandomCards = parseInt(this.$el.find(".setting-num-random-cards input").val());
+    this._aiNumRandomCards = parseInt(this.$el.find('.setting-num-random-cards input').val());
     if (_.isNumber(this._aiNumRandomCards) && this._aiNumRandomCards >= 0) {
-      this.$el.find(".setting-num-random-cards output").text(this._aiNumRandomCards);
+      this.$el.find('.setting-num-random-cards output').text(this._aiNumRandomCards);
     } else {
-      this.$el.find(".setting-num-random-cards output").text("auto");
+      this.$el.find('.setting-num-random-cards output').text('auto');
     }
-  }
+  },
 
   /* endregion AI TOOLS */
 

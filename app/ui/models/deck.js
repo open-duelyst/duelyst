@@ -14,11 +14,11 @@ var DeckModel = Backbone.Model.extend({
 
   _cardModels: null,
   _histogram: null,
-  _isValid:null,
-  _isLegacy:false,
+  _isValid: null,
+  _isLegacy: false,
 
   defaults: {
-    name: i18next.t(""+CONFIG.DEFAULT_DECK_NAME),
+    name: i18next.t('' + CONFIG.DEFAULT_DECK_NAME),
     faction_id: null,
     plays: 0,
     wins: 0,
@@ -34,32 +34,32 @@ var DeckModel = Backbone.Model.extend({
     color_code: 0,
     numCardsUnlocked: 0,
     numCardsUnlockable: 0,
-    searchableContent: "",
-    card_back_id: null
+    searchableContent: '',
+    card_back_id: null,
   },
 
-  initialize: function() {
-    Logger.module("UI").log("initialize a Deck model", this.get("name"));
-    this.listenTo(this,'sync',this.onSync);
+  initialize: function () {
+    Logger.module('UI').log('initialize a Deck model', this.get('name'));
+    this.listenTo(this, 'sync', this.onSync);
     this._cardModels = new CardsCollection();
     this._histogram = [];
   },
 
-  onSync: function() {
+  onSync: function () {
     if (this.hasChanged()) {
       this.updateCardModelsFromCardsData();
     }
   },
 
-  getCardModels: function() {
+  getCardModels: function () {
     return this._cardModels;
   },
 
-  addCard: function(cardModel) {
+  addCard: function (cardModel) {
     // when attempting to add another general, remove current first
-    if (cardModel && cardModel.get("isGeneral") && this.hasGeneral()) {
+    if (cardModel && cardModel.get('isGeneral') && this.hasGeneral()) {
       var generalCardModel = this.getGeneralCardModel();
-      if (cardModel.get("id") !== generalCardModel.get("id")) {
+      if (cardModel.get('id') !== generalCardModel.get('id')) {
         this.changeCardModel(generalCardModel, -1);
       }
     }
@@ -70,7 +70,7 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
-  addCardIds: function(cardIds) {
+  addCardIds: function (cardIds) {
     var changed = false;
     var cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardIds(cardIds);
     if (cardModels.length > 0) {
@@ -84,7 +84,7 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
-  addCardsData: function(cardsData) {
+  addCardsData: function (cardsData) {
     var changed = false;
     var cardModels = GameDataManager.getInstance().visibleCardsCollection.getCardModelsFromCardsData(cardsData);
     if (cardModels.length > 0) {
@@ -98,7 +98,7 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
-  removeCard: function(cardModel) {
+  removeCard: function (cardModel) {
     var changed = this.changeCardModel(cardModel, -1);
     if (changed) {
       this.updatePropertiesFromCardModels(changed);
@@ -106,21 +106,21 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
-  getCountForBaseCardId: function(cardId) {
+  getCountForBaseCardId: function (cardId) {
     var count = 0;
 
     // add counts of all cards in deck that have a matching base card id
     var baseCardId = SDK.Cards.getBaseCardId(cardId);
     this._cardModels.forEach(function (cardModel) {
-      if (cardModel.get("baseCardId") === baseCardId) {
-        count += (cardModel.get("deckCount") || 0);
+      if (cardModel.get('baseCardId') === baseCardId) {
+        count += (cardModel.get('deckCount') || 0);
       }
     });
 
     return count;
   },
 
-  getCountForCardId: function(cardId) {
+  getCountForCardId: function (cardId) {
     var count = 0;
 
     // add counts of all cards in deck that have the exact id
@@ -129,18 +129,18 @@ var DeckModel = Backbone.Model.extend({
     var baseCardId = SDK.Cards.getBaseCardId(cardId);
     var isPrismatic = SDK.Cards.getIsPrismaticCardId(cardId);
     this._cardModels.forEach(function (cardModel) {
-      if (cardModel.get("id") === cardId || (cardModel.get("isSkinned") && cardModel.get("baseCardId") === baseCardId && cardModel.get("isPrismatic") === isPrismatic)) {
-        count += (cardModel.get("deckCount") || 0);
+      if (cardModel.get('id') === cardId || (cardModel.get('isSkinned') && cardModel.get('baseCardId') === baseCardId && cardModel.get('isPrismatic') === isPrismatic)) {
+        count += (cardModel.get('deckCount') || 0);
       }
     });
 
     return count;
   },
 
-  changeCardModel: function(cardModel, deltaCount) {
-    var cardId = cardModel.get("id");
-    var factionId = cardModel.get("factionId");
-    if (cardId != null && (this.get("isStarter") || ProgressionManager.getInstance().isFactionUnlocked(factionId))) {
+  changeCardModel: function (cardModel, deltaCount) {
+    var cardId = cardModel.get('id');
+    var factionId = cardModel.get('factionId');
+    if (cardId != null && (this.get('isStarter') || ProgressionManager.getInstance().isFactionUnlocked(factionId))) {
       deltaCount || (deltaCount = 1);
 
       // check for existing card
@@ -151,11 +151,11 @@ var DeckModel = Backbone.Model.extend({
       }
 
       // validate card type and deck size
-      var deckSize = this.get("cards").length;
-      var isGeneral = deckCardModel.get("isGeneral");
-      var validCard = (isGeneral || this.hasGeneral()) && deckCardModel.get("isNeutral") || this.get("faction_id") === factionId;
+      var deckSize = this.get('cards').length;
+      var isGeneral = deckCardModel.get('isGeneral');
+      var validCard = (isGeneral || this.hasGeneral()) && deckCardModel.get('isNeutral') || this.get('faction_id') === factionId;
       var deckCount = this.getCountForCardId(cardId);
-      var inventoryCount = cardModel.get("inventoryCount");
+      var inventoryCount = cardModel.get('inventoryCount');
       if (deltaCount > 0) {
         deltaCount = Math.min(deckCount + deltaCount, inventoryCount) - deckCount;
       }
@@ -167,9 +167,9 @@ var DeckModel = Backbone.Model.extend({
         deltaCount = newCount - totalCount;
         if (newCount !== totalCount && ((deltaCount < 0 && deckCount > 0) || (inventoryCount >= deckCount + deltaCount))) {
           // update card count in deck
-          var cardDeckCount = deckCardModel.get("deckCount");
+          var cardDeckCount = deckCardModel.get('deckCount');
           var newCardDeckCount = cardDeckCount + deltaCount;
-          deckCardModel.set("deckCount", newCardDeckCount);
+          deckCardModel.set('deckCount', newCardDeckCount);
 
           // add or remove the card
           if (newCardDeckCount === 0) {
@@ -177,7 +177,7 @@ var DeckModel = Backbone.Model.extend({
             this._cardModels.remove(deckCardModel);
           } else if (cardDeckCount === 0 && newCardDeckCount > cardDeckCount) {
             // set deck faction
-            if (isGeneral && this.get("faction_id") !== factionId) {
+            if (isGeneral && this.get('faction_id') !== factionId) {
               this.set('faction_id', factionId);
             }
 
@@ -195,8 +195,8 @@ var DeckModel = Backbone.Model.extend({
     return false;
   },
 
-  updateCard: function(cardModel) {
-    var cardId = cardModel.get("id");
+  updateCard: function (cardModel) {
+    var cardId = cardModel.get('id');
     var changed = false;
 
     // update for skinned cards in deck
@@ -206,7 +206,7 @@ var DeckModel = Backbone.Model.extend({
       var removeAllSkins = false;
       if (skinIds.length > 1) {
         var gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
-        if (gameDataCardModel.get("inventoryCount") < this.getCountForCardId(cardId)) {
+        if (gameDataCardModel.get('inventoryCount') < this.getCountForCardId(cardId)) {
           removeAllSkins = true;
         }
       }
@@ -219,9 +219,9 @@ var DeckModel = Backbone.Model.extend({
         }
         if (removeAllSkins) {
           var skinnedDeckCardModel = this._cardModels.get(skinnedCardId);
-          if (skinnedDeckCardModel != null && skinnedDeckCardModel.get("deckCount") > 0) {
+          if (skinnedDeckCardModel != null && skinnedDeckCardModel.get('deckCount') > 0) {
             var skinnedGameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(skinnedCardId);
-            this.changeCardModel(skinnedGameDataCardModel, -skinnedDeckCardModel.get("deckCount"));
+            this.changeCardModel(skinnedGameDataCardModel, -skinnedDeckCardModel.get('deckCount'));
             changed = true;
           }
         } else {
@@ -249,12 +249,12 @@ var DeckModel = Backbone.Model.extend({
     if (deckCardModel != null) {
       // card is in deck
       var gameDataCardModel = GameDataManager.getInstance().getVisibleCardModelById(cardId);
-      var inventoryCount = gameDataCardModel.get("inventoryCount");
-      var deckCount = deckCardModel.get("deckCount");
+      var inventoryCount = gameDataCardModel.get('inventoryCount');
+      var deckCount = deckCardModel.get('deckCount');
       var totalCount = this.getCountForCardId(cardId);
 
       // update existing deck card's inventory count
-      deckCardModel.set("inventoryCount", inventoryCount);
+      deckCardModel.set('inventoryCount', inventoryCount);
 
       // check if card has less usable count than are in deck
       if (deckCount > 0 && inventoryCount < totalCount) {
@@ -267,37 +267,37 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
-  hasGeneral: function() {
+  hasGeneral: function () {
     var generalCardModel = this.getGeneralCardModel();
-    return generalCardModel && generalCardModel.get("isGeneral");
+    return generalCardModel && generalCardModel.get('isGeneral');
   },
 
-  getGeneralId: function() {
+  getGeneralId: function () {
     var generalCardModel = this.getGeneralCardModel();
-    return generalCardModel && generalCardModel.get("id");
+    return generalCardModel && generalCardModel.get('id');
   },
 
-  getGeneralCardModel: function() {
+  getGeneralCardModel: function () {
     return this._cardModels.at(0);
   },
 
-  isValid: function() {
+  isValid: function () {
     return this._isValid;
   },
 
-  isLegacy: function() {
+  isLegacy: function () {
     return this._isLegacy;
   },
 
-  updatePropertiesFromCardModels: function(changed) {
-    var i, il;
+  updatePropertiesFromCardModels: function (changed) {
+    var i; var il;
     var cards = [];
     var minionCount = 0;
     var spellCount = 0;
     var artifactCount = 0;
 
     // if we have a faction id, that means we have a general
-    var factionId = this.get("faction_id");
+    var factionId = this.get('faction_id');
     var needsGeneral = !this.hasGeneral();
 
     // reset histogram
@@ -305,55 +305,54 @@ var DeckModel = Backbone.Model.extend({
     for (i = 0, il = CONFIG.MAX_MANA; i <= il; i++) {
       this._histogram[i] = {
         manaCost: i,
-        histogramDisplayCost: ""+i,
+        histogramDisplayCost: '' + i,
         count: 0,
-        height: 0
+        height: 0,
       };
     }
-    this._histogram[9].histogramDisplayCost = "9+"
+    this._histogram[9].histogramDisplayCost = '9+';
 
     // filter collection
     var modelsToRemove = [];
     var hasLegacyCard = false;
-    this._cardModels.forEach(function(cardModel) {
+    this._cardModels.forEach(function (cardModel) {
       // we must have a general and the card must either be neutral or of the same faction as the general
       // card must have a count above 0 and total below max
       // otherwise the card is removed from the collection
       var id = cardModel.get('id');
-      var inventoryCount = cardModel.get("inventoryCount");
-      var deckCount = cardModel.get("deckCount");
+      var inventoryCount = cardModel.get('inventoryCount');
+      var deckCount = cardModel.get('deckCount');
       var count = Math.min(deckCount, inventoryCount);
       if (!needsGeneral
-        && cardModel.get("isUnlocked")
-        && (cardModel.get("isNeutral") || factionId === cardModel.get("factionId"))
+        && cardModel.get('isUnlocked')
+        && (cardModel.get('isNeutral') || factionId === cardModel.get('factionId'))
         && count > 0 && deckCount <= inventoryCount && this.getCountForBaseCardId(id) <= CONFIG.MAX_DECK_DUPLICATES) {
         // add one card data object for each count of the card
-        _.times(count, function() {
+        _.times(count, function () {
           cards.push(cardModel.getCardDataForDeck());
         });
 
-        if (!cardModel.get("isGeneral")) {
+        if (!cardModel.get('isGeneral')) {
           // update histogram count as long as the card is not a general
-          var manaCost = cardModel.get("manaCost");
-          if (manaCost > 9)  { // for cards with cost greater than 9 mana, lump them into the 9 mana count
-            manaCost = 9
+          var manaCost = cardModel.get('manaCost');
+          if (manaCost > 9) { // for cards with cost greater than 9 mana, lump them into the 9 mana count
+            manaCost = 9;
           }
           this._histogram[manaCost].count += count;
 
           // update individual counts
-          if (cardModel.get("isEntity")) {
+          if (cardModel.get('isEntity')) {
             minionCount += count;
-          } else if (cardModel.get("isSpell")) {
+          } else if (cardModel.get('isSpell')) {
             spellCount += count;
-          } else if (cardModel.get("isArtifact")) {
+          } else if (cardModel.get('isArtifact')) {
             artifactCount += count;
           }
 
           // check for legacy status of card
-          if (cardModel.get("isLegacy") || cardModel.get("cardSetId") == SDK.CardSet.Shimzar) {
+          if (cardModel.get('isLegacy') || cardModel.get('cardSetId') == SDK.CardSet.Shimzar) {
             hasLegacyCard = true;
           }
-
         }
       } else {
         modelsToRemove.push(cardModel);
@@ -368,8 +367,7 @@ var DeckModel = Backbone.Model.extend({
     // set deck to legacy if it has any legacy cards
     if (hasLegacyCard) {
       this._isLegacy = true;
-    }
-    else {
+    } else {
       this._isLegacy = false;
     }
 
@@ -395,7 +393,7 @@ var DeckModel = Backbone.Model.extend({
     // - each card is already validated as it is added/removed
     var valid = true;
 
-    if (!this.get("isStarter") && !process.env.ALL_CARDS_AVAILABLE) {
+    if (!this.get('isStarter') && !process.env.ALL_CARDS_AVAILABLE) {
       // when deck is in production
       if (needsGeneral) {
         // deck must have a general
@@ -409,11 +407,11 @@ var DeckModel = Backbone.Model.extend({
     this._isValid = valid;
 
     // get searchable content
-    var searchableContent = this.get("name");
+    var searchableContent = this.get('name');
     if (factionId != null) {
       var faction = SDK.FactionFactory.factionForIdentifier(factionId);
       if (faction != null) {
-        searchableContent += " " + faction.name;
+        searchableContent += ' ' + faction.name;
       }
     }
 
@@ -422,11 +420,11 @@ var DeckModel = Backbone.Model.extend({
       spell_count: spellCount,
       artifact_count: artifactCount,
       cards: cards,
-      searchableContent: searchableContent
+      searchableContent: searchableContent,
     });
   },
 
-  updateCardModelsFromCardsData: function() {
+  updateCardModelsFromCardsData: function () {
     // resets and repopulates card models from card ids
     this._cardModels.reset();
 
@@ -436,7 +434,7 @@ var DeckModel = Backbone.Model.extend({
     if (cardModels.length > 0) {
       for (var i = 0, il = cardModels.length; i < il; i++) {
         var cardModel = cardModels[i];
-        var cardId = cardModel.get("id");
+        var cardId = cardModel.get('id');
 
         // create each deck card model
         var deckCardModel = this._cardModels.get(cardId);
@@ -446,13 +444,13 @@ var DeckModel = Backbone.Model.extend({
         }
 
         // update count
-        deckCardModel.set("deckCount", (deckCardModel.get("deckCount") || 0) + 1);
+        deckCardModel.set('deckCount', (deckCardModel.get('deckCount') || 0) + 1);
       }
 
       // update cards list
       this.updatePropertiesFromCardModels();
     }
-  }
+  },
 });
 
 // Expose the class either via CommonJS or the global object

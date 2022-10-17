@@ -1,4 +1,5 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
+
 'use strict';
 
 var RSX = require('app/data/resources');
@@ -8,59 +9,59 @@ var DeckPreviewTmpl = require('./templates/deck_preview.hbs');
 var DeckPreviewItemView = Backbone.Marionette.ItemView.extend({
 
   tagName: 'li',
-  className: "deck-preview",
+  className: 'deck-preview',
 
   template: DeckPreviewTmpl,
 
   templateHelpers: {
-    generalId: function() {
+    generalId: function () {
       return this.model.getGeneralId();
-    }
+    },
   },
 
   events: {
-    "mouseenter": "onMouseEnter"
+    mouseenter: 'onMouseEnter',
   },
 
   triggers: {
-    "click .deck-preview-content": "select",
-    "click .deck-delete": "delete"
+    'click .deck-preview-content': 'select',
+    'click .deck-delete': 'delete',
   },
 
-  onRender: function() {
+  onRender: function () {
     // add faction class
-    var factionId = this.model.get("faction_id");
-    this.$el.addClass("f" + factionId);
+    var factionId = this.model.get('faction_id');
+    this.$el.addClass('f' + factionId);
 
     // add whether starter
-    if (this.model.get("isStarter")) {
-      this.$el.addClass("starter");
+    if (this.model.get('isStarter')) {
+      this.$el.addClass('starter');
     }
 
-    if (this.model.get("_flash")) {
-      this.$el.find(">div").get(0).animate([
-        {"background-color": "#243341"},
-        {"background-color": "#00b9fd"},
-        {"background-color": "#243341"}
+    if (this.model.get('_flash')) {
+      this.$el.find('>div').get(0).animate([
+        { 'background-color': '#243341' },
+        { 'background-color': '#00b9fd' },
+        { 'background-color': '#243341' },
       ], {
         duration: 800,
         delay: 300,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
       });
-      this.model.set("_flash",false);
+      this.model.set('_flash', false);
     }
 
     // show whether valid
     if (!this.model.isValid()) {
-      this.$el.addClass("invalid");
+      this.$el.addClass('invalid');
     } else {
-      this.$el.removeClass("invalid");
+      this.$el.removeClass('invalid');
     }
   },
 
   onShow: function () {
-    this.listenTo(this.model, "sync", this.onDeckSync);
+    this.listenTo(this.model, 'sync', this.onDeckSync);
   },
 
   onDeckSync: function () {
@@ -69,9 +70,9 @@ var DeckPreviewItemView = Backbone.Marionette.ItemView.extend({
     }
   },
 
-  onMouseEnter: function(){
+  onMouseEnter: function () {
     audio_engine.current().play_effect(RSX.sfx_ui_menu_hover.audio);
-  }
+  },
 
 });
 

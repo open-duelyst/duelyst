@@ -8,31 +8,31 @@ var SDK = require('app/sdk');
 var InventoryManager = require('app/ui/managers/inventory_manager');
 var BoosterPacksCompositeViewTemplate = require('app/ui/templates/composite/booster_packs.hbs');
 var BoosterPackPreviewItemView = require('app/ui/views/item/booster_pack_preview');
-var i18next = require('i18next')
+var i18next = require('i18next');
 
 var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  className: "booster-packs",
+  className: 'booster-packs',
   template: BoosterPacksCompositeViewTemplate,
   childView: BoosterPackPreviewItemView,
-  childViewContainer: ".booster-packs-list",
+  childViewContainer: '.booster-packs-list',
 
   _stateLocked: false,
   _draggingEnabled: true,
 
   ui: {
-    $totalBoosterPacksCount: ".total-booster-packs-count"
+    $totalBoosterPacksCount: '.total-booster-packs-count',
   },
 
   templateHelpers: {
     spiritOrbNameForCardSet: function (cardSetId) {
       var cardSetData = SDK.CardSetFactory.cardSetForIdentifier(cardSetId);
       if (cardSetData == null || cardSetData.id === SDK.CardSet.Core) {
-        return i18next.t("common.spirit_orb_plural");
+        return i18next.t('common.spirit_orb_plural');
       } else {
-        return cardSetData.name + " Orbs";
+        return cardSetData.name + ' Orbs';
       }
-    }
+    },
   },
 
   _boosterPackModels: null,
@@ -45,9 +45,9 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
 
   onResize: function () {
     if (!this._stateLocked) {
-      var cardSet = this.model.get("cardSet") || SDK.CardSet.Core;
-      this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter(function(p){
-        return p.get("card_set") === cardSet || (!p.get("card_set") && cardSet === SDK.CardSet.Core)
+      var cardSet = this.model.get('cardSet') || SDK.CardSet.Core;
+      this._boosterPackModels = InventoryManager.getInstance().boosterPacksCollection.filter(function (p) {
+        return p.get('card_set') === cardSet || (!p.get('card_set') && cardSet === SDK.CardSet.Core);
       }.bind(this));
       this.collection.reset(this._boosterPackModels.slice(0, CONFIG.MAX_BOOSTER_PACKS_SHOWN));
 
@@ -78,7 +78,7 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
         this.children.each(function (childView, index) {
           childView.$el.draggable({
             distance: 10,
-            revert: true
+            revert: true,
           });
         });
       }
@@ -105,7 +105,7 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
   /* region EVENT LISTENERS */
 
   onInventoryManagerConnected: function () {
-    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, "add remove", this.onResize);
+    this.listenTo(InventoryManager.getInstance().boosterPacksCollection, 'add remove', this.onResize);
     this.onResize();
   },
 
@@ -143,14 +143,14 @@ var BoosterPacksCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   _updateBoosterPackDraggingForItemView: function (childView) {
-    if (childView.$el.draggable("instance") != null) {
+    if (childView.$el.draggable('instance') != null) {
       if (this._draggingEnabled) {
-        childView.$el.draggable("enable");
+        childView.$el.draggable('enable');
       } else {
-        childView.$el.draggable("disable");
+        childView.$el.draggable('disable');
       }
     }
-  }
+  },
 
 });
 

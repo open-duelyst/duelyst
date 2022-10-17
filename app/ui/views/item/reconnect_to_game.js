@@ -5,31 +5,31 @@ var ReconnectToGameTemplate = require('app/ui/templates/item/reconnect_to_game.h
 
 var ReconnectToGameItemView = Backbone.Marionette.ItemView.extend({
 
-  id: "app-reconnect-to-game",
-  className: "status",
+  id: 'app-reconnect-to-game',
+  className: 'status',
 
   template: ReconnectToGameTemplate,
 
   /* ui selector cache */
   ui: {
-    "exit": ".exit"
+    exit: '.exit',
   },
 
   /* ui events hash */
   events: {
-    "click .exit": "onClickExit"
+    'click .exit': 'onClickExit',
   },
 
-  initialize: function() {
+  initialize: function () {
   },
 
   /* on render callback */
-  onRender: function() {
+  onRender: function () {
   },
 
   onClickExit: function () {
-    EventBus.getInstance().trigger("APP:cancelConnection");
-  }
+    EventBus.getInstance().trigger('APP:cancelConnection');
+  },
 });
 
 // Expose the class either via CommonJS or the global object

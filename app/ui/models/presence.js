@@ -12,21 +12,21 @@ var PresenceModel = DuelystFirebase.Model.extend({
   * @public
   * @returns {string} presence status of this buddy
   */
-  getStatus: function() {
+  getStatus: function () {
     if (this.get('began') && this.get('status') != 'offline') {
       var began = parseInt(this.get('began'));
       var now = moment.utc().valueOf();
-      var diff = now-began;
+      var diff = now - began;
       var duration = moment.duration(diff);
       if (duration.asDays() > 0.75) {
         // looks like the start of this status was almost a day ago. default to offline
-        return 'offline'
+        return 'offline';
       }
     }
 
     // by default return status
     return this.get('status');
-  }
+  },
 
 });
 

@@ -1,4 +1,5 @@
-//pragma PKGS: game
+// pragma PKGS: game
+
 'use strict';
 
 var EventBus = require('app/common/eventbus');
@@ -7,21 +8,21 @@ var CONFIG = require('app/common/config');
 var RSX = require('app/data/resources');
 var audio_engine = require('app/audio/audio_engine');
 var EmotesListCompositeView = require('app/ui/views/composite/emotes-list');
-var PlayerPopoverLayout = require('./game_player_popover');
 var OpponentPlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_opponent_player_popover.hbs');
-var TransitionRegion = require("app/ui/views/regions/transition");
-var InventoryManager = require("app/ui/managers/inventory_manager");
+var TransitionRegion = require('app/ui/views/regions/transition');
+var InventoryManager = require('app/ui/managers/inventory_manager');
 var i18next = require('i18next');
+var PlayerPopoverLayout = require('./game_player_popover');
 
 var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
-  className: "player-popover opponent-player",
+  className: 'player-popover opponent-player',
 
   template: OpponentPlayerPopoverLayoutTempl,
 
   regions: {
-    emotesListRegion: {selector: ".emotes-list-region"},
-    emoteRegion: {selector: ".emote-region", regionClass: TransitionRegion}
+    emotesListRegion: { selector: '.emotes-list-region' },
+    emoteRegion: { selector: '.emote-region', regionClass: TransitionRegion },
   },
 
   _isMuted: false,
@@ -30,17 +31,17 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function() {
+  onShow: function () {
     // show opponent options
     var opponentEmotes = [
       new Backbone.Model({
-        title: i18next.t("common.mute_button_label"),
+        title: i18next.t('common.mute_button_label'),
         callback: this.onMute.bind(this),
-        _canUse: true
-      })
+        _canUse: true,
+      }),
     ];
-    var emotesListCompositeView = new EmotesListCompositeView({collection: new Backbone.Collection(opponentEmotes)});
-    emotesListCompositeView.listenTo(emotesListCompositeView, "childview:select", this.onSelectEmote.bind(this));
+    var emotesListCompositeView = new EmotesListCompositeView({ collection: new Backbone.Collection(opponentEmotes) });
+    emotesListCompositeView.listenTo(emotesListCompositeView, 'childview:select', this.onSelectEmote.bind(this));
     this.emotesListRegion.show(emotesListCompositeView);
 
     // listen for emotes
@@ -74,13 +75,13 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   /* region EMOTES */
 
-  onEmoteReceived: function(event) {
+  onEmoteReceived: function (event) {
     var receivedTimestamp = Date.now();
     if (this._emoteReceivedAt + CONFIG.EMOTE_DELAY * 1000.0 <= receivedTimestamp) {
       this._emoteReceivedAt = receivedTimestamp;
       var emoteId = event.id;
       if (event.playerId && event.playerId != this.model.get('playerId'))
-        return
+        return;
       else
         this.showEmote(emoteId);
     }
@@ -88,7 +89,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   onSelectEmote: function (emoteView) {
     var emoteModel = emoteView && emoteView.model;
-    var emoteCallback = emoteModel && emoteModel.get("callback");
+    var emoteCallback = emoteModel && emoteModel.get('callback');
     if (emoteCallback != null) {
       // play effect
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_select.audio, CONFIG.SELECT_SFX_PRIORITY);
@@ -107,9 +108,9 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     if (!this._isMuted && !this.getIsShowingOptions()) {
       PlayerPopoverLayout.prototype.showEmote.call(this, emoteId);
     }
-  }
+  },
 
-  /* endregion EMOTES*/
+  /* endregion EMOTES */
 
 });
 

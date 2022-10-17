@@ -1,30 +1,31 @@
-//pragma PKGS: codex
+// pragma PKGS: codex
+
 'use strict';
 
 var SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
-var CodexChapterPreviewTmpl = require('./templates/codex_chapter_preview.hbs');
 var ProgressionManager = require('app/ui/managers/progression_manager');
+var CodexChapterPreviewTmpl = require('./templates/codex_chapter_preview.hbs');
 
 var CodexChapterPreviewItemView = SlidingPanelItemView.extend({
 
-  className: "sliding-panel codex-chapter-preview",
+  className: 'sliding-panel codex-chapter-preview',
 
   template: CodexChapterPreviewTmpl,
 
   /* region INITIALIZE */
 
-  initialize: function() {
+  initialize: function () {
     // add unlock message for not enough games
-    if (this.model.get("enabled") && !this.hasUnlockedChapter()) {
-      var gamesRequiredToUnlock = this.model.get("gamesRequiredToUnlock");
+    if (this.model.get('enabled') && !this.hasUnlockedChapter()) {
+      var gamesRequiredToUnlock = this.model.get('gamesRequiredToUnlock');
 
-      this.model.set("unlockMessage", "Play " + (gamesRequiredToUnlock - ProgressionManager.getInstance().getGameCount()) + " more games to unlock.");
+      this.model.set('unlockMessage', 'Play ' + (gamesRequiredToUnlock - ProgressionManager.getInstance().getGameCount()) + ' more games to unlock.');
     }
   },
 
-  serializeModel: function(model){
-    var data =  model.toJSON.apply(model, _.rest(arguments));
-    data.description = model.get("description").replace(/\n|\r/g, "<br/>");
+  serializeModel: function (model) {
+    var data = model.toJSON.apply(model, _.rest(arguments));
+    data.description = model.get('description').replace(/\n|\r/g, '<br/>');
     return data;
   },
 
@@ -35,19 +36,19 @@ var CodexChapterPreviewItemView = SlidingPanelItemView.extend({
   onRender: function () {
     SlidingPanelItemView.prototype.onRender.call(this);
 
-    if (!this.model.get("enabled") || !this.hasUnlockedChapter()) {
-      this.$el.addClass("disabled");
+    if (!this.model.get('enabled') || !this.hasUnlockedChapter()) {
+      this.$el.addClass('disabled');
     } else {
-      this.$el.removeClass("disabled");
+      this.$el.removeClass('disabled');
     }
   },
 
-  onDestroy: function() {
+  onDestroy: function () {
   },
 
-  onClick: function(){
-    if (this.model.get("enabled") && this.hasUnlockedChapter()) {
-      this.trigger("select");
+  onClick: function () {
+    if (this.model.get('enabled') && this.hasUnlockedChapter()) {
+      this.trigger('select');
     }
   },
 
@@ -56,8 +57,8 @@ var CodexChapterPreviewItemView = SlidingPanelItemView.extend({
   /* region HELPERS */
 
   hasUnlockedChapter: function () {
-    return InventoryManager.getInstance().hasUnlockedCodexChapter(this.model.get("id"));
-  }
+    return InventoryManager.getInstance().hasUnlockedCodexChapter(this.model.get('id'));
+  },
 
   /* endregion HELPERS */
 

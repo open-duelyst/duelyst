@@ -4,7 +4,7 @@ var ModifierTmpl = require('app/ui/templates/item/modifier.hbs');
 
 var ModifierItemView = Backbone.Marionette.ItemView.extend({
 
-  className: "media modifier",
+  className: 'media modifier',
 
   template: ModifierTmpl,
 
@@ -15,7 +15,7 @@ var ModifierItemView = Backbone.Marionette.ItemView.extend({
   events: {},
 
   /* on render callback */
-  onRender: function() {}
+  onRender: function () {},
 });
 
 // Expose the class either via CommonJS or the global object

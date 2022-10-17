@@ -1,4 +1,5 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
+
 'use strict';
 
 var RSX = require('app/data/resources');
@@ -9,20 +10,20 @@ var NavigationManager = require('app/ui/managers/navigation_manager');
 
 var LoadingDialogItemView = Backbone.Marionette.ItemView.extend({
 
-  id: "app-loading-dialog",
-  className: "dialog",
+  id: 'app-loading-dialog',
+  className: 'dialog',
 
   template: LoadingDialogViewTempl,
 
   animateIn: Animations.fadeIn,
   animateOut: Animations.fadeOut,
 
-  initialize: function() {
+  initialize: function () {
     this.model = new Backbone.Model({
       tip: this.options.tip || GAME_TIPS.random_tip(),
-      background: this.options.background
+      background: this.options.background,
     });
-  }
+  },
 
 });
 

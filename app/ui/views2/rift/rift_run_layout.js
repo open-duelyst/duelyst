@@ -1,4 +1,5 @@
-//pragma PKGS: nongame
+// pragma PKGS: nongame
+
 'use strict';
 
 var SDK = require('app/sdk');
@@ -10,7 +11,7 @@ var Logger = require('app/common/logger');
 var CONFIG = require('app/common/config');
 var Analytics = require('app/common/analytics');
 var AnalyticsTracker = require('app/common/analyticsTracker');
-var audio_engine = require("app/audio/audio_engine");
+var audio_engine = require('app/audio/audio_engine');
 var UtilsEnv = require('app/common/utils/utils_env');
 var PackageManager = require('app/ui/managers/package_manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
@@ -21,31 +22,30 @@ var ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 var ActivityDialogItemView = require('app/ui/views/item/activity_dialog');
 var RiftLayer = require('app/view/layers/rift/RiftLayer');
 var DuelystFirebase = require('app/ui/extensions/duelyst_firebase');
-var Promise = require("bluebird");
-var _ = require("underscore");
-var moment = require("moment");
+var Promise = require('bluebird');
+var _ = require('underscore');
+var moment = require('moment');
 var ShopData = require('app/data/shop.json');
 var ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 var NewPlayerManager = require('app/ui/managers/new_player_manager');
-var i18next = require("i18next");
+var i18next = require('i18next');
 
 var Templ = require('./templates/rift_run_layout.hbs');
 
 var RiftLayout = Backbone.Marionette.LayoutView.extend({
 
-  id: "app-rift",
+  id: 'app-rift',
   template: Templ,
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function() {
-
+  onShow: function () {
     // load rift resources
     // wait for model data to sync
     // show activity dialog while we load
     Promise.all([
       NavigationManager.getInstance().showDialogView(new ActivityDialogItemView()),
-      PackageManager.getInstance().loadMinorPackage("rift")
+      PackageManager.getInstance().loadMinorPackage('rift'),
     ]).then(function () {
       if (this.isDestroyed) return; // view is destroyed
 
@@ -73,9 +73,9 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
     }.bind(this));
   },
 
-  onDestroy: function() {
+  onDestroy: function () {
     // unload rift resources
-    PackageManager.getInstance().unloadMajorMinorPackage("rift");
+    PackageManager.getInstance().unloadMajorMinorPackage('rift');
   },
 
   /* endregion MARIONETTE EVENTS */
@@ -115,12 +115,12 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
         riftLayer.bindDeck(this.model.attributes.deck);
         riftLayer.showSelectCardToUpgradeScreen(riftRunData);
       } else {
-        var lastGameModel = GamesManager.getInstance().playerGames.first()
+        var lastGameModel = GamesManager.getInstance().playerGames.first();
         if (lastGameModel) {
-          var isRecent = moment.utc(lastGameModel.get("created_at")).isAfter(moment().utc().subtract(1,'hour'))
-          var wonLastGauntletGame = isRecent && lastGameModel.get("game_type") == SDK.GameType.Gauntlet && lastGameModel.get("is_winner")
+          var isRecent = moment.utc(lastGameModel.get('created_at')).isAfter(moment().utc().subtract(1, 'hour'));
+          var wonLastGauntletGame = isRecent && lastGameModel.get('game_type') == SDK.GameType.Gauntlet && lastGameModel.get('is_winner');
         }
-        riftLayer.showRiftRunScreen(riftRunData,false);
+        riftLayer.showRiftRunScreen(riftRunData, false);
       }
     }
 
@@ -137,19 +137,19 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * @returns {Promise}
    */
   showNextScreen: function (promise) {
-    var nextScreenPromise = (promise || Promise.resolve()).then(function(riftRunData){
+    var nextScreenPromise = (promise || Promise.resolve()).then(function (riftRunData) {
       // always fallback to current model data
       if (riftRunData == null) { riftRunData = this.model.attributes; }
 
       // load resources while delegate is running callback
-      return this.loadResourcesForRiftRunData(riftRunData).then(function(){
+      return this.loadResourcesForRiftRunData(riftRunData).then(function () {
         return this.showScreenForRiftRunData(riftRunData);
       }.bind(this));
     }.bind(this));
 
     // show dialog for errors
     nextScreenPromise.catch(function (errorMessage) {
-      return NavigationManager.getInstance().showDialogViewByClass(ErrorDialogItemView, {title: errorMessage});
+      return NavigationManager.getInstance().showDialogViewByClass(ErrorDialogItemView, { title: errorMessage });
     }.bind(this));
 
     return nextScreenPromise;
@@ -160,31 +160,31 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * @param factionId
    * @returns {Promise}
    */
-  selectGeneral: function(selectedSdkCard, unselectedSdkCards) {
+  selectGeneral: function (selectedSdkCard, unselectedSdkCards) {
     // make request
-    var requestPromise = new Promise(function(resolve,reject) {
+    var requestPromise = new Promise(function (resolve, reject) {
       var request = $.ajax({
-        url: process.env.API_URL + '/api/me/rift/runs/'+this.model.get("ticket_id")+'/general_id',
-        data: JSON.stringify({general_id: selectedSdkCard.id}),
+        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get('ticket_id') + '/general_id',
+        data: JSON.stringify({ general_id: selectedSdkCard.id }),
         type: 'PUT',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
 
-      request.done(function(response) {
+      request.done(function (response) {
         if (selectedSdkCard != null && selectedSdkCard.id != null) {
-          Analytics.track("select rift general", {
+          Analytics.track('select rift general', {
             category: Analytics.EventCategory.Rift,
-            card_id: selectedSdkCard.id
+            card_id: selectedSdkCard.id,
           });
         }
         this.model.set(response);
         resolve(response);
       }.bind(this));
 
-      request.fail(function(response){
+      request.fail(function (response) {
         // Temporary error, should parse server response.
-        var errorMessage = "Oops... there was a problem selecting your general. Please try again.";
+        var errorMessage = 'Oops... there was a problem selecting your general. Please try again.';
         EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
         reject(errorMessage);
       });
@@ -200,88 +200,86 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * @param {Array} unselectedSdkCards list of cards not selected
    * @returns {Promise}
    */
-  selectCard: function(selectedSdkCard, unselectedSdkCards) {
+  selectCard: function (selectedSdkCard, unselectedSdkCards) {
     // make request
-    var requestPromise = new Promise(function(resolve,reject) {
+    var requestPromise = new Promise(function (resolve, reject) {
       var request = $.ajax({
-        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get("ticket_id") + '/upgrade',
-        data: JSON.stringify({card_id:selectedSdkCard.id}),
+        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get('ticket_id') + '/upgrade',
+        data: JSON.stringify({ card_id: selectedSdkCard.id }),
         type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
 
-      request.done(function(response) {
-        this.model.set(response)
+      request.done(function (response) {
+        this.model.set(response);
         NewPlayerManager.getInstance().setHasUsedRiftUpgrade(true);
         resolve(response);
       }.bind(this));
 
-      request.fail(function(response){
+      request.fail(function (response) {
         // Temporary error, should parse server response.
-        var errorMessage = "Oops... there was a problem selecting your card. Please try again.";
+        var errorMessage = 'Oops... there was a problem selecting your card. Please try again.';
         EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
         reject(errorMessage);
       });
-
     }.bind(this));
 
     // progress rift flow after request
     return this.showNextScreen(requestPromise);
   },
 
-  selectCardToUpgrade: function(cardId) {
-    if (this.model.get("card_id_to_upgrade")) {
-      return NavigationManager.getInstance().showDialogView(new ErrorDialogItemView ({title: "You already have a card replace in progress"}));
+  selectCardToUpgrade: function (cardId) {
+    if (this.model.get('card_id_to_upgrade')) {
+      return NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({ title: 'You already have a card replace in progress' }));
     }
-    var upgradesAvailableCount = this.model.get("upgrades_available_count") || 0;
+    var upgradesAvailableCount = this.model.get('upgrades_available_count') || 0;
     var storedUpgradesAvailableCount = 0;
-    if (this.model.get("stored_upgrades") != null) {
-      storedUpgradesAvailableCount = this.model.get("stored_upgrades").length;
+    if (this.model.get('stored_upgrades') != null) {
+      storedUpgradesAvailableCount = this.model.get('stored_upgrades').length;
     }
 
     if (upgradesAvailableCount == 0 && storedUpgradesAvailableCount == 0) {
-      return NavigationManager.getInstance().showDialogView(new ErrorDialogItemView ({title: "You don't have any card upgrades available"}));
+      return NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({ title: 'You don\'t have any card upgrades available' }));
     }
 
-    return NavigationManager.getInstance().showDialogForConfirmation(i18next.t("rift.confirm_replace_card_message")).then(function(){
+    return NavigationManager.getInstance().showDialogForConfirmation(i18next.t('rift.confirm_replace_card_message')).then(function () {
       // make request
-      var requestPromise = new Promise(function(resolve,reject) {
+      var requestPromise = new Promise(function (resolve, reject) {
         var request = $.ajax({
-          url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get("ticket_id") + '/card_id_to_upgrade',
-          data: JSON.stringify({card_id: cardId}),
+          url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get('ticket_id') + '/card_id_to_upgrade',
+          data: JSON.stringify({ card_id: cardId }),
           type: 'POST',
           contentType: 'application/json',
-          dataType: 'json'
+          dataType: 'json',
         });
 
-        request.done(function(response) {
+        request.done(function (response) {
           this.model.set(response);
-          resolve(response)
+          resolve(response);
         }.bind(this));
 
-        request.fail(function(response){
+        request.fail(function (response) {
           // Temporary error, should parse server response.
-          var errorMessage = "Oops... there was a problem selecting your card. Please try again.";
+          var errorMessage = 'Oops... there was a problem selecting your card. Please try again.';
           EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
           reject(errorMessage);
         });
-
       }.bind(this));
 
       // progress rift flow after request
       return this.showNextScreen(requestPromise);
-    }.bind(this))
+    }.bind(this));
   },
 
   /**
    * Requests start looking for rift game.
    * @returns {Promise}
    */
-  startLookingForGame: function() {
+  startLookingForGame: function () {
     // rift deck is saved on server and not with user
     // so we'll start finding a new game with an empty deck but flag it as an rift game type
-    GamesManager.getInstance().findNewGame([], this.model.get("faction_id"), SDK.GameType.Rift, this.getRiftRunGeneralId(), null, null, this.model.get("ticket_id"));
+    GamesManager.getInstance().findNewGame([], this.model.get('faction_id'), SDK.GameType.Rift, this.getRiftRunGeneralId(), null, null, this.model.get('ticket_id'));
 
     return Promise.resolve();
   },
@@ -290,28 +288,27 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * Stores the current upgrade pack for the next rift run
    * @returns {Promise}
    */
-  storeCurrentUpgradePack: function() {
+  storeCurrentUpgradePack: function () {
     // make request
-    var requestPromise = new Promise(function(resolve,reject) {
+    var requestPromise = new Promise(function (resolve, reject) {
       var request = $.ajax({
-        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get("ticket_id") + '/store_upgrade',
+        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get('ticket_id') + '/store_upgrade',
         type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
 
-      request.done(function(response) {
+      request.done(function (response) {
         this.model.set(response);
         resolve(response);
       }.bind(this));
 
-      request.fail(function(response){
+      request.fail(function (response) {
         // Temporary error, should parse server response.
-        var errorMessage = "Oops... there was a problem storing your upgrade. Please try again.";
+        var errorMessage = 'Oops... there was a problem storing your upgrade. Please try again.';
         EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
         reject(errorMessage);
       });
-
     }.bind(this));
 
     // progress rift flow after request
@@ -322,28 +319,27 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * Rerolls the current upgrade pack for the current rift run
    * @returns {Promise}
    */
-  rerollCurrentUpgradePack: function() {
+  rerollCurrentUpgradePack: function () {
     // make request
-    var requestPromise = new Promise(function(resolve,reject) {
+    var requestPromise = new Promise(function (resolve, reject) {
       var request = $.ajax({
-        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get("ticket_id") + '/reroll_upgrade',
+        url: process.env.API_URL + '/api/me/rift/runs/' + this.model.get('ticket_id') + '/reroll_upgrade',
         type: 'POST',
         contentType: 'application/json',
-        dataType: 'json'
+        dataType: 'json',
       });
 
-      request.done(function(response) {
+      request.done(function (response) {
         this.model.set(response);
         resolve(response);
       }.bind(this));
 
-      request.fail(function(response){
+      request.fail(function (response) {
         // Temporary error, should parse server response.
-        var errorMessage = "Oops... there was a problem rerolling your upgrade. Please try again.";
+        var errorMessage = 'Oops... there was a problem rerolling your upgrade. Please try again.';
         EventBus.getInstance().trigger(EVENTS.ajax_error, errorMessage);
         reject(errorMessage);
       });
-
     }.bind(this));
 
     // progress rift flow after request
@@ -369,9 +365,9 @@ var RiftLayout = Backbone.Marionette.LayoutView.extend({
    * @returns {int} The card id of the general for this run || null
    */
   getRiftRunGeneralId: function () {
-    var generalId = this.model.get("general_id");
+    var generalId = this.model.get('general_id');
     return generalId;
-  }
+  },
 
 });
 

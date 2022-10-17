@@ -3,20 +3,20 @@
 var CONFIG = require('app/common/config');
 var NotificationsManager = require('app/ui/managers/notifications_manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
-var BuddiesLayout = require('./../layouts/buddies');
-var NotificationsCompositeView = require('./notifications');
 var MessageItemView = require('app/ui/views/item/message');
 var audio_engine = require('app/audio/audio_engine');
+var BuddiesLayout = require('../layouts/buddies');
+var NotificationsCompositeView = require('./notifications');
 
 var MessageNotificationsView = NotificationsCompositeView.extend({
 
-  id: "app-message-notifications",
+  id: 'app-message-notifications',
 
   childView: MessageItemView,
 
   initialize: function (opts) {
-    NotificationsCompositeView.prototype.initialize.call(this,opts);
-    this.listenTo(this,"childview:select",this.onNotificationSelected);
+    NotificationsCompositeView.prototype.initialize.call(this, opts);
+    this.listenTo(this, 'childview:select', this.onNotificationSelected);
   },
 
   onAddChild: function (childView) {
@@ -35,12 +35,12 @@ var MessageNotificationsView = NotificationsCompositeView.extend({
     // Play a sound effect when showing a new message notification
     if (this._throttledNotificationSFXPlay == null) {
       // Deferrted creation of a throttled sfx player
-      this._throttledNotificationSFXPlay = _.throttle(function(sfxAudio) {
+      this._throttledNotificationSFXPlay = _.throttle(function (sfxAudio) {
         audio_engine.current().play_effect(sfxAudio, false);
-      }.bind(this),CONFIG.INCOMING_MESSAGE_SFX_DELAY * 1000.0)
+      }.bind(this), CONFIG.INCOMING_MESSAGE_SFX_DELAY * 1000.0);
     }
-    if (childView && childView.model && childView.model.get("audio")) {
-      this._throttledNotificationSFXPlay(childView.model.get("audio"))
+    if (childView && childView.model && childView.model.get('audio')) {
+      this._throttledNotificationSFXPlay(childView.model.get('audio'));
     }
   },
 
@@ -48,8 +48,8 @@ var MessageNotificationsView = NotificationsCompositeView.extend({
     var message = childView.model;
     NavigationManager.getInstance().toggleModalViewByClass(BuddiesLayout, null);
     var buddiesLayout = NavigationManager.getInstance().getModalView();
-    buddiesLayout.selectBuddy(message.get("fromId"));
-  }
+    buddiesLayout.selectBuddy(message.get('fromId'));
+  },
 
 });
 

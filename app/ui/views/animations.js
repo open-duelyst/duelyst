@@ -1,5 +1,6 @@
-var CONFIG = require("app/common/config");
-var Animation = require("web-animations-js");
+var CONFIG = require('app/common/config');
+var Animation = require('web-animations-js');
+
 var BBMView = Backbone.Marionette.View;
 var BBMRegion = Backbone.Marionette.Region;
 
@@ -44,14 +45,14 @@ var Animations = {
   /* region HELPERS */
 
   _getAnimationForView: function (view) {
-    var id = view instanceof $ ? view.data("_animationId") : view._animationId;
+    var id = view instanceof $ ? view.data('_animationId') : view._animationId;
     return Animations._animationsById[id];
   },
 
   _storeAnimationForView: function (view, animation) {
     var id = Animations._animationId++;
     if (view instanceof $) {
-      view.data("_animationId", id);
+      view.data('_animationId', id);
     } else {
       view._animationId = id;
     }
@@ -59,10 +60,10 @@ var Animations = {
   },
 
   _destroyAnimationForView: function (view) {
-    var id = view instanceof $ ? view.data("_animationId") : view._animationId;
+    var id = view instanceof $ ? view.data('_animationId') : view._animationId;
     if (id != null) {
       if (view instanceof $) {
-        view.data("_animationId", "");
+        view.data('_animationId', '');
       } else {
         delete view._animationId;
       }
@@ -91,7 +92,7 @@ var Animations = {
    */
   animate: function (callback, duration, delay) {
     // determine view and elements
-    var view, $el, el;
+    var view; var $el; var el;
     if (this instanceof BBMView || this instanceof BBMRegion) { view = this; $el = this.$el; } else { view = $el = this; }
     if ($el instanceof $) { el = $el[0]; } else { el = $el; }
 
@@ -103,7 +104,7 @@ var Animations = {
     Animations.stop.call(this);
 
     // make sure the element is visible
-    $el.css("visibility", "");
+    $el.css('visibility', '');
 
     // execute callback to generate animation
     var animation = callback(view, $el, el, duration, delay);
@@ -116,7 +117,7 @@ var Animations = {
       var onfinish = animation.onfinish;
       animation.onfinish = function () {
         Animations._destroyAnimationForView(view);
-        view.trigger("animated");
+        view.trigger('animated');
         if (onfinish != null) { onfinish(); }
       };
     }
@@ -143,7 +144,7 @@ var Animations = {
           if (onfinish != null) {
             onfinish();
           }
-          view.trigger("animatedIn");
+          view.trigger('animatedIn');
         };
       }
 
@@ -166,11 +167,11 @@ var Animations = {
       if (Animations._isAnimation(animation)) {
         var onfinish = animation.onfinish;
         animation.onfinish = function () {
-          $el.css("visibility", "hidden");
+          $el.css('visibility', 'hidden');
           if (onfinish != null) {
             onfinish();
           }
-          view.trigger("animatedOut");
+          view.trigger('animatedOut');
         };
       }
 
@@ -180,8 +181,8 @@ var Animations = {
   /**
    * Stops any currently running animations that were created through the Animation helpers.
    */
-  stop: function() {
-    var view, $el;
+  stop: function () {
+    var view; var $el;
     if (this instanceof BBMView || this instanceof BBMRegion) { view = this; $el = this.$el; } else { view = $el = this; }
     var animation = Animations._getAnimationForView(view);
     if (animation != null) {
@@ -208,7 +209,7 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animate
    */
-  cssClassAnimation: function(cssClass) {
+  cssClassAnimation: function (cssClass) {
     return Animations.animate.call(this, function (view, $el, el, duration, delay) {
       $el.removeClass(cssClass);
 
@@ -227,22 +228,22 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateIn
    */
-  fadeIn: function(duration, delay) {
+  fadeIn: function (duration, delay) {
     return Animations.animateIn.call(this, function (view, $el, el, duration, delay) {
       if (delay > 0) {
-        $el.css("opacity", 0.0);
+        $el.css('opacity', 0.0);
       }
       var animation = el.animate([
-        {"opacity": 0.0},
-        {"opacity": 1.0}
+        { opacity: 0.0 },
+        { opacity: 1.0 },
       ], {
         duration: duration,
         delay: delay,
-        fill: 'forwards'
+        fill: 'forwards',
       });
       if (delay > 0) {
         animation.onfinish = function () {
-          $el.css("opacity", "");
+          $el.css('opacity', '');
         };
       }
       return animation;
@@ -255,15 +256,15 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateOut
    */
-  fadeOut: function(duration, delay) {
+  fadeOut: function (duration, delay) {
     return Animations.animateOut.call(this, function (view, $el, el, duration, delay) {
       return el.animate([
-        {"opacity": 1.0},
-        {"opacity": 0.0}
+        { opacity: 1.0 },
+        { opacity: 0.0 },
       ], {
         duration: duration,
         delay: delay,
-        fill: 'forwards'
+        fill: 'forwards',
       });
     }, duration, delay);
   },
@@ -277,26 +278,26 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateIn
    */
-  fadeZoomUpIn: function(duration, delay, translateX, translateY, scaleStart) {
+  fadeZoomUpIn: function (duration, delay, translateX, translateY, scaleStart) {
     return Animations.animateIn.call(this, function (view, $el, el, duration, delay) {
       if (translateX == null) { translateX = 0; }
       if (translateY == null) { translateY = 0; }
       if (scaleStart == null) { scaleStart = 0; }
       if (delay > 0) {
-        $el.css("opacity", 0.0);
+        $el.css('opacity', 0.0);
       }
       var animation = el.animate([
-        {"opacity": 0.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) scale(" + scaleStart + ")"},
-        {"opacity": 1.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) scale(1.0)"}
+        { opacity: 0.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(' + scaleStart + ')' },
+        { opacity: 1.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(1.0)' },
       ], {
         duration: duration,
         delay: delay,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
       });
       if (delay > 0) {
         animation.onfinish = function () {
-          $el.css("opacity", "");
+          $el.css('opacity', '');
         };
       }
       return animation;
@@ -311,19 +312,19 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateOut
    */
-  fadeZoomDownOut: function(duration, delay, translateX, translateY) {
+  fadeZoomDownOut: function (duration, delay, translateX, translateY) {
     return Animations.animateOut.call(this, function (view, $el, el, duration, delay) {
       if (translateX == null) { translateX = 0; }
       if (translateY == null) { translateY = 0; }
 
       return el.animate([
-        {"opacity": 1.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) scale(1.0)"},
-        {"opacity": 0.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) scale(0.0)"}
+        { opacity: 1.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(1.0)' },
+        { opacity: 0.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) scale(0.0)' },
       ], {
         duration: duration,
         delay: delay,
-        easing: "cubic-bezier(0.47, 0, 0.745, 0.715)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.47, 0, 0.745, 0.715)',
+        fill: 'forwards',
       });
     }, duration, delay);
   },
@@ -336,28 +337,28 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateIn
    */
-  fadeZoomDownIn: function(duration, delay, translateX, translateY) {
+  fadeZoomDownIn: function (duration, delay, translateX, translateY) {
     return Animations.animateIn.call(this, function (view, $el, el, duration, delay) {
       if (translateX == null) { translateX = 0; }
       if (translateY == null) { translateY = 0; }
       if (delay > 0) {
-        $el.css("opacity", 0.0);
+        $el.css('opacity', 0.0);
       }
 
-      $el.parent().css("perspective", "1000px");
+      $el.parent().css('perspective', '1000px');
 
       var animation = el.animate([
-        {"opacity": 0.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(600px)"},
-        {"opacity": 1.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(0.0)"}
+        { opacity: 0.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(600px)' },
+        { opacity: 1.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(0.0)' },
       ], {
         duration: duration,
         delay: delay,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
       });
       if (delay > 0) {
         animation.onfinish = function () {
-          $el.css("opacity", "");
+          $el.css('opacity', '');
         };
       }
       return animation;
@@ -372,28 +373,28 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateIn
    */
-  fadeZoomFlashUpIn: function(duration, delay, translateX, translateY) {
+  fadeZoomFlashUpIn: function (duration, delay, translateX, translateY) {
     return Animations.animateIn.call(this, function (view, $el, el, duration, delay) {
       if (translateX == null) { translateX = 0; }
       if (translateY == null) { translateY = 0; }
       if (delay > 0) {
-        $el.css("opacity", 0.0);
+        $el.css('opacity', 0.0);
       }
 
-      $el.parent().css("perspective", "1000px");
+      $el.parent().css('perspective', '1000px');
 
       var animation = el.animate([
-        {"opacity": 0.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(-50px)", "-webkit-filter": "brightness(0%)"},
-        {"opacity": 1.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(0.0)", "-webkit-filter": "brightness(100%)"}
+        { opacity: 0.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(-50px)', '-webkit-filter': 'brightness(0%)' },
+        { opacity: 1.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(0.0)', '-webkit-filter': 'brightness(100%)' },
       ], {
         duration: duration,
         delay: delay,
-        easing: "cubic-bezier(0.39, 0.575, 0.565, 1)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.39, 0.575, 0.565, 1)',
+        fill: 'forwards',
       });
       if (delay > 0) {
         animation.onfinish = function () {
-          $el.css("opacity", "");
+          $el.css('opacity', '');
         };
       }
       return animation;
@@ -408,37 +409,37 @@ var Animations = {
    * @returns {Animation}
    * @see Animations.animateIn
    */
-  fadeZoomRotateFlashUpIn: function(duration, delay, translateX, translateY) {
+  fadeZoomRotateFlashUpIn: function (duration, delay, translateX, translateY) {
     return Animations.animateIn.call(this, function (view, $el, el, duration, delay) {
       if (translateX == null) { translateX = 0; }
       if (translateY == null) { translateY = 0; }
       if (delay > 0) {
-        $el.css("opacity", 0.0);
+        $el.css('opacity', 0.0);
       }
 
-      $el.parent().css("perspective", "1000px");
-      $el.css("transform-origin", "50% 50%");
+      $el.parent().css('perspective', '1000px');
+      $el.css('transform-origin', '50% 50%');
       var rotateY = (0.5 - Math.random()) * 90;
       var rotateZ = (0.5 - Math.random()) * 30;
       var translateZ = -(150 + Math.random() * 100);
       var scale = (0.6 + Math.random() * 0.2);
 
       var animation = el.animate([
-        {"opacity": 0.75, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(" + translateZ + "px) scale("+scale+") rotateY(" + rotateY + "deg) rotateZ(" + rotateZ + "deg)", "-webkit-filter": "brightness(0)"},
-        {"opacity": 1.0, transform: "translateX(" + translateX + "px) translateY(" + translateY + "px) translateZ(0px) scale(1.0) rotateY(0deg) rotateZ(0deg)", "-webkit-filter": "brightness(1)"}
+        { opacity: 0.75, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ') rotateY(' + rotateY + 'deg) rotateZ(' + rotateZ + 'deg)', '-webkit-filter': 'brightness(0)' },
+        { opacity: 1.0, transform: 'translateX(' + translateX + 'px) translateY(' + translateY + 'px) translateZ(0px) scale(1.0) rotateY(0deg) rotateZ(0deg)', '-webkit-filter': 'brightness(1)' },
       ], {
         duration: duration,
         delay: delay,
-        easing: "cubic-bezier(0.56, 1.21, 0.56, 1)",
-        fill: 'forwards'
+        easing: 'cubic-bezier(0.56, 1.21, 0.56, 1)',
+        fill: 'forwards',
       });
       animation.onfinish = function () {
-        $el.css("opacity", "");
-        $el.css("transform-origin", "");
+        $el.css('opacity', '');
+        $el.css('transform-origin', '');
       };
       return animation;
     }, duration, delay);
-  }
+  },
 
   /* endregion PRESETS */
 

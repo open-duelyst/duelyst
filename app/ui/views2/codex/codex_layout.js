@@ -1,4 +1,5 @@
-//pragma PKGS: codex
+// pragma PKGS: codex
+
 'use strict';
 
 var SDK = require('app/sdk');
@@ -11,13 +12,13 @@ var CodexChapterLayer = require('app/view/layers/codex/CodexChapterLayer');
 var WorldMapLayer = require('app/view/layers/codex/WorldMapLayer');
 var audio_engine = require('app/audio/audio_engine');
 var PackageManager = require('app/ui/managers/package_manager');
-var NavigationManager = require("app/ui/managers/navigation_manager");
+var NavigationManager = require('app/ui/managers/navigation_manager');
 var ActivityDialogItemView = require('app/ui/views/item/activity_dialog');
-var Animations = require("app/ui/views/animations");
+var Animations = require('app/ui/views/animations');
+var Promise = require('bluebird');
 var CodexLayoutTempl = require('./templates/codex_layout.hbs');
 var CodexChapterSelectCompositeView = require('./codex_chapter_select');
 var CodexChapterItemView = require('./codex_chapter');
-var Promise = require('bluebird');
 
 var STATE_CHAPTERS = 1;
 var STATE_CHAPTER = 2;
@@ -25,24 +26,24 @@ var STATE_WORLD_MAP = 3;
 
 var CodexLayout = Backbone.Marionette.LayoutView.extend({
 
-  id: "app-codex",
-  //className: "",
+  id: 'app-codex',
+  // className: "",
   template: CodexLayoutTempl,
 
   regions: {
-    chaptersRegion: { selector: ".chapters-region" },
-    chapterRegion: { selector: ".chapter-region" }
+    chaptersRegion: { selector: '.chapters-region' },
+    chapterRegion: { selector: '.chapter-region' },
   },
 
   ui: {
-    $lore : ".lore",
-    $showWorldMap: ".show-world-map",
-    $hideWorldMap: ".hide-world-map"
+    $lore: '.lore',
+    $showWorldMap: '.show-world-map',
+    $hideWorldMap: '.hide-world-map',
   },
 
   events: {
-    "click .show-world-map": "onClickShowWorldMap",
-    "click .hide-world-map": "onClickHideWorldMap"
+    'click .show-world-map': 'onClickShowWorldMap',
+    'click .hide-world-map': 'onClickHideWorldMap',
   },
 
   animateIn: Animations.fadeIn,
@@ -57,10 +58,10 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onShow: function() {
+  onShow: function () {
     // hide interactive elements
-    this.ui.$showWorldMap.addClass("hide");
-    this.ui.$hideWorldMap.addClass("hide");
+    this.ui.$showWorldMap.addClass('hide');
+    this.ui.$hideWorldMap.addClass('hide');
 
     // show codex content
     Scene.getInstance().showContentByClass(CodexLayer, true);
@@ -71,10 +72,10 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
       // setup chapters
       var chaptersDisplayed = SDK.Codex.getAllChapters();
       var chaptersCollection = new Backbone.Collection(chaptersDisplayed);
-      var chapterSelectCompositeView = new CodexChapterSelectCompositeView({collection: chaptersCollection});
-      this.listenTo(chapterSelectCompositeView, "select", function (model) {
+      var chapterSelectCompositeView = new CodexChapterSelectCompositeView({ collection: chaptersCollection });
+      this.listenTo(chapterSelectCompositeView, 'select', function (model) {
         if (model != null) {
-          this.setState(STATE_CHAPTER, model.get("id"));
+          this.setState(STATE_CHAPTER, model.get('id'));
         }
       });
       this.chaptersRegion.show(chapterSelectCompositeView);
@@ -86,19 +87,19 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
       this.setState(STATE_CHAPTERS);
 
       // shoiw interactive elements
-      this.ui.$showWorldMap.removeClass("hide");
-      this.ui.$hideWorldMap.removeClass("hide");
+      this.ui.$showWorldMap.removeClass('hide');
+      this.ui.$hideWorldMap.removeClass('hide');
     }.bind(this));
   },
 
   getRequiredResources: function () {
-    return Backbone.Marionette.LayoutView.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier("codex"));
+    return Backbone.Marionette.LayoutView.prototype.getRequiredResources.call(this).concat(PKGS.getPkgForIdentifier('codex'));
   },
 
   onPrepareForDestroy: function () {
     Promise.all([
       this.chapterRegion.empty(),
-      Scene.getInstance().destroyOverlayByClass(CodexChapterLayer)
+      Scene.getInstance().destroyOverlayByClass(CodexChapterLayer),
     ]).then(function () {
       this._unloadCurrentChapterResources();
     }.bind(this));
@@ -108,11 +109,11 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
 
   /* region CUSTOM EVENTS */
 
-  onClickShowWorldMap: function() {
+  onClickShowWorldMap: function () {
     this.setState(STATE_WORLD_MAP);
   },
 
-  onClickHideWorldMap: function() {
+  onClickHideWorldMap: function () {
     NavigationManager.getInstance().showLastRoute();
   },
 
@@ -163,7 +164,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
    */
   _showLore: function () {
     // set css state
-    this.$el.addClass("state-lore");
+    this.$el.addClass('state-lore');
 
     Animations.fadeIn.call(this.ui.$lore);
 
@@ -177,7 +178,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
    */
   _stopShowingLore: function () {
     // set css state
-    this.$el.removeClass("state-lore");
+    this.$el.removeClass('state-lore');
 
     Animations.fadeOut.call(this.ui.$lore);
 
@@ -192,7 +193,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
   _showChapters: function () {
     // add mode to route
     NavigationManager.getInstance().resetMinorRoutes();
-    NavigationManager.getInstance().addMinorRoute("chapters", this.setState, this, [STATE_CHAPTERS]);
+    NavigationManager.getInstance().addMinorRoute('chapters', this.setState, this, [STATE_CHAPTERS]);
 
     // start music
     audio_engine.current().play_music(RSX.music_codex.audio);
@@ -229,15 +230,15 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
       var chapterData = SDK.Codex.chapterForIdentifier(chapterId);
 
       // add mode to route
-      NavigationManager.getInstance().addMinorRoute("chapter", this.setState, this, [STATE_CHAPTER, chapterId]);
+      NavigationManager.getInstance().addMinorRoute('chapter', this.setState, this, [STATE_CHAPTER, chapterId]);
 
       // Analytics call
-      Analytics.track("read codex chapter",{
-        category:Analytics.EventCategory.Codex,
-        chapter_id:chapterId
-      },{
-        nonInteraction:1
-      })
+      Analytics.track('read codex chapter', {
+        category: Analytics.EventCategory.Codex,
+        chapter_id: chapterId,
+      }, {
+        nonInteraction: 1,
+      });
 
       if (this._chapterId == null || this._chapterId !== chapterId) {
         // set new chapter
@@ -265,7 +266,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
           // check that loaded is same as current
           if (this._loadedChapterPkgId === chapterPkgId) {
             // show chapter ui
-            promises.push(this.chapterRegion.show(new CodexChapterItemView({model: new Backbone.Model(chapterData)})));
+            promises.push(this.chapterRegion.show(new CodexChapterItemView({ model: new Backbone.Model(chapterData) })));
 
             // show chapter visuals
             var chapterLayer = Scene.getInstance().getOverlay();
@@ -345,7 +346,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
    */
   _showWorldMap: function () {
     // add mode to route
-    NavigationManager.getInstance().addMinorRoute("world_map", this.setState, this, [STATE_WORLD_MAP]);
+    NavigationManager.getInstance().addMinorRoute('world_map', this.setState, this, [STATE_WORLD_MAP]);
 
     // play audio
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_in.audio, CONFIG.SHOW_SFX_PRIORITY);
@@ -354,7 +355,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
     this._stopShowingLore();
 
     // set css state
-    this.$el.addClass("state-world-map");
+    this.$el.addClass('state-world-map');
 
     // show overlay
     Scene.getInstance().showOverlayByClass(WorldMapLayer);
@@ -372,7 +373,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_tab_out.audio, CONFIG.HIDE_SFX_PRIORITY);
 
     // set css state
-    this.$el.removeClass("state-world-map");
+    this.$el.removeClass('state-world-map');
 
     // destroy overlay
     Scene.getInstance().destroyOverlayByClass(WorldMapLayer);
@@ -381,7 +382,7 @@ var CodexLayout = Backbone.Marionette.LayoutView.extend({
     this._showLore();
 
     return Promise.resolve();
-  }
+  },
 
   /* endregion MAP */
 

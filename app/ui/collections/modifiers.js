@@ -6,8 +6,8 @@ var ModifierModel = require('app/ui/models/modifier');
 
 var ModifierCollection = Backbone.Collection.extend({
   model: ModifierModel,
-  initialize: function() {
-  }
+  initialize: function () {
+  },
 });
 
 // Expose the class either via CommonJS or the global object

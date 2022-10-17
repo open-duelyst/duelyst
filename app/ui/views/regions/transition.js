@@ -1,6 +1,7 @@
 'use strict';
-var Promise = require("bluebird");
-var Animations = require("app/ui/views/animations");
+
+var Promise = require('bluebird');
+var Animations = require('app/ui/views/animations');
 
 // override marionette's region's _destroyView method to call prepareForDestroy method on views
 // this allows us to ensure a method gets called
@@ -40,7 +41,7 @@ Backbone.Marionette.LayoutView.prototype.prepareForDestroy = function () {
 };
 Backbone.Marionette.RegionManager.prototype.prepareForDestroy = function () {
   var regions = this.getRegions();
-  _.each(regions, function(region, name) {
+  _.each(regions, function (region, name) {
     region.prepareForDestroy();
   }, this);
 };
@@ -56,7 +57,7 @@ Backbone.Marionette.Region.prototype.prepareForDestroy = function () {
 // so that it will not transition any of its own views
 // because if it does, they will not get properly destroyed
 Backbone.Marionette.RegionManager.prototype._super_remove = Backbone.Marionette.RegionManager.prototype._remove;
-Backbone.Marionette.RegionManager.prototype._remove = function(name, region) {
+Backbone.Marionette.RegionManager.prototype._remove = function (name, region) {
   Backbone.Marionette.triggerMethodOn(region, 'before:remove');
   Backbone.Marionette.RegionManager.prototype._super_remove.apply(this, arguments);
   Backbone.Marionette.triggerMethodOn(region, 'remove');
@@ -112,7 +113,7 @@ var TransitionRegion = Backbone.Marionette.Region.extend({
         }.bind(this);
 
         // listen for view to be destroyed before animated in
-        this.listenTo(view, "destroy", onTransitionIn);
+        this.listenTo(view, 'destroy', onTransitionIn);
 
         // render the view immediately so all properties are present
         view.render();
@@ -179,8 +180,7 @@ var TransitionRegion = Backbone.Marionette.Region.extend({
             Backbone.Marionette.triggerMethodOn(view, 'animatedOut');
 
             // call 'destroy' or 'remove', depending on which is found
-            if (view.destroy) { view.destroy(); }
-            else if (view.remove) { view.remove(); }
+            if (view.destroy) { view.destroy(); } else if (view.remove) { view.remove(); }
 
             this.triggerMethod('empty', view);
 
@@ -189,7 +189,7 @@ var TransitionRegion = Backbone.Marionette.Region.extend({
         }.bind(this);
 
         // listen for view to be destroyed before animated out
-        this.listenTo(view, "destroy", onTransitionOut);
+        this.listenTo(view, 'destroy', onTransitionOut);
 
         this.triggerMethod('before:swapOut', view);
         this.triggerMethod('before:empty', view);
@@ -211,16 +211,15 @@ var TransitionRegion = Backbone.Marionette.Region.extend({
             onTransitionOut();
           }
         }
-
       }.bind(this));
     } else {
       return Promise.resolve();
     }
   },
 
-  appendHtml: function(view) {
+  appendHtml: function (view) {
     this.el.appendChild(view.el);
-  }
+  },
 
 });
 

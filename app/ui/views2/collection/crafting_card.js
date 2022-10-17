@@ -6,10 +6,10 @@ var CardCompositeView = require('app/ui/views/composite/card');
 var CraftingCardCompositeView = CardCompositeView.extend({
 
   draggable: true,
-  draggableScope: "remove",
+  draggableScope: 'remove',
 
-  onRender: function() {
-    CardCompositeView.prototype.onRender.apply(this,arguments);
+  onRender: function () {
+    CardCompositeView.prototype.onRender.apply(this, arguments);
 
     // crafting cards should always set read states to true
     this.setRead(true);
@@ -17,8 +17,8 @@ var CraftingCardCompositeView = CardCompositeView.extend({
   },
 
   getCardClasses: function () {
-    return CardCompositeView.prototype.getCardClasses.apply(this,arguments) + " crafting-card";
-  }
+    return CardCompositeView.prototype.getCardClasses.apply(this, arguments) + ' crafting-card';
+  },
 
 });
 

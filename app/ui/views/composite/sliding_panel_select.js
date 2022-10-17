@@ -1,23 +1,24 @@
-//pragma PKGS: nongame
+// pragma PKGS: nongame
+
 'use strict';
 
 var CONFIG = require('app/common/config');
 var EventBus = require('app/common/eventbus');
 var EVENTS = require('app/common/event_types');
 var RSX = require('app/data/resources');
-var Animations = require("app/ui/views/animations");
+var Animations = require('app/ui/views/animations');
 var SlidingPanelItemView = require('app/ui/views/item/sliding_panel');
-var SlidingPanelSelectTmpl = require('./../../templates/composite/sliding_panel_select.hbs');
-var _ = require("underscore");
+var _ = require('underscore');
+var SlidingPanelSelectTmpl = require('../../templates/composite/sliding_panel_select.hbs');
 
 var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  className: "sliding-panel-select",
+  className: 'sliding-panel-select',
 
   template: SlidingPanelSelectTmpl,
 
   childView: SlidingPanelItemView,
-  childViewContainer: ".sliding-panel-select-choices .choices",
+  childViewContainer: '.sliding-panel-select-choices .choices',
 
   _isEmptyView: false,
   _numPages: 0,
@@ -92,13 +93,13 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
   onResize: function () {
     // get dimensions of space
-    var $slidingPanelSelectBody = this.$el.find(".sliding-panel-select-body");
-    var $slidingPanelSelectChoicesContainer = this.$el.find(".sliding-panel-select-choices");
-    var $slidingPanelSelectChoices = $slidingPanelSelectChoicesContainer.children(".choices");
+    var $slidingPanelSelectBody = this.$el.find('.sliding-panel-select-body');
+    var $slidingPanelSelectChoicesContainer = this.$el.find('.sliding-panel-select-choices');
+    var $slidingPanelSelectChoices = $slidingPanelSelectChoicesContainer.children('.choices');
 
     // strip css
-    $slidingPanelSelectChoicesContainer.css({width: "", height: "", flex: ""});
-    this.$el.removeClass("slides slide-end slide-start");
+    $slidingPanelSelectChoicesContainer.css({ width: '', height: '', flex: '' });
+    this.$el.removeClass('slides slide-end slide-start');
     this._slidingAtStart = false;
     this._slidingAtEnd = false;
 
@@ -122,9 +123,9 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
       this._slidingContainerHeight = this._totalViewsHeight;
 
       // reset container css
-      this._slidingContainerCSSWidth = "";
+      this._slidingContainerCSSWidth = '';
       this._slidingContainerCSSHeight = this._slidingContainerHeight + slidingContainerVerticalPadding;
-      this._slidingContainerCSSFlex = "";
+      this._slidingContainerCSSFlex = '';
 
       // slide within window
       this._slidingRange = this._totalViewsWidth - this._slidingContainerWidth;
@@ -137,7 +138,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
       if (this._isEmptyView) {
         this._slidingContainerCSSWidth = this._slidingContainerWidth + this._slidingChoicesHorizontalPadding + slidingContainerHorizontalPadding;
         this._slidingContainerCSSHeight = this._slidingContainerHeight + slidingContainerVerticalPadding;
-        this._slidingContainerCSSFlex = "none";
+        this._slidingContainerCSSFlex = 'none';
       } else {
         // set container width/height to match total views width/height
         this._slidingContainerWidth = this._totalViewsWidth;
@@ -146,7 +147,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
         // reset container css
         this._slidingContainerCSSWidth = this._slidingContainerWidth + this._slidingChoicesHorizontalPadding + slidingContainerHorizontalPadding;
         this._slidingContainerCSSHeight = this._slidingContainerHeight + slidingContainerVerticalPadding;
-        this._slidingContainerCSSFlex = "none";
+        this._slidingContainerCSSFlex = 'none';
       }
 
       // window size is big enough that there is no need to slide
@@ -166,7 +167,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
           viewData.animation.cancel();
           viewData.animation = null;
         }
-        view.$el.css("transform", "translate(" + x + "px, " + y + "px)");
+        view.$el.css('transform', 'translate(' + x + 'px, ' + y + 'px)');
       }.bind(this));
     }
 
@@ -174,7 +175,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
     $slidingPanelSelectChoicesContainer.css({
       width: this._slidingContainerCSSWidth,
       height: this._slidingContainerCSSHeight,
-      flex: this._slidingContainerCSSFlex
+      flex: this._slidingContainerCSSFlex,
     });
   },
 
@@ -182,17 +183,17 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onRender: function() {
+  onRender: function () {
     this.onResize();
 
     // listen for pagination
-    this.$el.find(".previous-page").on("click", this.onClickPreviousPage.bind(this));
-    this.$el.find(".next-page").on("click", this.onClickNextPage.bind(this));
+    this.$el.find('.previous-page').on('click', this.onClickPreviousPage.bind(this));
+    this.$el.find('.next-page').on('click', this.onClickNextPage.bind(this));
   },
 
   onShow: function () {
     // start listening for select deck
-    this.listenTo(this, "childview:select", this.onSelectChildView);
+    this.listenTo(this, 'childview:select', this.onSelectChildView);
 
     // listen to global events
     this.listenTo(EventBus.getInstance(), EVENTS.pointer_wheel, this.onPointerWheel);
@@ -223,7 +224,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region EVENTS */
 
-  onPointerWheel: function(event) {
+  onPointerWheel: function (event) {
     if (!this._slidingLocked) {
       // stop any in progress animations
       this._stopSlidingPanelAnimations();
@@ -277,7 +278,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  onSelectChildView: function(childView) {
+  onSelectChildView: function (childView) {
     this.setSelectedChildView(childView);
   },
 
@@ -292,7 +293,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
   setSelectedChildView: function (childView) {
     if (!this.slidingPanelsStickySelection && !this.slidingPanelsSnap) {
       if (childView) {
-        this.trigger("select", childView.model);
+        this.trigger('select', childView.model);
       }
     } else {
       if (childView != null && this._selectedChildView === childView) {
@@ -340,12 +341,12 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
                 viewData.target_x = viewData.x - this._slidingRange * slidingVal;
                 viewData.animation_duration = this.slidingPanelsSnapDuration;
                 viewData.animation = el.animate([
-                  {"transform": "translate(" + viewData.source_x + "px, " + y + "px)"},
-                  {"transform": "translate(" + viewData.target_x + "px, " + y + "px)"}
+                  { transform: 'translate(' + viewData.source_x + 'px, ' + y + 'px)' },
+                  { transform: 'translate(' + viewData.target_x + 'px, ' + y + 'px)' },
                 ], {
                   duration: this.slidingPanelsSnapDuration,
                   fill: 'forwards',
-                  easing: "ease-out"
+                  easing: 'ease-out',
                 });
                 var onfinish = viewData.animation.onfinish;
                 viewData.animation.onfinish = function () {
@@ -356,11 +357,11 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
             }
 
             // trigger deselect event
-            this.trigger("deselect", this._selectedChildView.model);
+            this.trigger('deselect', this._selectedChildView.model);
           }
 
           // set child view as inactive
-          this._selectedChildView.$el.removeClass("active");
+          this._selectedChildView.$el.removeClass('active');
         }
 
         // store child view
@@ -368,7 +369,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
         if (this._selectedChildView != null) {
           // set child view as active
-          this._selectedChildView.$el.addClass("active");
+          this._selectedChildView.$el.addClass('active');
 
           if (this.slidingPanelsSnap && this._selectedChildView.collection != null && this._selectedChildView.collection.length > 0) {
             // lock sliding
@@ -380,15 +381,15 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
             }
 
             // unflag as sliding
-            this.$el.removeClass("sliding");
+            this.$el.removeClass('sliding');
 
             // unflag as slides
             if (this._slidingRange > 0) {
-              this.$el.removeClass("slides");
+              this.$el.removeClass('slides');
             }
 
             // flag as snapped
-            this.$el.addClass("snapped");
+            this.$el.addClass('snapped');
 
             // get position of selected panel relative to others
             var selectedX = -this._slidingChoicesHorizontalPadding * 0.5;
@@ -420,12 +421,12 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
               viewData.target_x = panelX;
               viewData.animation_duration = this.slidingPanelsSnapDuration;
               viewData.animation = el.animate([
-                {"transform": "translate(" + viewData.source_x + "px, " + y + "px)"},
-                {"transform": "translate(" + viewData.target_x + "px, " + y + "px)"}
+                { transform: 'translate(' + viewData.source_x + 'px, ' + y + 'px)' },
+                { transform: 'translate(' + viewData.target_x + 'px, ' + y + 'px)' },
               ], {
                 duration: viewData.animation_duration,
                 fill: 'forwards',
-                easing: "ease-out"
+                easing: 'ease-out',
               });
 
               // update x for next
@@ -444,7 +445,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
           }
 
           // trigger select event
-          this.trigger("select", this._selectedChildView.model);
+          this.trigger('select', this._selectedChildView.model);
         }
       }
     }
@@ -466,7 +467,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
     var val = 0.0;
     var selectedChildView = this.getSelectedChildView();
     if (selectedChildView != null) {
-      val += this._getSlidingPanelDataForView(selectedChildView).outerWidth + selectedChildView.$el.find(".sliding-panel-active-content").outerWidth(true);
+      val += this._getSlidingPanelDataForView(selectedChildView).outerWidth + selectedChildView.$el.find('.sliding-panel-active-content').outerWidth(true);
     }
     return val;
   },
@@ -484,18 +485,22 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   _getSlidingPanelDataForModel: function (model) {
-    var id = model.get("id") || model.get("name") || model.cid;
+    var id = model.get('id') || model.get('name') || model.cid;
     return this._getSlidingPanelDataForId(id);
   },
 
   _getSlidingPanelDataForId: function (id) {
     return this._dataById[id] || (this._dataById[id] = {
-      x: 0, y: 0,
-      source_x: 0, target_x: 0,
+      x: 0,
+      y: 0,
+      source_x: 0,
+      target_x: 0,
       animation: null,
       animation_duration: 1,
-      width: 0, height: 0,
-      outerWidth: 0, outerHeight: 0
+      width: 0,
+      height: 0,
+      outerWidth: 0,
+      outerHeight: 0,
     });
   },
 
@@ -618,7 +623,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
     // set as not slides
     if (this._slidingRange > 0) {
-      this.$el.removeClass("slides");
+      this.$el.removeClass('slides');
     }
 
     var delay = this.slidingPanelsShowDelay;
@@ -652,7 +657,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
       }
 
       // set final position immediately to ensure selections made during show are correct
-      view.$el.css("transform", "translateX(" + x + "px) translateY(" + y + "px)");
+      view.$el.css('transform', 'translateX(' + x + 'px) translateY(' + y + 'px)');
 
       if (x >= -viewData.outerWidth && x <= this._slidingContainerWidth + viewData.outerWidth) {
         // animate view in
@@ -726,16 +731,16 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
       viewData.target_x = viewData.source_x - this._slidingRange;
       viewData.animation_duration = 1.0;
       var y = viewData.y + (this._slidingContainerHeight - this._totalViewsHeight) * 0.5;
-      view.$el.css("transform", "");
+      view.$el.css('transform', '');
       if (viewData.animation != null) {
         viewData.animation.cancel();
       }
       viewData.animation = view.$el[0].animate([
-        {transform: "translate(" + viewData.source_x + "px, " + y + "px)"},
-        {transform: "translate(" + viewData.target_x + "px, " + y + "px)"}
+        { transform: 'translate(' + viewData.source_x + 'px, ' + y + 'px)' },
+        { transform: 'translate(' + viewData.target_x + 'px, ' + y + 'px)' },
       ], {
         duration: viewData.animation_duration,
-        fill: 'forwards'
+        fill: 'forwards',
       });
       viewData.animation.pause();
     }.bind(this));
@@ -745,7 +750,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
     // set as slides
     if (this._slidingRange > 0) {
-      this.$el.addClass("slides");
+      this.$el.addClass('slides');
     }
 
     // reset sliding movement
@@ -835,9 +840,9 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
 
       // set sliding class
       if (isSliding) {
-        this.$el.addClass("sliding");
+        this.$el.addClass('sliding');
       } else {
-        this.$el.removeClass("sliding");
+        this.$el.removeClass('sliding');
       }
     }
   },
@@ -852,17 +857,17 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
       var slidingSlop = 0.025;
       if (slidingVal - slidingSlop <= 0.0) {
         this._slidingAtStart = true;
-        this.$el.addClass("slide-start");
+        this.$el.addClass('slide-start');
       } else if (this._slidingAtStart) {
         this._slidingAtStart = false;
-        this.$el.removeClass("slide-start");
+        this.$el.removeClass('slide-start');
       }
       if (slidingVal + slidingSlop >= 1.0) {
         this._slidingAtEnd = true;
-        this.$el.addClass("slide-end");
+        this.$el.addClass('slide-end');
       } else if (this._slidingAtEnd) {
         this._slidingAtEnd = false;
-        this.$el.removeClass("slide-end");
+        this.$el.removeClass('slide-end');
       }
 
       // move all views to current sliding val
@@ -871,7 +876,7 @@ var SlidingPanelSelectCompositeView = Backbone.Marionette.CompositeView.extend({
         viewData.animation.currentTime = slidingVal;
       }.bind(this));
     }
-  }
+  },
 
   /* endregion SLIDING */
 

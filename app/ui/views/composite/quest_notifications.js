@@ -2,12 +2,12 @@
 
 var CONFIG = require('app/common/config');
 var NotificationsManager = require('app/ui/managers/notifications_manager');
-var NotificationsCompositeView = require('./notifications');
 var QuestNotificationItemView = require('app/ui/views/item/quest_notification');
+var NotificationsCompositeView = require('./notifications');
 
 var QuestNotificationsView = NotificationsCompositeView.extend({
 
-  id: "app-quest-notifications",
+  id: 'app-quest-notifications',
 
   childView: QuestNotificationItemView,
 
@@ -18,7 +18,7 @@ var QuestNotificationsView = NotificationsCompositeView.extend({
         NotificationsManager.getInstance().dismissNotification(childView.model);
       }.bind(this));
     }.bind(this), CONFIG.QUEST_NOTIFICATION_DURATION * 1000.0);
-  }
+  },
 
 });
 

@@ -1,37 +1,38 @@
-//pragma PKGS: codex
+// pragma PKGS: codex
+
 'use strict';
 
-var CONFIG = require("app/common/config");
+var CONFIG = require('app/common/config');
 var EventBus = require('app/common/eventbus');
 var EVENTS = require('app/common/event_types');
 var UtilsUI = require('app/common/utils/utils_ui');
-var audio_engine = require("app/audio/audio_engine");
-var audio_object = require("app/audio/audio_object");
-var RSX = require("app/data/resources");
+var audio_engine = require('app/audio/audio_engine');
+var audio_object = require('app/audio/audio_object');
+var RSX = require('app/data/resources');
+var Animations = require('app/ui/views/animations');
+var ProfileManager = require('app/ui/managers/profile_manager');
 var CodexChapterTmpl = require('./templates/codex_chapter.hbs');
-var Animations = require("app/ui/views/animations");
-var ProfileManager = require('app/ui/managers/profile_manager')
 
 var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
 
-  className: "codex-chapter",
+  className: 'codex-chapter',
 
   template: CodexChapterTmpl,
 
   events: {
-    "click .audio-play": "onClickAudioPlay",
-    "click .audio-pause": "onClickAudioPause",
-    "click .audio-stop": "onClickAudioStop",
-    "change .audio-volume-range": "onChangeAudioVolume",
-    "change .audio-seek-range": "onChangeAudioSeek"
+    'click .audio-play': 'onClickAudioPlay',
+    'click .audio-pause': 'onClickAudioPause',
+    'click .audio-stop': 'onClickAudioStop',
+    'change .audio-volume-range': 'onChangeAudioVolume',
+    'change .audio-seek-range': 'onChangeAudioSeek',
   },
 
   ui: {
-    $chapterText: ".chapter-text",
-    $audio: ".audio",
-    $audioElapsed: ".audio-elapsed",
-    $audioVolumeRange: ".audio-volume-range",
-    $audioSeekRange: ".audio-seek-range"
+    $chapterText: '.chapter-text',
+    $audio: '.audio',
+    $audioElapsed: '.audio-elapsed',
+    $audioVolumeRange: '.audio-volume-range',
+    $audioSeekRange: '.audio-seek-range',
   },
 
   _audioState: false,
@@ -39,10 +40,10 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
 
   /* region INITIALIZE */
 
-  serializeModel: function(model){
-    var data =  model.toJSON.apply(model, _.rest(arguments));
-    data.description = model.get("description").replace(/\n|\r/g, "<br/>");
-    data.text = model.get("text").replace(/\n|\r/g, "<br/>");
+  serializeModel: function (model) {
+    var data = model.toJSON.apply(model, _.rest(arguments));
+    data.description = model.get('description').replace(/\n|\r/g, '<br/>');
+    data.text = model.get('text').replace(/\n|\r/g, '<br/>');
     return data;
   },
 
@@ -52,7 +53,7 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
 
   onShow: function () {
     // set starting volume
-    this.ui.$audioVolumeRange.val(parseFloat(ProfileManager.getInstance().get("voiceVolume")));
+    this.ui.$audioVolumeRange.val(parseFloat(ProfileManager.getInstance().get('voiceVolume')));
 
     // set starting seek
     this._updateAudioSeek();
@@ -118,7 +119,7 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
   /* region AUDIO */
 
   playAudio: function () {
-    var audio = this.model.get("audio");
+    var audio = this.model.get('audio');
     var audioState = this._audioState;
     if (audio != null && audioState !== audio_object.STATE_PLAYING) {
       // fade music out
@@ -128,9 +129,9 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
       this._audioState = audio_object.STATE_PLAYING;
 
       // play or resume
-      this.ui.$audio.addClass("playing");
+      this.ui.$audio.addClass('playing');
       if (audioState === audio_object.STATE_PAUSED) {
-        this.ui.$audio.removeClass("paused");
+        this.ui.$audio.removeClass('paused');
         audio_engine.current().resume_voice(audio);
       } else {
         audio_engine.current().play_voice(audio);
@@ -146,16 +147,16 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   stopAudio: function () {
-    var audio = this.model.get("audio");
+    var audio = this.model.get('audio');
     var audioState = this._audioState;
     if (audio != null && audioState !== audio_object.STATE_STOPPED) {
       // set state
       this._audioState = audio_object.STATE_STOPPED;
 
       if (audioState === audio_object.STATE_PAUSED) {
-        this.ui.$audio.removeClass("paused");
+        this.ui.$audio.removeClass('paused');
       }
-      this.ui.$audio.removeClass("playing");
+      this.ui.$audio.removeClass('playing');
       if (this._elapsedIntervalId != null) {
         clearInterval(this._elapsedIntervalId);
         this._elapsedIntervalId = null;
@@ -170,13 +171,13 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   pauseAudio: function () {
-    var audio = this.model.get("audio");
+    var audio = this.model.get('audio');
     var audioState = this._audioState;
     if (audio != null && audioState === audio_object.STATE_PLAYING) {
       // set state
       this._audioState = audio_object.STATE_PAUSED;
-      this.ui.$audio.removeClass("playing");
-      this.ui.$audio.addClass("paused");
+      this.ui.$audio.removeClass('playing');
+      this.ui.$audio.addClass('paused');
       if (this._elapsedIntervalId != null) {
         clearInterval(this._elapsedIntervalId);
         this._elapsedIntervalId = null;
@@ -189,7 +190,7 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
   },
 
   changeAudioVolume: function (val) {
-    ProfileManager.getInstance().set("voiceVolume", val);
+    ProfileManager.getInstance().set('voiceVolume', val);
   },
 
   seekAudio: function (val) {
@@ -209,16 +210,16 @@ var CodexChapterItemView = Backbone.Marionette.ItemView.extend({
 
   _updateAudioSeek: function () {
     var voice = audio_engine.current().get_voice();
-    if (voice != null && voice.get_src() === this.model.get("audio")) {
+    if (voice != null && voice.get_src() === this.model.get('audio')) {
       var elapsed = voice.get_elapsed();
       var duration = voice.get_duration();
       var seekPct = duration > 0.0 ? elapsed / duration : 0.0;
       var minutes = Math.floor(elapsed / 60);
       var seconds = Math.round(elapsed % 60);
-      this.ui.$audioElapsed.text((minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds));
+      this.ui.$audioElapsed.text((minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds));
       this.ui.$audioSeekRange.val(seekPct);
     } else {
-      this.ui.$audioElapsed.text("00:00");
+      this.ui.$audioElapsed.text('00:00');
       this.ui.$audioSeekRange.val(0.0);
     }
   },

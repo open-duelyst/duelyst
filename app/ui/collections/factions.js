@@ -9,8 +9,8 @@ var FactionsCollection = Backbone.Collection.extend({
 
   model: FactionModel,
 
-  initialize: function() {
-    Logger.module("UI").log("initialize a Factions collection");
+  initialize: function () {
+    Logger.module('UI').log('initialize a Factions collection');
   },
 
   /**
@@ -18,7 +18,7 @@ var FactionsCollection = Backbone.Collection.extend({
    */
   addAllFactionsToCollection: function () {
     var factions = SDK.FactionFactory.getAllEnabledFactions();
-    for(var i = 0, il = factions.length; i < il; i++) {
+    for (var i = 0, il = factions.length; i < il; i++) {
       var faction = factions[i];
       this.add(faction);
     }
@@ -26,8 +26,8 @@ var FactionsCollection = Backbone.Collection.extend({
 
   comparator: function (a, b) {
     // sort by non-neutrality then id ascending
-    return (a.get("isNeutral") - b.get("isNeutral")) || (a.get("id") - b.get("id"));
-  }
+    return (a.get('isNeutral') - b.get('isNeutral')) || (a.get('id') - b.get('id'));
+  },
 });
 
 // Expose the class either via CommonJS or the global object

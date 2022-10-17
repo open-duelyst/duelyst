@@ -13,20 +13,20 @@ module.exports = _GameDataManager;
 var Promise = require('bluebird');
 var Logger = require('app/common/logger');
 var UtilsEnv = require('app/common/utils/utils_env');
+var CardsCollection = require('app/ui/collections/cards');
+var FactionsCollection = require('app/ui/collections/factions');
 var Manager = require('./manager');
 var InventoryManager = require('./inventory_manager');
 var ProgressionManager = require('./progression_manager');
-var CardsCollection = require('app/ui/collections/cards');
-var FactionsCollection = require('app/ui/collections/factions');
 
 var GameDataManager = Manager.extend({
 
-  cardsCollection:null,
-  visibleCardsCollection:null,
-  factionsCollection:null,
-  visibleFactionsCollection:null,
+  cardsCollection: null,
+  visibleCardsCollection: null,
+  factionsCollection: null,
+  visibleFactionsCollection: null,
 
-  onBeforeConnect: function() {
+  onBeforeConnect: function () {
     Manager.prototype.onBeforeConnect.call(this);
 
     // create empty collections
@@ -35,19 +35,19 @@ var GameDataManager = Manager.extend({
     this.factionsCollection = new FactionsCollection();
     this.visibleFactionsCollection = new FactionsCollection();
     this.generalsFaction = new Backbone.Model({
-      id: "generals",
-      name: "Generals",
-      cards: []
+      id: 'generals',
+      name: 'Generals',
+      cards: [],
     });
 
     // make sure that inventory and progression manager are done loading because card collection depends on those two
     Promise.all([
       InventoryManager.getInstance().onReady(),
-      ProgressionManager.getInstance().onReady()
+      ProgressionManager.getInstance().onReady(),
     ]).then(this.onInventoryReady.bind(this));
   },
 
-  onBeforeDisconnect: function() {
+  onBeforeDisconnect: function () {
     Manager.prototype.onBeforeDisconnect.call(this);
     this.cardsCollection = null;
     this.factionsCollection = null;
@@ -62,26 +62,26 @@ var GameDataManager = Manager.extend({
 
     // modify factions to cache cards and check availability
     this.factionsCollection.each(function (factionModel) {
-      var factionCards = this.cardsCollection.where({factionId: factionModel.get("id")});
-      factionModel.set("cards", factionCards);
+      var factionCards = this.cardsCollection.where({ factionId: factionModel.get('id') });
+      factionModel.set('cards', factionCards);
 
       // record fully enabled faction
-      var isAvailable = !factionModel.get("isInDevelopment");
+      var isAvailable = !factionModel.get('isInDevelopment');
       if (isAvailable) {
         var visibleFactionModel = factionModel.clone();
         var visibleCards = [];
-        _.each(factionCards, function(cardModel) {
+        _.each(factionCards, function (cardModel) {
           // record visible card
-          if (!cardModel.get("isHiddenInCollection") && cardModel.get("isAvailable")) {
+          if (!cardModel.get('isHiddenInCollection') && cardModel.get('isAvailable')) {
             visibleCards.push(cardModel);
           }
           // record general in pseudo-faction
-          if (cardModel.get("isGeneral")) {
-            this.generalsFaction.get("cards").push(cardModel);
+          if (cardModel.get('isGeneral')) {
+            this.generalsFaction.get('cards').push(cardModel);
           }
         }.bind(this));
 
-        visibleFactionModel.set("cards", visibleCards);
+        visibleFactionModel.set('cards', visibleCards);
         this.visibleFactionsCollection.add(visibleFactionModel);
 
         // record fully enabled cards as visible
@@ -128,7 +128,7 @@ var GameDataManager = Manager.extend({
 
     var factionModel = this.getFactionModelById(factionId);
     if (factionModel != null) {
-      var cardModels = factionModel.get("cards");
+      var cardModels = factionModel.get('cards');
       if (filters != null) {
         for (var i = 0, il = cardModels.length; i < il; i++) {
           var cardModel = cardModels[i];
@@ -152,6 +152,6 @@ var GameDataManager = Manager.extend({
     }
 
     return matchingCardModels;
-  }
+  },
 
 });

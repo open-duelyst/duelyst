@@ -2,11 +2,11 @@
 
 var Game = Backbone.Model.extend({
 
-  initialize: function() {
+  initialize: function () {
   },
 
   defaults: {
-  }
+  },
 
 });
 

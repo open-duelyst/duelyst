@@ -1,28 +1,29 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
+
 'use strict';
 
-var CONFIG = require("app/common/config");
-var EVENTS = require("app/common/event_types");
-var RSX = require("app/data/resources");
+var CONFIG = require('app/common/config');
+var EVENTS = require('app/common/event_types');
+var RSX = require('app/data/resources');
 var audio_engine = require('app/audio/audio_engine');
 var PromptDialogItemViewTempl = require('app/ui/templates/item/prompt_dialog.hbs');
 var NavigationManager = require('app/ui/managers/navigation_manager');
 
 var PromptDialogItemView = Backbone.Marionette.ItemView.extend({
 
-  id: "app-prompt-dialog",
-  className: "modal prompt-modal",
+  id: 'app-prompt-dialog',
+  className: 'modal prompt-modal',
 
   template: PromptDialogItemViewTempl,
 
   events: {
-    "click .cancel-dialog": "onCancel"
+    'click .cancel-dialog': 'onCancel',
   },
 
-  initialize: function() {
+  initialize: function () {
     this.model = new Backbone.Model({
       title: this.options.title,
-      message: this.options.message
+      message: this.options.message,
     });
   },
 
@@ -33,13 +34,13 @@ var PromptDialogItemView = Backbone.Marionette.ItemView.extend({
     this.listenToOnce(NavigationManager.getInstance(), EVENTS.user_attempt_confirm, this.onCancel);
   },
 
-  onCancel: function() {
+  onCancel: function () {
     audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_cancel.audio, CONFIG.CANCEL_SFX_PRIORITY);
-    this.trigger("cancel");
+    this.trigger('cancel');
 
     // destroy last to allow any events to occur
     NavigationManager.getInstance().destroyDialogView();
-  }
+  },
 
 });
 

@@ -10,9 +10,9 @@ var NotificationsViewTemplate = require('app/ui/templates/composite/notification
 var NotificationsCompositeView = Backbone.Marionette.CompositeView.extend({
 
   childView: NotificationItemView,
-  childViewContainer: ".notifications",
+  childViewContainer: '.notifications',
 
-  template: NotificationsViewTemplate
+  template: NotificationsViewTemplate,
 
 });
 

@@ -1,4 +1,4 @@
-var CONFIG = require("app/common/config");
+var CONFIG = require('app/common/config');
 /*
 
 @eanticev: YEAH YEAH i know this is a dumb use of backbone models but it was the quickest way i could prototype
@@ -6,20 +6,20 @@ var CONFIG = require("app/common/config");
 */
 var ZodiacSymbolModel = Backbone.Model.extend({
 
-  timestamp:null,
-  juncturePoints:null,
-  juncturePointsStart:null,
-  juncturePointsDestination:null,
-  canvas:null,
+  timestamp: null,
+  juncturePoints: null,
+  juncturePointsStart: null,
+  juncturePointsDestination: null,
+  canvas: null,
   paddingX: null,
   paddingY: null,
   width: null,
   height: null,
-  requestAnimationFrameId:null,
-  shadowColor:"#a4ffff",
-  lineWidth:1,
+  requestAnimationFrameId: null,
+  shadowColor: '#a4ffff',
+  lineWidth: 1,
 
-  initialize: function(opts) {
+  initialize: function (opts) {
     this.timestamp = new Date();
     this.width = opts.width != null ? opts.width : 30.0;
     this.height = opts.height != null ? opts.height : 30.0;
@@ -41,10 +41,10 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     var height = (this.height + this.paddingY * 2) * CONFIG.globalScale;
     var $canvas = $(canvas);
     $canvas.css({
-      "width": width,
-      "height": height
+      width: width,
+      height: height,
     });
-    $canvas.attr("width", Math.ceil(width * devicePixelRatio)).attr("height", Math.ceil(height * devicePixelRatio));
+    $canvas.attr('width', Math.ceil(width * devicePixelRatio)).attr('height', Math.ceil(height * devicePixelRatio));
 
     // fix for HiDPI screens
     var ctx = canvas.getContext('2d');
@@ -55,8 +55,8 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     ctx.imageSmoothingEnabled = false;
   },
 
-  startDrawing:function() {
-    $(this.canvas).css("opacity","1");
+  startDrawing: function () {
+    $(this.canvas).css('opacity', '1');
 
     if (this.requestAnimationFrameId != null) {
       cancelAnimationFrame(this.requestAnimationFrameId);
@@ -71,44 +71,43 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     this._animateBound();
   },
 
-  stopDrawing:function() {
+  stopDrawing: function () {
     if (this.requestAnimationFrameId != null) {
       cancelAnimationFrame(this.requestAnimationFrameId);
       this.requestAnimationFrameId = null;
     }
 
-    $(this.canvas).css("opacity","0.5");
+    $(this.canvas).css('opacity', '0.5');
   },
 
-  generateStartPoints: function() {
-
+  generateStartPoints: function () {
     this.juncturePointsStart = [];
     this.juncturePoints = [];
     for (var i = 0; i < 6; i++) {
-      this.generatePointPosition(this.juncturePoints,i,5 + Math.random() * 40);
+      this.generatePointPosition(this.juncturePoints, i, 5 + Math.random() * 40);
       this.juncturePointsStart.push({
         x: this.juncturePoints[i].x,
         y: this.juncturePoints[i].y,
-        z: this.juncturePoints[i].z
+        z: this.juncturePoints[i].z,
       });
     }
   },
 
-  generateDestinationPoints: function() {
+  generateDestinationPoints: function () {
     this.juncturePointsDestination = [];
     for (var i = 0; i < this.juncturePointsStart.length; i++) {
       var p = this.juncturePointsStart[i];
-      this.generatePointPosition(this.juncturePointsDestination,i,p.z);
+      this.generatePointPosition(this.juncturePointsDestination, i, p.z);
     }
   },
 
-  generatePointPosition: function(array,i,z,attempt) {
+  generatePointPosition: function (array, i, z, attempt) {
     if (attempt == null) { attempt = 0; }
     var scale = CONFIG.globalScale;
     var point = array[i] = {
       x: (this.paddingX + Math.random() * this.width) * scale,
       y: (this.paddingY + Math.random() * this.height) * scale,
-      z: z * scale
+      z: z * scale,
     };
     if (attempt < 10) {
       for (var j = i - 1; j >= 0; j--) {
@@ -124,7 +123,7 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     }
   },
 
-  draw: function() {
+  draw: function () {
     if (this.canvas && this.canvas.getContext) {
       var canvas = this.canvas;
       var ctx = canvas.getContext('2d');
@@ -134,7 +133,7 @@ var ZodiacSymbolModel = Backbone.Model.extend({
       ctx.clearRect(0, 0, width, height);
 
       if (this.juncturePoints && this.juncturePoints.length > 0) {
-        ctx.globalCompositeOperation = "lighter";
+        ctx.globalCompositeOperation = 'lighter';
 
         ctx.lineWidth = this.lineWidth * scale;
 
@@ -173,8 +172,7 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     }
   },
 
-
-  drawCircle: function(ctx, centerX, centerY, radius, fillColorStr, strokeColorStr,blurRadius) {
+  drawCircle: function (ctx, centerX, centerY, radius, fillColorStr, strokeColorStr, blurRadius) {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, true); // Outer circle
 
@@ -196,7 +194,7 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     }
   },
 
-  drawLine: function(ctx,startPoint, endPoint, strokeColorStr) {
+  drawLine: function (ctx, startPoint, endPoint, strokeColorStr) {
     ctx.beginPath();
     ctx.strokeStyle = strokeColorStr;
     ctx.moveTo(startPoint.x, startPoint.y);
@@ -206,15 +204,15 @@ var ZodiacSymbolModel = Backbone.Model.extend({
     ctx.stroke();
   },
 
-  drawJuncture: function(ctx, centerX, centerY) {
-    this.drawCircle(ctx, centerX, centerY, this.lineWidth + 0.5, "rgb(255,255,255)");
+  drawJuncture: function (ctx, centerX, centerY) {
+    this.drawCircle(ctx, centerX, centerY, this.lineWidth + 0.5, 'rgb(255,255,255)');
   },
 
-  drawConnection: function(ctx,p1,p2,alpha) {
-    this.drawLine(ctx,p1,p2,"rgba(255,255,255,"+alpha+")");
+  drawConnection: function (ctx, p1, p2, alpha) {
+    this.drawLine(ctx, p1, p2, 'rgba(255,255,255,' + alpha + ')');
   },
 
-  iterateState: function(dt) {
+  iterateState: function (dt) {
     if (dt != null && dt > 0) {
       for (var i = 0; i < this.juncturePoints.length; i++) {
         var p = this.juncturePoints[i];
@@ -236,7 +234,7 @@ var ZodiacSymbolModel = Backbone.Model.extend({
         }
       }
     }
-  }
+  },
 });
 
 // Expose the class either via CommonJS or the global object

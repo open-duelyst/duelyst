@@ -1,4 +1,5 @@
-//pragma PKGS: game
+// pragma PKGS: game
+
 'use strict';
 
 var CONFIG = require('app/common/config');
@@ -7,37 +8,37 @@ var EVENTS = require('app/common/event_types');
 var SDK = require('app/sdk');
 var Scene = require('app/view/Scene');
 var RSX = require('app/data/resources');
-var UtilsEngine = require("./../../../common/utils/utils_engine");
 var audio_engine = require('app/audio/audio_engine');
-var Animations = require("app/ui/views/animations");
+var Animations = require('app/ui/views/animations');
 var GameBottomBarTmpl = require('app/ui/templates/composite/game_bottom_bar.hbs');
-var ReplayEngine = require('app/replay/replayEngine')
-var i18next = require('i18next')
+var ReplayEngine = require('app/replay/replayEngine');
+var i18next = require('i18next');
+var UtilsEngine = require('../../../common/utils/utils_engine');
 
 var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  id: "app-game-bottombar",
+  id: 'app-game-bottombar',
 
   template: GameBottomBarTmpl,
 
   ui: {
-    "$submitTurn": ".submit-turn",
-    "$submitTurnType": ".submit-turn .turn-type",
-    "$replayControl": ".replay-control",
-    "$replayControlPause": ".replay-control .control-type-pause",
-    "$replayControlPlay": ".replay-control .control-type-play",
-    "$replayControlSpeedValue": ".replay-control .control-info-speed .control-value",
-    "$replayControlRealTimeModeValue": ".replay-control .control-type-real-time-mode #checkbox-real-time-mode"
+    $submitTurn: '.submit-turn',
+    $submitTurnType: '.submit-turn .turn-type',
+    $replayControl: '.replay-control',
+    $replayControlPause: '.replay-control .control-type-pause',
+    $replayControlPlay: '.replay-control .control-type-play',
+    $replayControlSpeedValue: '.replay-control .control-info-speed .control-value',
+    $replayControlRealTimeModeValue: '.replay-control .control-type-real-time-mode #checkbox-real-time-mode',
   },
 
   events: {
-    "click .submit-turn": "onClickSubmitTurn",
-    "click .replay-control .control-type-pause": "onReplayPause",
-    "click .replay-control .control-type-play": "onReplayPlay",
-    "click .replay-control .control-type-speed": "onIncreaseReplaySpeed",
-    "change .replay-control .control-type-real-time-mode": "onReplayRealTimeModeChange",
-    "mouseenter .submit-turn" : "onMouseEnterSubmitTurn",
-    "mouseleave .submit-turn" : "onMouseLeaveSubmitTurn"
+    'click .submit-turn': 'onClickSubmitTurn',
+    'click .replay-control .control-type-pause': 'onReplayPause',
+    'click .replay-control .control-type-play': 'onReplayPlay',
+    'click .replay-control .control-type-speed': 'onIncreaseReplaySpeed',
+    'change .replay-control .control-type-real-time-mode': 'onReplayRealTimeModeChange',
+    'mouseenter .submit-turn': 'onMouseEnterSubmitTurn',
+    'mouseleave .submit-turn': 'onMouseLeaveSubmitTurn',
   },
 
   animateIn: Animations.fadeIn,
@@ -57,14 +58,14 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       if (SDK.GameSession.getInstance().getIsReplay()) {
         this.ui.$replayControl.css(
-          "transform",
-          "translate(" + (endPosition.x - 60.0) / 10.0 + "rem, " + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.35) / 10.0 + "rem)"
+          'transform',
+          'translate(' + (endPosition.x - 60.0) / 10.0 + 'rem, ' + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.35) / 10.0 + 'rem)',
         );
       }
     } else {
       this.ui.$submitTurn.css(
-        "transform",
-        "translate(" + (endPosition.x - 10.0) / 10.0 + "rem, " + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.35) / 10.0 + "rem)"
+        'transform',
+        'translate(' + (endPosition.x - 10.0) / 10.0 + 'rem, ' + (-endPosition.y + CONFIG.HAND_CARD_SIZE * 0.35) / 10.0 + 'rem)',
       );
     }
   },
@@ -73,7 +74,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region MARIONETTE EVENTS */
 
-  onRender: function() {
+  onRender: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       this.ui.$submitTurn.remove();
       if (!SDK.GameSession.getInstance().getIsReplay()) {
@@ -85,7 +86,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     this._updateControls();
   },
 
-  _updateControls: function() {
+  _updateControls: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       this._updateReplayControlPlaying();
       this._updateReplayControlSpeed();
@@ -95,7 +96,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  onShow: function() {
+  onShow: function () {
     // game events
     this.listenTo(SDK.GameSession.getInstance().getEventBus(), EVENTS.end_turn, this._setSubmitTurnButtonToEnemyState);
     var scene = Scene.getInstance();
@@ -138,7 +139,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     this._updateSubmitTurnState();
   },
 
-  onClickSubmitTurn: function() {
+  onClickSubmitTurn: function () {
     var gameLayer = Scene.getInstance().getGameLayer();
     var gameSession = SDK.GameSession.getInstance();
 
@@ -152,19 +153,19 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  onReplayPause: function() {
+  onReplayPause: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       ReplayEngine.getInstance().pause();
     }
   },
 
-  onReplayPlay: function() {
+  onReplayPlay: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       ReplayEngine.getInstance().resume();
     }
   },
 
-  onIncreaseReplaySpeed: function() {
+  onIncreaseReplaySpeed: function () {
     if (CONFIG.replayActionSpeedModifier == 2.0) {
       CONFIG.replayActionSpeedModifier = 1.0;
     } else {
@@ -190,16 +191,16 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
   _updateReplayControlSpeed: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
-      this.ui.$replayControlSpeedValue.text(CONFIG.replayActionSpeedModifier.toFixed(1) + "x");
+      this.ui.$replayControlSpeedValue.text(CONFIG.replayActionSpeedModifier.toFixed(1) + 'x');
     }
   },
 
   _updateReplayControlPlaying: function () {
     if (SDK.GameSession.getInstance().getIsSpectateMode()) {
       if (ReplayEngine.getInstance().isPlaying()) {
-        this.ui.$replayControl.removeClass("paused").addClass("playing");
+        this.ui.$replayControl.removeClass('paused').addClass('playing');
       } else {
-        this.ui.$replayControl.removeClass("playing").addClass("paused");
+        this.ui.$replayControl.removeClass('playing').addClass('paused');
       }
     }
   },
@@ -210,7 +211,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  onMouseEnterSubmitTurn: function() {
+  onMouseEnterSubmitTurn: function () {
     audio_engine.current().play_effect(RSX.sfx_ui_in_game_hover.audio);
 
     var gameLayer = Scene.getInstance().getGameLayer();
@@ -220,7 +221,7 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
       }
     }
   },
-  onMouseLeaveSubmitTurn: function() {
+  onMouseLeaveSubmitTurn: function () {
     var gameLayer = Scene.getInstance().getGameLayer();
     if (gameLayer && CONFIG.SHOW_UNUSED_ENTITIES) {
       gameLayer.removeUnusedEntitiesTags();
@@ -231,14 +232,14 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* region TURN */
 
-  _updateSubmitTurnState: function() {
+  _updateSubmitTurnState: function () {
     if (!SDK.GameSession.getInstance().getIsSpectateMode()) {
       var gameLayer = Scene.getInstance().getGameLayer();
       var gameSession = SDK.GameSession.getInstance();
 
       // If in a challenge with reset turn, show reset turn, else if it's my turn show my turn, else show enemy turn
       if (gameSession.isChallenge() && gameSession.getChallenge() != null && gameSession.getChallenge().usesResetTurn) {
-        this._setSubmitTurnButtonToResetOTKState()
+        this._setSubmitTurnButtonToResetOTKState();
       } else if (!(gameLayer && gameLayer.getIsMyTurn()) || gameSession.getCurrentTurn().getEnded()) {
         this._setSubmitTurnButtonToEnemyState();
       } else {
@@ -248,36 +249,36 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   _setSubmitTurnButtonToMyState: function () {
-    this.ui.$submitTurnType.text(i18next.t("battle.turn_button_label_end_turn"));
-    this.ui.$submitTurn.addClass("my-turn");
+    this.ui.$submitTurnType.text(i18next.t('battle.turn_button_label_end_turn'));
+    this.ui.$submitTurn.addClass('my-turn');
 
     // check if player is finished (i.e. nothing left to do)
     if (this.getIsPlayerFinished()) {
-      this.ui.$submitTurn.addClass("finished");
+      this.ui.$submitTurn.addClass('finished');
     } else {
-      this.ui.$submitTurn.removeClass("finished");
+      this.ui.$submitTurn.removeClass('finished');
     }
 
-    this.ui.$submitTurn.removeClass("enemy-turn");
+    this.ui.$submitTurn.removeClass('enemy-turn');
   },
 
   _setSubmitTurnButtonToResetOTKState: function () {
-    var gameSession = SDK.GameSession.current()
-    this.ui.$submitTurnType.text(i18next.t("battle.turn_button_label_restart_turn"));
+    var gameSession = SDK.GameSession.current();
+    this.ui.$submitTurnType.text(i18next.t('battle.turn_button_label_restart_turn'));
     if (!gameSession.isOver()) {
-      this.ui.$submitTurn.addClass("my-turn");
+      this.ui.$submitTurn.addClass('my-turn');
     } else {
-      this.ui.$submitTurn.removeClass("my-turn");
+      this.ui.$submitTurn.removeClass('my-turn');
     }
 
     // check if player is finished (i.e. nothing left to do)
     if (this.getIsPlayerFinished()) {
-      this.ui.$submitTurn.addClass("finished");
+      this.ui.$submitTurn.addClass('finished');
     } else {
-      this.ui.$submitTurn.removeClass("finished");
+      this.ui.$submitTurn.removeClass('finished');
     }
 
-    this.ui.$submitTurn.removeClass("enemy-turn");
+    this.ui.$submitTurn.removeClass('enemy-turn');
   },
 
   getIsPlayerFinished: function () {
@@ -313,11 +314,11 @@ var GameBottomBarCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   _setSubmitTurnButtonToEnemyState: function () {
-    this.ui.$submitTurnType.text(i18next.t("battle.turn_button_label_enemy_turn"));
-    this.ui.$submitTurn.addClass("enemy-turn");
-    this.ui.$submitTurn.removeClass("my-turn");
-    this.ui.$submitTurn.removeClass("finished");
-  }
+    this.ui.$submitTurnType.text(i18next.t('battle.turn_button_label_enemy_turn'));
+    this.ui.$submitTurn.addClass('enemy-turn');
+    this.ui.$submitTurn.removeClass('my-turn');
+    this.ui.$submitTurn.removeClass('finished');
+  },
 
   /* endregion TURN */
 

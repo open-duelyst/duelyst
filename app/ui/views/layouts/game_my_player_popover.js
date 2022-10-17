@@ -1,4 +1,5 @@
-//pragma PKGS: game
+// pragma PKGS: game
+
 'use strict';
 
 var SDK = require('app/sdk');
@@ -8,36 +9,36 @@ var EVENTS = require('app/common/event_types');
 var RSX = require('app/data/resources');
 var audio_engine = require('app/audio/audio_engine');
 var EmotesListCompositeView = require('app/ui/views/composite/emotes-list');
-var PlayerPopoverLayout = require('./game_player_popover');
 var MyPlayerPopoverLayoutTempl = require('app/ui/templates/layouts/game_my_player_popover.hbs');
-var TransitionRegion = require("app/ui/views/regions/transition");
-var InventoryManager = require("app/ui/managers/inventory_manager");
+var TransitionRegion = require('app/ui/views/regions/transition');
+var InventoryManager = require('app/ui/managers/inventory_manager');
 var NavigationManager = require('app/ui/managers/navigation_manager');
 var i18next = require('i18next');
+var PlayerPopoverLayout = require('./game_player_popover');
 
 var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
-  className: "player-popover my-player",
+  className: 'player-popover my-player',
 
   template: MyPlayerPopoverLayoutTempl,
 
   regions: {
-    emotesListRegion: {selector: ".emotes-list-region", regionClass: TransitionRegion},
-    emotesTextListRegion: {selector: ".emotes-text-list-region"},
-    emoteRegion: {selector: ".emote-region", regionClass: TransitionRegion}
+    emotesListRegion: { selector: '.emotes-list-region', regionClass: TransitionRegion },
+    emotesTextListRegion: { selector: '.emotes-text-list-region' },
+    emoteRegion: { selector: '.emote-region', regionClass: TransitionRegion },
   },
 
   events: {
-    "click .emote-category": "onSelectEmoteCategory",
-    "click .next-page": "onSelectNextPage",
-    "click .previous-page": "onSelectPreviousPage"
+    'click .emote-category': 'onSelectEmoteCategory',
+    'click .next-page': 'onSelectNextPage',
+    'click .previous-page': 'onSelectPreviousPage',
   },
 
   ui: {
-    $playerPopoverContainer: ".player-popover-container",
-    $emoteCategoryButtons: ".emote-category",
-    $previousPageButton: ".previous-page",
-    $nextPageButton: ".next-page"
+    $playerPopoverContainer: '.player-popover-container',
+    $emoteCategoryButtons: '.emote-category',
+    $previousPageButton: '.previous-page',
+    $nextPageButton: '.next-page',
   },
 
   _emoteCollectionsByCategoryId: null,
@@ -54,25 +55,25 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     // setup collections
     this._emoteCollectionsByCategoryId = {};
     this._emotesWithTextAlwaysVisibleCollection = new Backbone.Collection();
-    this._emotesWithTextAlwaysVisibleCollection.comparator = "order";
+    this._emotesWithTextAlwaysVisibleCollection.comparator = 'order';
 
     // get categories
     var categories = [];
     for (var categoryName in SDK.EmoteCategory) {
       // add category
       var categoryId = SDK.EmoteCategory[categoryName];
-      var name = i18next.t("battle.emote_category_"+categoryName.toLowerCase())
-      categories.push({id: categoryId, name: categoryName});
+      var name = i18next.t('battle.emote_category_' + categoryName.toLowerCase());
+      categories.push({ id: categoryId, name: categoryName });
 
       // initialize emotes collection for category
       var emoteCollection = new Backbone.Collection();
       emoteCollection.comparator = function (a, b) {
-        return (InventoryManager.getInstance().hasCosmeticById(b.get("id")) - InventoryManager.getInstance().hasCosmeticById(a.get("id"))) || (a.get("order") - b.get("order")) || (a.get("id") - b.get("id"));
+        return (InventoryManager.getInstance().hasCosmeticById(b.get('id')) - InventoryManager.getInstance().hasCosmeticById(a.get('id'))) || (a.get('order') - b.get('order')) || (a.get('id') - b.get('id'));
       };
       this._emoteCollectionsByCategoryId[categoryId] = emoteCollection;
     }
-    categories = _.sortBy(categories, "id");
-    this.model.set("categories", categories);
+    categories = _.sortBy(categories, 'id');
+    this.model.set('categories', categories);
 
     // update collections
     this._updateEmoteCollections();
@@ -86,10 +87,10 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     this._updateCategories();
   },
 
-  onShow: function() {
+  onShow: function () {
     // show always visible text only emotes
-    var emotesListCompositeView = new EmotesListCompositeView({collection: this._emotesWithTextAlwaysVisibleCollection});
-    emotesListCompositeView.listenTo(emotesListCompositeView, "childview:select", this.onSelectEmote.bind(this));
+    var emotesListCompositeView = new EmotesListCompositeView({ collection: this._emotesWithTextAlwaysVisibleCollection });
+    emotesListCompositeView.listenTo(emotesListCompositeView, 'childview:select', this.onSelectEmote.bind(this));
     this.emotesTextListRegion.show(emotesListCompositeView);
 
     // set initial category
@@ -102,7 +103,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   onSelectEmoteCategory: function (event) {
     var $target = $(event.target);
-    var categoryId = $target.data("categoryid");
+    var categoryId = $target.data('categoryid');
 
     // play effect
     audio_engine.current().play_effect_for_interaction(RSX.sfx_collection_next.audio, CONFIG.SELECT_SFX_PRIORITY);
@@ -134,8 +135,8 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
       var emoteModelsOnPage = emoteCollection.slice(emoteStartIndex, emoteEndIndex);
 
       // show emotes
-      var emotesListCompositeView = new EmotesListCompositeView({collection: new Backbone.Collection(emoteModelsOnPage)});
-      emotesListCompositeView.listenTo(emotesListCompositeView, "childview:select", this.onSelectEmote.bind(this));
+      var emotesListCompositeView = new EmotesListCompositeView({ collection: new Backbone.Collection(emoteModelsOnPage) });
+      emotesListCompositeView.listenTo(emotesListCompositeView, 'childview:select', this.onSelectEmote.bind(this));
       this.emotesListRegion.show(emotesListCompositeView);
 
       // show/hide pagination buttons
@@ -156,25 +157,25 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     if (this.ui.$emoteCategoryButtons instanceof $) {
       this.ui.$emoteCategoryButtons.each(function (index, element) {
         var $emoteCategoryButton = $(element);
-        var categoryId = $emoteCategoryButton.data("categoryid");
+        var categoryId = $emoteCategoryButton.data('categoryid');
         // make the current category active
         if (categoryId === this._categoryId) {
-          $emoteCategoryButton.addClass("active");
+          $emoteCategoryButton.addClass('active');
         } else {
-          $emoteCategoryButton.removeClass("active");
+          $emoteCategoryButton.removeClass('active');
         }
 
         // disable categories with no emotes
         if (this._emoteCollectionsByCategoryId[categoryId].length === 0) {
-          $emoteCategoryButton.addClass("disabled");
+          $emoteCategoryButton.addClass('disabled');
         } else {
-          $emoteCategoryButton.removeClass("disabled");
+          $emoteCategoryButton.removeClass('disabled');
         }
       }.bind(this));
     }
   },
 
-  /* endregion CATEGORY*/
+  /* endregion CATEGORY */
 
   /* region PAGINATION */
 
@@ -191,7 +192,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     var targetPageIndex = fromPageIndex + 1;
     if (targetPageIndex > pagesInCategory - 1) {
       // next page takes us into next category
-      var categories = this.model.get("categories");
+      var categories = this.model.get('categories');
       var index;
       for (var i = 0, il = categories.length; i < il; i++) {
         if (categories[i].id === categoryId) {
@@ -228,7 +229,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     var targetPageIndex = fromPageIndex - 1;
     if (targetPageIndex < 0) {
       // previous page takes us into previous category
-      var categories = this.model.get("categories");
+      var categories = this.model.get('categories');
       var index;
       for (var i = 0, il = categories.length; i < il; i++) {
         if (categories[i].id === categoryId) {
@@ -268,8 +269,8 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
       var emoteData = emotesData[i];
       if (emoteData.enabled && emoteData.category == SDK.EmoteCategory.Default && emoteData.title != null && emoteData.img == null) {
         var emoteModel = new Backbone.Model(emoteData);
-        emoteModel.set("_canUse", true);
-        emoteModel.set("_canPurchase", false);
+        emoteModel.set('_canUse', true);
+        emoteModel.set('_canPurchase', false);
         emotesWithTextModels.push(emoteModel);
       }
     }
@@ -281,21 +282,21 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
     var emoteModelsByCategoryId = {};
     var addEmoteToCategory = function (emoteData, categoryId, canUse, canPurchase) {
       var emoteModel = new Backbone.Model(emoteData);
-      emoteModel.set("_canUse", canUse);
-      emoteModel.set("_canPurchase", canPurchase);
+      emoteModel.set('_canUse', canUse);
+      emoteModel.set('_canPurchase', canPurchase);
 
       if (canPurchase) {
-        var saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(emoteData.sku)
+        var saleModel = ShopManager.getInstance().getActiveShopSaleModelForSku(emoteData.sku);
         if (saleModel != null) {
-          emoteModel.set("sale_id", saleModel.get("sale_id"));
-          emoteModel.set("sale_price", saleModel.get("sale_price"));
-          emoteModel.set("sale_discount_percent", saleModel.get("sale_discount_percent"));
+          emoteModel.set('sale_id', saleModel.get('sale_id'));
+          emoteModel.set('sale_price', saleModel.get('sale_price'));
+          emoteModel.set('sale_discount_percent', saleModel.get('sale_discount_percent'));
         }
       }
 
       var emoteModels = emoteModelsByCategoryId[categoryId];
       if (emoteModels == null) {
-        emoteModels = emoteModelsByCategoryId[categoryId] = []
+        emoteModels = emoteModelsByCategoryId[categoryId] = [];
       }
       emoteModels.push(emoteModel);
     };
@@ -326,7 +327,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
   getCanSeeEmote: function (emoteData) {
     return InventoryManager.getInstance().getCanSeeCosmeticById(emoteData.id)
       && (emoteData.category !== SDK.EmoteCategory.Faction
-        || emoteData.generalId === SDK.Cards.getBaseCardId(SDK.GameSession.getInstance().getPlayerSetupDataForPlayerId(this.model.get("playerId")).generalId));
+        || emoteData.generalId === SDK.Cards.getBaseCardId(SDK.GameSession.getInstance().getPlayerSetupDataForPlayerId(this.model.get('playerId')).generalId));
   },
 
   getCanUseEmote: function (emoteData) {
@@ -347,7 +348,7 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
 
   onSelectEmote: function (emoteView) {
     var emoteModel = emoteView && emoteView.model;
-    var emoteId = emoteModel && emoteModel.get("id");
+    var emoteId = emoteModel && emoteModel.get('id');
     if (emoteId != null) {
       // play effect
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_select.audio, CONFIG.SELECT_SFX_PRIORITY);
@@ -356,11 +357,11 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
         // buy emote
         var productData = SDK.CosmeticsFactory.cosmeticProductDataForIdentifier(emoteId);
         var saleData = {};
-        if (emoteModel.get("sale_id")) {
-          saleData.saleId = emoteModel.get("sale_id");
-          saleData.salePrice = emoteModel.get("sale_price");
+        if (emoteModel.get('sale_id')) {
+          saleData.saleId = emoteModel.get('sale_id');
+          saleData.salePrice = emoteModel.get('sale_price');
         }
-        return NavigationManager.getInstance().showDialogForConfirmPurchase(productData,saleData)
+        return NavigationManager.getInstance().showDialogForConfirmPurchase(productData, saleData)
           .catch(function () {
           // do nothing on cancel
           });
@@ -372,8 +373,8 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
           SDK.NetworkManager.getInstance().broadcastGameEvent({
             type: EVENTS.show_emote,
             id: emoteId,
-            playerId: this.model.get("playerId"),
-            timestamp: emoteTimestamp
+            playerId: this.model.get('playerId'),
+            timestamp: emoteTimestamp,
           });
         }
 
@@ -381,9 +382,9 @@ var MyPlayerPopoverLayout = PlayerPopoverLayout.extend({
         this.showEmote(emoteId);
       }
     }
-  }
+  },
 
-  /* endregion EMOTES*/
+  /* endregion EMOTES */
 
 });
 

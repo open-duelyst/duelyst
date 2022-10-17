@@ -5,12 +5,12 @@ var StatsFactionsCompositeViewTempl = require('app/ui/templates/composite/stats_
 
 var StatsFactionsCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  className: "stats-factions",
+  className: 'stats-factions',
 
   template: StatsFactionsCompositeViewTempl,
 
   childView: StatsFactionItemView,
-  childViewContainer: ".factions"
+  childViewContainer: '.factions',
 
 });
 

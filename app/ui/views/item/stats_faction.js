@@ -4,9 +4,9 @@ var StatsFactionItemViewTempl = require('app/ui/templates/item/stats_faction.hbs
 
 var StatsFactionItemView = Backbone.Marionette.ItemView.extend({
 
-  className: "stat-faction",
+  className: 'stat-faction',
 
-  template: StatsFactionItemViewTempl
+  template: StatsFactionItemViewTempl,
 
 });
 

@@ -1,15 +1,15 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
 
 'use strict';
 
 var CONFIG = require('app/common/config');
 var RSX = require('app/data/resources');
 var SDK = require('app/sdk');
-var EventBus = require("app/common/eventbus");
-var EVENTS = require("app/common/event_types");
+var EventBus = require('app/common/eventbus');
+var EVENTS = require('app/common/event_types');
 var UtilsEnv = require('app/common/utils/utils_env');
-var UtilsUI = require("app/common/utils/utils_ui");
-var UtilsJavascript = require("app/common/utils/utils_javascript");
+var UtilsUI = require('app/common/utils/utils_ui');
+var UtilsJavascript = require('app/common/utils/utils_javascript');
 var audio_engine = require('app/audio/audio_engine');
 var CardModel = require('app/ui/models/card');
 var ProfileManager = require('app/ui/managers/profile_manager');
@@ -19,7 +19,7 @@ var InventoryManager = require('app/ui/managers/inventory_manager');
 var CardsCollectionTmpl = require('./templates/cards_collection.hbs');
 var CollectionCardCompositeView = require('./collection_card');
 
-var CARD_BACKS_FACTION_ID = "card_backs";
+var CARD_BACKS_FACTION_ID = 'card_backs';
 
 var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
@@ -31,11 +31,11 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   _currentPage: null,
   _currentDeck: null,
 
-  id: "app-cards-collection",
-  className: "card-container-hover-keywords",
+  id: 'app-cards-collection',
+  className: 'card-container-hover-keywords',
 
   childView: CollectionCardCompositeView,
-  childViewContainer: ".cards",
+  childViewContainer: '.cards',
 
   template: CardsCollectionTmpl,
 
@@ -44,8 +44,8 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
   _numCardsPerPage: 0,
 
-  initialize: function() {
-    this.model.set("factionsEnabled", new Backbone.Collection());
+  initialize: function () {
+    this.model.set('factionsEnabled', new Backbone.Collection());
   },
 
   /* region LAYOUT */
@@ -53,10 +53,10 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   onResize: function () {
     // create a test card to get width/height of cards
     if (this._testCardView == null) {
-      this._testCardView = new (this.childView)(new CardModel({id: -1}));
+      this._testCardView = new (this.childView)(new CardModel({ id: -1 }));
     }
-    this._testCardView.$el.css("position", "absolute");
-    $("body").prepend(this._testCardView.$el);
+    this._testCardView.$el.css('position', 'absolute');
+    $('body').prepend(this._testCardView.$el);
     var cardWidth = this._testCardView.$el.outerWidth(true);
     var cardHeight = this._testCardView.$el.outerHeight(true);
     this._testCardView.$el.remove();
@@ -73,7 +73,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
     // force fake ids so we can preallocate max card views per page
     for (var i = 0; i < this._numCardsPerPage; i++) {
-      this.collection.add(new CardModel({id: -i}));
+      this.collection.add(new CardModel({ id: -i }));
     }
 
     // go to this page again to repopulate cards
@@ -84,14 +84,14 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* BACKBONE EVENTS */
 
-  onRender: function() {
-    this.$el.find("[data-toggle='tooltip']").tooltip({container: CONFIG.OVERLAY_SELECTOR, trigger: "hover"});
+  onRender: function () {
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip({ container: CONFIG.OVERLAY_SELECTOR, trigger: 'hover' });
 
     this.onResize();
   },
 
   onDestroy: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
     if (this._testCardView != null) {
       this._testCardView.$el.remove();
       this._testCardView = null;
@@ -99,52 +99,52 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   onBeforeRender: function () {
-    this.$el.find("[data-toggle='tooltip']").tooltip("destroy");
+    this.$el.find('[data-toggle=\'tooltip\']').tooltip('destroy');
   },
 
   onShow: function () {
     // listen to global events
     this.listenTo(EventBus.getInstance(), EVENTS.resize, this.onResize);
-    this.listenTo(ProfileManager.getInstance().profile, "change:showPrismaticsInCollection", this.onShowPrismaticsInCollectionChanged);
-    this.listenTo(ProfileManager.getInstance().profile, "change:showPrismaticsWhileCrafting", this.onShowPrismaticsInCollectionChanged);
-    this.listenTo(ProfileManager.getInstance().profile, "change:showSkinsInCollection", this.onShowSkinsInCollectionChanged);
-    this.listenTo(ProfileManager.getInstance().profile, "change:filterCollectionCardSet", this.onFilterCollectionCardSetChanged);
+    this.listenTo(ProfileManager.getInstance().profile, 'change:showPrismaticsInCollection', this.onShowPrismaticsInCollectionChanged);
+    this.listenTo(ProfileManager.getInstance().profile, 'change:showPrismaticsWhileCrafting', this.onShowPrismaticsInCollectionChanged);
+    this.listenTo(ProfileManager.getInstance().profile, 'change:showSkinsInCollection', this.onShowSkinsInCollectionChanged);
+    this.listenTo(ProfileManager.getInstance().profile, 'change:filterCollectionCardSet', this.onFilterCollectionCardSetChanged);
     this.listenTo(InventoryManager.getInstance(), EVENTS.cosmetics_collection_change, this.onCosmeticsCollectionChanged);
 
     // listen to own events
-    this.listenTo(this, "childview:start_dragging", this.onCardStartDragging);
-    this.listenTo(this, "childview:stop_dragging", this.onCardStopDragging);
+    this.listenTo(this, 'childview:start_dragging', this.onCardStartDragging);
+    this.listenTo(this, 'childview:stop_dragging', this.onCardStopDragging);
 
-    this.$el.droppable( {
+    this.$el.droppable({
       drop: this.onCardDropped.bind(this),
-      scope: "remove"
+      scope: 'remove',
     });
 
     this.onResize();
     this.animateReveal();
   },
 
-  onShowPrismaticsInCollectionChanged: function() {
+  onShowPrismaticsInCollectionChanged: function () {
     this.showValidCards();
   },
 
-  onShowSkinsInCollectionChanged: function() {
+  onShowSkinsInCollectionChanged: function () {
     this.showValidCards();
   },
 
-  onFilterCollectionCardSetChanged: function() {
+  onFilterCollectionCardSetChanged: function () {
     this.showValidCards();
   },
 
-  onCosmeticsCollectionChanged: function(event) {
+  onCosmeticsCollectionChanged: function (event) {
     var model = event && event.model;
-    var cosmeticId = model && model.get("id");
+    var cosmeticId = model && model.get('id');
     if (cosmeticId != null && SDK.CosmeticsFactory.isIdentifierForCardSkin(cosmeticId)) {
       this.showValidCards();
     }
   },
 
-  animateReveal: function() {
+  animateReveal: function () {
 
     // this.children.each(function(view){
     //   view.setAnimated(false)
@@ -201,8 +201,8 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   onCardDropped: function (event, ui) {
     // don't respond to own cards
     var $draggable = ui.draggable;
-    if ($draggable instanceof $ && !$draggable.hasClass("collection-card")) {
-      $draggable.trigger("click");
+    if ($draggable instanceof $ && !$draggable.hasClass('collection-card')) {
+      $draggable.trigger('click');
     }
   },
 
@@ -233,7 +233,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   getEnabledFactions: function () {
-    return this.model.get("factionsEnabled");
+    return this.model.get('factionsEnabled');
   },
 
   /**
@@ -241,7 +241,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
    * @param factionId
    */
   gotoFactionById: function (factionId) {
-    var faction = this.model.get("factionsEnabled").get(factionId);
+    var faction = this.model.get('factionsEnabled').get(factionId);
     var currentFaction = this._currentFaction;
     var currentPage = this._currentPage;
 
@@ -256,7 +256,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
    * Switches the page to the previous faction from the current faction.
    */
   _gotoPreviousFaction: function () {
-    var factions = this.model.get("factionsEnabled");
+    var factions = this.model.get('factionsEnabled');
     var currentFactionIndex = factions.indexOf(this._currentFaction);
     var nextFactionIndex = currentFactionIndex - 1;
     if (nextFactionIndex < 0) {
@@ -269,7 +269,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
    * Switches the page to the next faction from the current faction.
    */
   _gotoNextFaction: function () {
-    var factions = this.model.get("factionsEnabled");
+    var factions = this.model.get('factionsEnabled');
     var currentFactionIndex = factions.indexOf(this._currentFaction);
     var nextFactionIndex = (currentFactionIndex + 1) % factions.length;
     this._showCardsForFaction(factions.at(nextFactionIndex));
@@ -282,7 +282,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
    * @param page
    */
   _showCardsForFaction: function (faction, page) {
-    var factions = this.model.get("factionsEnabled");
+    var factions = this.model.get('factionsEnabled');
 
     // cleanup last cards
     this._currentShowingCards = [];
@@ -292,7 +292,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
       if (faction == null) { faction = factions.first(); }
       if (faction != null) {
         // get new collection based on selected faction
-        var factionId = faction.get("id");
+        var factionId = faction.get('id');
         var factionEnabled = factions.get(factionId);
 
         // set new faction
@@ -300,11 +300,11 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
         // show cards if faction has been unlocked
         if (factionEnabled != null
-          && (factionEnabled.get("id") === CARD_BACKS_FACTION_ID
-            || factionEnabled.get("id") === GameDataManager.getInstance().generalsFaction.get("id")
+          && (factionEnabled.get('id') === CARD_BACKS_FACTION_ID
+            || factionEnabled.get('id') === GameDataManager.getInstance().generalsFaction.get('id')
             || ProgressionManager.getInstance().isFactionUnlockedOrCardsOwned(factionId))) {
           // store currently showing cards
-          var cardsToShow = factionEnabled.get("cards");
+          var cardsToShow = factionEnabled.get('cards');
           /*
           if (this._deckCardBackSelectingMode || this._craftingMode || (this._currentDeck != null && process.env.ALL_CARDS_AVAILABLE)) {
             cardsToShow = factionCards;
@@ -325,7 +325,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
           */
 
           this._showCards(cardsToShow, page);
-        } else if (factions.length > 1 || (factions.length === 1 && factionId != factions.first().get("id"))) {
+        } else if (factions.length > 1 || (factions.length === 1 && factionId != factions.first().get('id'))) {
           // go to next/previous faction
           if (page != null) {
             this._gotoPreviousFaction();
@@ -401,30 +401,30 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
         if (_.isNumber(manaQuery) && !isNaN(manaQuery)) {
           // special search case for numbers as mana cost
           filteredCards = _.filter(filteredCards, function (card) {
-            if (searchAllCards || card.get("inventoryCount") > 0) {
-              return card.get("manaCost") === manaQuery;
+            if (searchAllCards || card.get('inventoryCount') > 0) {
+              return card.get('manaCost') === manaQuery;
             }
             return false;
           });
-        } else if (searchQuery === "new") {
+        } else if (searchQuery === 'new') {
           // special search case for new cards
           filteredCards = _.filter(filteredCards, function (card) {
-            return InventoryManager.getInstance().isCardUnread(card.get("id"));
+            return InventoryManager.getInstance().isCardUnread(card.get('id'));
           }.bind(this));
-        } else if (searchQuery === "lore" || searchQuery === "new lore") {
+        } else if (searchQuery === 'lore' || searchQuery === 'new lore') {
           // special search case for new card lore
           filteredCards = _.filter(filteredCards, function (card) {
-            return SDK.CardLore.loreForIdentifier(card.get("baseCardId")) != null && InventoryManager.getInstance().isCardLoreUnread(card.get("baseCardId"));
+            return SDK.CardLore.loreForIdentifier(card.get('baseCardId')) != null && InventoryManager.getInstance().isCardLoreUnread(card.get('baseCardId'));
           }.bind(this));
         } else {
           // break search query into multiple look-aheads per word (word here = any group of characters delimited by spaces)
           // this way we can search for card descriptions that match all words instead of one of the words
-          searchQuery = searchQuery.replace(/(\S+)/g, "(?=.*$1)").replace(/[\s\t]/g, "") + ".+";
-          var searchPattern = new RegExp(searchQuery, "i");
+          searchQuery = searchQuery.replace(/(\S+)/g, '(?=.*$1)').replace(/[\s\t]/g, '') + '.+';
+          var searchPattern = new RegExp(searchQuery, 'i');
           filteredCards = _.filter(filteredCards, function (card) {
-            if (searchAllCards || card.get("inventoryCount") > 0) {
+            if (searchAllCards || card.get('inventoryCount') > 0) {
               // test against card's searchable content
-              return searchPattern.test(card.get("searchableContent"));
+              return searchPattern.test(card.get('searchableContent'));
             }
             return false;
           }.bind(this));
@@ -440,17 +440,17 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
    */
   showValidCards: function () {
     var deck = this._currentDeck;
-    var deckFactionId = deck && deck.get("faction_id");
+    var deckFactionId = deck && deck.get('faction_id');
     var hasGeneral = deckFactionId != null;
     var currentFaction = this._currentFaction;
     var factionsEnabled = [];
     var factionsCollection = GameDataManager.getInstance().visibleFactionsCollection;
     var searchQuery = this._currentSearchQuery;
     var searchAllCards = this._craftingMode;
-    var showPrismaticsInCollection = ProfileManager.getInstance().profile.get("showPrismaticsInCollection");
-    var showPrismaticsWhileCrafting = ProfileManager.getInstance().profile.get("showPrismaticsWhileCrafting");
-    var showSkinsInCollection = ProfileManager.getInstance().profile.get("showSkinsInCollection");
-    var cardSet = ProfileManager.getInstance().profile.get("filterCollectionCardSet");
+    var showPrismaticsInCollection = ProfileManager.getInstance().profile.get('showPrismaticsInCollection');
+    var showPrismaticsWhileCrafting = ProfileManager.getInstance().profile.get('showPrismaticsWhileCrafting');
+    var showSkinsInCollection = ProfileManager.getInstance().profile.get('showSkinsInCollection');
+    var cardSet = ProfileManager.getInstance().profile.get('filterCollectionCardSet');
 
     if (this._deckCardBackSelectingMode) {
       // card back selecting mode, swap current faction out with pseudo card backs faction
@@ -461,97 +461,97 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
         var cardBackId = cardBackData.id;
         if (InventoryManager.getInstance().getCanSeeCosmeticById(cardBackId)) {
           var cardBackModel = new Backbone.Model(cardBackData);
-          cardBackModel.set("_canUse", InventoryManager.getInstance().getCanUseCosmeticById(cardBackId));
-          cardBackModel.set("_canPurchase", InventoryManager.getInstance().getCanPurchaseCosmeticById(cardBackId));
+          cardBackModel.set('_canUse', InventoryManager.getInstance().getCanUseCosmeticById(cardBackId));
+          cardBackModel.set('_canPurchase', InventoryManager.getInstance().getCanPurchaseCosmeticById(cardBackId));
           cardBackModels.push(cardBackModel);
         }
       }
 
       var cardBacksFaction = new Backbone.Model({
         id: CARD_BACKS_FACTION_ID,
-        name: "Card Backs",
-        cards: cardBackModels
+        name: 'Card Backs',
+        cards: cardBackModels,
       });
       factionsEnabled.push(cardBacksFaction);
       currentFaction = cardBacksFaction;
     } else if (deck && !hasGeneral) {
       // deck needs a general/faction, swap current faction out with pseudo generals faction
       var generalsFaction = GameDataManager.getInstance().generalsFaction;
-      var generalCards = generalsFaction.get("cards");
+      var generalCards = generalsFaction.get('cards');
 
       // filter prismatics/skins as needed
-      generalCards = _.filter(generalCards, function(cardModel){
-        return cardModel.get("inventoryCount") > 0
-          && (!cardModel.get("isPrismatic") || showPrismaticsInCollection)
-          && (!cardModel.get("isSkinned") || (showSkinsInCollection && cardModel.get("canShowSkin")))
-          && (cardSet == 0 || cardSet == 9 || cardModel.get("cardSetId") === cardSet)
+      generalCards = _.filter(generalCards, function (cardModel) {
+        return cardModel.get('inventoryCount') > 0
+          && (!cardModel.get('isPrismatic') || showPrismaticsInCollection)
+          && (!cardModel.get('isSkinned') || (showSkinsInCollection && cardModel.get('canShowSkin')))
+          && (cardSet == 0 || cardSet == 9 || cardModel.get('cardSetId') === cardSet);
       });
 
       generalCards = _.sortBy(generalCards, function (cardModel) {
-        //return cardModel.get('baseCardId') + "." + cardModel.get("id")
-        return cardModel.get('baseCardId')
+        // return cardModel.get('baseCardId') + "." + cardModel.get("id")
+        return cardModel.get('baseCardId');
       });
 
       var generalsEnabledFaction = new Backbone.Model({
-        id: generalsFaction.get("id"),
-        name: generalsFaction.get("name"),
-        cards: generalCards
+        id: generalsFaction.get('id'),
+        name: generalsFaction.get('name'),
+        cards: generalCards,
       });
       factionsEnabled.push(generalsEnabledFaction);
       currentFaction = generalsEnabledFaction;
     } else if (factionsCollection) {
       // make sure current faction is not generals faction
-      if (currentFaction && currentFaction.get("id") === GameDataManager.getInstance().generalsFaction.get("id")) {
+      if (currentFaction && currentFaction.get('id') === GameDataManager.getInstance().generalsFaction.get('id')) {
         currentFaction = null;
       }
 
       // building deck with chosen faction or browsing/crafting
       factionsCollection.each(function (faction) {
-        var factionId = faction.get("id");
+        var factionId = faction.get('id');
         // faction must match deck faction id when building a deck
         if (ProgressionManager.getInstance().isFactionUnlockedOrCardsOwned(factionId)
-          && (deck == null || factionId === deckFactionId || faction.get("isNeutral"))) {
+          && (deck == null || factionId === deckFactionId || faction.get('isNeutral'))) {
           // filter cards by search
-          var factionCards = this._filterCardsForSearchQuery(faction.get("cards"), searchQuery, searchAllCards);
+          var factionCards = this._filterCardsForSearchQuery(faction.get('cards'), searchQuery, searchAllCards);
 
           // Filter legacy cards if a card set is chosen
           if (cardSet != 0) {
-            factionCards = _.filter(factionCards, function(cardModel){
-              return (cardModel.get("isLegacy") == false)
+            factionCards = _.filter(factionCards, function (cardModel) {
+              return (cardModel.get('isLegacy') == false);
             });
           }
           // filter shim'zar cards when "standard cards" is chosen
           if (cardSet == 9) {
-            factionCards = _.filter(factionCards, function(cardModel){
-              return (cardModel.get("cardSetId") != SDK.CardSet.Shimzar)
+            factionCards = _.filter(factionCards, function (cardModel) {
+              return (cardModel.get('cardSetId') != SDK.CardSet.Shimzar);
             });
           }
 
           if (!ProgressionManager.getInstance().isFactionUnlocked(factionId)) {
             // faction is visible in collection but not unlocked
             // which means user must own some cards from that faction
-            factionCards = _.filter(factionCards, function(cardModel){
-              return (cardModel.get("inventoryCount") > 0
-                  && (cardModel.get("isGeneral") || cardModel.get("rarityId") !== SDK.Rarity.Fixed))
-                && (!cardModel.get("isSkinned") || (showSkinsInCollection && cardModel.get("canShowSkin")))
-                && (cardSet == 0 || cardModel.get("cardSetId") === cardSet)
+            factionCards = _.filter(factionCards, function (cardModel) {
+              return (cardModel.get('inventoryCount') > 0
+                  && (cardModel.get('isGeneral') || cardModel.get('rarityId') !== SDK.Rarity.Fixed))
+                && (!cardModel.get('isSkinned') || (showSkinsInCollection && cardModel.get('canShowSkin')))
+                && (cardSet == 0 || cardModel.get('cardSetId') === cardSet);
             });
           } else if (this._craftingMode) {
             // filter for crafting mode
-            factionCards = _.filter(factionCards, function(cardModel){
+            factionCards = _.filter(factionCards, function (cardModel) {
               // don't show skins
-              return !cardModel.get("isSkinned")
+              return !cardModel.get('isSkinned')
                 // don't show prismatics unless allowed or has copies
-                && ((showPrismaticsInCollection && showPrismaticsWhileCrafting) || !cardModel.get("isPrismatic") || cardModel.get("inventoryCount") > 0)
-                && (cardSet == 0 || cardSet == 9 || cardModel.get("cardSetId") === cardSet)
+                && ((showPrismaticsInCollection && showPrismaticsWhileCrafting) || !cardModel.get('isPrismatic') || cardModel.get('inventoryCount') > 0)
+                && (cardSet == 0 || cardSet == 9 || cardModel.get('cardSetId') === cardSet);
             });
           } else {
             // filter prismatics/skins as needed
-            factionCards = _.filter(factionCards, function(cardModel){
-              return cardModel.get("inventoryCount") > 0
-                && (!cardModel.get("isPrismatic") || showPrismaticsInCollection)
-                && (!cardModel.get("isSkinned") || (showSkinsInCollection && cardModel.get("canShowSkin")))
-                && (cardSet == 0 || cardSet == 9 || cardModel.get("cardSetId") === cardSet)
+            factionCards = _.filter(factionCards, function (cardModel) {
+              return cardModel.get('inventoryCount') > 0
+                && (!cardModel.get('isPrismatic') || showPrismaticsInCollection)
+                && (!cardModel.get('isSkinned') || (showSkinsInCollection && cardModel.get('canShowSkin')))
+                && (cardSet == 0 || cardSet == 9 || cardModel.get('cardSetId') === cardSet);
             });
           }
 
@@ -559,8 +559,8 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
           if (factionCards.length > 0) {
             factionsEnabled.push(new Backbone.Model({
               id: factionId,
-              name: faction.get("name"),
-              cards: factionCards
+              name: faction.get('name'),
+              cards: factionCards,
             }));
           }
         }
@@ -568,7 +568,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
     }
 
     // update enabled factions
-    this.model.get("factionsEnabled").reset(factionsEnabled);
+    this.model.get('factionsEnabled').reset(factionsEnabled);
 
     // show new cards
     this._showCardsForFaction(currentFaction, this._currentPage);
@@ -669,7 +669,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
             }
           }
         }
-        this.trigger("change_page");
+        this.trigger('change_page');
       }
     }
   },
@@ -677,7 +677,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   isShowingCardOnCurrentPage: function (cardId) {
     for (var i = 0; i < this._numCardsPerPage; i++) {
       var cardView = this.children.findByIndex(i);
-      if (cardView != null && cardView.model != null && cardView.model.get("id") === cardId) {
+      if (cardView != null && cardView.model != null && cardView.model.get('id') === cardId) {
         return true;
       }
     }
@@ -687,7 +687,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
   isShowingBaseCardOnCurrentPage: function (baseCardId) {
     for (var i = 0; i < this._numCardsPerPage; i++) {
       var cardView = this.children.findByIndex(i);
-      if (cardView != null && cardView.model != null && cardView.model.get("baseCardId") === baseCardId) {
+      if (cardView != null && cardView.model != null && cardView.model.get('baseCardId') === baseCardId) {
         return true;
       }
     }
@@ -722,7 +722,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
       // set new
       this._currentDeck = deck;
       if (this._currentDeck) {
-        this.listenTo(this._currentDeck, "change:faction_id", this._startBuildingDeck);
+        this.listenTo(this._currentDeck, 'change:faction_id', this._startBuildingDeck);
       }
 
       // reset current browsing position
@@ -742,7 +742,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
 
   _resetCurrentDeck: function () {
     if (this._currentDeck) {
-      this.stopListening(this._currentDeck, "change:faction_id", this.showValidCards);
+      this.stopListening(this._currentDeck, 'change:faction_id', this.showValidCards);
       this._currentDeck = null;
     }
   },
@@ -774,7 +774,7 @@ var CardsCollectionCompositeView = Backbone.Marionette.CompositeView.extend({
       this._currentPage = null;
       this.showValidCards();
     }
-  }
+  },
 });
 
 // Expose the class either via CommonJS or the global object

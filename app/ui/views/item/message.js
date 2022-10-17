@@ -8,11 +8,11 @@ var EVENTS = require('app/common/event_types');
 
 var MessageItemView = Backbone.Marionette.ItemView.extend({
 
-  initialize: function() {
+  initialize: function () {
   },
 
-  tagName: "li",
-  className: "message",
+  tagName: 'li',
+  className: 'message',
 
   template: MessageTmpl,
 
@@ -21,31 +21,31 @@ var MessageItemView = Backbone.Marionette.ItemView.extend({
 
   /* ui triggers hash */
   triggers: {
-    "click":"select"
+    click: 'select',
   },
 
   /* ui events hash */
   events: {
-    "click .btn-watch-replay":"onClickReplay"
+    'click .btn-watch-replay': 'onClickReplay',
   },
 
-  onRender: function() {
+  onRender: function () {
   },
 
-  onShow: function() {
-    if (this.model.get("fromId") == ProfileManager.getInstance().get("id")) {
-      this.$el.addClass("from-me");
+  onShow: function () {
+    if (this.model.get('fromId') == ProfileManager.getInstance().get('id')) {
+      this.$el.addClass('from-me');
     }
   },
 
-  onClickReplay: function(e) {
-    e.preventDefault()
+  onClickReplay: function (e) {
+    e.preventDefault();
     EventBus.getInstance().trigger(EVENTS.start_replay, {
-      gameId: this.model.get("gameId"),
-      userId: this.model.get("fromId")
-    })
-    return false
-  }
+      gameId: this.model.get('gameId'),
+      userId: this.model.get('fromId'),
+    });
+    return false;
+  },
 
 });
 

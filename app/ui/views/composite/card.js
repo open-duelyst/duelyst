@@ -1,4 +1,4 @@
-//pragma PKGS: alwaysloaded
+// pragma PKGS: alwaysloaded
 
 'use strict';
 
@@ -19,47 +19,47 @@ var Animations = require('app/ui/views/animations');
 
 var CardCompositeView = Backbone.Marionette.CompositeView.extend({
 
-  tagName: "li",
-  className: "card choice",
+  tagName: 'li',
+  className: 'card choice',
 
   template: CardTmpl,
 
   ui: {
-    $cardSprite: ".card-sprite .sprite",
-    $signatureCardSprite: ".signature-card-sprite .sprite"
+    $cardSprite: '.card-sprite .sprite',
+    $signatureCardSprite: '.signature-card-sprite .sprite',
   },
 
   events: {
-    "mouseenter": "onMouseEnter",
-    "mouseleave": "onMouseLeave",
-    "click": "onSelect"
+    mouseenter: 'onMouseEnter',
+    mouseleave: 'onMouseLeave',
+    click: 'onSelect',
   },
 
   templateHelpers: {
 
-    longCardDescription: function() {
+    longCardDescription: function () {
       if (this.description == null)
         return false;
       var descriptionLength = this.description.length;
-      if (this.description.includes("<br/>")) {
+      if (this.description.includes('<br/>')) {
         descriptionLength += 15;
       }
       return descriptionLength >= 110;
     },
 
-    longCardName: function() {
+    longCardName: function () {
       if (this.name == null)
         return false;
       return this.name.length >= 23;
-    }
+    },
   },
 
   // whether a card is draggable
   draggable: false,
   // what kind of droppable to drop into
-  draggableScope: "add",
+  draggableScope: 'add',
   // a css selector for a different object to append the draggable to than the card parent
-  draggableAppendTo: "parent",
+  draggableAppendTo: 'parent',
 
   // whether a card may be used
   usable: true,
@@ -87,7 +87,7 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
   _displayedSignatureSpriteGLData: null,
   _draggableSignatureSpriteGLData: null,
 
-  initialize: function(opts) {
+  initialize: function (opts) {
     // set options from initial model
     var model = this.model;
     this.model = null;
@@ -99,18 +99,18 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     // initialize card draggability
     this.$el.draggable({
       distance: 50,
-      helper: "clone",
+      helper: 'clone',
       appendTo: this.draggableAppendTo,
       scroll: false,
-      revert: "invalid",
+      revert: 'invalid',
       revertDuration: 500,
       scope: opts.draggableScope || this.draggableScope,
       start: this.onStartDragging.bind(this),
-      stop: this.onStopDragging.bind(this)
+      stop: this.onStopDragging.bind(this),
     });
   },
 
-  onRender: function() {
+  onRender: function () {
     this._optionsDirty = false;
 
     // reset card classes
@@ -132,13 +132,13 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     this.setSignatureSprite(displayedSignatureSpriteData);
   },
 
-  onShow: function() {
+  onShow: function () {
     // force show inactive sprite
     this._displayedSpriteData = null;
     this.setSprite(this._inactiveSpriteData);
   },
 
-  onDestroy: function() {
+  onDestroy: function () {
     UtilsUI.releaseCocosSprite(this._displayedSpriteGLData);
     UtilsUI.releaseCocosSprite(this._displayedSignatureSpriteGLData);
     UtilsUI.releaseCocosSprite(this._draggableSpriteGLData);
@@ -146,11 +146,11 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     this._cleanup();
   },
 
-  onMouseEnter: function() {
+  onMouseEnter: function () {
     var interactiveAndUsable = this.interactive && this.usable;
-    var card = this.model.get("card");
+    var card = this.model.get('card');
     if (card instanceof SDK.Card) {
-      var cardId = this.model.get("id");
+      var cardId = this.model.get('id');
       InventoryManager.getInstance().markCardAsReadInCollection(cardId);
       this.setRead(true);
       if (interactiveAndUsable) {
@@ -163,24 +163,24 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     }
   },
 
-  onMouseLeave: function() {
+  onMouseLeave: function () {
     var interactiveAndUsable = this.interactive && this.usable;
-    var card = this.model.get("card");
+    var card = this.model.get('card');
     if (card instanceof SDK.Card && interactiveAndUsable) {
       this.setSprite(this._inactiveSpriteData);
     }
   },
 
-  onSelect: function() {
-    var card = this.model.get("card");
+  onSelect: function () {
+    var card = this.model.get('card');
     if (card instanceof SDK.Card) {
-      var cardId = this.model.get("id");
+      var cardId = this.model.get('id');
       InventoryManager.getInstance().markCardAsReadInCollection(cardId);
       this.setRead(true);
     }
 
     if (this.interactive) {
-      this.trigger("select", this);
+      this.trigger('select', this);
     }
   },
 
@@ -222,11 +222,11 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     if (this._optionsDirty) {
       this.render();
     }
-    this.$el.removeClass("invisible");
+    this.$el.removeClass('invisible');
   },
 
   hide: function (withoutOptionsClear) {
-    this.$el.addClass("invisible");
+    this.$el.addClass('invisible');
     if (!withoutOptionsClear) {
       this.setOptions(null, true);
     }
@@ -256,19 +256,19 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
       }
 
       // listen for changes to model between setting of options
-      this.listenTo(this.model, "change", this.render);
+      this.listenTo(this.model, 'change', this.render);
 
       // load card assets
       var previousLoadPkgId = this._loadPkgId;
       this._loadPkgId = null;
-      var card = this.model.get("card");
+      var card = this.model.get('card');
       if (card instanceof SDK.Card) {
-        var cardId = this.model.get("id");
+        var cardId = this.model.get('id');
         var cardPkgId = PKGS.getCardInspectPkgIdentifier(cardId);
         if (cardPkgId != null) {
           // we have to make each load pkg id unique in case more than one card loads the same assets
           // we don't want one to unload those assets and have another card that also uses the assets break
-          var loadPkgId = this._loadPkgId = cardPkgId + "_" + UtilsJavascript.generateIncrementalId();
+          var loadPkgId = this._loadPkgId = cardPkgId + '_' + UtilsJavascript.generateIncrementalId();
           var cardResourcesPkg = PKGS.getPkgForIdentifier(cardPkgId);
 
           // include signature card resources
@@ -317,7 +317,7 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
   },
 
   _getModelOptionsAreDifferent: function (model, options) {
-    return !this.model || this.model.get("id") != model.get("id");
+    return !this.model || this.model.get('id') != model.get('id');
   },
 
   _getModelFromOptions: function (options, forDeckCardBackSelectingMode) {
@@ -339,45 +339,45 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
 
   setRead: function (read) {
     if (read) {
-      this.$el.removeClass("is-unread");
+      this.$el.removeClass('is-unread');
     } else {
-      this.$el.addClass("is-unread");
+      this.$el.addClass('is-unread');
     }
   },
 
   setLoreRead: function (read) {
-    if (read || !ProfileManager.getInstance().profile.get("showLoreNotifications")) {
-      this.$el.removeClass("is-lore-unread");
+    if (read || !ProfileManager.getInstance().profile.get('showLoreNotifications')) {
+      this.$el.removeClass('is-lore-unread');
     } else {
-      this.$el.addClass("is-lore-unread");
+      this.$el.addClass('is-lore-unread');
     }
   },
 
   setUsable: function (usable) {
     this.usable = usable;
     if (!usable) {
-      this.$el.addClass("unusable");
+      this.$el.addClass('unusable');
     } else {
-      this.$el.removeClass("unusable");
+      this.$el.removeClass('unusable');
     }
   },
 
   setInteractive: function (interactive) {
     this.interactive = interactive;
     if (interactive) {
-      this.$el.removeClass("interaction-locked");
+      this.$el.removeClass('interaction-locked');
     } else {
-      this.$el.addClass("interaction-locked");
+      this.$el.addClass('interaction-locked');
     }
   },
 
   setDraggable: function (draggable) {
     this.draggable = draggable;
-    if (this.$el.draggable("instance") != null) {
+    if (this.$el.draggable('instance') != null) {
       if (draggable) {
-        this.$el.draggable("enable");
+        this.$el.draggable('enable');
       } else {
-        this.$el.draggable("disable");
+        this.$el.draggable('disable');
       }
     }
     UtilsUI.resetCocosSprite(this._draggableSpriteGLData);
@@ -403,36 +403,36 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
    * @returns {string}
    */
   getCardClasses: function () {
-    var cardTypes = "";
-    var card = this.model.get("card");
+    var cardTypes = '';
+    var card = this.model.get('card');
     if (card instanceof SDK.Card) {
       // card types
-      if (this.model.get("isEntity")) {
-        cardTypes += " entity";
-        if (this.model.get("isGeneral")) {
-          cardTypes += " general";
-        } else if (this.model.get("isUnit")) {
-          cardTypes += " unit";
-        } else if (this.model.get("isTile")) {
-          cardTypes += " tile";
+      if (this.model.get('isEntity')) {
+        cardTypes += ' entity';
+        if (this.model.get('isGeneral')) {
+          cardTypes += ' general';
+        } else if (this.model.get('isUnit')) {
+          cardTypes += ' unit';
+        } else if (this.model.get('isTile')) {
+          cardTypes += ' tile';
         }
-      } else if (this.model.get("isArtifact")) {
-        cardTypes += " artifact";
-      } else if (this.model.get("isSpell")) {
-        cardTypes += " spell";
+      } else if (this.model.get('isArtifact')) {
+        cardTypes += ' artifact';
+      } else if (this.model.get('isSpell')) {
+        cardTypes += ' spell';
       }
 
-      if (this.model.get("isPrismatic")) {
-        cardTypes += " prismatic";
+      if (this.model.get('isPrismatic')) {
+        cardTypes += ' prismatic';
       }
     } else {
-      cardTypes += "card-back";
+      cardTypes += 'card-back';
     }
 
     // faction
-    var factionId = this.model.get("factionId");
+    var factionId = this.model.get('factionId');
     if (factionId != null) {
-      cardTypes += " faction-" + factionId;
+      cardTypes += ' faction-' + factionId;
     }
 
     return cardTypes;
@@ -449,7 +449,7 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     this._signatureSpriteData = null;
 
     // cache sprite data
-    var card = this.model.get("card");
+    var card = this.model.get('card');
     if (card instanceof SDK.Card) {
       var animResource = card.getAnimResource();
       if (animResource != null) {
@@ -487,7 +487,7 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
     if (this._displayedSpriteData !== spriteData) {
       this._displayedSpriteData = spriteData;
       if (this._displayedSpriteData != null) {
-        this._displayedSpriteGLData = UtilsUI.showCocosSprite(this.ui.$cardSprite, this._displayedSpriteGLData, this._displayedSpriteData, null, this.animated, this.model.get("card"), startingSpriteData, startingSound);
+        this._displayedSpriteGLData = UtilsUI.showCocosSprite(this.ui.$cardSprite, this._displayedSpriteGLData, this._displayedSpriteData, null, this.animated, this.model.get('card'), startingSpriteData, startingSound);
       } else {
         UtilsUI.resetCocosSprite(this._displayedSpriteGLData);
         this._displayedSpriteGLData = null;
@@ -509,32 +509,32 @@ var CardCompositeView = Backbone.Marionette.CompositeView.extend({
 
   /* DRAG AND DROP */
 
-  onStartDragging: function() {
-    this.trigger("start_dragging");
+  onStartDragging: function () {
+    this.trigger('start_dragging');
 
-    var card = this.model.get("card");
+    var card = this.model.get('card');
     if (card instanceof SDK.Card) {
       this.setSprite(this._inactiveSpriteData);
-      var draggable = this.$el.draggable("instance");
+      var draggable = this.$el.draggable('instance');
       var $draggableElement = draggable.helper;
 
       // display sprites on draggable element
-      var $draggableCardSprite = $draggableElement.find(".card-sprite .sprite");
-      this._draggableSpriteGLData = UtilsUI.showCocosSprite($draggableCardSprite, this._draggableSpriteGLData, this._activeSpriteData, null, this.animated, this.model.get("card"));
+      var $draggableCardSprite = $draggableElement.find('.card-sprite .sprite');
+      this._draggableSpriteGLData = UtilsUI.showCocosSprite($draggableCardSprite, this._draggableSpriteGLData, this._activeSpriteData, null, this.animated, this.model.get('card'));
 
       if (this._signatureSpriteData != null) {
-        var $draggableSignatureCardSprite = $draggableElement.find(".signature-card-sprite .sprite");
+        var $draggableSignatureCardSprite = $draggableElement.find('.signature-card-sprite .sprite');
         this._draggableSignatureSpriteGLData = UtilsUI.showCocosSprite($draggableSignatureCardSprite, this._draggableSignatureSpriteGLData, this._signatureSpriteData, null, this.animated, null, null, null, this.signatureSpriteScaleDraggable);
       }
     }
   },
 
-  onStopDragging: function() {
-    this.trigger("stop_dragging");
+  onStopDragging: function () {
+    this.trigger('stop_dragging');
 
     UtilsUI.resetCocosSprite(this._draggableSpriteGLData);
     UtilsUI.resetCocosSprite(this._draggableSignatureSpriteGLData);
-  }
+  },
 
 });
 

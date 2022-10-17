@@ -1,29 +1,31 @@
-//pragma PKGS: nongame
+// pragma PKGS: nongame
+
 'use strict';
+
 var CONFIG = require('app/common/config');
 var RSX = require('app/data/resources');
 var audio_engine = require('app/audio/audio_engine');
 var SDK = require('app/sdk');
 var Scene = require('app/view/Scene');
 var Analytics = require('app/common/analytics');
-var Animations = require("app/ui/views/animations");
-var ProgressionManager = require("app/ui/managers/progression_manager");
-var SlidingPanelSelectCompositeView = require('./sliding_panel_select');
-var ChallengeSelectCompositeView = require('./challenge_select');
+var Animations = require('app/ui/views/animations');
+var ProgressionManager = require('app/ui/managers/progression_manager');
 var ChallengeCategorySelectTmpl = require('app/ui/templates/composite/challenge_category_select.hbs');
 var UtilsEnv = require('app/common/utils/utils_env');
 var PlayLayer = require('app/view/layers/pregame/PlayLayer');
+var ChallengeSelectCompositeView = require('./challenge_select');
+var SlidingPanelSelectCompositeView = require('./sliding_panel_select');
 
 var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.extend({
 
-  className: "sliding-panel-select challenge-category-select",
+  className: 'sliding-panel-select challenge-category-select',
 
   template: ChallengeCategorySelectTmpl,
 
   childView: ChallengeSelectCompositeView,
-  childViewOptions: function(model, index) {
+  childViewOptions: function (model, index) {
     // each child view should have a collection as it is a composite view
-    return {collection: new Backbone.Collection()}
+    return { collection: new Backbone.Collection() };
   },
 
   animateIn: Animations.fadeIn,
@@ -35,13 +37,13 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
 
   /* region INITIALIZE */
 
-  initialize: function() {
+  initialize: function () {
     SlidingPanelSelectCompositeView.prototype.initialize.apply(this, arguments);
 
     // build models for each category
     var challengeCategories = SDK.ChallengeFactory.getAllChallengeCategories();
     if (UtilsEnv.getIsInProduction()) {
-      challengeCategories = _.without(challengeCategories,SDK.ChallengeCategory.tutorial); // remove tutorial
+      challengeCategories = _.without(challengeCategories, SDK.ChallengeCategory.tutorial); // remove tutorial
     }
     var categoryModels = [];
     var hasAttemptedTutorial = ProgressionManager.getInstance().hasAttemptedChallengeCategory(SDK.ChallengeCategory.tutorial.type);
@@ -49,11 +51,11 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
       var challenges = SDK.ChallengeFactory.getChallengesForCategoryType(challengeCategory.type);
       if (challenges && challenges.length) {
         var enabled = true;
-        var unlockMessage = "";
+        var unlockMessage = '';
 
         // check if not tutorial category and has not attempted full tutorial
         if (challengeCategory.type !== SDK.ChallengeCategory.tutorial.type && !hasAttemptedTutorial) {
-          unlockMessage += "Complete the Tutorial Gate";
+          unlockMessage += 'Complete the Tutorial Gate';
           enabled = false;
         }
 
@@ -62,7 +64,7 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
         var gameCountRequired = challengeCategory.gamesRequiredToUnlock;
         if (gameCountRequired != null && gameCountRequired > 0 && gameCount < gameCountRequired) {
           var gamesNeeded = gameCountRequired - gameCount;
-          unlockMessage += (unlockMessage.length === 0 ? "" : " and ") + "Play " + gamesNeeded + " more online matches to unlock";
+          unlockMessage += (unlockMessage.length === 0 ? '' : ' and ') + 'Play ' + gamesNeeded + ' more online matches to unlock';
           enabled = false;
         }
 
@@ -84,7 +86,7 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
           numChallengesAttempted: numChallengesAttempted,
           numChallengesCompleted: numChallengesCompleted,
           enabled: enabled,
-          unlockMessage: unlockMessage + "."
+          unlockMessage: unlockMessage + '.',
         }));
         categoryModels.push(categoryModel);
       }
@@ -102,7 +104,7 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
     SlidingPanelSelectCompositeView.prototype.onShow.call(this);
 
     // analytics call
-    Analytics.page("Select Tutorial Category",{ path: "/#tutorial_category_selection" });
+    Analytics.page('Select Tutorial Category', { path: '/#tutorial_category_selection' });
 
     // show play layer
     Scene.getInstance().showContentByClass(PlayLayer, true);
@@ -138,7 +140,7 @@ var ChallengeCategorySelectCompositeView = SlidingPanelSelectCompositeView.exten
       // play audio
       audio_engine.current().play_effect_for_interaction(RSX.sfx_ui_challenge_category_select.audio, CONFIG.SELECT_SFX_PRIORITY);
     }
-  }
+  },
 
   /* endregion SELECT */
 
