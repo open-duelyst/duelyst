@@ -31,7 +31,7 @@
     "bluebird": "^2.9.13",
     "body-parser": "^1.6.5",
     "change-case": "2.3.0",
-    "coffee-script": "1.8.0",
+    "coffeescript": "1.12.7",
     "colors": "*",
     "compose-middleware": "^2.0.1",
     "convict": "^6.2.2",

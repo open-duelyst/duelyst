@@ -3707,13 +3707,6 @@ coffee-coverage@^0.6.2:
     lodash "^3.7.0"
     pkginfo ">=0.2.3"
 
-coffee-script@1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.8.0.tgz#9c9f1d2b4a52a000ded15b659791703648263c1d"
-  integrity sha1-nJ8dK0pSoADe0Vtll5FwNkgmPB0=
-  dependencies:
-    mkdirp "~0.3.5"
-
 coffee-script@>=1.6.2, coffee-script@^1.12.0:
   version "1.12.7"
   resolved "https://registry.yarnpkg.com/coffee-script/-/coffee-script-1.12.7.tgz#c05dae0cb79591d05b3070a8433a98c9a89ccc53"
@@ -3727,6 +3720,11 @@ coffeeify@^2.0.1:
     coffee-script "^1.12.0"
     convert-source-map "^1.3.0"
     through2 "^2.0.0"
+
+coffeescript@1.12.7:
+  version "1.12.7"
+  resolved "https://registry.yarnpkg.com/coffeescript/-/coffeescript-1.12.7.tgz#e57ee4c4867cf7f606bfc4a0f2d550c0981ddd27"
+  integrity sha512-pLXHFxQMPklVoEekowk8b3erNynC+DVJzChxS/LCBBgR6/8AJkHivkm//zbowcfc7BTCAjryuhx6gPqPRfsFoA==
 
 coffeescript@2.7.0:
   version "2.7.0"
@@ -10317,11 +10315,6 @@ mkdirp@^1.0.3, mkdirp@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
-
-mkdirp@~0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.5.tgz#de3e5f8961c88c787ee1368df849ac4413eca8d7"
-  integrity sha1-3j5fiWHIjHh+4TaN+EmsRBPsqNc=
 
 mocha@^10.0.0:
   version "10.0.0"
