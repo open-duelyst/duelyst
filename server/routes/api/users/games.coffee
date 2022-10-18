@@ -15,6 +15,9 @@ generatePushId = require '../../../../app/common/generate_push_id'
 Consul = require '../../../lib/consul'
 _ = require("underscore")
 
+awsRegion = config.get('aws.region')
+awsReplaysBucket = config.get('aws.replaysBucketName')
+
 router = express.Router()
 
 router.get "/", (req, res, next) ->
@@ -49,8 +52,7 @@ router.get "/:game_id/replay_data", (req, res, next) ->
   .then (row) ->
     if row?
       downloadGameSessionDataAsync = new Promise (resolve,reject)->
-        # FIXME: Hardcoded S3 URL.
-        gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{game_id}.json"
+        gameDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/#{game_id}.json"
         Logger.module("API").debug "starting download of game #{game_id} replay data from #{gameDataUrl}"
         request.get(gameDataUrl).end (err, res) ->
           if res? && res.status >= 400
@@ -65,8 +67,7 @@ router.get "/:game_id/replay_data", (req, res, next) ->
             return resolve(res.text)
 
       downloadMouseUIDataAsync = new Promise (resolve,reject)->
-        # FIXME: Hardcoded S3 URL.
-        mouseUIDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/ui_events/#{game_id}.json"
+        mouseUIDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/ui_events/#{game_id}.json"
         request.get(mouseUIDataUrl).end (err, res) ->
           if res? && res.status >= 400
             # Network failure, we should probably return a more intuitive error object

@@ -98,7 +98,7 @@ const config = convict({
       env: 'S3_ASSETS_BUCKET',
     },
     replaysBucketName: {
-      default: '',
+      default: 'duelyst-games', // Invalid bucket, but makes localdev happy.
       env: 'S3_REPLAYS_BUCKET',
     },
     cdnDomainName: {
@@ -106,7 +106,7 @@ const config = convict({
       env: 'CDN_DOMAIN_NAME',
     },
     region: {
-      default: '',
+      default: 'us-east-1',
       env: 'AWS_REGION',
     },
     accessKey: {

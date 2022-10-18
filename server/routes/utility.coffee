@@ -56,7 +56,7 @@ router.post "/utility/client_logs", (req, res, next) ->
   bucket = config.get("s3_client_logs.bucket")
   env = config.get("env")
   filename = env + "/#{user_id}/#{log_id}.html"
-  url = "https://s3-us-west-1.amazonaws.com/" + bucket + "/" + filename
+  url = "https://s3.#{config.get('aws.region')}.amazonaws.com/" + bucket + "/" + filename
 
   loadClientLogsHandlebarsTemplateAsync.then (template) ->
     # render client log as HTML
