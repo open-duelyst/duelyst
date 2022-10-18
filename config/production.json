@@ -10,8 +10,7 @@
 			"Bucket": "duelyst-assets"
 		},
 		"accessKeyId": "",
-		"secretAccessKey": "",
-		"region": "us-west-2"
+		"secretAccessKey": ""
 	},
 	"analyticsEnabled": true,
 	"gaId":"",

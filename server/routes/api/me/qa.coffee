@@ -1032,7 +1032,7 @@ router.post '/daily_challenge', (req,res,next)->
     bucket = "duelyst-challenges"
 
     filename = env + "/" + challengeDate + ".json"
-    @.url = "https://s3-us-west-2.amazonaws.com/" + bucket + "/" + filename
+    @.url = "https://s3.#{config.get('aws.region').amazonaws.com/" + bucket + "/" + filename
 
     Logger.module("QA").log "Pushing Daily challenge with url #{@.url}"
 

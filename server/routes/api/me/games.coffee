@@ -39,6 +39,9 @@ Cards = require '../../../../app/sdk/cards/cardsLookupComplete'
 GameSetups = require '../../../ai/decks/game_setups'
 CosmeticsFactory = require '../../../../app/sdk/cosmetics/cosmeticsFactory'
 
+awsRegion = config.get('aws.region')
+awsReplaysBucket = config.get('aws.replaysBucketName')
+
 router = express.Router()
 
 router.get "/", (req, res, next) ->
@@ -179,7 +182,7 @@ router.get "/watchable/:division_name", (req, res, next) ->
             }
 
           return Promise.map @.gamesData, (gameRow)->
-            gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{gameRow.id}.json"
+            gameDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/#{gameRow.id}.json"
             Logger.module("API").debug "downloading game #{gameRow.id} replay data from #{gameDataUrl}"
             return new Promise((resolve,reject)->
               request.get(gameDataUrl).end (err, res) ->
@@ -248,8 +251,8 @@ router.get "/watchable/:division_name/:game_id/replay_data", (req, res, next) ->
     return knex("games").where('id',game_id).first()
   .then (row) ->
     if row?
-      gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{game_id}.json"
-      mouseUIDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/ui_events/#{game_id}.json"
+      gameDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/#{game_id}.json"
+      mouseUIDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/ui_events/#{game_id}.json"
       Logger.module("API").debug "starting download of game #{game_id} replay data from #{gameDataUrl}"
       downloadGameSessionDataAsync = new Promise (resolve,reject)->
         request.get(gameDataUrl).end (err, res) ->

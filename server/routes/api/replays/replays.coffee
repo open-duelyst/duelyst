@@ -12,6 +12,9 @@ Errors = require '../../../lib/custom_errors'
 generatePushId = require '../../../../app/common/generate_push_id'
 _ = require("underscore")
 
+awsRegion = config.get('aws.region')
+awsReplaysBucket = config.get('aws.replaysBucketName')
+
 router = express.Router()
 
 router.get "/:replay_id", (req, res, next) ->
@@ -27,8 +30,8 @@ router.get "/:replay_id", (req, res, next) ->
     @.replayData = replayData
     if replayData?
       game_id = replayData.game_id
-      gameDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/#{game_id}.json"
-      mouseUIDataUrl = "https://s3-us-west-1.amazonaws.com/duelyst-games/#{config.get('env')}/ui_events/#{game_id}.json"
+      gameDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/#{game_id}.json"
+      mouseUIDataUrl = "https://s3.#{awsRegion}.amazonaws.com/#{awsReplaysBucket}/#{config.get('env')}/ui_events/#{game_id}.json"
       Logger.module("API").debug "starting download of game #{game_id} replay data from #{gameDataUrl}"
 
       downloadGameSessionDataAsync = new Promise (resolve,reject)->

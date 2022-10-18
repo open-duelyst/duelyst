@@ -37,7 +37,8 @@ module "ecs_service_api" {
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "CDN_DOMAIN_NAME", value = var.cdn_domain_name },
     { name = "ALL_CARDS_AVAILABLE", value = true },
-    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name }
+    { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
+    { name = "S3_REPLAYS_BUCKET", value = var.replays_bucket_name }
   ]
 
   secrets = [
