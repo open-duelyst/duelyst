@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.188.0",
+    "@aws-sdk/client-sts": "^3.190.0",
     "@bower_components/backbone": "jashkenas/backbone#1.1.2",
     "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
     "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
