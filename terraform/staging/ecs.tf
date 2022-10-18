@@ -27,6 +27,7 @@ module "ecs_service_api" {
   ecr_repository    = module.ecr_repository_api.id
   deployed_version  = "1.97.3"
   container_count   = 1
+  container_mem     = 500 # Runs out of memory with 350MB.
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
 
@@ -59,6 +60,7 @@ module "ecs_service_game" {
   ecr_repository    = module.ecr_repository_game.id
   deployed_version  = "1.97.1-socketfix"
   container_count   = 1
+  container_mem     = 200 # Uses about 125MB.
   service_port      = 8001
   alb_target_group  = module.staging_load_balancer.game_target_group_arn
 
@@ -84,6 +86,7 @@ module "ecs_service_sp" {
   ecr_repository    = module.ecr_repository_sp.id
   deployed_version  = "1.97.1"
   container_count   = 1
+  container_mem     = 200 # Uses about 125MB.
   service_port      = 8000
   alb_target_group  = module.staging_load_balancer.sp_target_group_arn
 
@@ -108,6 +111,7 @@ module "ecs_service_worker" {
   ecr_repository    = module.ecr_repository_worker.id
   deployed_version  = "1.97.3"
   container_count   = 1
+  container_mem     = 500 # Uses about 315MB.
   enable_lb         = false
   service_port      = 0
   alb_target_group  = ""
@@ -139,6 +143,7 @@ module "ecs_service_migrate" {
   ecr_repository    = module.ecr_repository_migrate.id
   deployed_version  = "1.97.1"
   container_count   = 0 # Change to 1 to apply database migrations.
+  container_mem     = 200
   enable_lb         = false
   service_port      = 0
   alb_target_group  = ""
