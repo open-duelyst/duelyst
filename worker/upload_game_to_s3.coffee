@@ -4,7 +4,6 @@ colors = require 'colors'
 url = require 'url'
 zlib = require 'zlib'
 { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3")
-{ STSClient, GetCallerIdentityCommand } = require("@aws-sdk/client-sts")
 
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
@@ -17,13 +16,6 @@ awsRegion = config.get('aws.region')
 replaysBucket = config.get('aws.replaysBucketName')
 if !awsRegion || !replaysBucket
   throw new Error('Error: Failed to initialize S3 uploader: aws.region and aws.replaysBucketName are required')
-
-# Log AWS caller identity.
-# TODO: Once this is working, remove this and the client-sts dependency.
-stsClient = new STSClient({ region: awsRegion })
-stsClient.send(new GetCallerIdentityCommand())
-  .then (stsResp) ->
-    Logger.module("REPLAYS").log "AWS Caller Identity: #{stsResp.Arn}"
 
 # Configure S3 access.
 Logger.module("REPLAYS").log "Creating S3 client with Region #{awsRegion} and Bucket #{replaysBucket}"
