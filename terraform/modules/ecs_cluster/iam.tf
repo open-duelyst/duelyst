@@ -1,3 +1,7 @@
+#
+# Instance Role & Policies
+#
+
 # Create a role for the instances.
 resource "aws_iam_role" "ecs_instance_role" {
   name = "ECSInstance"
@@ -20,6 +24,38 @@ resource "aws_iam_role" "ecs_instance_role" {
 EOF	
 }
 
+# Create an instance profile for the instances.
+resource "aws_iam_instance_profile" "ecs_instance_profile" {
+  name = "ECSInstance"
+  role = aws_iam_role.ecs_instance_role.name
+}
+
+# Create a policy which allows uploads to S3.
+resource "aws_iam_policy" "s3_upload_policy" {
+  name   = "S3Uploader"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "s3:PutObject",
+				"s3:PutObjectAcl"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+# Attach the S3 uploads policy to the instance role.
+resource "aws_iam_role_policy_attachment" "ecs_instance_s3_policy_attachment" {
+  policy_arn = aws_iam_policy.s3_upload_policy.arn
+  role       = aws_iam_role.ecs_instance_role.name
+}
+
 # Attach the pre-defined AmazonEC2ContainerServiceforEC2Role to the instance role.
 resource "aws_iam_role_policy_attachment" "ecs_instance_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
@@ -32,11 +68,9 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_cw_policy_attachment" {
   role       = aws_iam_role.ecs_instance_role.name
 }
 
-# Create an instance profile for the instances.
-resource "aws_iam_instance_profile" "ecs_instance_profile" {
-  name = "ECSInstance"
-  role = aws_iam_role.ecs_instance_role.name
-}
+#
+# Task Role & Policy
+#
 
 # Create a role for ECS tasks.
 resource "aws_iam_role" "task_role" {
