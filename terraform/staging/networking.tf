@@ -2,7 +2,6 @@ module "internal_vpc" {
   source = "../modules/vpc"
   name   = "duelyst-vpc"
   cidr   = "10.0.0.0/16" # 65534 addresses.
-  region = var.aws_region
 }
 
 module "first_subnet" {
