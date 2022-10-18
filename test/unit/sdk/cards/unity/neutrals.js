@@ -130,6 +130,8 @@ describe('unity', () => {
       expect(ghoulie.getPosition().y).to.equal(1);
       expect(xho2.getPosition().x !== 5 || xho2.getPosition().y !== 1).to.equal(true);
     });
+
+    /* Test disabled: flaky
     it('expect grimes to summon a random minion from a tribe nearby when played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -149,6 +151,7 @@ describe('unity', () => {
       // neutral race Id = 0.  anything else is a tribal.
       expect(tribal[0].getRaceId()).to.not.equal(0);
     });
+    */
 
     it('expect grimes to summon a random minion from a tribe nearby when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
