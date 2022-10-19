@@ -7,7 +7,6 @@ DuelystFirebase= require("../../server/lib/duelyst_firebase_module")
 FirebasePromises = require("../../server/lib/firebase_promises")
 _ = require 'underscore'
 Promise = require 'bluebird'
-ProgressBar = require('progress')
 Logger = require('../../app/common/logger')
 Errors = require("../../server/lib/custom_errors")
 moment = require 'moment'
@@ -46,13 +45,6 @@ return Promise.all([
   limit = allUserIds.length # Math.min(10000,userIds.length)
   console.log("#{allUserIds.length} users found")
 
-  # bar = new ProgressBar('importing users [:bar] :percent :etas', {
-  #     complete: '=',
-  #     incomplete: ' ',
-  #     width: 20,
-  #     total: limit
-  # })
-
   rootRef = @.rootRef
 
   return Promise.map(allUserIds,(userId)->
@@ -80,7 +72,6 @@ return Promise.all([
       .catch (e)->
         console.log("ERROR",e)
       .finally ()->
-        # bar?.tick()
         limit--
     else
       return Promise.resolve(true)

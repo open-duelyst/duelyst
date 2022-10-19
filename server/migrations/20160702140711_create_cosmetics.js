@@ -1,7 +1,6 @@
 require('coffeescript/register');
 const _ = require('underscore');
 const moment = require('moment');
-const ProgressBar = require('progress');
 
 exports.up = function (knex) {
   return Promise.all([

@@ -5,7 +5,6 @@ import qs from 'querystring';
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 import Promise from 'bluebird';
-import ProgressBar from 'progress';
 import colors from 'colors';
 import path from 'path';
 
