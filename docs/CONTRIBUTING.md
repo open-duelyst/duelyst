@@ -82,19 +82,22 @@ containers, and to interact with the JavaScript build process.
 Once you have `npm`, you can use it to install Yarn (the package manager we use):
 
 ```bash
-npm install -g yarn  # You can use `sudo` on Mac or Linux if this gives you a permissions error.
+npm install -g yarn@1
+npm install -g cross-env
 ```
 
-You can also install `cross-env` with `npm install -g cross-env`, which is used to support running
-the steps below on Windows systems in addition to Mac and Linux systems.
+Before proceeding, disable the deprecated `git://` protocol for fetching packages:
+```
+git config --global url."https://".insteadOf git://
+```
 
 #### Installing Node.js Dependencies
 
 Once you have Yarn installed, you can install the dependencies for the game:
 
 ```bash
-yarn tsc:chroma-js  # Compile TypeScript dependencies.
 yarn install --dev  # Install remaining Node.js dependencies.
+yarn tsc:chroma-js  # Compile TypeScript dependencies.
 ```
 
 #### Setting up Firebase
