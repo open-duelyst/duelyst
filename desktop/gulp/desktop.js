@@ -112,9 +112,16 @@ export function zip(opts, cb) {
     return cb();
   }
 
+  // Use 'friendly' names for platforms.
+  const friendlyNames = {
+    darwin: 'mac',
+    linux: 'linux',
+    win32: 'windows',
+  };
+
   const desktopPkgJson = readPkg.sync('package.json');
   const baseDir = `dist/build/${desktopPkgJson.productName}-${opts.platform}-${opts.arch}`;
-  const zipTarget = `dist/build/${desktopPkgJson.name}-v${desktopPkgJson.version}-${opts.platform}-${opts.arch}.zip`;
+  const zipTarget = `dist/build/${desktopPkgJson.name}-v${desktopPkgJson.version}-${friendlyNames[opts.platform]}-${opts.arch}.zip`;
 
   if (opts.platform === 'darwin') {
     // Add symlink named 'Electron' to actual binary
