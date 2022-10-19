@@ -4,20 +4,15 @@
 
 - OpenDuelyst will be free indefinitely, with no form of monetization. The code
 	supporting payment processing has already been disabled or removed.
-- Since monetization is disabled, the rate of card acquisition is accelerated.
-	- Orbs (card packs) cost 50 gold instead of 100.
-	- Diamond (premium currency) prices are unmodified, since there is currently
-		no way to gain Diamonds outside of test environments.
-	- Spirit (crafting) costs have also been halved. Spirit rewards (from
-		disenchanting cards) have been standardized at 50% of Spirit cost.
-	- Quests which award Gold now award up to twice as much gold, and we are
-		looking into adding new quests.
+- We aim to accelerate building a card collection, since there is no
+	monetization. This includes larger Gold rewards, reduced Orb (pack) costs,
+	and creating new Quests with additional rewards.
 - Creating new content or making balance changes are not goals of this project.
 	Instead, we aim to provide a well-maintained reference implementation and
 	reference deployment of the game as it existed before the shutdown in 2020.
 - The game will be maintained after launch, though support may be limited since
-	this is a volunteer project. Server outages will send alarms to developers,
-	but response times may be delayed.
+	this is a volunteer project. For example, server outages will send emails to
+	developers, but response times may be delayed.
 
 ## Project Timeline
 
@@ -26,14 +21,16 @@
 - Our priorities leading up to the launch include any issues which will
 	directly impact the player experience in the web client, such as granting
 	full collections, adding new quests, or adjusting card acquisition rates.
+- Since this project does not store personal user data (such as emails), we
+	also need to implement a password reset token system similar to MFA backup
+	tokens. The former system used an email-based flow.
 
 #### Launch and announcement
 
-- We plan to launch the reference deployment in Q4 2022, pending the
-	provisioning of a production environment. The production environment will be
-	provided by Counterplay Games.
-- Counterplay Games will announce the project once the production environment
-	is ready.
+- We plan to launch the reference deployment as soon as the production AWS
+	account is ready. This account will be provided by Counterplay Games.
+- Counterplay Games will announce the project once the reference deployment is
+	available.
 
 #### After launch
 
@@ -45,7 +42,8 @@
 	to make it easier to find work matching one's interests and expertise.
 - Once the project has been launched and announced, we will continue to work on
 	issues as needed, according to the issue priorities defined below.
-- The initial set of post-launch priorities includes desktop & mobile clients.
+- The initial post-launch priorities include web-based mobile clients for iOS
+	and Android.
 
 ## Issue Prioritization
 
