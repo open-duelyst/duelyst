@@ -7,6 +7,7 @@ RUN git config --global url."https://github.com/".insteadOf git@github.com:
 RUN git config --global url."https://".insteadOf git://
 
 # Add Python and other build utils for bcrypt.
+# TODO: Put this into an intermediate layer to reduce Game/Migrate/SP image size.
 RUN apk add python3 make gcc g++
 
 # Include Node.js dependencies in the image.

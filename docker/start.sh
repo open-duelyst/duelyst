@@ -9,12 +9,7 @@ git config --global url."https://".insteadOf git://
 apk add python3 make gcc g++
 
 # Install dependencies.
-if [ $1 == 'migrate:latest' ]; then
-  # Migrations code uses dev dependencies
-  yarn install --include=dev
-else
-  yarn install --production
-fi
+yarn install --production
 
 # Use exec to take over the PID from the shell, enabling signal handling.
 exec yarn $1
