@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 
 // var FirebasePromises = require('../lib/firebase_promises.coffee')
 // var DuelystFirebase = require('../lib/duelyst_firebase_module.coffee')
-const ProgressBar = require('progress');
 
 exports.up = function (knex) {
   return Promise.all([
@@ -29,12 +28,6 @@ exports.up = function (knex) {
         })
       // .then(function(rootRef){
         .then(function () {
-          const bar = new ProgressBar(`migrating ${this.rows.length} records [:bar] :percent :etas`, {
-            complete: '=',
-            incomplete: ' ',
-            width: 20,
-            total: this.rows.length,
-          });
           return Promise.map(this.rows, (row) => {
             const allPromises = [];
             const ribbonCount = Math.floor(row.win_count / 100);
@@ -56,9 +49,7 @@ exports.up = function (knex) {
             updated_at: moment().utc().valueOf()
           }))
           */
-            return Promise.all(allPromises).then(() => {
-              bar.tick();
-            });
+            return Promise.all(allPromises);
           }, { concurrency: 20 });
         })
         .then(resolve)

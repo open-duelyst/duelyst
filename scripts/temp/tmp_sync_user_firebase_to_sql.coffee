@@ -7,7 +7,6 @@ DuelystFirebase= require("../../server/lib/duelyst_firebase_module")
 FirebasePromises = require("../../server/lib/firebase_promises")
 _ = require 'underscore'
 Promise = require 'bluebird'
-ProgressBar = require('progress')
 Logger = require('../../app/common/logger')
 Errors = require("../../server/lib/custom_errors")
 config = require('../../config/config')
@@ -57,19 +56,11 @@ return Promise.all([
 
 #   activeCodes = inviteCodesSnapshot.val()
 
-#   bar = new ProgressBar('importing invite codes [:bar] :percent :etas', {
-#       complete: '=',
-#       incomplete: ' ',
-#       width: 20,
-#       total: _.keys(activeCodes).length
-#   })
-
 #   return Promise.map(_.keys(activeCodes),(code)->
 #     return knex("invite_codes").insert({
 #       code:    code,
 #       created_at:  moment.utc(activeCodes[code].created_at).toDate()
 #     }).then ()->
-#       bar.tick()
 #   ,{concurrency:10})
 
 # .then ()->
@@ -90,13 +81,6 @@ return Promise.all([
   allUserIds = userIds
   # console.timeEnd("loaded all users")
   console.log("#{allUserIds.length} users found")
-
-  bar = new ProgressBar('importing users [:bar] :percent :etas', {
-      complete: '=',
-      incomplete: ' ',
-      width: 20,
-      total: limit
-  })
 
   authRef = @.authRef
   rootRef = @.rootRef
@@ -119,7 +103,6 @@ return Promise.all([
       .catch (e)->
         console.log("ERROR on #{userId} ... ",e)
       .finally ()->
-        bar?.tick()
         limit--
     else
       return Promise.resolve(true)
