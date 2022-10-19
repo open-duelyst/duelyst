@@ -6,12 +6,12 @@ import rename from 'gulp-rename';
 import jeditor from 'gulp-json-editor';
 import tap from 'gulp-tap';
 import ncp from 'ncp';
-import hasha from 'hasha';
+// import hasha from 'hasha';
 import readPkg from 'read-pkg';
 import packager from 'electron-packager';
 import rebuild from 'electron-rebuild';
 import { exec, execSync } from 'child_process';
-import steamcmd from '@counterplay/steamcmd';
+// import steamcmd from '@counterplay/steamcmd';
 import Promise from 'bluebird';
 import {
   config, version, production, staging,
@@ -124,17 +124,15 @@ export function zip(opts, cb) {
     const dittoCmd = `ditto -c -k --sequesterRsrc --keepParent ${macAppDir} ${zipTarget}`;
     return exec(dittoCmd, cb);
   }
-
-  if (opts.platform === 'win32') {
+  if (opts.platform === 'linux' || opts.platform === 'win32') {
     const dittoCmd = `ditto -c -k --sequesterRsrc ${baseDir} ${zipTarget}`;
     return exec(dittoCmd, cb);
   }
-
   console.log(`Unrecognized platform ${opts.platform}; doing nothing`);
   return cb();
 }
 
-// Build the desktop app for the desired platform
+/*
 // Create new .SHA1SUM file, contains SHA1 hash + '  ' + filename
 // eg: duelyst-staging-v1.0.38-darwin-x64.zip.SHA1SUM contains
 // 10406a22124b4a0a9c32b34e3682ba601c6578ce  duelyst-staging-v1.0.38-darwin-x64.zip
@@ -142,7 +140,7 @@ export function shasums(cb) {
   if (!production && !staging) {
     return cb(new Error('Current NODE_ENV not supported'));
   }
-  return gulp.src('dist/desktop/*.zip')
+  return gulp.src('dist/build/*.zip')
     .pipe(tap((file) => {
       file.contents = Buffer.concat([
         Buffer.from(hasha(file.contents, { encoding: 'hex', algorithm: 'sha1' })),
@@ -155,7 +153,7 @@ export function shasums(cb) {
       p.extname = '.zip.SHA1SUM';
       return p.extname;
     }))
-    .pipe(gulp.dest('dist/desktop'));
+    .pipe(gulp.dest('dist/build'));
 }
 
 // Prep the macOS app for Steam
@@ -178,3 +176,4 @@ export function steamUpload() {
     appVdf: production ? './config/steam/app_291410.vdf' : './config/steam/app_staging_291410.vdf',
   });
 }
+*/

@@ -34,15 +34,19 @@
   "scripts": {
     "build:all": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build",
     "build:all:production": "cross-env NODE_ENV=production node node_modules/gulp/bin/gulp.js desktop:build",
-    "build:windows": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:windows",
     "build:mac": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:mac",
     "build:macm1": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:macm1",
+    "build:linux": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:linux",
+    "build:windows": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:windows",
     "build:steam": "node mode_modules/gulp/bin/gulp.js desktop:build:steam",
-    "zip:windows": "node node_modules/gulp/bin/gulp.js desktop:zip:win32:x64",
+    "zip:all": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:package",
     "zip:mac": "node node_modules/gulp/bin/gulp.js desktop:zip:darwin:x64",
     "zip:macm1": "node node_modules/gulp/bin/gulp.js desktop:zip:darwin:arm64",
-    "start:windows": "cross-env ELECTRONC_IS_DEV=1 dist/build/Duelyst-win32-x64/Duelyst.exe",
+    "zip:linux": "node node_modules/gulp/bin/gulp.js desktop:zip:linux:x64",
+    "zip:windows": "node node_modules/gulp/bin/gulp.js desktop:zip:win32:x64",
     "start:mac": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-x64/Duelyst.app",
-    "start:macm1": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-arm64/Duelyst.app"
+    "start:macm1": "cross-env ELECTRON_IS_DEV=1 open dist/build/Duelyst-darwin-arm64/Duelyst.app",
+    "start:linux": "cross-env ELECTRON_IS_DEV=1 dist/build/Duelyst-linux-x64/Duelyst",
+    "start:windows": "cross-env ELECTRONC_IS_DEV=1 dist/build/Duelyst-win32-x64/Duelyst.exe"
   }
 }
