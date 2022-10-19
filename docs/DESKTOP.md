@@ -34,3 +34,4 @@ dependencies and scripts.
 ## Known Issues
 
 - The Steam build is not yet working.
+- The Linux build depends on the `libgconf-2-4` package.
