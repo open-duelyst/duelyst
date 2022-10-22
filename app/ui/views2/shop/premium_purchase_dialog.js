@@ -280,13 +280,8 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
     // set initial purchase type
     this._currentPurchaseType = 'gold';
 
-    if (InventoryManager.getInstance().walletModel.get('gold_amount') < productData.gold * 2) {
-      // if we have gold for only one of this products, just buy it
-      this._goldCheckout(productData);
-    } else {
-      // show all purchase with gold UI
-      this.ui.for_purchase_with_gold.removeClass('hide');
-    }
+    // show all purchase with gold UI
+    this.ui.for_purchase_with_gold.removeClass('hide');
 
     this._showCurrentPurchaseType();
     this._bindProductPrice();
