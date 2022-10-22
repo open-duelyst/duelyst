@@ -97,7 +97,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   _loadedPkgId: null,
   _loadedPkgPromise: null,
   _loadedPkgValid: false,
-  paypalReceiptRef: null,
   productData: null,
   _hasEnoughToPurchase: true,
   _hasValidQuantity: true,
@@ -105,7 +104,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 
   templateHelpers: {
     isPaypalEnabled: function () {
-      return ServerStatusManager.getInstance().serverStatusModel.get('paypal_enabled');
+      return false;
     },
     isSteam: function () {
       return window.isSteam;
@@ -167,13 +166,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
     }
     this._invalidateAndUnloadLoadedPackages();
     this._releaseAnimation();
-    if (window.isDesktop) {
-      // this seems to not work since an 'off' function does not exist
-      // window.ipcRenderer.off('paypal-cancel', this.onCancelConfirmPurchase.bind(this))
-    }
-    if (this.paypalReceiptRef) {
-      this.paypalReceiptRef.off('child_added');
-    }
   },
 
   _invalidateAndUnloadLoadedPackages: function () {
@@ -300,7 +292,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
         }
       } else {
         var purchaseType = Storage.get('preferredPurchaseType');
-        if (purchaseType == null || (purchaseType !== 'creditcard' && purchaseType !== 'paypal')) {
+        if (purchaseType == null || (purchaseType !== 'creditcard')) {
           purchaseType = 'creditcard';
         }
         this._currentPurchaseType = purchaseType;
@@ -526,10 +518,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
       } else {
         if (window.isSteam) {
           return this._steamCheckout(productData);
-        } else if (this._currentPurchaseType === 'paypal') {
-          return this._paypalCheckout(productData);
         } else {
-          // return this._normalCheckout(productData);
           return this._premiumCheckout(productData);
         }
       }
@@ -543,84 +532,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   },
 
   /* endregion PURCHASE */
-
-  /* region NORMAL CHECKOUT */
-
-  _normalCheckout: function (productData) {
-    var sku = productData.sku;
-    var price = productData.price || 0;
-
-    // make purchase
-    var purchasePromise;
-    if (price != null && !isNaN(price) && price > 0) {
-      // show loading
-      this.$el.addClass('loading');
-      this.ui.card_form_error.addClass('hide');
-
-      var submitCreditCardPromise;
-      if (this.creditCardFormRegion != null && this.creditCardFormRegion.currentView != null) {
-        // submit credit card and wait for response
-        submitCreditCardPromise = this.creditCardFormRegion.currentView.submit()
-          .bind(this)
-          .then(function (cardFormResponse) {
-            this.creditCardFormRegion.empty();
-            this.ui.card_info.removeClass('hide');
-            return cardFormResponse.stored ? null : cardFormResponse.token;
-          });
-      } else {
-        // use saved credit card
-        if (InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-          this.ui.card_ending_digits.text(InventoryManager.getInstance().walletModel.get('card_last_four_digits'));
-        }
-        submitCreditCardPromise = Promise.resolve();
-      }
-
-      purchasePromise = submitCreditCardPromise
-        .bind(this)
-        .then(function (cardToken) {
-          this.trigger('processing', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          return InventoryManager.getInstance().purchaseProductSku(sku, cardToken);
-        });
-    }
-
-    if (purchasePromise == null) {
-      return Promise.resolve()
-        .bind(this)
-        .then(function () {
-          this.showError('Invalid premium purchase in normal checkout!');
-        });
-    } else {
-      return purchasePromise
-        .then(function () {
-        // track monetization in analytics
-          Analytics.track('product purchased', {
-            category: Analytics.EventCategory.Shop,
-            sku: sku,
-            price: price,
-          }, {
-            labelKey: 'sku',
-            valueKey: 'price',
-          });
-          Analytics.trackMonetizationEvent(sku, price);
-
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
-        });
-    }
-  },
-
-  /* endregion NORMAL CHECKOUT */
 
   /* region PREMIUM CHECKOUT */
 
