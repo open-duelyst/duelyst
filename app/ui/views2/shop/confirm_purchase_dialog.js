@@ -557,62 +557,79 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
   _goldCheckout: function (productData) {
     var sku = productData.sku;
     var gold = productData.gold || 0;
-    var quantity = this._quantity;
+    var category = productData.category_id; // Purchase type e.g. "packs".
+    var subCategory = productData.sub_category_name; // Set ID e.g. "Core Set".
+    var quantity = productData.qty || this._quantity;
 
-    // make purchase
-    var purchasePromise;
-    if (gold != null && !isNaN(gold) && gold > 0) {
-      // show loading
-      this.$el.addClass('loading');
-
-      this.trigger('processing', {
-        sku: sku,
-        paymentType: 'gold',
-      });
-
-      // product: individual boosters
-      if (sku === 'BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Core);
-      } else if (sku === 'SHIMZAR_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Shimzar);
-      } else if (sku === 'BLOODBORN_BOOSTER1_GOLD') {
-        // purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Bloodborn);
-        return Promise.reject(new Error('Unpurchaseable set'));
-      } else if (sku === 'ANCIENTBONDS_BOOSTER1_GOLD') {
-        // purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Unity);
-        return Promise.reject(new Error('Unpurchaseable set'));
-      } else if (sku === 'FIRSTWATCH_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.FirstWatch);
-      } else if (sku === 'WARTECH_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Wartech);
-      } else if (sku === 'COMBINED_UNLOCKABLES_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.CombinedUnlockables);
-      } else if (sku === 'FATE_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Coreshatter);
-      }
-    }
-
-    if (purchasePromise == null) {
+    if (gold == null || isNaN(gold) || gold === 0) {
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase in gold checkout!');
-        });
-    } else {
-      return purchasePromise
-        .bind(this)
-        .then(function () {
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'gold',
-          });
-
-          this.flashSuccessInDialog(i18next.t('common.success_title'));
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
+          this.showError(`Invalid gold cost (${gold})!`);
         });
     }
+
+    // show loading
+    this.$el.addClass('loading');
+    this.trigger('processing', {
+      sku: sku,
+      paymentType: 'gold',
+    });
+
+    // set up purchase.
+    var purchasePromise = null;
+
+    // product: individual boosters
+    if (category === 'packs') {
+      // Determine which card set to use from the SDK.
+      var cardSet = null;
+      if (subCategory === 'Core Set') {
+        // Duelyst Core Set.
+        cardSet = SDK.CardSet.Core;
+      } else if (subCategory === 'Shim\'Zar Set') {
+        // Denizens of Shim'Zar.
+        cardSet = SDK.CardSet.Shimzar;
+      } else if (subCategory === 'Combined Set') {
+        // Ancient Bonds.
+        cardSet = SDK.CardSet.CombinedUnlockables;
+      } else if (subCategory === 'Fatebound Set') {
+        // Trials of Mythron.
+        cardSet = SDK.CardSet.Coreshatter;
+      } else if (subCategory === 'Immortal Vanguard Set') {
+        // Immortal Vanguard.
+        cardSet = SDK.CardSet.Wartech;
+      } else if (subCategory === 'Unearthed Prophecy Set') {
+        // Unearthed Prophecy.
+        cardSet = SDK.CardSet.FirstWatch;
+      } else {
+        // Rise of the Bloodborn and Ancient Bonds sets are no longer purchaseable.
+        // SDK.CardSet.Bloodborn.
+        // SDK.CardSet.Unity.
+        return Promise.reject(new Error('Unpurchaseable set'));
+      }
+
+      purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, cardSet);
+    } else {
+      // TODO: Add support for bundles, emotes, etc.
+      return Promise.resolve()
+        .bind(this)
+        .then(function () {
+          this.showError(`Sorry, ${category} purchases are not yet enabled.`);
+        });
+    }
+
+    return purchasePromise
+      .bind(this)
+      .then(function () {
+        this.trigger('complete', {
+          sku: sku,
+          paymentType: 'gold',
+        });
+        this.flashSuccessInDialog(i18next.t('common.success_title'));
+      })
+      .catch(function (errorMessage) {
+        this.showError(errorMessage);
+      });
   },
 
   /* endregion GOLD CHECKOUT */

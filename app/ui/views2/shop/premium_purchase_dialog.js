@@ -502,7 +502,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid premium purchase in gold checkout!');
+          this.showError('Invalid premium purchase!');
         });
     } else {
       return purchasePromise
