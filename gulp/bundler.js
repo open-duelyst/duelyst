@@ -24,8 +24,6 @@ import {
   opts, config, env, version, production, staging, development,
 } from './shared';
 
-const datGUIEditorEnabled = development || staging || config.get('datGuiEditorEnabled');
-
 const minify = composer(uglify, console);
 
 // Browserify options
@@ -42,7 +40,7 @@ const bundlerOpts = {
 };
 
 const entries = ['./app/index'];
-if (datGUIEditorEnabled) {
+if (config.get('datGuiEditorEnabled')) {
   entries.push('./app/tools/editor.coffee');
 }
 
