@@ -25,7 +25,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.5"
   container_count   = 1
   container_mem     = 500 # Runs out of memory with 350MB.
   service_port      = 3000
@@ -109,7 +109,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.5"
   container_count   = 1
   container_mem     = 500 # Uses about 315MB.
   enable_lb         = false
