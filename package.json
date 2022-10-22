@@ -1,7 +1,7 @@
 {
   "name": "open-duelyst",
   "license": "CC0-1.0",
-  "version": "1.97.4",
+  "version": "1.97.5",
   "engines": {
     "yarn": ">= 1.0.0"
   },
