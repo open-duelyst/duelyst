@@ -42,8 +42,8 @@ class QuestsModule
   @PROMOTIONAL_QUEST_ACTIVE: true
 
   # Catch up quest reward definitions
-  @CATCH_UP_CHARGE_GOLD_VALUE:5
-  @CATCH_UP_MAX_GOLD_VALUE:25
+  @CATCH_UP_CHARGE_GOLD_VALUE: 50
+  @CATCH_UP_MAX_GOLD_VALUE: 50
 
   ###*
   # Checks if a user needs daily quests.
@@ -85,7 +85,7 @@ class QuestsModule
           # remove any quests that are no longer supposed to be in the system
           if _.contains(QuestFactory.questForIdentifier(quest.quest_type_id).types,QuestType.ExcludeFromSystem)
             return Promise.resolve(true)
-          # remove catch up quests that ended up in wrong slot, see: https://trello.com/c/3qxAtST3/1629
+          # remove catch up quests that ended up in wrong slot.
           if _.contains(QuestFactory.questForIdentifier(quest.quest_type_id).types,QuestType.CatchUp) and quest.quest_slot_index != QuestsModule.CATCH_UP_QUEST_SLOT
             return Promise.resolve(true)
 
@@ -189,7 +189,7 @@ class QuestsModule
             row.previous_quest_slot_index = row.quest_slot_index
             row.quest_slot_index = -1
             @.removedQuests.push row
-          # remove catch up quests that ended up in wrong slot, see: https://trello.com/c/3qxAtST3/1629
+          # remove catch up quests that ended up in wrong slot.
           else if _.contains(sdkQuest.types,QuestType.CatchUp) and row.quest_slot_index != QuestsModule.CATCH_UP_QUEST_SLOT
             removalQueries.push tx("user_quests").where({user_id:row.user_id,quest_slot_index:row.quest_slot_index}).delete()
             row.quest_slot_index = -1
