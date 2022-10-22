@@ -109,7 +109,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.5"
+  deployed_version  = "1.97.6-hotfix"
   container_count   = 1
   container_mem     = 500 # Uses about 315MB.
   enable_lb         = false
