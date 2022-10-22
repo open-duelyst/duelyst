@@ -97,7 +97,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   _loadedPkgId: null,
   _loadedPkgPromise: null,
   _loadedPkgValid: false,
-  paypalReceiptRef: null,
   productData: null,
   _hasEnoughToPurchase: true,
   _hasValidQuantity: true,
@@ -105,7 +104,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 
   templateHelpers: {
     isPaypalEnabled: function () {
-      return ServerStatusManager.getInstance().serverStatusModel.get('paypal_enabled');
+      return false;
     },
     isSteam: function () {
       return window.isSteam;
@@ -167,13 +166,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
     }
     this._invalidateAndUnloadLoadedPackages();
     this._releaseAnimation();
-    if (window.isDesktop) {
-      // this seems to not work since an 'off' function does not exist
-      // window.ipcRenderer.off('paypal-cancel', this.onCancelConfirmPurchase.bind(this))
-    }
-    if (this.paypalReceiptRef) {
-      this.paypalReceiptRef.off('child_added');
-    }
   },
 
   _invalidateAndUnloadLoadedPackages: function () {
@@ -282,60 +274,14 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
     this.ui.card_form_error.addClass('hide');
     this.ui.confirm_purchase_button.show();
 
-    if (this.productData.price != null) {
-      // hide all purchase with gold UI
-      this.ui.for_purchase_with_gold.addClass('hide');
+    // hide all normal purchase UI
+    this.ui.for_normal_purchase.addClass('hide');
 
-      // show all normal purchase UI
-      this.ui.for_normal_purchase.removeClass('hide');
+    // set initial purchase type
+    this._currentPurchaseType = 'gold';
 
-      // set initial purchase type
-      if (window.isSteam) {
-        this._currentPurchaseType = 'steam';
-
-        // empty out the credit card form and hide credit card data
-        if (this.creditCardFormRegion != null) {
-          this.creditCardFormRegion.empty();
-          this.ui.card_info.addClass('hide');
-        }
-      } else {
-        var purchaseType = Storage.get('preferredPurchaseType');
-        if (purchaseType == null || (purchaseType !== 'creditcard' && purchaseType !== 'paypal')) {
-          purchaseType = 'creditcard';
-        }
-        this._currentPurchaseType = purchaseType;
-
-        // update credit card data
-        if (InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-          // empty out the credit card form and show credit card data
-          if (this.creditCardFormRegion != null) {
-            this.creditCardFormRegion.empty();
-            this.ui.card_info.removeClass('hide');
-          }
-        } else {
-          // show credit card form
-          if (this.creditCardFormRegion != null) {
-            var cardFormView = new CreditCardFormView();
-            this.creditCardFormRegion.show(cardFormView);
-            this.ui.card_info.addClass('hide');
-          }
-        }
-      }
-    } else {
-      // hide all normal purchase UI
-      this.ui.for_normal_purchase.addClass('hide');
-
-      // set initial purchase type
-      this._currentPurchaseType = 'gold';
-
-      if (InventoryManager.getInstance().walletModel.get('gold_amount') < productData.gold * 2) {
-        // if we have gold for only one of this products, just buy it
-        this._goldCheckout(productData);
-      } else {
-        // show all purchase with gold UI
-        this.ui.for_purchase_with_gold.removeClass('hide');
-      }
-    }
+    // show all purchase with gold UI
+    this.ui.for_purchase_with_gold.removeClass('hide');
 
     this._showCurrentPurchaseType();
     this._bindProductPrice();
@@ -411,28 +357,20 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   _bindProductPrice: function () {
     var productData = this.productData;
     if (productData != null) {
-      // price
-      var price = productData.price;
-      if (price != null && !isNaN(price) && price > 0) {
-        this.ui.product_gold_cost.html('');
-        this.ui.product_price.html(i18next.t('shop.confirm_purchase_dialog_premium_price', { price: price }));
-        this._hasEnoughToPurchase = true;
-      } else {
-        this.ui.product_price.html('');
+      this.ui.product_price.html('');
 
-        // gold cost
-        var gold = productData.gold;
-        if (gold != null && !isNaN(gold) && gold > 0) {
-          this.ui.product_gold_cost.html('<strong>' + gold + '</strong> GOLD');
-          if (InventoryManager.getInstance().walletModel.get('gold_amount') >= gold * this._quantity) {
-            this._hasEnoughToPurchase = true;
-          } else {
-            this._hasEnoughToPurchase = false;
-          }
+      // gold cost
+      var gold = productData.gold;
+      if (gold != null && !isNaN(gold) && gold > 0) {
+        this.ui.product_gold_cost.html('<strong>' + gold + '</strong> GOLD');
+        if (InventoryManager.getInstance().walletModel.get('gold_amount') >= gold * this._quantity) {
+          this._hasEnoughToPurchase = true;
         } else {
-          this.ui.product_gold_cost.html('');
           this._hasEnoughToPurchase = false;
         }
+      } else {
+        this.ui.product_gold_cost.html('');
+        this._hasEnoughToPurchase = false;
       }
 
       // spirit cost
@@ -514,26 +452,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
       return;
     }
 
-    if (productData.price != null) {
-      if (this._currentPurchaseType != 'creditcard' && attemptedPurchaseExceedsPurchaseLimit && !skipPurchaseLimitCheck) {
-        return NavigationManager.getInstance().showDialogForConfirmation(
-          productData.name + ' can only be purchased once.',
-          'If you have already completed a ' + productData.name + ' purchase, your order is processing - DO NOT place a second order. If you have not yet completed this purchase, you may proceed to complete one now. Contact support in the settings menu if you need any help.',
-          'PROCEED',
-        ).then(function () {
-          this.onConfirmPurchase(e, true);
-        }.bind(this));
-      } else {
-        if (window.isSteam) {
-          return this._steamCheckout(productData);
-        } else if (this._currentPurchaseType === 'paypal') {
-          return this._paypalCheckout(productData);
-        } else {
-          // return this._normalCheckout(productData);
-          return this._premiumCheckout(productData);
-        }
-      }
-    } else if (productData.gold != null) {
+    if (productData.gold != null) {
       return this._goldCheckout(productData);
     }
   },
@@ -543,136 +462,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   },
 
   /* endregion PURCHASE */
-
-  /* region NORMAL CHECKOUT */
-
-  _normalCheckout: function (productData) {
-    var sku = productData.sku;
-    var price = productData.price || 0;
-
-    // make purchase
-    var purchasePromise;
-    if (price != null && !isNaN(price) && price > 0) {
-      // show loading
-      this.$el.addClass('loading');
-      this.ui.card_form_error.addClass('hide');
-
-      var submitCreditCardPromise;
-      if (this.creditCardFormRegion != null && this.creditCardFormRegion.currentView != null) {
-        // submit credit card and wait for response
-        submitCreditCardPromise = this.creditCardFormRegion.currentView.submit()
-          .bind(this)
-          .then(function (cardFormResponse) {
-            this.creditCardFormRegion.empty();
-            this.ui.card_info.removeClass('hide');
-            return cardFormResponse.stored ? null : cardFormResponse.token;
-          });
-      } else {
-        // use saved credit card
-        if (InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-          this.ui.card_ending_digits.text(InventoryManager.getInstance().walletModel.get('card_last_four_digits'));
-        }
-        submitCreditCardPromise = Promise.resolve();
-      }
-
-      purchasePromise = submitCreditCardPromise
-        .bind(this)
-        .then(function (cardToken) {
-          this.trigger('processing', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          return InventoryManager.getInstance().purchaseProductSku(sku, cardToken);
-        });
-    }
-
-    if (purchasePromise == null) {
-      return Promise.resolve()
-        .bind(this)
-        .then(function () {
-          this.showError('Invalid purchase!');
-        });
-    } else {
-      return purchasePromise
-        .then(function () {
-        // track monetization in analytics
-          Analytics.track('product purchased', {
-            category: Analytics.EventCategory.Shop,
-            sku: sku,
-            price: price,
-          }, {
-            labelKey: 'sku',
-            valueKey: 'price',
-          });
-          Analytics.trackMonetizationEvent(sku, price);
-
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
-        });
-    }
-  },
-
-  /* endregion NORMAL CHECKOUT */
-
-  /* region PREMIUM CHECKOUT */
-
-  _premiumCheckout: function (productData) {
-    var sku = productData.sku;
-    var price = productData.price || 0;
-
-    // make purchase
-    var purchasePromise;
-    if (price != null && !isNaN(price) && price > 0) {
-      // show loading
-      this.$el.addClass('loading');
-      this.ui.card_form_error.addClass('hide');
-
-      purchasePromise = InventoryManager.getInstance().purchaseProductWithPremiumCurrency(sku);
-    }
-
-    if (purchasePromise == null) {
-      return Promise.resolve()
-        .bind(this)
-        .then(function () {
-          this.showError('Invalid purchase!');
-        });
-    } else {
-      return purchasePromise
-        .bind(this)
-        .then(function () {
-          // track monetization in analytics
-          Analytics.track('product purchased', {
-            category: Analytics.EventCategory.Shop,
-            sku: sku,
-            price: price,
-          }, {
-            labelKey: 'sku',
-            valueKey: 'price',
-          });
-          Analytics.trackMonetizationEvent(sku, price);
-
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'premium',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
-        }.bind(this));
-    }
-  },
-
-  /* endregion PREMIUM CHECKOUT */
 
   /* region GOLD CHECKOUT */
 
@@ -708,7 +497,7 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase!');
+          this.showError('Invalid premium purchase!');
         });
     } else {
       return purchasePromise

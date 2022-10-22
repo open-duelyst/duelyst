@@ -875,7 +875,6 @@ class InventoryModule
   # @return  {Promise}        Promise that will post BOOSTER PACK ID on completion.
   ###
   @buyBoosterPacksWithGold: (userId, qty, cardSetId) ->
-
     unless userId
       Logger.module("InventoryModule").debug "buyBoosterPacksWithGold() -> invalid user ID - #{userId}.".red
       return Promise.reject(new Error("Can not buy booster pack with gold : invalid user ID - #{userId}"))
@@ -889,19 +888,27 @@ class InventoryModule
       Logger.module("InventoryModule").debug "buyBoosterPacksWithGold() -> invalid card set - #{cardSetId}.".red
       return Promise.reject(new Error("Can not buy booster pack with gold : invalid card set - #{cardSetId}"))
 
-    total_gold_cost = qty * cardSetData.orbGoldCost
-    final_wallet_gold = null
+    # Account for bundle discounts here.
+    # TODO: This is a temporary hack. We should revisit the Gold vs. Premium flows entirely.
+    if qty == 3
+      total_gold_cost = 140
+    else if qty == 10
+      total_gold_cost = 450
+    else if qty == 25
+      total_gold_cost = 1050
+    else if qty == 50
+      total_gold_cost = 2000
+    else
+      total_gold_cost = qty * cardSetData.orbGoldCost
 
     Logger.module("InventoryModule").debug "buyBoosterPacksWithGold() -> user #{userId.blue} buying #{qty} #{if qty > 1 then "packs" else "pack"} from set #{cardSetId}"
     Logger.module("InventoryModule").time "buyBoosterPacksWithGold() -> bought by user #{userId.blue}.".green
 
     NOW_UTC_MOMENT = moment.utc()
+    this_obj = { cardSetData: cardSetData }
 
-    this_obj = {
-      cardSetData: cardSetData
-    }
+    final_wallet_gold = null
     txPromise = knex.transaction (tx)->
-
       knex.first()
         .from('users')
         .where('id',userId)

@@ -112,18 +112,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     isSteam: function () {
       return window.isSteam;
     },
-    hasSufficientPremiumCurrency: function () {
-      if (this.productData != null) {
-        if (this.saleData != null) {
-          return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.saleData.salePrice;
-        } else {
-          return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.productData.price;
-        }
-      } else {
-        // Shouldn't happen
-        return true;
-      }
-    },
   },
 
   /* region INITIALIZE */
@@ -303,47 +291,14 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     this.ui.card_form_error.addClass('hide');
     this.ui.confirm_purchase_button.show();
 
-    if (this.productData.price != null) {
-      // hide all purchase with gold UI
-      this.ui.for_purchase_with_gold.addClass('hide');
+    // hide all normal purchase UI
+    this.ui.for_normal_purchase.addClass('hide');
 
-      // show all normal purchase UI
-      this.ui.for_normal_purchase.removeClass('hide');
+    // set initial purchase type
+    this._currentPurchaseType = 'gold';
 
-      // set initial purchase type
-      var purchaseType = 'premium';
-      this._currentPurchaseType = purchaseType;
-
-      // update credit card data
-      if (InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-        // empty out the credit card form and show credit card data
-        if (this.creditCardFormRegion != null) {
-          this.creditCardFormRegion.empty();
-          this.ui.card_info.removeClass('hide');
-        }
-      } else {
-        // show credit card form
-        if (this.creditCardFormRegion != null) {
-          var cardFormView = new CreditCardFormView();
-          this.creditCardFormRegion.show(cardFormView);
-          this.ui.card_info.addClass('hide');
-        }
-      }
-    } else {
-      // hide all normal purchase UI
-      this.ui.for_normal_purchase.addClass('hide');
-
-      // set initial purchase type
-      this._currentPurchaseType = 'gold';
-
-      if (InventoryManager.getInstance().walletModel.get('gold_amount') < productData.gold * 2) {
-        // if we have gold for only one of this products, just buy it
-        this._goldCheckout(productData);
-      } else {
-        // show all purchase with gold UI
-        this.ui.for_purchase_with_gold.removeClass('hide');
-      }
-    }
+    // show all purchase with gold UI
+    this.ui.for_purchase_with_gold.removeClass('hide');
 
     this._showCurrentPurchaseType();
     this._bindProductPrice();
@@ -420,31 +375,31 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     var productData = this.productData;
     var saleData = this.saleData;
     if (productData != null) {
-      // price
-      var price = productData.price;
-      if (saleData != null && saleData.salePrice != null) {
-        price = saleData.salePrice;
-      }
-      if (price != null && !isNaN(price) && price > 0) {
-        this.ui.product_gold_cost.html('');
-        this.ui.product_price.html(i18next.t('shop.confirm_purchase_dialog_premium_price', { price: price }));
-        this._hasEnoughToPurchase = true;
-      } else {
-        this.ui.product_price.html('');
+      this.ui.product_price.html('');
 
-        // gold cost
-        var gold = productData.gold;
-        if (gold != null && !isNaN(gold) && gold > 0) {
-          this.ui.product_gold_cost.html(i18next.t('shop.confirm_purchase_dialog_orb_gold_cost', { gold_cost: gold }));
-          if (InventoryManager.getInstance().walletModel.get('gold_amount') >= gold * this._quantity) {
-            this._hasEnoughToPurchase = true;
-          } else {
-            this._hasEnoughToPurchase = false;
-          }
+      // gold cost
+      var gold = productData.gold;
+      if (gold != null && !isNaN(gold) && gold > 0) {
+        // Calculate per-Orb cost for purchases which contain more than one Orb.
+        var perOrbCost = null;
+        if (productData.qty > 1) {
+          perOrbCost = gold / productData.qty;
+          perOrbCost = perOrbCost.toFixed(0); // Trim decimal points.
         } else {
-          this.ui.product_gold_cost.html('');
+          perOrbCost = gold;
+        }
+
+        // Display the modal.
+        const localizedCost = i18next.t('shop.confirm_purchase_dialog_orb_gold_cost', { gold_cost: perOrbCost });
+        this.ui.product_gold_cost.html(localizedCost);
+        if (InventoryManager.getInstance().walletModel.get('gold_amount') >= gold * this._quantity) {
+          this._hasEnoughToPurchase = true;
+        } else {
           this._hasEnoughToPurchase = false;
         }
+      } else {
+        this.ui.product_gold_cost.html('');
+        this._hasEnoughToPurchase = false;
       }
 
       // spirit cost
@@ -508,6 +463,8 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
   },
 
   onPremiumCurrencyChange: function () {
+    // No products have premium prices as of 1.97.5.
+    /*
     if (this.productData && this.productData.price) {
       var price = this.productData.price;
       if (this.saleData && this.saleData.salePrice) {
@@ -532,6 +489,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
         this.ui.balance_change_remaining_label.text('' + (InventoryManager.getInstance().getWalletModelPremiumAmount() - price));
       }
     }
+    */
   },
 
   /* endregion EVENTS */
@@ -574,9 +532,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       return;
     }
 
-    if (productData.price != null) {
-      return this._premiumCheckout(productData, saleData);
-    } else if (productData.gold != null) {
+    if (productData.gold != null) {
       return this._goldCheckout(productData);
     }
   },
@@ -587,201 +543,84 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
 
   /* endregion PURCHASE */
 
-  /* region NORMAL CHECKOUT */
-
-  _normalCheckout: function (productData) {
-    var sku = productData.sku;
-    var price = productData.price || 0;
-
-    // make purchase
-    var purchasePromise;
-    if (price != null && !isNaN(price) && price > 0) {
-      // show loading
-      this.$el.addClass('loading');
-      this.ui.card_form_error.addClass('hide');
-
-      var submitCreditCardPromise;
-      if (this.creditCardFormRegion != null && this.creditCardFormRegion.currentView != null) {
-        // submit credit card and wait for response
-        submitCreditCardPromise = this.creditCardFormRegion.currentView.submit()
-          .bind(this)
-          .then(function (cardFormResponse) {
-            this.creditCardFormRegion.empty();
-            this.ui.card_info.removeClass('hide');
-            return cardFormResponse.stored ? null : cardFormResponse.token;
-          });
-      } else {
-        // use saved credit card
-        if (InventoryManager.getInstance().walletModel.get('card_last_four_digits')) {
-          this.ui.card_ending_digits.text(InventoryManager.getInstance().walletModel.get('card_last_four_digits'));
-        }
-        submitCreditCardPromise = Promise.resolve();
-      }
-
-      purchasePromise = submitCreditCardPromise
-        .bind(this)
-        .then(function (cardToken) {
-          this.trigger('processing', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          return InventoryManager.getInstance().purchaseProductSku(sku, cardToken);
-        });
-    }
-
-    if (purchasePromise == null) {
-      return Promise.resolve()
-        .bind(this)
-        .then(function () {
-          this.showError('Invalid purchase!');
-        });
-    } else {
-      return purchasePromise
-        .then(function () {
-        // track monetization in analytics
-          Analytics.track('premium product purchased', {
-            category: Analytics.EventCategory.Shop,
-            sku: sku,
-            price: price,
-          }, {
-            labelKey: 'sku',
-            valueKey: 'price',
-          });
-          // Analytics.trackMonetizationEvent(sku, price);
-
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'stripe',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
-        });
-    }
-  },
-
-  /* endregion NORMAL CHECKOUT */
-
-  /* region PREMIUM CHECKOUT */
-
-  _premiumCheckout: function (productData, saleData) {
-    var sku = productData.sku;
-    var price = productData.price || 0;
-
-    if (saleData != null && saleData.salePrice != null) {
-      price = saleData.salePrice;
-    }
-
-    // make purchase
-    var purchasePromise;
-    if (price != null && !isNaN(price) && price > 0) {
-      // show loading
-      this.$el.addClass('loading');
-      this.ui.card_form_error.addClass('hide');
-
-      purchasePromise = InventoryManager.getInstance().purchaseProductWithPremiumCurrency(sku, saleData);
-    }
-
-    if (purchasePromise == null) {
-      return Promise.resolve()
-        .bind(this)
-        .then(function () {
-          this.showError('Invalid purchase!');
-        });
-    } else {
-      return purchasePromise
-        .bind(this)
-        .then(function () {
-          // track monetization in analytics
-          Analytics.track('premium product purchased', {
-            category: Analytics.EventCategory.Shop,
-            sku: sku,
-            price: price,
-          }, {
-            labelKey: 'sku',
-            valueKey: 'price',
-          });
-          // Analytics.trackMonetizationEvent(sku, price);
-
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'premium',
-          });
-
-          this.flashSuccessInDialog('SUCCESS!');
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
-        }.bind(this));
-    }
-  },
-
-  /* endregion PREMIUM CHECKOUT */
-
   /* region GOLD CHECKOUT */
 
   _goldCheckout: function (productData) {
     var sku = productData.sku;
     var gold = productData.gold || 0;
-    var quantity = this._quantity;
+    var category = productData.category_id; // Purchase type e.g. "packs".
+    var subCategory = productData.sub_category_name; // Set ID e.g. "Core Set".
+    var quantity = productData.qty || this._quantity;
 
-    // make purchase
-    var purchasePromise;
-    if (gold != null && !isNaN(gold) && gold > 0) {
-      // show loading
-      this.$el.addClass('loading');
-
-      this.trigger('processing', {
-        sku: sku,
-        paymentType: 'gold',
-      });
-
-      // product: individual boosters
-      if (sku === 'BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Core);
-      } else if (sku === 'SHIMZAR_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Shimzar);
-      } else if (sku === 'BLOODBORN_BOOSTER1_GOLD') {
-        // purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Bloodborn);
-        return Promise.reject(new Error('Unpurchaseable set'));
-      } else if (sku === 'ANCIENTBONDS_BOOSTER1_GOLD') {
-        // purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Unity);
-        return Promise.reject(new Error('Unpurchaseable set'));
-      } else if (sku === 'FIRSTWATCH_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.FirstWatch);
-      } else if (sku === 'WARTECH_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Wartech);
-      } else if (sku === 'COMBINED_UNLOCKABLES_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.CombinedUnlockables);
-      } else if (sku === 'FATE_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Coreshatter);
-      }
-    }
-
-    if (purchasePromise == null) {
+    if (gold == null || isNaN(gold) || gold === 0) {
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase!');
-        });
-    } else {
-      return purchasePromise
-        .bind(this)
-        .then(function () {
-          this.trigger('complete', {
-            sku: sku,
-            paymentType: 'gold',
-          });
-
-          this.flashSuccessInDialog(i18next.t('common.success_title'));
-        })
-        .catch(function (errorMessage) {
-          this.showError(errorMessage);
+          this.showError(`Invalid gold cost (${gold})!`);
         });
     }
+
+    // show loading
+    this.$el.addClass('loading');
+    this.trigger('processing', {
+      sku: sku,
+      paymentType: 'gold',
+    });
+
+    // set up purchase.
+    var purchasePromise = null;
+
+    // product: individual boosters
+    if (category === 'packs') {
+      // Determine which card set to use from the SDK.
+      var cardSet = null;
+      if (subCategory === 'Core Set') {
+        // Duelyst Core Set.
+        cardSet = SDK.CardSet.Core;
+      } else if (subCategory === 'Shim\'Zar Set') {
+        // Denizens of Shim'Zar.
+        cardSet = SDK.CardSet.Shimzar;
+      } else if (subCategory === 'Combined Set') {
+        // Ancient Bonds.
+        cardSet = SDK.CardSet.CombinedUnlockables;
+      } else if (subCategory === 'Fatebound Set') {
+        // Trials of Mythron.
+        cardSet = SDK.CardSet.Coreshatter;
+      } else if (subCategory === 'Immortal Vanguard Set') {
+        // Immortal Vanguard.
+        cardSet = SDK.CardSet.Wartech;
+      } else if (subCategory === 'Unearthed Prophecy Set') {
+        // Unearthed Prophecy.
+        cardSet = SDK.CardSet.FirstWatch;
+      } else {
+        // Rise of the Bloodborn and Ancient Bonds sets are no longer purchaseable.
+        // SDK.CardSet.Bloodborn.
+        // SDK.CardSet.Unity.
+        return Promise.reject(new Error('Unpurchaseable set'));
+      }
+
+      purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, cardSet);
+    } else {
+      // TODO: Add support for bundles, emotes, etc.
+      return Promise.resolve()
+        .bind(this)
+        .then(function () {
+          this.showError(`Sorry, ${category} purchases are not yet enabled.`);
+        });
+    }
+
+    return purchasePromise
+      .bind(this)
+      .then(function () {
+        this.trigger('complete', {
+          sku: sku,
+          paymentType: 'gold',
+        });
+        this.flashSuccessInDialog(i18next.t('common.success_title'));
+      })
+      .catch(function (errorMessage) {
+        this.showError(errorMessage);
+      });
   },
 
   /* endregion GOLD CHECKOUT */
