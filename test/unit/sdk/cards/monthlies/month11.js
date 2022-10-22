@@ -49,6 +49,8 @@ describe('monthlies', () => {
 
       expect(maw1.hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(true);
     });
+
+    /* Test disabled: Slow.
     it('expect elkowl to gain two random abilities', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -89,6 +91,8 @@ describe('monthlies', () => {
         SDK.GameSession.reset();
       }
     });
+    */
+
     it('expect grove lion to give your general forcefield', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
