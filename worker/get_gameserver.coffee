@@ -2,7 +2,7 @@ Promise = require 'bluebird'
 #_ = require 'underscore'
 
 config = require '../config/config.js'
-#Logger = require '../app/common/logger.coffee'
+Logger = require '../app/common/logger.coffee'
 #Consul = require '../server/lib/consul'
 
 getGameServer = ()->
