@@ -112,21 +112,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     isSteam: function () {
       return window.isSteam;
     },
-    hasSufficientPremiumCurrency: function () {
-      return false; // No products have premium prices as of 1.97.5.
-      /*
-      if (this.productData != null) {
-        if (this.saleData != null) {
-          return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.saleData.salePrice;
-        } else {
-          return InventoryManager.getInstance().getWalletModelPremiumAmount() > this.productData.price;
-        }
-      } else {
-        // Shouldn't happen
-        return true;
-      }
-      */
-    },
   },
 
   /* region INITIALIZE */
@@ -400,7 +385,18 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       // gold cost
       var gold = productData.gold;
       if (gold != null && !isNaN(gold) && gold > 0) {
-        this.ui.product_gold_cost.html(i18next.t('shop.confirm_purchase_dialog_orb_gold_cost', { gold_cost: gold }));
+        // Calculate per-Orb cost for purchases which contain more than one Orb.
+        var perOrbCost = null;
+        if (productData.qty > 1) {
+          perOrbCost = gold / productData.qty;
+          perOrbCost = perOrbCost.toFixed(0); // Trim decimal points.
+        } else {
+          perOrbCost = gold;
+        }
+
+        // Display the modal.
+        const localizedCost = i18next.t('shop.confirm_purchase_dialog_orb_gold_cost', { gold_cost: perOrbCost });
+        this.ui.product_gold_cost.html(localizedCost);
         if (InventoryManager.getInstance().walletModel.get('gold_amount') >= gold * this._quantity) {
           this._hasEnoughToPurchase = true;
         } else {
