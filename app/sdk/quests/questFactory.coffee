@@ -56,8 +56,8 @@ class QuestFactory
   # global cache for quick access
   @_questCache: null
 
-  @SHORT_QUEST_GOLD: 50
-  @LONG_QUEST_GOLD: 100
+  @SHORT_QUEST_GOLD: 150
+  @LONG_QUEST_GOLD: 300
 
   # begin CONSTS DO NOT CHANGE # Iterate last by 100 for new quest base id
   @_FACTION_CHALLENGER_BASE_ID: 100
