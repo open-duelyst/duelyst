@@ -634,7 +634,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase!');
+          this.showError('Invalid purchase in normal checkout!');
         });
     } else {
       return purchasePromise
@@ -689,7 +689,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase!');
+          this.showError('Invalid purchase in premium checkout!');
         });
     } else {
       return purchasePromise
@@ -765,7 +765,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
       return Promise.resolve()
         .bind(this)
         .then(function () {
-          this.showError('Invalid purchase!');
+          this.showError('Invalid purchase in gold checkout!');
         });
     } else {
       return purchasePromise
