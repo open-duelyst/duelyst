@@ -118,6 +118,11 @@ In order to successfully run the game, you will need a
 Fortunately, Google provides a free version of this service called the
 ["Spark Pricing Plan"](https://firebase.google.com/docs/projects/billing/firebase-pricing-plans).
 
+Create a Firebase (Google) account, a Firebase project, and a Firebase Realtime
+Database. Be sure to create the Realtime Database in the US Central region, as
+the Europe and Singapore regions will give you a URL which is incompatible with
+our Firebase client.
+
 Once you have created a Firebase account and a Realtime Database, take note of
 your Realtime Database's URL, as you'll need it when building the code. You
 will also want to configure the Security Rules for your database. You can copy
