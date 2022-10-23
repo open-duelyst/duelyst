@@ -25,7 +25,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.5"
+  deployed_version  = "1.97.6-hotfix"
   container_count   = 1
   container_mem     = 500 # Runs out of memory with 350MB.
   service_port      = 3000

@@ -1,6 +1,5 @@
 Promise = require 'bluebird'
 util = require 'util'
-Firebase = require 'firebase'
 glicko2 = require 'glicko2'
 
 FirebasePromises = require '../firebase_promises'

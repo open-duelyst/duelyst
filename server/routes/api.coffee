@@ -59,7 +59,7 @@ router.use '/api/me/rift', meRoutes.rift
 router.use '/replays', replaysRoutes
 
 # QA / Testing
-if config.isDevelopment() || config.isStaging()
+if config.isDevelopment()
   router.use '/api/me/qa', meRoutes.qa
 
   # Just a route for secure testing
