@@ -16,7 +16,7 @@ locals {
 
 resource "aws_launch_template" "template" {
   name_prefix            = "ecs-${var.name}"
-  image_id               = local.ami_ids[var.architecture][data.aws_region.current.name]
+  image_id               = var.use_custom_ami ? var.custom_ami_id : local.ami_ids[var.architecture][data.aws_region.current.name]
   instance_type          = var.instance_type
   key_name               = aws_key_pair.ssh_key.id
   vpc_security_group_ids = var.security_group_ids
