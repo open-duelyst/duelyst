@@ -36,6 +36,12 @@ variable "instance_type" {
   default     = "t4g.micro"
 }
 
+variable "root_volume_size" {
+  type        = number
+  description = "The size of the EBS root block device on ECS-EC2 instances."
+  default     = 30
+}
+
 variable "min_capacity" {
   type        = number
   description = "The minimum number of ECS-EC2 instances."
