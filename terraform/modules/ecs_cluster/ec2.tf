@@ -16,7 +16,7 @@ locals {
 
 resource "aws_launch_template" "template" {
   name_prefix            = "ecs-${var.name}"
-  image_id               = local.ami_ids[var.architecture][data.aws_region.current.name]
+  image_id               = var.use_custom_ami ? var.custom_ami_id : local.ami_ids[var.architecture][data.aws_region.current.name]
   instance_type          = var.instance_type
   key_name               = aws_key_pair.ssh_key.id
   vpc_security_group_ids = var.security_group_ids
@@ -35,7 +35,7 @@ resource "aws_launch_template" "template" {
       # Given that we hardly use disks, gp3 should result in a 20% cost reduction.
       # If we ever exceed the baseline for IOPS or Throughput, let's go back to gp2.
       volume_type           = "gp3"
-      volume_size           = 30   # Default is 30GB; we only use 3GB. Need to build our own AMI to reduce this.
+      volume_size           = var.root_volume_size
       iops                  = 3000 # Cap IOPS at 3,000 to avoid overage charges.
       throughput            = 125  # Cap Throughput at 125MB/s to avoid overage charges.
       delete_on_termination = true
