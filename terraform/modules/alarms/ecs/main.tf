@@ -1,3 +1,4 @@
+/* Disabling Cluster-wide alarms, since we prevent these by right-sizing services.
 resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
   alarm_name        = "ECS CPU Utilization"
   alarm_description = "ECS CPU utilization is over ${var.cpu_threshold}%"
@@ -43,6 +44,7 @@ resource "aws_cloudwatch_metric_alarm" "memory_alarm" {
   alarm_actions             = var.alarm_actions
   insufficient_data_actions = []
 }
+*/
 
 resource "aws_cloudwatch_metric_alarm" "service_cpu_alarm" {
   for_each = toset(var.service_names)

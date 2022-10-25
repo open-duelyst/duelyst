@@ -63,7 +63,3 @@ variable "ecr_registry_id" {
 variable "email_address_for_alarms" {
   type = string
 }
-
-variable "billing_alarm_threshold" {
-  type = string
-}

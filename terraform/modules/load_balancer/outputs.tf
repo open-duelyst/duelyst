@@ -14,7 +14,15 @@ output "load_balancer_id" {
   value = aws_lb.lb.arn_suffix
 }
 
-output "target_group_ids" {
+# Used in Cloudwatch alarms.
+output "http_target_group_ids" {
+  value = {
+    api = aws_lb_target_group.api_target_group.arn_suffix
+  }
+}
+
+# Used in Cloudwatch alarms.
+output "all_target_group_ids" {
   value = {
     api  = aws_lb_target_group.api_target_group.arn_suffix
     game = aws_lb_target_group.game_target_group.arn_suffix
