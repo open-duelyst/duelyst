@@ -1,6 +1,8 @@
 module "ecs_cluster" {
   source         = "../modules/ecs_cluster"
   name           = "duelyst-staging"
+  use_custom_ami = true
+  custom_ami_id  = var.custom_ami_id
   ssh_public_key = var.ssh_public_key
 
   # Set capacity to 3 to allow graceful deployments without stopping live containers.

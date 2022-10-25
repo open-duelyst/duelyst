@@ -4,6 +4,11 @@ variable "aws_region" {
   type = string
 }
 
+variable "custom_ami_id" {
+  type    = string
+  default = ""
+}
+
 variable "aws_access_key" {
   type = string
 }
