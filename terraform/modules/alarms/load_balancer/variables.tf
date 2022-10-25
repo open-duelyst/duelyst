@@ -3,9 +3,14 @@ variable "load_balancer_id" {
   description = "The load balancer to monitor."
 }
 
-variable "target_group_ids" {
+variable "http_target_group_ids" {
   type        = map(any)
-  description = "The target groups to monitor."
+  description = "The target groups for which to create 5xx alarms."
+}
+
+variable "all_target_group_ids" {
+  type        = map(any)
+  description = "The target groups for which to create unhealthy target alarms."
 }
 
 variable "unhealthy_target_threshold" {
