@@ -24,6 +24,24 @@ resource "aws_launch_template" "template" {
   # Associate ECS-EC2 instances with this ECS cluster.
   user_data = base64encode("#!/bin/bash\necho ECS_CLUSTER=${var.name} >> /etc/ecs/ecs.config\necho ECS_ENABLE_TASK_IAM_ROLE=true >> /etc/ecs/ecs.config")
 
+  block_device_mappings {
+    # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/device_naming.html
+    # https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/nvme-ebs-volumes.html#identify-nvme-ebs-device
+    device_name = "/dev/xvda"
+
+    ebs {
+      # gp2 is billed at $0.10/GB/month.
+      # gp3 is billed at $0.08/GB/month, plus $0.005 for each I/O operation per second over 3,000, plus $0.04 for each MB/s in throughput over 125.
+      # Given that we hardly use disks, gp3 should result in a 20% cost reduction.
+      # If we ever exceed the baseline for IOPS or Throughput, let's go back to gp2.
+      volume_type           = "gp3"
+      volume_size           = 30   # Default is 30GB; we only use 3GB. Need to build our own AMI to reduce this.
+      iops                  = 3000 # Cap IOPS at 3,000 to avoid overage charges.
+      throughput            = 125  # Cap Throughput at 125MB/s to avoid overage charges.
+      delete_on_termination = true
+    }
+  }
+
   iam_instance_profile {
     name = aws_iam_instance_profile.ecs_instance_profile.name
   }
