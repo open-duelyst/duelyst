@@ -19,7 +19,7 @@ on:
 jobs:
   integration_tests:
     runs-on: ubuntu-latest
-    container: node:16
+    container: node:18-slim
     services:
       redis:
         image: redis:6
@@ -31,6 +31,9 @@ jobs:
           POSTGRES_DB: duelyst
 
     steps:
+    - name: install bcrypt dependencies and git
+      run: apt-get update && apt-get -y install python3 make gcc g++ git
+
     - name: check out code
       uses: actions/checkout@v3
 

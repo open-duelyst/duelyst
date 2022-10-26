@@ -1,14 +1,13 @@
-# This image is 114MB vs. 856MB for node:lts.
-FROM node:16-alpine
+# Slim images are based on Debian, but with a smaller size footprint.
+FROM node:18-slim
+
+# Install bcrypt dependencies and git.
+# TODO: Isolate bcrypt dependencies to API images only.
+RUN apt-get update && apt-get -y install python3 make gcc g++ git
 
 # Work around boneskull/yargs dependency using the deprecated git protocol.
-RUN apk add git
 RUN git config --global url."https://github.com/".insteadOf git@github.com:
 RUN git config --global url."https://".insteadOf git://
-
-# Add Python and other build utils for bcrypt.
-# TODO: Put this into an intermediate layer to reduce Game/Migrate/SP image size.
-RUN apk add python3 make gcc g++
 
 # Include Node.js dependencies in the image.
 WORKDIR /duelyst
