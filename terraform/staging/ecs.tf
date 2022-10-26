@@ -28,7 +28,7 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.6-hotfix"
+  deployed_version  = "1.97.7"
   container_count   = 1
   container_mem     = 500 # Runs out of memory with 350MB.
   service_port      = 3000
@@ -61,7 +61,7 @@ module "ecs_service_game" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_game.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 1
   container_mem     = 200 # Uses about 125MB.
   service_port      = 8001
@@ -87,7 +87,7 @@ module "ecs_service_sp" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_sp.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 1
   container_mem     = 200 # Uses about 125MB.
   service_port      = 8000
@@ -112,7 +112,7 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.6-hotfix"
+  deployed_version  = "1.97.7"
   container_count   = 1
   container_mem     = 500 # Uses about 315MB.
   enable_lb         = false
@@ -144,7 +144,7 @@ module "ecs_service_migrate" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_migrate.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 0 # Change to 1 to apply database migrations.
   container_mem     = 200
   enable_lb         = false
