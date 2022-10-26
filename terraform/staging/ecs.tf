@@ -28,9 +28,9 @@ module "ecs_service_api" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_api.id
-  deployed_version  = "1.97.6-hotfix"
+  deployed_version  = "1.97.7"
   container_count   = 1
-  container_mem     = 500 # Runs out of memory with 350MB.
+  container_mem     = 450
   service_port      = 3000
   alb_target_group  = module.staging_load_balancer.api_target_group_arn
 
@@ -61,9 +61,9 @@ module "ecs_service_game" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_game.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 1
-  container_mem     = 200 # Uses about 125MB.
+  container_mem     = 350
   service_port      = 8001
   alb_target_group  = module.staging_load_balancer.game_target_group_arn
 
@@ -87,9 +87,9 @@ module "ecs_service_sp" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_sp.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 1
-  container_mem     = 200 # Uses about 125MB.
+  container_mem     = 350
   service_port      = 8000
   alb_target_group  = module.staging_load_balancer.sp_target_group_arn
 
@@ -112,9 +112,9 @@ module "ecs_service_worker" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_worker.id
-  deployed_version  = "1.97.6-hotfix"
+  deployed_version  = "1.97.7"
   container_count   = 1
-  container_mem     = 500 # Uses about 315MB.
+  container_mem     = 450
   enable_lb         = false
   service_port      = 0
   alb_target_group  = ""
@@ -144,9 +144,9 @@ module "ecs_service_migrate" {
   task_role         = module.ecs_cluster.task_role
   ecr_registry      = var.ecr_registry_id
   ecr_repository    = module.ecr_repository_migrate.id
-  deployed_version  = "1.97.4"
+  deployed_version  = "1.97.7"
   container_count   = 0 # Change to 1 to apply database migrations.
-  container_mem     = 200
+  container_mem     = 350
   enable_lb         = false
   service_port      = 0
   alb_target_group  = ""
