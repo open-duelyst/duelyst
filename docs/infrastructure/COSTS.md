@@ -22,7 +22,7 @@ concurrent users:
 
 ## AWS Service Requirements
 
-Running a staging environment in AWS costs about $8/month, with the following
+Running a staging environment in AWS costs about $9/month, with the following
 breakdown:
 
 ### RDS and ElastiCache ($0/mo with Free Tier)
@@ -154,3 +154,8 @@ KMS, which charges a fee of $1 per month per key.
 An alternative here is AWS Secrets Manager, which charges $0.40 per secret per
 month. With five secrets, this is already twice the cost of using KMS and AWS
 SSM.
+
+### Alarms: Cloudwatch ($1/month)
+
+The first 10 Cloudwatch Alarms in an AWS account are always free. We have about
+20 alarms, so we pay for 10 of these at a rate of $0.10/month ($1/mo total).
