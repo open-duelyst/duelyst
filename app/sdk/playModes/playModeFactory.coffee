@@ -87,7 +87,6 @@ class PlayModeFactory
         enabled: true
         isHiddenInUI: false
         # availableOnDaysOfWeek: [0,3,5,6] # 0-6 indexed Sun-Sat
-        gamesRequiredToUnlock: 20
       }
 
       pm[PlayModes.Rift] = {
