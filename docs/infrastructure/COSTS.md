@@ -22,7 +22,7 @@ concurrent users:
 
 ## AWS Service Requirements
 
-Running a staging environment in AWS costs about $6/month, with the following
+Running a staging environment in AWS costs about $8/month, with the following
 breakdown:
 
 ### RDS and ElastiCache ($0/mo with Free Tier)
@@ -96,12 +96,22 @@ works well with our API and Worker services, but 2 minutes is generally not
 long enough to allow in-progress games to finish. However, we can use Spot
 instances in staging, where losing games is not a big deal.
 
-In terms of storage, EC2 provides 30GB of `gp3` disk storage for free. We don't
-have any real storage requirements for the apps, so we won't incur any
-significant storage costs.
-
 In summary, running two `t4g.micro` Spot instances to power a staging ECS
 cluster would cost about $4 per month.
+
+### EBS Storage Pricing ($2/mo)
+
+In terms of storage, EC2 provides 30GB of `gp3` disk storage for free. We don't
+have any real storage requirements for the apps, so we won't incur any
+significant storage costs for EBS volumes.
+
+The default AWS ECS-Optimized AMI specifies a 30GB root volume, which increases
+the storage costs based on how many instances we run. AWS offers a way to pack
+our own AMI based on theirs via https://github.com/aws/amazon-ecs-ami, so we
+can build custom images with an 8GB root volume instead. With two running
+instances, this reduces our `gp3` EBS costs from 60GB * $0.08 = $4.80/mo to
+16GB * $0.08 = $1.28/mo. However, this means we also need to retain an 8GB
+snapshot backing the AMI, which costs 8GB * $0.05 = $0.40/mo.
 
 ### Networking ($0/month with Free Tier)
 
