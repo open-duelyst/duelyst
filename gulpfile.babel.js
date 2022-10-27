@@ -4,7 +4,7 @@ import 'app-module-path/register';
 
 import gulp from 'gulp';
 import gutil from 'gulp-util';
-import autowatch from 'gulp-autowatch';
+// import autowatch from 'gulp-autowatch';
 import bundle from './gulp/bundler';
 import bundleRegister from './gulp/bundler.register';
 import css from './gulp/css';
@@ -31,7 +31,7 @@ if (os.platform() === 'win32' || os.platform() === 'linux' || os.platform() === 
 }
 
 gutil.log(`${gutil.colors.red(`GULP :: env: ${env} :: version: ${version}`)}`);
-gutil.log(`${gutil.colors.yellow(`GULP :: watch = ${opts.watch}`)}`);
+// gutil.log(`${gutil.colors.yellow(`GULP :: watch = ${opts.watch}`)}`);
 gutil.log(`${gutil.colors.yellow(`GULP :: minification = ${opts.minify}`)}`);
 
 // Define main tasks
@@ -122,12 +122,15 @@ const watchPaths = {
     './app/vendor/aws/aws-sdk-mobile-analytics.min.js',
   ],
 };
+
+/* Disable autowatch for now (--watch=false conflicts with --watch in Node.js v18+).
 gulp.task('autowatch', (cb) => {
   if (opts.watch) {
     autowatch(gulp, watchPaths);
   }
   cb();
 });
+*/
 
 // Define aliases for task groupings
 gulp.task('source', gulp.series(gulp.parallel('vendor', 'css', 'html'), 'localization:copy', 'rsx:packages', 'js'));
@@ -136,14 +139,14 @@ gulp.task('build', gulp.series(
   'source',
   'rsx:copy',
   'rsx:copy:web',
-  'autowatch',
+  // 'autowatch',
 ));
 gulp.task('build:withallrsx', gulp.series(
   'clean:all',
   'source',
   'rsx:copy:all',
   'rsx:copy:web',
-  'autowatch',
+  // 'autowatch',
 ));
 gulp.task('build:app', gulp.series(
   'clean:app',
@@ -165,7 +168,7 @@ gulp.task('build:register', gulp.series(
   'source:register',
   'rsx:copy',
   'rsx:copy:cdn',
-  'autowatch',
+  // 'autowatch',
 ));
 gulp.task('default', gulp.series('build'));
 

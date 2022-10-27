@@ -83,9 +83,14 @@ preconfigured for new code. After writing new TypeScript code, you can run
 
 #### Installing System Dependencies
 
-Before you get started, you'll need [Docker](https://www.docker.com/products/docker-desktop/)
-and [Node.js](https://nodejs.org/en/download/). These will enable you to run
-the code in containers, and to interact with the JavaScript build process.
+Before you get started, you'll need Node.js and
+[Docker Desktop](https://www.docker.com/products/docker-desktop/)
+These will enable you to run the code in containers, and to interact with the
+JavaScript build process.
+
+We recommend installing Node.js by using [Volta](https://volta.sh/), which
+helps manage Node.js versions for you. We use the latest LTS release of Node,
+which is currently v18.
 
 Once you have `npm`, you can use it to install Yarn (the package manager we
 use):
