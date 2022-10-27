@@ -51,3 +51,5 @@ jobs:
 
     - name: build the app
       run: yarn build
+      env:
+        FIREBASE_URL: "https://test-url.firebaseio.com/"
