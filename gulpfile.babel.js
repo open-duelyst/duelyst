@@ -133,7 +133,13 @@ gulp.task('autowatch', (cb) => {
 */
 
 // Define aliases for task groupings
-gulp.task('source', gulp.series(gulp.parallel('vendor', 'css', 'html'), 'localization:copy', 'rsx:packages', 'js'));
+gulp.task('source', gulp.series(
+  validateFirebase,
+  gulp.parallel('vendor', 'css', 'html'),
+  'localization:copy',
+  'rsx:packages',
+  'js',
+));
 gulp.task('build', gulp.series(
   'clean:all',
   'source',
@@ -149,6 +155,7 @@ gulp.task('build:withallrsx', gulp.series(
   // 'autowatch',
 ));
 gulp.task('build:app', gulp.series(
+  validateFirebase,
   'clean:app',
   'js',
 ));
@@ -174,6 +181,17 @@ gulp.task('default', gulp.series('build'));
 
 // Release Builds (CI ready tasks)
 const ciTargets = ['staging', 'production'];
+
+function validateFirebase(cb) {
+  // Ensure FIREBASE_URL is set and valid when building the app.
+  if (process.env.FIREBASE_URL === undefined) {
+    return cb(new Error('FIREBASE_URL must be set'));
+  }
+  if (!process.env.FIREBASE_URL.endsWith('firebaseio.com/')) {
+    return cb(new Error('FIREBASE_URL must end in firebaseio.com/'));
+  }
+  return cb();
+}
 
 function validateConfig(cb) {
   // Ensure running build:release:${target} matches running config environemnt
