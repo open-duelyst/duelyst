@@ -67,4 +67,4 @@ jobs:
         REDIS_HOST: redis
         POSTGRES_CONNECTION: "pg://duelyst:duelyst@db/duelyst"
         # TODO: Create a Firebase Realtime Database for CI.
-        FIREBASE_URL: ""
+        FIREBASE_URL: "https://test-url.firebaseio.com/"
