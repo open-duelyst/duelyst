@@ -108,7 +108,8 @@ git config --global url."https://".insteadOf git://
 
 #### Installing Node.js Dependencies
 
-Once you have Yarn installed, you can install the dependencies for the game:
+Once you have Yarn installed, you can install the dependencies for the game.
+Run the following in the repository root directory:
 
 ```bash
 yarn install --dev  # Install remaining Node.js dependencies.
@@ -143,7 +144,10 @@ cross-env FIREBASE_URL=<YOUR_FIREBASE_URL> yarn build
 ```
 
 Including the Firebase URL is important, since it enables the game client to
-communicate with the servers.
+communicate with the servers. There's a link button on the front page of the
+realtime database you can press to copy the correct URL; don't copy and paste
+the address. We want the URl provided on the front page; it should look something
+like 'https://[name_of_database]-default-rtdb.firebaseio.com/".
 
 After the initial build, you can save time with `yarn build:app` (code only; no
 assets) or `yarn build:web` (frontend HTML/CSS/JS only).
@@ -157,7 +161,7 @@ configuration needed. From your Firebase project settings page, click the
 "Service Accounts" tab.
 
 First, click "Database Secrets" and create a new legacy token.
-Create a `.env` file in the repo root with the following contents:
+Create a file named `.env` in the repo root with the following contents:
 
 ```bash
 FIREBASE_URL=<YOUR_FIREBASE_URL>
