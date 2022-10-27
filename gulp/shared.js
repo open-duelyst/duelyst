@@ -16,7 +16,7 @@ const knownOpts = {
   boolean: ['watch', 'minify'],
   alias: { w: 'watch', m: 'minify' },
   default: {
-    watch: development,
+    watch: false,
     minify: production || staging,
   },
 };
