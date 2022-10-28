@@ -54,8 +54,6 @@ services:
 
   game:
     <<: *base
-    profiles:
-      - donotstart
     ports:
       - 8001:8001
     environment:
