@@ -1,10 +1,9 @@
 class GameType
-
   @Ranked: "ranked"
   @Casual: "casual"
   @Gauntlet: "gauntlet"
-  @Friendly: "friendly"
-  @Challenge: "challenge"
+  @Friendly: "friendly" # Friend Challenge
+  @Challenge: "challenge" # Solo Challenge
   @Sandbox: "sandbox"
   @SinglePlayer: "single_player"
   @Rift: "rift"

@@ -20,13 +20,15 @@ if config.isDevelopment() or config.isStaging()
 else
   parser = bodyParser.json()
 
-# Enable CORS to CDN in staging/production.
-cdnDomain = config.get('aws.cdnDomainName')
-if cdnDomain && !config.isDevelopment()
-  # Same-Origin requests are already allowed; add CDN origin as well.
-  corsOptions = {origin: "https://#{cdnDomain}"}
+# Configure CORS.
+if config.isDevelopment()
+  corsOptions = {origin: "*"} # Allow any origin.
 else
-  corsOptions = {}
+  cdnDomain = config.get('aws.cdnDomainName')
+  if cdnDomain
+    corsOptions = {origin: "https://#{cdnDomain}"} # Allow CORS to CDN.
+  else
+    corsOptions = {} # Same-Origin only.
 
 module.exports = compose([
   getRealIp(),

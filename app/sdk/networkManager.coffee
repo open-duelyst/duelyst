@@ -7,6 +7,7 @@ CONFIG = require 'app/common/config'
 Storage = require 'app/common/storage'
 GameSession = require './gameSession'
 ApplyCardToBoardAction = require './actions/applyCardToBoardAction'
+GameType = require 'app/sdk/gameType.coffee'
 
 class NetworkManager
   instance = null
@@ -57,28 +58,21 @@ class NetworkManager
       TelemetryManager.getInstance().setSignal("game","connecting")
       token = Storage.get('token')
 
-      # Determine which WebSocket URL to use.
-      # SP uses port 8000; MP uses port 8001.
-      # Development uses window.location.hostname and no SSL.
+      # Determine which WebSocket protocol to use.
+      # Use secure WebSockets in staging and production.
       env = process.env.NODE_ENV || 'development'
-      if env == 'development' then websocketUrl = "ws://#{window.location.hostname}:8000"
+      protocol = if env == 'development' then 'ws' else 'wss'
 
-      # Staging/Production will set gameServerAddress and use SSL.
-      else
-        if gameServerAddress?
-          if gameType == 'single_player' then websocketUrl = "wss://#{gameServerAddress}:8000"
-          else websocketUrl = "wss://#{gameServerAddress}:8001"
+      # Determine which WebSocket host to use.
+      # Use the assigned game server if one was provided.
+      host = if gameServerAddress? then gameServerAddress else window.location.hostname
 
-        # Fall back to window.location.hostname if gameServerAddress is missing.
-        # This will work in the web client, but not in the desktop client.
-        else
-          if gameType == 'single_player' then websocketUrl = "wss://#{window.location.hostname}:8000"
-          else websocketUrl = "wss://#{window.location.hostname}:8001"
+      # Determine which WebSocket port to use.
+      # SP modes use port 8000; MP modes use port 8001.
+      port = if GameType.isSinglePlayerGameType(gameType) then 8000 else 8001
 
-      # validate and log websocket URL
-      if !websocketUrl
-        Logger.module("SDK").error "NetworkManager: failed to determine WebSocket URL!"
-        return
+      # Format the WebSocket URL.
+      websocketUrl = "#{protocol}://#{host}:#{port}"
       Logger.module("SDK").warn "NetworkManager: connecting to game server #{websocketUrl}"
 
       # connect using socket.io manager
