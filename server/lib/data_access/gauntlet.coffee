@@ -26,7 +26,7 @@ class GauntletModule
   # GOLD cost for a GAUNTLET Ticket.
   # @public
   ###
-  @GAUNTLET_TICKET_GOLD_PRICE: 150
+  @GAUNTLET_TICKET_GOLD_PRICE: 0 # was 150
 
   ###*
   # Maximum win count for gauntlet.

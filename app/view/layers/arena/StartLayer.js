@@ -23,14 +23,13 @@ const audio_engine = require('../../../audio/audio_engine');
  *************************************************************************** */
 
 const StartLayer = BaseLayer.extend({
-
   delegate: null,
+  _gauntletGoldPrice: 0,
 
   // ui elements
   titleLabel: null,
   runDetailsLabel: null,
   startButton: null,
-
   _mouseOverButton: null,
 
   /* region INITIALIZE */
@@ -60,7 +59,7 @@ const StartLayer = BaseLayer.extend({
     this.startButton.setPosition(-100, -200);
     this.addChild(this.startButton, 0);
 
-    this.costLabel = new cc.LabelTTF(i18next.t('gauntlet.gauntlet_start_instructions', { gold_price: 150, hard_currency_price: '200 Diamonds' }), RSX.font_regular.name, 14, cc.size(500, 32), cc.TEXT_ALIGNMENT_CENTER);
+    this.costLabel = new cc.LabelTTF(i18next.t('gauntlet.gauntlet_start_instructions', { gold_price: this._gauntletGoldPrice, hard_currency_price: '200 Diamonds' }), RSX.font_regular.name, 14, cc.size(500, 32), cc.TEXT_ALIGNMENT_CENTER);
     this.costLabel.setPosition(0, -150);
     this.addChild(this.costLabel);
 
@@ -70,7 +69,7 @@ const StartLayer = BaseLayer.extend({
     this.addChild(this.currency_icon, 1);
 
     // gold AMOUNT # label
-    this.currency_amount_label = new cc.LabelTTF('150', RSX.font_regular.name, 20, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
+    this.currency_amount_label = new cc.LabelTTF(`${this._gauntletGoldPrice}`, RSX.font_regular.name, 20, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
     this.currency_amount_label.setFontFillColor({ r: 121, g: 66, b: 0 });
     this.currency_amount_label.setPosition(-175, -200);
     this.addChild(this.currency_amount_label, 1);
