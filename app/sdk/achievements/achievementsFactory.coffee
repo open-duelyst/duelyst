@@ -63,6 +63,8 @@ LaborDayLoginAchievement = require './loginBasedAchievements/laborDayLoginAchiev
 HalloweenLoginAchievement = require './loginBasedAchievements/halloweenLoginAchievement.coffee'
 ThanksgivingLoginAchievement = require './loginBasedAchievements/thanksgivingLoginAchievement.coffee'
 ChristmasLoginAchievement = require './loginBasedAchievements/christmasLoginAchievement.coffee'
+NewPlayerGoldLoginAchievement = require './loginBasedAchievements/newPlayerGoldLoginAchievement.coffee'
+NewPlayerSpiritLoginAchievement = require './loginBasedAchievements/newPlayerSpiritLoginAchievement.coffee'
 
 # Wartech general achievements
 WartechGeneralFaction1Achievement = require './wartechAchievements/wartechGeneralFaction1Achievement'
@@ -147,6 +149,8 @@ class AchievementsFactory
     @_achievementsCache[HalloweenLoginAchievement.id] = HalloweenLoginAchievement
     @_achievementsCache[ThanksgivingLoginAchievement.id] = ThanksgivingLoginAchievement
     @_achievementsCache[ChristmasLoginAchievement.id] = ChristmasLoginAchievement
+    @_achievementsCache[NewPlayerGoldLoginAchievement.id] = NewPlayerGoldLoginAchievement
+    @_achievementsCache[NewPlayerSpiritLoginAchievement.id] = NewPlayerSpiritLoginAchievement
     # wartech
     @_achievementsCache[WartechGeneralFaction1Achievement.id] = WartechGeneralFaction1Achievement
     @_achievementsCache[WartechGeneralFaction2Achievement.id] = WartechGeneralFaction2Achievement
