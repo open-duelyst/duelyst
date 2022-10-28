@@ -26,7 +26,7 @@ class GauntletModule
   # GOLD cost for a GAUNTLET Ticket.
   # @public
   ###
-  @GAUNTLET_TICKET_GOLD_PRICE: 150
+  @GAUNTLET_TICKET_GOLD_PRICE: 0 # was 150
 
   ###*
   # Maximum win count for gauntlet.
@@ -535,33 +535,32 @@ class GauntletModule
           rewardsData = []
           @.rewardsRows = []
           rewardCardIds = []
-
-          rewardsData.push(spirit_orbs:GauntletModule._GAUNTLET_SPIRIT_ORB_REWARD_SETS[Math.floor(Math.random()*GauntletModule._GAUNTLET_SPIRIT_ORB_REWARD_SETS.length)])
-
           rewardMap = GauntletModule._getRewardMap()
 
-          # add up the reward set
-          # Always gets 1 basic box
-          rewards.push(_.sample(rewardMap.basic_box_wins[@.runData.win_count],1)[0])
-          # If 2 or less wins, get a basic box, otherwise get a gold box
-          if @.runData.win_count <= 2
+          # At 1 win, get a random spirit orb and a  basic box
+          if @.runData.win_count >= 1
+            rewardsData.push(spirit_orbs: GauntletModule._GAUNTLET_SPIRIT_ORB_REWARD_SETS[Math.floor(Math.random()*GauntletModule._GAUNTLET_SPIRIT_ORB_REWARD_SETS.length)])
             rewards.push(_.sample(rewardMap.basic_box_wins[@.runData.win_count],1)[0])
-          else
+
+          # At 2 wins, get a gold box
+          if @.runData.win_count >= 2
             rewards.push(_.sample(rewardMap.gold_box_wins[@.runData.win_count],1)[0])
-          # If more than 2 wins, get a good box
-          if   @.runData.win_count > 2
+
+          # At 3 wins, get a good box
+          if @.runData.win_count >= 3
             rewards.push(_.sample(rewardMap.good_box_wins[@.runData.win_count],1)[0])
-          # if more than 9 wins, get a great box
-          if   @.runData.win_count > 9
+
+          # Free gauntlet ticket after 6 wins (disabled; gauntlet is already free)
+          #if @.runData.win_count > 6
+          #  rewardsData.push({arena_tickets:1})
+
+          # At 10 wins, get a great box
+          if @.runData.win_count >= 10
             rewards.push(_.sample(rewardMap.great_box_wins[@.runData.win_count],1)[0])
-          # if more than 11 wins, get an awesome box
-          if   @.runData.win_count > 11
+
+          # At 12 wins, get an awesome box and a gift crate
+          if @.runData.win_count >= 12
             rewards.push(_.sample(rewardMap.awesome_box_wins[@.runData.win_count],1)[0])
-          # Free gauntlet ticket after 6 wins
-          if   @.runData.win_count > 6
-            rewardsData.push({arena_tickets:1})
-          # Gift Crate at 12 wins
-          if   @.runData.win_count == 12
             keyRandom = Math.random()
             if (keyRandom < 0.85)
               rewardsData.push({cosmetic_keys:[SDK.CosmeticsChestTypeLookup.Common]})
@@ -569,17 +568,17 @@ class GauntletModule
               rewardsData.push({cosmetic_keys:[SDK.CosmeticsChestTypeLookup.Rare]})
             else
               rewardsData.push({cosmetic_keys:[SDK.CosmeticsChestTypeLookup.Epic]})
+
           # set arena rewards in db
           for reward in rewards
-
             if reward instanceof String || typeof reward is "string"
               parts = reward.split(' ')
-              if     parts[1] == "G"
-                rewardsData.push({ gold:parseInt(parts[0]) })
+              if parts[1] == "G"
+                rewardsData.push({ gold: parseInt(parts[0]) })
               else if parts[1] == "S"
-                rewardsData.push({ spirit:parseInt(parts[0]) })
+                rewardsData.push({ spirit: parseInt(parts[0]) })
               else if parts[1] == "ORB"
-                rewardsData.push({spirit_orbs:parseInt(parts[0])})
+                rewardsData.push({ spirit_orbs: parseInt(parts[0]) })
 
             else if reward instanceof Number || typeof reward is "number"
               rarityId = reward
@@ -702,13 +701,10 @@ class GauntletModule
           return Promise.all(allPromises)
 
         else
-
           return Promise.reject(new Errors.NotFoundError("No active gauntlet run found."))
 
       .then ()-> return DuelystFirebase.connect().getRootRef()
-
       .then (fbRootRef) ->
-
         allPromises = []
 
         if @.runData.rewards_claimed_at then @.runData.rewards_claimed_at = moment.utc(@.runData.rewards_claimed_at).valueOf()
@@ -739,9 +735,7 @@ class GauntletModule
       return
 
     .bind this_obj
-
     .then ()->
-
       return Promise.resolve(@.runData)
 
     return txPromise

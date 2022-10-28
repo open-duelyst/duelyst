@@ -101,7 +101,6 @@ var ArenaLayout = Backbone.Marionette.LayoutView.extend({
   },
 
   needsShowRewardsForArenaRunData: function (arenaRunData) {
-    // return arenaRunData != null && arenaRunData.faction_id != null && (arenaRunData.ended_at != null || arenaRunData.rewards_claimed_at != null);
     return arenaRunData != null && (arenaRunData.ended_at != null || arenaRunData.rewards_claimed_at != null);
   },
 
@@ -162,7 +161,8 @@ var ArenaLayout = Backbone.Marionette.LayoutView.extend({
         resolve(InventoryManager.getInstance().arenaTicketsCollection.at(0));
       } else {
         // attempt to buy a new ticket
-        if (InventoryManager.getInstance().walletModel.get('gold_amount') < 150) {
+        // reduced gold price from 150 to 0
+        if (InventoryManager.getInstance().walletModel.get('gold_amount') < 0) {
           reject(i18next.t('gauntlet.start_error_message_insufficient_gold'));
         } else {
           // buy an arena ticket
