@@ -60,7 +60,7 @@ var ShopSpecialProductAvailableDialogItemView = Backbone.Marionette.ItemView.ext
     return {
       name: model.get('name'),
       description: model.get('description'),
-      price: model.get('price'),
+      gold: model.get('gold'),
       image_url: imageUrl,
     };
   },

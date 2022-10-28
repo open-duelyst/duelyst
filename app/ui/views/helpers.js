@@ -281,6 +281,10 @@ Handlebars.registerHelper('ifNotNull', function (n, block) {
     return block.fn(this);
 });
 
+Handlebars.registerHelper('formatGold', function (value) {
+  return '$<strong>' + value + '</strong> ' + i18next.t('common.currency_gold');
+});
+
 Handlebars.registerHelper('formatCurrency', function (value) {
   return '$<strong>' + (value / 100).toFixed(2) + '</strong> USD';
 });
