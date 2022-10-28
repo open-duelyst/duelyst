@@ -76,9 +76,9 @@
         if (/RSX\[/.test(match)) {
           isDynamic = true;
           // filter for partials that begin with a set of quotes
-          partials = p1.match(/"(?:[^"])*"|'(?:[^'])*'/g) || [];
+          partials = p1.match(/"(?:[^"])*"|'(?:[^'])*'|\}(.*?)\$\{|\}(.*?)\`|\`(.*?)\$\{/g) || [];
           partialAtBeginning = partials.length <= 1;
-          partials = _.map(partials, (partial) => partial.replace(/["']/g, ''));
+          partials = _.map(partials, (partial) => partial.replace(/["'`}]|(\$\{)/g, ''));
           partials = _.reject(partials, (partial) => !partial || partial.length < 2 || !isNaN(parseInt(partial)));
         } else {
           isDynamic = false;
@@ -287,8 +287,8 @@
 
     // look for resources in file
     const resourcesData = resourcesForFile(file, content);
-    const { resources } = resourcesData;
-    const { dynamicResources } = resourcesData;
+    const { resources, dynamicResources } = resourcesData;
+
     if (resources.length > 0 || dynamicResources.length > 0) {
       const allResources = [].concat(resources, dynamicResources);
       addPkgResources('all', allResources);
