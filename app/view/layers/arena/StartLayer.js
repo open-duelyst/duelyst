@@ -56,7 +56,7 @@ const StartLayer = BaseLayer.extend({
     this.startButton.setBackgroundSpriteForState(confirmButtonSprite, cc.CONTROL_STATE_NORMAL);
     this.startButton.setBackgroundSpriteForState(confirmButtonGlowSprite, cc.CONTROL_STATE_HIGHLIGHTED);
     this.startButton.setTitleColorForState(cc.color(255, 255, 255), cc.CONTROL_STATE_NORMAL);
-    this.startButton.setPosition(-100, -200);
+    this.startButton.setPosition(0, -200); // Was -100, -200.
     this.addChild(this.startButton, 0);
 
     this.costLabel = new cc.LabelTTF(i18next.t('gauntlet.gauntlet_start_instructions', { gold_price: this._gauntletGoldPrice, hard_currency_price: '200 Diamonds' }), RSX.font_regular.name, 14, cc.size(500, 32), cc.TEXT_ALIGNMENT_CENTER);
@@ -65,13 +65,13 @@ const StartLayer = BaseLayer.extend({
 
     // gold icon sprite
     this.currency_icon = new BaseSprite(RSX.gold_reward_gold_icon.img);
-    this.currency_icon.setPosition(-175, -200);
+    this.currency_icon.setPosition(-75, -200); // Was -175, -200.
     this.addChild(this.currency_icon, 1);
 
     // gold AMOUNT # label
     this.currency_amount_label = new cc.LabelTTF(`${this._gauntletGoldPrice}`, RSX.font_regular.name, 20, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
     this.currency_amount_label.setFontFillColor({ r: 121, g: 66, b: 0 });
-    this.currency_amount_label.setPosition(-175, -200);
+    this.currency_amount_label.setPosition(-75, -200); // Was -175, -200.
     this.addChild(this.currency_amount_label, 1);
 
     this.countLabel = new cc.LabelTTF(i18next.t('gauntlet.ticket_inventory_label_plural', { count: ticketCount }), RSX.font_regular.name, 14, cc.size(500, 32), cc.TEXT_ALIGNMENT_CENTER);
@@ -100,6 +100,9 @@ const StartLayer = BaseLayer.extend({
       this.buyTicketButton.setVisible(false);
       this.startButton.setPosition(0, -200);
     }
+
+    // Ensure Diamond purchase button is hidden.
+    this.buyTicketButton.setVisible(false);
   },
 
   /* endregion INITIALIZE */
