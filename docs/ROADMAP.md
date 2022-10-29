@@ -4,57 +4,44 @@
 
 - OpenDuelyst will be free indefinitely, with no form of monetization. The code
 	supporting payment processing has already been disabled or removed.
-- We aim to accelerate building a card collection, since there is no
-	monetization. This includes larger Gold rewards, reduced Orb (pack) costs,
-	and creating new Quests with additional rewards.
+- We aim to preserve the original game experience of building a collection
+	while greatly accelerating card acquisition. As a result, all users receive
+	2,500 Gold and 50,000 Spirit after logging in, which gives plenty of
+	resources to start building decks. The costs of purchasing Orbs (packs) and
+	crafting cards has been reduced by 50%, and quest rewards have been tripled.
 - Creating new content or making balance changes are not goals of this project.
 	Instead, we aim to provide a well-maintained reference implementation and
 	reference deployment of the game as it existed before the shutdown in 2020.
-- The game will be maintained after launch, though support may be limited since
-	this is a volunteer project. For example, server outages will send emails to
-	developers, but response times may be delayed.
+- We will build clients for web, desktop, mobile, and Steam.
+- We would like to provide native mod support for modified art, game rules,
+	cards, etc., enabling users to tweak the existing codebase without needing
+	to fork and heavily modify the project.
 
 ## Project Timeline
 
-#### Leading up to launch
+As of October 2022, most of the highest-priority issues, such as making the
+game functional, building clients for our target platforms, and creating
+automation and documentation for the project, are already complete.
 
-- Our priorities leading up to the launch include any issues which will
-	directly impact the player experience in the web client, such as granting
-	full collections, adding new quests, or adjusting card acquisition rates.
-- Since this project does not store personal user data (such as emails), we
-	also need to implement a password reset token system similar to MFA backup
-	tokens. The former system used an email-based flow.
+We are currently focused on contributor onboarding. Issues are tagged as
+`frontend`, `backend`, or `infrastructure` to make it easier to find work which
+matches contributors' interests and experience. Contributors can work on any
+issue, but we have some rough prioritization assigned to issues:
 
-#### Launch and announcement
+- P0 issues involve major end-user impact, such as broken or missing features.
+- P1 issues involve major developer impact, such as automating deployments.
+- P2 issues involve minor end-user impact, such as visual or text bugs.
+- P3 issues involve minor developer impact, such as code cleanup.
 
-- We plan to launch the reference deployment as soon as the production AWS
-	account is ready. This account will be provided by Counterplay Games.
-- Counterplay Games will announce the project once the reference deployment is
-	available.
+For November 2022 and beyond, we have a few high-priority objectives:
 
-#### After launch
+- Better mobile support, including packaging Android and iOS apps and
+	improvements to UI scaling
+- Restoring the Steam builds which are currently disabled in the code
+- Creating new achievements and quests
+- Creating new daily challenges and puzzles
+- Implementing a password reset flow (using tokens rather than email)
 
-- Following the announcement, onboarding new contributors will be a priority.
-	Much work has been done to streamline this process (writing documentation,
-	automating tests in CI, etc.) so we should have ample resources for new
-	contributors. Contributors are welcome to work on any issue with the `help
-	wanted` label. Issues are labeled `frontend`, `backend`, or `infrastructure`
-	to make it easier to find work matching one's interests and expertise.
-- Once the project has been launched and announced, we will continue to work on
-	issues as needed, according to the issue priorities defined below.
-- The initial post-launch priorities include web-based mobile clients for iOS
-	and Android.
-
-## Issue Prioritization
-
-These guidelines help determine issue priority. P0 is the highest priority.
-
-- P0: Issues which have major impact on the player experience, e.g. inability
-	to play games or use core features.
-- P1: Issues which have major impact on the developer experience, e.g. enabling
-	developers to deploy code or modify infrastructure without blocking on
-	maintainers or CPG.
-- P2: Issues which have minor impact on the player experience, e.g. broken
-	links or typos.
-- P3: Issues which have minor impact on the developer experience, e.g. code
-	cleanup.
+At some point, we plan to provision a production environment in AWS for a more
+"official" launch of the game. In the meantime, we are using the staging
+environment as a publicly-available deployment for web and desktop clients.
