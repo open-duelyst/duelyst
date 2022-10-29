@@ -1,57 +1,78 @@
 <!DOCTYPE html>
 <html>
-		<head>
-				<meta charset="utf-8">
-				<meta http-equiv="X-UA-Compatible" content="IE=edge">
-				<title>DUELYST</title>
-				<link rel="icon" type="image/gif" href="{{window.location.origin}}/favicon.gif">
-				<link rel="shortcut icon" href="{{window.location.origin}}/favicon.ico">
-				<meta name="description" content="">
-				<meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-				<meta name="screen-orientation" content="portrait"/>
-				<meta name="apple-mobile-web-app-capable" content="yes"/>
-				<meta name="msapplication-tap-highlight" content="no">
-				<meta name="full-screen" content="yes"/>
-				<meta name="x5-fullscreen" content="true"/>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>DUELYST</title>
+    <link rel="icon" type="image/gif" href="{{window.location.origin}}/favicon.gif">
+    <link rel="shortcut icon" href="{{window.location.origin}}/favicon.ico">
+    <meta name="description" content="">
 
-				<script type="text/javascript">
-					// this is for cocos
-					window.ccMapLimit = 100
-				</script>
+    <!-- Mobile web configuration -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/Guide/Mobile -->
 
-				<!-- DUELYST CSS HERE ++ -->
-				<link rel="stylesheet" href="duelyst.css">
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=0.1, maximum-scale=1.0, user-scalable=no">
 
-		</head>
-		<body>
+    <!-- https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation -->
+    <!-- Note: The orientation API may not be supported by Safari on Mac/iOS -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation#browser_compatibility -->
+    <!-- We don't use the orientation API from CSS -->
+    <!-- Cocos2D may attempt to read orientation to support rotation -->
+    <meta name="screen-orientation" content="portrait"/>
 
-		<!-- application container div -->
-		<div id="app">
-		<div id="app-main">
-					<div id="app-horizontal">
-					<canvas id="app-gamecanvas"></canvas>
-					<div id="app-content-region"></div>
-					<div id="app-utility-region"></div>
-					</div>
-			<div id="app-vertical">
-				<div id="app-modal-region"></div>
-				<div id="app-notifications-region"></div>
-			</div>
-		</div>
-		<div id="app-overlay-region"></div>
-		<div id="maintenance-announcements-region"></div>
-		<div id="app-preloading">
-			<div class="brand-main">
-				<h1>DUELYST</h1>
-			</div>
-			<img class="mystic-loader" src="loading.gif">
-		</div>
-		</div>
-		<!-- end container div -->
+    <!-- Progressive Web App settings -->
+    <!-- https://en.wikipedia.org/wiki/Progressive_web_app -->
+    <!-- https://web.dev/native-hardware-fullscreen/#launching-a-page-fullscreen-from-home-screen -->
+    <!-- See also: https://developer.chrome.com/blog/pwacompat/ -->
+    <!-- This setting hides the status/navigation bar on Chrome apps -->
+    <meta name="mobile-web-app-capable" content="yes"/>
 
-		<!-- DUELYST JS HERE ++ -->
-		<script src="vendor.js" crossorigin></script>
-		<script src="duelyst.js" crossorigin></script>
+    <!-- This setting hides the status/navigation bar on Safari apps -->
+    <!-- https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+    <!-- This appears to possibly be deprecated, with archived documentation -->
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
 
-		</body>
+    <!-- End mobile web configuration -->
+
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="full-screen" content="yes"/>
+    <meta name="x5-fullscreen" content="true"/>
+
+    <script type="text/javascript">
+      // this is for cocos
+      window.ccMapLimit = 100
+    </script>
+
+    <link rel="stylesheet" href="duelyst.css">
+  </head>
+
+  <body>
+    <!-- application container div -->
+    <div id="app">
+      <div id="app-main">
+        <div id="app-horizontal">
+          <canvas id="app-gamecanvas"></canvas>
+          <div id="app-content-region"></div>
+          <div id="app-utility-region"></div>
+        </div>
+        <div id="app-vertical">
+          <div id="app-modal-region"></div>
+          <div id="app-notifications-region"></div>
+        </div>
+      </div>
+      <div id="app-overlay-region"></div>
+      <div id="maintenance-announcements-region"></div>
+      <div id="app-preloading">
+        <div class="brand-main">
+          <h1>DUELYST</h1>
+        </div>
+        <img class="mystic-loader" src="loading.gif">
+      </div>
+    </div>
+    <!-- end container div -->
+
+    <script src="vendor.js" crossorigin></script>
+    <script src="duelyst.js" crossorigin></script>
+  </body>
 </html>

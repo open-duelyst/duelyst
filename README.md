@@ -24,6 +24,15 @@ Desktop clients for Windows, Mac, and Linux can be downloaded on the
 Desktop clients currently use the staging environment. They'll use the
 production environment once it's available.
 
+## Playing on Android or iOS
+
+We have basic support for playing on mobile web currently. From your phone's
+browser, head to https://staging.duelyst.org to try it out.
+
+To hide the status/navigation bar in Chrome or Safari, open the game and select
+"Add to Home Screen". When you open the game from the home screen, the status
+bar will be hidden.
+
 ## Contributing to OpenDuelyst
 
 If you'd like to contribute to OpenDuelyst, check out our
