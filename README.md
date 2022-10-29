@@ -58,6 +58,18 @@ Since OpenDuelyst is currently focused on recreating the game as it last
 existed in v1.96.17, please avoid creating feature requests related to balance
 changes.
 
+## Localization
+
+The game currently includes English and German localization. If you'd like to
+contribute translations for another language, take a look at the
+`app/localization/locales` directory. You can copy the `en` folder and start
+updating strings for the new language, then submit a Pull Request with your
+contribution.
+
+There are about 4,500 localized strings, so this can also be done a little bit
+at a time. Once the translations are in, we can help get the language included
+in the game.
+
 ## License
 
 OpenDuelyst is licensed under the Creative Commons Zero v1.0 Universal license.
