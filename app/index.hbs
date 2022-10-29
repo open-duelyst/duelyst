@@ -8,17 +8,29 @@
     <link rel="shortcut icon" href="{{window.location.origin}}/favicon.ico">
     <meta name="description" content="">
 
-    <!-- Needs work -->
+    <!-- Mobile web configuration below -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/Guide/Mobile -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta -->
+
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag -->
     <meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation -->
     <!-- Note: The orientation API may not be supported by Safari on Mac/iOS -->
     <!-- https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation#browser_compatibility -->
-    <!-- We don't appear to use the orientation API from CSS -->
-    <!-- That said, Cocos2D may attempt to read orientation to support rotation -->
+    <!-- We don't use the orientation API from CSS -->
+    <!-- Cocos2D may attempt to read orientation to support rotation -->
     <meta name="screen-orientation" content="portrait"/>
 
-    <!-- TODO: Non-Apple settings? -->
+    <!-- Progressive Web App settings -->
+    <!-- https://en.wikipedia.org/wiki/Progressive_web_app -->
+    <!-- https://web.dev/native-hardware-fullscreen/#launching-a-page-fullscreen-from-home-screen -->
+    <!-- See also: https://developer.chrome.com/blog/pwacompat/ -->
+    <!-- This setting hides the status/navigation bar on Chrome apps -->
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <!-- This setting hides the status/navigation bar on Safari apps -->
+    <!-- https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html -->
+    <!-- This appears to possibly be deprecated, with archived documentation -->
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
     <meta name="msapplication-tap-highlight" content="no">
