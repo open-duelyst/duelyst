@@ -7,9 +7,20 @@
 				<link rel="icon" type="image/gif" href="{{window.location.origin}}/favicon.gif">
 				<link rel="shortcut icon" href="{{window.location.origin}}/favicon.ico">
 				<meta name="description" content="">
+
+				<!-- Needs work -->
 				<meta name="viewport" content="width=800, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+				<!-- https://developer.mozilla.org/en-US/docs/Web/API/CSS_Object_Model/Managing_screen_orientation -->
+				<!-- Note: The orientation API may not be supported by Safari on Mac/iOS -->
+				<!-- https://developer.mozilla.org/en-US/docs/Web/API/Screen/orientation#browser_compatibility -->
+				<!-- We don't appear to use the orientation API from CSS -->
+				<!-- That said, Cocos2D may attempt to read orientation to support rotation -->
 				<meta name="screen-orientation" content="portrait"/>
+
+				<!-- TODO: Non-Apple settings? -->
 				<meta name="apple-mobile-web-app-capable" content="yes"/>
+
 				<meta name="msapplication-tap-highlight" content="no">
 				<meta name="full-screen" content="yes"/>
 				<meta name="x5-fullscreen" content="true"/>
@@ -19,7 +30,6 @@
 					window.ccMapLimit = 100
 				</script>
 
-				<!-- DUELYST CSS HERE ++ -->
 				<link rel="stylesheet" href="duelyst.css">
 
 		</head>
@@ -49,7 +59,6 @@
 		</div>
 		<!-- end container div -->
 
-		<!-- DUELYST JS HERE ++ -->
 		<script src="vendor.js" crossorigin></script>
 		<script src="duelyst.js" crossorigin></script>
 
