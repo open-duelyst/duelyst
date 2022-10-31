@@ -18,7 +18,7 @@ resource "aws_ecs_service" "service" {
   }
 
   dynamic "load_balancer" {
-    for_each = var.enable_lb ? [1] : []
+    for_each = var.alb_target_group == "" ? [] : ["include_this_section"]
     content {
       target_group_arn = var.alb_target_group
       container_name   = var.name
@@ -36,20 +36,18 @@ resource "aws_ecs_task_definition" "task_def" {
   container_definitions = jsonencode([
     {
       name         = var.name
-      image        = "public.ecr.aws/${var.ecr_registry}/${var.ecr_repository}:${var.deployed_version}"
+      image        = "${var.image_name}:${var.deployed_version}"
       essential    = true
       cpu          = var.container_cpu
       memory       = var.container_mem
       network_mode = "awsvpc"
       mountPoints  = []
       volumesFrom  = []
-      portMappings = var.enable_lb ? [
-        {
-          containerPort = var.service_port
-          hostPort      = var.service_port
-          protocol      = "tcp"
-        }
-      ] : []
+      portMappings = var.service_port == 0 ? [] : [{
+        containerPort = var.service_port
+        hostPort      = var.service_port
+        protocol      = "tcp"
+      }]
       logConfiguration = {
         logDriver = "awslogs"
         options = {

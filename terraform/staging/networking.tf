@@ -50,6 +50,16 @@ module "internal_security_group" {
       cidr_blocks = ["10.0.0.0/16"]
     },
     {
+      description = "Allow TCP/5432 from VPC"
+      port        = 5432
+      cidr_blocks = ["10.0.0.0/16"]
+    },
+    {
+      description = "Allow TCP/6379 from VPC"
+      port        = 6379
+      cidr_blocks = ["10.0.0.0/16"]
+    },
+    {
       description = "Allow TCP/8000 from VPC"
       port        = 8000
       cidr_blocks = ["10.0.0.0/16"]

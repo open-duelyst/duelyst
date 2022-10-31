@@ -9,8 +9,8 @@ module "ecs_cluster" {
   # Set capacity to 3 to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
-  min_spot_capacity = 2
-  max_spot_capacity = 2
+  min_spot_capacity = 3
+  max_spot_capacity = 3
 
   security_group_ids = [module.internal_security_group.id]
   subnets = [
@@ -26,8 +26,7 @@ module "ecs_service_api" {
   cluster           = module.ecs_cluster.id
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
-  ecr_registry      = var.ecr_registry_id
-  ecr_repository    = module.ecr_repository_api.id
+  image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_api.id}"
   deployed_version  = "1.97.8"
   container_count   = 1
   container_mem     = 450
@@ -58,8 +57,7 @@ module "ecs_service_game" {
   cluster           = module.ecs_cluster.id
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
-  ecr_registry      = var.ecr_registry_id
-  ecr_repository    = module.ecr_repository_game.id
+  image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_game.id}"
   deployed_version  = "1.97.8"
   container_count   = 1
   container_mem     = 350
@@ -84,8 +82,7 @@ module "ecs_service_sp" {
   cluster           = module.ecs_cluster.id
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
-  ecr_registry      = var.ecr_registry_id
-  ecr_repository    = module.ecr_repository_sp.id
+  image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_sp.id}"
   deployed_version  = "1.97.8"
   container_count   = 1
   container_mem     = 350
@@ -109,14 +106,10 @@ module "ecs_service_worker" {
   cluster           = module.ecs_cluster.id
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
-  ecr_registry      = var.ecr_registry_id
-  ecr_repository    = module.ecr_repository_worker.id
+  image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_worker.id}"
   deployed_version  = "1.97.8"
   container_count   = 1
   container_mem     = 450
-  enable_lb         = false
-  service_port      = 0
-  alb_target_group  = ""
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
@@ -139,16 +132,12 @@ module "ecs_service_migrate" {
   source            = "../modules/ecs_service"
   name              = "duelyst-migrate-staging"
   cluster           = module.ecs_cluster.id
-  capacity_provider = module.ecs_cluster.capacity_provider
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
-  ecr_registry      = var.ecr_registry_id
-  ecr_repository    = module.ecr_repository_migrate.id
+  image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_migrate.id}"
   deployed_version  = "1.97.8"
   container_count   = 0 # Change to 1 to apply database migrations.
   container_mem     = 350
-  enable_lb         = false
-  service_port      = 0
-  alb_target_group  = ""
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" }
@@ -157,4 +146,30 @@ module "ecs_service_migrate" {
   secrets = [
     { name = "POSTGRES_CONNECTION", valueFrom = "/duelyst/staging/postgres/connection-string" }
   ]
+}
+
+module "ecs_service_redis" {
+  source            = "../modules/ecs_service"
+  name              = "redis"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/redis"
+  deployed_version  = "6"
+  container_count   = 1
+  container_mem     = 450
+  service_port      = 6379
+}
+
+module "ecs_service_postgres" {
+  source            = "../modules/ecs_service"
+  name              = "postgres"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/postgres"
+  deployed_version  = "13"
+  container_count   = 0
+  container_mem     = 450
+  service_port      = 5432
 }
