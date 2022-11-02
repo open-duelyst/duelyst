@@ -158,6 +158,7 @@ module "ecs_service_redis" {
   deployed_version  = "6"
   container_count   = 1
   container_mem     = 450
+  command           = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
   service_port      = 6379
   network_mode      = "awsvpc"
   security_groups   = [module.internal_security_group.id]
