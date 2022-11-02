@@ -59,6 +59,12 @@ variable "alb_target_group" {
   default     = ""
 }
 
+variable "network_mode" {
+  type = string
+  description = "The ECS Task networking mode to use for this service. Default is 'bridge'."
+  default = "bridge"
+}
+
 variable "environment_variables" {
   type = list(object({
     name  = string

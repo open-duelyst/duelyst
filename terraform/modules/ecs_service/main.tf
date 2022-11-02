@@ -39,6 +39,7 @@ resource "aws_ecs_service" "service" {
 resource "aws_ecs_task_definition" "task_def" {
   family                   = var.name
   execution_role_arn       = var.task_role
+  network_mode             = var.network_mode
   requires_compatibilities = []
   tags                     = {}
 
@@ -49,7 +50,6 @@ resource "aws_ecs_task_definition" "task_def" {
       essential    = true
       cpu          = var.container_cpu
       memory       = var.container_mem
-      network_mode = "awsvpc"
       mountPoints  = []
       volumesFrom  = []
       portMappings = var.service_port == 0 ? [] : [{
