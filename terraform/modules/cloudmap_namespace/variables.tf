@@ -1,6 +1,6 @@
 variable "name" {
   type        = string
-  description = "The name of this CloudMap namespace, e.g. duelyst.local"
+  description = "The name of this CloudMap namespace, e.g. 'duelyst.local'."
 }
 
 variable "vpc_id" {

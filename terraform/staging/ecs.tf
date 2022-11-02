@@ -166,7 +166,7 @@ module "ecs_service_redis" {
     module.second_subnet.id,
     module.third_subnet.id,
   ]
-  cloudmap_service_arn = module.cloudmap.redis_service_arn
+  cloudmap_service_arn = module.cloudmap_service_redis.service_arn
 }
 
 module "ecs_service_postgres" {
