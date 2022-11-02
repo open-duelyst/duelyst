@@ -5,7 +5,8 @@ module "cloudmap_namespace" {
 }
 
 module "cloudmap_service_redis" {
-  source       = "../modules/cloudmap_service"
-  name         = "redis"
-  namespace_id = module.cloudmap_namespace.namespace_id
+  source         = "../modules/cloudmap_service"
+  name           = "redis"
+  namespace_id   = module.cloudmap_namespace.id
+  namespace_name = module.cloudmap_namespace.name
 }
