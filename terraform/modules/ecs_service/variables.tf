@@ -18,19 +18,14 @@ variable "task_role" {
   description = "The task execution IAM role for this service."
 }
 
-variable "ecr_registry" {
+variable "image_name" {
   type        = string
-  description = "The ECR registry from which to source container images."
-}
-
-variable "ecr_repository" {
-  type        = string
-  description = "The ECR repository from which to source container images."
+  description = "The name of the image to deploy."
 }
 
 variable "deployed_version" {
   type        = string
-  description = "The version of the image to pull from the ECR repository."
+  description = "The version of the image to deploy."
   default     = "latest"
 }
 
@@ -43,7 +38,7 @@ variable "container_count" {
 variable "container_cpu" {
   type        = number
   description = "The number of CPU units to allocate to each container."
-  default     = 1000
+  default     = 1024
 }
 
 variable "container_mem" {
@@ -52,20 +47,34 @@ variable "container_mem" {
   default     = 350 # Allows for 2 containers on a t4g.micro instance.
 }
 
-variable "enable_lb" {
-  type        = bool
-  description = "Whether or not to associate this ECS service with an ALB target group."
-  default     = true
-}
-
 variable "service_port" {
   type        = number
-  description = "The TCP port to expose for this service."
+  description = "The TCP port to expose via `portMapping` for this service. Disabled by default."
+  default     = 0
 }
 
 variable "alb_target_group" {
   type        = string
-  description = "The ALB target group to associate with this service."
+  description = "The ALB target group to associate with this service. The default is no target group."
+  default     = ""
+}
+
+variable "network_mode" {
+  type        = string
+  description = "The ECS Task networking mode to use for this service. Default is 'bridge'."
+  default     = "bridge"
+}
+
+variable "subnets" {
+  type        = list(string)
+  description = "Subnets for the ECS service (`awsvpc` networking mode only)."
+  default     = []
+}
+
+variable "security_groups" {
+  type        = list(string)
+  description = "Security groups for the ECS service (`awsvpc` networking mode only)."
+  default     = []
 }
 
 variable "environment_variables" {
@@ -74,6 +83,7 @@ variable "environment_variables" {
     value = string
   }))
   description = "A list of environment variable objects with name and value keys."
+  default     = []
 }
 
 variable "secrets" {
@@ -82,4 +92,11 @@ variable "secrets" {
     valueFrom = string
   }))
   description = "A list of secret objects with name and valueFrom (SSM path) keys."
+  default     = []
+}
+
+variable "cloudmap_service_arn" {
+  type        = string
+  description = "An optional CloudMap service ARN to use for service discovery."
+  default     = ""
 }

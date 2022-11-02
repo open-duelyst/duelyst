@@ -22,26 +22,8 @@ concurrent users:
 
 ## AWS Service Requirements
 
-Running a staging environment in AWS costs about $9/month, with the following
+Running a staging environment in AWS costs about $12/month, with the following
 breakdown:
-
-### RDS and ElastiCache ($0/mo with Free Tier)
-
-Of the above six resources, AWS offers fully managed solutions for Postgres
-(RDS) and Redis (ElastiCache). While these are generally more expensive than
-running containers, the Free Tier limits are sufficient for a staging
-environment:
-
-Postgres:
-
-- AWS RDS provides one free `db.t4g.micro` instance per AWS account.
-- This instance type has 2 vCPU, 1GB of memory, and 20GB of storage.
-- 20GB of backups are also included for free.
-
-Redis:
-
-- AWS ElastiCache provides one free `cache.t3.micro` instance per AWS account.
-- This instance type has 2 vCPU and 500MB of memory.
 
 ### Choosing a Compute Platform: AWS ECS ($0/month)
 
@@ -125,7 +107,37 @@ billed at $0.09 per GB per month. With constant peak traffic, this could amount
 to 1TB of monthly egress at $36/mo. However, we employ S3 and CloudFront to
 avoid serving static assets from EC2.
 
-### CDN: S3 and CloudFront ($1/month)
+### RDS and ElastiCache ($0/mo with Free Tier)
+
+Of the above six resources, AWS offers fully managed solutions for Postgres
+(RDS) and Redis (ElastiCache). While these are generally more expensive than
+running containers, the Free Tier limits are sufficient for a staging
+environment:
+
+Postgres:
+
+- AWS RDS provides one free `db.t4g.micro` instance per AWS account.
+- This instance type has 2 vCPU, 1GB of memory, and 20GB of storage.
+- 20GB of backups are also included for free.
+- After the Free Tier expires, this is around $12/mo
+
+Redis:
+
+- AWS ElastiCache provides one free `cache.t3.micro` instance per AWS account.
+- This instance type has 2 vCPU and 500MB of memory.
+- After the Free Tier expires, this is around $12/mo
+
+### Self-hosted Redis and Postgres (about $4/mo)
+
+In order to avoid the $24/mo in billing after the Free Tier expires, we can run
+Redis and Postgres in ECS instead. This comes with its own costs, including:
+
+- One `t4g.micro` Spot instance to provide the compute ($1.83/mo)
+- One DNS hosted zone for service discovery via AWS CloudMap ($0.50/mo)
+- One 8GB EBS disk for persisting Postgres data across containers ($0.64/mo)
+- 8GB EBS disk snapshots for backups ($0.40/mo each)
+
+### CDN: S3 and CloudFront ($0/month)
 
 S3:
 
@@ -134,8 +146,7 @@ S3:
 - Like EC2, the first 100GB of data transfer is free.
 - Both GET requests and data transfer are reduced by CDN caching with
 	CloudFront.
-- We'll round S3 costs up to $1/mo to store 1GB of static assets and ~1MB of
-	Terraform state.
+- In total, serving 1GB of static assets via CDN costs pennies per month.
 
 CloudFront:
 
