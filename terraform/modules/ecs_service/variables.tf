@@ -76,3 +76,9 @@ variable "secrets" {
   description = "A list of secret objects with name and valueFrom (SSM path) keys."
   default     = []
 }
+
+variable "cloudmap_service_arn" {
+  type        = string
+  description = "An optional CloudMap service ARN to use for service discovery."
+  default     = ""
+}

@@ -25,6 +25,15 @@ resource "aws_ecs_service" "service" {
       container_port   = var.service_port
     }
   }
+
+  dynamic "service_registries" {
+    for_each = var.cloudmap_service_arn == "" ? [] : ["include_this_section"]
+    content {
+      registry_arn   = var.cloudmap_service_arn
+      container_name = var.name
+      container_port = var.service_port
+    }
+  }
 }
 
 resource "aws_ecs_task_definition" "task_def" {
