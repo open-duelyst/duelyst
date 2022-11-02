@@ -35,7 +35,7 @@ module "ecs_service_api" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "CDN_DOMAIN_NAME", value = var.cdn_domain_name },
@@ -67,7 +67,7 @@ module "ecs_service_game" {
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
     { name = "GAME_PORT", value = 8001 },
-    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -91,7 +91,7 @@ module "ecs_service_sp" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -113,7 +113,7 @@ module "ecs_service_worker" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.redis.instance_dns },
+    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
