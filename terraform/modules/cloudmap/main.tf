@@ -11,7 +11,7 @@ resource "aws_service_discovery_service" "redis" {
     namespace_id = aws_service_discovery_private_dns_namespace.namespace.id
 
     dns_records {
-      type = "SRV"
+      type = "A"
       ttl  = 10 # Seconds.
     }
   }

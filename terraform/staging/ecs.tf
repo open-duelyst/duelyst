@@ -149,16 +149,23 @@ module "ecs_service_migrate" {
 }
 
 module "ecs_service_redis" {
-  source               = "../modules/ecs_service"
-  name                 = "redis"
-  cluster              = module.ecs_cluster.id
-  capacity_provider    = module.ecs_cluster.spot_capacity_provider
-  task_role            = module.ecs_cluster.task_role
-  image_name           = "public.ecr.aws/docker/library/redis"
-  deployed_version     = "6"
-  container_count      = 1
-  container_mem        = 450
-  service_port         = 6379
+  source            = "../modules/ecs_service"
+  name              = "redis"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/redis"
+  deployed_version  = "6"
+  container_count   = 1
+  container_mem     = 450
+  service_port      = 6379
+  network_mode      = "awsvpc"
+  security_groups   = [module.internal_security_group.id]
+  subnets = [
+    module.first_subnet.id,
+    module.second_subnet.id,
+    module.third_subnet.id,
+  ]
   cloudmap_service_arn = module.cloudmap.redis_service_arn
 }
 

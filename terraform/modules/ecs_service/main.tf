@@ -26,12 +26,19 @@ resource "aws_ecs_service" "service" {
     }
   }
 
+  dynamic "network_configuration" {
+    for_each = var.network_mode == "bridge" ? [] : ["include_this_section"]
+    content {
+      subnets         = var.subnets
+      security_groups = var.security_groups
+    }
+  }
+
   dynamic "service_registries" {
     for_each = var.cloudmap_service_arn == "" ? [] : ["include_this_section"]
     content {
       registry_arn   = var.cloudmap_service_arn
       container_name = var.name
-      container_port = var.service_port
     }
   }
 }
@@ -39,19 +46,19 @@ resource "aws_ecs_service" "service" {
 resource "aws_ecs_task_definition" "task_def" {
   family                   = var.name
   execution_role_arn       = var.task_role
-  network_mode             = var.network_mode
+  network_mode             = var.network_mode == "bridge" ? null : var.network_mode
   requires_compatibilities = []
   tags                     = {}
 
   container_definitions = jsonencode([
     {
-      name         = var.name
-      image        = "${var.image_name}:${var.deployed_version}"
-      essential    = true
-      cpu          = var.container_cpu
-      memory       = var.container_mem
-      mountPoints  = []
-      volumesFrom  = []
+      name        = var.name
+      image       = "${var.image_name}:${var.deployed_version}"
+      essential   = true
+      cpu         = var.container_cpu
+      memory      = var.container_mem
+      mountPoints = []
+      volumesFrom = []
       portMappings = var.service_port == 0 ? [] : [{
         containerPort = var.service_port
         hostPort      = var.service_port

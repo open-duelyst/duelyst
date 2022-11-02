@@ -60,9 +60,21 @@ variable "alb_target_group" {
 }
 
 variable "network_mode" {
-  type = string
+  type        = string
   description = "The ECS Task networking mode to use for this service. Default is 'bridge'."
-  default = "bridge"
+  default     = "bridge"
+}
+
+variable "subnets" {
+  type        = list(string)
+  description = "Subnets for the ECS service (`awsvpc` networking mode only)."
+  default     = []
+}
+
+variable "security_groups" {
+  type        = list(string)
+  description = "Security groups for the ECS service (`awsvpc` networking mode only)."
+  default     = []
 }
 
 variable "environment_variables" {
