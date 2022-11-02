@@ -23,14 +23,6 @@ module "ecs_alarms" {
   alarm_actions = [module.email_sns_topic.topic_arn]
 }
 
-module "redis_alarms" {
-  source        = "../modules/alarms/elasticache"
-  cluster_id    = "duelyst-staging"
-  node_id       = "0001"
-  instance_type = module.redis.instance_type
-  alarm_actions = [module.email_sns_topic.topic_arn]
-}
-
 module "postgres_alarms" {
   source        = "../modules/alarms/rds"
   database_id   = "duelyst-staging"
