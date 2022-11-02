@@ -57,6 +57,7 @@ resource "aws_ecs_task_definition" "task_def" {
       essential   = true
       cpu         = var.container_cpu
       memory      = var.container_mem
+      command     = var.command == [] ? null : var.command
       mountPoints = []
       volumesFrom = []
       portMappings = var.service_port == 0 ? [] : [{
