@@ -171,7 +171,6 @@ module "ecs_service_redis" {
   ]
 }
 
-/* Disabled: Using RDS for now.
 module "ecs_service_postgres" {
   source               = "../modules/ecs_service"
   name                 = "postgres"
@@ -180,7 +179,7 @@ module "ecs_service_postgres" {
   task_role            = module.ecs_cluster.task_role
   image_name           = "public.ecr.aws/docker/library/postgres"
   deployed_version     = "13"
-  container_count      = 1
+  container_count      = 0
   container_mem        = 450
   service_port         = 5432
   cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
@@ -210,4 +209,3 @@ module "ecs_service_postgres" {
     { name = "POSTGRES_PASSWORD", valueFrom = "/duelyst/staging/postgres/password" }
   ]
 }
-*/
