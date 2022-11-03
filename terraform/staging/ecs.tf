@@ -35,6 +35,8 @@ module "ecs_service_api" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
+    # Use module.redis.instance_dns for ElastiCache.
+    # Use module.cloudmap_service_redis.dns_name for Redis on ECS.
     { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
