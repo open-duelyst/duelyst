@@ -6,7 +6,7 @@ module "ecs_cluster" {
   root_volume_size = 8
   ssh_public_key   = var.ssh_public_key
 
-  # Set capacity to 3 to allow graceful deployments without stopping live containers.
+  # Increase capacity to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
   min_spot_capacity = 3
@@ -149,36 +149,65 @@ module "ecs_service_migrate" {
 }
 
 module "ecs_service_redis" {
-  source            = "../modules/ecs_service"
-  name              = "redis"
-  cluster           = module.ecs_cluster.id
-  capacity_provider = module.ecs_cluster.spot_capacity_provider
-  task_role         = module.ecs_cluster.task_role
-  image_name        = "public.ecr.aws/docker/library/redis"
-  deployed_version  = "6"
-  container_count   = 1
-  container_mem     = 450
-  command           = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
-  service_port      = 6379
-  network_mode      = "awsvpc"
-  security_groups   = [module.internal_security_group.id]
+  source               = "../modules/ecs_service"
+  name                 = "redis"
+  cluster              = module.ecs_cluster.id
+  capacity_provider    = module.ecs_cluster.spot_capacity_provider
+  task_role            = module.ecs_cluster.task_role
+  image_name           = "public.ecr.aws/docker/library/redis"
+  deployed_version     = "6"
+  container_count      = 1
+  container_mem        = 450
+  command              = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
+  service_port         = 6379
+  cloudmap_service_arn = module.cloudmap_service_redis.service_arn
+  network_mode         = "awsvpc"
+  security_groups      = [module.internal_security_group.id]
+
   subnets = [
     module.first_subnet.id,
     module.second_subnet.id,
     module.third_subnet.id,
   ]
-  cloudmap_service_arn = module.cloudmap_service_redis.service_arn
 }
 
+/* Disabled: Using RDS for now.
 module "ecs_service_postgres" {
-  source            = "../modules/ecs_service"
-  name              = "postgres"
-  cluster           = module.ecs_cluster.id
-  capacity_provider = module.ecs_cluster.spot_capacity_provider
-  task_role         = module.ecs_cluster.task_role
-  image_name        = "public.ecr.aws/docker/library/postgres"
-  deployed_version  = "13"
-  container_count   = 0
-  container_mem     = 450
-  service_port      = 5432
+  source               = "../modules/ecs_service"
+  name                 = "postgres"
+  cluster              = module.ecs_cluster.id
+  capacity_provider    = module.ecs_cluster.spot_capacity_provider
+  task_role            = module.ecs_cluster.task_role
+  image_name           = "public.ecr.aws/docker/library/postgres"
+  deployed_version     = "13"
+  container_count      = 1
+  container_mem        = 450
+  service_port         = 5432
+  cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
+  network_mode         = "awsvpc"
+  security_groups      = [module.internal_security_group.id]
+
+  subnets = [
+    module.first_subnet.id,
+    module.second_subnet.id,
+    module.third_subnet.id,
+  ]
+
+  volumes = [
+    { name = "postgres-volume", host_path = "/mnt/postgres-volume" }
+  ]
+
+  mount_points = [
+    { containerPath = "/var/lib/postgresql/data", sourceVolume = "postgres-volume" }
+  ]
+
+  environment_variables = [
+    { name = "POSTGRES_USER", value = "duelyst" },
+    { name = "POSTGRES_DATABASE", value = "duelyst" }
+  ]
+
+  secrets = [
+    { name = "POSTGRES_PASSWORD", valueFrom = "/duelyst/staging/postgres/password" }
+  ]
 }
+*/

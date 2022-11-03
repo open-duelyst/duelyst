@@ -50,6 +50,29 @@ resource "aws_ecs_task_definition" "task_def" {
   requires_compatibilities = []
   tags                     = {}
 
+  dynamic "placement_constraints" {
+    for_each = var.placement_constraints
+    content {
+      type       = placement_constraints.value.type
+      expression = placement_constraints.value.expression
+    }
+  }
+
+  /* Disabled: No longer using rexray/ebs.
+  dynamic "volume" {
+    for_each = var.volumes
+    content {
+      name = volume.value.name
+
+      docker_volume_configuration {
+        driver        = "rexray/ebs"
+        scope         = "shared"
+        autoprovision = true
+      }
+    }
+  }
+  */
+
   container_definitions = jsonencode([
     {
       name        = var.name
@@ -58,7 +81,7 @@ resource "aws_ecs_task_definition" "task_def" {
       cpu         = var.container_cpu
       memory      = var.container_mem
       command     = var.command == [] ? null : var.command
-      mountPoints = []
+      mountPoints = var.mount_points == [] ? [] : var.mount_points
       volumesFrom = []
       portMappings = var.service_port == 0 ? [] : [{
         containerPort = var.service_port

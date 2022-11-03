@@ -53,6 +53,33 @@ variable "command" {
   default     = []
 }
 
+variable "mount_points" {
+  type = list(object({
+    containerPath = string
+    sourceVolume  = string
+  }))
+  description = "A list of volumes to be mounted in the container."
+  default     = []
+}
+
+variable "placement_constraints" {
+  type = list(object({
+    type       = string
+    expression = string
+  }))
+  description = "A list of constraints for task placement."
+  default     = []
+}
+
+variable "volumes" {
+  type = list(object({
+    name      = string
+    host_path = string
+  }))
+  description = "A list of volumes to attach to the task."
+  default     = []
+}
+
 variable "service_port" {
   type        = number
   description = "The TCP port to expose via `portMapping` for this service. Disabled by default."
