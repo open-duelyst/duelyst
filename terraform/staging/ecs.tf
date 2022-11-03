@@ -9,8 +9,8 @@ module "ecs_cluster" {
   # Increase capacity to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
-  min_spot_capacity = 3
-  max_spot_capacity = 3
+  min_spot_capacity = 2
+  max_spot_capacity = 2
 
   security_group_ids = [module.internal_security_group.id]
   subnets = [
@@ -156,7 +156,7 @@ module "ecs_service_redis" {
   task_role            = module.ecs_cluster.task_role
   image_name           = "public.ecr.aws/docker/library/redis"
   deployed_version     = "6"
-  container_count      = 1
+  container_count      = 0 # Still using ElastiCache.
   container_mem        = 450
   command              = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
   service_port         = 6379
@@ -179,7 +179,7 @@ module "ecs_service_postgres" {
   task_role            = module.ecs_cluster.task_role
   image_name           = "public.ecr.aws/docker/library/postgres"
   deployed_version     = "13"
-  container_count      = 0
+  container_count      = 0 # Still using RDS.
   container_mem        = 450
   service_port         = 5432
   cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
