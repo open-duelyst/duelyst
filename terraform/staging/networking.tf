@@ -49,16 +49,18 @@ module "internal_security_group" {
       port        = 3000
       cidr_blocks = ["10.0.0.0/16"]
     },
-    {
-      description = "Allow TCP/5432 from VPC"
-      port        = 5432
-      cidr_blocks = ["10.0.0.0/16"]
-    },
-    {
-      description = "Allow TCP/6379 from VPC"
-      port        = 6379
-      cidr_blocks = ["10.0.0.0/16"]
-    },
+    # Not running Postgres in ECS currently.
+    #{
+    #  description = "Allow TCP/5432 from VPC"
+    #  port        = 5432
+    #  cidr_blocks = ["10.0.0.0/16"]
+    #},
+    # Not running Redis in ECS currently.
+    #{
+    #  description = "Allow TCP/6379 from VPC"
+    #  port        = 6379
+    #  cidr_blocks = ["10.0.0.0/16"]
+    #},
     {
       description = "Allow TCP/8000 from VPC"
       port        = 8000
@@ -69,8 +71,9 @@ module "internal_security_group" {
       port        = 8001
       cidr_blocks = ["10.0.0.0/16"]
     },
+    # Temporary SSH access.
     #{
-    #  description = "Temporary SSH access"
+    #  description = "Allow TCP/22 from public Internet"
     #  port        = 22
     #  cidr_blocks = ["0.0.0.0/0"]
     #}

@@ -149,20 +149,20 @@ module "ecs_service_migrate" {
 }
 
 module "ecs_service_redis" {
-  source               = "../modules/ecs_service"
-  name                 = "redis"
-  cluster              = module.ecs_cluster.id
-  capacity_provider    = module.ecs_cluster.spot_capacity_provider
-  task_role            = module.ecs_cluster.task_role
-  image_name           = "public.ecr.aws/docker/library/redis"
-  deployed_version     = "6"
-  container_count      = 0 # Still using ElastiCache.
-  container_mem        = 450
-  command              = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
-  service_port         = 6379
-  cloudmap_service_arn = module.cloudmap_service_redis.service_arn
-  network_mode         = "awsvpc"
-  security_groups      = [module.internal_security_group.id]
+  source            = "../modules/ecs_service"
+  name              = "redis"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/redis"
+  deployed_version  = "6"
+  container_count   = 0 # Still using ElastiCache.
+  container_mem     = 450
+  command           = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
+  service_port      = 6379
+  network_mode      = "awsvpc"
+  security_groups   = [module.internal_security_group.id]
+  #cloudmap_service_arn = module.cloudmap_service_redis.service_arn
 
   subnets = [
     module.first_subnet.id,
@@ -172,19 +172,19 @@ module "ecs_service_redis" {
 }
 
 module "ecs_service_postgres" {
-  source               = "../modules/ecs_service"
-  name                 = "postgres"
-  cluster              = module.ecs_cluster.id
-  capacity_provider    = module.ecs_cluster.spot_capacity_provider
-  task_role            = module.ecs_cluster.task_role
-  image_name           = "public.ecr.aws/docker/library/postgres"
-  deployed_version     = "13"
-  container_count      = 0 # Still using RDS.
-  container_mem        = 450
-  service_port         = 5432
-  cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
-  network_mode         = "awsvpc"
-  security_groups      = [module.internal_security_group.id]
+  source            = "../modules/ecs_service"
+  name              = "postgres"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/postgres"
+  deployed_version  = "13"
+  container_count   = 0 # Still using RDS.
+  container_mem     = 450
+  service_port      = 5432
+  network_mode      = "awsvpc"
+  security_groups   = [module.internal_security_group.id]
+  #cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
 
   subnets = [
     module.first_subnet.id,
