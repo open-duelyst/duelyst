@@ -9,8 +9,8 @@ module "ecs_cluster" {
   # Increase capacity to allow graceful deployments without stopping live containers.
   min_capacity      = 0
   max_capacity      = 0
-  min_spot_capacity = 3
-  max_spot_capacity = 3
+  min_spot_capacity = 2
+  max_spot_capacity = 2
 
   security_group_ids = [module.internal_security_group.id]
   subnets = [
@@ -35,7 +35,7 @@ module "ecs_service_api" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "CDN_DOMAIN_NAME", value = var.cdn_domain_name },
@@ -67,7 +67,7 @@ module "ecs_service_game" {
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
     { name = "GAME_PORT", value = 8001 },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -91,7 +91,7 @@ module "ecs_service_sp" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -113,7 +113,7 @@ module "ecs_service_worker" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
@@ -149,20 +149,20 @@ module "ecs_service_migrate" {
 }
 
 module "ecs_service_redis" {
-  source               = "../modules/ecs_service"
-  name                 = "redis"
-  cluster              = module.ecs_cluster.id
-  capacity_provider    = module.ecs_cluster.spot_capacity_provider
-  task_role            = module.ecs_cluster.task_role
-  image_name           = "public.ecr.aws/docker/library/redis"
-  deployed_version     = "6"
-  container_count      = 1
-  container_mem        = 450
-  command              = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
-  service_port         = 6379
-  cloudmap_service_arn = module.cloudmap_service_redis.service_arn
-  network_mode         = "awsvpc"
-  security_groups      = [module.internal_security_group.id]
+  source            = "../modules/ecs_service"
+  name              = "redis"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/redis"
+  deployed_version  = "6"
+  container_count   = 0 # Still using ElastiCache.
+  container_mem     = 450
+  command           = ["redis-server", "--save", "\"\"", "--appendonly", "no"] # Disable persistence.
+  service_port      = 6379
+  network_mode      = "awsvpc"
+  security_groups   = [module.internal_security_group.id]
+  #cloudmap_service_arn = module.cloudmap_service_redis.service_arn
 
   subnets = [
     module.first_subnet.id,
@@ -171,21 +171,20 @@ module "ecs_service_redis" {
   ]
 }
 
-/* Disabled: Using RDS for now.
 module "ecs_service_postgres" {
-  source               = "../modules/ecs_service"
-  name                 = "postgres"
-  cluster              = module.ecs_cluster.id
-  capacity_provider    = module.ecs_cluster.spot_capacity_provider
-  task_role            = module.ecs_cluster.task_role
-  image_name           = "public.ecr.aws/docker/library/postgres"
-  deployed_version     = "13"
-  container_count      = 1
-  container_mem        = 450
-  service_port         = 5432
-  cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
-  network_mode         = "awsvpc"
-  security_groups      = [module.internal_security_group.id]
+  source            = "../modules/ecs_service"
+  name              = "postgres"
+  cluster           = module.ecs_cluster.id
+  capacity_provider = module.ecs_cluster.spot_capacity_provider
+  task_role         = module.ecs_cluster.task_role
+  image_name        = "public.ecr.aws/docker/library/postgres"
+  deployed_version  = "13"
+  container_count   = 0 # Still using RDS.
+  container_mem     = 450
+  service_port      = 5432
+  network_mode      = "awsvpc"
+  security_groups   = [module.internal_security_group.id]
+  #cloudmap_service_arn = module.cloudmap_service_postgres.service_arn
 
   subnets = [
     module.first_subnet.id,
@@ -193,6 +192,7 @@ module "ecs_service_postgres" {
     module.third_subnet.id,
   ]
 
+  /* Disabled: Not using rexray/ebs Docker plugin.
   volumes = [
     { name = "postgres-volume", host_path = "/mnt/postgres-volume" }
   ]
@@ -200,6 +200,7 @@ module "ecs_service_postgres" {
   mount_points = [
     { containerPath = "/var/lib/postgresql/data", sourceVolume = "postgres-volume" }
   ]
+  */
 
   environment_variables = [
     { name = "POSTGRES_USER", value = "duelyst" },
@@ -210,4 +211,3 @@ module "ecs_service_postgres" {
     { name = "POSTGRES_PASSWORD", valueFrom = "/duelyst/staging/postgres/password" }
   ]
 }
-*/
