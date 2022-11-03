@@ -35,9 +35,7 @@ module "ecs_service_api" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    # Use module.redis.instance_dns for ElastiCache.
-    # Use module.cloudmap_service_redis.dns_name for Redis on ECS.
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "CDN_DOMAIN_NAME", value = var.cdn_domain_name },
@@ -69,7 +67,7 @@ module "ecs_service_game" {
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
     { name = "GAME_PORT", value = 8001 },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -93,7 +91,7 @@ module "ecs_service_sp" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url }
   ]
 
@@ -115,7 +113,7 @@ module "ecs_service_worker" {
 
   environment_variables = [
     { name = "NODE_ENV", value = "staging" },
-    { name = "REDIS_HOST", value = module.cloudmap_service_redis.dns_name },
+    { name = "REDIS_HOST", value = module.redis.instance_dns },
     { name = "FIREBASE_URL", value = var.firebase_url },
     { name = "FIREBASE_PROJECT_ID", value = var.firebase_project },
     { name = "DEFAULT_GAME_SERVER", value = var.staging_domain_name },
@@ -194,6 +192,7 @@ module "ecs_service_postgres" {
     module.third_subnet.id,
   ]
 
+  /* Disabled: Not using rexray/ebs Docker plugin.
   volumes = [
     { name = "postgres-volume", host_path = "/mnt/postgres-volume" }
   ]
@@ -201,6 +200,7 @@ module "ecs_service_postgres" {
   mount_points = [
     { containerPath = "/var/lib/postgresql/data", sourceVolume = "postgres-volume" }
   ]
+  */
 
   environment_variables = [
     { name = "POSTGRES_USER", value = "duelyst" },
