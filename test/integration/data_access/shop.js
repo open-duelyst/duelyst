@@ -42,32 +42,6 @@ describe("shop module", function() {
   //   });
   // });
 
-  describe("Shop.json", function () {
-    it('expect no duplicate steam ids or skus', function () {
-      const allSkus = [];
-      const allSteamIds = [];
-
-      for (var categoryId in ShopData) {
-        const shopCategoryData = ShopData[categoryId];
-        for (var productKey in shopCategoryData) {
-          const productData = shopCategoryData[productKey];
-          expect(productData.sku).to.exist
-          allSkus.push(productData.sku);
-
-          if (productData.gold != null) {
-            expect(productData.gold).to.exist
-          } else {
-            expect(productData.steam_id).to.exist
-            allSteamIds.push(productData.steam_id);
-          }
-        }
-      }
-
-      expect(_.unique(allSkus).length).to.equal(allSkus.length);
-      expect(_.unique(allSteamIds).length).to.equal(allSteamIds.length);
-    })
-  })
-
   describe("ShopModule - tokens and charges", function() {
     describe("productDataForSKU()", function() {
       it('expect to pull up correct data for an SKU', function() {
@@ -100,60 +74,6 @@ describe("shop module", function() {
         });
       });
     });
-  })
-
-  describe("ShopModule - STEAM", function() {
-    before(function(){
-      this.timeout(15000);
-      return SyncModule.wipeUserData(userId)
-    })
-
-    describe("purchaseProductOnSteam()", function() {
-
-      it('expect to record all data correctly for a steam purchase', function() {
-
-        const orderId = "steam-tx-id"
-
-        return ShopModule.purchaseProductOnSteam({
-          userId: userId,
-          sku: "BOOSTER3",
-          orderId: orderId
-        })
-        .then(function(result){
-          expect(result).to.exist;
-          return DuelystFirebase.connect().getRootRef()
-        }).then(function(rootRef){
-          return Promise.all([
-            knex("users").first().where('id',userId),
-            FirebasePromises.once(rootRef.child("users").child(userId),"value"),
-            knex("user_charges").select().where('user_id',userId),
-            FirebasePromises.once(rootRef.child("user-charges").child(userId).child(orderId),"value"),
-            knex.select().from("user_spirit_orbs").where('user_id',userId),
-            FirebasePromises.once(rootRef.child("user-inventory").child(userId).child("spirit-orbs"),"value")
-          ])
-        }).spread(function(userRow,userSnapshot,chargeRows,userChargeSnapshot,spiritOrbRows,firebaseBoostersSnapshot){
-
-          expect(spiritOrbRows.length).to.equal(2)
-          expect(firebaseBoostersSnapshot.val()).to.exist
-
-          expect(userRow.last_purchase_at).to.exist
-          expect(userRow.first_purchased_at.valueOf()).to.equal(userRow.last_purchase_at.valueOf())
-          expect(userRow.purchase_count).to.equal(1)
-          expect(userRow.ltv).to.equal(299)
-
-          expect(chargeRows).to.exist
-          expect(chargeRows.length).to.equal(1)
-          expect(chargeRows[0].charge_id).to.equal(orderId)
-          expect(chargeRows[0].amount).to.equal(userRow.ltv)
-          expect(chargeRows[0].payment_type).to.equal("steam")
-          expect(chargeRows[0].charge_json).to.exist
-          expect(chargeRows[0].sku).to.equal('BOOSTER3')
-          expect(chargeRows[0].created_at.valueOf()).to.equal(userRow.last_purchase_at.valueOf())
-
-          expect(userSnapshot.val().ltv).to.equal(userRow.ltv)
-        })
-      })
-    })
   })
 });
 */

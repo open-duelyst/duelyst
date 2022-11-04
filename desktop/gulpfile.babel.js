@@ -103,28 +103,3 @@ gulp.task('desktop:package', gulp.series(
   // 'desktop:shasums',
   // 'desktop:git:publish',
 ));
-
-/* Steam tasks temporarily disabled.
-['darwin', 'linux', 'win32'].forEach((platform) => {
-  gulp.task(`desktop:build:steam:${platform}`, (cb) => desktop.build({ platform, steam: true }, cb));
-});
-
-gulp.task('desktop:build:steam', gulp.series(
-  validateConfigForDesktop,
-  'clean:all',
-  'source',
-  'rsx:codex_urls',
-  'rsx:copy',
-  'desktop:setup',
-  'desktop:yarn',
-  'desktop:copy',
-  'desktop:build:steam:win32',
-  'desktop:build:steam:darwin',
-  'desktop:build:steam:linux',
-));
-
-gulp.task('desktop:package:steam', gulp.series(
-  desktop.steamPrep,
-  desktop.steamUpload,
-));
-*/

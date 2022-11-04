@@ -17,7 +17,6 @@
 		},
 		"BOOSTER3": {
 			"sku": "BOOSTER3",
-			"steam_id": 100102,
 			"gold": 140,
 			"name": "core_set_booster_name_plural",
 			"qty": 3,
@@ -33,7 +32,6 @@
 		},
 		"BOOSTER10": {
 			"sku": "BOOSTER10",
-			"steam_id": 100107,
 			"gold": 450,
 			"name": "core_set_booster_name_plural",
 			"qty": 10,
@@ -49,7 +47,6 @@
 		},
 		"STARTERBUNDLE_201604": {
 			"sku": "STARTERBUNDLE_201604",
-			"steam_id": 100110,
 			"gold": 300,
 			"name": "core_set_booster_name_plural",
 			"qty": 10,
@@ -66,7 +63,6 @@
 		},
 		"BOOSTER25": {
 			"sku": "BOOSTER25",
-			"steam_id": 100115,
 			"gold": 1050,
 			"name": "core_set_booster_name_plural",
 			"qty": 25,
@@ -82,7 +78,6 @@
 		},
 		"BOOSTER50": {
 			"sku": "BOOSTER50",
-			"steam_id": 100140,
 			"gold": 2000,
 			"qty": 50,
 			"name": "core_set_booster_name_plural",
@@ -113,7 +108,6 @@
 		},
 		"SHIMZAR_BOOSTER3": {
 			"sku": "SHIMZAR_BOOSTER3",
-			"steam_id": 100202,
 			"gold": 140,
 			"qty": 3,
 			"name": "shimzar_booster_name_plural",
@@ -129,7 +123,6 @@
 		},
 		"SHIMZAR_BOOSTER10": {
 			"sku": "SHIMZAR_BOOSTER10",
-			"steam_id": 100207,
 			"gold": 450,
 			"qty": 10,
 			"name": "shimzar_booster_name_plural",
@@ -145,7 +138,6 @@
 		},
 		"SHIMZAR_BOOSTER25": {
 			"sku": "SHIMZAR_BOOSTER25",
-			"steam_id": 100215,
 			"gold": 1050,
 			"name": "shimzar_booster_name_plural",
 			"qty": 25,
@@ -161,7 +153,6 @@
 		},
 		"SHIMZAR_BOOSTER50": {
 			"sku": "SHIMZAR_BOOSTER50",
-			"steam_id": 100240,
 			"gold": 2000,
 			"name": "shimzar_booster_name_plural",
 			"qty": 50,
@@ -192,7 +183,6 @@
 		},
 		"COMBINED_UNLOCKABLES_BOOSTER3": {
 			"sku": "COMBINED_UNLOCKABLES_BOOSTER3",
-			"steam_id": 100202,
 			"gold": 140,
 			"qty": 3,
 			"name": "combined_booster_name_plural",
@@ -208,7 +198,6 @@
 		},
 		"COMBINED_UNLOCKABLES_BOOSTER10": {
 			"sku": "COMBINED_UNLOCKABLES_BOOSTER10",
-			"steam_id": 100207,
 			"gold": 450,
 			"qty": 10,
 			"name": "combined_booster_name_plural",
@@ -224,7 +213,6 @@
 		},
 		"COMBINED_UNLOCKABLES_BOOSTER25": {
 			"sku": "COMBINED_UNLOCKABLES_BOOSTER25",
-			"steam_id": 100215,
 			"gold": 1050,
 			"name": "combined_booster_name_plural",
 			"qty": 25,
@@ -240,7 +228,6 @@
 		},
 		"COMBINED_UNLOCKABLES_BOOSTER50": {
 			"sku": "COMBINED_UNLOCKABLES_BOOSTER50",
-			"steam_id": 100240,
 			"gold": 2000,
 			"name": "combined_booster_name_plural",
 			"qty": 50,
@@ -271,7 +258,6 @@
 		},
 		"FIRSTWATCH_BOOSTER3": {
 			"sku": "FIRSTWATCH_BOOSTER3",
-			"steam_id": 100502,
 			"gold": 140,
 			"name": "firstwatch_booster_name_plural",
 			"qty": 3,
@@ -287,7 +273,6 @@
 		},
 		"FIRSTWATCH_BOOSTER10": {
 			"sku": "FIRSTWATCH_BOOSTER10",
-			"steam_id": 100507,
 			"gold": 450,
 			"name": "firstwatch_booster_name_plural",
 			"qty": 10,
@@ -303,7 +288,6 @@
 		},
 		"FIRSTWATCH_BOOSTER25": {
 			"sku": "FIRSTWATCH_BOOSTER25",
-			"steam_id": 100515,
 			"gold": 1050,
 			"name": "firstwatch_booster_name_plural",
 			"qty": 25,
@@ -319,7 +303,6 @@
 		},
 		"FIRSTWATCH_BOOSTER50": {
 			"sku": "FIRSTWATCH_BOOSTER50",
-			"steam_id": 100540,
 			"gold": 2000,
 			"name": "firstwatch_booster_name_plural",
 			"qty": 50,
@@ -350,7 +333,6 @@
 		},
 		"WARTECH_BOOSTER3": {
 			"sku": "WARTECH_BOOSTER3",
-			"steam_id": 100602,
 			"gold": 140,
 			"name": "wartech_booster_name_plural",
 			"qty": 3,
@@ -366,7 +348,6 @@
 		},
 		"WARTECH_BOOSTER10": {
 			"sku": "WARTECH_BOOSTER10",
-			"steam_id": 100607,
 			"gold": 450,
 			"name": "wartech_booster_name_plural",
 			"qty": 10,
@@ -382,7 +363,6 @@
 		},
 		"WARTECH_BOOSTER25": {
 			"sku": "WARTECH_BOOSTER25",
-			"steam_id": 100615,
 			"gold": 1050,
 			"name": "wartech_booster_name_plural",
 			"qty": 25,
@@ -398,7 +378,6 @@
 		},
 		"WARTECH_BOOSTER50": {
 			"sku": "WARTECH_BOOSTER50",
-			"steam_id": 100640,
 			"gold": 2000,
 			"name": "wartech_booster_name_plural",
 			"qty": 50,
@@ -429,7 +408,6 @@
 		},
 		"FATE_BOOSTER3": {
 			"sku": "FATE_BOOSTER3",
-			"steam_id": 100802,
 			"gold": 140,
 			"name": "fate_booster_name_plural",
 			"qty": 3,
@@ -445,7 +423,6 @@
 		},
 		"FATE_BOOSTER10": {
 			"sku": "FATE_BOOSTER10",
-			"steam_id": 100807,
 			"gold": 450,
 			"name": "fate_booster_name_plural",
 			"qty": 10,
@@ -461,7 +438,6 @@
 		},
 		"FATE_BOOSTER25": {
 			"sku": "FATE_BOOSTER25",
-			"steam_id": 100815,
 			"gold": 1050,
 			"name": "fate_booster_name_plural",
 			"qty": 25,
@@ -477,7 +453,6 @@
 		},
 		"FATE_BOOSTER50": {
 			"sku": "FATE_BOOSTER50",
-			"steam_id": 100840,
 			"gold": 2000,
 			"name": "fate_booster_name_plural",
 			"qty": 50,
@@ -495,7 +470,6 @@
 	"earned_specials":{
 		"BRONZE_DIVISION_STARTER_SPECIAL": {
 			"sku": "BRONZE_DIVISION_STARTER_SPECIAL",
-			"steam_id": 500001,
 			"name": "BRONZE_DIVISION_STARTER_SPECIAL_name",
 			"gold": 150,
 			"unit_name": "Bronze Division Starter Bundle",
@@ -526,7 +500,6 @@
 		},
 		"SILVER_DIVISION_STARTER_SPECIAL": {
 			"sku": "SILVER_DIVISION_STARTER_SPECIAL",
-			"steam_id": 500002,
 			"name": "SILVER_DIVISION_STARTER_SPECIAL_name",
 			"gold": 300,
 			"unit_name": "Silver Division Starter Bundle",
@@ -557,7 +530,6 @@
 		},
 		"GOLD_DIVISION_STARTER_SPECIAL": {
 			"sku": "GOLD_DIVISION_STARTER_SPECIAL",
-			"steam_id": 500003,
 			"name": "GOLD_DIVISION_STARTER_SPECIAL_name",
 			"gold": 600,
 			"unit_name": "Gold Division Starter Bundle",
@@ -588,7 +560,6 @@
 		},
 		"F1_F5_STARTER_SPECIAL": {
 			"sku": "F1_F5_STARTER_SPECIAL",
-			"steam_id": 500004,
 			"name": "F1_F5_STARTER_SPECIAL_name",
 			"gold": 140,
 			"unit_name": "Lyonar and Magmar Starter Bundle",
@@ -607,7 +578,6 @@
 		},
 		"F2_F4_STARTER_SPECIAL": {
 			"sku": "F2_F4_STARTER_SPECIAL",
-			"steam_id": 500005,
 			"name": "F2_F4_STARTER_SPECIAL_name",
 			"gold": 140,
 			"unit_name": "Songhai and Abyssian Starter Bundle",
@@ -626,7 +596,6 @@
 		},
 		"F3_F6_STARTER_SPECIAL": {
 			"sku": "F3_F6_STARTER_SPECIAL",
-			"steam_id": 500006,
 			"name": "F3_F6_STARTER_SPECIAL_name",
 			"gold": 140,
 			"unit_name": "Vetruvian and Vanar Starter Bundle",
@@ -645,7 +614,6 @@
 		},
 		"ALL_FACTIONS_STARTER_SPECIAL": {
 			"sku": "ALL_FACTIONS_STARTER_SPECIAL",
-			"steam_id": 500007,
 			"name": "ALL_FACTIONS_STARTER_SPECIAL_name",
 			"gold": 300,
 			"unit_name": "All Factions Starter Bundle",
@@ -666,7 +634,6 @@
 	"gauntlet": {
 		"GAUNTLET_TICKET": {
 			"sku": "GAUNTLET_TICKET",
-			"steam_id": 200001,
 			"name": "gauntlet_ticket_name",
 			"gold": 150,
 			"qty": 1,
@@ -684,7 +651,6 @@
 		"Bundle_Argeon_Emotes": {
 			"sku": "Bundle_Argeon_Emotes",
 			"bundle_cosmetic_ids": [3001,3002,3003,3004,3005,3006,3007,3008,3009,3010,3011],
-			"steam_id": 300001,
 			"name": "emote_bundle_argeon_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_argeon_emote_bundle",
@@ -701,7 +667,6 @@
 		"Bundle_Ziran_Emotes": {
 			"sku": "Bundle_Ziran_Emotes",
 			"bundle_cosmetic_ids": [3101,3102,3103,3104,3105,3106,3107,3108,3109,3110,3111],
-			"steam_id": 300002,
 			"name": "emote_bundle_ziran_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_ziran_emote_bundle",
@@ -718,7 +683,6 @@
 		"Bundle_Kaleos_Emotes": {
 			"sku": "Bundle_Kaleos_Emotes",
 			"bundle_cosmetic_ids": [4001,4002,4003,4004,4005,4006,4007,4008,4009,4010,4011],
-			"steam_id": 300003,
 			"name": "emote_bundle_kaleos_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_kaleos_emote_bundle",
@@ -735,7 +699,6 @@
 		"Bundle_Reva_Emotes": {
 			"sku": "Bundle_Reva_Emotes",
 			"bundle_cosmetic_ids": [4101,4102,4103,4104,4105,4106,4107,4108,4109,4110,4111],
-			"steam_id": 300004,
 			"name": "emote_bundle_reva_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_reva_emote_bundle",
@@ -752,7 +715,6 @@
 		"Bundle_Zirix_Emotes": {
 			"sku": "Bundle_Zirix_Emotes",
 			"bundle_cosmetic_ids": [5001,5002,5003,5004,5005,5006,5007,5008,5009,5010,5011],
-			"steam_id": 300005,
 			"name": "emote_bundle_zirix_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_zirix_emote_bundle",
@@ -769,7 +731,6 @@
 		"Bundle_Sajj_Emotes": {
 			"sku": "Bundle_Sajj_Emotes",
 			"bundle_cosmetic_ids": [5101,5102,5103,5104,5105,5106,5107,5108,5109,5110,5111],
-			"steam_id": 300006,
 			"name": "emote_bundle_sajj_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_sajj_emote_bundle",
@@ -786,7 +747,6 @@
 		"Bundle_Lilithe_Emotes": {
 			"sku": "Bundle_Lilithe_Emotes",
 			"bundle_cosmetic_ids": [6001,6002,6003,6004,6005,6006,6007,6008,6009,6010,6011],
-			"steam_id": 300007,
 			"name": "emote_bundle_lilithe_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_lilithe_emote_bundle",
@@ -803,7 +763,6 @@
 		"Bundle_Cassyva_Emotes": {
 			"sku": "Bundle_Cassyva_Emotes",
 			"bundle_cosmetic_ids": [6101,6102,6103,6104,6105,6106,6107,6108,6109,6110,6111],
-			"steam_id": 300008,
 			"name": "emote_bundle_cassyva_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_cassyva_emote_bundle",
@@ -820,7 +779,6 @@
 		"Bundle_Vaath_Emotes": {
 			"sku": "Bundle_Vaath_Emotes",
 			"bundle_cosmetic_ids": [7001,7002,7003,7004,7005,7006,7007,7008,7009,7010,7011],
-			"steam_id": 300009,
 			"name": "emote_bundle_vaath_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_vaath_emote_bundle",
@@ -837,7 +795,6 @@
 		"Bundle_Starhorn_Emotes": {
 			"sku": "Bundle_Starhorn_Emotes",
 			"bundle_cosmetic_ids": [7101,7102,7103,7104,7105,7106,7107,7108,7109,7110,7111],
-			"steam_id": 300010,
 			"name": "emote_bundle_starhorn_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_starhorn_emote_bundle",
@@ -854,7 +811,6 @@
 		"Bundle_Faie_Emotes": {
 			"sku": "Bundle_Faie_Emotes",
 			"bundle_cosmetic_ids": [8001,8002,8003,8004,8005,8006,8007,8008,8009,8010,8011],
-			"steam_id": 300011,
 			"name": "emote_bundle_faie_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_faie_emote_bundle",
@@ -871,7 +827,6 @@
 		"Bundle_Kara_Emotes": {
 			"sku": "Bundle_Kara_Emotes",
 			"bundle_cosmetic_ids": [8101,8102,8103,8104,8105,8106,8107,8108,8109,8110,8111],
-			"steam_id": 300012,
 			"name": "emote_bundle_kara_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_kara_emote_bundle",
@@ -888,7 +843,6 @@
 		"Bundle_HealingMystic_Emotes": {
 			"sku": "Bundle_HealingMystic_Emotes",
 			"bundle_cosmetic_ids": [2001,2002,2003,2004,2005],
-			"steam_id": 300013,
 			"gold": 150,
 			"order_id": -1,
 			"name": "emote_bundle_healing_mystic_name",
@@ -906,7 +860,6 @@
 		"Bundle_Mechaz0r_Emotes": {
 			"sku": "Bundle_Mechaz0r_Emotes",
 			"bundle_cosmetic_ids": [2101,2102,2103,2104,2105,2106],
-			"steam_id": 300014,
 			"gold": 150,
 			"order_id": -1,
 			"name": "emote_bundle_mechaz0r_name",
@@ -924,7 +877,6 @@
 		"Bundle_Brome_Emotes": {
 			"sku": "Bundle_Brome_Emotes",
 			"bundle_cosmetic_ids": [3201,3202,3203,3204,3205,3206,3207,3208,3209,3210,3211],
-			"steam_id": 300015,
 			"name": "emote_bundle_brome_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_brome_emote_bundle",
@@ -941,7 +893,6 @@
 		"Bundle_Shidai_Emotes": {
 			"sku": "Bundle_Shidai_Emotes",
 			"bundle_cosmetic_ids": [4201,4202,4203,4204,4205,4206,4207,4208,4209,4210,4211],
-			"steam_id": 300016,
 			"name": "emote_bundle_shidai_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_shidai_emote_bundle",
@@ -958,7 +909,6 @@
 		"Bundle_Ciphyron_Emotes": {
 			"sku": "Bundle_Ciphyron_Emotes",
 			"bundle_cosmetic_ids": [5201,5202,5203,5204,5205,5206,5207,5208,5209,5210,5211],
-			"steam_id": 300017,
 			"name": "emote_bundle_ciphyron_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_ciphyron_emote_bundle",
@@ -975,7 +925,6 @@
 		"Bundle_Maehv_Emotes": {
 			"sku": "Bundle_Maehv_Emotes",
 			"bundle_cosmetic_ids": [6201,6202,6203,6204,6205,6206,6207,6208,6209,6210,6211],
-			"steam_id": 300018,
 			"name": "emote_bundle_maehv_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_maehv_emote_bundle",
@@ -992,7 +941,6 @@
 		"Bundle_Ragnora_Emotes": {
 			"sku": "Bundle_Ragnora_Emotes",
 			"bundle_cosmetic_ids": [7201,7202,7203,7204,7205,7206,7207,7208,7209,7210,7211],
-			"steam_id": 300019,
 			"name": "emote_bundle_ragnora_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_ragnora_emote_bundle",
@@ -1009,7 +957,6 @@
 		"Bundle_Ilena_Emotes": {
 			"sku": "Bundle_Ilena_Emotes",
 			"bundle_cosmetic_ids": [8201,8202,8203,8204,8205,8206,8207,8208,8209,8210,8211],
-			"steam_id": 300020,
 			"name": "emote_bundle_ilena_name",
 			"gold": 300,
 			"icon_image_resource_name": "shop_product_ilena_emote_bundle",
@@ -1027,7 +974,6 @@
 	"loot_chest_keys": {
 		"Common_Chest_Key": {
 			"sku": "Common_Chest_Key",
-			"steam_id": 400001,
 			"chest_type": "bronze",
 			"name": "Common_Chest_Key_name",
 			"gold": 150,
@@ -1043,7 +989,6 @@
 		},
 		"Rare_Chest_Key": {
 			"sku": "Rare_Chest_Key",
-			"steam_id": 400002,
 			"chest_type": "gold",
 			"name": "Rare_Chest_Key_name",
 			"gold": 150,
@@ -1059,7 +1004,6 @@
 		},
 		"Epic_Chest_Key": {
 			"sku": "Epic_Chest_Key",
-			"steam_id": 400003,
 			"chest_type": "platinum",
 			"name": "Epic_Chest_Key_name",
 			"gold": 300,
@@ -1075,7 +1019,6 @@
 		},
 		"Boss_Chest_Key": {
 			"sku": "Boss_Chest_Key",
-			"steam_id": 400004,
 			"chest_type": "boss",
 			"name": "Boss_Chest_Key_name",
 			"gold": 150,
@@ -1094,7 +1037,6 @@
 		"RIFT_TICKET": {
 			"sku": "RIFT_TICKET",
 			"name": "rift_ticket_name",
-			"steam_id": 600001,
 			"gold": 150,
 			"qty": 1,
 			"unit_name": "Rift Ticket",
@@ -1111,7 +1053,6 @@
 		"FROSTFIRE_2017_CRATE": {
 			"sku": "FROSTFIRE_2017_CRATE",
 			"name": "frostfire_2017_name",
-			"steam_id": 700001,
 			"gold": 300,
 			"qty": 1,
 			"unit_name": "Frostfire 2017 Crate",
@@ -1127,7 +1068,6 @@
 		"FROSTFIRE_2017_PREMIUM_CRATE": {
 			"sku": "FROSTFIRE_2017_PREMIUM_CRATE",
 			"name": "frostfire_premium_2017_name",
-			"steam_id": 700002,
 			"gold": 140,
 			"qty": 1,
 			"unit_name": "Frostfire 2017 Premium Crate",

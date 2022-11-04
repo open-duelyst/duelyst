@@ -12,7 +12,7 @@
 - Creating new content or making balance changes are not goals of this project.
 	Instead, we aim to provide a well-maintained reference implementation and
 	reference deployment of the game as it existed before the shutdown in 2020.
-- We will build clients for web, desktop, mobile, and Steam.
+- We will build clients for web (including mobile web) and desktop.
 - We would like to provide native mod support for modified art, game rules,
 	cards, etc., enabling users to tweak the existing codebase without needing
 	to fork and heavily modify the project.
@@ -37,7 +37,6 @@ For November 2022 and beyond, we have a few high-priority objectives:
 
 - Better mobile support, including packaging Android and iOS apps and
 	improvements to UI scaling
-- Restoring the Steam builds which are currently disabled in the code
 - Creating new achievements and quests
 - Creating new daily challenges and puzzles
 - Implementing a password reset flow (using tokens rather than email)

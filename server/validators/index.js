@@ -11,11 +11,6 @@ const loginInput = t.struct({
   username: t.maybe(types.Username),
 });
 
-const loginSteamInput = t.struct({
-  steam_ticket: t.Str,
-  steam_friends: t.maybe(t.Array),
-});
-
 const loginGooglePlayInput = t.struct({
   google_play_id: t.Str,
   google_auth_token: t.Str,
@@ -129,15 +124,9 @@ const premiumPurchaseInput = t.struct({
   sale_id: t.maybe(t.Str),
 });
 
-const steamInitTxn = t.struct({
-  steam_ticket: t.Str,
-  product_sku: types.ProductSku,
-});
-
 module.exports = {
   token,
   loginInput,
-  loginSteamInput,
   loginGooglePlayInput,
   loginGameCenterInput,
   signupInput,
@@ -152,5 +141,4 @@ module.exports = {
   deckInput,
   purchaseInput,
   premiumPurchaseInput,
-  steamInitTxn,
 };

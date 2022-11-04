@@ -267,67 +267,6 @@ class ShopModule
     .then ()->
       return DuelystFirebase.connect().getRootRef()
 
-  ###*
-  # Execute a Steam purchase
-  # @public
-  # @return  {Promise}              Promise that will resolve when done.
-  ###
-  @purchaseProductOnSteam: (opts)->
-    NOW_UTC_MOMENT = moment.utc()
-    this_obj = {}
-
-    orderId = opts.orderId
-    userId = opts.userId
-    sku = opts.sku
-
-    productData = ShopModule.productDataForSKU(sku)
-
-    unless productData
-      Logger.module("InventoryModule").debug "purchaseProduct() -> no product found for SKU - #{sku?.blue}.".red
-      return Promise.reject(new Errors.NotFoundError("Could not find product for SKU - #{sku}"))
-
-    amount = opts.amount || productData.price
-
-    trxPromise = knex.transaction (tx)->
-
-      tx("users").where('id',userId).first().forUpdate()
-      .bind this_obj
-      .then (userRow)->
-        @.userRow = userRow
-
-        if sku == "STARTERBUNDLE_201604"
-          if userRow.has_purchased_starter_bundle
-            throw new Errors.AlreadyExistsError("Player already purchased the starter bundle.")
-
-        if productData.purchase_limit?
-          return tx("user_currency_log").count().where("user_id",userId).andWhere('sku',sku)
-          .then (count)->
-            if count >= productData.purchase_limit
-              throw new Errors.AlreadyExistsError("This product has already been purchased.")
-
-        if productData.type == "cosmetic"
-          return tx("user_cosmetic_inventory").where("user_id",userId).andWhere("cosmetic_id",productData.id).first()
-          .then (row)->
-            if row?
-              throw new Errors.AlreadyExistsError("This cosmetic item is already in the user inventory.")
-      .then ()->
-        return ShopModule._addChargeToUser(trxPromise, tx, @.userRow, userId, sku, amount, 'usd', opts.orderId, opts, "steam", NOW_UTC_MOMENT)
-      .then ()->
-        return ShopModule._awardProductDataContents(trxPromise, tx, userId, opts.orderId, productData, NOW_UTC_MOMENT)
-      .then (value)->
-        @.to_return = value
-      .then ()-> SyncModule._bumpUserTransactionCounter(tx,userId)
-      .then tx.commit
-      .catch tx.rollback
-      return
-
-    .bind this_obj
-    .then () ->
-
-      return @.to_return
-
-    return trxPromise
-
   @_awardProductDataContents: (txPromise,tx,userId,chargeId,productData,systemTime)->
     NOW_UTC_MOMENT = systemTime || moment.utc()
     allPromises = []
@@ -402,29 +341,6 @@ class ShopModule
   @productDataForSKU: (sku)->
     productData = _.find ShopModule._allProducts(), (p)-> return p.sku == sku
     productData ?= CosmeticsFactory.cosmeticProductAttrsForSKU(sku)
-
-  @steamProductDataForSKU: (sku)->
-    productData = ShopModule.productDataForSKU(sku)
-    if not productData?
-      throw new Error.NotFoundError("Product not found for SKU: #{sku}")
-    steamData =
-      id: productData.steam_id
-      amount: productData.price
-      description: "DUELYST - #{productData.unit_name || productData.name}"
-      qty: productData.qty || 1
-    return steamData
-
-  @skuForSteamProductID: (id)->
-    sku = null
-    productData = _.find ShopModule._allProducts(), (p)-> return p.steam_id == id
-    if not productData?
-      productData = CosmeticsFactory.cosmeticForIdentifier(id)
-    if not productData?
-      throw new Error.NotFoundError("Product not found for Steam ID: #{id}")
-
-    sku = productData.sku
-
-    return sku
 
   @creditUserPremiumCurrency: (txPromise, tx, userId, amount) ->
     # userId must be defined

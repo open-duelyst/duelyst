@@ -15,30 +15,17 @@ const argv = minimist(process.argv.slice(1), {
   alias: {
     windowed: 'w',
     token: 't',
-    steam: 's',
     overlay: 'o',
     disableOverlay: 'd',
     inProcessGpu: 'i',
   },
   string: ['token'],
-  boolean: ['windowed', 'steam', 'overlay', 'disableOverlay', 'inProcessGpu'],
+  boolean: ['windowed', 'overlay', 'disableOverlay', 'inProcessGpu'],
 });
 
-// enable in-process gpu flag (ie if used outside Steam)
+// enable in-process gpu flag
 if (argv.inProcessGpu) {
   app.commandLine.appendSwitch('in-process-gpu');
-}
-
-if (argv.steam) {
-  // enable Steam overlay on supported OSes or if forced
-  // ensure in-process-gpu is enabled when using overlay
-  const osWhitelist = ['Windows 8', 'Windows 8.1', 'Windows 10'];
-  if (osWhitelist.includes(osName) || argv.overlay) {
-    if (!argv.disableOverlay) {
-      app.commandLine.appendSwitch('in-process-gpu');
-      argv.overlay = true;
-    }
-  }
 }
 
 process.on('uncaughtException', (error) => {
@@ -86,25 +73,6 @@ app.on('ready', () => {
   //   }, app.quit)
   //   return
   // }
-
-  // if using steam, attempt to initialize steamworks api
-  // otherwise display dialog erroring out
-  if (argv.steam) {
-    const steamworks = require('./steam/steamworks');
-    if (!steamworks || !steamworks.initAPI()) {
-      console.log('steam did not init correctly');
-      console.log(steamworks);
-      console.log(steamworks.initAPI());
-      dialog.showMessageBox({
-        type: 'error',
-        title: 'ERROR',
-        message: 'Please use Steam to start Duelyst',
-        detail: 'Steam must be running and logged in.',
-        buttons: [],
-      }, app.quit);
-      return;
-    }
-  }
 
   // create keyboard shortcuts for win32
   // we don't need to do it for darwin because the menu takes care of it for us
@@ -162,34 +130,14 @@ function setupWin32Shortcuts() {
     const focusedWindow = BrowserWindow.getFocusedWindow();
     if (focusedWindow) focusedWindow.toggleDevTools();
   });
-  if (!argv.steam) {
-    localShortcut.register('Ctrl+Shift+F', () => {
-      const focusedWindow = BrowserWindow.getFocusedWindow();
-      if (focusedWindow) focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
-    });
-  }
-  if (argv.steam && !argv.overlay) {
-    localShortcut.register('Shift+Tab', () => {
-      const data = {
-        message: 'Steam Overlay is disabled',
-        detail: 'Steam in-game Overlay is currently disabled or not supported on this OS.',
-      };
-      showInfoDialog(data);
-    });
-  }
+  localShortcut.register('Ctrl+Shift+F', () => {
+    const focusedWindow = BrowserWindow.getFocusedWindow();
+    if (focusedWindow) focusedWindow.setFullScreen(!focusedWindow.isFullScreen());
+  });
 }
 
 function setupDarwinMenu() {
   if (process.platform !== 'darwin') return;
-  if (argv.steam && !argv.overlay) {
-    localShortcut.register('Shift+Tab', () => {
-      const data = {
-        message: 'Steam Overlay is disabled',
-        detail: 'Unfortunately Steam in-game Overlay is not supported on this OS.',
-      };
-      showInfoDialog(data);
-    });
-  }
   const template = [
     {
       label: 'Duelyst',
@@ -291,17 +239,10 @@ function setupDiscord() {
   mainWindow.webContents.on("did-finish-load", () => {
     // wait until mainWindow is done loading so we can be sure to catch all events
     const DISCORD_APPLICATION_ID = "357706468843061258";
-    // Discord uses the Steam ID to start the application via Steam
-    let STEAM_ID = null;
-    if (argv.steam) {
-      STEAM_ID = "291410";
-    } else {
-      // outside of Steam, we register the protocol handler ourself
-      app.setAsDefaultProtocolClient(`discord-${DISCORD_APPLICATION_ID}`);
-    }
+    app.setAsDefaultProtocolClient(`discord-${DISCORD_APPLICATION_ID}`);
 
     const DiscordRpc = require("@counterplay/discord-rpc-nodejs");
-    const discordRpc = new DiscordRpc(DISCORD_APPLICATION_ID, STEAM_ID);
+    const discordRpc = new DiscordRpc(DISCORD_APPLICATION_ID, '291410'); // Old Steam ID.
 
     discordRpc.on("ready", (...args) => {
       mainWindow.webContents.send("discord", "ready", ...args);
@@ -362,14 +303,4 @@ ipcMain.on('create-window', (event, options) => {
   };
   const win = window.createWindow(windowOptions);
   win.showURL(options.url, {}, () => { });
-});
-
-ipcMain.on('steam-error', (event, options) => {
-  dialog.showMessageBox({
-    type: 'error',
-    title: 'ERROR',
-    message: options.message || 'Unable to connect to Steam',
-    detail: options.detail || 'Please restart the application using Steam.',
-    buttons: [],
-  }, app.quit);
 });

@@ -62,7 +62,6 @@ matchmakingSearchCasual = require './jobs/matchmaking-search-casual.coffee'
 matchmakingSearchArena = require './jobs/matchmaking-search-arena.coffee'
 matchmakingSearchRift = require './jobs/matchmaking-search-rift.coffee'
 dataSyncUserBuddyList = require './jobs/data-sync-user-buddy-list.coffee'
-dataSyncSteamFriends = require './jobs/data-sync-steam-friends.coffee'
 processUserReferralEvent = require './jobs/process-user-referral-event.coffee'
 updateUsersRatings = require './jobs/update-users-ratings.coffee'
 updateUserSeenOn = require './jobs/update-user-seen-on.coffee'
@@ -78,7 +77,6 @@ worker.process('matchmaking-search-casual', 1, matchmakingSearchCasual)
 worker.process('matchmaking-search-arena', 1, matchmakingSearchArena)
 worker.process('matchmaking-search-rift', 1, matchmakingSearchRift)
 worker.process('data-sync-user-buddy-list', 1, dataSyncUserBuddyList)
-worker.process('data-sync-steam-friends', 1, dataSyncSteamFriends)
 worker.process('process-user-referral-event', 1, processUserReferralEvent)
 worker.process('update-users-ratings', 1, updateUsersRatings)
 worker.process('update-user-seen-on', 1, updateUserSeenOn)

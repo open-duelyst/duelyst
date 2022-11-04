@@ -18,7 +18,6 @@ dump.rdb
 .idea/
 .node-version
 .sass-cache
-.steamcache
 .tmp
 .vagrant/
 .vscode

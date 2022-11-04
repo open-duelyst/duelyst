@@ -4144,11 +4144,9 @@
   },
   "shop": {
     "confirm_purchase_dialog_purchase_button_label": "Kaufen",
-    "payment_option_steam": "Steam",
     "payment_option_credit_card": "Kreditkarte",
     "payment_option_paypal": "Paypal",
     "paypal_instructions": "Einkäufe mit Paypal können bis zu 5 Minuten dauern. Sobald der Kauf verarbeitet wurde, wird dein Inventar automatisch aktualisiert. Du musst das Spiel nicht neu starten.",
-    "steam_instructions": "Wenn du einen Kauf mit deinem Steam-Guthaben durchführst, wird dein Inventar automatisch aktualisiert.",
     "payment_option_disabled_message": "Diese Bezahloption ist aktuell aufgrund von Wartungsarbeiten deaktiviert. Wir bedauern etwaige Umstände.",
     "change_payment_info_button_label": "Ändern",
     "delete_payment_info_button_label": "Löschen",
