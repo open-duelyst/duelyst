@@ -1,6 +1,5 @@
 os = require 'os'
 Logger = require '../app/common/logger'
-StackLogger = require './lib/stack_logger.coffee'
 Promise = require 'bluebird'
 
 # Configuration object
@@ -12,5 +11,5 @@ config = require '../config/config.js'
 # @param {Error} err
 ###
 module.exports.errorShutdown = (err) ->
-  Logger.module("SHUTDOWN").error StackLogger.render(err)
+  Logger.module("SHUTDOWN").error err.stack
   process.exit(1)

@@ -704,6 +704,46 @@ var InventoryManager = Manager.extend({
     }.bind(this));
   },
 
+  exportDecks: function () {
+    return new Promise(function (resolve, reject) {
+      var request = $.ajax({
+        url: process.env.API_URL + '/api/me/decks/export-decks',
+        type: 'GET',
+        contentType: 'application/json',
+      });
+
+      request.done(function (response) {
+        resolve(response);
+      });
+
+      request.fail(function (response) {
+        var errorMessage = response.responseJSON ? response.responseJSON.message : 'Failed to export decks.';
+        reject(errorMessage);
+      });
+    }.bind(this));
+  },
+
+  importDecks: function (input) {
+    return new Promise(function (resolve, reject) {
+      var request = $.ajax({
+        url: process.env.API_URL + '/api/me/decks/import-decks',
+        type: 'PUT',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: input,
+      });
+
+      request.done(function (response) {
+        resolve(response);
+      });
+
+      request.fail(function (response) {
+        var errorMessage = response.responseJSON ? response.responseJSON.error : 'Failed to import decks.';
+        reject(errorMessage);
+      });
+    }.bind(this));
+  },
+
   /* endregion ACTIONS */
 
   /* region GETTERS / SETTERS */

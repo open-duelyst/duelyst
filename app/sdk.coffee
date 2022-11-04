@@ -1,5 +1,4 @@
 Logger = require 'app/common/logger.coffee'
-Logger.module('SDK').log 'Initializing SDK...'
 
 # SDK Namespace Wrapper
 GameSession = require 'app/sdk/gameSession'
