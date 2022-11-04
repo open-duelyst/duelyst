@@ -3,6 +3,7 @@ os = require 'os'
 Logger = require '../app/common/logger.coffee'
 config = require '../config/config.js'
 Promise = require 'bluebird'
+{ Jobs } = require '../server/redis'
 
 if config.isDevelopment()
   Logger.module("WORKER").log "DEV MODE: enabling long stack support"
@@ -10,10 +11,9 @@ if config.isDevelopment()
   Promise.longStackTraces()
 
 # Increase the number of event listeners in Node.js.
-# The default is 10, but we listen to 14 events in the worker process.
-# Setting this to 15 suppresses benign warnings without losing leak detection.
+# Raising this suppresses benign warnings without losing leak detection.
 events = require 'events'
-events.EventEmitter.defaultMaxListeners = 15
+events.EventEmitter.defaultMaxListeners = 20 # Default is 10.
 
 ###
 Job Queue Consumer // aka Worker
@@ -66,6 +66,7 @@ dataSyncSteamFriends = require './jobs/data-sync-steam-friends.coffee'
 processUserReferralEvent = require './jobs/process-user-referral-event.coffee'
 updateUsersRatings = require './jobs/update-users-ratings.coffee'
 updateUserSeenOn = require './jobs/update-user-seen-on.coffee'
+rotateBosses = require './jobs/rotate-bosses.coffee'
 
 worker.process('archive-game', 1, archiveGame)
 worker.process('update-user-post-game', 2, updateUserPostGame)
@@ -79,5 +80,15 @@ worker.process('matchmaking-search-rift', 1, matchmakingSearchRift)
 worker.process('data-sync-user-buddy-list', 1, dataSyncUserBuddyList)
 worker.process('data-sync-steam-friends', 1, dataSyncSteamFriends)
 worker.process('process-user-referral-event', 1, processUserReferralEvent)
-worker.process('update-users-ratings', 1, updateUsersRatings )
-worker.process('update-user-seen-on', 1, updateUserSeenOn )
+worker.process('update-users-ratings', 1, updateUsersRatings)
+worker.process('update-user-seen-on', 1, updateUserSeenOn)
+
+# Run the rotateBosses job once on startup.
+# TODO: Find another way to trigger this hourly.
+worker.process('rotate-bosses', 1, rotateBosses)
+runRotateBossesJob = () ->
+  Jobs.create('rotate-bosses',
+    name: 'Rotate Bosses'
+    title: 'Rotating Boss Event'
+  ).removeOnComplete(true).save()
+setTimeout(runRotateBossesJob, 1000)
