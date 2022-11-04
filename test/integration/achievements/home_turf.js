@@ -32,13 +32,13 @@ describe("achievements module", function() {
   // before cleanup to check if user already exists and delete
   before(function(){
     Logger.module("UNITTEST").log("creating user");
-    return UsersModule.createNewUser('unit-test@counterplay.co','unittest','hash','kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local','unittest','hash','kumite14')
     .then(function(userIdCreated){
       Logger.module("UNITTEST").log("created user ",userIdCreated);
       userId = userIdCreated;
     }).catch(Errors.AlreadyExistsError,function(error){
       Logger.module("UNITTEST").log("existing user");
-      return UsersModule.userIdForEmail('unit-test@counterplay.co').then(function(userIdExisting){
+      return UsersModule.userIdForEmail('unit-test@duelyst.local').then(function(userIdExisting){
         Logger.module("UNITTEST").log("existing user retrieved",userIdExisting);
         userId = userIdExisting;
         return SyncModule.wipeUserData(userIdExisting);

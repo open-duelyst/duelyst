@@ -52,19 +52,3 @@
     }
   }
 }
-
-.brand-cpg {
-	position: relative;
-	width: 25.0rem;
-	height: 5.4rem;
-	pointer-events: none;
-	@include backgroundImage("resources/ui/brand_cpg.png");
-	background-size: contain;
-	background-repeat: no-repeat;
-	background-position: 50%;
-	position:relative;
-	z-index:100;
-	* {
-		display: none;
-	}
-}

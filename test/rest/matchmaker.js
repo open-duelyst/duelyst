@@ -32,27 +32,27 @@ describe('matchmaking', () => {
   before(function () {
     this.timeout(25000);
     Logger.module('UNITTEST').log('creating users');
-    return UsersModule.createNewUser('unit-test@counterplay.co', 'unittest', 'hash', 'kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local', 'unittest', 'hash', 'kumite14')
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user 1 ', userIdCreated);
         userId1 = userIdCreated;
       }).catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user 1');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user 1 retrieved', userIdExisting);
           userId1 = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);
         }).then(() => {
           Logger.module('UNITTEST').log('existing user 1 data wiped', userId1);
         });
-      }).then(() => UsersModule.createNewUser('unit-test2@counterplay.co', 'unittest', 'hash', 'kumite14'))
+      }).then(() => UsersModule.createNewUser('unit-test2@duelyst.local', 'unittest', 'hash', 'kumite14'))
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user 2 ', userIdCreated);
         userId2 = userIdCreated;
       })
       .catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user 2');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user 2 retrieved', userIdExisting);
           userId2 = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);
@@ -73,13 +73,13 @@ describe('matchmaking', () => {
       request
         .post('/session')
         .set('Client-Version', version)
-        .send({ email: 'unit-test@counterplay.co', password: 'hash' })
+        .send({ email: 'unit-test@duelyst.local', password: 'hash' })
         .expect(200)
         .end((err, res) => {
           expect(err).to.be.equal(null);
           expect(res.body).to.have.property('token');
           expect(jwt.decode(res.body.token).d.id).to.have.length(20);
-          expect(jwt.decode(res.body.token).d.email).to.be.equal('unit-test@counterplay.co');
+          expect(jwt.decode(res.body.token).d.email).to.be.equal('unit-test@duelyst.local');
           p1Token = res.body.token;
           p1Id = jwt.decode(res.body.token).d.id;
           done();
@@ -94,13 +94,13 @@ describe('matchmaking', () => {
       request
         .post('/session')
         .set('Client-Version', version)
-        .send({ email: 'unit-test2@counterplay.co', password: 'hash' })
+        .send({ email: 'unit-test2@duelyst.local', password: 'hash' })
         .expect(200)
         .end((err, res) => {
           expect(err).to.be.equal(null);
           expect(res.body).to.have.property('token');
           expect(jwt.decode(res.body.token).d.id).to.have.length(20);
-          expect(jwt.decode(res.body.token).d.email).to.be.equal('unit-test2@counterplay.co');
+          expect(jwt.decode(res.body.token).d.email).to.be.equal('unit-test2@duelyst.local');
           p2Token = res.body.token;
           p2Id = jwt.decode(res.body.token).d.id;
           done();

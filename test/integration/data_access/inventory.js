@@ -35,13 +35,13 @@ describe('inventory module', function () {
   before(function () {
     this.timeout(25000);
     Logger.module('UNITTEST').log('creating user');
-    return UsersModule.createNewUser('unit-test@counterplay.co', 'unittest', 'hash', 'kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local', 'unittest', 'hash', 'kumite14')
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user ', userIdCreated);
         userId = userIdCreated;
       }).catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user retrieved', userIdExisting);
           userId = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);

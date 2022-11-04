@@ -64,11 +64,11 @@ export function build(opts, cb) {
     prune: true,
     overwrite: true,
     icon: 'icon',
-    appCopyright: '2016 Counterplay Games Inc.',
+    appCopyright: 'Creative Commons CC0 1.0 Universal',
     appVersion: desktopPkgJson.version,
     // windows
     win32metadata: {
-      CompanyName: 'Counterplay Games Inc.',
+      CompanyName: 'OpenDuelyst',
       ProductName: desktopPkgJson.productName,
       FileDescription: desktopPkgJson.productName,
       OriginalFilename: `${desktopPkgJson.productName}.exe`,

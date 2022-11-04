@@ -83,13 +83,13 @@ describe('rank module', function () {
     SRankManager.unitTestMode = true;
 
     Logger.module('UNITTEST').log('creating user');
-    return UsersModule.createNewUser('unit-test@counterplay.co', 'unittest', 'hash', 'kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local', 'unittest', 'hash', 'kumite14')
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user ', userIdCreated);
         userId = userIdCreated;
       }).catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user retrieved', userIdExisting);
           userId = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);
@@ -224,10 +224,10 @@ describe('rank module', function () {
 
       // set up users
       return Promise.all([
-        createOrWipeUser('unit-test-rating-1@counterplay.co', player1UserName, 0, startOfCurrentSeasonDate),
-        createOrWipeUser('unit-test-rating-2@counterplay.co', player2UserName, 0, startOfCurrentSeasonDate),
-        createOrWipeUser('unit-test-rating-3@counterplay.co', player3UserName, 5, startOfCurrentSeasonDate),
-        createOrWipeUser('unit-test-rating-4@counterplay.co', player4UserName, 2, startOfCurrentSeasonDate),
+        createOrWipeUser('unit-test-rating-1@duelyst.local', player1UserName, 0, startOfCurrentSeasonDate),
+        createOrWipeUser('unit-test-rating-2@duelyst.local', player2UserName, 0, startOfCurrentSeasonDate),
+        createOrWipeUser('unit-test-rating-3@duelyst.local', player3UserName, 5, startOfCurrentSeasonDate),
+        createOrWipeUser('unit-test-rating-4@duelyst.local', player4UserName, 2, startOfCurrentSeasonDate),
       ]).then(() => {
         // Simulate some s-rank matches
         // [Player 1, Player 2, Player 1 is winner]
@@ -528,10 +528,10 @@ describe('rank module', function () {
     before(function () {
       this.timeout(10000);
       return Promise.all([
-        createOrWipeUser('unit-test-rating-1@counterplay.co', player1UserName, 20),
-        createOrWipeUser('unit-test-rating-2@counterplay.co', player2UserName, 20),
-        createOrWipeUser('unit-test-rating-3@counterplay.co', player3UserName, 0),
-        createOrWipeUser('unit-test-rating-4@counterplay.co', player4UserName, 0),
+        createOrWipeUser('unit-test-rating-1@duelyst.local', player1UserName, 20),
+        createOrWipeUser('unit-test-rating-2@duelyst.local', player2UserName, 20),
+        createOrWipeUser('unit-test-rating-3@duelyst.local', player3UserName, 0),
+        createOrWipeUser('unit-test-rating-4@duelyst.local', player4UserName, 0),
       ]).spread((player1CreatedId, player2CreatedId, player3CreatedId, player4CreatedId) => {
         player1Id = player1CreatedId;
         player2Id = player2CreatedId;
@@ -779,12 +779,12 @@ describe('rank module', function () {
       const oldSeasonTime = moment().utc().year(1999).month(2); // Set to an old season so this can happen in isolation
       startOfSeasonMoment = moment(oldSeasonTime).utc().startOf('month');
       return Promise.all([
-        createOrWipeUser('unit-test-position-1@counterplay.co', player1UserName, 0),
-        createOrWipeUser('unit-test-position-2@counterplay.co', player2UserName, 0),
-        createOrWipeUser('unit-test-position-3@counterplay.co', player3UserName, 0),
-        createOrWipeUser('unit-test-position-4@counterplay.co', player4UserName, 0),
-        createOrWipeUser('unit-test-position-5@counterplay.co', player5UserName, 0),
-        createOrWipeUser('unit-test-position-6@counterplay.co', player6UserName, 0),
+        createOrWipeUser('unit-test-position-1@duelyst.local', player1UserName, 0),
+        createOrWipeUser('unit-test-position-2@duelyst.local', player2UserName, 0),
+        createOrWipeUser('unit-test-position-3@duelyst.local', player3UserName, 0),
+        createOrWipeUser('unit-test-position-4@duelyst.local', player4UserName, 0),
+        createOrWipeUser('unit-test-position-5@duelyst.local', player5UserName, 0),
+        createOrWipeUser('unit-test-position-6@duelyst.local', player6UserName, 0),
       ]).spread((player1CreatedId, player2CreatedId, player3CreatedId, player4CreatedId, player5CreatedId, player6CreatedId) => {
         player1Id = player1CreatedId;
         player2Id = player2CreatedId;
