@@ -57,8 +57,8 @@ describe('sync module', function () {
     };
 
     return Promise.all([
-      createOrInsertUser('unit-test-1@counterplay.co', 'player 1', 0),
-      createOrInsertUser('unit-test-2@counterplay.co', 'player 2', 0),
+      createOrInsertUser('unit-test-1@duelyst.local', 'player 1', 0),
+      createOrInsertUser('unit-test-2@duelyst.local', 'player 2', 0),
     ]).spread((player1CreatedId, player2CreatedId) => {
       const userId = player1CreatedId;
       const user2Id = player2CreatedId;

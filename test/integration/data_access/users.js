@@ -33,13 +33,13 @@ describe('users module', () => {
   // before cleanup to check if user already exists and delete
   before(() => {
     Logger.module('UNITTEST').log('creating user');
-    return UsersModule.createNewUser('unit-test@counterplay.co', 'unittest', 'hash', 'kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local', 'unittest', 'hash', 'kumite14')
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user ', userIdCreated);
         userId = userIdCreated;
       }).catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user retrieved', userIdExisting);
           userId = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);
@@ -63,7 +63,7 @@ describe('users module', () => {
   //   });
   // });
   describe('userIdForEmail()', () => {
-    it('expect a user id if email exists', () => UsersModule.userIdForEmail('unit-test@counterplay.co')
+    it('expect a user id if email exists', () => UsersModule.userIdForEmail('unit-test@duelyst.local')
       .then((id) => {
         expect(id).to.exist;
         expect(id).to.have.length(20);
@@ -97,7 +97,7 @@ describe('users module', () => {
 
       it('expect NOT to be able to create a user with an invalid invite code if invite codes are ACTIVE', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         return UsersModule.createNewUser(email, `testuser${rando}`, 'testpassword', 'invalid invite')
           .then((result) => {
             expect(result).to.not.exist;
@@ -111,7 +111,7 @@ describe('users module', () => {
       it('expect to be able to create a user with a valid invite code if invite codes are ACTIVE', () => {
         const rando = generatePushId();
         const code = `test-invite-${rando}`;
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return knex('invite_codes').insert({ code })
           .bind({})
@@ -146,7 +146,7 @@ describe('users module', () => {
       it('expect to be able to create a user with an invalid invite code if invite codes are INACTIVE', () => {
         const rando = generatePushId();
         const code = `fake-test-invite-${rando}`;
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return UsersModule.createNewUser(email, username, 'testpassword', code)
           .then(function (newUserId) {
@@ -169,7 +169,7 @@ describe('users module', () => {
       it('expect a referral code with 20 bonus signup GOLD to work', () => {
         const rando = generatePushId();
         const code = `test-invite-${rando}`;
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         const referralCode = 'test-referral-20-gold';
         return Promise.all([
@@ -205,7 +205,7 @@ describe('users module', () => {
 
       it('expect a referral code to be CaSE insensitive', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         const referralCode = 'TEST-referral-20-Gold';
         return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referralCode)
@@ -231,7 +231,7 @@ describe('users module', () => {
 
       it('expect a referral code to trim whitespace', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         const referralCode = ' TEST-referral-20-Gold ';
         return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', referralCode)
@@ -257,10 +257,10 @@ describe('users module', () => {
 
       // it('expect a referral code with auto friending to work', function() {
       //   const rando1 = generatePushId()
-      //   const email1 = rando1+'-unit-test@counterplay.co'
+      //   const email1 = rando1+'-unit-test@duelyst.local'
       //   const username1 = rando1.toLowerCase()+'-unit-test'
       //   const rando2 = generatePushId()
-      //   const email2 = rando2+'-unit-test@counterplay.co'
+      //   const email2 = rando2+'-unit-test@duelyst.local'
       //   const username2 = rando2.toLowerCase()+'-unit-test'
       //   const referralCode = "test-referral-10-gold-friend"
       //   const friendId = null
@@ -301,7 +301,7 @@ describe('users module', () => {
 
       it('expect using an invalid referral code to ERROR out', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return Promise.all([])
           .then(() => UsersModule.createNewUser(email, username, 'testpassword', 'kumite14', 'invalid-code'))
@@ -315,7 +315,7 @@ describe('users module', () => {
 
       it('expect using an MAXED-out referral code to error out', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return Promise.all([
           knex('referral_codes').insert({
@@ -353,7 +353,7 @@ describe('users module', () => {
 
       it('expect using an expired referral code to error out', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         const expires = moment().utc().subtract(1, 'month').toDate();
         return Promise.all([
@@ -391,7 +391,7 @@ describe('users module', () => {
 
       it('expect using an inactive referral code to error out', () => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return Promise.all([
           knex('referral_codes').insert({
@@ -431,7 +431,7 @@ describe('users module', () => {
       it('expect campaign data to set correctly', () => {
         const rando = generatePushId();
         const code = `test-invite-${rando}`;
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         const referralCode = 'test-referral-20-gold';
         const campaignData = {
@@ -465,7 +465,7 @@ describe('users module', () => {
     let daysSeenUserId;
     before(() => {
       const rando = generatePushId();
-      const email = `${rando}-unit-test@counterplay.co`;
+      const email = `${rando}-unit-test@duelyst.local`;
       const username = `${rando.toLowerCase()}-unit-test`;
       return UsersModule.createNewUser(email, username, 'hash', 'kumite14')
         .then((userIdCreated) => {
@@ -2712,13 +2712,13 @@ describe('users module', () => {
   //   // before cleanup to check if user already exists and delete
   //   before(function(){
   //     Logger.module("UNITTEST").log("creating user");
-  //     return UsersModule.createNewUser('unit-test-opponent@counterplay.co','unittestopponent','hash','kumite14')
+  //     return UsersModule.createNewUser('unit-test-opponent@duelyst.local','unittestopponent','hash','kumite14')
   //     .then(function(userIdCreated){
   //       Logger.module("UNITTEST").log("created user ",userIdCreated);
   //       opponentId = userIdCreated;
   //     }).catch(Errors.AlreadyExistsError,function(error){
   //       Logger.module("UNITTEST").log("existing user");
-  //       return UsersModule.userIdForEmail('unit-test-opponent@counterplay.co').then(function(userIdExisting){
+  //       return UsersModule.userIdForEmail('unit-test-opponent@duelyst.local').then(function(userIdExisting){
   //         Logger.module("UNITTEST").log("existing user retrieved",userIdExisting);
   //         opponentId = userIdExisting;
   //         return SyncModule.wipeUserData(userIdExisting);

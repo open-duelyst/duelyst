@@ -73,7 +73,7 @@ class GiftCrateFactory
     # BN Promo login crate
     @_giftCrateTemplateCache[GiftCrateLookup.BNLogin2017] =
       titleText: "Re-Launch Gift Box"
-      subtitleText: "Counterplay Games and Bandai Namco welcome you back"
+      subtitleText: "Welcome back!"
       rewards:
         spirit_orbs: 3
         cosmetics: [CosmeticsLookup.CardSkin.HealingMysticBN]

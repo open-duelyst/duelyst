@@ -3,7 +3,7 @@ const promiseThrottle = require('p-throttle');
 const promiseWhilst = require('p-whilst');
 const { ChromaApp, Color, Keyboard } = require('../../packages/chroma-js');
 
-const App = new ChromaApp('Duelyst', 'The ULTIMATE collectible tactics game', 'Counterplay Games');
+const App = new ChromaApp('Duelyst', 'The ULTIMATE collectible tactics game', 'Duelyst');
 
 function sleep(timeMs) {
   return new Promise((resolve) => setTimeout(resolve, timeMs));

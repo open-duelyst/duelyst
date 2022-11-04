@@ -13,7 +13,7 @@ describe('password reset', () => {
       request
         .post('/forgot')
         .set('Accept', 'application/json')
-        .send({ email: 'unit-test@counterplay.co' })
+        .send({ email: 'unit-test@duelyst.local' })
         .expect(200, done);
     });
 

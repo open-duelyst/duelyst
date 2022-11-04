@@ -35,13 +35,13 @@ describe('referrals module', function () {
   before(function () {
     this.timeout(25000);
     Logger.module('UNITTEST').log('creating user');
-    return UsersModule.createNewUser('unit-test@counterplay.co', 'unittest', 'hash', 'kumite14')
+    return UsersModule.createNewUser('unit-test@duelyst.local', 'unittest', 'hash', 'kumite14')
       .then((userIdCreated) => {
         Logger.module('UNITTEST').log('created user ', userIdCreated);
         userId = userIdCreated;
       }).catch(Errors.AlreadyExistsError, (error) => {
         Logger.module('UNITTEST').log('existing user');
-        return UsersModule.userIdForEmail('unit-test@counterplay.co').then((userIdExisting) => {
+        return UsersModule.userIdForEmail('unit-test@duelyst.local').then((userIdExisting) => {
           Logger.module('UNITTEST').log('existing user retrieved', userIdExisting);
           userId = userIdExisting;
           return SyncModule.wipeUserData(userIdExisting);
@@ -62,19 +62,19 @@ describe('referrals module', function () {
 
     before(() => {
       const rando1 = generatePushId();
-      const email1 = `${rando1}-unit-test@counterplay.co`;
+      const email1 = `${rando1}-unit-test@duelyst.local`;
       const username1 = `${rando1.toLowerCase()}-unit-test`;
 
       const rando2 = generatePushId();
-      const email2 = `${rando2}-unit-test@counterplay.co`;
+      const email2 = `${rando2}-unit-test@duelyst.local`;
       const username2 = `${rando2.toLowerCase()}-unit-test`;
 
       const rando3 = generatePushId();
-      const email3 = `${rando3}-unit-test@counterplay.co`;
+      const email3 = `${rando3}-unit-test@duelyst.local`;
       const username3 = `${rando3.toLowerCase()}-unit-test`;
 
       const rando4 = generatePushId();
-      const email4 = `${rando4}-unit-test@counterplay.co`;
+      const email4 = `${rando4}-unit-test@duelyst.local`;
       const username4 = `${rando4.toLowerCase()}-unit-test`;
 
       return Promise.all([
@@ -270,7 +270,7 @@ describe('referrals module', function () {
 
       before(() => {
         const rando = generatePushId();
-        const email = `${rando}-unit-test@counterplay.co`;
+        const email = `${rando}-unit-test@duelyst.local`;
         const username = `${rando.toLowerCase()}-unit-test`;
         return UsersModule.createNewUser(email, username, 'testpassword', 'kumite14')
           .then((userId) => {
