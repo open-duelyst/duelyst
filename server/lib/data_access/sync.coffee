@@ -231,8 +231,6 @@ class SyncModule
           last_soft_twipe_at:null
           first_purchased_at:null
           has_purchased_starter_bundle:null
-          steam_id:null
-          steam_associated_at:null
           portrait_id: null
           total_orb_count_set_3: 0
           total_orb_count_set_4: null

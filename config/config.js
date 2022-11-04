@@ -382,29 +382,6 @@ const config = convict({
       env: 'DEFAULT_GAME_SERVER',
     },
   },
-  steam: {
-    apiUrl: {
-      doc: 'STEAM API URL.',
-      default: '',
-      env: 'STEAM_API_URL',
-    },
-    apiKey: {
-      doc: 'STEAM API Key.',
-      default: '',
-      env: 'STEAM_API_KEY',
-    },
-    appId: {
-      doc: 'STEAM APP ID.',
-      default: '',
-      env: 'STEAM_APP_ID',
-    },
-    sandbox: {
-      doc: 'Run Steam transactions in sandbox mode',
-      format: Boolean,
-      default: true,
-      env: 'STEAM_SANDBOX_ENABLED',
-    },
-  },
   fastly: {
     token: {
       default: '',

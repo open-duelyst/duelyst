@@ -109,9 +109,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
     isPaypalEnabled: function () {
       return ServerStatusManager.getInstance().serverStatusModel.get('paypal_enabled');
     },
-    isSteam: function () {
-      return window.isSteam;
-    },
   },
 
   /* region INITIALIZE */
@@ -497,23 +494,8 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
   /* region PURCHASE */
 
   onRefillPressed: _.throttle(function (e) {
-    // if (!window.isSteam) {
-    //   Session.initPremiumPurchase()
-    //   .then(function (url) {
-    //     if (window.isDesktop) {
-    //       window.ipcRenderer.send('create-window', {
-    //         url: url,
-    //         width: 920,
-    //         height: 660
-    //       })
-    //     } else {
-    //       openUrl(url)
-    //     }
-    //   })
-    // } else {
-    //   this.trigger("cancel");
-    //   NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
-    // }
+    // this.trigger("cancel");
+    // NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
   }, 1500, { trailing: false }),
 
   onConfirmPurchase: function (e, skipPurchaseLimitCheck) {
@@ -624,56 +606,6 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
   },
 
   /* endregion GOLD CHECKOUT */
-
-  /* region STEAM CHECKOUT */
-
-  _steamCheckout: function (productData) {
-    var sku = productData.sku;
-
-    // track in analytics
-    Analytics.track('product selected', {
-      category: Analytics.EventCategory.Shop,
-      product_id: sku,
-    }, {
-      labelKey: 'product_id',
-    });
-
-    this.$el.addClass('loading');
-
-    // if (sku === "STARTERBUNDLE_201604") {
-    //   ProfileManager.getInstance().set("has_tried_purchase_starter_bundle",true);
-    // }
-    ShopManager.getInstance().markAttemptedPurchase(sku);
-
-    this.trigger('processing', {
-      sku: sku,
-      paymentType: 'steam',
-    });
-
-    return InventoryManager.getInstance().purchaseProductSkuOnSteam(sku, Storage.get('steam_ticket'))
-      .bind(this)
-      .then(function (res) {
-      // open [steam] browser then flash success
-      // check platform here to determine if to use steam browser
-        if (window.steamworksOverlayEnabled) {
-          window.steamworks.activateGameOverlayToWebPage(res.steamurl);
-        } else {
-          openUrl(res.steamurl);
-        }
-
-        this.trigger('complete', {
-          sku: sku,
-          paymentType: 'steam',
-        });
-
-        this.flashSuccessInDialog('Complete the transaction in the browser...');
-      })
-      .catch(function (errorMessage) {
-        this.showError(errorMessage);
-      });
-  },
-
-  /* endregion STEAM CHECKOUT */
 
   /* region SUCCESS / ERROR */
 

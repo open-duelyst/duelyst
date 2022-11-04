@@ -25,9 +25,6 @@
 	"recaptcha": {
 		"enabled":false
 	},
-	"steam": {
-		"sandbox": false
-	},
 	"fastly": {
 		"token": "",
 		"serviceId": ""

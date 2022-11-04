@@ -67,26 +67,6 @@ var ShopPremiumPacksCollectionView = Backbone.Marionette.ItemView.extend({
   /* region PURCHASE */
 
   onSelectProduct: function (e) {
-    if (window.isSteam) {
-      return this.onSelectProductSteam(e);
-    }
-  },
-
-  onSelectProductSteam: function (e) {
-    var productSkuId = $(e.currentTarget).data('productSkuId');
-    // return InventoryManager.getInstance().purchaseProductSkuOnSteam([{sku_id: productSkuId, qty: 1}])
-    // .then(function(steamUrl){
-    //   // open [steam] browser then flash success
-    //   // check platform here to determine if to use steam browser
-    //   if (window.steamworksOverlayEnabled) {
-    //     window.steamworks.activateGameOverlayToWebPage(steamUrl)
-    //   } else {
-    //     openUrl(steamUrl)
-    //   }
-    // })
-    // .catch(function(e){
-    //   Logger.module('STEAM').error("Initializing Steam transaction failed: #{e.message}")
-    // })
   },
 
   onPurchaseComplete: function (purchaseData) {

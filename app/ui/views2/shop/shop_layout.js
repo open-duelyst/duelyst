@@ -239,22 +239,7 @@ var ShopLayout = Backbone.Marionette.LayoutView.extend({
   },
 
   onPremiumCurrencyPressed: _.throttle(function (e) {
-    // if (!window.isSteam) {
-    //   Session.initPremiumPurchase()
-    //   .then(function (url) {
-    //     if (window.isDesktop) {
-    //       window.ipcRenderer.send('create-window', {
-    //         url: url,
-    //         width: 920,
-    //         height: 660
-    //       })
-    //     } else {
-    //       openUrl(url)
-    //     }
-    //   })
-    // } else {
-    //   NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
-    // }
+    // NavigationManager.getInstance().showModalView(new PremiumPurchaseDialog());
   }, 1500, { trailing: false }),
 
 });

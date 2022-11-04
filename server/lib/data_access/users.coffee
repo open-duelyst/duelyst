@@ -217,7 +217,6 @@ class UsersModule
             }
             # all new users have accepted EULA before signing up
             hasAcceptedEula: false
-            hasAcceptedSteamEula: false
           }
 
           starting_gold = @.referralCodeRow?.params?.gold || 0
@@ -508,56 +507,6 @@ class UsersModule
       return
 
   ###*
-  # Associate a Steam ID to a User
-  # @public
-  # @param  {String}  userId        User ID
-  # @param  {String}  steamId        User's Steam ID as returned from steam.coffee authenticateUserTicket
-  # @return  {Promise}            Promise that will return on completion.
-  ###
-  @associateSteamId: (userId, steamId) ->
-
-    MOMENT_NOW_UTC = moment().utc()
-
-    return knex.transaction (tx) ->
-      knex("users").where('id',userId).first().forUpdate().transacting(tx)
-      .bind {}
-      .then (userRow)->
-        if !userRow
-          throw new Errors.NotFoundError()
-        else
-          knex("users").where('id',userId).update({
-            steam_id: steamId
-            steam_associated_at: MOMENT_NOW_UTC.toDate()
-          }).transacting(tx)
-      .then tx.commit
-      .catch tx.rollback
-      return
-
-  ###*
-  # Disassociate a Steam ID to a User
-  # Currently only used for testing
-  # @public
-  # @param  {String}  userId        User ID
-  # @return  {Promise}            Promise that will return on completion.
-  ###
-  @disassociateSteamId: (userId) ->
-
-    return knex.transaction (tx) ->
-      knex("users").where('id',userId).first().forUpdate().transacting(tx)
-      .bind {}
-      .then (userRow)->
-        if !userRow
-          throw new Errors.NotFoundError()
-        else
-          knex("users").where('id',userId).update({
-            steam_id: null
-            steam_associated_at: null
-          }).transacting(tx)
-      .then tx.commit
-      .catch tx.rollback
-      return
-
-  ###*
   # Get user data for id.
   # @public
   # @param  {String}  userId      User ID
@@ -695,23 +644,6 @@ class UsersModule
     return Promise.resolve()
 
   ###*
-  # Intended to be called on login/reload to fire off a job which tracks cohort data for given user
-  # @public
-  # @param  {String}  userId      User ID
-  # @param  {Moment}  systemTime    Pass in the current system time to use. Used only for testing.
-  # @return  {Promise}  Promise.resolve() for now since all handling is done in job
-  ###
-  @createSteamFriendsSyncJob: (userId, friendSteamIds) ->
-    Jobs.create("data-sync-steam-friends",
-      name: "Sync Steam Friends"
-      title: util.format("User %s :: Sync Steam Friends", userId)
-      userId: userId
-      friendsSteamIds: friendSteamIds
-    ).removeOnComplete(true).save()
-
-    return Promise.resolve()
-
-  ###*
   # Updates the users row if they have newly logged in on a set day
   # @public
   # @param  {String}  userId      User ID
@@ -751,24 +683,6 @@ class UsersModule
     username = username?.toLowerCase()
 
     return knex.first('id').from('users').where('username',username)
-    .then (userRow) ->
-      return new Promise( (resolve, reject) ->
-        if userRow
-          return resolve(userRow.id)
-        else
-          return resolve(null)
-      ).nodeify(callback)
-
-  ###*
-  # Get the user ID for the specified Steam ID.
-  # Reference steam.coffee's authenticateUserTicket
-  # @public
-  # @param  {String}  steamId  User's Steam ID as returned from steam.coffee authenticateUserTicket
-  # @return  {Promise}        Promise that will return the userId data on completion.
-  ###
-  @userIdForSteamId: (steamId, callback) ->
-
-    return knex.first('id').from('users').where('steam_id',steamId)
     .then (userRow) ->
       return new Promise( (resolve, reject) ->
         if userRow

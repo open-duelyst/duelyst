@@ -694,16 +694,10 @@ App._showTerms = (options = {}) ->
       viewPromise = Scene.getInstance().showMain()
 
       if App.getIsLoggedIn()
-        if window.isSteam
-          ProfileManager.getInstance().set('hasAcceptedSteamEula', true)
-        else
-          ProfileManager.getInstance().set('hasAcceptedEula', true)
+        ProfileManager.getInstance().set('hasAcceptedEula', true)
         mainPromise = App.main()
       else
-        if window.isSteam
-          window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedSteamEula', true)
-        else
-          window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
+        window.sessionStorage.setItem(Storage.namespace() + '.hasAcceptedEula', true)
         mainPromise = App._showLoginMenu({type: 'register'})
 
       return Promise.all([
@@ -3900,7 +3894,6 @@ App.versionTestFailed = () ->
       <div style="margin:auto; position:absolute; height:50%;  width:100%; top: 0px; bottom: 0px; font-size: 20px; color: white; text-align: center;">
         <p>Looks like you are running an old version of DUELYST.</p>
         <p>Exit and restart DUELYST to update to the latest version.</p>
-        <p>If you are using Steam, you may need to restart Steam before the update appears.</p>
         <p>Click <a id='reload-link' href='' style="color: gray;">here</a> to exit.</p>
       </div>
     """
@@ -3954,10 +3947,7 @@ App.getMinBrowserVersions()
   if !App.glTest()
     return App.glTestFailed()
 
-  if window.isSteam
-    App.minVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('steam_minimum_version')
-  else
-    App.minVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('minimum_version')
+  App.minVersionRef = new Firebase(process.env.FIREBASE_URL).child("system-status").child('minimum_version')
 
   # wrap App.setup() in _.once() just to be safe from double calling
   App.setupOnce = _.once(App.setup)

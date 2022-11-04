@@ -106,9 +106,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
     isPaypalEnabled: function () {
       return false;
     },
-    isSteam: function () {
-      return window.isSteam;
-    },
   },
 
   /* region INITIALIZE */
@@ -517,56 +514,6 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
   },
 
   /* endregion GOLD CHECKOUT */
-
-  /* region STEAM CHECKOUT */
-
-  _steamCheckout: function (productData) {
-    var sku = productData.sku;
-
-    // track in analytics
-    Analytics.track('product selected', {
-      category: Analytics.EventCategory.Shop,
-      product_id: sku,
-    }, {
-      labelKey: 'product_id',
-    });
-
-    this.$el.addClass('loading');
-
-    // if (sku === "STARTERBUNDLE_201604") {
-    //   ProfileManager.getInstance().set("has_tried_purchase_starter_bundle",true);
-    // }
-    ShopManager.getInstance().markAttemptedPurchase(sku);
-
-    this.trigger('processing', {
-      sku: sku,
-      paymentType: 'steam',
-    });
-
-    return InventoryManager.getInstance().purchaseProductSkuOnSteam(sku, Storage.get('steam_ticket'))
-      .bind(this)
-      .then(function (res) {
-      // open [steam] browser then flash success
-      // check platform here to determine if to use steam browser
-        if (window.steamworksOverlayEnabled) {
-          window.steamworks.activateGameOverlayToWebPage(res.steamurl);
-        } else {
-          openUrl(res.steamurl);
-        }
-
-        this.trigger('complete', {
-          sku: sku,
-          paymentType: 'steam',
-        });
-
-        this.flashSuccessInDialog('Complete the transaction in the browser...');
-      })
-      .catch(function (errorMessage) {
-        this.showError(errorMessage);
-      });
-  },
-
-  /* endregion STEAM CHECKOUT */
 
   /* region SUCCESS / ERROR */
 

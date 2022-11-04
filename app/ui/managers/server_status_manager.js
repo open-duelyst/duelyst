@@ -49,14 +49,7 @@ var ServerStatusManager = Manager.extend({
   onSystemStatusChanged: function (model) {
     Logger.module('UI').log('ServerStatusManager::onSystemStatusChanged');
     // if the game build has changed we want to notify the user that they need to refresh
-    // we check a different key for steam version
-    var versionKey;
-    if (window.isSteam) {
-      versionKey = 'steam_version';
-    } else {
-      versionKey = 'version';
-    }
-    if (this.serverStatusModel.hasChanged(versionKey)) {
+    if (this.serverStatusModel.hasChanged('version')) {
       // if the user is not in-game, notify them immediately, otherwise we will wait to notify them until they are finished
       if (!ChatManager.getInstance().getStatusIsInBattle()) {
         this.requestReloadForGameUpdate();

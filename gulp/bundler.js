@@ -69,7 +69,6 @@ bundler.transform(envify({
   RECAPTCHA_ACTIVE: config.get('recaptcha.enabled'),
   BUGSNAG_WEB: config.get('bugsnag.web_key'),
   BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
-  STEAM_APP_ID: config.get('steam.appId'),
   TRACKING_PIXELS_ENABLED: false,
   LANDING_PAGE_URL: '/',
   REFERRER_PAGE_URLS: '',

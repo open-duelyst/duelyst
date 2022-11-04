@@ -1,6 +1,5 @@
 .git
 .gitignore
-.steamcache
 .vagrant
 Procfile
 README.md

@@ -32,7 +32,7 @@ function isNewSignup() {
 // look at current environment and parse current URL to determine if we should redirect to a landing page
 function shouldRedirect() {
   // check environnent
-  if (window.isSteam || window.isDesktop) {
+  if (window.isDesktop) {
     debug('no redirect environment');
     return false;
   }
@@ -77,7 +77,7 @@ function redirectToGame(options) {
 
 // async add tracking pixel(s) to current page (after registration)
 function firePixels() {
-  if (window.isSteam || window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
+  if (window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
     debug('tracking pixels disabled');
     return Promise.resolve();
   }
@@ -98,7 +98,7 @@ function firePixels() {
 
 // add tracking pixel(s) to document head (on page load)
 function addPixelsToHead() {
-  if (window.isSteam || window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
+  if (window.isDesktop || !process.env.TRACKING_PIXELS_ENABLED) {
     debug('tracking pixels disabled');
     return;
   }

@@ -70,9 +70,6 @@ var AchievementsManager = Manager.extend({
         // listen to changes immediately so we don't miss anything
         // this.listenTo(this._achievementsModel, "change",this._onNewPlayerChange);
           this._completedAchievementsRef = new Firebase(process.env.FIREBASE_URL + '/user-achievements/' + userId).child('completed');
-          if (window.isSteam) {
-            this._completedAchievementsRef.orderByChild('completed_at').once('value', this.syncSteamAchievements.bind(this));
-          }
           this._completedAchievementsRef.orderByChild('completed_at').startAt(this.getAchievementsLastReadAt()).on('child_added', this._onNewCompletedAchievement.bind(this));
 
           return this._scheduleOrRequestLoginAchievements();
@@ -89,23 +86,6 @@ var AchievementsManager = Manager.extend({
     }
 
     this._clearLoginAchievementsTimeout();
-  },
-
-  /* endregion CONNECT */
-  syncSteamAchievements: function (snapshot) {
-    var achievements = snapshot.val();
-    if (!achievements) {
-      return;
-    }
-    Object.keys(achievements).map(function (achievement) {
-      // trigger steam achievement here
-      // we don't care about error
-      steamworks.activateAchievement(
-        achievement,
-        function () {},
-        function (err) {},
-      );
-    });
   },
 
   hasUnreadCompletedAchievements: function () {
@@ -141,17 +121,6 @@ var AchievementsManager = Manager.extend({
       achievementRewardModel.set('cosmetic_keys', reward.cosmetic_keys);
     } else if (reward.gift_chests) {
       achievementRewardModel.set('gift_chests', reward.gift_chests);
-    }
-
-    // trigger steam achievement here
-    // use same achievement_id
-    // we don't care about error
-    if (window.isSteam) {
-      steamworks.activateAchievement(
-        nextUnread.achievement_id,
-        function () {},
-        function (err) {},
-      );
     }
 
     return achievementRewardModel;

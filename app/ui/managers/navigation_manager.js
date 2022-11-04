@@ -515,7 +515,7 @@ var NavigationManager = Manager.extend({
         var confirmPurchaseDialogView = new ConfirmPurchaseDialogView({ model: new Backbone.Model(), productData: productData, saleData: saleData });
         var completedPurchase = false;
         this.listenToOnce(confirmPurchaseDialogView, 'processing', function (purchaseData) {
-          // paypal and steam are assumed to be successful
+          // paypal is assumed to be successful
           if (!completedPurchase && purchaseData && (purchaseData.paymentType === 'paypal')) {
             completedPurchase = true;
             this.destroyDialogForConfirmPurchase();

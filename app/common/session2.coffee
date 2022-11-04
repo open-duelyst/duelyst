@@ -120,8 +120,6 @@ class Session extends EventEmitter
 
   logout: () ->
     debug('logout')
-    if window.isSteam
-      return
 
     # if @userId
       # @_deauthFirebase()

@@ -171,10 +171,6 @@ var SettingsMenuView = Backbone.Marionette.ItemView.extend({
     this._updateShadowQualityUI();
     this._updateBoardQualityUI();
 
-    if (window.isSteam) {
-      this.$el.find('.logout').remove();
-    }
-
     if (!window.isDesktop) {
       this.$el.find('.desktop-quit').remove();
       this.$el.find('#razer-chroma-setting').remove();

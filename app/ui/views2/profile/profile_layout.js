@@ -93,10 +93,6 @@ var ProfileLayout = Backbone.Marionette.LayoutView.extend({
   onRender: function () {
     this._bindPortrait();
     this.showSelectedTab();
-
-    if (window.isSteam) {
-      this.$el.find('.change-password').text('Set Password');
-    }
   },
 
   onShow: function () {
@@ -150,18 +146,14 @@ var ProfileLayout = Backbone.Marionette.LayoutView.extend({
   },
 
   onChangePasswordClicked: function (e) {
-    if (!window.isSteam) {
-      NavigationManager.getInstance().showDialogView(new ChangePasswordItemView());
-    } else {
-      var confirmDialogItemView = new ConfirmDialogItemView({ title: 'Click OK and use the forgot password system to set a password for use outside of Steam.' });
-      this.listenToOnce(confirmDialogItemView, 'confirm', function () {
-        openUrl(process.env.API_URL + '/forgot');
-      });
-      this.listenToOnce(confirmDialogItemView, 'cancel', function () {
-        this.stopListening(confirmDialogItemView);
-      }.bind(this));
-      NavigationManager.getInstance().showDialogView(confirmDialogItemView);
-    }
+    var confirmDialogItemView = new ConfirmDialogItemView({ title: 'Click OK and use the forgot password system to set a password.' });
+    this.listenToOnce(confirmDialogItemView, 'confirm', function () {
+      openUrl(process.env.API_URL + '/forgot');
+    });
+    this.listenToOnce(confirmDialogItemView, 'cancel', function () {
+      this.stopListening(confirmDialogItemView);
+    }.bind(this));
+    NavigationManager.getInstance().showDialogView(confirmDialogItemView);
   },
 
   onTabChanged: function (e) {

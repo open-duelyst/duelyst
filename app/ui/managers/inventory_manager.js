@@ -502,29 +502,6 @@ var InventoryManager = Manager.extend({
     }
   },
 
-  purchaseProductSkuOnSteam: function (sku, steamTicket) {
-    if (steamTicket !== null) {
-      return new Promise(function (resolve, reject) {
-        var request = $.ajax({
-          data: JSON.stringify({ product_sku: sku, steam_ticket: steamTicket }),
-          url: process.env.API_URL + '/steam/init_txn',
-          type: 'POST',
-          contentType: 'application/json',
-          dataType: 'json',
-        });
-        request.done(function (response) {
-          resolve(response);
-        });
-        request.fail(function (response) {
-          var errorMessage = 'Purchase failed. Please try again.';
-          reject(errorMessage);
-        });
-      });
-    } else {
-      return Promise.reject('No steam ticket provided.');
-    }
-  },
-
   craftCosmetic: function (cosmeticId) {
     return new Promise(function (resolve, reject) {
       var request = $.ajax({

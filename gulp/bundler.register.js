@@ -65,7 +65,6 @@ bundler.transform(envify({
   BUGSNAG_WEB: config.get('bugsnag.web_key'),
   BUGSNAG_DESKTOP: config.get('bugsnag.desktop_key'),
   RECAPTCHA_SITE_KEY: config.get('recaptcha.siteKey'),
-  STEAM_APP_ID: config.get('steam.appId'),
   REGISTER_STANDALONE: true,
 }));
 // bundler.transform(babelify, {

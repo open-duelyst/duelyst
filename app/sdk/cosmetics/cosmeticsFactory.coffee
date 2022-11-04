@@ -199,7 +199,6 @@ class CosmeticsFactory
     return {
       id: cosmeticData.id
       sku: cosmeticData.sku
-      steam_id: cosmeticData.id
       name: cosmeticData.name
       price: rarityData.cosmeticHardPrice
       rarity_id: cosmeticData.rarityId || Rarity.Common

@@ -102,7 +102,7 @@ var ShopManager = Manager.extend({
     return this._premiumProductsModel.fetch().then(function (data) {
       // If we didn't get anything back, reject
       if (data == null) {
-        return Promise.reject(new Error('Invalid Premium Product Steam Data'));
+        return Promise.reject(new Error('Invalid Premium Product Data'));
       }
       // Sort the premium products
       data = _.sortBy(data, function (d) { return d.premium_currency; });

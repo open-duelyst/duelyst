@@ -11,7 +11,6 @@ import readPkg from 'read-pkg';
 import packager from 'electron-packager';
 import rebuild from 'electron-rebuild';
 import { exec, execSync } from 'child_process';
-// import steamcmd from '@counterplay/steamcmd';
 import Promise from 'bluebird';
 import {
   config, version, production, staging,
@@ -161,26 +160,5 @@ export function shasums(cb) {
       return p.extname;
     }))
     .pipe(gulp.dest('dist/build'));
-}
-
-// Prep the macOS app for Steam
-export function steamPrep() {
-  const desktopPkgJson = readPkg.sync('./desktop');
-  return steamcmd.appPrep({
-    force: true,
-    appId: config.get('steam').appId,
-    source: `./dist/desktop/${desktopPkgJson.productName}-darwin-x64/${desktopPkgJson.productName}.app`,
-    destination: `./dist/desktop/${desktopPkgJson.productName}-darwin-x64-steam/`,
-    executable: `Contents/MacOS/${desktopPkgJson.productName}`,
-  });
-}
-
-// Upload the app to Steam using our .vdf config files
-export function steamUpload() {
-  return steamcmd.appBuild({
-    username: process.env.STEAM_USERNAME,
-    password: process.env.STEAM_PASSWORD,
-    appVdf: production ? './config/steam/app_291410.vdf' : './config/steam/app_staging_291410.vdf',
-  });
 }
 */

@@ -38,7 +38,6 @@
     "build:macm1": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:macm1",
     "build:linux": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:linux",
     "build:windows": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:build:windows",
-    "build:steam": "node mode_modules/gulp/bin/gulp.js desktop:build:steam",
     "zip:all": "cross-env NODE_ENV=staging node node_modules/gulp/bin/gulp.js desktop:package",
     "zip:mac": "node node_modules/gulp/bin/gulp.js desktop:zip:darwin:x64",
     "zip:macm1": "node node_modules/gulp/bin/gulp.js desktop:zip:darwin:arm64",
