@@ -7,7 +7,7 @@ Cards = require '../../app/sdk/cards/cardsLookup.coffee'
 moment = require 'moment'
 
 BossIds = Object.values(Cards.Boss)
-threeDays = 3 * 24 * 60 * 60 * 1000 # Milliseconds.
+oneDay = 24 * 60 * 60 * 1000 # Milliseconds.
 
 ###*
 # Job - 'rotate-bosses'
@@ -45,8 +45,8 @@ module.exports = (job, done) ->
           event_id: "boss-battle"
           boss_id: nextBossId
           event_start: now
-          event_end: now + threeDays
-          valid_end: now + threeDays
+          event_end: now + oneDay
+          valid_end: now + oneDay
       DuelystFirebase.connect().getRootRef().then (rootRef) ->
         rootRef.child('boss-events').set(event, (error) ->
           if error?
