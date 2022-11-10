@@ -3789,7 +3789,8 @@ App.getMinBrowserVersions = () ->
       "Chrome": 50,
       "Safari": 10,
       "Firefox": 57,
-      "Edge": 15
+      "Edge": 15,
+      "Mobile Safari": 10,
     }
 
     # create a timeout to skip check in case Firebase lags (so atleast user does not get stuck on black screen)
