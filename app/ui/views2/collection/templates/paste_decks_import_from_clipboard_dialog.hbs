@@ -1,0 +1,20 @@
+<div class="dialog-background" {{#if background}} style="background: {{background}}" {{/if}}></div>
+
+<div class="modal-dialog">
+  <button type="button" class="btn btn-clean btn-cancel-primary cancel-dialog"></button>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Import Decks</h4>
+    </div>
+    <div class="modal-body">
+      <div class="modal-message">Paste exported decks JSON into the text box below, then click Import.</div>
+      <div class="modal-message">You will need to reload the game client to see imported decks.</div>
+      <div class="input-group import-input">
+        <input id="input_text" type="text" class="form-control" placeholder="Paste JSON here." />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button id="paste_decks_import_button" class="btn btn-clean btn-clean-primary import-decks-submit">Import</button>
+    </div>
+  </div>
+</div>

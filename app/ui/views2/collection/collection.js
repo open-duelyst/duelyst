@@ -25,6 +25,8 @@ var GamesManager = require('app/ui/managers/games_manager');
 var ConfirmDialogItemView = require('app/ui/views/item/confirm_dialog');
 var ErrorDialogItemView = require('app/ui/views/item/error_dialog');
 var ActivityDialogItemView = require('app/ui/views/item/activity_dialog');
+var CopyDecksDialogView = require('app/ui/views2/collection/copy_decks_export_to_clipboard_dialog');
+var PasteDecksDialogView = require('app/ui/views2/collection/paste_decks_import_from_clipboard_dialog');
 var moment = require('moment');
 var i18next = require('i18next');
 var CollectionTmpl = require('./templates/collection.hbs');
@@ -57,6 +59,8 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
     $cardsList: '.collection-cards .cards-list',
     $startCraftingModeButton: '.crafting-mode-start',
     $stopCraftingModeButton: '.crafting-mode-stop',
+    $exportDecksButton: '.export-decks',
+    $importDecksButton: '.import-decks',
     $searchSubmit: '.search-submit',
     $searchClear: '.search-clear',
     $searchInput: '.search input[type=\'search\']',
@@ -78,6 +82,8 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
     'click .next-page': 'onNextPage',
     'click .crafting-mode-start': 'onStartCraftingMode',
     'click .crafting-mode-stop': 'onStopCraftingMode',
+    'click .export-decks': 'onExportDecks',
+    'click .import-decks': 'onImportDecks',
     'click .browsing-mode': 'onBrowsingMode',
     'click .search-clear': 'onSearchClear',
     'input .search input[type=\'search\']': 'onSearch',
@@ -659,6 +665,24 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
     NavigationManager.getInstance().showLastRoute();
   },
 
+  onExportDecks: function (event) {
+    InventoryManager.getInstance().exportDecks()
+      .then((response) => {
+        NavigationManager.getInstance().showDialogView(new CopyDecksDialogView({
+          decksExport: response,
+        }));
+      })
+      .catch((error) => {
+        NavigationManager.getInstance().showDialogView(new ErrorDialogItemView({
+          title: `Failed to export decks: ${error}`,
+        }));
+      });
+  },
+
+  onImportDecks: function (event) {
+    NavigationManager.getInstance().showDialogView(new PasteDecksDialogView());
+  },
+
   _cleanupCurrentDeck: function () {
     if (this._deck) {
       // delete current deck if it has no general
@@ -686,6 +710,8 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
     // toggle classes
     this.$el.removeClass('deck-building crafting deck-card-back-selecting');
     this.ui.$startCraftingModeButton.removeClass('hidden disabled');
+    this.ui.$exportDecksButton.removeClass('hidden disabled');
+    this.ui.$importDecksButton.removeClass('hidden disabled');
     this.ui.$stopCraftingModeButton.addClass('hidden disabled');
 
     // mode flags
@@ -797,6 +823,8 @@ var CollectionLayout = Backbone.Marionette.LayoutView.extend({
 
     // toggle buttons
     this.ui.$startCraftingModeButton.addClass('hidden disabled');
+    this.ui.$exportDecksButton.addClass('hidden disabled');
+    this.ui.$importDecksButton.addClass('hidden disabled');
     this.ui.$stopCraftingModeButton.removeClass('hidden disabled');
 
     // start crafting in the collection

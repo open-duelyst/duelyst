@@ -1,7 +1,6 @@
 # Helper scripts for performing a full rebuild before starting the backend.
 
-# Clean and reinstall dependencies.
-rm -rf node_modules
+# Install dependencies.
 yarn install --dev || exit 1
 
 # Build the game client.

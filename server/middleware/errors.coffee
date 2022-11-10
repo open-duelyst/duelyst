@@ -3,7 +3,6 @@
 # Should be included in app.use last
 ###
 Logger = require '../../app/common/logger'
-StackLogger = require '../lib/stack_logger.coffee'
 config = require '../../config/config'
 
 # first error middleware: internal console.logger
@@ -18,7 +17,7 @@ module.exports.logError = (err, req, res, next) ->
 
   # log errors and stack traces
   Logger.module("EXPRESS").log "ERROR: #{err.status} #{err.message} for client #{req.ip}"
-  Logger.module("EXPRESS").log StackLogger.render(err)
+  Logger.module("EXPRESS").log err.stack
   return next(err)
 
 # last error middleware: either development or production

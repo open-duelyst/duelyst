@@ -12,10 +12,12 @@ crypto = require('crypto')
 
 # SDK imports
 SDK = require '../../../app/sdk'
+FactionFactory = require '../../../app/sdk/cards/factionFactory.coffee'
+CardFactory = require '../../../app/sdk/cards/cardFactory.coffee'
 UtilsGameSession = require '../../../app/common/utils/utils_game_session.coffee'
+en = require '../../../app/localization/locales/en/index.json'
 
 class DecksModule
-
   ###*
   # Retrieve all user decks
   # @public
@@ -23,7 +25,6 @@ class DecksModule
   # @return  {Promise}
   ###
   @decksForUser: (userId)->
-
     return knex("user_decks").where('user_id',userId).select()
 
   ###*
@@ -144,5 +145,51 @@ class DecksModule
     Logger.module("DecksModule").debug "hashCodeForDeck() -> final: #{final}"
 
     return final
+
+  # Retrieve a user's decks, and return them as a JSON-encoded string.
+  @getDecksAsJSON: (userId) ->
+    result = {}
+    @decksForUser(userId)
+    .then (decks) ->
+      for deckData in decks
+        # Collect card names.
+        cardNames = []
+        for card in deckData.cards
+          cardNames.push(en['cards'][CardFactory.cardForIdentifier(card, null).name.substring(6)])
+        # Encode the results.
+        result[deckData.id] =
+          name: deckData.name
+          faction_id: deckData.faction_id
+          faction_name: FactionFactory.factionForIdentifier(deckData.faction_id).devName
+          cards: deckData.cards
+          card_names: cardNames
+          spell_count: deckData.spell_count
+          minion_count: deckData.minion_count
+          artifact_count: deckData.artifact_count
+      Logger.module("DecksModule").debug "encoded decks for user #{userId}"
+      return result
+    .catch (error) ->
+      Logger.module("DecksModule").error "failed to encode decks: #{error}"
+      throw error
+
+  # Given a JSON object from @getDecksAsJSON, create corresponding decks for the user.
+  @putDecksFromJSON: (userId, obj) ->
+    for key in Object.keys(obj)
+      deck = obj[key]
+      @addDeck(
+        userId,
+        deck.faction_id,
+        deck.name,
+        deck.cards,
+        deck.spell_count,
+        deck.minion_count,
+        deck.artifact_count,
+        0,
+        null
+      ).then (deck) ->
+        Logger.module("DecksModule").debug "created deck #{deck.id} for user #{userId}"
+      .catch (error) ->
+        Logger.module("DecksModule").error "failed to create deck: #{error}"
+        throw error
 
 module.exports = DecksModule

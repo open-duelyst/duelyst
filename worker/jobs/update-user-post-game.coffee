@@ -23,11 +23,6 @@ QuestsModule = require '../../server/lib/data_access/quests'
 
 {Redis, Jobs, GameManager} = require '../../server/redis/'
 
-# Pretty error printing, helps with stack traces
-PrettyError = require 'pretty-error'
-pe = new PrettyError()
-pe.skipNodeFiles()
-
 ###*
 # Start processing quests for user.
 # @param  {Object} job        Kue job
@@ -316,7 +311,7 @@ module.exports = (job, done) ->
         # if we catch an error, add it to the retained error object, and log out some info
         @.errors ?= []
         @.errors.push(e)
-        Logger.module("JOB").debug "[J:#{job.id}]", pe.render(e)
+        Logger.module("JOB").debug "[J:#{job.id}]", e.stack
         Logger.module("JOB").error("[J:#{job.id}] update-user-post-game (#{userId} - #{gameId}) -> error processing part '#{item?.name}' ", e?.message)
     )
 

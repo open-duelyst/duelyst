@@ -3711,6 +3711,8 @@ App.on "start", (options) ->
   ).then(() ->
     # temporary bypass all loader
     return Promise.resolve()
+
+    ###
     # check if all assets should be loaded now or as needed
     # we want to know if the client has cached all resources for this version
     # we only care when not using the desktop client, on the production environment, and not loading all at start
@@ -3759,6 +3761,7 @@ App.on "start", (options) ->
     else
       # no loading needed now
       return Promise.resolve()
+    ###
   ).then(() ->
     # clear telemetry signal that a client is loading
     TelemetryManager.getInstance().clearSignal("lifecycle","loading")
