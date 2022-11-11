@@ -21,6 +21,7 @@ COPY version.json /duelyst/
 COPY app/*.coffee /duelyst/app/
 COPY app/common /duelyst/app/common
 COPY app/data /duelyst/app/data
+COPY app/localization /duelyst/app/localization
 COPY app/sdk /duelyst/app/sdk
 COPY bin /duelyst/bin
 COPY config /duelyst/config
