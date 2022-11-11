@@ -8,18 +8,18 @@ on:
     paths:
       - .babelrc
       - .mocharc.js
-      - app/**
+      - app/**/*.js
       - bulk-decaffeinate.config.js
-      - cli/**
-      - config/**
-      - desktop/**
-      - gulp/**
+      - cli/**/*.js
+      - config/**/*.js
+      - desktop/**/*.js
+      - gulp/**/*.js
       - gulpfile.babel.js
-      #- packages/**
-      - scripts/**
-      - server/**
-      - test/**
-      - worker/**
+      #- packages/**/*.js
+      - scripts/**/*.js
+      - server/**/*.js
+      - test/**/*.js
+      - worker/**/*.js
 
 jobs:
   linting:
