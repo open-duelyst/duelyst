@@ -13,11 +13,11 @@ services, and uploading web client builds requires AWS access.
 These can be safely automated by storing any necessary credentials in Github
 Secrets:
 
-https://docs.github.com/en/actions/security-guides/encrypted-secrets
-https://docs.github.com/en/github-ae@latest/rest/actions/secrets
+- https://docs.github.com/en/actions/security-guides/encrypted-secrets
+- https://docs.github.com/en/github-ae@latest/rest/actions/secrets
 
-Once the relevant secrets are in Github, we can create and test new Actions to
-perform these steps on our behalf.
+Once the relevant secrets are in Github, we can create and test new Github
+Actions to perform these steps on our behalf.
 
 In the meantime, the steps to deploy the game are recorded below.
 
