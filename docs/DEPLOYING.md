@@ -31,6 +31,7 @@ In order to complete this process, the following things are required:
 - Permissions to publish container images to AWS ECR
 - Permissions to deploy AWS ECS services
 - Permissions to upload files to AWS S3 buckets
+- Permissions to create cache invalidations in AWS CloudFront distributions
 
 ## Step 1: Tag and Create a Release
 
@@ -149,7 +150,7 @@ complete.
 
 ## Step 4: Build and Upload Web Client
 
-This step requires S3 permissions in AWS.
+This step requires S3 and CloudFront permissions in AWS.
 
 On a Mac or Linux system, build the web client using the Staging configuration:
 
@@ -199,13 +200,21 @@ export S3_ASSETS_BUCKET=my-bucket
 yarn cdn:upload:all
 ```
 
+Since the web client is heavily cached in CloudFront, we can create a cache
+invalidation to get the new version out faster. To do this, open the AWS
+CloudFront UI, open the CDN distribution, and click 'Invalidations'. On this
+page, create a new invalidation for `/staging/duelyst.js` and click 'Create
+invalidation'. This will take a few minutes, after which the updated web client
+will be served to end users.
+
 **To automate this step:**
 
 - Add an IAM user, role, and policy via Terraform which allows uploading files
-  to S3
+  to S3 and creating CloudFront invalidations
 - Generate access keys for the IAM user, and place them in Github Secrets
 - Create a new Github Action which triggers when a new release is created
 - Have the Github Action build the web client and upload it to S3
+- Have the Github Action create a cache invalidation in CloudFront
 
 ## Step 5: Build and Upload Desktop Clients
 
