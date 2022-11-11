@@ -27,7 +27,7 @@ module "ecs_service_api" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_api.id}"
-  deployed_version  = "1.97.9"
+  deployed_version  = "1.97.9-hotfix1"
   container_count   = 1
   container_mem     = 450
   service_port      = 3000
