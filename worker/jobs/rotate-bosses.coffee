@@ -6,7 +6,11 @@ Logger = require '../../app/common/logger.coffee'
 Cards = require '../../app/sdk/cards/cardsLookup.coffee'
 moment = require 'moment'
 
+# Collect valid boss IDs.
 BossIds = Object.values(Cards.Boss)
+BrokenBossIds = [200106] # These bosses are missing resources and cause login crashes.
+BossIds = BossIds.filter (id) -> return BrokenBossIds.indexOf(id) == -1
+
 oneDay = 24 * 60 * 60 * 1000 # Milliseconds.
 
 ###*
