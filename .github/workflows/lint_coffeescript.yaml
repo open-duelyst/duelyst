@@ -6,11 +6,11 @@ on:
     - main
   pull_request:
     paths:
-      - app/**/*.coffee
-      #- cli/**/*.coffee
-      #- scripts/**/*.coffee
-      - server/**/*.coffee
-      - worker/**/*.coffee
+      - app/**.coffee
+      #- cli/**.coffee
+      #- scripts/**.coffee
+      - server/**.coffee
+      - worker/**.coffee
 
 jobs:
   linting:
