@@ -33,6 +33,7 @@ describe('faction progression', () => {
       expect(SDK.FactionFactory.starterDeckForFactionLevel(SDK.Factions.Faction1, 9).length).to.equal(40);
     });
 
+    /* Test disabled: Basics are no longer unlockable.
     it('expect 12 total unlockable basic cards in starter deck at level 9', () => {
       let unlockableBasicCount = 0;
       const deck = SDK.FactionFactory.starterDeckForFactionLevel(SDK.Factions.Faction1, 9);
@@ -42,8 +43,8 @@ describe('faction progression', () => {
         const sdkCard = SDK.CardFactory.cardForIdentifier(cardId, SDK.GameSession.current());
         if (sdkCard.getIsUnlockableBasic()) unlockableBasicCount++;
       }
-
       expect(unlockableBasicCount).to.equal(12);
     });
+    */
   });
 });

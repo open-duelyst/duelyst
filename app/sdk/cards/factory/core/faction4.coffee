@@ -128,7 +128,7 @@ class CardFactory_CoreSet_Faction4
 
     if (identifier == Cards.Faction4.AltGeneral)
       card = new Unit(gameSession)
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.setIsGeneral(true)
       card.factionId = Factions.Faction4
       card.name = i18next.t("cards.faction_4_unit_cassyva_name")
@@ -172,8 +172,8 @@ class CardFactory_CoreSet_Faction4
     if (identifier == Cards.Faction4.ThirdGeneral)
       card = new Unit(gameSession)
       card.setIsGeneral(true)
-      card.setIsUnlockableWithAchievement(true)
-      card.setIsUnlockedWithAchievementId(WartechGeneralFaction4Achievement.id)
+      #card.setIsUnlockableWithAchievement(true)
+      #card.setIsUnlockedWithAchievementId(WartechGeneralFaction4Achievement.id)
       card.factionId = Factions.Faction4
       card.name = i18next.t("cards.faction_4_unit_maehv_name")
       card.setDescription(i18next.t("cards.faction_4_unit_maehv_desc"))
@@ -216,7 +216,7 @@ class CardFactory_CoreSet_Faction4
     if (identifier == Cards.Faction4.AbyssalCrawler)
       card = new Unit(gameSession)
       card.factionId = Factions.Faction4
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.name = i18next.t("cards.faction_4_unit_abyssal_crawler_name")
       card.setDescription(i18next.t("cards.faction_4_unit_abyssal_crawler_desc"))
       card.setFXResource(["FX.Cards.Faction4.AbyssalCrawler"])
@@ -856,7 +856,7 @@ class CardFactory_CoreSet_Faction4
     if (identifier == Cards.Spell.DaemonicLure)
       card = new SpellDamage(gameSession)
       card.factionId = Factions.Faction4
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.DaemonicLure
       card.name = i18next.t("cards.faction_4_spell_daemonic_lure_name")
       card.setDescription(i18next.t("cards.faction_4_spell_daemonic_lure_description"))
@@ -896,7 +896,7 @@ class CardFactory_CoreSet_Faction4
     if (identifier == Cards.Spell.ShadowNova)
       card = new SpellChokingShadows(gameSession)
       card.factionId = Factions.Faction4
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.ShadowNova
       card.name = i18next.t("cards.faction_4_spell_shadow_nova_name")
       card.setDescription(i18next.t("cards.faction_4_spell_shadow_nova_description"))
@@ -1115,7 +1115,7 @@ class CardFactory_CoreSet_Faction4
     if (identifier == Cards.Spell.SoulshatterPact)
       card = new SpellApplyModifiers(gameSession)
       card.factionId = Factions.Faction4
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.SoulshatterPact
       card.name = i18next.t("cards.faction_4_spell_soulshatter_pact_name")
       card.setDescription(i18next.t("cards.faction_4_spell_soulshatter_pact_description"))
