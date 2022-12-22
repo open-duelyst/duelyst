@@ -1,7 +1,5 @@
 class CardSet
-
   @GauntletSpecial: -1
-
   @Core: 1
   @Shimzar: 2
   @Bloodborn: 3

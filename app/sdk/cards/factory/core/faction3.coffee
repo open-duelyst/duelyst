@@ -122,7 +122,7 @@ class CardFactory_CoreSet_Faction3
 
     if (identifier == Cards.Faction3.AltGeneral)
       card = new Unit(gameSession)
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.setIsGeneral(true)
       card.factionId = Factions.Faction3
       card.name = i18next.t("cards.faction_3_unit_sajj_name")
@@ -166,8 +166,8 @@ class CardFactory_CoreSet_Faction3
     if (identifier == Cards.Faction3.ThirdGeneral)
       card = new Unit(gameSession)
       card.setIsGeneral(true)
-      card.setIsUnlockableWithAchievement(true)
-      card.setIsUnlockedWithAchievementId(WartechGeneralFaction3Achievement.id)
+      #card.setIsUnlockableWithAchievement(true)
+      #card.setIsUnlockedWithAchievementId(WartechGeneralFaction3Achievement.id)
       card.factionId = Factions.Faction3
       card.name = i18next.t("cards.faction_3_unit_ciphyron_name")
       card.setDescription(i18next.t("cards.faction_3_unit_ciphyron_desc"))
@@ -409,7 +409,7 @@ class CardFactory_CoreSet_Faction3
     if (identifier == Cards.Faction3.BrazierRedSand)
       card = new Unit(gameSession)
       card.factionId = Factions.Faction3
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.name = i18next.t("cards.faction_3_unit_ethereal_obelysk_name")
       card.setDescription(i18next.t("cards.faction_3_unit_ethereal_obelysk_desc"))
       card.raceId = Races.Structure
@@ -876,7 +876,7 @@ class CardFactory_CoreSet_Faction3
     if (identifier == Cards.Spell.CosmicFlesh)
       card = new SpellApplyModifiers(gameSession)
       card.factionId = Factions.Faction3
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.CosmicFlesh
       card.name = i18next.t("cards.faction_3_spell_cosmic_flesh_name")
       card.setDescription(i18next.t("cards.faction_3_spell_cosmic_flesh_description"))
@@ -902,7 +902,7 @@ class CardFactory_CoreSet_Faction3
     if (identifier == Cards.Spell.Blindscorch)
       card = new SpellApplyModifiers(gameSession)
       card.factionId = Factions.Faction3
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.Blindscorch
       card.name = i18next.t("cards.faction_3_spell_blindscorch_name")
       card.setDescription(i18next.t("cards.faction_3_spell_blindscorch_description"))
@@ -1054,7 +1054,7 @@ class CardFactory_CoreSet_Faction3
     if (identifier == Cards.Spell.ScionsSecondWish)
       card = new SpellApplyModifiers(gameSession)
       card.factionId = Factions.Faction3
-      card.setIsUnlockableBasic(true)
+      #card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.ScionsSecondWish
       card.name = i18next.t("cards.faction_3_spell_scions_second_wish_name")
       card.setDescription(i18next.t("cards.faction_3_spell_scions_second_wish_description"))

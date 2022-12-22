@@ -161,12 +161,16 @@ var ProgressionManager = Manager.extend({
   },
 
   isFactionUnlocked: function (factionId) {
+    // As of Dec 2022, all factions are always unlocked.
+    return true;
+    /*
     // Lyonar and Neutral always unlocked
     if (factionId == SDK.Factions.Faction1 || factionId == SDK.Factions.Neutral) {
       return true;
     }
     var progressionStatsModel = this.getFactionProgressionStatsModel(factionId);
     return (progressionStatsModel != null && progressionStatsModel.get('xp') != null);
+    */
   },
 
   isFactionUnlockedOrCardsOwned: function (factionId) {

@@ -21,6 +21,7 @@ class GiftCrateLookup
   @HalloweenLogin: "HalloweenLogin"
   @ThanksgivingLogin: "ThanksgivingLogin"
   @ChristmasLogin: "ChristmasLogin"
+  @FullCollection: "FullCollection"
 
   # Test
   @Unavailable2050: "Unavailable2050"
