@@ -1,5 +1,4 @@
 class GiftCrateLookup
-
   @WinterHoliday2015: "WinterHoliday2015"
   @Frostfire2016: "Frostfire2016"
   @FebruaryLag2016: "FebruaryLag2016"
@@ -21,7 +20,6 @@ class GiftCrateLookup
   @HalloweenLogin: "HalloweenLogin"
   @ThanksgivingLogin: "ThanksgivingLogin"
   @ChristmasLogin: "ChristmasLogin"
-  @FullCollection: "FullCollection"
 
   # Test
   @Unavailable2050: "Unavailable2050"

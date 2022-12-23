@@ -7,6 +7,7 @@ moment = require 'moment'
 Logger = require 'app/common/logger'
 
 CONFIG = require('app/common/config')
+config = require('config/config')
 RSX = require('app/data/resources')
 
 Card = require 'app/sdk/cards/card'
@@ -121,7 +122,8 @@ class CardFactory_CoreSet_Faction1
 
     if (identifier == Cards.Faction1.AltGeneral)
       card = new Unit(gameSession)
-      #card.setIsUnlockableBasic(true)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableBasic(true)
       card.setIsGeneral(true)
       card.factionId = Factions.Faction1
       card.name = i18next.t("cards.faction_1_unit_ziran_name")
@@ -165,8 +167,9 @@ class CardFactory_CoreSet_Faction1
     if (identifier == Cards.Faction1.ThirdGeneral)
       card = new Unit(gameSession)
       card.setIsGeneral(true)
-      #card.setIsUnlockableWithAchievement(true)
-      #card.setIsUnlockedWithAchievementId(WartechGeneralFaction1Achievement.id)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableWithAchievement(true)
+        card.setIsUnlockedWithAchievementId(WartechGeneralFaction1Achievement.id)
       card.factionId = Factions.Faction1
       card.name = i18next.t("cards.faction_1_unit_brome_name")
       card.setDescription(i18next.t("cards.faction_1_unit_brome_desc"))
@@ -301,7 +304,8 @@ class CardFactory_CoreSet_Faction1
     if (identifier == Cards.Faction1.SilverguardKnight)
       card = new Unit(gameSession)
       card.factionId = Factions.Faction1
-      #card.setIsUnlockableBasic(true)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableBasic(true)
       card.name = i18next.t("cards.faction_1_unit_silverguard_knight_name")
       card.setBoundingBoxWidth(100)
       card.setBoundingBoxHeight(80)
@@ -804,7 +808,8 @@ class CardFactory_CoreSet_Faction1
     if (identifier == Cards.Spell.Tempest)
       card = new SpellDamage(gameSession)
       card.factionId = Factions.Faction1
-      #card.setIsUnlockableBasic(true)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.Tempest
       card.name = i18next.t("cards.faction_1_spell_tempest_name")
       card.setDescription(i18next.t("cards.faction_1_spell_tempest_description"))
@@ -889,7 +894,8 @@ class CardFactory_CoreSet_Faction1
     if (identifier == Cards.Spell.Martyrdom)
       card = new SpellMartyrdom(gameSession)
       card.factionId = Factions.Faction1
-      #card.setIsUnlockableBasic(true)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.Martyrdom
       card.name = i18next.t("cards.faction_1_spell_martyrdom_name")
       card.setDescription(i18next.t("cards.faction_1_spell_martyrdom_description"))
@@ -1049,7 +1055,8 @@ class CardFactory_CoreSet_Faction1
     if (identifier == Cards.Spell.DivineBond)
       card = new SpellBuffAttributeByOtherAttribute(gameSession)
       card.factionId = Factions.Faction1
-      #card.setIsUnlockableBasic(true)
+      if !config.get('allCardsAvailable')?
+        card.setIsUnlockableBasic(true)
       card.id = Cards.Spell.DivineBond
       card.name = i18next.t("cards.faction_1_spell_divine_bond_name")
       card.setDescription(i18next.t("cards.faction_1_spell_divine_bond_description"))
