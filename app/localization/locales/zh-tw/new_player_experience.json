@@ -1,0 +1,19 @@
+{
+	"highlight_practice_game_popover": "Practice Game Here",
+	"highlight_more_practice_games_popover": "Play more Practice Games",
+	"highlight_ladder_popover": "Play Season Ladder Game",
+	"highlight_solo_challenge_popover": "Play Solo Challenges",
+	"play_mode_unlock_message": "Complete Starter Quests to unlock.",
+	"play_mode_gauntlet_unlock_message": "Reach Level 10 with any Faction to unlock.",
+	"play_mode_unlock_game_count_message": "Play {{game_count}} more Season Games to unlock.",
+	"highlight_open_spirit_orbs_popover": "Open Spirit Orbs to unlock new cards for your Collection.",
+	"new_quests_popover": "New Quests",
+	"buy_spirit_orb": "Get Spirit Orb",
+	"new_shop_special_available_popover": "New Special",
+
+	"faction_unlocked_title": "Faction Unlocked",
+	"faction_cards_unlocked_progress_label": "{{card_count}} cards unlocked",
+
+	"bloodborn_message": "This is your [Bloodbound Spell]. It refreshes on your next turn.",
+	"bloodborn_message_plural": "This is your [Bloodbound Spell]. It refreshes in {{count}} turns."
+}

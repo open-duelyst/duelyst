@@ -1,0 +1,42 @@
+{
+	"username_input_label": "Username",
+	"password_input_label": "Password",
+	"login_button_label": "Login",
+	"forgot_password_button_label": "Forgot Password?",
+	"help_label": "Help?",
+	"create_account_button_label": "Create Account",
+	"invalid_password_message": "Invalid password",
+	"invalid_username_message": "Invalid username",
+	"account_suspended_message": "Account Suspended",
+	"invalid_username_or_password_message": "Invalid username or password",
+	"forgot_password_dialog_title": "Forgot Password?",
+	"forgot_password_submit_button_label": "Submit",
+	"unable_to_login_to_account_message": "We are unable to log in to your account.",
+	"skip_to_login_button_label": "Skip to Log In",
+	"log_in_label": "Log In",
+	"log_in_label_emphasized": "LOG IN",
+	"sign_up_label": "Sign Up",
+	"sign_up_label_emphasized": "SIGN UP",
+
+	"show_password":"show",
+
+	"date_of_birth":"Date of Birth",
+	"month":"Month",
+	"day":"Day",
+	"year":"Year",
+	"send_me_news":"Send me news and special offers",
+	"account_created_success_title":"Account Created!",
+	"login_one_moment":"One moment while we log you in...",
+	"link_old_account":"Need to link your old DUELYST account? <a href=\"javascript:void(0)\" class=\"link-existing-account\">Link Account",
+
+	"login_using_duelyst_account":"Log In Using Your Duelyst Account",
+	"login_using_duelyst_account_2":"Use your Duelyst account credentials to start the account linking process.",
+	"help":"Help?",
+	"dont_have_duelyst_account":"Don't have a DUELYST account? <a href=\"javascript:void(0)\" class=\"signup-link\">Register <i class=\"fa fa-arrow-circle-o-right\"></i></a>.",
+
+	"select_username":"Select Username",
+	"username":"Username",
+	"play_duelyst_btn":"Play Duelyst",
+	"username_set_success":"Your username has been set!"
+
+}

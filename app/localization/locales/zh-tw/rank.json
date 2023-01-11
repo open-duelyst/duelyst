@@ -1,0 +1,23 @@
+{
+	"rank":"Rank",
+	"division":"Division",
+	"season":"Season",
+	"loot_crate_instructions":"Upgrade Season Loot Crate by reaching the next Division",
+	"loot_crate_max_reached":"Max Loot Crate upgrades earned!",
+	"win_streak_message":"{{win_count}} wins in a row! +1 BONUS CHEVRON",
+	"next_division_message": "You will reach {{division_name}} at rank{{rank}}",
+
+	"bronze_division_name": "Bronze",
+	"silver_division_name": "Silver",
+	"gold_division_name": "Gold",
+	"diamond_division_name": "Diamond",
+	"elite_division_name": "S-Rank",
+
+	"end_of_ranked_season_title": "RANKED SEASON REWARD",
+	"current_rank_message": "RANK {{rank}}",
+	"current_division_message": "{{division}} DIVISION",
+	"month_year_season_message": "{{month}} {{year}}",
+	"last_season_ranked_earned_message": "Your rank from last season earned you",
+	"bonus_chevrons_message": "BONUS CHEVRONS",
+	"season_has_begun_message": "The {{month}} Season {{year}} has begun!"
+}

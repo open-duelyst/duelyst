@@ -1,0 +1,34 @@
+{
+	"rift_title": "The Rift",
+	"start_run_button_label": "Start Run",
+	"rift_level_label": "LEVEL: {{level}}",
+	"rift_rating_label": "RATING: {{rating}}",
+	"progress_to_next_level_message": "progress to next level",
+	"progress_over_required_xp_message": "{{current}} / {{required}}",
+	"upgrade_count_button_label": "LEVEL UP ({{upgradesAvailableCount}})",
+	"improve_deck_message": "Improve your deck by upgrading cards.",
+	"select_card_to_upgrade_message": "SELECT A CARD TO UPGRADE",
+	"select_a_new_card_message": "Select a new card",
+	"save_upgrade_button_label": "SAVE UPGRADE",
+	"save_upgrade_confirmation_title": "Save Upgrade",
+	"save_upgrade_confirmation_body": "Saving an upgrade will allow you to use it in your NEXT RIFT RUN.  Are you sure you wish to do this?",
+	"choose_card_upgrade_instruction_message": "Choose a card to replace",
+	"upgrade_details_message": "You will get a choice of 6 cards to replace the selected card with.",
+	"upgrade_details_with_stored_packs_message": "You will get a choice of cards that you saved from previous Rift Runs.\nYou have {{storedPacks}} saved packs remaining.\nThese upgrades cannot be saved again.",
+	"upgrade_added_details_max_saved_message": "\nYou have the max (10) number of saved upgrades and WILL NOT be able to save this for a future run.",
+	"upgrade_added_details_current_saved_message": "\nYou have {{storedUpgradeCount}} saved upgrades and will be able to save this for a future run.",
+	"purchase_rift_ticket_message": "Purchase Rift Ticket:",
+	"stored_upgrade_count_label": "Stored Upgrades: {{getStoredRiftUpgradesCount}} / 10",
+	"no_active_rift_runs_message": "You have no active rift runs yet.",
+	"select_general_message": "SELECT YOUR GENERAL",
+	"select_card_message": "SELECT A CARD",
+	"confirm_replace_card_message": "Are you sure you want to replace this card?",
+
+	"empty_rift_instruction_header": "In Rift Mode, you build a deck over time by upgrading cards one-by-one.",
+	"empty_rift_instruction_p1": "Every Rift Run starts with a Basic Deck.",
+	"empty_rift_instruction_p2": "You earn Rift XP as you play, which alows you to level up your Deck.",
+	"empty_rift_instruction_p3": "Each time you level up a Rift Run, you can replace one card from your deck with a new card from a pack of 6.",
+	"empty_rift_instruction_p4": "Your first Rift Run is free and starts with 5 upgrades."
+
+
+}

@@ -1,0 +1,41 @@
+{
+	"category_summary_label": "Summary",
+	"category_faction_levels_label": "Faction Levels",
+	"category_rank_history_label": "Rank History",
+	"category_match_history_label": "Match History",
+	"category_rift_label": "Rift",
+
+	"summary_current_rank": "Current Rank",
+	"summary_current_win_streak": "Current Win Streak",
+	"summary_current_ranked_wins": "Ranked Wins",
+	"summary_top_rank": "Top Rank",
+	"summary_top_win_streak": "Top Win Streak",
+	"summary_total_ranked_wins": "Total Ranked Wins",
+	"summary_gauntlet": "Best Gauntlet Run",
+	"summary_gauntlet_total_wins": "Total Gauntlet Wins",
+	"summary_battle_ribbons_label": "Battle Ribbons",
+
+	"match_history_game_type": "game type",
+	"match_history_win_loss": "win/loss",
+	"match_history_duration": "time",
+	"match_history_replay": "replay",
+	"match_history_next_page": "next",
+
+	"share_replay_title": "Share Replay",
+	"share_replay_message": "Send this link to anyone:",
+	"share_replay_button_label": "COPY TO CLIPBOARD",
+
+	"change_username_title": "Change Username",
+	"change_username_free_message": "You can change your username only <strong>once per month</strong>, and your FIRST username change is FREE. Changing your username afterwards will cost 100 Gold.",
+	"change_username_message": "You can change your username only <strong>once per month</strong>, and will cost 100 Gold.",
+	"username_placeholder": "New Username",
+	"change_username_max_per_month_error": "You have already changed your username the maximum allowed times this month.",
+	"change_username_success": "Your username has been updated!",
+
+	"change_avatar":"Change Avatar",
+	"click_to_unlock":"Click to unlock.",
+	"percent_off":"{{discount}}% Off!",
+	"avatar_update_success_msg":"Your avatar has been updated!",
+
+	"season_played_label": "Played for {{season_count}} seasons."
+}

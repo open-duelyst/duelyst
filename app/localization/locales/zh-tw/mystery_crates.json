@@ -1,0 +1,23 @@
+{
+	"crate_type_label": "{{crate_type}} Crate",
+	"mystery_crate_label": "Mystery Crate",
+	"mystery_crate_name_plural": "Mystery Crates",
+	"mystery_crate_screen_instructions": "Select a crate to get started",
+	"unlock_button_label": "Unlock",
+	"continue_button_label": "Open",
+	"buy_button_label": "Buy",
+	"get_keys_label": "Get Keys",
+	"no_crates_of_type_warning": "You don't have any {{crate_type}} Crates!",
+	"key_count_label": "You have {{count}} {{crate_type}} Key",
+	"key_count_label_plural": "You have {{count}} {{crate_type}} Keys",
+	"gift_crate_adjective": "Gift",
+	"boss_crate_adjective": "Boss",
+	"crate_expires_in_label": "expires in",
+	"frostfire_adjective": "Frostfire",
+	"frostfire_promo_text": "1 Core Set Orb, Spirit,",
+	"frostfire_promo_text2": "and a Frostfire cosmetic!",
+	"frostfire_premium_adjective": "Premium Frostfire",
+	"frostfire_premium_promo_text": "2 Immortal Orbs, Spirit,",
+	"frostfire_premium_promo_text2": "and a Frostfire cosmetic!"
+
+}

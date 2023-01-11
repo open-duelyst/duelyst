@@ -1,0 +1,21 @@
+{
+	"exhausted_message": "[力竭]－無法移動或攻擊。",
+	"battlepet_message": "[戰鬥寵物]－他們擁有自己的意識！",
+	"stunned_message": "[被擊暈]－無法移動或攻擊。",
+	"replace_bloodborn_message": "[血源法術]－無法被替換！",
+	"out_of_mulligan_message": "只能替換 {{count}} 張牌。",
+	"out_of_mulligan_message_plural": "只能替換{{count}}張牌。",
+	"hand_is_full_message": "手牌滿了！",
+	"out_of_cards_message": "沒有牌了！",
+
+	"my_bloodborn_refresh_message": "你的[血源法術]將在下回合刷新。",
+	"my_bloodborn_refresh_message_plural": "你的[血源法術]將在{{count}}回合後刷新。",
+
+	"opponent_bloodborn_refresh_message": "對手的[血源法術]將在下回合刷新。",
+	"opponent_bloodborn_refresh_message_plural": "對手的[血源法術]將在 {{count}} 回合後刷新。",
+	"connected_label": "connected",
+	"disconnected_label": "disconnected",
+	"label_your_turn": "你的回合",
+	"label_enemy_turn": "敵方回合",
+	"label_automatic_moves": "自動移動"
+}

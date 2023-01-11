@@ -1,0 +1,43 @@
+{
+	"quest_log_title":"Daily Quests",
+	"first_win_of_the_day_active":"First Win of the Day (+{{first_win_gold_amount}} Gold): ACTIVE",
+	"first_win_of_the_day_available_in":"First win of the day available in:",
+	"replace_quest_instructions":"You can replace each quest once per day.",
+	"quest_rollover_instructions":"New Quests in: {{time_until_quests}}",
+	"quest_log_empty": "You have completed all of your quests. Check back tomorrow!",
+
+	"daily_free_card_label": "Daily Free Card",
+	"claim_your_free_card_label": "Claim your free card of the day",
+
+	"quest_beginner_win_practice_games_title": "Win {{count}} Practice Game",
+	"quest_beginner_win_practice_games_title_plural": "Win {{count}} Practice Games",
+	"quest_beginner_win_practice_games_description": "Win {{count}} practice game.",
+	"quest_beginner_win_practice_games_description_plural": "Win {{count}} practice games.",
+	"quest_beginner_win_ladder_game_title": "Into the Fray",
+	"quest_beginner_win_ladder_game_desc": "Win {{count}} Season Ladder Game.",
+	"quest_beginner_faction_up_title": "Faction Up",
+	"quest_beginner_faction_up_desc": "Get any Faction to Level 10.",
+	"quest_beginner_complete_solo_challenges_title": "Lone Wolf",
+	"quest_beginner_complete_solo_challenges_desc": "Complete {{count}} Solo Challenges.",
+
+	"replace_button_label": "Replace",
+	"replace_button_starter_label": "Starter",
+
+	"daily_challenge_title": "Daily Challenge",
+	"daily_challenge_instructions": "Complete the Daily Challenge",
+	"daily_challenge_play_button_label": "Play",
+
+	"quest_faction_games_title": "{{faction_name}} Challenger",
+	"quest_faction_games_desc": "Play {{count}} online games with a {{faction}} Deck",
+	"quest_faction_abyss_games_desc": "Play {{count}} online games with an {{faction}} Deck",
+	"quest_adventurer_title": "Adventurer",
+	"quest_adventurer_desc": "Play {{count}} games.",
+	"quest_ultimate_aggressor_title": "Ultimate Aggressor",
+	"quest_ultimate_aggressor_desc": "Deal {{count}} Damage to enemy Generals.",
+	"quest_assassin_title": "Assassin",
+	"quest_assassin_desc": "Destroy {{count}} enemy minions.",
+	"quest_welcome_back_title": "Welcome Back!",
+	"quest_welcome_back_desc": "Play {{count}} Games",
+	"monthly_quest_title": "Monthly Quest",
+	"monthly_quest_desc": "Complete {{count}} quests."
+}

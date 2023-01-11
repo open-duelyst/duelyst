@@ -1,0 +1,61 @@
+{
+	"new_deck_button_label": "New Deck",
+	"crafting_button_label": "Crafting",
+	"crafting_instructions": "Select or drag a card here to start crafting or disenchanting.",
+	"crafting_disenchant_duplicates_button_label": "Disenchant Extras",
+	"crafting_disenchant_duplicates_instructions": "any duplicate with more than 3x cards",
+	"craft_card_button_label": "Craft",
+	"disenchant_card_button_label": "Disenchant",
+	"confirm_card_crafting_message": "Are you sure you want to craft +1 {{card_name}}?",
+	"confirm_card_disenchanting_message": "Are you sure you want to DISENCHANT (-1) {{card_name}}",
+	"confirm_card_disenchant_all_message": "Are you sure you want to Disenchant Extras?",
+	"deck_save_button_label": "Save",
+	"back_button_label": "Back",
+	"crafting_rewards_title": "Crafting Rewards",
+	"seven_sisters_unlock_message":"To earn, unlock 3x of any six {{faction_name}} Rares.",
+
+	"action_filter_all_cards": "All Cards",
+	"action_filter_standard_cards": "Standard Cards",
+	"action_filter_lore": "Lore Notifications",
+	"action_filter_card_skins": "Card Skins",
+	"action_filter_prismatic_crafting": "Prismatic Crafting",
+	"action_filter_prismatics": "Prismatics",
+	"action_dismiss_all_new": "Dismiss New",
+
+	"unlock_prismatic_crafting_by_normal_unlock_msg": "Unlock prismatic crafting by unlocking the normal version of this card.",
+	"unlock_prismatic_crafting_by_leveling_faction_msg":"Unlock prismatic by reaching {{faction_name}} level {{unlocksAtLevel}}.",
+	"unlock_general_by_leveling_msg": "Unlock 1 copy by reaching {{faction_name}} level {{level}}.",
+	"unlock_card_by_leveling_msg": "Unlock 3 copies by reaching {{faction_name}} level {{level}}.",
+	"unlock_through_spirit_orbs_msg": "Unlockable only through {{card_set_name}} Spirit Orbs.",
+	"unlock_faction_msg": "Unlock {{faction_name}} by defeating them in a Practice Game.",
+
+	"cannot_craft_prismatic_achievement_cards_yet_msg": "You cannot craft or disenchant prismatic achievement cards until you've earned the achievement.",
+	"cannot_craft_achievement_cards_msg": "You cannot craft or disenchant achievement cards.",
+	"cannot_craft_progression_cards_msg": "You cannot craft or disenchant progression cards.",
+	"cannot_craft_prismatic_of_unlockable_set_msg": "You cannot craft or disenchant prismatic {{cardSetName}} cards until you've unlocked the normal version of this card.",
+	"cannot_craft_cards_of_unlockable_set_msg": "You cannot craft or disenchant the normal version of {{cardSetName}} cards.",
+	"cannot_craft_basic_cards_msg": "You cannot craft or disenchant basic cards.",
+
+
+	"duplicate_cards_msg": "You have duplicate cards",
+	"new_card_popover_msg": "NEW",
+
+	"import_deck": "Import Deck",
+	"export_deck": "Export Deck",
+
+	"must_select_general_error": "You must select a General first!",
+	"default_deck_name":"Deck Name",
+	"default_deck_desc":"this deck",
+	"deck_change_cancel_msg":"Are you sure you want to cancel changes made to {{deckName}}?",
+	"deck_delete_confirm_msg":"Are you sure you want to delete {{deckName}}?",
+	"deck_save_error_msg":"There was a problem saving your deck. Please try again.",
+	"deck_save_no_general_error_msg":"You cannot save a deck without a general.",
+
+	"max_copies_added_to_deck": "MAX copies added to deck.",
+
+	"artifact_desc": "Artifacts may be applied to your general to grant bonuses and special abilities. A general may wield up to 3 artifacts at a time. Artifacts remain active until replaced or destroyed.",
+	"general_desc": "Generals command your minions and cast your spells. Each general has a unique Bloodbound Spell that may be reused throughout a battle. Destroy the enemy general to win the game!",
+	"minion_desc": "Minions may be played to the battle field nearby any other friendly minion. Minions begin their first turn exhausted, but may move and attack at least once on each subsequent turn, and remain active until killed.",
+	"spell_desc": "Spells may be played to the battle field to activate the spell's text. Spells do not remain active after activation.",
+	"copies_label": "Copies: "
+}

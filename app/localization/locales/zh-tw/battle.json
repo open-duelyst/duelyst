@@ -1,0 +1,51 @@
+{
+	"finding_game": "搜尋中",
+	"starting_practice_game": "正在開始",
+	"loading_battle": "讀取遊戲中",
+	"existing_battle_in_progress": "遊戲正在進行中",
+	"continue_battle_button_label": "繼續",
+
+	"choose_starting_hand_title": "選擇你的起始手牌",
+	"choose_starting_hand_instructions": "選擇以替換最多 2 張牌",
+	"choose_starting_hand_confirm_button_label": "確認",
+	"opponent_connection_status_connecting": "對手連線中",
+	"opponent_connection_status_connected": "對手已連線",
+
+	"replace_button_label": "換牌",
+	"hand_indicator_label": "手牌",
+	"deck_indicator_label": "牌堆",
+
+	"emote_category_default": "預設",
+	"emote_category_faction": "陣營",
+	"emote_category_other": "其他",
+
+	"your_name_default_label": "你",
+	"opponent_name_default_label": "對手",
+	"battle_log_label": "遊戲紀錄",
+	"turn_button_label_enemy_turn": "敵方回合",
+	"turn_button_label_end_turn": "回合結束",
+	"turn_button_label_restart_turn": "回合重啟",
+	"menu_button_label": "選單",
+	"esc_menu_end_game_label": "結束遊戲",
+	"esc_menu_concede_label": "投降",
+	"esc_menu_more_settings_label": "設定",
+	"esc_menu_friends_label": "好友",
+	"card_instructions_attack": "攻擊力",
+	"card_instructions_health": "生命值",
+	"card_instructions_mana_cost": "消耗",
+
+	"outcome_victory": "勝利",
+	"outcome_defeat": "戰敗",
+	"outcome_draw": "平手",
+	"zero_xp_earned": "+0 XP",
+	"unscored_game_xp_notice": "在沒有足夠多操作的遊戲中無法取得 XP 或獎勵。",
+	"max_practice_xp_reached_notice": "Single Player and Friendly games stop rewarding XP at level 10. Play Ranked Games to earn more XP and rewards up to max level.",
+	"gold_tip_button_label": "付出 5 Gold 作為小費。",
+	"gold_tip_button_tooltip": "付給對手自己的少量 gold 作為小費。",
+	"gold_tip_confirm_message": "你確定要付出自己的 5 gold 作為小費嗎?",
+	"report_opponent_button_label": "回報違規",
+	"max_daily_win_rewards_reached": "已達每日勝場獎勵的上限。",
+	"progress_towards_next_win_counter_reward": "{{x}}/3 勝場以取得下次獎勵。",
+	"level_up_notice": "等級提升"
+
+}
