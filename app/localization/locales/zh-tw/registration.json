@@ -1,0 +1,18 @@
+{
+	"registration_title": "Create Account",
+	"registration_username_label": "Username",
+	"registration_password_label": "Password",
+	"registration_password_confirmation_label": "Confirm Password",
+	"registration_invite_code_label": "Invite Code",
+	"registration_show_referral_button_label": "did a friend refer you?",
+	"registration_referral_field_label": "Friend Code",
+	"registration_referral_field_placeholder": "friend username",
+	"registration_submit_button_label": "Submit",
+	"registration_success_message": "One moment while we log you into your new account...",
+	"registration_validation_username_instructions": "3 to 18 alphanumeric characters",
+	"registration_validation_username_exists": "Username already exists",
+	"registration_validation_password_instructions": "Minimum 8 characters",
+	"registration_validation_passwords_dont_match": "Passwords must match",
+	"registration_validation_invite_code_invalid": "Invalid invite code",
+	"already_have_an_account": "already have an account?"
+}

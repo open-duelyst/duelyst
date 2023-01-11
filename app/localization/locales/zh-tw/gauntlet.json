@@ -1,0 +1,23 @@
+{
+	"gauntlet_title": "The Gauntlet",
+	"gauntlet_instructions": "Test your skills in the Gauntlet. Draft a deck of 30 cards and face off against other players. Each win unlocks better rewards. Battle until you lose 3 times.",
+	"gauntlet_start_instructions": "Start a Gauntlet run for {{gold_price}} Gold or purchase a ticket for {{hard_currency_price}}.",
+	"ticket_inventory_label": "you have {{count}} ticket",
+	"ticket_inventory_label_plural": "you have {{count}} tickets",
+	"start_button_label": "Start",
+
+	"start_error_message_insufficient_gold": "You do not have sufficient gold to start the Gauntlet run.",
+	"start_error_message_generic": "Oops... there was a problem starting your Gauntlet run. Please try again.",
+
+	"select_faction_label": "Select your Faction",
+	"select_general_label": "Select your General",
+	"select_card_label": "Select a Card",
+
+	"resign_run_button_label": "Resign",
+	"resign_confirmation_message": "Are you sure you want to resign?",
+	"claim_rewards_win_count_label": "{{count}} Win",
+	"claim_rewards_win_count_label_plural": "{{count}} Wins",
+	"claim_rewards_button_label": "Claim Rewards",
+	"win_loss_label": "WINS: {{win_count}}   LOSSES: {{loss_count}}",
+	"no_available_gauntlet_decks": "You have no recent gauntlet decks."
+}

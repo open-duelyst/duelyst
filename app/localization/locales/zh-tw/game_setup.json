@@ -1,0 +1,24 @@
+{
+	"must_select_deck_message": "You must select a deck!",
+	"must_select_opponent_message": "You must select an opponent!",
+	"must_select_deck_and_opponent_message": "You must select your deck and an opponent!",
+
+	"recommended_ai_opponent_label": "(recommended)",
+	"choose_your_opponent_header": "Choose Your Opponent",
+
+	"matchmaking_wait_time_message": "Average wait is {{wait_time}}",
+	"matchmaking_estimated_wait_time_message": "Average est. wait is {{wait_time}}",
+
+	"find_selected_deck_msg": "Find your selected deck here.",
+
+	"waiting_for_opponent_msg": "Waiting for Opponent",
+	"opponent_choosing_hand_msg": "Opponent still choosing starting hand",
+	"opponent_connecting_msg": "Opponent connecting",
+	"opponent_connected_msg": "Opponent connected",
+
+	"battle_map_choose_tooltip": "The Battle Map you choose will be used when you are <strong>player one</strong>.",
+	"battle_map_saved_success_msg": "Your Battle Map has been saved!",
+	"battle_map_select_title": "Set Battle Map",
+	"battle_map_random": "RANDOM"
+
+}
