@@ -1,7 +1,7 @@
 {
-	"rarity_basic": "Basic",
-	"rarity_common": "Common",
-	"rarity_rare": "Rare",
-	"rarity_epic": "Epic",
-	"rarity_legendary": "Legendary"
+	"rarity_basic": "基本",
+	"rarity_common": "普通",
+	"rarity_rare": "稀有",
+	"rarity_epic": "史詩",
+	"rarity_legendary": "傳說"
 }
