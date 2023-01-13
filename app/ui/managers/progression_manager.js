@@ -13,6 +13,7 @@ _ProgressionManager.current = _ProgressionManager.getInstance;
 module.exports = _ProgressionManager;
 
 var CONFIG = require('app/common/config');
+var config = require('config/config');
 var EventBus = require('app/common/eventbus');
 var EVENTS = require('app/common/event_types');
 var Logger = require('app/common/logger');
@@ -161,16 +162,15 @@ var ProgressionManager = Manager.extend({
   },
 
   isFactionUnlocked: function (factionId) {
-    // As of Dec 2022, all factions are always unlocked.
-    return true;
-    /*
+    if (config.get('allCardsAvailable')) {
+      return true;
+    }
     // Lyonar and Neutral always unlocked
     if (factionId == SDK.Factions.Faction1 || factionId == SDK.Factions.Neutral) {
       return true;
     }
     var progressionStatsModel = this.getFactionProgressionStatsModel(factionId);
     return (progressionStatsModel != null && progressionStatsModel.get('xp') != null);
-    */
   },
 
   isFactionUnlockedOrCardsOwned: function (factionId) {

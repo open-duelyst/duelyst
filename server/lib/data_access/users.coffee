@@ -27,6 +27,7 @@ DataAccessHelpers = require('./helpers')
 hashHelpers = require '../hash_helpers.coffee'
 AnalyticsUtil = require '../../../app/common/analyticsUtil.coffee'
 {version} = require '../../../version.json'
+grantFullCollection = require '../collection.coffee'
 
 # redis
 {Redis, Jobs, GameManager} = require '../../redis/'
@@ -236,11 +237,12 @@ class UsersModule
 
       .bind this_obj
       .then ()->
-
         if config.get("inviteCodesActive")
           return knex("invite_codes").where('code',inviteCode).delete()
 
       .then ()->
+        # User has been created. Grant a full collection and return.
+        grantFullCollection(userId)
         return Promise.resolve(userId)
 
   ###*

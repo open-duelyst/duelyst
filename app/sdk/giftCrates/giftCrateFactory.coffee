@@ -214,27 +214,10 @@ class GiftCrateFactory
         card_ids: [Cards.Neutral.SarlacTheEternal,Cards.Neutral.BlackLocust]
         gold: 100
         cosmetics: [CosmeticsLookup.Emote.Faction1Taunt]
-    
-    # Full Collection gift crate
-    allCardIds = SDK.GameSession.getCardCaches().getIsCollectible(true).getIsPrismatic(false).getIsSkinned(false).getCards().map (card) -> return card.id
-    completeCollection = []
-    for id in allCardIds
-      # Include three copies of all non-prismatic, non-skinned cards.
-      completeCollection.push(id)
-      completeCollection.push(id)
-      completeCollection.push(id)
-    @_giftCrateTemplateCache[GiftCrateLookup.FullCollection] =
-      titleText: "Full Collection"
-      subtitleText: "___"
-      availableAt: moment.utc().startOf('year').year(2022).valueOf()
-      rewards:
-        card_ids: completeCollection
 
   @getIsCrateTypeAvailable: (crateType,systemTime) ->
     MOMENT_NOW_UTC = moment(systemTime) || moment().utc()
-
     @_generateCache()
-
     giftCrateTemplate = @giftCrateTemplateForType(crateType)
 
     if giftCrateTemplate == null # No template, so consider unavailable
@@ -247,8 +230,6 @@ class GiftCrateFactory
 
   @giftCrateTemplateForType: (crateType) ->
     @_generateCache()
-
     return @_giftCrateTemplateCache[crateType]
-
 
 module.exports = GiftCrateFactory

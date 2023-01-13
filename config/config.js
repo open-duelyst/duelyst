@@ -292,7 +292,7 @@ const config = convict({
   allCardsAvailable: {
     doc: 'Should all cards be usable in this environment or just ones the player owns?',
     format: Boolean,
-    default: false,
+    default: true,
     env: 'ALL_CARDS_AVAILABLE',
   },
   paypalEnvironmentUrl: {
