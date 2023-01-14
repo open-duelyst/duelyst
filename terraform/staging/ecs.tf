@@ -27,7 +27,7 @@ module "ecs_service_api" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_api.id}"
-  deployed_version  = "1.97.10"
+  deployed_version  = "1.97.11"
   container_count   = 1
   container_mem     = 450
   service_port      = 3000
@@ -58,7 +58,7 @@ module "ecs_service_game" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_game.id}"
-  deployed_version  = "1.97.10"
+  deployed_version  = "1.97.11"
   container_count   = 1
   container_mem     = 350
   service_port      = 8001
@@ -83,7 +83,7 @@ module "ecs_service_sp" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_sp.id}"
-  deployed_version  = "1.97.10"
+  deployed_version  = "1.97.11"
   container_count   = 1
   container_mem     = 350
   service_port      = 8000
@@ -107,7 +107,7 @@ module "ecs_service_worker" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_worker.id}"
-  deployed_version  = "1.97.10"
+  deployed_version  = "1.97.11"
   container_count   = 1
   container_mem     = 450
 
@@ -135,7 +135,7 @@ module "ecs_service_migrate" {
   capacity_provider = module.ecs_cluster.spot_capacity_provider
   task_role         = module.ecs_cluster.task_role
   image_name        = "public.ecr.aws/${var.ecr_registry_id}/${module.ecr_repository_migrate.id}"
-  deployed_version  = "1.97.10"
+  deployed_version  = "1.97.11"
   container_count   = 0 # Change to 1 to apply database migrations.
   container_mem     = 350
 
