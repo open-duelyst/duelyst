@@ -28,6 +28,13 @@ if (argv.inProcessGpu) {
   app.commandLine.appendSwitch('in-process-gpu');
 }
 
+// enable WebGL hardware acceleration by default
+app.commandLine.appendSwitch('enable-accelerated-mjpeg-decode');
+app.commandLine.appendSwitch('enable-accelerated-video');
+app.commandLine.appendSwitch('enable-gpu-rasterization');
+app.commandLine.appendSwitch('enable-native-gpu-memory-buffers');
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
+
 process.on('uncaughtException', (error) => {
   if (error != null && error.message != null) console.log(error.message);
   if (error != null && error.stack != null) console.log(error.stack);
