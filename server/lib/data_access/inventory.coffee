@@ -874,7 +874,7 @@ class InventoryModule
   # @param  {Number}  cardSetId    card set id to buy booster from
   # @return  {Promise}        Promise that will post BOOSTER PACK ID on completion.
   ###
-  @buyBoosterPacksWithGold: (userId, qty, cardSetId) ->
+  @buyBoosterPacksWithGold: (userId, qty, cardSetId, sku) ->
     unless userId
       Logger.module("InventoryModule").debug "buyBoosterPacksWithGold() -> invalid user ID - #{userId}.".red
       return Promise.reject(new Error("Can not buy booster pack with gold : invalid user ID - #{userId}"))
@@ -917,6 +917,9 @@ class InventoryModule
       .bind this_obj
       .then (userRow)->
 
+        if sku == "STARTERBUNDLE_201604" and userRow.has_purchased_starter_bundle
+          throw new Errors.AlreadyExistsError("Player already purchased the starter bundle.")
+
         # if the user has enough gold
         if userRow.wallet_gold >= total_gold_cost
 
@@ -927,6 +930,7 @@ class InventoryModule
           userUpdateParams =
             wallet_gold:    final_wallet_gold
             wallet_updated_at:   NOW_UTC_MOMENT.toDate()
+            has_purchased_starter_bundle: sku == "STARTERBUNDLE_201604"
 
           knex("users").where('id',userId).update(userUpdateParams).transacting(tx)
 
@@ -954,6 +958,12 @@ class InventoryModule
       .then ()->
         return DuelystFirebase.connect().getRootRef()
       .then (fbRootRef) ->
+
+        if sku == "STARTERBUNDLE_201604"
+          FirebasePromises.set(fbRootRef.child("users").child(userId).child("has_purchased_starter_bundle"),true)
+          FirebasePromises.safeTransaction(fbRootRef.child("user-purchase-counts").child(userId).child(sku),(purchaseCountRecord)->
+            return { count: 1 }
+          )
 
         return FirebasePromises.update(fbRootRef.child("user-inventory").child(userId).child("wallet"),{
           gold_amount:@.final_wallet_gold

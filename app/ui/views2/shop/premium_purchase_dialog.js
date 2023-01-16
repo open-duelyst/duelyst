@@ -480,13 +480,13 @@ var PremiumPurchaseDialogView = Backbone.Marionette.LayoutView.extend({
 
       // product: individual boosters
       if (sku === 'BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Core);
+        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Core, sku);
       } else if (sku === 'SHIMZAR_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Shimzar);
+        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Shimzar, sku);
       } else if (sku === 'BLOODBORN_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Bloodborn);
+        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Bloodborn, sku);
       } else if (sku === 'ANCIENTBONDS_BOOSTER1_GOLD') {
-        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Unity);
+        purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, SDK.CardSet.Unity, sku);
       }
     }
 

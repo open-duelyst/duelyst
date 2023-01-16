@@ -111,6 +111,7 @@ router.put "/card_lore_collection/:card_id/read_lore_at", (req, res, next) ->
 router.post "/spirit_orbs", (req, res, next) ->
 
   user_id = req.user.d.id
+  sku = req.body.sku
   qty = req.body.qty
   card_set_id = req.body.card_set_id
   currency_type = req.body.currency_type
@@ -119,7 +120,7 @@ router.post "/spirit_orbs", (req, res, next) ->
 
   if (currency_type == 'soft')
     Logger.module("API").debug "Buying Booster Packs for user #{user_id.blue} with GOLD"
-    InventoryModule.buyBoosterPacksWithGold(user_id, qty, card_set_id)
+    InventoryModule.buyBoosterPacksWithGold(user_id, qty, card_set_id, sku)
     .then (value) ->
       Logger.module("API").debug "COMPLETE Buying Booster Pack with GOLD for user #{user_id.blue}".cyan
       res.status(200).json(value)

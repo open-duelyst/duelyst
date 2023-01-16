@@ -581,7 +581,7 @@ var ConfirmPurchaseDialogView = Backbone.Marionette.ItemView.extend({
         return Promise.reject(new Error('Unpurchaseable set'));
       }
 
-      purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, cardSet);
+      purchasePromise = InventoryManager.getInstance().buyBoosterPacksWithGold(quantity, cardSet, sku);
     } else {
       // TODO: Add support for bundles, emotes, etc.
       return Promise.resolve()
