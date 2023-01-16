@@ -407,7 +407,7 @@ var InventoryManager = Manager.extend({
     }
   },
 
-  buyBoosterPacksWithGold: function (numBoosterPacks, cardSetId) {
+  buyBoosterPacksWithGold: function (numBoosterPacks, cardSetId, sku) {
     if (numBoosterPacks == null || isNaN(numBoosterPacks) || numBoosterPacks <= 0) { numBoosterPacks = 1; }
     if (cardSetId == null) { cardSetId = SDK.CardSet.Core; }
     if (this.walletModel.get('gold_amount') >= numBoosterPacks * ORB_GOLD_COST) {
@@ -416,6 +416,7 @@ var InventoryManager = Manager.extend({
       return new Promise(function (resolve, reject) {
         var request = $.ajax({
           data: JSON.stringify({
+            sku,
             qty: numBoosterPacks,
             card_set_id: cardSetId,
             currency_type: 'soft',
