@@ -96,7 +96,7 @@ var ShopSpiritOrbsCollectionView = Backbone.Marionette.ItemView.extend({
 
       if (packProductSet != null
         && !packProductData.is_purchase_limit_reached
-        && (packProductData.sku !== "STARTERBUNDLE_201604" || !ProfileManager.getInstance().get("has_purchased_starter_bundle"))
+        && (packProductData.sku !== 'STARTERBUNDLE_201604' || !ProfileManager.getInstance().get('has_purchased_starter_bundle'))
       ) {
         packProductSet.packProducts.push(packProductData);
       }

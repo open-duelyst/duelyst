@@ -959,8 +959,6 @@ class InventoryModule
         return DuelystFirebase.connect().getRootRef()
       .then (fbRootRef) ->
 
-        
-
         if sku == "STARTERBUNDLE_201604"
           FirebasePromises.set(fbRootRef.child("users").child(userId).child("has_purchased_starter_bundle"),true)
           FirebasePromises.safeTransaction(fbRootRef.child("user-purchase-counts").child(userId).child(sku),(purchaseCountRecord)->
