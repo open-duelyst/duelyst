@@ -220,10 +220,10 @@ class GiftCrateFactory
     @_generateCache()
     giftCrateTemplate = @giftCrateTemplateForType(crateType)
 
-    if giftCrateTemplate == null # No template, so consider unavailable
+    if !giftCrateTemplate? # No template, so consider unavailable
       return false
 
-    if giftCrateTemplate.availableAt == null # If available at is not defined or 0 it is available
+    if !giftCrateTemplate.availableAt? # If available at is not defined or 0 it is available
       return true
 
     return MOMENT_NOW_UTC.add(1, 'hours').isAfter(moment(giftCrateTemplate.availableAt)) # Last, compare available at with now + 1 hour
