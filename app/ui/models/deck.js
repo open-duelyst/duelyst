@@ -106,6 +106,11 @@ var DeckModel = Backbone.Model.extend({
     return changed;
   },
 
+  emptyDeck: function () {
+    this.set('cards', []);
+    this._cardModels.reset();
+  },
+
   getCountForBaseCardId: function (cardId) {
     var count = 0;
 

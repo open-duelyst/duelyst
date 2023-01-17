@@ -173,6 +173,7 @@ var DeckLayout = Backbone.Marionette.LayoutView.extend({
 
       // convert card data from base 64 into array of [count:id][count:id]...
       val = atob(val);
+      this.model.emptyDeck();
       var cardsData = val.split(',');
       var cardIdsToAdd = [];
       var phantomCardIdsToAdd = [];
