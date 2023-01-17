@@ -295,34 +295,11 @@ const config = convict({
     default: true,
     env: 'ALL_CARDS_AVAILABLE',
   },
-  paypalEnvironmentUrl: {
-    doc: 'Paypal Environment Base URL.',
-    // format: "url",
-    default: 'https://sandbox.paypal.com/',
-  },
-  paypalNvpApi: {
-    username: {
-      doc: 'Paypal NVP API username.',
-      default: '',
-    },
-    password: {
-      doc: 'Paypal NVP API password.',
-      default: '',
-    },
-    signature: {
-      doc: 'Paypal NVP API signature.',
-      default: '',
-    },
-    sandbox: {
-      doc: 'Use NVP API Sandbox?',
-      format: Boolean,
-      default: true,
-    },
-  },
-  mailchimpApiKey: {
-    doc: 'Mailchimp API key',
-    format: String,
-    default: '',
+  disableDeckValidation: {
+    doc: 'Requires decks to contain exactly 40 cards and 1 general.',
+    format: Boolean,
+    default: false,
+    env: 'DISABLE_DECK_VALIDATION',
   },
   recordClientLogs: {
     doc: 'Buffer 500 log lines on the client to be able to submit to server.',

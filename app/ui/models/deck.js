@@ -392,8 +392,7 @@ var DeckModel = Backbone.Model.extend({
     // - any starter deck is valid
     // - each card is already validated as it is added/removed
     var valid = true;
-
-    if (!this.get('isStarter') && !process.env.ALL_CARDS_AVAILABLE) {
+    if (!this.get('isStarter') && !process.env.DISABLE_DECK_VALIDATION) {
       // when deck is in production
       if (needsGeneral) {
         // deck must have a general
@@ -403,7 +402,6 @@ var DeckModel = Backbone.Model.extend({
         valid = false;
       }
     }
-
     this._isValid = valid;
 
     // get searchable content
