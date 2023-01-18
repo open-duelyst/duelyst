@@ -21,31 +21,6 @@ router.get '/', (req, res, next) ->
     res.status(200).json(DataAccessHelpers.restifyData(decks))
   .catch (error) -> next(error)
 
-# Exports all user decks to JSON.
-router.get '/export-decks', (req, res, next) ->
-  user_id = req.user.d.id
-  if !user_id?
-    return res.status(400).json({'message': 'User ID must be provided'})
-
-  return DecksModule.getDecksAsJSON(user_id)
-  .then (result) -> res.status(200).json(result)
-  .catch (error) -> next(error)
-
-# Imports user decks from JSON.
-router.put '/import-decks', (req, res, next) ->
-  user_id = req.user.d.id
-  if !user_id?
-    return res.status(400).json({'message': 'User ID must be provided'})
-
-  if !req.body?
-    return res.status(400).json({'message': 'Data must be provided'})
-
-  try
-    DecksModule.putDecksFromJSON(user_id, req.body)
-    return res.status(200).json({'message': 'Imported deck(s).'})
-  catch error
-    return next(error)
-
 router.get '/:deck_id', (req, res, next) ->
   result = t.validate(req.params.deck_id, t.subtype(t.Str, (s) -> s.length <= 36))
   if not result.isValid()
