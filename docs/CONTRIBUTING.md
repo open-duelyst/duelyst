@@ -181,6 +181,12 @@ save it as `serviceAccountKey.json` in the repo root.
 Note: Both `.env` and `serviceAccountKey.json` are ignored by Git for this repo,
 so these secrets can't be accidentally committed.
 
+#### Enabling the Cosmetics Shop
+
+If you would like to enable the shop, set the value of
+`/system-status/shop_enabled` in Firebase to `true`. Once this is done, the shop
+will appear in the main menu.
+
 #### Starting with Docker
 
 Now that the game has been built and Firebase has been configured, you can
