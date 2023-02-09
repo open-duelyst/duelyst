@@ -132,7 +132,7 @@ our Firebase client.
 Once you have created a Firebase account and a Realtime Database, take note of
 your Realtime Database's URL, as you'll need it when building the code. You
 will also want to configure the Security Rules for your database. You can copy
-these from [firebaseRules.json](firebaseRules.json) in the repo.
+these from [firebaseRules.json](../firebaseRules.json) in the repo.
 
 #### Building the Code
 
