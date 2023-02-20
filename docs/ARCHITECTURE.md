@@ -8,6 +8,8 @@ The game client is a Backbone.js + Marionette application which runs in the
 browser. Code can be found in `app/`, and configuration can be found in
 `app/common/config.js`.
 
+The game engine to render the client in HTML is [Cocos2d-JS (vs 3.3)](https://docs.cocos.com/cocos2d-x/manual/en/)
+
 ## Server Architecture
 
 Duelyst's backend primarily consists of four CoffeeScript services:
