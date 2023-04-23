@@ -3,7 +3,7 @@
 version=$1
 registry=$2
 if [ -z $version ] || [ -z $registry ]; then
-	echo "Usage: release_containers.sh <verison> <ecr-registry-id>"
+	echo "Usage: release_containers.sh <version> <ecr-registry-id>"
 	exit 1
 fi
 
