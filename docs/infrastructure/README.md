@@ -1,6 +1,7 @@
 # OpenDuelyst Infrastructure Documentation
 
 - [Provisioning Infrastructure with Terraform](TERRAFORM.md)
+- [PostgreSQL Database](POSTGRES.md)
 - [Deploying OpenDuelyst Builds](DEPLOYMENTS.md)
 - [Cloud Cost Management](COSTS.md)
 
