@@ -187,7 +187,7 @@ var CardNode = SdkNode.extend({
     // mana label
     this.manaLabel = new cc.LabelTTF('', RSX.font_bold.name, 24, cc.size(48, 24), cc.TEXT_ALIGNMENT_CENTER);
     this.manaLabel.setFontFillColor({ r: 0, g: 33, b: 159 });
-    this.manaLabel.setAnchorPoint(0.5, 0.5);
+    this.manaLabel.setAnchorPoint(0.51, 0.65);
     this.manaLabel.setVisible(false);
     this._staticContainerNodeFront.addChild(this.manaLabel, 2);
 
@@ -340,8 +340,8 @@ var CardNode = SdkNode.extend({
       // contained elements relative to center
       this._manaGemSprite.setPosition(-100, cardBackgroundContentSize.height * 0.5 - 20);
       this.manaLabel.setPosition(-100, cardBackgroundContentSize.height * 0.5 - 17);
-      this.atkLabel.setPosition(-61, -28);
-      this.hpLabel.setPosition(59, -28);
+      this.atkLabel.setPosition(-61, -32);
+      this.hpLabel.setPosition(59, -32);
       this.cardNameLabel.setPosition(0.0, 21.0);
       this.cardTypeLabel.setPosition(0.0, 4.0);
       this.factionNameLabel.setPosition(0.0, -150.0);

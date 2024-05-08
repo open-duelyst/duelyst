@@ -59,13 +59,13 @@ const StatsNode = EntitySupportNode.extend({
     this.atkLabel = new cc.LabelTTF('', RSX.font_regular.name, CONFIG.OVERLAY_STATS_TEXT_SIZE);
     this.atkLabel.setFontFillColor(cc.color.WHITE);
     this.atkLabel.setHorizontalAlignment(cc.TEXT_ALIGNMENT_CENTER);
-    this.atkLabel.setAnchorPoint(cc.p(0.5, 0.5));
+    this.atkLabel.setAnchorPoint(cc.p(0.5, 0.65));
     this.addChild(this.atkLabel);
 
     this.hpLabel = new cc.LabelTTF('', RSX.font_regular.name, CONFIG.OVERLAY_STATS_TEXT_SIZE);
     this.hpLabel.setFontFillColor(cc.color.WHITE);
     this.hpLabel.setHorizontalAlignment(cc.TEXT_ALIGNMENT_CENTER);
-    this.hpLabel.setAnchorPoint(cc.p(0.5, 0.5));
+    this.hpLabel.setAnchorPoint(cc.p(0.5, 0.65));
     this.addChild(this.hpLabel);
 
     // position stats
