@@ -63,7 +63,7 @@ const BottomDeckCardNode = SdkNode.extend({
 
     // mana token
     this.manaTokenSprite = BaseSprite.create(RSX.icon_mana.img);
-    this.manaTokenSprite.setAnchorPoint(0.5, 0.5);
+    this.manaTokenSprite.setAnchorPoint(0.49, 0.45);
     this.manaTokenSprite.setPosition(cc.p(contentSize.width * 0.5, contentSize.height * 0.5 - 50.0));
     this.manaTokenSprite.setScale(0.65);
 
