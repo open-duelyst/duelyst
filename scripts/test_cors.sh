@@ -5,20 +5,23 @@
 # bucket. This should help ensure the configuration is working for all users.
 
 # Architecture notes (staging):
-# - The user visits https://staging.duelyst.org, which serves an index.html
+# - The user visits https://staging.example.org, which serves an index.html
 #   page directly from Express.
-# - Origin https://staging.duelyst.org requests assets from CloudFront, with
-#   the URL https://cdn.duelyst.org, such as the duelyst.js game client.
+# - Origin https://staging.example.org requests assets from CloudFront, with
+#   the URL https://cdn.example.org, such as the duelyst.js game client.
 # - CloudFront requests the asset from S3 and caches it.
 # - Both CloudFront and S3 should include CORS response headers to enable using
 #   assets from the CDN in the client app/domain/origin.
 
 # HTTP Targets.
 # Requests for APP_ORIGIN/file will redirect to CDN_ORIGIN/staging/file.
-APP_ORIGIN="https://staging.duelyst.org"
-CDN_ORIGIN="https://cdn.duelyst.org"
-CDN_URL="https://d3tg1rqy5u5jtl.cloudfront.net"
-S3_URL="https://s3.amazonaws.com/duelyst.org-assets"
+APP_ORIGIN="https://staging.example.org"
+CDN_ORIGIN="https://cdn.example.org"
+CDN_URL="https://example.cloudfront.net"
+S3_URL="https://s3.amazonaws.com/example.org-assets"
+
+echo "This script is disabled; modify the app and CDN domains to continue."
+exit 0
 
 # Example assets which have been missing CORS headers in staging.
 ORB_IMAGE="resources/booster_pack_opening/booster_orb.png"
@@ -39,7 +42,7 @@ send_cors_preflight_request () {
 		-H 'Access-Control-Request-Method GET' \
 		-H 'Access-Control-Request-Headers X-Requested-With' \
 		$URL | grep -i '^Access-Control-Allow-Origin' || {
-			echo -e "CORS chekc failed! Missing Access-Control-Allow-Origin header!\n"
+			echo -e "CORS check failed! Missing Access-Control-Allow-Origin header!\n"
 			return
 		}
 	echo -e "CORS check passed!\n"
