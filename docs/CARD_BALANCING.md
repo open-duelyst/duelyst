@@ -73,6 +73,94 @@ Abilities and keywords add significant complexity and power to cards.
 *   **Unintentional/Broken Combos:** Be vigilant for combinations of cards that create overly powerful or non-interactive game states. This often requires extensive testing.
 *   **Combo Reliability:** If a combo is very powerful, it should ideally require multiple specific cards and/or be difficult to assemble.
 
+## How to Modify Card Attributes (Technical Guide)
+
+This section provides a practical guide for game designers and QA to modify card attributes for balancing and testing purposes.
+
+**IMPORTANT PRELIMINARIES:**
+
+*   **Version Control:** ALWAYS use Git or your version control system. Create a new branch for your changes before you start editing. This allows you to easily revert changes and collaborate with others.
+*   **Understand the Code Structure:** Card definitions are primarily located in CoffeeScript (`.coffee`) files within the `app/sdk/cards/factory/` directory. This directory is further structured by card set (e.g., `core`, `bloodstorm`, `shimzar`) and then by faction (e.g., `faction1`, `faction2`, `neutral`).
+*   **Testing Environment:** Only make and test these changes in a dedicated development or staging environment. Never edit production code directly.
+*   **Build Process:** After making changes to card files, you will likely need to rebuild the game client/server for the changes to take effect. Consult the project's build documentation (e.g., `docs/GULP.md` or `docs/DOCKER.md`) for instructions.
+
+**Locating Card Files:**
+
+1.  **Identify the Card:** Know the name of the card you want to modify and its faction and set if possible.
+2.  **Navigate to the Factory:** Go to `app/sdk/cards/factory/`.
+3.  **Find the Set:** Open the directory corresponding to the card's set (e.g., `core/`).
+4.  **Find the Faction File:** Inside the set directory, open the CoffeeScript file for the card's faction (e.g., `neutral.coffee`, `faction1.coffee`).
+5.  **Search for the Card:** Within the file, search for the card's name or its unique identifier (often found in `app/sdk/cards/cardsLookupComplete.coffee` if you need a reference, e.g., `Cards.Neutral.FireSpitter`).
+
+**Modifying Common Attributes:**
+
+Once you've located the card's definition block (it usually starts with `if (identifier == Cards.FactionOrNeutral.CardName)`):
+
+*   **Mana Cost:**
+    *   Look for the line `card.manaCost = X`
+    *   Change `X` to the new desired mana cost.
+    *   **Example (FireSpitter):** To change FireSpitter's mana cost from 4 to 5:
+        ```coffeescript
+        // Before
+        card.manaCost = 4
+        // After
+        card.manaCost = 5
+        ```
+
+*   **Attack (for Units):**
+    *   Look for the line `card.atk = X`
+    *   Change `X` to the new attack value.
+    *   **Example (FireSpitter):** To change FireSpitter's attack from 3 to 2:
+        ```coffeescript
+        // Before
+        card.atk = 3
+        // After
+        card.atk = 2
+        ```
+
+*   **Health (for Units):**
+    *   Look for the line `card.maxHP = X`
+    *   Change `X` to the new health value.
+    *   **Example (FireSpitter):** To change FireSpitter's health from 2 to 3:
+        ```coffeescript
+        // Before
+        card.maxHP = 2
+        // After
+        card.maxHP = 3
+        ```
+
+*   **Abilities and Modifiers:**
+    *   Abilities are often added via `card.setInherentModifiersContextObjects([...])` or by setting boolean flags (e.g., `card.setIsProvoke(true)` if such direct setters exist, though modifier objects are more common).
+    *   To add or remove an ability, you might need to add or remove a `ModifierSomething.createContextObject()` from this array.
+    *   **Example (FireSpitter - Ranged):**
+        ```coffeescript
+        // Has Ranged
+        card.setInherentModifiersContextObjects([ModifierRanged.createContextObject()])
+
+        // To remove Ranged (hypothetically, if it had other modifiers you wanted to keep):
+        // card.setInherentModifiersContextObjects([ModifierOther.createContextObject()])
+        // or if Ranged was the only one:
+        // card.setInherentModifiersContextObjects([])
+        ```
+    *   Modifying abilities requires a deeper understanding of the modifier system (`app/sdk/modifiers/`). Refer to existing cards with similar abilities as a template.
+
+**Testing Your Changes:**
+
+1.  **Rebuild:** Rebuild the game client and/or server as required.
+2.  **Playtest:** Launch the game in your test environment.
+    *   Verify the card's stats and abilities are updated in the collection view and in-game.
+    *   Playtest scenarios where the card is used to see its impact on gameplay.
+    *   Test against various other cards and strategies.
+3.  **Iterate:** Based on testing, you might need to further adjust the values.
+
+**Important Considerations:**
+
+*   **Consistency:** Ensure the card's text description (`card.setDescription(...)`) is updated to reflect any mechanical changes. Localization files (`app/localization/`) might also need updates if descriptions are hardcoded there.
+*   **Impact Assessment:** Think about the broader impact of your change. How does it affect other cards, factions, or archetypes?
+*   **Documentation (Internal):** Briefly document your changes and the reasons for them, perhaps in commit messages or a shared design document.
+
+This guide provides a starting point. The game's codebase is complex, and some changes may require more intricate modifications. Always proceed with caution, test thoroughly, and consult with experienced developers if you are unsure.
+
 ## Playtesting and Iteration
 
 *   **Internal Testing:** Rigorously test new cards and balance changes with the design and QA teams.

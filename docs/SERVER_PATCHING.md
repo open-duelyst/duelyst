@@ -39,29 +39,115 @@ Before deploying any patch, complete the following steps:
 
 ## Deployment Process
 
-The exact deployment process may vary based on the server architecture and tools used (e.g., Docker, Kubernetes, CI/CD pipelines).
+**Disclaimer:** *The following steps and commands are generalized examples. Your specific server architecture, tooling (Docker, Kubernetes, CI/CD pipelines, specific cloud provider CLI, etc.), and scripts (`./stop-server.sh`, etc.) will differ. Adapt these steps to your actual environment and always test thoroughly in a staging environment first.*
 
 1.  **Deploy to Staging Environment:**
-    *   Deploy the patch to the staging environment first.
+    *   Always deploy the patch to the staging environment first.
+    *   **Example (if using a manual script):**
+        ```bash
+        ./deploy_to_staging.sh <release_branch_or_tag>
+        ```
     *   Perform a final round of smoke tests and critical functionality checks in staging.
+
 2.  **Production Deployment Strategy:**
-    *   **Blue/Green Deployment (Recommended for minimizing downtime):**
-        *   Provision a new "green" environment with the patched version alongside the existing "blue" production environment.
-        *   Once the green environment is tested and deemed stable, switch traffic from blue to green.
-        *   Keep the blue environment running temporarily for quick rollback if needed.
-    *   **Canary Release:**
-        *   Roll out the patch to a small subset of production servers/users.
-        *   Monitor closely. If stable, gradually roll out to the rest of the servers.
-    *   **In-Place Update (Higher risk of downtime):**
-        *   If unavoidable, take servers offline, deploy the new version, and bring them back online. This will cause downtime.
-3.  **Execute Database Migrations:**
-    *   Run any necessary database migration scripts. This should ideally be done during a period of low traffic or within the scheduled maintenance window.
-4.  **Deploy Application Code:**
-    *   Deploy the new application code/binaries to the production servers.
-5.  **Clear Caches:**
-    *   Clear any relevant server-side or CDN caches.
-6.  **Restart Services:**
-    *   Perform a rolling restart of application services to ensure they pick up the new code and configuration.
+
+    Choose a strategy based on your infrastructure and risk tolerance.
+
+    *   **A. Blue/Green Deployment (Recommended for minimizing downtime):**
+        1.  **Provision Green Environment:** Create a new, identical "green" environment. This might involve:
+            ```bash
+            # Example using a hypothetical cloud CLI or IaC tool
+            infra-tool apply -target=green-environment -vars version=<new_patch_version>
+            ```
+        2.  **Deploy to Green:** Deploy the new patch version to the green environment.
+            ```bash
+            ./deploy_to_green.sh <new_patch_version>
+            ```
+        3.  **Test Green:** Thoroughly test the green environment (automated checks, critical path manual tests).
+        4.  **Switch Traffic:** Redirect live traffic from the "blue" (old) environment to the "green" (new) environment. This is often done at the load balancer or DNS level.
+            ```bash
+            # Example: Update load balancer to point to green instances
+            lb-tool update-traffic --target-group=green --weight=100
+            lb-tool update-traffic --target-group=blue --weight=0
+            ```
+        5.  **Monitor Green:** Closely monitor the green environment under full load.
+        6.  **Decommission Blue:** After a period of stability (e.g., 24 hours), decommission the blue environment.
+            ```bash
+            infra-tool destroy -target=blue-environment
+            ```
+
+    *   **B. Canary Release:**
+        1.  **Select Canary Servers:** Identify a small subset of your production servers for the initial rollout.
+        2.  **Deploy to Canaries:** Deploy the patch only to these canary servers.
+            ```bash
+            ./deploy_to_canary_servers.sh <new_patch_version> --servers=server1,server2
+            ```
+        3.  **Monitor Canaries:** Intensely monitor these servers for errors, performance issues, and user feedback.
+        4.  **Gradual Rollout:** If canaries are stable, gradually deploy to more servers in batches.
+            ```bash
+            ./deploy_to_production_batch.sh <new_patch_version> --batch=1
+            ./deploy_to_production_batch.sh <new_patch_version> --batch=2
+            # ...and so on
+            ```
+        5.  **Full Rollout:** Once confident, deploy to all remaining servers.
+
+    *   **C. In-Place Update (Higher risk of downtime - use during scheduled maintenance):**
+        1.  **Announce Maintenance:** Ensure players are aware of the scheduled downtime.
+        2.  **Stop Services:** Stop the game servers/application services.
+            ```bash
+            # Example:
+            ssh user@your-server-ip "cd /srv/game && ./stop-server.sh"
+            # Or for multiple servers:
+            # ansible-playbook stop_game_servers.yml
+            ```
+        3.  **(Conditional) Backup Database:** If not done in pre-patch, or if another quick backup is desired.
+        4.  **Execute Database Migrations:** Run any necessary database migration scripts.
+            ```bash
+            ssh user@your-db-migration-runner "cd /srv/game-migrations && ./run-migrations.sh <new_patch_version>"
+            ```
+        5.  **Deploy Application Code:** Update the code on all servers. This could be `git pull`, `rsync`, `scp`, or a deployment script.
+            ```bash
+            # Example using git on a single server:
+            ssh user@your-server-ip "cd /srv/game && git fetch && git checkout <release_branch_or_tag> && ./install_dependencies.sh"
+            # Or for multiple servers:
+            # ansible-playbook deploy_code.yml -e version=<release_branch_or_tag>
+            ```
+        6.  **Clear Caches:** Clear any server-side or CDN caches.
+            ```bash
+            # Example:
+            ssh user@your-server-ip "./clear_caches.sh"
+            # aws cloudfront create-invalidation --distribution-id YOUR_DIST_ID --paths "/*" (for AWS CDN)
+            ```
+        7.  **Start Services:** Bring the game servers/application services back online.
+            ```bash
+            ssh user@your-server-ip "cd /srv/game && ./start-server.sh"
+            # Or for multiple servers:
+            # ansible-playbook start_game_servers.yml
+            ```
+        8.  **Verify:** Perform smoke tests and check critical functionality.
+        9.  **End Maintenance:** Announce that maintenance is complete.
+
+3.  **Post-Deployment Steps (Common to all strategies, though timing might vary):**
+
+    *   **(If not part of a Blue/Green automated step) Execute Database Migrations:**
+        *   Run any necessary database migration scripts. This should ideally be done during a period of low traffic or within the scheduled maintenance window if not handled by an automated Blue/Green swap.
+        ```bash
+        # Example: (if not done during an in-place update)
+        ssh user@your-db-migration-host "cd /srv/migrations && ./run-migrations.sh --version=<new_patch_version>"
+        ```
+    *   **Clear Caches (if not done during a specific strategy's steps):**
+        *   Clear any relevant server-side or CDN caches.
+        ```bash
+        # Example:
+        # redis-cli FLUSHALL (if using Redis for caching and a full flush is appropriate)
+        # (CDN invalidation commands vary by provider)
+        ```
+    *   **Restart Services (if not done as part of a rolling update or Blue/Green):**
+        *   Perform a rolling restart of application services if necessary to ensure they pick up the new code and configuration.
+        ```bash
+        # Example for a rolling restart if using a service manager like systemd:
+        # ansible all -m systemd -a "name=your-game-service state=restarted" --become
+        ```
 
 ## Post-Patch Monitoring
 
