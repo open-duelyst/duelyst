@@ -9021,7 +9021,7 @@ j2j@0.1.2:
     graceful-fs "^3.0.2"
     q "^1.0.1"
     sandbox "^0.8.6"
-    yargs "git://github.com/boneskull/yargs#nylen"
+    yargs "https://github.com/boneskull/yargs#nylen"
 
 jmespath@0.16.0:
   version "0.16.0"
