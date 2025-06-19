@@ -166,6 +166,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(400);
     });
+
     it('Sundrop Elixir', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -345,6 +346,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.below(-20);
     });
+
     it('Tempest', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -423,6 +425,7 @@ describe('starter ai scoring', () => {
         expect(bestPositionAndScore.score).to.be.below(0);
       }
     });
+
     it('Decimate', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -467,6 +470,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(130);
     });
+
     it('Martyrdom', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -703,6 +707,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(30);
     });
+
     it('True Strike', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -783,6 +788,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(35);
     });
+
     it('Beam Shock', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -855,6 +861,7 @@ describe('starter ai scoring', () => {
         console.log('Score for', card.getName(), 'on a ranged enemy 15/3', ' = ', bestPositionAndScore.score);
       }
     });
+
     it('Holy Immolation', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -919,6 +926,7 @@ describe('starter ai scoring', () => {
         console.log('Score for', card.getName(), 'on a full health 2/6 with an enemy deathwatch 2/5, enemy ranged 3/6, and 5 HP enemy general nearby', ' = ', bestPositionAndScore.score);
       }
     });
+
     it('Phoenix Fire', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1031,6 +1039,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(1000);
     });
+
     it('Kage Lightning', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1109,6 +1118,7 @@ describe('starter ai scoring', () => {
         console.log('Score for', card.getName(), 'on a ranged enemy 15/6', ' = ', bestPositionAndScore.score);
       }
     });
+
     it('Spiral Technique', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1214,6 +1224,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(1000);
     });
+
     it('Onyx Bear Seal', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1322,6 +1333,7 @@ describe('starter ai scoring', () => {
         console.log('Score for', card.getName(), 'on a deathwatch enemy 6/6', ' = ', bestPositionAndScore.score);
       }
     });
+
     it('Ghost Lightning', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1376,6 +1388,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(300);
     });
+
     it('Metamorphosis', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1430,6 +1443,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(100);
     });
+
     it('Dominate Will', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1542,6 +1556,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(200);
     });
+
     it('Sunbloom', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1667,6 +1682,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(88);
     });
+
     it('Siphon Energy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1778,6 +1794,7 @@ describe('starter ai scoring', () => {
         console.log('Score for', card.getName(), 'on a deathwatch enemy 6/6', ' = ', bestPositionAndScore.score);
       }
     });
+
     it('Mana Vortex', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1836,6 +1853,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Flash Reincarnation', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1915,6 +1933,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(120);
     });
+
     it('Heavens Eclipse', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -1993,6 +2012,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.below(-100);
     });
+
     it('Aerial Rift', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2067,6 +2087,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.below(0);
     });
+
     it('Greater Fortitude', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2117,6 +2138,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Auryn Nexus', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2167,6 +2189,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(45);
     });
+
     it('Amplification', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2222,6 +2245,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(86);
     });
+
     it('Lasting Judgement', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2329,6 +2353,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(200);
     });
+
     it('Aspect of the Fox', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2425,6 +2450,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(110);
     });
+
     it('Inner Focus', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2473,6 +2499,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(70);
     });
+
     it('Spirit of the Wild', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2534,6 +2561,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(400);
     });
+
     it('Bloodtear Alchemist (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2579,6 +2607,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(480);
     });
+
     it('Ephemeral Shroud (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2623,6 +2652,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(100);
     });
+
     it('Healing Mystic (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2672,6 +2702,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(160);
     });
+
     it('Primus Fist (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2696,6 +2727,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Dark Transformation', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2721,6 +2753,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(180);
     });
+
     it('Arclyte Sentinel (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2768,6 +2801,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(30);
     });
+
     it('Blood Siren (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2812,6 +2846,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Nightsorrow Assassin (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2855,6 +2890,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(190);
     });
+
     it('Crossbones (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2898,6 +2934,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(160);
     });
+
     it('Shadow Watcher', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -2942,6 +2979,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(190);
     });
+
     it('Shadow Dancer', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3006,6 +3044,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(120);
     });
+
     it('Aspect of the Mountain', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3100,6 +3139,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.below(50);
     });
+
     it('Natural Selection', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3165,6 +3205,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(159);
     });
+
     it('Daemonic Lure (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3190,6 +3231,7 @@ describe('starter ai scoring', () => {
 
       // expect(bestPositionAndScore.score).to.be.above(0);
     });
+
     it('Orb Weaver (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3214,6 +3256,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(35);
     });
+
     it('Gloom Chaser', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3236,6 +3279,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(40);
     });
+
     it('Wraithling Swarm (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3261,6 +3305,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(44);
     });
+
     it('Sky Phalanx (followup)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3286,6 +3331,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(80);
     });
+
     it('Khymera', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3311,6 +3357,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(80);
     });
+
     it('Chrysalis Burst', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3336,6 +3383,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(150);
     });
+
     it('Roar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3383,6 +3431,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(28);
     });
+
     it('Afterglow', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3431,6 +3480,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(37);
     });
+
     it('Arcane Heart', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3454,6 +3504,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(20);
     });
+
     it('Iron Shroud', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3477,6 +3528,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(15);
     });
+
     it('Shadow Spawn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3500,6 +3552,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(14);
     });
+
     it('Abyssal Scar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3556,6 +3609,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(46);
     });
+
     it('Overload', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3579,6 +3633,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(15);
     });
+
     it('Seeking Eye', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3634,6 +3689,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Warbird', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3685,6 +3741,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(350);
     });
+
     it('Kinetic Surge', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3735,6 +3792,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(70);
     });
+
     it('Darkfire Sacrifice', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3834,6 +3892,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.below(-20);
     });
+
     it('Keeper of the Vale', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3885,6 +3944,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(50);
     });
+
     it('Nether Summoning', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -3936,6 +3996,7 @@ describe('starter ai scoring', () => {
 
       expect(bestPositionAndScore.score).to.be.above(36);
     });
+
     it('Summon Intent Tests', () => {
       // TEST FOR:
       //  ScoreForIntentSummon
@@ -4068,6 +4129,7 @@ describe('starter ai scoring', () => {
       // expect
       expect(scoreForPosition_adjacentTo_enemyGeneral.score).to.be.below(scoreForPosition_AwayFromEnemyGeneral.score);
     });
+
     it('Teleport Intent Tests', () => {
       // TEST FOR:
       //  ScoreForIntentTeleportTarget

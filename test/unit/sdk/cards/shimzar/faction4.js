@@ -49,6 +49,7 @@ describe('shimzar', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(2);
       expect(brightmossGolem.getDamage()).to.equal(2);
     });
+
     it('expect gor to respawn in a corner when it dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -67,6 +68,7 @@ describe('shimzar', () => {
       expect(gor.getATK()).to.equal(1);
       expect(gor.getHP()).to.equal(1);
     });
+
     it('expect inkhorn gaze to deal 2 damage to a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -82,6 +84,7 @@ describe('shimzar', () => {
 
       expect(brightmossGolem.getDamage()).to.equal(2);
     });
+
     it('expect inkhorn gaze to draw a random f4/neutral battlepet if the minion it targeted died this turn', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -152,6 +155,7 @@ describe('shimzar', () => {
       expect(hand[0]).to.exist;
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.SphereOfDarkness);
     });
+
     it('expect ooz to turn a random enemys tile into shadow creep when damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -169,6 +173,7 @@ describe('shimzar', () => {
       const creep = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Tile.Shadow);
       expect(creep.length).to.equal(1);
     });
+
     it('expect blood baronette to double a wraithlings attack and health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -195,6 +200,7 @@ describe('shimzar', () => {
       expect(wraithling.getATK()).to.equal(10);
       expect(wraithling.getHP()).to.equal(10);
     });
+
     it('expect void steal to give an enemy minion -3 attack and nearby allies +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -218,6 +224,7 @@ describe('shimzar', () => {
       expect(wraithling4.getATK()).to.equal(4);
       expect(golem.getATK()).to.equal(1);
     });
+
     it('expect echoing shriek to transform all minions with cost 2 or lower into wraithlings', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -244,6 +251,7 @@ describe('shimzar', () => {
       expect(golem.getId()).to.equal(SDK.Cards.Neutral.BrightmossGolem);
       expect(golem2.getId()).to.equal(SDK.Cards.Neutral.BrightmossGolem);
     });
+
     it('expect arcane devourer to lower the mana cost of the next minion cast to 1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -325,6 +333,7 @@ describe('shimzar', () => {
       expect(deck[1].getManaCostChange()).to.equal(-1);
       expect(deck[2].getManaCostChange()).to.equal(-1);
     });
+
     it('expect ghost azalea to give your general +1 attack for every friendly shadow creep on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -342,6 +351,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(6);
     });
+
     it('expect obliterate deal damage to all enemies equal to the total shadow creep and then remove the creep', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -374,6 +384,7 @@ describe('shimzar', () => {
       expect(emptyTile3).to.equal(undefined);
       expect(emptyTile4).to.equal(undefined);
     });
+
     it('expect klaxon to summon 6 shadow creep spaces when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

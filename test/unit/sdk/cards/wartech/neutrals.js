@@ -45,6 +45,7 @@ describe('wartech', () => {
 
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Neutral.Replicant);
     });
+
     it('expect metaltooth to gain rush only if another mech is in play', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -64,6 +65,7 @@ describe('wartech', () => {
       expect(metal2th.getPosition().x).to.equal(2);
       expect(metal2th.getPosition().y).to.equal(3);
     });
+
     it('expect recombobulous to move a minion one space in a random direction', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -85,6 +87,7 @@ describe('wartech', () => {
       expect(squires.length).to.equal(1);
       expect(squires[0].getId()).to.equal(SDK.Cards.Faction1.SilverguardSquire);
     });
+
     it('expect redsteel minos to gain +2/+2 when your BBS is cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -104,6 +107,7 @@ describe('wartech', () => {
       expect(redsteelMinos.getHP()).to.equal(5);
       expect(redsteelMinos.getATK()).to.equal(4);
     });
+
     it('expect timekeeper to progress buildings by 1 turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -121,6 +125,7 @@ describe('wartech', () => {
       const voidTalon = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(voidTalon.getATK()).to.equal(6);
     });
+
     it('expect capricious marauder to change owners when a friendly minion is destroyed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +142,7 @@ describe('wartech', () => {
 
       expect(capriciousMarauder.ownerId).to.equal('player1_id');
     });
+
     it('expect impervious giago to gain 2 attack when attacked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -152,6 +158,7 @@ describe('wartech', () => {
 
       expect(imperviousGiago.getATK()).to.equal(3);
     });
+
     it('expect lost artificer to make the first artifact you equip each turn cost 1 less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -172,6 +179,7 @@ describe('wartech', () => {
 
       expect(player1.getRemainingMana()).to.equal(6);
     });
+
     it('expect architect-T2k5 to draw you a card when he or another friendly minion finishes building', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -213,6 +221,7 @@ describe('wartech', () => {
       expect(hand1[3].getId()).to.equal(SDK.Cards.Neutral.ArchitectT2K5); // from rescueRx finishing
       expect(hand1[4]).to.equal(undefined);
     });
+
     it('expect bloodbound mentor to put a copy of your bbs in your hand when you use your bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -232,6 +241,7 @@ describe('wartech', () => {
       hand1 = player1.getDeck().getCardsInHand();
       expect(hand1[0].getId()).to.equal(SDK.Cards.Spell.Warbird);
     });
+
     it('expect deceptibot to summon a mech from your deck nearby whenever it kills an enemy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -252,6 +262,7 @@ describe('wartech', () => {
       expect(mech.length).to.equal(1);
       expect(mech[0].getId()).to.equal(SDK.Cards.Neutral.Mechaz0rHelm);
     });
+
     it('expect qorrhlmaa to remove all minions that cost 2 or less from both players decks', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -280,6 +291,7 @@ describe('wartech', () => {
       expect(player1.getDeck().getDrawPile().length).to.equal(2);
       expect(player2.getDeck().getDrawPile().length).to.equal(2);
     });
+
     it('expect silver to share mech keywords between all mechs whenever its summoned or another is summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -317,6 +329,7 @@ describe('wartech', () => {
       expect(forcefield.hasModifierClass(SDK.ModifierFrenzy));
       expect(forcefield.hasModifierClass(ModifierForcefield));
     });
+
     it('expect project omega to gain +2/+2 for each mech summoned this game', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -347,6 +360,7 @@ describe('wartech', () => {
       expect(omega.getHP()).to.equal(7);
       expect(omega.getATK()).to.equal(7);
     });
+
     it('expect reqliquarian when used on a neutral minion to gain an artifact with +attack equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -365,6 +379,7 @@ describe('wartech', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
     });
+
     it('expect reqliquarian when used on a lyonar minion to gain an artifact with +attack and healing when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -391,6 +406,7 @@ describe('wartech', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(9);
     });
+
     it('expect reqliquarian when used on a songhai minion to gain an artifact with +attack and damage to a random enemy when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -416,6 +432,7 @@ describe('wartech', () => {
 
       expect(totalDamage).to.equal(6); // 4 from general attack + 2 from artifact random proc
     });
+
     it('expect reqliquarian when used on an abyssian minion to gain an artifact with +attack and steal health from enemy general when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -442,6 +459,7 @@ describe('wartech', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(6);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(6);
     });
+
     it('expect reqliquarian when used on a vetruvian minion to gain an artifact with +attack and revive X number of fallen minions when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -475,6 +493,7 @@ describe('wartech', () => {
       const orbweavers = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Faction3.OrbWeaver);
       expect(dragonlarks.length + orbweavers.length).to.equal(2);
     });
+
     it('expect reqliquarian when used on a magmar minion to gain an artifact with +attack and give friendly minions +x/+x when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -504,6 +523,7 @@ describe('wartech', () => {
       expect(lark2.getHP()).to.equal(7);
       expect(lark2.getATK()).to.equal(8);
     });
+
     it('expect reqliquarian when used on a vanar minion to gain an artifact with +attack and summons X 3/3 howlers nearby when attacking equal to that minions attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

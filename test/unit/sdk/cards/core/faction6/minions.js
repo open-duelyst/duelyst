@@ -38,6 +38,7 @@ describe('faction6', () => {
 
       expect(crystalCloaker.getATK()).to.equal(4);
     });
+
     it('expect infiltrated effects to not activate when on center or own side of board (crystal cloaker)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -47,6 +48,7 @@ describe('faction6', () => {
 
       expect(crystalCloaker.getATK()).to.equal(2);
     });
+
     it('expect snow chaser to return to hand when dying on opponents side of board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -60,6 +62,7 @@ describe('faction6', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction6.WyrBeast);
     });
+
     it('expect borean bear to gain +1 attack when you summon vespyr minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -72,6 +75,7 @@ describe('faction6', () => {
       gameSession.executeAction(playCardFromHandAction);
       expect(boreanBear.getATK()).to.equal(2);
     });
+
     it('expect crystal wisp to give permanent +1 mana crystal on death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -87,6 +91,7 @@ describe('faction6', () => {
 
       expect(player1.getRemainingMana()).to.equal(4);
     });
+
     it('expect crystal wisp to not give +1 mana crystal on death if already at 9 mana', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -117,6 +122,7 @@ describe('faction6', () => {
 
       expect(player1.getRemainingMana()).to.equal(9);
     });
+
     it('expect hearth sister to switch places with any minion when summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -139,6 +145,7 @@ describe('faction6', () => {
       expect(crystalWisp.getId()).to.equal(SDK.Cards.Faction6.CrystalWisp);
       expect(hearthseeker.getId()).to.equal(SDK.Cards.Faction6.HearthSister);
     });
+
     it('expect fenrir warmaster to leave behind 3/2 ghost wolf on death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -155,6 +162,7 @@ describe('faction6', () => {
       expect(wolf.getHP()).to.equal(2);
       expect(wolf.getATK()).to.equal(3);
     });
+
     it('expect glacial elemental to deal 2 damage to a random enemy minion when vespyr summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -169,6 +177,7 @@ describe('faction6', () => {
 
       expect(arcticDisplacer.getDamage()).to.equal(2);
     });
+
     it('expect razorback to give all friendly minions +2 attack this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -191,6 +200,7 @@ describe('faction6', () => {
       expect(snowchaser.getATK()).to.equal(2);
       expect(wall.getATK()).to.equal(3);
     });
+
     it('expect voice of the wind to summon 2/2 vespyr winter in random nearby space when a minion played from action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -204,6 +214,7 @@ describe('faction6', () => {
       const unitArray = board.getUnits();
       expect(unitArray[4].getId()).to.equal(SDK.Cards.Faction6.WaterBear);
     });
+
     it('expect voice of the wind to not summon 2/2 vespyr when using bonechill barrier', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -238,6 +249,7 @@ describe('faction6', () => {
 
       expect(wraithling).to.equal(undefined);
     });
+
     it('expect draugar lord to leave behind 4/8 drake on death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -254,6 +266,7 @@ describe('faction6', () => {
       expect(wolf.getHP()).to.equal(8);
       expect(wolf.getATK()).to.equal(4);
     });
+
     it('expect ancient grove to give friendly minions dying wish: summon 1/1 treant with provoke', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

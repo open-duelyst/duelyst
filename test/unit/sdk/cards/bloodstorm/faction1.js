@@ -54,6 +54,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(7);
     });
+
     it('expect draining wave to deal 4 damage to a minion and your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -68,6 +69,7 @@ describe('bloodstorm', () => {
       expect(ironcliffe.getDamage()).to.equal(4);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(4);
     });
+
     it('expect sunbreaker to turn your BBS into tempest', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -85,6 +87,7 @@ describe('bloodstorm', () => {
       expect(signatureCardAfter.getBaseCardId()).to.not.equal(signatureCardBefore.getBaseCardId());
       expect(signatureCardAfter.getBaseCardId()).to.equal(SDK.Cards.Spell.TempestBBS);
     });
+
     it('expect zir to retain the sunbreaker tempest BBS and return to original generals BBS when sunbreaker dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -129,6 +132,7 @@ describe('bloodstorm', () => {
       var signatureCardAfter = player1.getCurrentSignatureCard();
       expect(signatureCardAfter.getBaseCardId()).to.equal(signatureCardBefore.getBaseCardId());
     });
+
     it('expect prism barrier to give a friendly minion forcefield', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -142,6 +146,7 @@ describe('bloodstorm', () => {
 
       expect(ironcliffe.hasActiveModifierClass(ModifierForcefield)).to.equal(true);
     });
+
     it('expect trinity oath to draw 3 cards and restore 3 health to your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -167,6 +172,7 @@ describe('bloodstorm', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.TrinityOath);
       expect(hand[3]).to.not.exist;
     });
+
     it('expect excelsious to gain +1/+1 from deck whenever anything is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -191,6 +197,7 @@ describe('bloodstorm', () => {
       expect(hand[0].getATK()).to.equal(8);
       expect(hand[0].getHP()).to.equal(8);
     });
+
     it('expect excelsious to gain +1/+1 from hand whenever anything is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -213,6 +220,7 @@ describe('bloodstorm', () => {
       expect(hand[0].getATK()).to.equal(8);
       expect(hand[0].getHP()).to.equal(8);
     });
+
     it('expect excelsious to gain +1/+1 while in play whenever anything is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

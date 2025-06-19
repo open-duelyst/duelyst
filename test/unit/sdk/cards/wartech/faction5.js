@@ -50,6 +50,7 @@ describe('wartech', () => {
       expect(egg1.getId()).to.equal(SDK.Cards.Faction5.Egg);
       expect(egg2.getId()).to.equal(SDK.Cards.Faction5.Egg);
     });
+
     it('expect embryotic insight to draw you 2 cards if you have an egg', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -83,6 +84,7 @@ describe('wartech', () => {
       expect(hand1[1].getId()).to.equal(SDK.Cards.Spell.BurdenOfKnowledge);
       expect(hand1[2]).to.equal(undefined);
     });
+
     it('expect seismoid to draw both players a card whenever you summon a mech from your action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -108,6 +110,7 @@ describe('wartech', () => {
       expect(hand2[0].getId()).to.equal(SDK.Cards.Spell.BurdenOfKnowledge);
       expect(hand2[1]).to.equal(undefined);
     });
+
     it('expect upper hand to damage a minion equal to the number of cards in opponents action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -128,6 +131,7 @@ describe('wartech', () => {
 
       expect(brightmossGolem.getDamage()).to.equal(4);
     });
+
     it('expect rage reactor to give your general +1 attack and summon a ripper egg on destroyed enemy spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -155,6 +159,7 @@ describe('wartech', () => {
       expect(ripper.getId()).to.equal(SDK.Cards.Faction5.Gibblegup);
       expect(ripper.ownerId).to.equal('player1_id');
     });
+
     it('expect armada to deal 5 damage to the closest enemy when you use your bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -176,6 +181,7 @@ describe('wartech', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(5);
       expect(golem.getDamage()).to.equal(0);
     });
+
     it('expect pupabomb to destroy a friendly egg and deal 4 damage to enemies around it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -200,6 +206,7 @@ describe('wartech', () => {
       expect(leviathan2.getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect homeostatic rebuke to make all minions attack themselves', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -217,6 +224,7 @@ describe('wartech', () => {
       expect(valeHunter.getDamage()).to.equal(valeHunter.getATK());
       expect(tethermancer.getDamage()).to.equal(tethermancer.getATK());
     });
+
     it('expect progenitor to make friendly non-egg minions summon egg copies of themselves behind them', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -252,6 +260,7 @@ describe('wartech', () => {
 
       expect(egg.getId()).to.equal(SDK.Cards.Neutral.Tethermancer);
     });
+
     it('expect gigaloth to give other friendly minions +3/+3 when it attacks', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

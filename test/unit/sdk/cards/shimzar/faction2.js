@@ -168,6 +168,7 @@ describe('shimzar', () => {
       expect(xho1.getPosition().x !== 5 || xho1.getPosition().y !== 4).to.equal(true);
       expect(xho2.getPosition().x !== 5 || xho2.getPosition().y !== 1).to.equal(true);
     });
+
     it('expect shadow waltz to lower the cost of all minions with backstab in your action bar by 1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -186,6 +187,7 @@ describe('shimzar', () => {
       expect(hand[2].getManaCost()).to.equal(4);
       expect(hand[3].getManaCost()).to.equal(1);
     });
+
     it('expect shadow waltz to give all minions with backstab in your action bar +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -207,6 +209,7 @@ describe('shimzar', () => {
       expect(hand[3].getATK()).to.equal(3);
       expect(hand[3].getHP()).to.equal(4);
     });
+
     it('expect ki beholder to make a minion unable to move next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -234,6 +237,7 @@ describe('shimzar', () => {
       expect(golemPositionX).to.equal(brightmossGolem.getPosition().x);
       expect(golemPositionY).to.equal(brightmossGolem.getPosition().y);
     });
+
     it('expect mirror meld to copy a friendly minion of cost 2 or lower', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -259,6 +263,7 @@ describe('shimzar', () => {
       expect(clone[0].getHP()).to.equal(4);
       expect(clone[0].getATK()).to.equal(3);
     });
+
     it('expect mirror melded clone on a buffed + damaged unit to not instantly die when summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -288,6 +293,7 @@ describe('shimzar', () => {
       expect(clone[0].getHP()).to.equal(2);
       expect(clone[0].getATK()).to.equal(7);
     });
+
     it('expect battle panddo to deal 1 damage to all enemy minions and generals upon taking damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -305,6 +311,7 @@ describe('shimzar', () => {
       expect(shiro.getDamage()).to.equal(1);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(1);
     });
+
     it('expect onyx jaguar to give friendly minions +1/+1 who move naturally', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -321,6 +328,7 @@ describe('shimzar', () => {
       expect(brightmossGolem.getATK()).to.equal(5);
       expect(brightmossGolem.getHP()).to.equal(10);
     });
+
     it('expect onyx jaguar to give friendly minions +1/+1 who are moved through spells', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -340,6 +348,7 @@ describe('shimzar', () => {
       expect(brightmossGolem.getATK()).to.equal(6);
       expect(brightmossGolem.getHP()).to.equal(11);
     });
+
     it('expect pandamonium to turn all minions into 0/2 Panddos until end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -371,6 +380,7 @@ describe('shimzar', () => {
       expect(panddo2.getATK()).to.equal(2);
       expect(panddo2.getHP()).to.equal(3);
     });
+
     it('expect crescent spear to grant +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -381,6 +391,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect crescent spear to grant +1 spell damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -397,6 +408,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect koan of horns to transform all minions in your action bar into 0 mana gorehorns', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -419,6 +431,7 @@ describe('shimzar', () => {
       expect(hand[2].getId()).to.equal(SDK.Cards.Faction2.GoreHorn);
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction2.GoreHorn);
     });
+
     it('expect koan of horns to transform all minions in your deck into 0 mana gorehorns and to draw 3 cards', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -441,6 +454,7 @@ describe('shimzar', () => {
       expect(hand[2].getId()).to.equal(SDK.Cards.Faction2.GoreHorn);
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction2.GoreHorn);
     });
+
     it('expect grandmaster zendo to make enemy general act like a battle pet', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -41,6 +41,7 @@ describe('faction3', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
     });
+
     it('expect wildfire ankh to give general blast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -51,6 +52,7 @@ describe('faction3', () => {
 
       expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierBlastAttack)).to.equal(true);
     });
+
     it('expect hexblade to give general +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -61,6 +63,7 @@ describe('faction3', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect hexblade to make enemy minion attack to 1 before getting countered', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -51,6 +51,7 @@ describe('bloodstorm', () => {
       expect(thraex.getATK()).to.equal(3);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect entropic gaze to draw both generals a card and deal 4 damage to the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -76,6 +77,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(2);
     });
+
     it('expect entropic gaze to only damage generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -93,6 +95,7 @@ describe('bloodstorm', () => {
       expect(rancour.getDamage()).to.equal(0);
       expect(rancour2.getDamage()).to.equal(0);
     });
+
     it('expect rancour to gain attack equal to damage he takes', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -106,6 +109,7 @@ describe('bloodstorm', () => {
 
       expect(rancour.getATK()).to.equal(3);
     });
+
     it('expect tectonic spikes to draw both generals 3 cards and deal 3 damage to both generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -140,6 +144,7 @@ describe('bloodstorm', () => {
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(3);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
     });
+
     it('expect valknus seal to summon an egg that hatches into your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -157,6 +162,7 @@ describe('bloodstorm', () => {
       expect(clone.getHP()).to.equal(25);
       expect(clone.getATK()).to.equal(2);
     });
+
     it('expect valknus seal to copy buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -186,6 +192,7 @@ describe('bloodstorm', () => {
       expect(clone.getHP()).to.equal(25);
       expect(clone.getATK()).to.equal(3);
     });
+
     it('expect valknus seal to copy artifact effects', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -213,6 +220,7 @@ describe('bloodstorm', () => {
       expect(clone.getATK()).to.equal(6);
       expect(clone.hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect valknus seal to not copy buffs granted by auras (ex: elyx stormblade)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -240,6 +248,7 @@ describe('bloodstorm', () => {
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(2);
       expect(clone.getSpeed()).to.equal(2);
     });
+
     it('expect valknus seal to copy buffs granted by non-auras (ex: grove lion)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -271,6 +280,7 @@ describe('bloodstorm', () => {
       expect(clone.hasActiveModifierClass(ModifierForcefield)).to.equal(true);
       expect(gameSession.getGeneralForPlayer1().hasActiveModifierClass(ModifierForcefield)).to.equal(false);
     });
+
     it('expect valknus seals max HP to equal your generals current HP', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -302,6 +312,7 @@ describe('bloodstorm', () => {
 
       expect(clone.getHP()).to.equal(15);
     });
+
     it('expect drogon to double your generals attack this turn whenever you use your bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -48,6 +48,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(2);
     });
+
     it('expect ethereal blades to give a friendly minion and your general +2 attack this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -66,6 +67,7 @@ describe('bloodstorm', () => {
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(2);
       expect(whiplash.getATK()).to.equal(4);
     });
+
     it('expect geomancer to turn your BBS into phoenix fire', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -83,6 +85,7 @@ describe('bloodstorm', () => {
       expect(signatureCardAfter.getBaseCardId()).to.not.equal(signatureCardBefore.getBaseCardId());
       expect(signatureCardAfter.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFireBBS);
     });
+
     it('expect obscuring blow to give a friendly minion or general backstab(2)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -101,6 +104,7 @@ describe('bloodstorm', () => {
       expect(ironcliffe.getDamage()).to.equal(6);
       expect(whiplash.getDamage()).to.equal(0);
     });
+
     it('expect cobra strike to deal 3 damage to an enemy minion and the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -115,6 +119,7 @@ describe('bloodstorm', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
       expect(geomancer.getDamage()).to.equal(3);
     });
+
     it('expect twilight fox to teleport a random enemy minion behind your general when you use your bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -148,6 +153,7 @@ describe('bloodstorm', () => {
 
       expect(unitBehindGeneral).to.equal(true);
     });
+
     it('expect twilight fox to not teleport a random enemy when you use your bbs if there is no space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -168,6 +174,7 @@ describe('bloodstorm', () => {
       expect(squire.getPosition().x).to.equal(6);
       expect(squire.getPosition().y).to.equal(1);
     });
+
     it('expect twilight fox to not teleport an enemy behind your general if blocked and for onyx jaguar to not activate', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

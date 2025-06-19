@@ -54,6 +54,7 @@ describe('gift crates module', function () {
 
   describe('unlockGiftCrate()', () => {
     const UNIT_TEST_CRATE = 'UNIT_TEST_CRATE';
+
     before(() => {
       GiftCrateFactory._generateCache();
       GiftCrateFactory._giftCrateTemplateCache[UNIT_TEST_CRATE] = {

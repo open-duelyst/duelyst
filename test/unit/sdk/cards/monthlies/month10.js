@@ -49,6 +49,7 @@ describe('monthlies', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(1);
       expect(board.getUnitAtPosition({ x: 0, y: 3 }).getDamage()).to.equal(1);
     });
+
     it('expect chakkram to cost 2 less if your general took damage last turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -73,6 +74,7 @@ describe('monthlies', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getManaCost()).to.equal(3);
     });
+
     it('expect blood tauras cost to be equal to your generals current health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -111,6 +113,7 @@ describe('monthlies', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getManaCost()).to.equal(1);
     });
+
     it('expect ruby rifter to gain +2 attack whenever your general is damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -140,6 +143,7 @@ describe('monthlies', () => {
 
       expect(board.getUnitAtPosition({ x: 0, y: 3 }).getATK()).to.equal(6);
     });
+
     it('expect ruby rifter to draw a card whenever your general is damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

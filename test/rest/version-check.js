@@ -20,6 +20,7 @@ Logger.enabled = false;
 
 describe('version check', function () {
   this.timeout(5000);
+
   it(`is newer than the version in ${env}`, (done) => {
     request
       .get('version')

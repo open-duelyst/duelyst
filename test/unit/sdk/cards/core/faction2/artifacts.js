@@ -49,6 +49,7 @@ describe('faction2', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(21);
     });
+
     it('expect cyclone mask to let general attack from range', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

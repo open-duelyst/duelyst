@@ -162,6 +162,7 @@ describe('faction1', () => {
 
       expect(gameSession.getGeneralForPlayer2().hasModifierClass(SDK.ModifierStunned)).to.equal(true);
     });
+
     it('expect lionheart blessing to give a unit zeal: deal damage to draw a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -184,6 +185,7 @@ describe('faction1', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.Magnetize);
     });
+
     it('expect aegis barrier to prevent being targeted by spells and to draw a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -209,6 +211,7 @@ describe('faction1', () => {
 
       expect(suntideMaiden.getHP()).to.equal(6);
     });
+
     it('expect aerial rift to let you summon a minion anywhere on the board this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -225,6 +228,7 @@ describe('faction1', () => {
       const silverguardSquire = board.getUnitAtPosition({ x: 6, y: 3 });
       expect(silverguardSquire.getHP()).to.equal(4);
     });
+
     it('expect aerial rift to immediately draw you a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -239,6 +243,7 @@ describe('faction1', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.Magnetize);
     });
+
     it('expect magnetize to pull a friendly minion in front of your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -253,6 +258,7 @@ describe('faction1', () => {
       expect(suntideMaiden.getPosition().x).to.equal(1);
       expect(suntideMaiden.getPosition().y).to.equal(2);
     });
+
     it('expect magentize to pull an enemy minion in front of your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -267,6 +273,7 @@ describe('faction1', () => {
       expect(jadeOgre.getPosition().x).to.equal(1);
       expect(jadeOgre.getPosition().y).to.equal(2);
     });
+
     it('expect sundrop elixir to restore 5 health to target', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -293,6 +300,7 @@ describe('faction1', () => {
       // make sure sundrop elixir healed 5 health
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect lasting judgement to give a minion +3 atk/-3 hp', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -307,6 +315,7 @@ describe('faction1', () => {
       expect(silverguardSquire.getHP()).to.equal(1);
       expect(silverguardSquire.getATK()).to.equal(4);
     });
+
     it('expect martyrdom to kill a minion and restore health to that minion\'s general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -346,6 +355,7 @@ describe('faction1', () => {
       expect(jadeOgre3.getIsSilenced()).to.equal(true);
       expect(jadeOgre4.getIsSilenced()).to.equal(true);
     });
+
     it('expect warsurge to give friendly minions +1/+1', () => {
       // *****REVISE TO INCLUDE A SECOND UNIT ON BOARD AND CHECK THAT BOTH UNITS RECEIVE BUFF
 
@@ -362,6 +372,7 @@ describe('faction1', () => {
       expect(silverguardSquire.getHP()).to.equal(5);
       expect(silverguardSquire.getATK()).to.equal(2);
     });
+
     it('expect divine bond to give a minion +attack equal to its current health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -374,6 +385,7 @@ describe('faction1', () => {
       // check to see if Silverguard Squire is a 5/4
       expect(silverguardSquire.getATK()).to.equal(5);
     });
+
     it('expect decimate to kill minions not near any general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -395,6 +407,7 @@ describe('faction1', () => {
       expect(hailstoneGolem3.getIsRemoved()).to.equal(false);
       expect(hailstoneGolem4.getIsRemoved()).to.equal(true);
     });
+
     it('expect holy immolation to heal +4 health and deal 4 damage to all enemy minions and general near target', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -426,6 +439,7 @@ describe('faction1', () => {
       expect(hailstoneGolem7.getHP()).to.equal(2);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(21);
     });
+
     it('expect circle of life to deal 5 damage to enemy unit and heal 5 to your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

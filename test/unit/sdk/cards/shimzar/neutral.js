@@ -63,6 +63,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect koi to take no damage from enemy generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -75,6 +76,7 @@ describe('shimzar', () => {
       expect(koi.getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(3);
     });
+
     it('expect gnasher to deal 3 damage to enemies upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -95,6 +97,7 @@ describe('shimzar', () => {
       expect(golem.getDamage()).to.equal(3);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
     });
+
     it('expect ion to deal double damage to generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -106,6 +109,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(4);
     });
+
     it('expect sol to activate a friendly battle pet', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -121,6 +125,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect soboro to kill any neutral unit it deals damage to', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -135,6 +140,7 @@ describe('shimzar', () => {
 
       expect(brightmossGolem.getIsRemoved()).to.equal(true);
     });
+
     it('expect z0r to put a mech in your hand when it dies', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -166,6 +172,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect calculator to gain stats equal to the combined health and attack of battlepets in your action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -183,6 +190,7 @@ describe('shimzar', () => {
       expect(calculator.getATK()).to.equal(9);
       expect(calculator.getHP()).to.equal(6);
     });
+
     it('expect zukong to allow you to control your battlepets', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -199,6 +207,7 @@ describe('shimzar', () => {
 
       expect(board.getUnitAtPosition({ x: 3, y: 1 }).getId()).to.equal(SDK.Cards.Neutral.Z0r);
     });
+
     it('expect hydrax to draw you a card whenever a battlepet dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -224,6 +233,7 @@ describe('shimzar', () => {
       expect(hand[1]).to.exist;
       expect(hand[1].getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect rawr to summon a random neutral token battlepet nearby whenever it is damaged', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -258,6 +268,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect inquisitor kron to summon a random 2/2 prisoner when replacing', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -278,6 +289,7 @@ describe('shimzar', () => {
       expect(prisoner[0].getATK()).to.equal(2);
       expect(prisoner[0].getHP()).to.equal(2);
     });
+
     it('expect fog to put a random battlepet in your hand when it dies', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [

@@ -56,6 +56,7 @@ describe('bloodstorm', () => {
       expect(wraithlings[2].getHP()).to.equal(2);
       expect(wraithlings[2].getATK()).to.equal(2);
     });
+
     it('expect aphotic drain to destroy a friendly minion and restore 5 health to your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -71,6 +72,7 @@ describe('bloodstorm', () => {
       expect(wraithling.getIsRemoved()).to.equal(true);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(5);
     });
+
     it('expect horror burster to turn a random friendly minion into a 6/6 upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -87,6 +89,7 @@ describe('bloodstorm', () => {
       expect(horror).to.exist;
       expect(horror.getBaseCardId()).to.equal(SDK.Cards.Faction4.Horror);
     });
+
     it('expect horror burster to not turn a random friendly minion into a horror if everything dies to tempest', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -102,6 +105,7 @@ describe('bloodstorm', () => {
 
       expect(horror).to.not.exist;
     });
+
     it('expect horror burster to not turn a random friendly minion into a horror if everything dies to twin strike', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -120,6 +124,7 @@ describe('bloodstorm', () => {
 
       expect(horror).to.not.exist;
     });
+
     it('expect horror burster to create a horror out of a naga if the naga clears the board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -136,6 +141,7 @@ describe('bloodstorm', () => {
       expect(horror).to.exist;
       expect(horror.getBaseCardId()).to.equal(SDK.Cards.Faction4.Horror);
     });
+
     it('expect horror burster to not turn a random friendly minion into a horror if everything dies to decimate', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -151,6 +157,7 @@ describe('bloodstorm', () => {
 
       expect(horror).to.not.exist;
     });
+
     it('expect punish to destroy a damaged minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -165,6 +172,7 @@ describe('bloodstorm', () => {
 
       expect(juggernaut.getIsRemoved()).to.equal(true);
     });
+
     it('expect necrotic sphere to turn all friendly and enemy minions nearby general into wraithlings', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -182,6 +190,7 @@ describe('bloodstorm', () => {
       expect(wraithling1.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
       expect(wraithling2.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect grandmaster variax to give all lilithes wraithlings +4/+4 for every 3 mana BBS use', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -218,6 +227,7 @@ describe('bloodstorm', () => {
 
       expect(player1.remainingMana).to.equal(6);
     });
+
     it('expect grandmaster variax to make cassyvas shadow creep tiles spawn 4/4 minions for every 3 mana BBS use', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -259,6 +269,7 @@ describe('bloodstorm', () => {
 
       expect(player2.remainingMana).to.equal(6);
     });
+
     it('expect grandmaster variax and furosa to give all lilithes wraithlings +5/+5 for every 3 mana BBS use', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -296,6 +307,7 @@ describe('bloodstorm', () => {
 
       expect(player1.remainingMana).to.equal(6);
     });
+
     it('expect grandmaster variax to turn grandmaster zirs bbs into the upgraded one', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

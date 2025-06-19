@@ -57,6 +57,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect dervishes to be ignored unless can reach objective', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -75,6 +76,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect units to ignore targets that they cannot damage or that should be ignored', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -165,6 +167,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 0% difficulty: will not spawn a unit if one is already on board and hand not full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -194,6 +197,7 @@ describe('starter ai', () => {
 
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 0% difficulty: will spawn a unit if one is already on board only if hand is full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -225,6 +229,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 0% difficulty: never removes more than 1 unit per turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -330,6 +335,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 10% difficulty: will not spawn a unit if two are already on board and hand not full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -360,6 +366,7 @@ describe('starter ai', () => {
 
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 10% difficulty: will spawn a unit if two are already on board only if hand is full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -392,6 +399,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 10% difficulty: will attack enemy general with own general and own units', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -434,6 +442,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 10% difficulty: general will not retreat when below 10 hp', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -468,6 +477,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 20% difficulty: general will retreat when below 10 hp', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -502,6 +512,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 20% difficulty: will not spawn a unit if four are already on board and hand not full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -534,6 +545,7 @@ describe('starter ai', () => {
 
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 20% difficulty: will spawn a unit if four are already on board only if hand is full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -568,6 +580,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 20% difficulty: never spawns more than 1 unit per turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -599,6 +612,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 20% difficulty: never removes more than 2 units per turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -634,6 +648,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 50% difficulty: never spawns more than 3 units per turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -675,6 +690,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 50% difficulty: never removes more than 5 units per turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -727,6 +743,7 @@ describe('starter ai', () => {
       nextAction = ai.nextAction();
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 50% difficulty: will not spawn a unit if ten are already on board and hand not full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -765,6 +782,7 @@ describe('starter ai', () => {
 
       expect(nextAction.getType()).to.equal(SDK.EndTurnAction.type);
     });
+
     it('expect at 50% difficulty: will spawn a unit if ten are already on board only if hand is full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

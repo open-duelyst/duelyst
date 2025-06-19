@@ -52,6 +52,7 @@ describe('core set', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.Metamorphosis);
     });
+
     it('expect alcuin loremaster to copy the last spell cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('core set', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect chaos elemental to teleport to a random space when taking damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -89,6 +91,7 @@ describe('core set', () => {
       expect(updatedChaosElemental).to.equal(undefined);
       expect(chaosElemental.getHP()).to.equal(1);
     });
+
     it('expect sworn avenger to gain +1 attack when general is damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -104,6 +107,7 @@ describe('core set', () => {
 
       expect(swornAvenger.getATK()).to.equal(2);
     });
+
     it('expect syvrel the exile to move minions in front of him', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -123,6 +127,7 @@ describe('core set', () => {
       expect(azurehorn.getPosition().x).to.equal(2);
       expect(azurehorn.getPosition().y).to.equal(2);
     });
+
     it('expect venom toth to deal 1 damage to the enemy general on minion summon', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -138,6 +143,7 @@ describe('core set', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(1);
     });
+
     it('expect artifact hunter to draw a random artifact from your deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -216,6 +222,7 @@ describe('core set', () => {
       expect(moebius.getHP()).to.equal(5);
       expect(moebius.getATK()).to.equal(3);
     });
+
     it('expect moebius to swap attack and health at start of next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -234,6 +241,7 @@ describe('core set', () => {
       expect(moebius.getHP()).to.equal(3);
       expect(moebius.getATK()).to.equal(5);
     });
+
     it('expect buffs moebius receives to be swapped', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -256,6 +264,7 @@ describe('core set', () => {
       expect(moebius.getHP()).to.equal(6);
       expect(moebius.getATK()).to.equal(5);
     });
+
     it('expect purgatos the realmkeeper to deal 3 damage to enemy general or restore 3 health to your general on attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -276,6 +285,7 @@ describe('core set', () => {
 
       expect(damageSpread).to.equal(3);
     });
+
     it('expect captain hank hart to recover health for as much damage he deals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -292,6 +302,7 @@ describe('core set', () => {
 
       expect(hankHart.getHP()).to.equal(3);
     });
+
     it('expect lux ignis to restore 2 health to all damaged friendly minions nearby at the end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -310,6 +321,7 @@ describe('core set', () => {
       expect(hankHart.getHP()).to.equal(3);
       expect(brightmossGolem.getHP()).to.equal(8);
     });
+
     it('expect sworn defender to be restored to full health when your general takes damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -326,6 +338,7 @@ describe('core set', () => {
 
       expect(swornDefender.getHP()).to.equal(7);
     });
+
     it('expect twilight sorcerer to put a copy of a random spell you cast this game in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

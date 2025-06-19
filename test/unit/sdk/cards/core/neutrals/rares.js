@@ -46,6 +46,7 @@ describe('core set', () => {
       expect(brightmossGolem.getHP()).to.equal(13);
       expect(brightmossGolem2.getHP()).to.equal(13);
     });
+
     it('expect flameblood warlock to deal 3 damage to both generals on summon', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -60,6 +61,7 @@ describe('core set', () => {
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(3);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
     });
+
     it('expect golem metallurgist to make the first golem played each turn cost 1 less mana', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -86,6 +88,7 @@ describe('core set', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Neutral.BrightmossGolem);
       expect(cardDraw.getManaCost()).to.equal(5);
     });
+
     it('expect manaforger to make your first spell each turn cost 1 less to cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -110,6 +113,7 @@ describe('core set', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(cardDraw.getManaCost()).to.equal(2);
     });
+
     it('expect manaforger to swap effects when mind controlled', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -136,6 +140,7 @@ describe('core set', () => {
 
       expect(phoenixFire.getManaCostChange()).to.equal(-1);
     });
+
     it('expect crimson oculus to gain +1/+1 whenever opponent summons a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -158,6 +163,7 @@ describe('core set', () => {
       expect(crimsonOculus.getHP()).to.equal(5);
       expect(crimsonOculus.getATK()).to.equal(4);
     });
+
     it('expect dancing blades to kill a crimson oculus', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -173,6 +179,7 @@ describe('core set', () => {
 
       expect(crimsonOculus.getIsRemoved()).to.equal(true);
     });
+
     it('expect crossbones to instantly kill a ranged unit (mechaz0r)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -191,6 +198,7 @@ describe('core set', () => {
 
       expect(mechaz0r.getIsRemoved()).to.equal(true);
     });
+
     it('expect crossbones cannot be cast on blast or non-ranged minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -210,6 +218,7 @@ describe('core set', () => {
 
       expect(pyromancer.getIsRemoved()).to.equal(false);
     });
+
     it('expect prismatic illusionist to summon 2/1 illusions whenever you cast a spell', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -231,6 +240,7 @@ describe('core set', () => {
 
       expect(illusions.length).to.equal(2);
     });
+
     it('expect sojourner draw a card whenever it does damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -249,6 +259,7 @@ describe('core set', () => {
       const hand1 = player1.getDeck().getCardsInHand();
       expect(hand1[0].getBaseCardId()).to.equal(SDK.Cards.Neutral.Maw);
     });
+
     it('expect silvertongue corsair takes no damage when a general attacks it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -263,6 +274,7 @@ describe('core set', () => {
 
       expect(silvertongue.getHP()).to.equal(3);
     });
+
     it('expect silvertongue corsair takes no damage when being counterattacked by a general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -276,6 +288,7 @@ describe('core set', () => {
 
       expect(silvertongue.getHP()).to.equal(3);
     });
+
     it('expect emerald rejuvenator to restore 4 health to both generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -292,6 +305,7 @@ describe('core set', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(24);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(24);
     });
+
     it('expect lightbender to dispel all tiles around it including mana tiles', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -306,6 +320,7 @@ describe('core set', () => {
 
       expect(azurehorn.getIsSilenced()).to.equal(true);
     });
+
     it('expect mindwarper to gain a copy of a random spell from opponents action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -323,6 +338,7 @@ describe('core set', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect owlbeast sage to grant only arcanyst minions +2 health on every spell cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

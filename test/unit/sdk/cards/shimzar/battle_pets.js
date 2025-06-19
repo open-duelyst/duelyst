@@ -47,6 +47,7 @@ describe('battle pets', () => {
 
     expect(oldYun).to.equal(undefined);
   });
+
   it('expect battle pets to not attempt to move if sand trapped', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -68,6 +69,7 @@ describe('battle pets', () => {
     expect(currentPlayer).to.equal(gameSession.getPlayer2());
     expect(oldYun.getId()).to.equal(SDK.Cards.Neutral.Yun);
   });
+
   it('expect battle pets to not attempt to attack if attack is 0', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -90,6 +92,7 @@ describe('battle pets', () => {
     const player1General = gameSession.getGeneralForPlayer1();
     expect(player1General.getDamage()).to.equal(0);
   });
+
   it('expect battle pets to move towards its closest enemy', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -106,6 +109,7 @@ describe('battle pets', () => {
 
     expect(yun.getPosition().x).to.be.above(5);
   });
+
   it('expect battle pets to immediately attack an enemy if its already in melee range instead of moving first', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -122,6 +126,7 @@ describe('battle pets', () => {
     expect(yun.getPosition().x).to.equal(4);
     expect(yun.getPosition().y).to.equal(0);
   });
+
   it('expect melee battle pets to attack the nearest enemy', () => {
     for (let i = 0; i < 30; i++) {
       const player1Deck = [{ id: SDK.Cards.Faction1.General }];
@@ -199,6 +204,7 @@ describe('battle pets', () => {
       expect(golem1.getDamage()).to.equal(damage);
     }
   });
+
   it('expect battle pets to attack the next closest enemy if the closest one is blocked', () => {
     for (let i = 0; i < 30; i++) {
       const player1Deck = [{ id: SDK.Cards.Faction1.General }];
@@ -222,6 +228,7 @@ describe('battle pets', () => {
       expect(golem4.getDamage()).to.equal(damage);
     }
   });
+
   it('expect battle pets to always attack a provoking minion when provoked', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -240,6 +247,7 @@ describe('battle pets', () => {
 
     expect(provoke.getDamage()).to.equal(damage);
   });
+
   it('expect battle pets to always attack a provoking minion when moving into provoke range', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -256,6 +264,7 @@ describe('battle pets', () => {
 
     expect(provoke.getDamage()).to.equal(damage);
   });
+
   it('expect ranged battle pets to always attack a ranged provoking minion when provoked', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -272,6 +281,7 @@ describe('battle pets', () => {
 
     expect(windstopper.getDamage()).to.equal(damage);
   });
+
   it('expect ranged battle pets to not attack a provoking minion when out of range', () => {
     for (let i = 0; i < 30; i++) {
       const player1Deck = [{ id: SDK.Cards.Faction1.General }];
@@ -292,6 +302,7 @@ describe('battle pets', () => {
       expect(golem1.getDamage()).to.equal(damage);
     }
   });
+
   it('expect battle pets to take actions in the order they were summoned', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -318,6 +329,7 @@ describe('battle pets', () => {
     expect(yun1.getIsRemoved()).to.equal(true);
     expect(yun2.getIsRemoved()).to.equal(false);
   });
+
   it('expect battle pets to ignore invalid targets', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -333,6 +345,7 @@ describe('battle pets', () => {
 
     expect(golem1.getDamage()).to.equal(damage);
   });
+
   it('expect battle pets to attack forcefielded targets', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();

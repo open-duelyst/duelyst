@@ -59,6 +59,7 @@ describe('coreshatter', () => {
 
       expect(silverguardSquire.getATK()).to.equal(5);
     });
+
     it('expect kindle to give consecutively more damage to an enemy each time its played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -79,6 +80,7 @@ describe('coreshatter', () => {
 
       expect(ironcliffe.getDamage()).to.equal(3);
     });
+
     it('expect greater phoenix fire to deal 3 damage to an enemy general or minion and put a phoenix fire in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -94,6 +96,7 @@ describe('coreshatter', () => {
 
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect shadow summoner to summon a 2 cost or less minion with backstab from your deck nearby whenever it backstabs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -117,6 +120,7 @@ describe('coreshatter', () => {
 
       expect(nearbyAllies[0].getId()).to.equal(SDK.Cards.Faction2.KaidoAssassin);
     });
+
     it('expect deja vu to shuffle 5 copies of the last spell you played into your deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -141,6 +145,7 @@ describe('coreshatter', () => {
       expect(deck[4].getId()).to.equal(SDK.Cards.Spell.GreaterPhoenixFire);
       expect(deck.length).to.equal(5);
     });
+
     it('expect booty projection to put an exact copy of a friendly minion into your action bar with buffs but without damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -171,6 +176,7 @@ describe('coreshatter', () => {
       expect(newIroncliffe.getHP()).to.equal(12);
       expect(newIroncliffe.getDamage()).to.equal(0);
     });
+
     it('expect paper dropper to draw a card every time it moves for any reason', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -197,6 +203,7 @@ describe('coreshatter', () => {
       expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Faction4.SpectralRevenant);
       expect(hand[2]).to.equal(undefined);
     });
+
     it('expect panda jail to surround the enemy general with panddos that vanish on your next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -221,6 +228,7 @@ describe('coreshatter', () => {
       nearbyPanddo = board.getEnemyEntitiesAroundEntity(gameSession.getGeneralForPlayer2());
       expect(nearbyPanddo.length).to.equal(0);
     });
+
     it('expect gorehorn mask to give friendly backstab minions +1/+1 after they attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -241,6 +249,7 @@ describe('coreshatter', () => {
       expect(shadowSummoner.getHP()).to.equal(3);
       expect(shadowSummoner.getATK()).to.equal(3);
     });
+
     it('expect massacre artist to give all minions backstab after it backstabs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -266,6 +275,7 @@ describe('coreshatter', () => {
       expect(squire.getDamage()).to.equal(0);
       expect(golem.getDamage()).to.equal(5);
     });
+
     it('expect flare slinger to give rush to your newly summoned ranged minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -295,6 +305,7 @@ describe('coreshatter', () => {
 
       expect(golem.getDamage()).to.equal(1);
     });
+
     it('expect hollow vortex to lower mana cost every time you cast a spell and then to summon a neutral minion that costs up to 2 more', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -333,6 +344,7 @@ describe('coreshatter', () => {
       const nearbyAllies = board.getFriendlyEntitiesAroundEntity(gameSession.getGeneralForPlayer1());
       expect(nearbyAllies[0].getManaCost()).to.equal(4);
     });
+
     it('expect dark heart of the songhai to ping a random enemy for damage equal to your summoned minions mana cost after you summon 7 minions with different costs from your action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

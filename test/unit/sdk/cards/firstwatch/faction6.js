@@ -55,6 +55,7 @@ describe('first watch', () => {
       expect(freeblade.getId()).to.equal(SDK.Cards.Faction6.Freeblade);
       expect(gloomchaser.getId()).to.equal(SDK.Cards.Faction4.GloomChaser);
     });
+
     it('expect crystal arbiter to gain +3 attack on your opponents turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -71,6 +72,7 @@ describe('first watch', () => {
 
       expect(crystalArbiter.getATK()).to.equal(4);
     });
+
     it('expect vespyrian might to give +2/+2 for each friendly vespyr minion on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -90,6 +92,7 @@ describe('first watch', () => {
       expect(crystalArbiter.getATK()).to.equal(7);
       expect(crystalArbiter.getHP()).to.equal(10);
     });
+
     it('expect blinding snowstorm to deal 1 damage to all enemies and reduce their movement to 1 next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -132,6 +135,7 @@ describe('first watch', () => {
       gameSession.executeAction(action);
       expect(action.getIsValid()).to.equal(true);
     });
+
     it('expect drake dowager to transform when the enemy general attacks and to summon a 4/4 drake when it attacks', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -166,6 +170,7 @@ describe('first watch', () => {
 
       expect(drake[0].getId()).to.equal(SDK.Cards.Faction6.AzureDrake);
     });
+
     it('expect moonlit basilysk to gain +3/+3 when your opponent casts a spell', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -192,6 +197,7 @@ describe('first watch', () => {
       expect(board.getUnitAtPosition({ x: 1, y: 1 }).getATK()).to.equal(8);
       expect(board.getUnitAtPosition({ x: 1, y: 1 }).getHP()).to.equal(8);
     });
+
     it('expect luminous charge to summon 5 0/1 walls that explode for 2 on death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -223,6 +229,7 @@ describe('first watch', () => {
 
       expect(terrodon.getDamage()).to.equal(2);
     });
+
     it('expect shivers to give you 1 mana crystal when it attacks infiltrated', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -240,6 +247,7 @@ describe('first watch', () => {
 
       expect(player1.getRemainingMana()).to.equal(4);
     });
+
     it('expect glacial fissure to deal 8 damage to everything in the center column', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -264,6 +272,7 @@ describe('first watch', () => {
       expect(dragonboneGolem2.getDamage()).to.equal(8);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(8);
     });
+
     it('expect icebreak ambush to summon two snowchasers, a crystal cloaker, and a wolf raven on your opponents side of board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -288,6 +297,7 @@ describe('first watch', () => {
       expect(cloaker[0].getPosition().x).to.be.above(4);
       expect(wolfraven[0].getPosition().x).to.be.above(4);
     });
+
     it('expect matron elveiti to stop minions from attacking your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -304,6 +314,7 @@ describe('first watch', () => {
       expect(action.getIsValid()).to.equal(false);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
     });
+
     it('expect flawless reflection to transform all nearby minions into selected minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -322,6 +333,7 @@ describe('first watch', () => {
       expect(board.getUnitAtPosition({ x: 7, y: 2 }).getId()).to.equal(SDK.Cards.Faction6.MatronElveiti);
       expect(board.getUnitAtPosition({ x: 7, y: 3 }).getId()).to.equal(SDK.Cards.Faction6.MatronElveiti);
     });
+
     it('expect the dredger to teleport an enemy to your starting side of the battlefield after you damage an enemy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

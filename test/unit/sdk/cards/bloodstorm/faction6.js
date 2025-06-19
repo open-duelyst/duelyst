@@ -82,6 +82,7 @@ describe('bloodstorm', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.TrinityOath);
       expect(hand[1]).to.not.exist;
     });
+
     it('expect sleet dasher to reactivate whenever it destroys a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -108,6 +109,7 @@ describe('bloodstorm', () => {
       expect(windstopper.getIsRemoved()).to.equal(false);
       expect(valeHunter3.getIsRemoved()).to.equal(false);
     });
+
     it('expect concealing shroud to make your general immune to damage until your next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -130,6 +132,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(0);
     });
+
     it('expect enfeeble to turn all minions into 1/1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

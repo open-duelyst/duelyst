@@ -61,6 +61,7 @@ describe('first watch', () => {
       gameSession.executeAction(gameSession.actionEndTurn());
       expect(wildTahr.getATK()).to.equal(2);
     });
+
     it('expect komodo hunter to spawn 2 komodo chargers for your opponent', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -79,6 +80,7 @@ describe('first watch', () => {
       expect(chargers[1].getId()).to.equal(SDK.Cards.Neutral.KomodoCharger);
       expect(chargers[2]).to.not.exist;
     });
+
     it('expect rokadoptera to put a 0 mana, deal 1 damage spell in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -96,6 +98,7 @@ describe('first watch', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(1);
     });
+
     it('expect sinister silhouette to not be attackable by minions or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -116,6 +119,7 @@ describe('first watch', () => {
       gameSession.executeAction(action);
       expect(action.getIsValid()).to.equal(false);
     });
+
     it('expect minions that quahog defeats to return to their owners action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -133,6 +137,7 @@ describe('first watch', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction6.CrystalCloaker);
     });
+
     it('expect matter shaper to destroy an enemy artifact and to put a random artifact from your faction in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -158,6 +163,7 @@ describe('first watch', () => {
       expect(hand[0].type).to.equal(SDK.CardType.Artifact);
       expect(hand[0].factionId).to.equal(gameSession.getGeneralForPlayer2().factionId);
     });
+
     it('expect thunderhorn to deal its damage to all joined enemies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -182,6 +188,7 @@ describe('first watch', () => {
       expect(terradon3.getDamage()).to.equal(thunderhorn.getATK());
       expect(terradon4.getDamage()).to.equal(0);
     });
+
     it('expect spriggin to summon 3 spriggin kin nearby each general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -223,6 +230,7 @@ describe('first watch', () => {
       expect(allySprigganCheck).to.equal(true);
       expect(enemySprigganCheck).to.equal(true);
     });
+
     it('expect spriggin kin glub to gain +3/+3 whenever a spriggin dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -254,6 +262,7 @@ describe('first watch', () => {
       expect(glub.getATK()).to.equal(7);
       expect(glub.getHP()).to.equal(7);
     });
+
     it('expect spriggin kin binky to heal your general for 2 whenever it damages a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -270,6 +279,7 @@ describe('first watch', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect spriggin kin moro to have +3 attack as long as a spriggin lives', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -298,6 +308,7 @@ describe('first watch', () => {
 
       expect(moro.getATK()).to.equal(0);
     });
+
     it('expect bloodsworn gambler to have a chance of randomly activating and attacking again', () => {
       let attackedTwice = false;
       let safetyCounter = 0;
@@ -336,6 +347,7 @@ describe('first watch', () => {
 
       expect(attackedTwice).to.equal(true);
     });
+
     it('expect theobule to replace your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -368,6 +380,7 @@ describe('first watch', () => {
       expect(hand[3].getId()).to.equal(SDK.Cards.Spell.AerialRift);
       expect(hand[4].getId()).to.equal(SDK.Cards.Spell.AerialRift);
     });
+
     it('expect letigress to summon a saberspine cub every time your general attacks', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -386,6 +399,7 @@ describe('first watch', () => {
       expect(cub.length).to.equal(1);
       expect(cub[0].getId()).to.equal(SDK.Cards.Neutral.TigerCub);
     });
+
     it('expect magesworn to stop both players from casting spells that cost 2 or less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -423,6 +437,7 @@ describe('first watch', () => {
       expect(playCardFromHandAction.getIsValid()).to.equal(true);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(8);
     });
+
     it('expect dagona to not be summonable on spaces not occupied by minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -439,6 +454,7 @@ describe('first watch', () => {
       expect(playCardFromHandAction.getIsValid()).to.equal(false);
       expect(board.getUnitAtPosition({ x: 1, y: 1 })).to.not.exist;
     });
+
     it('expect dagona to consume the minion it is summoned on and to spit it out when it dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -50,6 +50,7 @@ describe('faction3', () => {
       expect(valeHunter.getIsSilenced()).to.equal(true);
       expect(valeHunter.isRanged()).to.equal(false);
     });
+
     it('expect auroras tears to give +2 attack for each artifact equipped', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('faction3', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(10);
     });
+
     it('expect blind scorch to reduce a minions attack to 0 until your next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -87,6 +89,7 @@ describe('faction3', () => {
       gameSession.executeAction(gameSession.actionEndTurn());
       expect(valeHunter.getATK()).to.equal(1);
     });
+
     it('expect scions first wish to give a minion +1/+1 and draw a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -106,6 +109,7 @@ describe('faction3', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.SiphonEnergy);
     });
+
     it('expect boneswarm to deal to 2 damage to an enemy general and every minion around it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -128,6 +132,7 @@ describe('faction3', () => {
       expect(hailstoneGolem5.getHP()).to.equal(4);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
     });
+
     it('expect cosmic flesh to give a minion +1/+3 and provoke', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -143,6 +148,7 @@ describe('faction3', () => {
       expect(valeHunter.getHP()).to.equal(5);
       expect(valeHunter.hasModifierClass(SDK.ModifierProvoke)).to.equal(true);
     });
+
     it('expect fountain of youth to restore the health of all friendly minions to full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -165,6 +171,7 @@ describe('faction3', () => {
       expect(brightmossGolem.getHP()).to.equal(9);
       expect(hailstoneGolem.getHP()).to.equal(6);
     });
+
     it('expect rashas curse to break a random artifact', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -191,6 +198,7 @@ describe('faction3', () => {
       var modifiers = gameSession.getGeneralForPlayer2().getArtifactModifiers();
       expect(modifiers[0]).to.equal(undefined);
     });
+
     it('expect rashas curse to summon a 2/2 dervish with rush next to an enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -216,6 +224,7 @@ describe('faction3', () => {
       expect(dervish.getATK()).to.equal(2);
       expect(dervish.getIsExhausted()).to.equal(false);
     });
+
     it('expect sand trap to stop an enemy minion from being able to move', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -229,6 +238,7 @@ describe('faction3', () => {
 
       expect(valeHunter.getSpeed()).to.equal(0);
     });
+
     it('expect scions second wish to give a minion +2/+2', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -245,6 +255,7 @@ describe('faction3', () => {
       expect(brightmossGolem.getATK()).to.equal(6);
       expect(brightmossGolem.getHP()).to.equal(11);
     });
+
     it('expect scions second wish to give a minion invulnerability to generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -265,6 +276,7 @@ describe('faction3', () => {
       expect(brightmossGolem.getATK()).to.equal(6);
       expect(brightmossGolem.getHP()).to.equal(11);
     });
+
     it('expect astral phasing to give a friendly minion +5 health and flying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -280,6 +292,7 @@ describe('faction3', () => {
       expect(valeHunter.getHP()).to.equal(7);
       expect(valeHunter.hasModifierClass(SDK.ModifierFlying)).to.equal(true);
     });
+
     it('expect inner oasis to give all friendly minions +3 health and to draw a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -298,6 +311,7 @@ describe('faction3', () => {
       expect(valeHunter2.getHP()).to.equal(5);
       expect(valeHunter3.getHP()).to.equal(5);
     });
+
     it('expect scions third wish to only be castable on dervishes', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -319,6 +333,7 @@ describe('faction3', () => {
       expect(validTargetPositions[0].x === 1 && validTargetPositions[0].y === 4).to.equal(true);
       expect(validTargetPositions[1]).to.not.exist;
     });
+
     it('expect scions third wish to give a dervish +3/+3 and flying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -336,6 +351,7 @@ describe('faction3', () => {
       expect(sandHowler.getHP()).to.equal(6);
       expect(sandHowler.hasModifierClass(SDK.ModifierFlying)).to.equal(true);
     });
+
     it('expect entropic decay to destroy a minion nearby general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -350,6 +366,7 @@ describe('faction3', () => {
 
       expect(valeHunter.getIsRemoved()).to.equal(true);
     });
+
     it('expect entropic decay to not be able to target minions far away from general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -370,6 +387,7 @@ describe('faction3', () => {
 
       expect(valeHunter.getIsRemoved()).to.equal(false);
     });
+
     it('expect stars fury to summon 2/2 dervish in front of every enemy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -396,6 +414,7 @@ describe('faction3', () => {
       expect(dervish.getATK()).to.equal(2);
       expect(dervish.getIsExhausted()).to.equal(false);
     });
+
     it('expect stars fury to not summon a 2/2 dervish if front space is blocked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -416,6 +435,7 @@ describe('faction3', () => {
       const valeHunter = board.getUnitAtPosition({ x: 3, y: 2 });
       expect(valeHunter.getBaseCardId()).to.equal(SDK.Cards.Neutral.ValeHunter);
     });
+
     it('expect dominate will to make any enemy minion join your side', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -432,6 +452,7 @@ describe('faction3', () => {
 
       expect(valeHunter.ownerId).to.equal('player1_id');
     });
+
     it('expect dominate will when provoked to not provoke the enemy general if they are out of range of the newly controlled provoke minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -450,6 +471,7 @@ describe('faction3', () => {
       expect(primusShieldmaster.ownerId).to.equal('player1_id');
       expect(gameSession.getGeneralForPlayer2().hasActiveModifierClass(SDK.ModifierProvoked)).to.equal(false);
     });
+
     it('expect dominate will on a self buffed enemy should not transfer buffs from the unit to any general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -483,6 +505,7 @@ describe('faction3', () => {
       expect(gameSession.getGeneralForPlayer2().getATK()).to.equal(2);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(2);
     });
+
     it('expect time maelstrom to refresh your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -45,6 +45,7 @@ describe('faction2', () => {
       expect(chakriAvatar.getHP()).to.equal(3);
       expect(chakriAvatar.getATK()).to.equal(2);
     });
+
     it('expect back stab to give bonus damage and not get counter attacked (kaido assassin)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -60,6 +61,7 @@ describe('faction2', () => {
       expect(kaidoAssassin.getHP()).to.equal(3);
       expect(brightmossGolem.getHP()).to.equal(6);
     });
+
     it('expect tusk boar to return to hand at start of next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -74,6 +76,7 @@ describe('faction2', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction2.TuskBoar);
     });
+
     it('expect celestial phantom to kill any unit it deals damage to', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -89,6 +92,7 @@ describe('faction2', () => {
       expect(celestialPhantom.getHP()).to.equal(1);
       expect(brightmossGolem.getIsRemoved()).to.equal(true);
     });
+
     it('expect gorehorn to gain +1/+1 on attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -105,6 +109,7 @@ describe('faction2', () => {
       expect(goreHorn.getATK()).to.equal(4);
       expect(brightmossGolem.getHP()).to.equal(4);
     });
+
     it('expect gorehorn to not gain +1/+1 when counter attacking', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -123,6 +128,7 @@ describe('faction2', () => {
       expect(goreHorn.getATK()).to.equal(3);
       expect(silverguardSquire.getHP()).to.equal(1);
     });
+
     it('expect jade monk to deal 1 damage to random enemy minion upon taking damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -145,6 +151,7 @@ describe('faction2', () => {
       expect(totalDamage).to.equal(3);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
     });
+
     it('expect lantern fox to give a phoenix fire when it takes damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -161,6 +168,7 @@ describe('faction2', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect four winds magi to deal 1 damage and heal your general for 1 on every allied spell cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -176,6 +184,7 @@ describe('faction2', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(24);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(24);
     });
+
     it('expect keshrai fanblade to make opponents spells cost 2 more on next turn only', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -198,6 +207,7 @@ describe('faction2', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.Magnetize);
       expect(cardDraw.getManaCost()).to.equal(3);
     });
+
     it('expect hamon bladeseeker to deal 2 damage to own general at start of every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -210,6 +220,7 @@ describe('faction2', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(23);
     });
+
     it('expect storm kage to give kage lightning on damaging spell cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -227,6 +238,7 @@ describe('faction2', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.KageLightning);
     });
+
     it('expect storm kage to not give kage lightning if spell could not cause any damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

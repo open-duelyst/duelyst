@@ -54,6 +54,7 @@ describe('shimzar', () => {
       expect(silithar.getId()).to.equal(SDK.Cards.Faction5.YoungSilithar);
       expect(silithar.getIsRemoved()).to.equal(false);
     });
+
     it('expect razor skin to give all friendly minions +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('shimzar', () => {
       expect(silverguardSquire2.getATK()).to.equal(2);
       expect(silverguardSquire3.getATK()).to.equal(2);
     });
+
     it('expect razor skin to draw a random f5/neutral battlepet', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -102,6 +104,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect lava lance to deal 2 damage to a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -117,6 +120,7 @@ describe('shimzar', () => {
 
       expect(golem.getDamage()).to.equal(2);
     });
+
     it('expect lava lance to deal 4 damage to a minion if you have an egg', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +141,7 @@ describe('shimzar', () => {
 
       expect(golem.getDamage()).to.equal(4);
     });
+
     it('expect mandrake to cost 1 less for each minion both players played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -187,6 +192,7 @@ describe('shimzar', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[1].getManaCost()).to.equal(6);
     });
+
     it('expect thumping wave to give a friendly minion +5 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -202,6 +208,7 @@ describe('shimzar', () => {
 
       expect(golem.getATK()).to.equal(9);
     });
+
     it('expect thumping wave to turn a minion into kin at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -276,6 +283,7 @@ describe('shimzar', () => {
       expect(huntress.getATK()).to.equal(3);
       expect(huntress.getHP()).to.equal(4);
     });
+
     it('expect natures confluence to summon 4 copies of a random f5/neutral battle pet in a 2x2 grid', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -313,6 +321,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect morin-khur to grant +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -323,6 +332,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect morin-khur to hatch friendly eggs when its owners general does damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -400,6 +410,7 @@ describe('shimzar', () => {
       expect(silithar.getATK()).to.equal(2);
       expect(silithar.getHP()).to.equal(3);
     });
+
     it('expect dreadnought to not give his own egg +2/+2', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

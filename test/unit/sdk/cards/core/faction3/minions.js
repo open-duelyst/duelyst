@@ -58,6 +58,7 @@ describe('faction3', () => {
       expect(dervish.getATK()).to.equal(4);
       expect(dervish.getHP()).to.equal(4);
     });
+
     it('expect dunecaster to make temporary dervishes permanent', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -83,6 +84,7 @@ describe('faction3', () => {
 
       expect(dervish.getIsRemoved()).to.equal(false);
     });
+
     it('expect pyromancer to be able to blast everything in a row', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -98,6 +100,7 @@ describe('faction3', () => {
       expect(brightmossGolem.getHP()).to.equal(7);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
     });
+
     it('expect ethereal obelysk to spawn a 2/2 dervish every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -113,6 +116,7 @@ describe('faction3', () => {
       expect(dervish.getHP()).to.equal(2);
       expect(dervish.getATK()).to.equal(2);
     });
+
     it('expect obelysks to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 1)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -154,6 +158,7 @@ describe('faction3', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect obelysks to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 2)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -195,6 +200,7 @@ describe('faction3', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect obelysks to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 3)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -327,6 +333,7 @@ describe('faction3', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect ethereal obelysk to never be able to move', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -340,6 +347,7 @@ describe('faction3', () => {
 
       expect(action.getIsValid()).to.equal(false);
     });
+
     it('expect ethereal obelysk to never be able to attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -358,6 +366,7 @@ describe('faction3', () => {
 
       expect(action.getIsValid()).to.equal(false);
     });
+
     it('expect fireblaze obelysk to give all dervishes +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -392,6 +401,7 @@ describe('faction3', () => {
       expect(dervish.getATK()).to.equal(3);
       expect(sandHowler.getATK()).to.equal(4);
     });
+
     it('expect imperial mechanyst to restore all artifact durability charges to full', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -420,6 +430,7 @@ describe('faction3', () => {
       expect(modifiers[0].getDurability()).to.equal(3);
       expect(modifiers[1].getDurability()).to.equal(3);
     });
+
     it('expect orb weaver to summon a copy of itself in nearby space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -445,6 +456,7 @@ describe('faction3', () => {
       expect(orbWeaver1.getATK()).to.equal(2);
       expect(orbWeaver2.getATK()).to.equal(2);
     });
+
     it('expect portal guardian to gain +1 attack when you summon a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -471,6 +483,7 @@ describe('faction3', () => {
 
       expect(portalGuardian.getATK()).to.equal(3);
     });
+
     it('expect sand howler to not be targetable by spells', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -488,6 +501,7 @@ describe('faction3', () => {
       expect(playCardFromHandAction.getIsValid()).to.equal(false);
       expect(sandHowler.getHP()).to.equal(3);
     });
+
     it('expect windstorm obelysk to give all friendly dervishes +1 health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -523,6 +537,7 @@ describe('faction3', () => {
       expect(sandHowler.getATK()).to.equal(3);
       expect(sandHowler.getHP()).to.equal(4);
     });
+
     it('expect mirage master to copy enemy unit that has been buffed and has taken damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -562,6 +577,7 @@ describe('faction3', () => {
       expect(hailstoneGolem.getATK()).to.equal(8);
       expect(hailstoneGolem.getHP()).to.equal(6);
     });
+
     it('expect aymara healer to deal 5 damage on death and heal 5 to own general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -579,6 +595,7 @@ describe('faction3', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(20);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(20);
     });
+
     it('expect osterix to equip 2 artifacts from your deck on death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

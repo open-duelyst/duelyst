@@ -50,6 +50,7 @@ describe('first watch', () => {
       expect(terradon1.getDamage()).to.equal(1);
       expect(terradon2.getDamage()).to.equal(1);
     });
+
     it('expect vaaths brutality to give +1 attack and stun an enemy minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -67,6 +68,7 @@ describe('first watch', () => {
       expect(terradon2.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect blood rage to give a minion +1/+1 for each time damage was dealt this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -92,6 +94,7 @@ describe('first watch', () => {
       expect(terradon1.getATK()).to.equal(8); // 2 base attack + 2 + 4 = 8 attack
       expect(terradon1.getHP()).to.equal(12); // 6 health after Tempest + 2 + 4 = 12
     });
+
     it('expect omniseer to create a primal flourish tile underneath a nearby friendly minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -112,6 +115,7 @@ describe('first watch', () => {
       const primaltile = board.getTileAtPosition({ x: 1, y: 2 }, true);
       expect(primaltile.getId()).to.equal(SDK.Cards.Tile.PrimalMojo);
     });
+
     it('expect primal flourish to give grow +2/+2 to friendly minions standing on it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -138,6 +142,7 @@ describe('first watch', () => {
       expect(terradon1.getATK()).to.equal(4);
       expect(terradon1.getHP()).to.equal(10);
     });
+
     it('expect primal ballast to dispel a space and give +2/+2 to any minion on that space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -171,6 +176,7 @@ describe('first watch', () => {
       expect(terradon1.getATK()).to.equal(4);
       expect(terradon1.getHP()).to.equal(10);
     });
+
     it('expect rizen to summon an egg of itself nearby any time the enemy summons a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -197,6 +203,7 @@ describe('first watch', () => {
 
       expect(hatchedEgg[0].getId()).to.equal(SDK.Cards.Faction5.Rizen);
     });
+
     it('expect endure the beastlands to create a 2x2 area of primal flourish', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -219,6 +226,7 @@ describe('first watch', () => {
       expect(primalFlourish3.getId()).to.equal(SDK.Cards.Tile.PrimalMojo);
       expect(primalFlourish4.getId()).to.equal(SDK.Cards.Tile.PrimalMojo);
     });
+
     it('expect verdant fulmination to grow friendly minions on primal flourish and spawn primal flourish under minions who arent standing on it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -250,6 +258,7 @@ describe('first watch', () => {
       var primaltile2 = board.getTileAtPosition({ x: 1, y: 1 }, true);
       expect(primaltile2.getId()).to.equal(SDK.Cards.Tile.PrimalMojo);
     });
+
     it('expect grandmaster kraigon to give your general forcefield, frenzy, and grow +7/+7', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -297,6 +306,7 @@ describe('first watch', () => {
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(9);
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(32);
     });
+
     it('expect evolutionary apex to play all minions from both players hands around their generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -323,6 +333,7 @@ describe('first watch', () => {
       expect(enemyMinions[1].getId()).to.equal(SDK.Cards.Faction5.Terradon);
       expect(enemyMinions[2]).to.not.exist;
     });
+
     it('expect eternal heart to prevent your general from dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

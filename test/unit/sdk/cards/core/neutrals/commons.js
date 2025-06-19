@@ -47,6 +47,7 @@ describe('core set', () => {
 
       expect(brightmossGolem.getDamage()).to.equal(2);
     });
+
     it('expect blaze hound to draw a card for both players', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -65,6 +66,7 @@ describe('core set', () => {
       expect(hand1[0].getBaseCardId()).to.equal(SDK.Cards.Neutral.Maw);
       expect(hand2[0].getBaseCardId()).to.equal(SDK.Cards.Neutral.Maw);
     });
+
     it('expect mechaz0r to be created when 5 mech peices are down', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -96,6 +98,7 @@ describe('core set', () => {
 
       expect(mechaz0r.getId()).to.equal(SDK.Cards.Neutral.Mechaz0r);
     });
+
     it('expect bluetip scorpion to deal double damage to only minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -115,6 +118,7 @@ describe('core set', () => {
       expect(brightmossGolem.getDamage()).to.equal(6);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
     });
+
     it('expect primus fist to give a friendly minion +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +141,7 @@ describe('core set', () => {
 
       expect(bluetip.getATK()).to.equal(3);
     });
+
     it('expect rust crawler to break a random artifact on the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -160,6 +165,7 @@ describe('core set', () => {
       var modifiers = gameSession.getGeneralForPlayer2().getArtifactModifiers();
       expect(modifiers[0]).to.equal(undefined);
     });
+
     it('expect songweaver to give a nearby friendly minion +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -180,6 +186,7 @@ describe('core set', () => {
       expect(bluetip.getATK()).to.equal(4);
       expect(bluetip.getHP()).to.equal(2);
     });
+
     it('expect sun seer to restore 2 health to your general when it deals damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -195,6 +202,7 @@ describe('core set', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect void hunter to draw a card when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -212,6 +220,7 @@ describe('core set', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect wind stopper to force ranged minions to attack it first', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -226,6 +235,7 @@ describe('core set', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
     });
+
     it('expect frostbone naga to deal 2 damage to ALL minions and generals around it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -243,6 +253,7 @@ describe('core set', () => {
       expect(brightmossGolem.getDamage()).to.equal(2);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(2);
     });
+
     it('expect sand burrower to take no damage from ranged minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -260,6 +271,7 @@ describe('core set', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Neutral.BlackSandBurrower);
     });
+
     it('expect silhouette tracer to teleport general 3 spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -277,6 +289,7 @@ describe('core set', () => {
       expect(gameSession.getGeneralForPlayer1().getPosition().x).to.equal(3);
       expect(gameSession.getGeneralForPlayer1().getPosition().y).to.equal(2);
     });
+
     it('expect ash mephyt to spawn 2 copies of itself on random spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -294,6 +307,7 @@ describe('core set', () => {
       expect(ash[1].getId()).to.equal(SDK.Cards.Neutral.AshMephyt);
       expect(ash[2].getId()).to.equal(SDK.Cards.Neutral.AshMephyt);
     });
+
     it('expect dancing blades to deal 3 damage to any minion in front of it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -311,6 +325,7 @@ describe('core set', () => {
       expect(brightmossGolem.getDamage()).to.equal(3);
       expect(brightmossGolem2.getDamage()).to.equal(0);
     });
+
     it('expect the high hand to gain +1/+1 for each card in opponents action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -334,6 +349,7 @@ describe('core set', () => {
       expect(highhand.getATK()).to.equal(8);
       expect(highhand.getHP()).to.equal(9);
     });
+
     it('expect deathblighter to deal 3 damage to all nearby enemy minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -352,6 +368,7 @@ describe('core set', () => {
       expect(brightmossGolem.getDamage()).to.equal(3);
       expect(brightmossGolem2.getDamage()).to.equal(0);
     });
+
     it('expect first sword of akrane to give all other friendly minions +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -49,6 +49,7 @@ describe('monthlies', () => {
       expect(hand[2].getManaCost()).to.equal(1);
       expect(hand[3].getManaCost()).to.equal(1);
     });
+
     it('expect abjudicator to not lower the cost of spells you replace into after abjudicator is played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -71,6 +72,7 @@ describe('monthlies', () => {
       expect(hand[1].getManaCost()).to.equal(2);
       expect(hand[2].getManaCost()).to.equal(1);
     });
+
     it('expect bastion to give all other friendly minions +1 health at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -90,6 +92,7 @@ describe('monthlies', () => {
       expect(bastion.getHP()).to.equal(5);
       expect(brightmossGolem.getHP()).to.equal(9);
     });
+
     it('expect alter rexx to put a mechaz0r in your hand when mechaz0r is summoned through mechs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -123,6 +126,7 @@ describe('monthlies', () => {
 
       expect(hand[0].getId()).to.equal(SDK.Cards.Neutral.Mechaz0r);
     });
+
     it('expect alter rexx to put a mechaz0r in your hand when mechaz0r is summoned from hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

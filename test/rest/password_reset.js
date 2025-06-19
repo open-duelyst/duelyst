@@ -9,6 +9,7 @@ const request = supertest(api);
 describe('password reset', () => {
   describe('POST /forgot', function () {
     this.timeout(5000);
+
     it('returns 200 and sends email if given user exists', (done) => {
       request
         .post('/forgot')

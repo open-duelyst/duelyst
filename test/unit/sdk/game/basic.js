@@ -54,6 +54,7 @@ describe('basic', () => {
     expect(windbladeAdept2.getDamage()).to.equal(2);
     expect(windbladeAdept.getDamage()).to.equal(2);
   });
+
   it('expect to not be able to attack when out of range', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('basic', () => {
     expect(windbladeAdept2.getDamage()).to.equal(0);
     expect(windbladeAdept.getDamage()).to.equal(0);
   });
+
   it('expect blast to damage all enemies in a vertical line', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -86,6 +88,7 @@ describe('basic', () => {
     expect(brightmossGolem.getDamage()).to.equal(2);
     expect(brightmossGolem2.getDamage()).to.equal(2);
   });
+
   it('expect to not be able to attack again after already attacking', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -104,6 +107,7 @@ describe('basic', () => {
     expect(windbladeAdept2.getDamage()).to.equal(2);
     expect(windbladeAdept.getDamage()).to.equal(2);
   });
+
   it('expect flying to allow a unit to move across the map', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -119,6 +123,7 @@ describe('basic', () => {
 
     expect(flameWing.getId()).to.equal(SDK.Cards.Neutral.FlameWing);
   });
+
   it('expect to not be able to move out of range', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -134,6 +139,7 @@ describe('basic', () => {
 
     expect(windbladeAdept).to.equal(undefined);
   });
+
   it('expect to not be able to move through an enemy unit', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -149,6 +155,7 @@ describe('basic', () => {
 
     expect(windbladeAdept).to.equal(undefined);
   });
+
   it('expect to not be albe to move a unit that has already moved', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -165,6 +172,7 @@ describe('basic', () => {
 
     expect(windbladeAdept).to.equal(undefined);
   });
+
   it('expect to not be able to move after a unit has already attacked', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -182,6 +190,7 @@ describe('basic', () => {
 
     expect(windbladeAdept).to.equal(undefined);
   });
+
   it('expect to not be able to play a unit from hand out of range', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -197,6 +206,7 @@ describe('basic', () => {
 
     expect(windbladeAdept).to.equal(undefined);
   });
+
   it('expect a valid card with an invalid follow-up action to fail', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -220,6 +230,7 @@ describe('basic', () => {
     const dervish = board.getUnitAtPosition({ x: 5, y: 3 });
     expect(dervish).to.equal(undefined);
   });
+
   it('expect mana to be returned correctly if canceling a follow-up on a mana orb', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -244,6 +255,7 @@ describe('basic', () => {
 
     expect(player1.getRemainingMana()).to.equal(3);
   });
+
   it('expect blast units to still have blast after canceling a follow-up', () => {
     const gameSession = SDK.GameSession.getInstance();
     let board = gameSession.getBoard();
@@ -277,6 +289,7 @@ describe('basic', () => {
 
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(2);
   });
+
   it('expect buffed units to still have buffs after canceling a follow-up', () => {
     const gameSession = SDK.GameSession.getInstance();
     let board = gameSession.getBoard();
@@ -310,6 +323,7 @@ describe('basic', () => {
     expect(pyromancer.getATK()).to.equal(3);
     expect(pyromancer.getHP()).to.equal(2);
   });
+
   it('expect zealed units to still have zeal buffs after canceling a follow-up', () => {
     const gameSession = SDK.GameSession.getInstance();
     let board = gameSession.getBoard();
@@ -341,6 +355,7 @@ describe('basic', () => {
     expect(windbladeAdept.getATK()).to.equal(3);
     expect(windbladeAdept.getHP()).to.equal(3);
   });
+
   it('expect players to have correct mana progression until reaching max mana', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -400,6 +415,7 @@ describe('basic', () => {
 
     expect(cardDraw).to.equal(undefined);
   });
+
   it('expect eggs to grant rush when hatching', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -425,6 +441,7 @@ describe('basic', () => {
     expect(veteranSilithar.getPosition().x).to.equal(6);
     expect(veteranSilithar.getPosition().y).to.equal(3);
   });
+
   it('expect hailstone prison on a newly hatched minion to lose rush when played again', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -457,6 +474,7 @@ describe('basic', () => {
     expect(veteranSilithar.getPosition().x).to.equal(1);
     expect(veteranSilithar.getPosition().y).to.equal(1);
   });
+
   it('expect hailstone prisoned eggs to hatch correctly when played to the board', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -486,6 +504,7 @@ describe('basic', () => {
 
     expect(veteranSilithar.getId()).to.equal(SDK.Cards.Faction5.VeteranSilithar);
   });
+
   it('expect the last artifact to be replaced when equipping a 4th', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -508,6 +527,7 @@ describe('basic', () => {
     expect(artifactModifiersBySourceCard.length).to.equal(3);
     expect(artifactModifiersBySourceCard[2][0].getSourceCard().getId()).to.equal(SDK.Cards.Artifact.ArclyteRegalia);
   });
+
   it('expect prismatic sarlac the eternal to respawn a prismatic sarlac when dying to an attack', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -527,6 +547,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsPrismaticCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect prismatic sarlac the eternal to respawn a prismatic sarlac when dying to a non-followup burn spell', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -546,6 +567,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsPrismaticCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect prismatic sarlac the eternal to respawn a prismatic sarlac when dying to a followup spell', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -571,6 +593,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsPrismaticCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect sarlac prime to respawn a sarlac prime when dying to an attack', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -590,6 +613,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsSkinnedCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect prismatic sarlac the eternal to respawn on a prismatic sarlac when dying to a non-followup burn spell', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -609,6 +633,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsSkinnedCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect prismatic sarlac the eternal to respawn on a prismatic sarlac when dying to a followup spell', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -634,6 +659,7 @@ describe('basic', () => {
     expect(sarlac.getHP()).to.equal(1);
     expect(SDK.Cards.getIsSkinnedCardId(sarlac.getId())).to.equal(true);
   });
+
   it('expect an egged grow minion to gain stats the turn it hatches', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -653,6 +679,7 @@ describe('basic', () => {
     expect(earthwalker.getHP()).to.equal(4);
     expect(earthwalker.getATK()).to.equal(4);
   });
+
   it('expect an egged vindicator to not gain stats the turn it hatches', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -672,6 +699,7 @@ describe('basic', () => {
     expect(vindicator.getHP()).to.equal(3);
     expect(vindicator.getATK()).to.equal(1);
   });
+
   it('expect eggs that are stolen from dominate will to hatch at the beginning of their owners next turn', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -702,6 +730,7 @@ describe('basic', () => {
     expect(vindicator.getHP()).to.equal(3);
     expect(vindicator.getATK()).to.equal(1);
   });
+
   it('expect eggs that are stolen from psychic conduit to hatch at the beginning of their owners next turn', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();
@@ -726,6 +755,7 @@ describe('basic', () => {
     expect(vindicator.getATK()).to.equal(1);
     expect(vindicator.getOwnerId()).to.equal('player2_id');
   });
+
   it('expect eggs that are stolen from dominate will and then stolen back to hatch at the beginning of their final owners next turn', () => {
     const gameSession = SDK.GameSession.getInstance();
     const board = gameSession.getBoard();

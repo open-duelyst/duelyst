@@ -47,6 +47,7 @@ describe('wartech', () => {
 
       expect(decoratedEnlistee.getATK()).to.equal(1);
     });
+
     it('expect vigilator to give nearby allies +3 health when built', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -64,6 +65,7 @@ describe('wartech', () => {
 
       expect(silverguardSquire.getHP()).to.equal(7);
     });
+
     it('expect dauntless advance to prevent damage on General and nearby minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -85,6 +87,7 @@ describe('wartech', () => {
       expect(silverguardSquire.getHP()).to.equal(4);
       expect(silverguardSquire2.getHP()).to.equal(2);
     });
+
     it('expect steadfast formation to give provoke to friendly minions in a 2x2', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -104,6 +107,7 @@ describe('wartech', () => {
       expect(silverguardSquire3.hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(true);
       expect(silverguardSquire4.hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(false);
     });
+
     it('expect oakenheart to give friendly mechs +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -116,6 +120,7 @@ describe('wartech', () => {
       expect(mechaz0rHelm.getHP()).to.equal(3);
       expect(mechaz0rHelm.getATK()).to.equal(3);
     });
+
     it('expect fealty to draw a card for each minion nearby your General', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -136,6 +141,7 @@ describe('wartech', () => {
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Spell.Tempest);
       expect(player1.getDeck().getCardInHandAtIndex(1).getId()).to.equal(SDK.Cards.Spell.Tempest);
     });
+
     it('expect sunbond pavise to give the minions above and below you +2 attack and provoke', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -157,6 +163,7 @@ describe('wartech', () => {
       expect(silverguardSquire2.getATK()).to.equal(3);
       expect(silverguardSquire3.getATK()).to.equal(1);
     });
+
     it('expect prominence to summon a silverguard knight nearby your general when bbs is cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -177,6 +184,7 @@ describe('wartech', () => {
       expect(knight.length).to.equal(1);
       expect(knight[0].getId()).to.equal(SDK.Cards.Faction1.SilverguardKnight);
     });
+
     it('expect sunstrike to damage enemies and heal allies in a row', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -199,6 +207,7 @@ describe('wartech', () => {
       expect(evilSilverguardSquire.getHP()).to.equal(1);
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(25);
     });
+
     it('expect invincible to give a minion +4/+4 if at full health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -228,6 +237,7 @@ describe('wartech', () => {
 
       expect(silverguardSquire.getHP()).to.equal(5);
     });
+
     it('expect ironcliffe monument to transform summoned nearby minions into ironcliffe guardians', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -250,6 +260,7 @@ describe('wartech', () => {
       const newIroncliffe = board.getUnitAtPosition({ x: 1, y: 2 });
       expect(newIroncliffe.getId()).to.equal(SDK.Cards.Faction1.IroncliffeGuardian);
     });
+
     it('expect surgeforger to give minions summoned nearby +1/+1 and gain +1/+1 when it happens', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -268,6 +279,7 @@ describe('wartech', () => {
       expect(board.getUnitAtPosition({ x: 1, y: 3 }).getHP()).to.equal(5);
       expect(board.getUnitAtPosition({ x: 1, y: 3 }).getATK()).to.equal(2);
     });
+
     it('expect call to arms to give minions summoned nearby your general +3/+3 for the rest of the game', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

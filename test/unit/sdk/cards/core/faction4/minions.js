@@ -61,6 +61,7 @@ describe('faction4', () => {
 
       expect(creepSpawn).to.equal(1);
     });
+
     it('expect blood siren to give a nearby enemy minion -2 attack until end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -81,6 +82,7 @@ describe('faction4', () => {
 
       expect(youngSilithar.getATK()).to.equal(2);
     });
+
     it('expect darkspine elemental to double the damage of friendly shadow creep on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -113,6 +115,7 @@ describe('faction4', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect gloomchaser to summon 1/1 wraithling on random nearby space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -141,6 +144,7 @@ describe('faction4', () => {
       expect(wraithling.getHP()).to.equal(1);
       expect(wraithling.getATK()).to.equal(1);
     });
+
     it('expect nightsorrow assassin to destroy nearby minion with 2 or less attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -159,6 +163,7 @@ describe('faction4', () => {
 
       expect(windblade.getIsRemoved()).to.equal(true);
     });
+
     it('expect nightsorrow assassin to not be able to target minions with more than 2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -177,6 +182,7 @@ describe('faction4', () => {
 
       expect(knight.getIsRemoved()).to.equal(false);
     });
+
     it('expect shadowwatcher to gain +1/+1 on every allied or enemy minion death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -195,6 +201,7 @@ describe('faction4', () => {
       expect(shadowwatcher.getATK()).to.equal(4);
       expect(shadowwatcher.getHP()).to.equal(4);
     });
+
     it('expect abyssal juggernaut to gain and lose +1/+1 for each friendly shadow creep on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -226,6 +233,7 @@ describe('faction4', () => {
       expect(abyssalJuggernaut.getHP()).to.equal(3);
       expect(abyssalJuggernaut.getATK()).to.equal(3);
     });
+
     it('expect bloodmoon priestess to summon 1/1 wraithling nearby whenever a friendly or enemy minion dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -258,6 +266,7 @@ describe('faction4', () => {
 
       expect(wraithlingCount).to.equal(2);
     });
+
     it('expect deepfire devourer to destroy all nearby friendly minions and gain +2/+2 for each minion destroyed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -279,6 +288,7 @@ describe('faction4', () => {
       expect(deepfireDevourer.getHP()).to.equal(10);
       expect(deepfireDevourer.getATK()).to.equal(10);
     });
+
     it('expect black solus to gain +2 attack when you summon a wraithling', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -308,6 +318,7 @@ describe('faction4', () => {
       expect(blackSolus.getHP()).to.equal(7);
       expect(blackSolus.getATK()).to.equal(10);
     });
+
     it('expect reaper of the nine moons to be replaced by a random enemy minion in opponents deck when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -326,6 +337,7 @@ describe('faction4', () => {
       expect(silitharElder.getId()).to.equal(SDK.Cards.Faction5.SilitharElder);
       expect(silitharElder.getOwnerId()).to.equal(gameSession.getPlayer1Id());
     });
+
     it('expect repear of the nine moons to do nothing when dying if there are no minions left in enemy deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -341,6 +353,7 @@ describe('faction4', () => {
       const silitharElder = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(silitharElder).to.equal(undefined);
     });
+
     it('expect shadow dancer to deal 1 damage to enemy general and heal allied general 1 every time an enemy or friendly minion dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -360,6 +373,7 @@ describe('faction4', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
     });
+
     it('expect vorpal reaver to summon six 1/1 wraithlings in random spaces when killed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -389,6 +403,7 @@ describe('faction4', () => {
 
       expect(wraithlingCount).to.equal(6);
     });
+
     it('expect spectral revenant to deal 4 damage to enemy general when attacking an enemy minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

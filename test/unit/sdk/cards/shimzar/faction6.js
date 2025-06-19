@@ -59,6 +59,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect icy to stun a nearby enemy minion or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -77,6 +78,7 @@ describe('shimzar', () => {
 
       expect(rippler.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
     });
+
     it('expect wailing overdrive to give a friendly minion on opponents side of the battlefield +5/+5', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -100,6 +102,7 @@ describe('shimzar', () => {
       expect(rippler2.getATK()).to.equal(3);
       expect(rippler2.getHP()).to.equal(4);
     });
+
     it('expect altered beast to turn one minion into a random battlepet', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -133,6 +136,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect huldra to give a friendly vespyr minion celerity', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -151,6 +155,7 @@ describe('shimzar', () => {
 
       expect(cloaker.hasActiveModifierClass(ModifierTranscendance)).to.equal(true);
     });
+
     it('expect bur to transform into a different battle pet when it takes damage', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -183,6 +188,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect frostburn to deal 3 damage to all enemy minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -202,6 +208,7 @@ describe('shimzar', () => {
       expect(brightmossGolem.getDamage()).to.equal(3);
       expect(brightmossGolem2.getDamage()).to.equal(0); // to make sure our own don't get targeted
     });
+
     it('expect iceblade dryad to give a friendly vespyr minion flying and +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -222,6 +229,7 @@ describe('shimzar', () => {
       expect(cloaker.getATK()).to.equal(3);
       expect(cloaker.getHP()).to.equal(4);
     });
+
     it('expect vespyric call to draw a non-token vespyr minion', () => {
       for (let i = 0; i < 50; i++) {
         const player1Deck = [
@@ -249,6 +257,7 @@ describe('shimzar', () => {
         expect(hand[0].getRarityId()).to.not.equal(SDK.Rarity.TokenUnit);
       }
     });
+
     it('expect vespyric call to give the vespyr +1/+1 and cost 1 less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -307,6 +316,7 @@ describe('shimzar', () => {
         expect(vespyr.getManaCost()).to.equal(2);
       }
     });
+
     it('expect lightning blitz to give your friendly minions +1/+1 and teleport them to opponents starting side of battlefield', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -330,6 +340,7 @@ describe('shimzar', () => {
       expect(cloaker3.getATK()).to.equal(5);
       expect(cloaker3.getHP()).to.equal(4);
     });
+
     it('expect white asp to grant +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -342,6 +353,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect white asp to turn enemies killed by it into blazing spines', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -360,6 +372,7 @@ describe('shimzar', () => {
       const wall = board.getUnitAtPosition({ x: 1, y: 2 });
       expect(wall.getId()).to.equal(SDK.Cards.Faction6.BlazingSpines);
     });
+
     it('expect winters wake to give friendly walls +4/+4 and allow them to move', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -388,6 +401,7 @@ describe('shimzar', () => {
       expect(blazingSpines1.getPosition().x).to.equal(3);
       expect(blazingSpines2.getPosition().y).to.equal(4);
     });
+
     it('expect frostiva to summon a shadow vespyr nearby whenever it attacks or is attacked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

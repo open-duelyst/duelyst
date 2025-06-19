@@ -72,15 +72,18 @@ describe('inventory module', function () {
       const anyAchievementCard = _.find(SDK.GameSession.getCardCaches().getIsCollectible(true).getCards(), (c) => c.getIsUnlockableWithAchievement());
       expect(anyAchievementCard).to.exist;
     });
+
     it('expect to contain a prismatic ACHIEVEMENT card', () => {
       const anyPrismaticAchievementCard = _.find(SDK.GameSession.getCardCaches().getIsCollectible(true).getCards(), (c) => c.getIsUnlockablePrismaticWithAchievement());
       expect(anyPrismaticAchievementCard).to.exist;
     });
+
     it('expect to contain a Seven Sisters cards in Legendary group', () => {
       let sunSister = _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getCardIds(), (c) => c === SDK.Cards.Faction1.SunSister);
       sunSister = sunSister || _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getCards(), (c) => c.getId() === SDK.Cards.Faction1.SunSister);
       expect(sunSister).to.exist;
     });
+
     it('expect to contain a prismatic Seven Sisters cards in Legendary group', () => {
       let prismaticSunSister = _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getCardIds(), (c) => c === SDK.Cards.Faction1.SunSister + SDK.Cards.Prismatic);
       prismaticSunSister = prismaticSunSister || _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getCards(), (c) => c.getId() === SDK.Cards.Faction1.SunSister + SDK.Cards.Prismatic);
@@ -93,10 +96,12 @@ describe('inventory module', function () {
       const anyAchievementCard = _.find(SDK.GameSession.getCardCaches().getIsCollectible(true).getIsUnlockable(false).getCards(), (c) => c.getIsUnlockableWithAchievement());
       expect(anyAchievementCard).to.not.exist;
     });
+
     it('expect NOT to contain prismatic ACHIEVEMENT cards', () => {
       const anyPrismaticAchievementCard = _.find(SDK.GameSession.getCardCaches().getIsCollectible(true).getIsUnlockable(false).getCards(), (c) => c.getIsUnlockableWithAchievement() && c.getIsUnlockablePrismaticWithAchievement());
       expect(anyPrismaticAchievementCard).to.not.exist;
     });
+
     it('expect NOT to contain a Seven Sisters cards in Legendary group', () => {
       let sunSister = _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getIsUnlockable(false)
         .getCardIds(), (c) => c === SDK.Cards.Faction1.SunSister);
@@ -104,6 +109,7 @@ describe('inventory module', function () {
         .getCards(), (c) => c.getId() === SDK.Cards.Faction1.SunSister);
       expect(sunSister).to.not.exist;
     });
+
     it('expect NOT to contain a prismatic Seven Sisters cards in Legendary group', () => {
       let prismaticSunSister = _.find(SDK.GameSession.getCardCaches().getRarity(SDK.Rarity.Legendary).getIsCollectible(true).getIsUnlockable(false)
         .getCardIds(), (c) => c === SDK.Cards.Faction1.SunSister + SDK.Cards.Prismatic);
@@ -2053,6 +2059,7 @@ describe('inventory module', function () {
 
     describe('if a user has not opened any orbs and has no cards', () => {
       before(() => SyncModule.wipeUserData(userId));
+
       it('should not make any changes to the account and throw a BadRequestError', () => InventoryModule.softWipeUserCardInventory(userId)
         .then((r) => {
           expect(r).to.not.exist;
@@ -2076,6 +2083,7 @@ describe('inventory module', function () {
           console.error(error);
           throw error;
         }));
+
       it('should wipe the collection entirely', () => Promise.all([
         knex('user_cards').where('user_id', userId),
         knex('user_card_collection').first().where('user_id', userId),
@@ -2083,6 +2091,7 @@ describe('inventory module', function () {
         expect(cardCountRows.length).to.equal(0);
         expect(_.keys(cardCollectionRow.cards).length).to.equal(0);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2092,6 +2101,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2114,6 +2124,7 @@ describe('inventory module', function () {
 
     describe('if a user attempts to soft wipe past maximum allowed soft-wipe count', () => {
       InventoryModule.MAX_SOFTWIPE_COUNT = 1;
+
       it('should throw a BadRequestError', () => InventoryModule.softWipeUserCardInventory(userId)
         .then((r) => {
           expect(r).to.not.exist;
@@ -2126,6 +2137,7 @@ describe('inventory module', function () {
     describe('if a user has not opened any orbs and has some BASIC cards', () => {
       before(() => SyncModule.wipeUserData(userId)
         .then(() => knex('users').where('id', userId).update({ wallet_gold: 200 })).then(() => knex.transaction((tx) => InventoryModule.giveUserCards(null, tx, userId, [11, 11, 11], 'faction xp'))));
+
       it('should not make any changes to the account and throw a BadRequestError', () => InventoryModule.softWipeUserCardInventory(userId)
         .then((r) => {
           expect(r).to.not.exist;
@@ -2133,6 +2145,7 @@ describe('inventory module', function () {
           expect(e).to.not.be.an.instanceof(chai.AssertionError);
           expect(e).to.be.an.instanceof(Errors.BadRequestError);
         }));
+
       it('should still have BASIC cards in the inventory', () => Promise.all([
         knex('user_cards').where('user_id', userId).andWhere('card_id', 11),
         knex('user_card_collection').first().where('user_id', userId),
@@ -2141,6 +2154,7 @@ describe('inventory module', function () {
         expect(cardCountRows[0].count).to.equal(3);
         expect(cardCollectionRow.cards[11].count).to.equal(3);
       }));
+
       it('should leave card log ledger items unchanged', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2195,6 +2209,7 @@ describe('inventory module', function () {
         expect(cardCollectionRow.cards[19005].count).to.equal(2);
         expect(cardCollectionRow.cards[10307].count).to.equal(2);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2204,6 +2219,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2255,6 +2271,7 @@ describe('inventory module', function () {
         expect(cardCollectionRow.cards[19005].count).to.equal(2);
         expect(cardCollectionRow.cards[10307].count).to.equal(2);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2264,6 +2281,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2283,6 +2301,7 @@ describe('inventory module', function () {
           expect(credits).to.equal(27);
           expect(debits).to.equal(20);
         }));
+
       it('should set users wallet spirit to 0 and create a currency ledger item for it', () => Promise.all([
         knex('users').where('id', userId).first(),
         knex('user_currency_log').whereNotNull('spirit').andWhere('user_id', userId).select(),
@@ -2323,6 +2342,7 @@ describe('inventory module', function () {
         expect(cardCollectionRow.cards[19005].count).to.equal(2);
         expect(cardCollectionRow.cards[10307].count).to.equal(2);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2332,6 +2352,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2351,6 +2372,7 @@ describe('inventory module', function () {
           expect(credits).to.equal(17 + 2);
           expect(debits).to.equal(10 + 2);
         }));
+
       it('should set users wallet spirit to 0 and create a currency ledger item for it', () => Promise.all([
         knex('users').where('id', userId).first(),
         knex('user_currency_log').whereNotNull('spirit').andWhere('user_id', userId).select(),
@@ -2402,6 +2424,7 @@ describe('inventory module', function () {
         expect(cardCollectionRow.cards[19005].count).to.equal(2);
         expect(cardCollectionRow.cards[10307].count).to.equal(2);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2411,6 +2434,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2430,6 +2454,7 @@ describe('inventory module', function () {
           expect(credits).to.equal(17 + 10 + 4);
           expect(debits).to.equal(10 + 10 + 4);
         }));
+
       it('should set users wallet spirit to 0 and create a currency ledger item for it', () => Promise.all([
         knex('users').where('id', userId).first(),
         knex('user_currency_log').whereNotNull('spirit').andWhere('user_id', userId).select(),
@@ -2483,6 +2508,7 @@ describe('inventory module', function () {
         expect(cardCollectionRow.cards[19005].count).to.equal(2);
         expect(cardCollectionRow.cards[10307].count).to.equal(2);
       }));
+
       it('should give user # of orbs equal to number opened and mark old orbs with "wiped_at" time', () => Promise.all([
         knex('user_spirit_orbs').where('user_id', userId),
         knex('user_spirit_orbs_opened').where('user_id', userId),
@@ -2492,6 +2518,7 @@ describe('inventory module', function () {
           expect(openedOrb.wiped_at).to.exist;
         });
       }));
+
       it('should have created card log ledger items for the wipe', () => knex('user_card_log').where('user_id', userId)
         .then((cardLogRows) => {
           // count all debits
@@ -2511,6 +2538,7 @@ describe('inventory module', function () {
           expect(credits).to.equal(17 + 10 + 4 + 1);
           expect(debits).to.equal(10 + 10 + 4 + 1);
         }));
+
       it('should set users wallet spirit to 0 and create a currency ledger item for it', () => Promise.all([
         knex('users').where('id', userId).first(),
         knex('user_currency_log').whereNotNull('spirit').andWhere('user_id', userId).select(),
