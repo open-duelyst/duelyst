@@ -47,6 +47,7 @@ describe('monthlies', () => {
 
       expect(locusts[2].getHP()).to.equal(2);
     });
+
     it('expect black locust to copy to not retain buffs and damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -72,6 +73,7 @@ describe('monthlies', () => {
       expect(locusts[1].getHP()).to.equal(2);
       expect(locusts[1].getATK()).to.equal(2);
     });
+
     it('expect wind runner to give +1/+1 to friendly minions nearby its movement destination', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -92,6 +94,7 @@ describe('monthlies', () => {
       expect(windRunner.getHP()).to.equal(3);
       expect(windRunner.getATK()).to.equal(3);
     });
+
     it('expect ghost lynx to move any nearby minion into a random space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -111,6 +114,7 @@ describe('monthlies', () => {
 
       expect(brightmossGolem.getPosition().x !== 1 || brightmossGolem.getPosition().y !== 2).to.equal(true);
     });
+
     it('expect mogwai to draw a card every time it moves', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

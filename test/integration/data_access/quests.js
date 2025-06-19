@@ -1161,6 +1161,7 @@ describe('quests module', function () {
           stage: NewPlayerProgressionStageEnum.Skipped.key,
         }));
     });
+
     describe('Frostfire 2016 Quest', () => {
       describe('generateDailyQuests() - Frostfire 2016 Quest', () => {
         it('expect not to generate the seasonal Frostfire-2016 quest before December 1st 2016', () => QuestsModule.generateDailyQuests(userId, moment.utc('2016-11-30'))
@@ -1168,17 +1169,20 @@ describe('quests module', function () {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.not.exist;
             // expect(_.keys(result.quests).length).to.equal(2)
           }));
+
         it('expect not to generate the seasonal Frostfire-2016 quest after January 1st 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-01-02'))
           .then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.not.exist;
             // expect(_.keys(result.quests).length).to.equal(2)
           }));
+
         it('expect to generate the seasonal Frostfire-2016 during December 2016', () => QuestsModule.generateDailyQuests(userId, moment.utc('2016-12-02'))
           .then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.exist;
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].quest_type_id).to.equal(30001);
             // expect(_.keys(result.quests).length).to.equal(3)
           }));
+
         it('expect to NOT generate/overwrite the seasonal Frostfire-2016 quest if it already exists', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => QuestsModule.updateQuestProgressWithCompletedQuest(Promise.resolve(), tx, userId, generatePushId(), 1, questRows)).then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.exist;
@@ -1188,6 +1192,7 @@ describe('quests module', function () {
           expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].quest_type_id).to.equal(30001);
           expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].progress).to.equal(1);
         }));
+
         it('expect to NOT generate the seasonal Frostfire-2016 quest if it\'s already complete', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => {
             const array = [];
@@ -1209,6 +1214,7 @@ describe('quests module', function () {
             expect(q1).to.not.exist;
             expect(q2).to.exist;
           }));
+
         it('expect the seasonal Frostfire-2016 quest to NOT contribute to catchup quests', () => {
           const systemTime = moment.utc('2016-12-02').add(1, 'hour');
           return SyncModule.wipeUserData(userId)
@@ -1234,6 +1240,7 @@ describe('quests module', function () {
             });
         });
       });
+
       describe('mulliganDailyQuest() - Frostfire 2016 Quest', () => {
         before(() => {
           QuestsModule.SEASONAL_QUESTS_ACTIVE = true;
@@ -1245,6 +1252,7 @@ describe('quests module', function () {
             }))
             .then(() => QuestsModule.generateDailyQuests(userId, moment.utc('2016-12-05')));
         });
+
         it('expect not to be able to mulligan seasonal Frostfire-2016 quest', () => QuestsModule.mulliganDailyQuest(userId, QuestsModule.SEASONAL_QUEST_SLOT)
           .then((result) => {
             expect(result).to.not.exist;
@@ -1253,8 +1261,10 @@ describe('quests module', function () {
             expect(error).to.be.an.instanceof(Errors.BadRequestError);
           }));
       });
+
       describe('updateQuestProgressWithGame() - Frostfire 2016 Quest', () => {
         let fakeGameSessionData;
+
         before(function () {
           this.timeout(5000);
           const systemTime = moment().add(50, 'hours');
@@ -1280,6 +1290,7 @@ describe('quests module', function () {
               QuestsModule.mulliganDailyQuest(userId, 1, systemTime, 102),
             ]));
         });
+
         it('expect completing a quest to fire updateQuestProgressWithCompletedQuest() and progress the Frostfire-2016 quest', () => Promise.map([
           generatePushId(),
           generatePushId(),
@@ -1289,6 +1300,7 @@ describe('quests module', function () {
           .spread(() => knex('user_quests').where('user_id', userId).andWhere('quest_slot_index', QuestsModule.SEASONAL_QUEST_SLOT).first()).then((questRow) => {
             expect(questRow.progress).to.equal(1);
           }));
+
         it('expect completing 2 quests to fire updateQuestProgressWithCompletedQuest() and progress the Frostfire-2016 quest by 2 ticks', () => {
           const futureTime = moment().add(100, 'hours');
 
@@ -1312,6 +1324,7 @@ describe('quests module', function () {
               expect(questRow.progress).to.equal(2);
             });
         });
+
         it('expect completing 2 quests at the very end of the Frostfire Quest Progress (14/15) to complete the season quest but not award double gift crates', () => {
           const futureTime = moment().add(100, 'hours');
 
@@ -1409,10 +1422,12 @@ describe('quests module', function () {
               QuestsModule.mulliganDailyQuest(userId, 1, systemTime, 102),
             ]));
         });
+
         it('expect Frostfire-2016 quest to progress with a quest completion', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => QuestsModule.updateQuestProgressWithCompletedQuest(Promise.resolve(), tx, userId, generatePushId(), 1, questRows)).then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].progress).to.equal(1);
           })));
+
         it('expect completing the Frostfire-2016 quest to award 1 gift chest', () => {
           const gameId = generatePushId();
           return knex.transaction((tx) => tx('user_quests').where('user_id', userId)
@@ -1439,6 +1454,7 @@ describe('quests module', function () {
 
     describe('February 2017 Quest', () => {
       const FebQuestId = 30002;
+
       before(function () {
         this.timeout(5000);
         return SyncModule.wipeUserData(userId)
@@ -1448,6 +1464,7 @@ describe('quests module', function () {
             stage: NewPlayerProgressionStageEnum.Skipped.key,
           }));
       });
+
       describe('generateDailyQuests() - February 2017 Quest', () => {
         it('expect not to generate the seasonal February-2017 quest before February 1st 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-01-31'))
           .then((result) => {
@@ -1457,6 +1474,7 @@ describe('quests module', function () {
               expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.not.exist;
             }
           }));
+
         it('expect not to generate the seasonal February-2017 quest after March 1st 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-03-01'))
           .then((result) => {
             if (result.quests[QuestsModule.SEASONAL_QUEST_SLOT] != null) {
@@ -1465,11 +1483,13 @@ describe('quests module', function () {
               expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.not.exist;
             }
           }));
+
         it('expect to generate the seasonal February-2017 during February 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-02-05'))
           .then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.exist;
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].quest_type_id).to.equal(FebQuestId);
           }));
+
         it('expect to NOT generate/overwrite the seasonal quest if it already exists', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => QuestsModule.updateQuestProgressWithCompletedQuest(Promise.resolve(), tx, userId, generatePushId(), 1, questRows)).then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT]).to.exist;
@@ -1479,6 +1499,7 @@ describe('quests module', function () {
           expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].quest_type_id).to.equal(FebQuestId);
           expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].progress).to.equal(1);
         }));
+
         it('expect to NOT generate the seasonal February-2017 quest if it\'s already complete', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => {
             const array = [];
@@ -1517,10 +1538,12 @@ describe('quests module', function () {
               QuestsModule.mulliganDailyQuest(userId, 1, systemTime, 102),
             ]));
         });
+
         it('expect February-2017 quest to progress with a quest completion', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
           .then((questRows) => QuestsModule.updateQuestProgressWithCompletedQuest(Promise.resolve(), tx, userId, generatePushId(), 1, questRows)).then((result) => {
             expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].progress).to.equal(1);
           })));
+
         it('expect completing the February-2017 quest to award 1 common cosmetic key', () => {
           const gameId = generatePushId();
           return knex.transaction((tx) => tx('user_quests').where('user_id', userId)
@@ -1562,10 +1585,12 @@ describe('quests module', function () {
             QuestsModule.mulliganDailyQuest(userId, 1, systemTime, 102),
           ]));
       });
+
       it('expect Frostfire-2016 quest to progress with a quest completion', () => knex.transaction((tx) => tx('user_quests').where('user_id', userId)
         .then((questRows) => QuestsModule.updateQuestProgressWithCompletedQuest(Promise.resolve(), tx, userId, generatePushId(), 1, questRows)).then((result) => {
           expect(result.quests[QuestsModule.SEASONAL_QUEST_SLOT].progress).to.equal(1);
         })));
+
       it('expect completing the Frostfire-2016 quest to award 1 gift chest', () => {
         const gameId = generatePushId();
         return knex.transaction((tx) => tx('user_quests').where('user_id', userId)
@@ -1592,6 +1617,7 @@ describe('quests module', function () {
 
   describe('Promo Quest', () => {
     const annQuestId = 40001;
+
     before(function () {
       this.timeout(5000);
       return SyncModule.wipeUserData(userId)
@@ -1601,6 +1627,7 @@ describe('quests module', function () {
           stage: NewPlayerProgressionStageEnum.Skipped.key,
         }));
     });
+
     describe('generateDailyQuests() - Anniversary 2017 Quest', () => {
       it('expect not to generate the promo Anniversary-2017 quest before May 1st 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-04-29'))
         .then((result) => {
@@ -1610,6 +1637,7 @@ describe('quests module', function () {
             expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT]).to.not.exist;
           }
         }));
+
       it('expect not to generate the promo Anniversary-2017 quest after May 15th 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-05-16'))
         .then((result) => {
           if (result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT] != null) {
@@ -1618,11 +1646,13 @@ describe('quests module', function () {
             expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT]).to.not.exist;
           }
         }));
+
       it('expect to generate the promo Anniversary-2017 during May first week 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-05-05'))
         .then((result) => {
           expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT]).to.exist;
           expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT].quest_type_id).to.equal(annQuestId);
         }));
+
       it('expect to NOT generate/overwrite the promo quest if it already exists', () => {
         const genTime = moment.utc('2017-05-06');
         return knex('user_quests').where('user_id', userId).andWhere('quest_slot_index', QuestsModule.PROMOTIONAL_QUEST_SLOT).update({ progress: 0 })
@@ -1646,6 +1676,7 @@ describe('quests module', function () {
             }
           });
       });
+
       it('expect to NOT generate/overwrite the promo quest if it already complete', () => knex('user_quests').where('user_id', userId).andWhere('quest_slot_index', QuestsModule.PROMOTIONAL_QUEST_SLOT).update({ progress: 3 })
         .then(() => {
           const fakeGameSessionData = {};
@@ -1664,6 +1695,7 @@ describe('quests module', function () {
         .then((result) => {
           expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT]).to.not.exist;
         }));
+
       it('expect to remove the promo Anniversary-2017 during May third week 2017', () => QuestsModule.generateDailyQuests(userId, moment.utc('2017-05-21'))
         .then((result) => {
           expect(result.quests[QuestsModule.PROMOTIONAL_QUEST_SLOT]).to.not.exist;

@@ -53,6 +53,7 @@ describe('monthlies', () => {
       expect(prophet.getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(0);
     });
+
     it('expect prophet of the white palm to prevent all spell damage to enemies until your next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -79,6 +80,7 @@ describe('monthlies', () => {
       expect(khymera.getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
     });
+
     it('expect sun elemental to give 2 random friendly minions +2 health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -96,6 +98,7 @@ describe('monthlies', () => {
       expect(khymera.getHP()).to.equal(14);
       expect(valeHunter.getHP()).to.equal(4);
     });
+
     it('expect araki headhunter to gain +2 attack every time you summon a minion with opening gambit', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -114,6 +117,7 @@ describe('monthlies', () => {
 
       expect(araki.getATK()).to.equal(5);
     });
+
     it('expect araki headhunter to not gain +2 attack when summoning a unit with a different keyword than opening gambit', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -132,6 +136,7 @@ describe('monthlies', () => {
 
       expect(araki.getATK()).to.equal(3);
     });
+
     it('expect araki headhunter to gain +2 attack when summoning a unit with a \'plain\' opening gambit', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -156,6 +161,7 @@ describe('monthlies', () => {
 
       expect(araki.getATK()).to.equal(5);
     });
+
     it('expect keeper of the vale to revive a friendly minion destroyed this game', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

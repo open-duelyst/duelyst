@@ -69,6 +69,7 @@ describe('faction4', () => {
       expect(wraithling.getHP()).to.equal(1);
       expect(wraithling.getATK()).to.equal(1);
     });
+
     it('expect horn of the forsaken to summon 1/1 in instead of magmar egg if no other spaces available', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -97,6 +98,7 @@ describe('faction4', () => {
       expect(wraithling.getHP()).to.equal(1);
       expect(wraithling.getATK()).to.equal(1);
     });
+
     it('expect spectral blade to give +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -107,6 +109,7 @@ describe('faction4', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
     });
+
     it('expect spectral blade to restore +2 health to general if it kills enemy minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -124,6 +127,7 @@ describe('faction4', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(25);
     });
+
     it('expect soul grimwar to give general +2 attack on ally and enemy minion death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

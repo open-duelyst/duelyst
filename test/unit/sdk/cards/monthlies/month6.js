@@ -45,6 +45,7 @@ describe('monthlies', () => {
       expect(brightmossGolem.getDamage()).to.equal(2);
       expect(sapphireSeer.getDamage()).to.equal(0);
     });
+
     it('expect forcefield to not prevent the second source of damage each turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -67,6 +68,7 @@ describe('monthlies', () => {
 
       expect(sapphireSeer.getIsRemoved()).to.equal(true);
     });
+
     it('expect expect forcefield to regenerate after your turn ends', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -91,6 +93,7 @@ describe('monthlies', () => {
       expect(brightmossGolem.getDamage()).to.equal(4);
       expect(sapphireSeer.getDamage()).to.equal(0);
     });
+
     it('expect sunset paragon to make all nearby minions deal damage to themselves equal to their attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -108,6 +111,7 @@ describe('monthlies', () => {
       expect(valeHunter.getDamage()).to.equal(valeHunter.getATK());
       expect(brightmossGolem.getDamage()).to.equal(brightmossGolem.getATK());
     });
+
     it('expect exun to draw a card whenever it attacks or is attacked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

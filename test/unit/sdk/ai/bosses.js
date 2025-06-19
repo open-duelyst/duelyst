@@ -101,6 +101,7 @@ describe('bosses', () => {
     expect(boss.getPosition().x).to.equal(1);
     expect(boss.getPosition().y).to.equal(2);
   });
+
   it('expect boreal juggernaut to stun enemies hit', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss1 },
@@ -130,6 +131,7 @@ describe('bosses', () => {
     expect(action.getIsValid()).to.equal(true);
     expect(golem.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
   });
+
   it('expect umbra to spawn a 1 health clone whenever you summon a minion', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -160,6 +162,7 @@ describe('bosses', () => {
     expect(clone[0].getHP()).to.equal(1);
     expect(clone[0].getId()).to.equal(SDK.Cards.Faction1.IroncliffeGuardian);
   });
+
   it('expect cade to teleport any minion he hits to a random space', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss4 },
@@ -190,6 +193,7 @@ describe('bosses', () => {
     const updatedGolem = board.getUnitAtPosition({ x: 1, y: 1 });
     expect(updatedGolem).to.equal(undefined);
   });
+
   it('expect cade to teleport generals he hits to a random space', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss4 },
@@ -225,6 +229,7 @@ describe('bosses', () => {
     const updatedGeneral = board.getUnitAtPosition({ x: 8, y: 2 });
     expect(updatedGeneral).to.equal(undefined);
   });
+
   it('expect cade to teleport your general when you cast spells on it', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -249,6 +254,7 @@ describe('bosses', () => {
     const updatedGeneral = board.getUnitAtPosition({ x: 0, y: 2 });
     expect(updatedGeneral).to.equal(undefined);
   });
+
   it('expect shinkage zendo to be unable to move', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss5 },
@@ -277,6 +283,7 @@ describe('bosses', () => {
     expect(boss.getPosition().x).to.equal(0);
     expect(boss.getPosition().y).to.equal(2);
   });
+
   it('expect shinkage zendo to be immune to damage if he has minions in play', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss5 },
@@ -324,6 +331,7 @@ describe('bosses', () => {
 
     expect(boss.getDamage()).to.equal(3);
   });
+
   it('expect shinkage zendo to make the enemy general act like a battlepet', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss5 },
@@ -353,6 +361,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer2().getPosition().x !== 8 || gameSession.getGeneralForPlayer2().getPosition().y !== 2).to.equal(true);
   });
+
   it('expect caliber0 to equip artifacts every turn after the second', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss7 },
@@ -378,6 +387,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer1().getArtifactModifiersGroupedByArtifactCard().length).to.equal(1);
   });
+
   it('expect monolith guardian to steal enemy units he kills', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss8 },
@@ -409,6 +419,7 @@ describe('bosses', () => {
     expect(newUnit[0].getId()).to.equal(SDK.Cards.Neutral.PlanarScout);
     expect(newUnit[0].ownerId).to.equal('player1_id');
   });
+
   it('expect monolith guardian to respawn at 4/20 stats when dying for the first time', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss8 },
@@ -444,6 +455,7 @@ describe('bosses', () => {
     expect(boss.getHP()).to.equal(20);
     expect(boss.getATK()).to.equal(4);
   });
+
   it('expect monolith guardian to be killable again after he transforms into a 4/20', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss8 },
@@ -483,6 +495,7 @@ describe('bosses', () => {
     expect(boss.getHP()).to.equal(0);
     expect(boss.getIsRemoved()).to.equal(true);
   });
+
   it('expect wujin to spawn 1/5 provoke decoys when he attacks', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss9 },
@@ -517,6 +530,7 @@ describe('bosses', () => {
     expect(newUnit[0].getATK()).to.equal(1);
     expect(newUnit[0].hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(true);
   });
+
   it('expect wujin to spawn 1/5 provoke decoys when he is attacked', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss9 },
@@ -553,6 +567,7 @@ describe('bosses', () => {
     expect(newUnit[0].getATK()).to.equal(1);
     expect(newUnit[0].hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(true);
   });
+
   it('expect wujin to teleport to a random corner at the end of turn', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss9 },
@@ -606,6 +621,7 @@ describe('bosses', () => {
 
     expect(generalInCorner).to.equal(true);
   });
+
   it('expect d3c to transform into d3cepticle when killed', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss6 },
@@ -635,6 +651,7 @@ describe('bosses', () => {
     const newBoss = UtilsSDK.getEntityOnBoardById(SDK.Cards.Boss.Boss6Prime);
     expect(newBoss.getId()).to.equal(SDK.Cards.Boss.Boss6Prime);
   });
+
   it('expect d3c to be immune to damage with a mech peice in play', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss6 },
@@ -665,6 +682,7 @@ describe('bosses', () => {
 
     expect(board.getUnitAtPosition({ x: 0, y: 2 }).getHP()).to.equal(1);
   });
+
   it('expect solfist to reactivate whenever he kills a minion', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss10 },
@@ -699,6 +717,7 @@ describe('bosses', () => {
     expect(boss.getPosition().y).to.equal(2);
     expect(valeHunter.getIsRemoved()).to.equal(true);
   });
+
   it('expect solfist to damage himself and all nearby enemies at the end of each turn', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss10 },
@@ -737,6 +756,7 @@ describe('bosses', () => {
     expect(boss.getDamage()).to.equal(7);
     expect(highHP.getDamage()).to.equal(7);
   });
+
   it('expect automaton 8s ranged attack to damage enemies in an area and take an equal amount himself', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss11 },
@@ -770,6 +790,7 @@ describe('bosses', () => {
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
     expect(boss.getDamage()).to.equal(9);
   });
+
   it('expect orias to gain attack anytime he or his minions are damaged', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss12 },
@@ -805,6 +826,7 @@ describe('bosses', () => {
 
     expect(boss.getATK()).to.equal(2);
   });
+
   it('expect malyk to let the opponent draw a card whenever they play a minion', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss13 },
@@ -837,6 +859,7 @@ describe('bosses', () => {
     const hand = player2.getDeck().getCardsInHand();
     expect(hand[0].getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
   });
+
   it('expect malyk to summon a 3/3 ooz whenever the opponent overdraws', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss13 },
@@ -881,6 +904,7 @@ describe('bosses', () => {
     const ooz = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Faction4.Ooz);
     expect(ooz[0].getId()).to.equal(SDK.Cards.Faction4.Ooz);
   });
+
   it('expect archonis to deal damage equal to unspent mana', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss14 },
@@ -909,6 +933,7 @@ describe('bosses', () => {
     expect(boss.getDamage()).to.equal(7);
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
   });
+
   it('expect paragon of light to gain/lose modifiers at certain HP thresholds', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss15 },
@@ -1008,6 +1033,7 @@ describe('bosses', () => {
     expect(boss.hasModifierClass(ModifierTranscendance)).to.equal(false);
     expect(boss.hasModifierClass(ModifierFlying)).to.equal(false);
   });
+
   it('expect scion of the void to deal double damage on counter attacks', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss16 },
@@ -1039,6 +1065,7 @@ describe('bosses', () => {
 
     expect(highHP.getDamage()).to.equal(6);
   });
+
   it('expect scion of the void to steal health when attacking', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss16 },
@@ -1133,6 +1160,7 @@ describe('bosses', () => {
 
     expect(player1.getRemainingMana()).to.equal(9);
   });
+
   it('expect megapenti to make all minions he summons from hand have rebirth: serpenti', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss18 },
@@ -1166,6 +1194,7 @@ describe('bosses', () => {
     const serpenti = board.getUnitAtPosition({ x: 1, y: 1 });
     expect(serpenti.getId()).to.equal(SDK.Cards.Neutral.Serpenti);
   });
+
   it('expect rin the shadowsworn to spawn wraithlings with grow +1/+1 when taking damage', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss19 },
@@ -1204,6 +1233,7 @@ describe('bosses', () => {
     expect(wraithlings[1].getHP()).to.equal(2);
     expect(wraithlings[1].getATK()).to.equal(2);
   });
+
   it('expect skyfall tyrant to equip frost armor at the beginning of every turn that reduces damage by 1 and returns 1 damage to the attacker', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss20 },
@@ -1237,6 +1267,7 @@ describe('bosses', () => {
     expect(boss.getDamage()).to.equal(2);
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(1);
   });
+
   it('expect cindera to teleport randomly at the start of every turn', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss21 },
@@ -1262,6 +1293,7 @@ describe('bosses', () => {
     const oldSpot = board.getUnitAtPosition({ x: 0, y: 2 });
     expect(oldSpot).to.equal(undefined);
   });
+
   it('expect cindera to give all minions summoned dying wish: explode 2 damage to enemies', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss21 },
@@ -1295,6 +1327,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
   });
+
   it('expect crystalline champion to give all minions summoned +2/-2', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss22 },
@@ -1333,6 +1366,7 @@ describe('bosses', () => {
     expect(yun.getHP()).to.equal(2);
     expect(yun.getATK()).to.equal(7);
   });
+
   it('expect xel to damage enemy player at the end of their turn equal to total number of minions they own', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss23 },
@@ -1362,6 +1396,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
   });
+
   it('expect xel to have deathwatch: deal 1 damage to enemy general, heal 1 health', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss23 },
@@ -1394,6 +1429,7 @@ describe('bosses', () => {
     expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(27);
     expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
   });
+
   it('expect skurge to summon valiant when at 15 health or under and to then be immune to damage until valiant dies', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss24 },
@@ -1443,6 +1479,7 @@ describe('bosses', () => {
 
     expect(boss.getDamage()).to.equal(15);
   });
+
   it('expect skurge to take 3 damage at the start of its turn and gain +1 attack', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -1465,6 +1502,7 @@ describe('bosses', () => {
     expect(boss.getDamage()).to.equal(3);
     expect(boss.getATK()).to.equal(2);
   });
+
   it('expect shadow lord to give friendly minions +1/+1 when they move', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss25 },
@@ -1497,6 +1535,7 @@ describe('bosses', () => {
     expect(tiger.getATK()).to.equal(4);
     expect(tiger.getHP()).to.equal(3);
   });
+
   it('expect shadow lord to summon a kaido assassin behind enemy minions when they move', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss25 },
@@ -1532,6 +1571,7 @@ describe('bosses', () => {
     const kaido = board.getUnitAtPosition({ x: 6, y: 1 });
     expect(kaido.getBaseCardId()).to.equal(SDK.Cards.Faction2.KaidoAssassin);
   });
+
   it('expect archmagus vol to damage all enemy minions when he attacks', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss26 },
@@ -1562,6 +1602,7 @@ describe('bosses', () => {
     expect(golem2.getDamage()).to.equal(2);
     expect(golem3.getDamage()).to.equal(0);
   });
+
   it('expect zane to deal double damage to vol', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss26 },
@@ -1587,6 +1628,7 @@ describe('bosses', () => {
 
     expect(boss.getDamage()).to.equal(6);
   });
+
   it('expect zane to die if his attack exceeds 6 and then for zanes general to die', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss26 },
@@ -1621,6 +1663,7 @@ describe('bosses', () => {
     expect(zane.getIsRemoved()).to.equal(true);
     expect(gameSession.getGeneralForPlayer2().getIsRemoved()).to.equal(true);
   });
+
   it('expect taskmaster beatrix to make both generals unable to move', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss27 },
@@ -1652,6 +1695,7 @@ describe('bosses', () => {
 
     expect(action.getIsValid()).to.equal(false);
   });
+
   it('expect taskmaster beatrix to make all minions behave like battle pets', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss27 },
@@ -1693,6 +1737,7 @@ describe('bosses', () => {
 
     expect(rocky2.getPosition().x !== 7 || rocky2.getPosition().y !== 1).to.equal(true);
   });
+
   it('expect grym to deal 3 damage to a random minion and to heal 3 whenever a friendly minion dies', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss28 },
@@ -1729,6 +1774,7 @@ describe('bosses', () => {
 
     expect(boss.getDamage()).to.equal(2);
   });
+
   it('expect nahlgol to summon a sand tile randomly at the start of their turn', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -1753,6 +1799,7 @@ describe('bosses', () => {
     const sand = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Tile.SandPortal);
     expect(sand.length).to.equal(1);
   });
+
   it('expect wolfpunch to gain +4 attack on opponents turn and to summon a fox ravager nearby', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -1781,6 +1828,7 @@ describe('bosses', () => {
     const fox = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Faction6.WolfAspect);
     expect(fox.length).to.equal(1);
   });
+
   it('expect unhallowed to spawn a random haunt whenever she takes damage', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -1810,6 +1858,7 @@ describe('bosses', () => {
     const hauntcount = haunt1.length + haunt2.length + haunt3.length;
     expect(hauntcount).to.equal(1);
   });
+
   it('expect the first candy panda to give +5 health and draw a card when the general attacks', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss31 },
@@ -1852,6 +1901,7 @@ describe('bosses', () => {
     const hand = player2.getDeck().getCardsInHand();
     expect(hand[0].getId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
   });
+
   it('expect the second candy panda to give +2/+2 to the minion that triggers the flip and to draw a card', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss31 },
@@ -1893,6 +1943,7 @@ describe('bosses', () => {
     const hand = player2.getDeck().getCardsInHand();
     expect(hand[0].getId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
   });
+
   it('expect the third candy panda to refund the mana of the spell that was cast and to draw a card', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss31 },
@@ -1933,6 +1984,7 @@ describe('bosses', () => {
     const hand = player2.getDeck().getCardsInHand();
     expect(hand[0].getId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
   });
+
   it('expect the corporeal haunt to make the enemy generals minions cost 1 more to play and to draw 2 cards on death', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -1976,6 +2028,7 @@ describe('bosses', () => {
     expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
     expect(hand[2]).to.equal(undefined);
   });
+
   it('expect the enchanted haunt to make the enemy generals spells cost 1 more to play and to draw 2 cards on death', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2019,6 +2072,7 @@ describe('bosses', () => {
     expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
     expect(hand[2]).to.equal(undefined);
   });
+
   it('expect the material haunt to make the enemy generals artifacts cost 1 more to play and to draw 2 cards on death', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2062,6 +2116,7 @@ describe('bosses', () => {
     expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Neutral.RockPulverizer);
     expect(hand[2]).to.equal(undefined);
   });
+
   it('expect santaur to spawn a frostfire elf at the start of his turn and to give the player a present spell when those die', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2098,6 +2153,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer1().getArtifactModifiersGroupedByArtifactCard().length).to.equal(1);
   });
+
   it('expect jingle bells to give your general flying', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2121,6 +2177,7 @@ describe('bosses', () => {
 
     expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierFlying)).to.equal(true);
   });
+
   it('expect lump of coal to block you from casting your bbs', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2157,6 +2214,7 @@ describe('bosses', () => {
     expect(squire.getHP()).to.equal(4);
     expect(squire.getATK()).to.equal(1);
   });
+
   it('expect mistletoe to reduce the mana of all cards in your hand by 1', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2187,6 +2245,7 @@ describe('bosses', () => {
     expect(hand[1].getManaCost()).to.equal(1);
     expect(hand[2].getManaCost()).to.equal(1);
   });
+
   it('expect snowball to give your general ranged and -1 attack', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2211,6 +2270,7 @@ describe('bosses', () => {
     expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierRanged)).to.equal(true);
     expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(1);
   });
+
   it('expect legion heal clone to heal itself and allies at end of turn for 3', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2263,6 +2323,7 @@ describe('bosses', () => {
     expect(clone.getDamage()).to.equal(3); // heal new general
     expect(healclone.getDamage()).to.equal(3); // heal self
   });
+
   it('expect legion attack clone to give +2 attack to itself and allies (and general control swaps to clone on death)', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2312,6 +2373,7 @@ describe('bosses', () => {
     expect(newclone.getATK()).to.equal(4);
     expect(newclone.getIsGeneral()).to.equal(true);
   });
+
   it('expect legion to resummon its fallen clones in corners at the start of turn', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2352,6 +2414,7 @@ describe('bosses', () => {
 
     expect(totalClones).to.equal(3);
   });
+
   it('expect harmony to make all minions cost 0 mana', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2385,6 +2448,7 @@ describe('bosses', () => {
 
     expect(player2.getRemainingMana()).to.equal(9);
   });
+
   it('expect harmony to become dissonance when killed and to flip all minion allegiances', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2468,6 +2532,7 @@ describe('bosses', () => {
     const notWindblade = board.getUnitAtPosition({ x: 1, y: 1 });
     expect(notWindblade.getIsGeneral()).to.equal(true);
   });
+
   it('expect soulstealer to give one of his minions general status whenever he dies', () => {
     const player1Deck = [
       { id: SDK.Cards.Boss.Boss37 },
@@ -2500,6 +2565,7 @@ describe('bosses', () => {
 
     expect(notWindblade.getIsGeneral()).to.equal(true);
   });
+
   it('expect spell eater to gain a keyword when the enemy casts a spell', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },
@@ -2527,6 +2593,7 @@ describe('bosses', () => {
 
     expect(endingModifiers).to.be.above(startingModifiers);
   });
+
   it('expect spell eater to give all summoned minions their generals keywords', () => {
     const player1Deck = [
       { id: SDK.Cards.Faction1.General },

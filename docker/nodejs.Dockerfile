@@ -5,10 +5,6 @@ FROM node:18-slim
 # TODO: Isolate bcrypt dependencies to API images only.
 RUN apt-get update && apt-get -y install python3 make gcc g++ git
 
-# Work around boneskull/yargs dependency using the deprecated git protocol.
-RUN git config --global url."https://github.com/".insteadOf git@github.com:
-RUN git config --global url."https://".insteadOf git://
-
 # Include Node.js dependencies in the image.
 WORKDIR /duelyst
 COPY package.json /duelyst/

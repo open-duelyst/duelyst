@@ -62,6 +62,7 @@ describe('monthlies', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(13);
     });
+
     it('expect dust wailer deal 3 damage to only enemies in the row in front of it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -85,6 +86,7 @@ describe('monthlies', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(3);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(0);
     });
+
     it('expect night watcher to exhaust all minions who enter play with rush', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -119,6 +121,7 @@ describe('monthlies', () => {
       expect(tiger2.getPosition().x).to.equal(7);
       expect(tiger2.getPosition().y).to.equal(2);
     });
+
     it('expect quartermaster gauj to not take damage from the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -136,6 +139,7 @@ describe('monthlies', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(5);
       expect(gauj.getDamage()).to.equal(0);
     });
+
     it('expect quartermaster gauj to not take damage from enemy minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -154,6 +158,7 @@ describe('monthlies', () => {
       expect(brightmossGolem.getDamage()).to.equal(5);
       expect(gauj.getDamage()).to.equal(0);
     });
+
     it('expect quartermaster gauj to not take damage from enemy minion abilities', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -169,6 +174,7 @@ describe('monthlies', () => {
 
       expect(gauj.getDamage()).to.equal(0);
     });
+
     it('expect quartermaster gauj to take damage from spells', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

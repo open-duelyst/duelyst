@@ -44,6 +44,7 @@ describe('monthlies', () => {
       expect(arrowWhistler.getATK()).to.equal(3);
       expect(valeHunter.getATK()).to.equal(3);
     });
+
     it('expect golden justicar to allow your other minions with provoke to move 2 additional spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

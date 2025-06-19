@@ -48,6 +48,7 @@ describe('wartech', () => {
       expect(hand1[0].rarityId).to.equal(4);
       expect(hand1[0].type).to.equal(SDK.CardType.Artifact);
     });
+
     it('expect barren shrike to build after 2 turns but stay a 0/10 structure until it finishes', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -76,6 +77,7 @@ describe('wartech', () => {
       expect(barrenShrike.getHP()).to.equal(5);
       expect(barrenShrike.getATK()).to.equal(5);
     });
+
     it('expect equality constraint to set a minions health to equal their attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -91,6 +93,7 @@ describe('wartech', () => {
       expect(pyromancer.getHP()).to.equal(2);
       expect(pyromancer.getATK()).to.equal(2);
     });
+
     it('expect burden of knowledge to draw you a card and take 3 damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -107,6 +110,7 @@ describe('wartech', () => {
       expect(hand1[0].getId()).to.equal(SDK.Cards.Spell.BurdenOfKnowledge);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(3);
     });
+
     it('expect silica weaver to increase mechaz0r progress by 40%', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -135,6 +139,7 @@ describe('wartech', () => {
 
       expect(mechaz0r.getId()).to.equal(SDK.Cards.Neutral.Mechaz0r);
     });
+
     it('expect kinematic projection to give a minion blast but reduce movement to 0', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -162,6 +167,7 @@ describe('wartech', () => {
       expect(action.getIsValid()).to.equal(true);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.be.above(0);
     });
+
     it('expect iris barrier to prevent damage taken during your turn only', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -187,6 +193,7 @@ describe('wartech', () => {
       expect(golem.getDamage()).to.equal(4);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.be.above(0);
     });
+
     it('expect gust to summon 2 wind dervishes whenever you use your bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -285,6 +292,7 @@ describe('wartech', () => {
       expect(gameSession.getGeneralForPlayer1().hasModifierClass(ModifierTranscendance)).to.equal(false);
       expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierRanged)).to.equal(false);
     });
+
     it('expect simulacra obelysk to start building another one once it finishes building', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -312,6 +320,7 @@ describe('wartech', () => {
       obelysks = UtilsSDK.getEntitiesOnBoardById(SDK.Cards.Faction3.SimulacraObelysk);
       expect(obelysks.length).to.equal(2);
     });
+
     it('expect grapnel paradigm to take over enemy minions with 2 or less attack when summoned on the same row as them', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -336,6 +345,7 @@ describe('wartech', () => {
       expect(terradon2.ownerId).to.equal('player2_id');
       expect(makantor.ownerId).to.equal('player2_id');
     });
+
     it('expect monolithic vision to transform your action bar to have 6 random vetruvian cards all with -4 cost', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

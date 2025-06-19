@@ -48,6 +48,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect divine spark to draw 2 cards', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -68,6 +69,7 @@ describe('bloodstorm', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.TrinityOath);
       expect(hand[2]).to.not.exist;
     });
+
     it('expect incinera to allow your general to move 2 additional spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -77,6 +79,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(4);
     });
+
     it('expect stone to spears to give a friendly obelysk +3 attack and movement', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -108,6 +111,7 @@ describe('bloodstorm', () => {
       expect(obelysk.getSpeed()).to.equal(0);
       expect(obelysk.getATK()).to.equal(0);
     });
+
     it('expect autarchs gifts to equip 2 random vetruvian artifacts', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -119,6 +123,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer1().getArtifactModifiersGroupedByArtifactCard().length).to.equal(2);
     });
+
     it('expect grandmaster nosh-rak to make the enemy general take double damage from all sources', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

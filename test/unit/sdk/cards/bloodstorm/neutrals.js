@@ -52,6 +52,7 @@ describe('bloodstorm', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect sanguinar to make your normal bbs cost 1 less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

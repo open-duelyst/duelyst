@@ -56,6 +56,7 @@ describe('faction4', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction4.SpectralRevenant);
       expect(cardDraw.getManaCost()).to.equal(6);
     });
+
     it('expect darkfire sacrifice mana reduction to continue onto next turn if no minion summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -79,6 +80,7 @@ describe('faction4', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction4.SpectralRevenant);
       expect(cardDraw.getManaCost()).to.equal(6);
     });
+
     it('expect grasp of agony to deal 3 damage to all nearby enemies when unit dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -101,6 +103,7 @@ describe('faction4', () => {
       expect(bloodshardGolem.getIsRemoved()).to.equal(true);
       expect(bloodshardGolem2.getIsRemoved()).to.equal(true);
     });
+
     it('expect grasp of agony to work when combined with ritual banishing', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -132,6 +135,7 @@ describe('faction4', () => {
       expect(bloodshardGolem.getIsRemoved()).to.equal(true);
       expect(bloodshardGolem2.getIsRemoved()).to.equal(true);
     });
+
     it('expect void pulse to deal 2 damage to enemy general and restore 3 health to own general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -146,6 +150,7 @@ describe('faction4', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(23);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
     });
+
     it('expect consuming rebirth to destroy a friendly minion and revive it at end of turn on same space with +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -168,6 +173,7 @@ describe('faction4', () => {
       expect(abyssalCrawler2.getHP()).to.equal(2);
       expect(abyssalCrawler2.getATK()).to.equal(3);
     });
+
     it('expect daemonic lure to deal 1 damage to enemy minion and teleport unit far away', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -188,6 +194,7 @@ describe('faction4', () => {
       expect(abyssalJuggernaut.getPosition().x).to.equal(7);
       expect(abyssalJuggernaut.getPosition().y).to.equal(4);
     });
+
     it('expect soulshatter pact to give friendly minions +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -205,6 +212,7 @@ describe('faction4', () => {
       expect(golem1.getATK()).to.equal(6);
       expect(golem2.getATK()).to.equal(6);
     });
+
     it('expect deathfire crescendo to give friendly minion +2/+2 any time a friendly or enemy minion dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -229,6 +237,7 @@ describe('faction4', () => {
       expect(abyssalCrawler.getATK()).to.equal(6);
       expect(abyssalCrawler.getHP()).to.equal(5);
     });
+
     it('expect rite of the undervault to refill your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -250,6 +259,7 @@ describe('faction4', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[5].getBaseCardId()).to.equal(SDK.Cards.Spell.InnerFocus);
     });
+
     it('expect ritual banishing to destroy one of your minions and destroy an enemy minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -270,6 +280,7 @@ describe('faction4', () => {
       expect(abyssalCrawler1.getIsRemoved()).to.equal(true);
       expect(unstableLeviathan.getIsRemoved()).to.equal(true);
     });
+
     it('expect shadow reflection to give a unit +5 attack buff', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -285,6 +296,7 @@ describe('faction4', () => {
 
       expect(abyssalCrawler1.getATK()).to.equal(7);
     });
+
     it('expect wraithling fury to give a wraithling +4/+4', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -301,6 +313,7 @@ describe('faction4', () => {
       expect(wraithling.getATK()).to.equal(5);
       expect(wraithling.getHP()).to.equal(5);
     });
+
     it('expect wraithling fury can only be cast on wraithlings', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -321,6 +334,7 @@ describe('faction4', () => {
       expect(validTargetPositions[0].x === 1 && validTargetPositions[0].y === 1).to.equal(true);
       expect(validTargetPositions[1]).to.not.exist;
     });
+
     it('expect wraithling swarm to summon 3 1/1 wraithlings', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -346,6 +360,7 @@ describe('faction4', () => {
       expect(wraithling2.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
       expect(wraithling3.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect wraithling swarm can be skipped midway through follow up to only summon 1 wraithling', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -364,6 +379,7 @@ describe('faction4', () => {
       expect(wraithling1.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
       expect(gameSession.getIsFollowupActive()).to.equal(false);
     });
+
     it('expect breath of the unborn to deal 2 damage to all enemy minions and restore all friendly minions to full health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -384,6 +400,7 @@ describe('faction4', () => {
       expect(kaidoAssassin2.getHP()).to.equal(3);
       expect(kaidoAssassin.getHP()).to.equal(1);
     });
+
     it('expect dark seed to deal 1 damage to the enemy general for each card in their hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -405,6 +422,7 @@ describe('faction4', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(19);
     });
+
     it('expect dark transformation to destroy an enemy minion and leave 1/1 wraithling in place', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -424,6 +442,7 @@ describe('faction4', () => {
       expect(kaidoAssassin.getIsRemoved()).to.equal(true);
       expect(wraithling.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect dark transformation to override magmar rebirth eggs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -443,6 +462,7 @@ describe('faction4', () => {
       expect(youngSilithar.getIsRemoved()).to.equal(true);
       expect(wraithling.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect nether summoning to summon 2 enemy minions that opponent suicided during his turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -492,6 +512,7 @@ describe('faction4', () => {
       expect(rustCrawler.getOwnerId()).to.equal(gameSession.getPlayer1Id());
       expect(repulsorBeast.getOwnerId()).to.equal(gameSession.getPlayer1Id());
     });
+
     it('expect nether summoning to summon 2 friendly minions that opponent killed during his turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -545,6 +566,7 @@ describe('faction4', () => {
       expect(rustCrawler.getOwnerId()).to.equal(gameSession.getPlayer1Id());
       expect(repulsorBeast.getOwnerId()).to.equal(gameSession.getPlayer1Id());
     });
+
     it('expect nether summoning to not summon anything if no minions died on opponents last turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -592,6 +614,7 @@ describe('faction4', () => {
       expect(rustCrawler).to.equal(undefined);
       expect(repulsorBeast).to.equal(undefined);
     });
+
     it('expect nether summoning to not summon tokens', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -633,6 +656,7 @@ describe('faction4', () => {
 
       expect(wraithling).to.equal(undefined);
     });
+
     it('expect shadow nova to create 2x2 shadow creep grid', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -655,6 +679,7 @@ describe('faction4', () => {
       expect(shadowCreep3.getId()).to.equal(SDK.Cards.Tile.Shadow);
       expect(shadowCreep4.getId()).to.equal(SDK.Cards.Tile.Shadow);
     });
+
     it('expect shadow creep to deal 1 damage at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

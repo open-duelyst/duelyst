@@ -80,6 +80,7 @@ describe('unit position scoring', () => {
       expect(scoreForPositionBehindTargetedBackstabber).to.be.below(scoreForPositionAdjacentNotBehindTargetedBackstabber)
         .and.to.be.below(scoreForPositionAwayFromTargetedBackstabber);
     });
+
     it('Objective Backstab', () => {
       // TEST FOR:
       //  positionObjectiveBackstab = function (gameSession, unit, position, bestObjective)
@@ -126,6 +127,7 @@ describe('unit position scoring', () => {
       expect(scoreForPositionAdjacentNotBehindObjective).to.be.above(scoreForPositionAwayFromObjective);
       expect(scoreForPositionNonBackstabber).to.be.equal(0);
     });
+
     it('Distance From Best Objective', () => {
       // TEST FOR:
       //  positionObjectiveDistanceFromBestObjective (gameSession, unit, position, bestObjective, scoringMode)
@@ -201,6 +203,7 @@ describe('unit position scoring', () => {
         .and.to.be.below(scoreForPositionRanged3DistanceFromObjective);
       expect(scoreForPositionRanged2DistanceFromObjective).to.be.below(scoreForPositionRanged3DistanceFromObjective);
     });
+
     it('Objective Frenzy', () => {
       // TEST FOR:
       //  positionObjectiveFrenzy (gameSession, unit, position, bestObjective)
@@ -244,6 +247,7 @@ describe('unit position scoring', () => {
         .and.to.be.above(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
       expect(scoreForPositionNotAdjacentToObjectiveAdjacentToOther).to.be.equal(0);
     });
+
     it('Objective Provoke', () => {
       // TEST FOR:
       //  positionObjectiveProvoke = function (gameSession, unit, position, bestObjective)
@@ -286,6 +290,7 @@ describe('unit position scoring', () => {
       expect(scoreForPositionAdjacentToObjectiveAndEnemy).to.be.above(scoreForPositionAdjacentToObjectiveOnly)
         .and.to.be.above(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
     });
+
     it('Proximity to Enemies', () => {
       // TEST FOR:
       //  positionProximityToEnemies = function (gameSession, unit, position)
@@ -352,6 +357,7 @@ describe('unit position scoring', () => {
         .and.to.be.below(scoreForPositionNotAdjacentToObjectiveAdjacentToOther);
       expect(scoreForPositionNotAdjacentToObjectiveAdjacentToOther).to.be.equal(0);
     });
+
     it('Proximity to Generals', () => {
       // TEST FOR:
       //  positionProximityToGenerals = function (gameSession, unit, position)
@@ -414,6 +420,7 @@ describe('unit position scoring', () => {
       // expect
       // expect(scoreForPositionAdjacentToEnemyGeneral).to.be.above(scoreForPosition4AwayFromEnemyGeneral);
     });
+
     it('Shadow Tile Avoidance', () => {
       // TEST FOR:
       //  positionShadowTileAvoidance = function (gameSession, unit, position) {
@@ -454,6 +461,7 @@ describe('unit position scoring', () => {
       // .and.to.be.above(scoreForPositionOutsideShadowCreep5hp);
       // expect(scoreForPositionOutsideShadowCreep5hp).to.be.equal(0);
     });
+
     it('Zeal', () => {
       // TEST FOR:
       //  positionZeal = function (gameSession, unit, position)

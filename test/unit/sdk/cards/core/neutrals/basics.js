@@ -51,6 +51,7 @@ describe('core set', () => {
       expect(osterix.getPosition().x).to.equal(3);
       expect(osterix.getPosition().y).to.equal(3);
     });
+
     it('expect bloodtear alchemist to deal 1 damage to any minion or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('core set', () => {
 
       expect(osterix.getDamage()).to.equal(1);
     });
+
     it('expect ephemeral shroud to dispel a nearby space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -89,6 +91,7 @@ describe('core set', () => {
 
       expect(osterix.getIsSilenced()).to.equal(true);
     });
+
     it('expect healing mystic to restore 2 health to a minion or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -107,6 +110,7 @@ describe('core set', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect necroseer to draw a card when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -126,6 +130,7 @@ describe('core set', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect bloodletter to deal double damage to generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -642,18 +642,21 @@ describe('cosmetic chests module', function () {
       });
       expect(value).to.equal(0.0);
     });
+
     it(`expects probability of 0.5 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW / 2} and last_crate_awarded_at == NULL and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: (CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW / 2),
       });
       expect(value).to.equal(0.5);
     });
+
     it(`expects probability of 1.0 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == NULL and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
       });
       expect(value).to.equal(1.0);
     });
+
     it(`expects probability of 0.0156 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-1) and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
@@ -661,6 +664,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value.toFixed(4)).to.equal('0.0156');
     });
+
     it(`expects probability of 0.0625 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-2) and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
@@ -668,6 +672,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value.toFixed(4)).to.equal('0.0625');
     });
+
     it(`expects probability of 1.0 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-3) and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
@@ -675,6 +680,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value.toFixed(4)).to.equal('0.2500');
     });
+
     it(`expects probability of 1.0 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-4) and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
@@ -682,6 +688,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value).to.equal(1.0);
     });
+
     it(`expects probability of 0.33 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW / 3} and last_crate_awarded_at == (today-4) and last_crate_awarded_game_count == NULL`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW / 3,
@@ -689,6 +696,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value.toFixed(2)).to.equal('0.33');
     });
+
     it(`expects probability of 0.33 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-4) and last_crate_awarded_game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW - 1}`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,
@@ -697,6 +705,7 @@ describe('cosmetic chests module', function () {
       });
       expect(value.toFixed(2)).to.equal('0.33');
     });
+
     it(`expects probability of 0.0417 if game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW} and last_crate_awarded_at == (today-2) and last_crate_awarded_game_count == ${CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW - 2}`, () => {
       const value = CosmeticChestsModule._chestProbabilityForProgressionData({
         game_count: CosmeticChestsModule.CHEST_GAME_COUNT_WINDOW,

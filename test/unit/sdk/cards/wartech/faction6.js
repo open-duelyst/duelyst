@@ -50,6 +50,7 @@ describe('wartech', () => {
 
       expect(blade.getDamage()).to.equal(4);
     });
+
     it('expect aspect of the bear to turn a minion into a 4/5 that cant counterattack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -73,6 +74,7 @@ describe('wartech', () => {
       expect(ursaplomb.getDamage()).to.equal(2);
       expect(cryoblade.getDamage()).to.equal(0);
     });
+
     it('expect shatter to destroy a stunned minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -91,6 +93,7 @@ describe('wartech', () => {
 
       expect(blade.getIsRemoved()).to.equal(true);
     });
+
     it('expect echo deliverant to clone any mech unit you summon nearby', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -111,6 +114,7 @@ describe('wartech', () => {
       const duplicate = board.getEntitiesAroundEntity(mech);
       expect(duplicate[0].getId()).to.equal(SDK.Cards.Faction5.Seismoid);
     });
+
     it('expect essence sculpt to put a copy of a stunned minion in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -130,6 +134,7 @@ describe('wartech', () => {
       const hand1 = player1.getDeck().getCardsInHand();
       expect(hand1[0].getId()).to.equal(SDK.Cards.Neutral.WhistlingBlade);
     });
+
     it('expect animus plate to give +2 attack and give all friendly vespyrs +2/+2 when attacking or counterattacking', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -165,6 +170,7 @@ describe('wartech', () => {
       expect(circulus.getATK()).to.equal(1);
       expect(circulus.getHP()).to.equal(1);
     });
+
     it('expect hydrogarm to deal 1 damage to enemy minions in his row and stun them when using bbs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -186,6 +192,7 @@ describe('wartech', () => {
       expect(golem.hasModifierClass(SDK.ModifierStunned)).to.equal(true);
       expect(golem.getDamage()).to.equal(1);
     });
+
     it('expect crystalline reinforcement to give friendly minions +attack/+health equal to their current bonus attack and health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -234,6 +241,7 @@ describe('wartech', () => {
       expect(blade.getHP()).to.equal(9); // negative lasting judgement buff goes into place
       expect(blade.getATK()).to.equal(8); // but positive lasting judgement buff does... 2 base + 3 from LJ + 3 from crystalline reinforcement
     });
+
     it('expect wintertide to summon 3 2/2 vespyr winter maerids on a column', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -252,6 +260,7 @@ describe('wartech', () => {
       expect(maerid2.getId()).to.equal(SDK.Cards.Faction6.WaterBear);
       expect(maerid3.getId()).to.equal(SDK.Cards.Faction6.WaterBear);
     });
+
     it('expect denadoro to make your minions always infiltrated', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -276,6 +285,7 @@ describe('wartech', () => {
       expect(cloaker2.getATK()).to.equal(4);
       expect(cloaker2.getHP()).to.equal(3);
     });
+
     it('expect draugar eyolith to make enemies only move 1 space while building and while active', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -328,6 +338,7 @@ describe('wartech', () => {
       gameSession.executeAction(action);
       expect(board.getUnitAtPosition({ x: 5, y: 0 }).getId()).to.equal(SDK.Cards.Faction6.CrystalCloaker);
     });
+
     it('expect auroraboros to give all friendly minions dying wish: respawn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

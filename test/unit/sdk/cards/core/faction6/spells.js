@@ -52,6 +52,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getDamage()).to.equal(1);
       expect(kaidoAssassin.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
     });
+
     it('expect polarity to swap minion attack and health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -68,6 +69,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(2);
       expect(kaidoAssassin.getATK()).to.equal(3);
     });
+
     it('expect polarity to swap minion attack and health when minion is damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -85,6 +87,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(2);
       expect(kaidoAssassin.getATK()).to.equal(2);
     });
+
     it('expect a minion to have original HP if polarity cast on them, then damaged, then polarity cast again', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -106,6 +109,7 @@ describe('faction6', () => {
 
       expect(kaidoAssassin.getHP()).to.equal(3);
     });
+
     it('expect aspect of the fox to turn any minion into vanilla 3/3', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -125,6 +129,7 @@ describe('faction6', () => {
       expect(fox.getHP()).to.equal(3);
       expect(fox.getATK()).to.equal(3);
     });
+
     it('expect mesmerize to push an enemy general or minion one space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -152,6 +157,7 @@ describe('faction6', () => {
       expect(board.getUnitAtPosition({ x: 5, y: 2 }).getId()).to.equal(SDK.Cards.Faction2.KaidoAssassin);
       expect(board.getUnitAtPosition({ x: 7, y: 2 }).getId()).to.equal(SDK.Cards.Faction3.General);
     });
+
     it('expect bonechill barrier to summon 3 0/2 vespyr walls', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -179,6 +185,7 @@ describe('faction6', () => {
       expect(bcb1.getHP()).to.equal(2);
       expect(bcb1.getATK()).to.equal(0);
     });
+
     it('expect bonechill barrier walls to stun enemy minions who attack it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -207,6 +214,7 @@ describe('faction6', () => {
       gameSession.executeAction(action);
       expect(abyssalCrawler1.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
     });
+
     it('expect boundless courage to give a minion +2 attack permanently', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -222,6 +230,7 @@ describe('faction6', () => {
 
       expect(kaidoAssassin.getATK()).to.equal(4);
     });
+
     it('expect boundless courage to make a minion immune to damage only until end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -242,6 +251,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(3);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(21);
     });
+
     it('expect chromatic cold to deal 1 damage to an enemy minion or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -262,6 +272,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(2);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(24);
     });
+
     it('expect chromatic cold to dispel spell immune creatures', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -277,6 +288,7 @@ describe('faction6', () => {
 
       expect(sandHowler.getIsSilenced()).to.equal(true);
     });
+
     it('expect chromatic cold to not deal damage to friendly minions or generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -297,6 +309,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(3);
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(25);
     });
+
     it('expect chromatic cold to dispel buffs and debuffs on a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -317,6 +330,7 @@ describe('faction6', () => {
 
       expect(kaidoAssassin.getATK()).to.equal(2);
     });
+
     it('expect frostfire to give a friendly non-vespyr +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -332,6 +346,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getATK()).to.equal(5);
       expect(kaidoAssassin.getHP()).to.equal(3);
     });
+
     it('expect frostfire to give a friendly vespyr +3 attack and +3 health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -347,6 +362,7 @@ describe('faction6', () => {
       expect(boreanBear.getATK()).to.equal(4);
       expect(boreanBear.getHP()).to.equal(6);
     });
+
     it('expect hailstone prison to return a minion to its owners action bar', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -364,6 +380,7 @@ describe('faction6', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction6.BoreanBear);
     });
+
     it('expect hailstone prison to exhaust a minion when you replay it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -392,6 +409,7 @@ describe('faction6', () => {
       expect(boreanBear.getPosition().x).to.equal(1);
       expect(boreanBear.getPosition().y).to.equal(2);
     });
+
     it('expect mark of solitude to ignore damage and buffs and transform a unit into a 5/5', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -414,6 +432,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getATK()).to.equal(5);
       expect(kaidoAssassin.getHP()).to.equal(5);
     });
+
     it('expect mark of solitude to make minion unable to attack general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -433,6 +452,7 @@ describe('faction6', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(25);
     });
+
     it('expect mark of solitude minions to be able to counter attack if a general strikes them', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -454,6 +474,7 @@ describe('faction6', () => {
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(20);
       expect(kaidoAssassin.getHP()).to.equal(3);
     });
+
     it('expect mark of solitude stats to not be diselable (only unable to attack general part)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -474,6 +495,7 @@ describe('faction6', () => {
       expect(kaidoAssassin.getHP()).to.equal(5);
       expect(kaidoAssassin.getATK()).to.equal(5);
     });
+
     it('expect blazing spines to create two 3/3 walls', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -496,6 +518,7 @@ describe('faction6', () => {
       expect(bcb1.getHP()).to.equal(3);
       expect(bcb1.getATK()).to.equal(3);
     });
+
     it('expect blazing spine walls to disappear if dispeled', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -518,6 +541,7 @@ describe('faction6', () => {
 
       expect(bcb1).to.equal(undefined);
     });
+
     it('expect blazing spine walls to not be able to move', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -540,6 +564,7 @@ describe('faction6', () => {
       expect(bcb1.getPosition().x).to.equal(0);
       expect(bcb1.getPosition().y).to.equal(3);
     });
+
     it('expect cryogenesis to deal 4 damage to an enemy minion and draw a vespyr minion from deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -560,6 +585,7 @@ describe('faction6', () => {
       const cardDraw = hand[0];
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction6.BoreanBear);
     });
+
     it('expect cryogensis to not draw any minion if you have no vespyrs in deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -580,6 +606,7 @@ describe('faction6', () => {
       const cardDraw = hand[0];
       expect(cardDraw).to.equal(undefined);
     });
+
     it('expect gravity well to summon 4 0/1 walls with provoke', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -613,6 +640,7 @@ describe('faction6', () => {
       expect(bcb1.getATK()).to.equal(0);
       expect(bcb1.hasActiveModifierClass(SDK.ModifierProvoke)).to.equal(true);
     });
+
     it('expect aspect of the drake to turn an enemy minion into a 4/4 with flying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -632,6 +660,7 @@ describe('faction6', () => {
       expect(drake.getATK()).to.equal(4);
       expect(drake.getHP()).to.equal(4);
     });
+
     it('expect aspect of the drake to give friendly nearby minions flying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -648,6 +677,7 @@ describe('faction6', () => {
 
       expect(hailstoneGolem2.hasActiveModifierClass(SDK.ModifierFlying)).to.equal(true);
     });
+
     it('expect avalanche to deal 4 damage to all friendly and enemy minions and generals on your side of map and stun them', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -671,6 +701,7 @@ describe('faction6', () => {
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer2().hasActiveModifierClass(SDK.ModifierStunned)).to.equal(false);
     });
+
     it('expect spirit of the wild to reactivate exhausted friendly minions only on opponents side of battlefield', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -688,6 +719,7 @@ describe('faction6', () => {
       expect(hailstoneGolem.getIsExhausted()).to.equal(true);
       expect(hailstoneGolem2.getIsExhausted()).to.equal(false);
     });
+
     it('expect aspect of the mountain to transform a minion into a 5/5 and deal 5 damage to all nearby enemy minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -42,6 +42,7 @@ describe('monthlies', () => {
       expect(brightmossGolem.getDamage()).to.equal(2);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(0);
     });
+
     it('expect hollow grovekeeper to destroy a nearby enemy minion with provoke and gain provoke + frenzy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -64,6 +65,7 @@ describe('monthlies', () => {
       expect(hollowGrovekeeper.hasModifierClass(SDK.ModifierProvoke)).to.equal(true);
       expect(hollowGrovekeeper.hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect hollow grovekeeper to destroy a nearby enemy minion with frenzy and gain provoke + frenzy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -86,6 +88,7 @@ describe('monthlies', () => {
       expect(hollowGrovekeeper.hasModifierClass(SDK.ModifierProvoke)).to.equal(true);
       expect(hollowGrovekeeper.hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect tethermancer to dispel minions that deal damage to it', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

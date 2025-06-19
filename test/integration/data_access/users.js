@@ -89,10 +89,12 @@ describe('users module', () => {
     describe('registration - when invite codes are active', () => {
       //
       let invitesActiveBefore = null;
+
       before(() => {
         invitesActiveBefore = config.get('inviteCodesActive');
         config.set('inviteCodesActive', true);
       });
+
       after(() => { config.set('inviteCodesActive', invitesActiveBefore); });
 
       it('expect NOT to be able to create a user with an invalid invite code if invite codes are ACTIVE', () => {
@@ -137,10 +139,12 @@ describe('users module', () => {
     describe('registration - when invite codes are in-active', () => {
       //
       let invitesActiveBefore = null;
+
       before(() => {
         invitesActiveBefore = config.get('inviteCodesActive');
         config.set('inviteCodesActive', false);
       });
+
       after(() => { config.set('inviteCodesActive', invitesActiveBefore); });
 
       it('expect to be able to create a user with an invalid invite code if invite codes are INACTIVE', () => {
@@ -463,6 +467,7 @@ describe('users module', () => {
   describe('updateDaysSeen()', () => {
     let registeredMoment;
     let daysSeenUserId;
+
     before(() => {
       const rando = generatePushId();
       const email = `${rando}-unit-test@duelyst.local`;
@@ -1805,6 +1810,7 @@ describe('users module', () => {
       }));
 
     const xpCap = SDK.FactionProgression.totalXPForLevel(SDK.FactionProgression.maxLevel);
+
     it(`expect max level ${SDK.FactionProgression.maxLevel} to cap at ${xpCap} XP`, () => SyncModule.wipeUserData(userId)
       .bind({})
       .then(() => {

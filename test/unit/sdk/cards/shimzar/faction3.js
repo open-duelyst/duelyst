@@ -48,6 +48,7 @@ describe('shimzar', () => {
       expect(brightmossGolem.getDamage()).to.equal(4);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(0);
     });
+
     it('expect rae to dispel the nearest enemy minion upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -141,6 +142,7 @@ describe('shimzar', () => {
         expect(units.length).to.equal(10);
       }
     });
+
     it('expect whisper of the sands to summon a wind dervish next to each friendly obelysk even when the obelysk is dispelled', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -175,6 +177,7 @@ describe('shimzar', () => {
         expect(units.length).to.equal(6);
       }
     });
+
     it('expect whisper of the sands to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 1)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -211,6 +214,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect whisper of the sands to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 2)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -247,6 +251,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect whisper of the sands to summon a wind dervish next to each friendly obelysk even if most spaces are blocked (formation 3)', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -282,6 +287,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect whisper of the sands to not crash game if it cannot spawn all dervishes', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -364,6 +370,7 @@ describe('shimzar', () => {
 
       expect(dervishes.length).to.equal(2);
     });
+
     it('expect psychic conduit to take control of an enemy with 2 or less power for a turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -380,6 +387,7 @@ describe('shimzar', () => {
 
       expect(valeHunter.ownerId).to.equal('player1_id');
     });
+
     it('expect pantheran to cost 0 if youve cast all 3 scions wish spells', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -410,6 +418,7 @@ describe('shimzar', () => {
       expect(hand[1].getManaCost()).to.equal(0); // pantheran draw from deck
       expect(hand[2].getManaCost()).to.equal(0); // drew from l'kian failing.
     });
+
     it('expect allomancer to summon a random obelysk upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -427,6 +436,7 @@ describe('shimzar', () => {
 
       expect(obelysk.getRaceId()).to.equal(SDK.Races.Structure);
     });
+
     it('expect allomancer to never summon a bloodfire totem upon death', () => {
       for (let i = 0; i < 20; i++) {
         const player1Deck = [
@@ -457,6 +467,7 @@ describe('shimzar', () => {
         expect(obelysk.getId()).to.not.equal(SDK.Cards.Faction3.PlagueTotem);
       }
     });
+
     it('expect corpse combustion to summon friendly minions with dying wish that died last turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -494,6 +505,7 @@ describe('shimzar', () => {
       expect(voidHunter.getOwnerId()).to.equal(gameSession.getPlayer1Id());
       expect(aymara.getOwnerId()).to.equal(gameSession.getPlayer1Id());
     });
+
     it('expect spinecleaver to grant +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -504,6 +516,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect spinecleaver to turn enemies killed by it into bloodfire totems', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -520,6 +533,7 @@ describe('shimzar', () => {
       const totem = board.getUnitAtPosition({ x: 1, y: 2 });
       expect(totem.getId()).to.equal(SDK.Cards.Faction3.PlagueTotem);
     });
+
     it('expect bloodfire totems to deal 1 damage to its owner at the end of every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -536,6 +550,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(4);
     });
+
     it('expect circle of desiccation to kill all non-structure minions', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -557,6 +572,7 @@ describe('shimzar', () => {
       expect(obelysk1.getIsRemoved()).to.equal(false);
       expect(obelysk2.getIsRemoved()).to.equal(false);
     });
+
     it('expect nimbus to summon a soulburn obelysk nearby whenever its damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

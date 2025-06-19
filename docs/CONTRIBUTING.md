@@ -100,12 +100,6 @@ npm install -g yarn@1
 npm install -g cross-env
 ```
 
-Before proceeding, disable the deprecated `git://` protocol for fetching
-packages:
-```
-git config --global url."https://".insteadOf git://
-```
-
 #### Installing Node.js Dependencies
 
 Once you have Yarn installed, you can install the dependencies for the game.

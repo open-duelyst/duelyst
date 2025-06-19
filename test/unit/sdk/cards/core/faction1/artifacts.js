@@ -46,6 +46,7 @@ describe('faction1', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect skywind glaives to give nearby allied minions +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -58,6 +59,7 @@ describe('faction1', () => {
 
       expect(suntideMaiden.getATK()).to.equal(5);
     });
+
     it('expect skywind glaives to not give far away allied minions +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +72,7 @@ describe('faction1', () => {
 
       expect(suntideMaiden.getATK()).to.equal(3);
     });
+
     it('expect arclyte regalia to only prevent first 2 damage in a turn without durability going down', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -92,6 +95,7 @@ describe('faction1', () => {
       expect(modifiers[0].getDurability()).to.equal(2);
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(23);
     });
+
     it('expect arclyte regalia to grant +2 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -102,6 +106,7 @@ describe('faction1', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(4);
     });
+
     it('expect arclyte regalia to prevent 2 damage from white widow replace ping', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

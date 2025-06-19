@@ -4,10 +4,6 @@
 # TODO: Isolate bcrypt dependencies to API images only.
 apt-get update && apt-get install -y python3 make gcc g++ git
 
-# Work around boneskull/yargs dependency using the deprecated git protocol.
-git config --global url."https://github.com/".insteadOf git@github.com:
-git config --global url."https://".insteadOf git://
-
 # Install dependencies.
 yarn install --production && yarn cache clean
 

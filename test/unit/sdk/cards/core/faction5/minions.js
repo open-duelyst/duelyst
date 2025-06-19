@@ -42,6 +42,7 @@ describe('faction5', () => {
       const komodo = player1.getDeck().getCardInHandAtIndex(0);
       expect(komodo.getManaCostChange()).to.equal(-1);
     });
+
     it('expect kujata to deal 1 damage to any minion you summon', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -59,6 +60,7 @@ describe('faction5', () => {
 
       expect(komodo.getHP()).to.equal(hp - 1);
     });
+
     it('expect kujata to swap effects when mind controlled', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -93,6 +95,7 @@ describe('faction5', () => {
 
       expect(komodo.getHP()).to.equal(hp - 1);
     });
+
     it('expect rebirth to leave behind an egg on death (young silithar)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -112,6 +115,7 @@ describe('faction5', () => {
       expect(egg.getHP()).to.equal(1);
       expect(egg.getATK()).to.equal(0);
     });
+
     it('expect egg to hatch back into original unit at end of next turn (young silithar)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -136,6 +140,7 @@ describe('faction5', () => {
       expect(youngSilithar.getHP()).to.equal(3);
       expect(youngSilithar.getATK()).to.equal(2);
     });
+
     it('expect grow to gain stats at start of every turn (earth walker)', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -155,6 +160,7 @@ describe('faction5', () => {
       expect(earthwalker.getHP()).to.equal(5);
       expect(earthwalker.getATK()).to.equal(5);
     });
+
     it('expect primordial gazer to give friendly nearby minion +2/+2', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -174,6 +180,7 @@ describe('faction5', () => {
       expect(hailstoneGolem.getHP()).to.equal(8);
       expect(hailstoneGolem.getATK()).to.equal(6);
     });
+
     it('expect vindicator to gain +2/+2 whenever opponent draws a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -190,6 +197,7 @@ describe('faction5', () => {
       expect(vindicator.getATK()).to.equal(3);
       expect(vindicator.getHP()).to.equal(5);
     });
+
     it('expect vindicator to not gain +2/+2 whenever opponent draws a card not from their own deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -207,6 +215,7 @@ describe('faction5', () => {
       expect(vindicator.getATK()).to.equal(1);
       expect(vindicator.getHP()).to.equal(3);
     });
+
     it('expect elucidator to deal 4 damage to own general when summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -220,6 +229,7 @@ describe('faction5', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(21);
     });
+
     it('expect spirit harvester to deal 1 damage to all friendly and enemy minions at end of turn and to not hurt self', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -235,6 +245,7 @@ describe('faction5', () => {
       expect(earthwalker2.getHP()).to.equal(2);
       expect(spiritHarvester.getHP()).to.equal(5);
     });
+
     it('expect silithar elder to spawn silithar elder egg at end of every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -263,6 +274,7 @@ describe('faction5', () => {
       const eggModifier = egg.getActiveModifierByClass(SDK.ModifierEgg);
       expect(eggModifier.cardDataOrIndexToSpawn.id).to.equal(SDK.Cards.Faction5.SilitharElder);
     });
+
     it('expect unstable leviathan to deal 4 damage to a random minion or general at start of owners turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

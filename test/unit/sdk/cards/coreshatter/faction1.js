@@ -51,6 +51,7 @@ describe('coreshatter', () => {
       expect(player1.getDeck().getCardInHandAtIndex(1).getId()).to.equal(SDK.Cards.Faction1.KingsGuard);
       expect(player1.getDeck().getCardInHandAtIndex(2).getId()).to.equal(SDK.Cards.Faction1.KingsGuard);
     });
+
     it('expect one man army to be shuffled into your deck each time its played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -73,6 +74,7 @@ describe('coreshatter', () => {
       var deck = player1.getDeck().getCardsInDrawPile();
       expect(deck[1].getId()).to.equal(SDK.Cards.Faction1.OneManArmy);
     });
+
     it('expect friend fighter to summon a friendsguard from your deck nearby', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -102,6 +104,7 @@ describe('coreshatter', () => {
       expect(nearbyUnits.length).to.equal(1);
       expect(nearbyUnits[0].getId()).to.equal(SDK.Cards.Faction1.Friendsguard);
     });
+
     it('expect lifestream to fully heal a minion and then draw a copy of it from your deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -119,6 +122,7 @@ describe('coreshatter', () => {
       expect(silverguardSquire.getDamage()).to.equal(0);
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Faction1.SilverguardSquire);
     });
+
     it('expect increasing dominance to give your minions incremental +2 health each time its played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -140,6 +144,7 @@ describe('coreshatter', () => {
 
       expect(silverguardSquire.getHP()).to.equal(10);
     });
+
     it('expect rally to give friendly minions in front of and behind your general +2/+2 and cant be spell targeted if they have zeal', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -177,6 +182,7 @@ describe('coreshatter', () => {
 
       expect(knight.getHP()).to.equal(7);
     });
+
     it('expect divinest bonderest to give all friendly minions +attack equal to their health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -197,6 +203,7 @@ describe('coreshatter', () => {
       expect(knight.getATK()).to.equal(8);
       expect(knight.getHP()).to.equal(5);
     });
+
     it('expect friendsguard to turn into a friend fighter if a friendly friend fighter dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -212,6 +219,7 @@ describe('coreshatter', () => {
 
       expect(board.getUnitAtPosition({ x: 1, y: 1 }).getId()).to.equal(SDK.Cards.Faction1.FriendFighter);
     });
+
     it('expect charge into battle to give a unit behind your general celerity', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -229,6 +237,7 @@ describe('coreshatter', () => {
 
       expect(friendFighter.hasModifierClass(ModifierCelerity)).to.equal(true);
     });
+
     it('expect 3hander to give your general +3 attack and to summon a 3 cost minion from your deck nearby when attacking', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -258,6 +267,7 @@ describe('coreshatter', () => {
 
       expect(nearbyAllies[0].getId()).to.equal(SDK.Cards.Faction1.SilverguardKnight);
     });
+
     it('expect indominus to make your general invulnerable but cant move or attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -287,6 +297,7 @@ describe('coreshatter', () => {
       */
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(0);
     });
+
     it('expect suntide expert to cast holy immolation on your damaged minions at the start of your turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -304,6 +315,7 @@ describe('coreshatter', () => {
       expect(silverguardSquire.getDamage()).to.equal(0);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect once more with provoke to summon all friendly minions with provoke that died this game around your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

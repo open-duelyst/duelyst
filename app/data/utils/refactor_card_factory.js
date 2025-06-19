@@ -38,7 +38,6 @@ function writeFile(path, contents, cb) {
   });
 }
 
-const j2j = require('j2j');
 const S = require('string');
 const RSX = require('../resources');
 const CONFIG = require('../../common/config');

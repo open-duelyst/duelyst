@@ -154,6 +154,7 @@ describe('monthlies', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(hand[1]).to.not.exist;
     });
+
     it('expect envybaer to teleport units damaged by it to a random corner of the board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

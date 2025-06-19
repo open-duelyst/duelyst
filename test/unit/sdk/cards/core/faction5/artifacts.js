@@ -46,6 +46,7 @@ describe('faction5', () => {
 
       expect(gameSession.getGeneralForPlayer1().hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect adamantite claws to give general +4 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -56,6 +57,7 @@ describe('faction5', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(6);
     });
+
     it('expect twin fang to give general +2 attack whenever friendly minion or general damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

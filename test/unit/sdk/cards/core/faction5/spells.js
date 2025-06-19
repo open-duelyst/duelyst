@@ -54,6 +54,7 @@ describe('faction5', () => {
       expect(earthwalker.getATK()).to.equal(5);
       expect(earthwalker.getHP()).to.equal(6);
     });
+
     it('expect amplification cannot be cast on minion with full health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -70,6 +71,7 @@ describe('faction5', () => {
       expect(earthwalker.getATK()).to.equal(3);
       expect(earthwalker.getHP()).to.equal(3);
     });
+
     it('expect dampening wave to take away counter attacking from a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -87,6 +89,7 @@ describe('faction5', () => {
 
       expect(abyssalCrawler1.getHP()).to.equal(1);
     });
+
     it('expect flash reincarnation to reduce next minion summoned by 2 and will take 2 damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -109,6 +112,7 @@ describe('faction5', () => {
       const revenant = board.getUnitAtPosition({ x: 1, y: 2 });
       expect(revenant.getHP()).to.equal(4);
     });
+
     it('expect flash reincarnation effect to not persist after minion summoned', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +141,7 @@ describe('faction5', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction4.SpectralRevenant);
       expect(cardDraw.getManaCost()).to.equal(8);
     });
+
     it('expect flash reincarnation effect to not persist after you end a turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -159,6 +164,7 @@ describe('faction5', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Faction4.SpectralRevenant);
       expect(cardDraw.getManaCost()).to.equal(8);
     });
+
     it('expect greater fortitude to give friendly minion +2/+2', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -175,6 +181,7 @@ describe('faction5', () => {
       expect(earthwalker.getATK()).to.equal(5);
       expect(earthwalker.getHP()).to.equal(5);
     });
+
     it('expect diretide frenzy to give minion +1 attack and frenzy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -191,6 +198,7 @@ describe('faction5', () => {
       expect(earthwalker.getATK()).to.equal(4);
       expect(earthwalker.hasModifierClass(SDK.ModifierFrenzy)).to.equal(true);
     });
+
     it('expect dance of dreams to draw a card every time a friendly minion dies this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -220,6 +228,7 @@ describe('faction5', () => {
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.EggMorph);
       expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Spell.EggMorph);
     });
+
     it('expect natural selection to destroy the minion with the lowest attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -235,6 +244,7 @@ describe('faction5', () => {
 
       expect(earthwalker.getIsRemoved()).to.equal(true);
     });
+
     it('expect natural selection to not be castable on minion that does not have lowest attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -251,6 +261,7 @@ describe('faction5', () => {
 
       expect(veteranSilithar.getIsRemoved()).to.equal(false);
     });
+
     it('expect tremor to stun enemy minions in 2x2 grid', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -322,6 +333,7 @@ describe('faction5', () => {
       expect(veteranSilithar3.getATK()).to.equal(4);
       expect(veteranSilithar4.getATK()).to.equal(6);
     });
+
     it('expect chrysallis burst to spawn 4 random eggs (1 of each rarity) in 4 random spots', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -419,6 +431,7 @@ describe('faction5', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(23);
     });
+
     it('expect egg morph to transform a minion into an egg', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -436,6 +449,7 @@ describe('faction5', () => {
       const egg = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(egg.getId()).to.equal(SDK.Cards.Faction5.Egg);
     });
+
     it('expect egg morph to transform an egg into a hatched minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -455,6 +469,7 @@ describe('faction5', () => {
       var earthwalker = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(earthwalker.getId()).to.equal(SDK.Cards.Faction5.EarthWalker);
     });
+
     it('expect mind steal to summon a minion from the enemys deck under your control', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -470,6 +485,7 @@ describe('faction5', () => {
       const earthwalker = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(earthwalker.getId()).to.equal(SDK.Cards.Faction5.EarthWalker);
     });
+
     it('expect mind steal to remove that minion from the enemys deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -489,6 +505,7 @@ describe('faction5', () => {
       expect(earthwalker.getId()).to.equal(SDK.Cards.Faction5.EarthWalker);
       expect(cardsToDraw[0]).to.equal(undefined);
     });
+
     it('expect mind steal to not do anything if enemy has no minions left in deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -504,6 +521,7 @@ describe('faction5', () => {
       const earthwalker = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(earthwalker).to.equal(undefined);
     });
+
     it('expect metamorphosis to turn all enemy minions into 1/1 magma until end of opponents next turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -526,6 +544,7 @@ describe('faction5', () => {
       var earthwalker = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(earthwalker.getId()).to.equal(SDK.Cards.Faction5.EarthWalker);
     });
+
     it('expect metamorphosis to return the transformed enemies back to a fresh copy of the minion with no buffs or debuffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -560,6 +579,7 @@ describe('faction5', () => {
       expect(earthwalker.getHP()).to.equal(3);
       expect(earthwalker.getATK()).to.equal(3);
     });
+
     it('expect plasma storm to kill all friendly and enemy minions with only 3 attack or lower', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -577,6 +597,7 @@ describe('faction5', () => {
       expect(earthwalker.getIsRemoved()).to.equal(true);
       expect(veteranSilithar.getIsRemoved()).to.equal(false);
     });
+
     it('expect fractal replication to create 2 copies of a unit with damage and buffs retained', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -615,6 +636,7 @@ describe('faction5', () => {
       expect(earthwalker3.getATK()).to.equal(5);
       expect(earthwalker3.getHP()).to.equal(6);
     });
+
     it('expect bounded lifeforce to turn general into 10/10', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -629,6 +651,7 @@ describe('faction5', () => {
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(10);
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(10);
     });
+
     it('expect bounded lifeforce to make you unable to heal past 10 health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -651,6 +674,7 @@ describe('faction5', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(10);
     });
+
     it('expect bounded lifeforce to not be dispelable', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -674,6 +698,7 @@ describe('faction5', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(9);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(10);
     });
+
     it('expect bounded lifeforce to preserve artifact buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

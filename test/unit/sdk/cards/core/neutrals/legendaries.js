@@ -42,6 +42,7 @@ describe('core set', () => {
       expect(brightmossGolem.hasModifierClass(SDK.ModifierProvoke)).to.equal(true);
       expect(brightmossGolem2.hasModifierClass(SDK.ModifierProvoke)).to.equal(false);
     });
+
     it('expect golem vanquisher to not give golems provoke when he dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -59,6 +60,7 @@ describe('core set', () => {
       expect(brightmossGolem.hasModifierClass(SDK.ModifierProvoke)).to.equal(false);
       expect(brightmossGolem2.hasModifierClass(SDK.ModifierProvoke)).to.equal(false);
     });
+
     it('expect lady locke to give minions you summon on same turn +1/+1 and provoke', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -86,6 +88,7 @@ describe('core set', () => {
       expect(maw2.getHP()).to.equal(3);
       expect(maw2.getATK()).to.equal(3);
     });
+
     it('expect mirkblood devourer to give nearby summoned minions +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -111,6 +114,7 @@ describe('core set', () => {
       expect(maw2.getHP()).to.equal(3);
       expect(maw2.getATK()).to.equal(3);
     });
+
     it('expect sarlac the eternal to respawn on a random tile when killed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -128,6 +132,7 @@ describe('core set', () => {
       expect(updatedSarlac).to.equal(undefined);
       expect(sarlac.getHP()).to.equal(1);
     });
+
     it('expect spelljammer to allow both players to draw 2 cards at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -153,6 +158,7 @@ describe('core set', () => {
       expect(hand2[0].getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(hand2[1].getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
     });
+
     it('expect a spelljammer you used dominate will on to allow you to draw 2 cards at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -188,6 +194,7 @@ describe('core set', () => {
       expect(hand2[1].getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(hand2[2]).to.equal(undefined);
     });
+
     it('expect zenrui to be able to take control of any minion with 2 attack or less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -206,6 +213,7 @@ describe('core set', () => {
 
       expect(sarlac.ownerId).to.equal('player1_id');
     });
+
     it('expect archon spellbinder to make your opponents spells cost 1 more to cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -221,6 +229,7 @@ describe('core set', () => {
       expect(cardDraw.getBaseCardId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(cardDraw.getManaCost()).to.equal(3);
     });
+
     it('expect eclipse to return damage taken to the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -237,6 +246,7 @@ describe('core set', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect jax to summon 1/1 mini jaxes in every corner', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -258,6 +268,7 @@ describe('core set', () => {
       expect(minijax3.getId()).to.equal(SDK.Cards.Neutral.MiniJax);
       expect(minijax4.getId()).to.equal(SDK.Cards.Neutral.MiniJax);
     });
+
     it('expect dark nemesis to deal 4 damage to the enemy general and gain +4 attack at the start of every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -273,6 +284,7 @@ describe('core set', () => {
       expect(darkNemesis.getATK()).to.equal(8);
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(4);
     });
+
     it('expect paddo to push all nearby minions and generals to random spaces', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -307,6 +319,7 @@ describe('core set', () => {
       expect(general1.getPosition().x !== 6 || general1.getPosition().y !== 2).to.equal(true);
       expect(general2.getPosition().x !== 8 || general2.getPosition().y !== 2).to.equal(true);
     });
+
     it('expect pandora to summon a random 3/3 wolf in a nearby random space at the end of every turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -334,6 +347,7 @@ describe('core set', () => {
 
       expect(wolves).to.equal(1);
     });
+
     it('expect red synja to deal 7 damage to a random nearby enemy minion when your general takes damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -350,6 +364,7 @@ describe('core set', () => {
 
       expect(brightmossGolem.getIsRemoved()).to.equal(true);
     });
+
     it('expect rook to have 6 faction abilites after 6 turns ', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -371,6 +386,7 @@ describe('core set', () => {
       expect(rook.hasModifierClass(SDK.ModifierBanding)).to.equal(true);
       expect(rook.hasModifierClass(DEATHWATCH)).to.equal(true);
     });
+
     it('expect rook to only gain 1 faction ability each turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -405,6 +421,7 @@ describe('core set', () => {
 
       expect(modifiers).to.equal(1);
     });
+
     it('expect rooks zeal to give him and general 5 health', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -436,6 +453,7 @@ describe('core set', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(25);
       expect(rook.getDamage()).to.equal(0);
     });
+
     it('expect zurael the lifegiver to revive all friendly minions that were destroyed during opponents last turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -489,6 +507,7 @@ describe('core set', () => {
       expect(rustCrawler.getOwnerId()).to.equal(gameSession.getPlayer1Id());
       expect(repulsorBeast.getOwnerId()).to.equal(gameSession.getPlayer1Id());
     });
+
     it('expect zurael the lifegiver to not revive tokens', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

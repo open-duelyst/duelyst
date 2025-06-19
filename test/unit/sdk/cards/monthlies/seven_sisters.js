@@ -51,6 +51,7 @@ describe('special events', () => {
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.TrueStrike);
       expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Spell.TrueStrike);
     });
+
     it('expect lyonar sister to put True Strike in action bar when enemy minion or general healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -81,6 +82,7 @@ describe('special events', () => {
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.TrueStrike);
       expect(hand[1].getBaseCardId()).to.equal(SDK.Cards.Spell.TrueStrike);
     });
+
     it('expect songhai sister to increase damage done with spells by 1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -96,6 +98,7 @@ describe('special events', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(21);
     });
+
     it('expect vetruvian sister to increase generals attack by 1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -107,6 +110,7 @@ describe('special events', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(3);
     });
+
     it('expect abyssian sister to heal general for 1 every time an enemy minion or general is damaged', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -127,6 +131,7 @@ describe('special events', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect magmar sister to deal equal amount of damage to all nearby enemies when taking damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -150,6 +155,7 @@ describe('special events', () => {
       expect(secondSun.getDamage()).to.equal(5);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(8);
     });
+
     it('expect vanar sister to give summoned infiltrate minions +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -166,6 +172,7 @@ describe('special events', () => {
       expect(crystalCloaker.getHP()).to.equal(4);
       expect(crystalCloaker.getATK()).to.equal(3);
     });
+
     it('expect vanar sister to not give summoned monster without infiltrate a buff', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

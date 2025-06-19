@@ -59,6 +59,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 4: challenge 2 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerAbyssianChallenge5());
 
@@ -101,6 +102,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 4: challenge 3 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerMagmarChallenge4());
 
@@ -134,6 +136,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 4: challenge 4 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerVetruvianChallenge4());
 
@@ -170,6 +173,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 4: challenge 5 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerVanarChallenge4());
 

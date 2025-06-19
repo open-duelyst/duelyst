@@ -1,6 +1,6 @@
 // this script converts the old cardFactory to fx.json and a new cardFactory without fx data
 // this script needs cardFactory.coffee and a compiled version cardFactory.js in the same directory
-// this script also requires the j2j and string npm modules
+// this script also requires the string npm module
 
 const mkdirp = require('mkdirp');
 const fs = require('fs');
@@ -13,7 +13,6 @@ function writeFile(path, contents, cb) {
   });
 }
 
-const j2j = require('j2j');
 const RSX = require('../resources');
 const CONFIG = require('../../common/config');
 const S = require('../../../node_modules/string');
@@ -83,7 +82,7 @@ function parseCFJPart(part) {
   }
 }
 // save final fx map as JSON
-writeFile('../fx.json', j2j.output(fxMap));
+writeFile('../fx.json', JSON.stringify(fxMap));
 
 // process cardFactory.coffee
 let cardFactoryCoffee = fs.readFileSync('cardFactory.coffee', 'utf8');

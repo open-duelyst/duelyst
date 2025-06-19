@@ -110,6 +110,7 @@ describe('monthlies', () => {
 
       expect(gameSession.getGeneralForPlayer1().hasActiveModifierClass(ModifierForcefield)).to.equal(false);
     });
+
     it('expect dominate will on a grove lion to switch forcefield status between generals', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -129,6 +130,7 @@ describe('monthlies', () => {
       expect(gameSession.getGeneralForPlayer2().hasActiveModifierClass(ModifierForcefield)).to.equal(false);
       expect(gameSession.getGeneralForPlayer1().hasActiveModifierClass(ModifierForcefield)).to.equal(true);
     });
+
     it('expect sphynx to give your opponent a riddle spell', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -144,6 +146,7 @@ describe('monthlies', () => {
       const hand = player2.getDeck().getCardsInHand();
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.Riddle);
     });
+
     it('expect riddle to not allow you to replace while in your hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -170,6 +173,7 @@ describe('monthlies', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[1].getId()).to.equal(SDK.Cards.Spell.TrueStrike);
     });
+
     it('expect riddle to be transfered to opponent after being cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

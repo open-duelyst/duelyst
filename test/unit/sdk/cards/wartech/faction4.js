@@ -47,6 +47,7 @@ describe('wartech', () => {
       expect(silverguardSquire.getIsRemoved()).to.equal(true);
       expect(cacophynos.getIsRemoved()).to.equal(true);
     });
+
     it('expect void talon to successfully build', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -109,6 +110,7 @@ describe('wartech', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[2].getBaseCardId()).to.equal(SDK.Cards.Spell.InnerFocus);
     });
+
     it('expect nightmare operant to put a MECHAZ0R in your deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -128,6 +130,7 @@ describe('wartech', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Neutral.Mechaz0r);
     });
+
     it('expect deathmark to deal 1 damage to a minion, and for the minion to be destroyed when attacked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -150,6 +153,7 @@ describe('wartech', () => {
 
       expect(imperviousGiago.getIsRemoved()).to.equal(true);
     });
+
     it('expect furor chakram to give friendly minions +2 Attack and Frenzy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -164,6 +168,7 @@ describe('wartech', () => {
       expect(silverguardSquire.hasActiveModifierClass(SDK.ModifierFrenzy)).to.equal(true);
       expect(silverguardSquire.getATK()).to.equal(3);
     });
+
     it('expect moonrider to summon a Fiend nearby when you use your BBS', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -184,6 +189,7 @@ describe('wartech', () => {
       expect(fiend.length).to.equal(1);
       expect(fiend[0].getId()).to.equal(SDK.Cards.Faction4.Fiend);
     });
+
     it('expect betrayal to cause enemy minions near the enemy general to attack them', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -200,6 +206,7 @@ describe('wartech', () => {
       expect(cacophynos.getHP()).to.equal(1);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(19);
     });
+
     it('expect abhorrent unbirth to destroy all your minions and  create a 1/1 abomination that gains all their Attack, Health, and keywords', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -313,6 +320,7 @@ describe('wartech', () => {
       const gateToTheUndervault = board.getUnitAtPosition({ x: 1, y: 2 }, true);
       expect(gateToTheUndervault.getIsRemoved()).to.equal(false);
     });
+
     it('expect stygian observer to give friendly minions in your action bar +2/+2 whenever a minion dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -342,6 +350,7 @@ describe('wartech', () => {
       expect(hand[0].getATK()).to.equal(6);
       expect(hand[0].getHP()).to.equal(6);
     });
+
     it('expect infest to deal 2 damage to the enemy General when the targeted minion is destroyed, and spread to nearby enemies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

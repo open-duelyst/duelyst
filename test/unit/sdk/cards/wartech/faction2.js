@@ -51,6 +51,7 @@ describe('wartech', () => {
 
       expect(suzumebachi.getATK()).to.equal(1);
     });
+
     it('expect manakite drifter to give +2 mana the turn it is built', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -68,6 +69,7 @@ describe('wartech', () => {
 
       expect(player1.getRemainingMana()).to.equal(6);
     });
+
     it('expect thunderbomb to deal 3 damage to an enemy and 1 damage to nearby enemies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -83,6 +85,7 @@ describe('wartech', () => {
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(22);
       expect(silverguardSquire.getHP()).to.equal(3);
     });
+
     it('expect assassination protocol to activate a minion but prevent attacking and damaging the General', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -104,6 +107,7 @@ describe('wartech', () => {
       gameSession.executeAction(action);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(25);
     });
+
     it('expect assassination protocol to prevent unit abilities from damaging the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -122,6 +126,7 @@ describe('wartech', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(25);
     });
+
     it('expect dusk rigger to give a mech progress spell on successful backstab', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +142,7 @@ describe('wartech', () => {
 
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Spell.MechProgress);
     });
+
     it('expect mass flight to give all friendly minions flying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -153,6 +159,7 @@ describe('wartech', () => {
       expect(silverguardSquire.hasActiveModifierClass(SDK.ModifierFlying)).to.equal(true);
       expect(silverguardSquire2.hasActiveModifierClass(SDK.ModifierFlying)).to.equal(true);
     });
+
     it('expect ornate hiogi to draw a card when a spell is played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -170,6 +177,7 @@ describe('wartech', () => {
 
       expect(player1.getDeck().getCardInHandAtIndex(0).getId()).to.equal(SDK.Cards.Spell.InnerFocus);
     });
+
     it('expect wildfire tenketsu to give you an Eight Gates when your BBS is used', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -189,6 +197,7 @@ describe('wartech', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getBaseCardId()).to.equal(SDK.Cards.Spell.EightGates);
     });
+
     it('expect substitution to switch your General with a minion', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -206,6 +215,7 @@ describe('wartech', () => {
       expect(gameSession.getGeneralForPlayer1().getPosition().x).to.equal(1);
       expect(gameSession.getGeneralForPlayer1().getPosition().y).to.equal(1);
     });
+
     it('expect bamboozle to turn an enemy into a panddo', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -223,6 +233,7 @@ describe('wartech', () => {
       expect(panddo.getATK()).to.equal(0);
       expect(panddo.getHP()).to.equal(2);
     });
+
     it('expect bamboozle to not work on minions far away from general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -237,6 +248,7 @@ describe('wartech', () => {
 
       expect(valeHunter.getIsRemoved()).to.equal(false);
     });
+
     it('expect bamboozle to refill your action bar if used on a panddo, and destroy that panddo', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -307,6 +319,7 @@ describe('wartech', () => {
       expect(hand1[0].getManaCost()).to.equal(1);
       expect(hand1[1].getManaCost()).to.equal(1);
     });
+
     it('expect seeker squad to create heartseekers diagonally around your General', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

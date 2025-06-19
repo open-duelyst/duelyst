@@ -109,6 +109,7 @@ describe('api', () => {
         .post('/session')
         .expect(400, done);
     });
+
     it('expect 400 if not providing a valid login request parameters', function (done) {
       this.timeout(1500);
       request
@@ -116,6 +117,7 @@ describe('api', () => {
         .set('Client-Version', version)
         .expect(400, done);
     });
+
     it('expect 401 if not providing valid login', function (done) {
       this.timeout(1500);
       request
@@ -222,6 +224,7 @@ describe('api', () => {
           done();
         });
     });
+
     it('returns 304 the next time you try to call it', function (done) {
       this.timeout(2500);
       request
@@ -249,6 +252,7 @@ describe('api', () => {
           done();
         });
     });
+
     it('returns 200 OK for mulliganing quest 1', function (done) {
       this.timeout(2500);
       request
@@ -262,6 +266,7 @@ describe('api', () => {
           done();
         });
     });
+
     it('returns 200 OK for mulliganing quest 2', function (done) {
       this.timeout(2500);
       request
@@ -275,6 +280,7 @@ describe('api', () => {
           done();
         });
     });
+
     it('returns 200 OK for mulliganing quest 3', function (done) {
       this.timeout(2500);
       request
@@ -288,6 +294,7 @@ describe('api', () => {
           done();
         });
     });
+
     it('returns 304 for subsequent attempts to mulligan a quest for the day', function (done) {
       this.timeout(2500);
       request

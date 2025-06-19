@@ -44,6 +44,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 1: challenge 2 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerSonghaiChallenge4());
 
@@ -124,6 +125,7 @@ describe('challenges', () => {
 
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(0);
     });
+
     it('expect gate 1: challenge 5 to be completable', () => {
       UtilsSDK.setupSessionForChallenge(new BeginnerMagmarChallenge3());
 

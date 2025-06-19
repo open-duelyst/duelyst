@@ -22,7 +22,6 @@
   require('app-module-path').addPath(path.join(__dirname, '..'));
   const Promise = require('bluebird');
   const _ = require('underscore');
-  const j2j = require('j2j');
   const helpers = require('./helpers');
   const coffeScript = require('coffeescript/register');
   const Cards = require('app/sdk/cards/cardsLookupComplete.coffee');
@@ -1431,7 +1430,7 @@
       PKGS.all = pkg_all;
 
       // convert packages map to json
-      let PKGS_JSON = j2j.output(PKGS);
+      let PKGS_JSON = JSON.stringify(PKGS);
 
       // preserve escaped quotes and strip all other quotes
       PKGS_JSON = PKGS_JSON.replace(/\\("|')/g, '$1');

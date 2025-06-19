@@ -45,6 +45,7 @@ describe('shimzar', () => {
       expect(silverguardSquire2.getHP()).to.equal(5);
       expect(silverguardSquire3.getHP()).to.equal(5);
     });
+
     it('expect fighting spirit to draw a random f1/neutral battlepet', () => {
       for (let i = 0; i < 100; i++) {
         const player1Deck = [
@@ -77,6 +78,7 @@ describe('shimzar', () => {
         SDK.GameSession.reset();
       }
     });
+
     it('expect fiz restore 2 health to a minion or general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -95,6 +97,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(22);
     });
+
     it('expect lucent beam to deal 2 damage to an enemy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -109,6 +112,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(2);
     });
+
     it('expect lucent beam to deal 4 damage to an enemy if something was healed this turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -128,6 +132,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect sun wisp to draw you a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -143,6 +148,7 @@ describe('shimzar', () => {
       const hand1 = player1.getDeck().getCardsInHand();
       expect(hand1[0].getBaseCardId()).to.equal(SDK.Cards.Neutral.Maw);
     });
+
     it('expect afterblaze to give a friendly minion +2/+4', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -159,6 +165,7 @@ describe('shimzar', () => {
       expect(heartSeeker.getHP()).to.equal(5);
       expect(heartSeeker.getATK()).to.equal(3);
     });
+
     it('expect afterblaze to draw a card when cast on zeal unit', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -216,6 +223,7 @@ describe('shimzar', () => {
 
       expect(valeHunter.getIsRemoved()).to.equal(true);
     });
+
     it('expect sky burial to not destroy a minion nearby general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -230,6 +238,7 @@ describe('shimzar', () => {
 
       expect(valeHunter.getIsRemoved()).to.equal(false);
     });
+
     it('expect sunforge lancer to give your general +1 attack whenever anything is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -263,6 +272,7 @@ describe('shimzar', () => {
       gameSession.executeAction(playCardFromHandAction);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(6);
     });
+
     it('expect ironcliffe heart to transform a friendly minion into an ironcliffe guardian', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -280,6 +290,7 @@ describe('shimzar', () => {
       expect(ironcliffe.getATK()).to.equal(3);
       expect(ironcliffe.getHP()).to.equal(10);
     });
+
     it('expect an ironcliffe hearted minion to not permanently provoke after being bounced back to hand', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -306,6 +317,7 @@ describe('shimzar', () => {
 
       expect(valeHunter2.hasActiveModifierClass(SDK.ModifierProvoked)).to.equal(false);
     });
+
     it('expect ironcliffe heart to leave an exhausted minion exhausted', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -331,6 +343,7 @@ describe('shimzar', () => {
       expect(ironcliffe.getPosition().x).to.equal(1);
       expect(ironcliffe.getPosition().y).to.equal(2);
     });
+
     it('expect ironcliffe heart to leave a non-exhausted minion non-exhausted', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -356,6 +369,7 @@ describe('shimzar', () => {
       expect(ironcliffe.getPosition().x).to.equal(2);
       expect(ironcliffe.getPosition().y).to.equal(3);
     });
+
     it('expect dawns eye to grant +4 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -366,6 +380,7 @@ describe('shimzar', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(6);
     });
+
     it('expect dawns eye to restore durability of all artifacts at the end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -390,6 +405,7 @@ describe('shimzar', () => {
       expect(modifiers[0].getDurability()).to.equal(3);
       expect(modifiers[1].getDurability()).to.equal(3);
     });
+
     it('expect solarius to draw 2 extra cards at end of turn when zealed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -413,6 +429,7 @@ describe('shimzar', () => {
       expect(hand[2].getBaseCardId()).to.equal(SDK.Cards.Spell.Magnetize);
       expect(hand[3]).to.not.exist;
     });
+
     it('expect sky phalanx summon 3 silverguard knights near your general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

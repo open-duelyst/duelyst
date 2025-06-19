@@ -52,6 +52,7 @@ describe('faction6', () => {
       expect(abyssalJuggernaut.getDamage()).to.equal(2);
       expect(abyssalJuggernaut2.getDamage()).to.equal(2);
     });
+
     it('expect coldbiter + winterblade to stun and deal 2 damage to every nearby enemy at end of turn', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -72,6 +73,7 @@ describe('faction6', () => {
       expect(abyssalJuggernaut2.getDamage()).to.equal(2);
       expect(abyssalJuggernaut2.hasActiveModifierClass(SDK.ModifierStunned)).to.equal(true);
     });
+
     it('expect snowpiercer to give general +3 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -82,6 +84,7 @@ describe('faction6', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect winterblade to give general +2 attack and stun enemy minions that you attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

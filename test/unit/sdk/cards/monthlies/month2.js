@@ -68,6 +68,7 @@ describe('monthlies', () => {
       expect(grailmaster.hasModifierClass(SDK.ModifierFlying)).to.equal(true);
       //      expect(grailmaster.hasModifierClass(MODFORCEFIELD)).to.equal(true);
     });
+
     it('expect firestarter to summon 1/1 spellspark on spell cast', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -89,6 +90,7 @@ describe('monthlies', () => {
 
       expect(spellsparks.length).to.equal(2);
     });
+
     it('expect khymera to summon a token minion when taking damage', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -137,6 +139,7 @@ describe('monthlies', () => {
       expect(token2check).to.equal(true);
       expect(token3check).to.equal(true);
     });
+
     it('expect jaxi to leave behind a 1/1 mini-jax in a corner upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

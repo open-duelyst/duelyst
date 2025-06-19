@@ -71,6 +71,7 @@ describe('faction1', () => {
       expect(valeHunter.isRanged()).to.equal(false);
       expect(valeHunter.getHP()).to.equal(1);
     });
+
     it('expect zeal to be active while in range of general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -86,6 +87,7 @@ describe('faction1', () => {
       expect(windbladeAdept.getPosition().y).to.equal(1);
       expect(windbladeAdept.hasActiveModifierClass(SDK.ModifierBanded)).to.equal(false);
     });
+
     it('expect lightchaser to gain +1/+1 when a friendly or enemy minion or general is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -101,6 +103,7 @@ describe('faction1', () => {
       expect(lightChaser.getHP()).to.equal(3);
       expect(lightChaser.getATK()).to.equal(4);
     });
+
     it('expect sunriser to deal 2 damage to all nearby enemy units when a friendly or enemy minion or general is healed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -130,6 +133,7 @@ describe('faction1', () => {
       expect(fourWindsMagi7.getHP()).to.equal(2);
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(23);
     });
+
     it('expect suntide maiden to be healed to full health at end of turn when in zeal range', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -143,6 +147,7 @@ describe('faction1', () => {
       gameSession.executeAction(gameSession.actionEndTurn());
       expect(suntideMaiden.getHP()).to.equal(6);
     });
+
     it('expect elyx stormblade to grant allied minions and general +1 movement', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -153,6 +158,7 @@ describe('faction1', () => {
       expect(elyxStormblade.getSpeed()).to.equal(3);
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(3);
     });
+
     it('expect elyx stormblade grant enemy minions and general +1 movement if mind controlled instead of your own', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -168,6 +174,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(2);
       expect(gameSession.getGeneralForPlayer2().getSpeed()).to.equal(3);
     });
+
     it('expect elyx stormblade to not grant +1 movement to allied minions and general when dead or dispeled', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -180,6 +187,7 @@ describe('faction1', () => {
       expect(elyxStormblade.getSpeed()).to.equal(2);
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(2);
     });
+
     it('expect elyx stormblade to not be able to move when sand trapped', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -194,6 +202,7 @@ describe('faction1', () => {
       expect(elyxStormblade.getSpeed()).to.equal(0);
       expect(gameSession.getGeneralForPlayer2().getSpeed()).to.equal(3);
     });
+
     it('expect elyx stormblade to grant allied minions and general +2 movement if two elyx stormblades out', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -205,6 +214,7 @@ describe('faction1', () => {
       expect(elyxStormblade.getSpeed()).to.equal(4);
       expect(gameSession.getGeneralForPlayer1().getSpeed()).to.equal(4);
     });
+
     it('expect grandmaster zir to become your general when you die', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -220,6 +230,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(12);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect ruby rifter to draw a card and get buffed when general dies with a grandmaster zir on the field', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -245,6 +256,7 @@ describe('faction1', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(hand[1]).to.not.exist;
     });
+
     it('expect songhai to play a zendo and then lyonar to die and turn into zir and zir acts like a battle pet', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -266,6 +278,7 @@ describe('faction1', () => {
 
       expect(grandmasterZir.getPosition().x).to.not.equal(0);
     });
+
     it('expect lyonar to die and turn into zir and songhai plays zendo and zir acts like a battle pet', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -287,6 +300,7 @@ describe('faction1', () => {
 
       expect(grandmasterZir.getPosition().x).to.not.equal(0);
     });
+
     it('expect grandmaster zir to be able to equip artifacts', () => {
       var gameSession = SDK.GameSession.getInstance();
       var board = gameSession.getBoard();
@@ -311,6 +325,7 @@ describe('faction1', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(6);
     });
+
     it('expect grandmaster zir to replace another grandmaster zir when it dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -336,6 +351,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(12);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect with 3 zirs on board each will cycle through becoming the general when one dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -369,6 +385,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(12);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(5);
     });
+
     it('expect with a Grandmaster Zir on board and artifacts equipped that Argeon will lose the artifacts when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -418,6 +435,7 @@ describe('faction1', () => {
 
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(9);
     });
+
     it('expect grandmaster zir to not become your general when you die if its dispeled', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -434,6 +452,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer1().getHP()).to.equal(0);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(2);
     });
+
     it('expect grandmaster zir to become your enemys general when hes mind controlled and enemy general dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -453,6 +472,7 @@ describe('faction1', () => {
       expect(gameSession.getGeneralForPlayer2().getHP()).to.equal(12);
       expect(gameSession.getGeneralForPlayer2().getATK()).to.equal(5);
     });
+
     it('expect grandmaster zir + blind scorch + psychic conduit + own general suicide = temporarily become Zir but then lose the game when psychic conduit wears off', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

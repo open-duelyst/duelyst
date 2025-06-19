@@ -46,6 +46,7 @@ describe('monthlies', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(7);
     });
+
     it('expect zyx to summon a clone of itself in a nearby space', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -64,6 +65,7 @@ describe('monthlies', () => {
       const clone = board.getFriendlyEntitiesAroundEntity(board.getUnitAtPosition({ x: 1, y: 1 }));
       expect(clone[0].getId()).to.equal(SDK.Cards.Neutral.Zyx);
     });
+
     it('expect zyxs clone to also copy buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -88,6 +90,7 @@ describe('monthlies', () => {
       expect(clone[0].getHP()).to.equal(3);
       expect(clone[0].getATK()).to.equal(2);
     });
+
     it('expect ironclad to dispel all enemy minions upon death', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -109,6 +112,7 @@ describe('monthlies', () => {
       expect(shadowWatcher.getIsSilenced()).to.equal(true);
       expect(vorpalReaver.getIsSilenced()).to.equal(true);
     });
+
     it('expect decimus to deal 2 damage to the enemy general whenever they draw a card', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

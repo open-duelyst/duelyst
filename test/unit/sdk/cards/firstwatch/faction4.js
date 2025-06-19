@@ -51,6 +51,7 @@ describe('first watch', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getATK()).to.equal(4);
     });
+
     it('expect bound tormentor to create a copy of a minion the opponent played in your hand that costs 2 less', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -74,6 +75,7 @@ describe('first watch', () => {
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction4.GloomChaser);
       expect(hand[0].getManaCost()).to.equal(0);
     });
+
     it('expect choking tendrils to kill an enemy minion on shadow creep', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -94,6 +96,7 @@ describe('first watch', () => {
 
       expect(phantasm.getIsRemoved()).to.equal(true);
     });
+
     it('expect inkling surge to summon a wraithling', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -109,6 +112,7 @@ describe('first watch', () => {
       const wraithling = board.getUnitAtPosition({ x: 1, y: 1 });
       expect(wraithling.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect inkling surge to draw you a card if you have a wraithling on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -131,6 +135,7 @@ describe('first watch', () => {
       var hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getId()).to.equal(SDK.Cards.Spell.InklingSurge);
     });
+
     it('expect skullprophet to reduce the enemy generals attack by one when they attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -151,6 +156,7 @@ describe('first watch', () => {
 
       expect(gameSession.getGeneralForPlayer2().getATK()).to.equal(1);
     });
+
     it('expect xerroloth to put a 4/4 fiend in your action bar when your opponent casts a spell', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -173,6 +179,7 @@ describe('first watch', () => {
       const hand = player1.getDeck().getCardsInHand();
       expect(hand[0].getId()).to.equal(SDK.Cards.Faction4.Fiend);
     });
+
     it('expect shadowstalk to summon a wraithling behind each enemy', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -202,6 +209,7 @@ describe('first watch', () => {
       expect(wraithling2.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
       expect(wraithling3.getId()).to.equal(SDK.Cards.Faction4.Wraithling);
     });
+
     it('expect nethermeld to teleport an enemy to a friendly shadow creep', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -225,6 +233,7 @@ describe('first watch', () => {
 
       expect(board.getUnitAtPosition({ x: 0, y: 0 }).getId()).to.equal(SDK.Cards.Faction4.Phantasm);
     });
+
     it('expect nekomata to draw you two cards with dying wish when it dies', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -255,6 +264,7 @@ describe('first watch', () => {
       expect(hand[1].getId()).to.equal(SDK.Cards.Faction4.Nekomata);
       expect(hand[2]).to.not.exist;
     });
+
     it('expect corporeal cadence to kill a friendly minion and deal its attack to the enemy general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -271,6 +281,7 @@ describe('first watch', () => {
 
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(6);
     });
+
     it('expect mindlathe to take control of an enemy minion until end of turn after its been attacked', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -298,6 +309,7 @@ describe('first watch', () => {
 
       expect(pandora.getIsRemoved()).to.equal(true);
     });
+
     it('expect doom to kill the enemy general after 3 of their turns have passed', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -319,6 +331,7 @@ describe('first watch', () => {
       gameSession.executeAction(gameSession.actionEndTurn()); // 3
       expect(gameSession.getGeneralForPlayer2().getIsRemoved()).to.equal(true);
     });
+
     it('expect desolator to steal 2 health when entering play and to return to your hand when dying', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

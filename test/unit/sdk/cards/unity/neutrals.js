@@ -42,6 +42,7 @@ describe('unity', () => {
       expect(ghoulie.hasModifierClass(SDK.ModifierProvoke)).to.equal(true);
       expect(brightmossGolem2.hasModifierClass(SDK.ModifierProvoke)).to.equal(false);
     });
+
     it('expect ghoulie to be affected by arcanyst buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -66,6 +67,7 @@ describe('unity', () => {
       expect(ghoulie.getHP()).to.equal(8);
       expect(brightmossGolem.getHP()).to.equal(9);
     });
+
     it('expect ghoulie to be affected by vespyr buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -86,6 +88,7 @@ describe('unity', () => {
       expect(ghoulie.getATK()).to.equal(4);
       expect(ghoulie.getHP()).to.equal(5);
     });
+
     it('expect ghoulie to be affected by dervish buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -108,6 +111,7 @@ describe('unity', () => {
       expect(ghoulie.getATK()).to.equal(5);
       expect(ghoulie.getHP()).to.equal(6);
     });
+
     it('expect ghoulie to be affected by battle pet buffs', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -187,6 +191,7 @@ describe('unity', () => {
       expect(hand1[0].getId()).to.equal(SDK.Cards.Spell.MistDragonSeal);
       expect(hand1[1]).to.not.exist;
     });
+
     it('expect loreweaver to draw an additional copy of a spell drawn from your deck', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -204,6 +209,7 @@ describe('unity', () => {
       expect(hand1[1].getId()).to.equal(SDK.Cards.Spell.PhoenixFire);
       expect(hand1[2]).to.not.exist;
     });
+
     it('expect celebrant to create a mana spring nearby', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -222,6 +228,7 @@ describe('unity', () => {
 
       expect(manatile.getId()).to.equal(SDK.Cards.Tile.BonusMana);
     });
+
     it('expect blue conjurer to put a random arcanyst in your hand whenever you play a spell', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -262,6 +269,7 @@ describe('unity', () => {
       expect(vorpalReaver.getIsSilenced()).to.equal(true);
       expect(gameSession.getGeneralForPlayer1().getATK()).to.equal(2);
     });
+
     it('expect EMP to break all artifacts when played', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -317,6 +325,7 @@ describe('unity', () => {
       expect(golem2.getDamage()).to.equal(4);
       expect(gameSession.getGeneralForPlayer2().getDamage()).to.equal(4);
     });
+
     it('expect feralu to give any friendly minion with a tribe +1/+1', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -345,6 +354,7 @@ describe('unity', () => {
       expect(structure.getATK()).to.equal(0);
       expect(structure.getHP()).to.equal(6);
     });
+
     it('expect trinity wing to draw 3 teachings of the dragon when played with an arcanyst on board', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -368,6 +378,7 @@ describe('unity', () => {
 
       expect(spellCounter).to.equal(3);
     });
+
     it('expect lesson of wisdom to restore 3 health to anything', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -382,6 +393,7 @@ describe('unity', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(2);
     });
+
     it('expect lesson of power to deal 2 damage to anything', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();
@@ -394,6 +406,7 @@ describe('unity', () => {
 
       expect(gameSession.getGeneralForPlayer1().getDamage()).to.equal(2);
     });
+
     it('expect lesson of courage to give your general +1 attack', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

@@ -106,6 +106,7 @@ describe('monthlies', () => {
 
       expect(wings.getATK()).to.equal(3);
     });
+
     it('expect dreamgazer to be summoned into play when replaced and deal 2 damage to own general', () => {
       const gameSession = SDK.GameSession.getInstance();
       const board = gameSession.getBoard();

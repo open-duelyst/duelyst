@@ -25,12 +25,14 @@ describe('basic route checks', () => {
         .get('/session')
         .expect(400, done);
     });
+
     it('returns 400 if wrong client version set', (done) => {
       request
         .get('/session')
         .set('Client-Version', 'wrong')
         .expect(400, done);
     });
+
     it('returns 401 unauthorized if no token provided', (done) => {
       request
         .get('/session')
@@ -46,6 +48,7 @@ describe('basic route checks', () => {
         .set('Client-Version', 'wrong')
         .expect(400, done);
     });
+
     it('returns 401 unauthorized if no token provided', (done) => {
       request
         .get('/api/me/securetest')
@@ -60,12 +63,14 @@ describe('basic route checks', () => {
         .get('/api')
         .expect(400, done);
     });
+
     it('returns 400 if wrong client version set', (done) => {
       request
         .get('/api')
         .set('Client-Version', 'wrong')
         .expect(400, done);
     });
+
     it('returns 401 unauthorized if no token provided', (done) => {
       request
         .get('/api')
