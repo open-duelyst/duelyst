@@ -3,7 +3,6 @@
 (function () {
   const Promise = require('bluebird');
   const _ = require('underscore');
-  const j2j = require('j2j');
   const helpers = require('../../../scripts/helpers');
   const RSX = require('../resources');
   const CONFIG = require('../../common/config');
@@ -59,7 +58,7 @@
     }
 
     // convert resources map to json
-    let resourcesJSON = j2j.output(RSX_ANIM_MAP);
+    let resourcesJSON = JSON.stringify(RSX_ANIM_MAP);
 
     // preserve escaped quotes and strip all other quotes
     resourcesJSON = resourcesJSON.replace(/\\("|')/g, '$1');

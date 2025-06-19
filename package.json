@@ -146,7 +146,6 @@
     "imagemin-zopfli": "4.2.0",
     "inquirer": "0.10.0",
     "istanbul": "^0.3.17",
-    "j2j": "0.1.2",
     "mailchimp": "1.1.0",
     "minimist": "^1.2.0",
     "mocha": "^10.0.0",
