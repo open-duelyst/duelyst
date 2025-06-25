@@ -8,10 +8,8 @@ turn-based strategy hybrid developed by Counterplay Games and released in 2016.
 This repo preserves the state of the game as it existed before the shutdown in
 2020, with improvements targeting the code and infrastructure. The game is
 playable by hosting a local server; there is no public server available at the
-moment.
-
-When playing locally, all factions and cards are unlocked, and you start with
-bonus Gold and Spirit for building new decks.
+moment. When playing locally, all factions and cards are unlocked, and you start
+with bonus Gold and Spirit for building new decks.
 
 For more information, you can join the Discord server for this project
 [here](https://discord.gg/HhUWfZ9cxe).

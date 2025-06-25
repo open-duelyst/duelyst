@@ -14,6 +14,7 @@ changes.
 
 ## Helpful Links <a id="helpful-links" />
 
+- [Quick Start Guide](QUICKSTART.md)
 - [Architecture Documentation](ARCHITECTURE.md)
 - [Open Issues](https://github.com/open-duelyst/duelyst/issues)
 - [Mocha Unit Testing API Reference](https://mochajs.org/api/)
