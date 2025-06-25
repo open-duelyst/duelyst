@@ -41,8 +41,11 @@ jobs:
         restore-keys: |
           node-modules-
 
+    - name: enable corepack
+      run: corepack enable
+
     - name: install node dependencies
-      run: yarn install
+      run: yarn workspaces focus
 
     - name: run unit tests
       run: yarn test:unit

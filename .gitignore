@@ -22,6 +22,7 @@ dump.rdb
 .vagrant/
 .vscode
 /.pgdata
+.yarn/install-state.gz
 
 # OSX-specific artifacts
 .DS_Store

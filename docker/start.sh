@@ -5,7 +5,7 @@
 apt-get update && apt-get install -y python3 make gcc g++ git
 
 # Install dependencies.
-yarn install --production && yarn cache clean
+yarn workspaces focus -A --production && yarn cache clean
 
 # Use exec to take over the PID from the shell, enabling signal handling.
 exec yarn $1
