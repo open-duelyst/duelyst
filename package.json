@@ -3,7 +3,7 @@
   "license": "CC0-1.0",
   "version": "1.97.13",
   "engines": {
-    "yarn": ">= 1.0.0"
+    "yarn": ">= 4.0.0"
   },
   "resolutions": {
     "handlebars": "4.5.3"
@@ -19,7 +19,6 @@
     "backbone.babysitter": "^0.1.0",
     "backbone.marionette": "2.2.2",
     "backbone.wreqr": "^1.0.0",
-    "backfire": "./packages/backbonefire",
     "bcrypt": "^5.0.1",
     "bluebird": "^2.9.13",
     "body-parser": "^1.6.5",
@@ -35,7 +34,6 @@
     "express": "^4.8.5",
     "express-jwt": "^6.0.0",
     "express-real-ip": "^1.0.0",
-    "firebase": "2.0.3",
     "firebase": "2.0.x",
     "firebase-admin": "^11.0.1",
     "font-awesome": "4.7.0",
@@ -77,7 +75,6 @@
     "tcomb": "^2.6.0",
     "tcomb-validation": "^2.3.0",
     "ua-parser-js": "^0.7.3",
-    "underscore": "1.6.0",
     "underscore": "1.6.0",
     "validator": "^3.18.0",
     "velocity-animate": "~1.2.0",
@@ -207,5 +204,6 @@
     "tsc": "tsc",
     "tsc:chroma-js": "tsc -p ./packages/chroma-js/tsconfig.json",
     "watch": "node --max_old_space_size=2048 --stack-size=100000 node_modules/gulp/bin/gulp.js build"
-  }
+  },
+  "packageManager": "yarn@4.9.2"
 }
