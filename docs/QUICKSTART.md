@@ -96,7 +96,7 @@ The value of `<your-firebase-url>` should be
 slash. Including the Firebase URL here enables the game client to communicate
 with the server code.
 
-## Building Desktop Clients
+## Building Desktop Clients <a id="desktop" />
 
 After building the app, the desktop clients can be built separately:
 ```bash
