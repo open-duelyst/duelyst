@@ -1,7 +1,7 @@
 version: "3.9"
 
 x-base-service: &base
-  image: node:18-slim
+  image: node:24-slim
   entrypoint: sh
   working_dir: /app
   volumes:

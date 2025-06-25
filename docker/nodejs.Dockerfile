@@ -1,5 +1,5 @@
 # Slim images are based on Debian, but with a smaller size footprint.
-FROM node:18-slim
+FROM node:24-slim
 
 # Install bcrypt dependencies and git.
 # TODO: Isolate bcrypt dependencies to API images only.
