@@ -11,7 +11,7 @@ fi
 
 # Clean and reinstall dependencies.
 rm -rf node_modules
-yarn install --dev || exit 1
+yarn install || exit 1
 
 # Build the game client.
 NODE_ENV=staging yarn build:withallrsx || exit 1
