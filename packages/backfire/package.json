@@ -1,0 +1,64 @@
+{
+  "name": "backfire",
+  "description": "The officially supported Backbone binding for Firebase",
+  "version": "0.4.0",
+  "author": "Firebase <support@firebase.com> (https://www.firebase.com/)",
+  "homepage": "https://github.com/firebase/backfire/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/firebase/backfire.git"
+  },
+  "bugs": {
+    "url": "https://github.com/firebase/backfire/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://firebase.mit-license.org/"
+    }
+  ],
+  "keywords": [
+    "backbone",
+    "firebase",
+    "realtime"
+  ],
+  "main": "dist/backfire.js",
+  "files": [
+    "dist/**",
+    "LICENSE",
+    "README.md",
+    "package.json"
+  ],
+  "dependencies": {
+    "firebase": "2.0.x"
+  },
+  "devDependencies": {
+    "chai-backbone": "~0.9.2",
+    "coveralls": "^2.11.1",
+    "grunt": "~0.4.1",
+    "grunt-cli": "0.1.13",
+    "grunt-contrib-concat": "^0.5.0",
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt-karma": "^0.8.3",
+    "grunt-notify": "~0.2.7",
+    "istanbul": "^0.3.2",
+    "karma": "~0.12.8",
+    "karma-chai": "0.0.2",
+    "karma-coffee-preprocessor": "~0.1.0",
+    "karma-coverage": "^0.2.6",
+    "karma-failed-reporter": "0.0.2",
+    "karma-mocha": "~0.1.0",
+    "karma-phantomjs-launcher": "~0.1.0",
+    "karma-requirejs": "~0.2.0",
+    "karma-sinon": "~1.0.0",
+    "karma-spec-reporter": "0.0.13",
+    "mocha": "~1.14.0",
+    "requirejs": "~2.1.9"
+  },
+  "scripts": {
+    "test": "grunt test",
+    "travis": "grunt"
+  }
+}
