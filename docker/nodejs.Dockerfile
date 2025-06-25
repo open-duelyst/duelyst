@@ -10,7 +10,7 @@ WORKDIR /duelyst
 COPY package.json /duelyst/
 COPY yarn.lock /duelyst/
 COPY packages /duelyst/packages
-RUN yarn install --production && yarn cache clean
+RUN yarn install && yarn cache clean
 
 # Include the code in the image.
 COPY version.json /duelyst/
