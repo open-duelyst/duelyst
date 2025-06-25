@@ -19,7 +19,7 @@ on:
 jobs:
   integration_tests:
     runs-on: ubuntu-latest
-    container: node:18-slim
+    container: node:24-slim
     services:
       redis:
         image: redis:6

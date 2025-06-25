@@ -26,12 +26,12 @@
 
 To build the code, you will need Node.js, NPM, and Yarn.
 
-For Windows environments, install Volta, Node.js v18, and Yarn v1.
+For Windows environments, install Volta, Node.js v24, and Yarn v1.
 
 For Unix environments:
 ```bash
 curl https://get.volta.sh | bash
-volta install node@18
+volta install node@24
 volta install yarn@1
 ```
 
