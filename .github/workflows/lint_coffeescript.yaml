@@ -37,8 +37,11 @@ jobs:
         restore-keys: |
           node-modules-
 
+    - name: enable corepack
+      run: corepack enable
+
     - name: install node dependencies
-      run: yarn install
+      run: yarn workspaces focus
 
     - name: compile typescript dependencies
       run: yarn tsc:chroma-js

@@ -86,7 +86,9 @@ will appear in the main menu.
 Now that dependencies are installed, you can build the game code and its
 assets. This step will take a few minutes.
 ```bash
-yarn install
+corepack enable
+yarn set version berry
+yarn workspaces focus
 yarn tsc:chroma-js
 FIREBASE_URL=<your-firebase-url> yarn build
 ```
@@ -101,7 +103,7 @@ with the server code.
 After building the app, the desktop clients can be built separately:
 ```bash
 cd desktop
-yarn install
+yarn workspaces focus
 # replace <platform> with 'mac', 'windows', 'linux', or 'all'
 yarn build:<platform>
 yarn start:<platform>
