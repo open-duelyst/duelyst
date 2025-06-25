@@ -595,13 +595,6 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
-"@bower_components/backbone.babysitter@marionettejs/backbone.babysitter#^0.1.0":
-  version "0.1.12"
-  resolved "https://codeload.github.com/marionettejs/backbone.babysitter/tar.gz/efd475f2e915775e790065b80d129f8a5b356c26"
-  dependencies:
-    backbone ">=0.9.9 <=1.3.x"
-    underscore ">=1.4.0 <=1.8.3"
-
 "@bower_components/backbone.marionette@marionettejs/backbone.marionette#2.2.2":
   version "2.2.2"
   resolved "https://codeload.github.com/marionettejs/backbone.marionette/tar.gz/d0244db89fb8a5bce8f1422a5294b25c0d6cb459"
@@ -610,13 +603,6 @@
     backbone.babysitter "^0.1.0"
     backbone.wreqr "^1.0.0"
     underscore "1.4.4 - 1.6.0"
-
-"@bower_components/backbone.wreqr@marionettejs/backbone.wreqr#^1.0.0":
-  version "1.4.0"
-  resolved "https://codeload.github.com/marionettejs/backbone.wreqr/tar.gz/ce4665f7e13ec46d66fe9215f5a91199e29dff51"
-  dependencies:
-    backbone ">=0.9.9 <=1.3.x"
-    underscore ">=1.3.3 <=1.8.3"
 
 "@bower_components/backbone@jashkenas/backbone#1.1.2":
   version "1.1.2"

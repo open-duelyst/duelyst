@@ -11,9 +11,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.188.0",
     "@bower_components/backbone": "jashkenas/backbone#1.1.2",
-    "@bower_components/backbone.babysitter": "marionettejs/backbone.babysitter#^0.1.0",
     "@bower_components/backbone.marionette": "marionettejs/backbone.marionette#2.2.2",
-    "@bower_components/backbone.wreqr": "marionettejs/backbone.wreqr#^1.0.0",
     "@bower_components/backfire": "firebase/backfire#~0.4.0",
     "@bower_components/bootstrap-sass-official": "twbs/bootstrap-sass#3.4.3",
     "@bower_components/firebase": "firebase/firebase-bower#2.0.x",
