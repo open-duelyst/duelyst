@@ -9,6 +9,7 @@ serviceAccountKey.json
 /dist
 node_modules
 .awspublish*
+.yarn
 
 # Development artifacts
 *.log
