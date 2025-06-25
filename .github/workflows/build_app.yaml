@@ -30,6 +30,7 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 24
+        cache: yarn
 
     # Caching node_modules saves 50s on builds which don't modify dependencies.
     # Compared to yarn caching, it saves an additional 27 seconds.
