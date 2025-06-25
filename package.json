@@ -35,7 +35,6 @@
     "express-jwt": "^6.0.0",
     "express-real-ip": "^1.0.0",
     "firebase": "2.0.3",
-    "firebase": "2.0.x",
     "firebase-admin": "^11.0.1",
     "font-awesome": "4.7.0",
     "form-urlencoded": "^1.2.1",
