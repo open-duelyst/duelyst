@@ -101,8 +101,8 @@ with the server code.
 After building the app, the desktop clients can be built separately:
 ```bash
 cd desktop
-yarn install --include=dev
-# replace <platform> with 'mac', 'macm1', 'windows', 'linux', or 'all'
+yarn install --dev
+# replace <platform> with 'mac', 'windows', 'linux', or 'all'
 yarn build:<platform>
 yarn start:<platform>
 ```
