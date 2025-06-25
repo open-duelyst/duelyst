@@ -56,7 +56,7 @@ need extra capacity (1 more instance is enough) to allow for graceful
 deployments with no downtime, as well as configuration to automatically shut
 down old tasks once new tasks are healthy.
 
-Until this configuration is in place, we can manually kick ECS services to get
+Until this configuration is in place, we can manually cycle ECS services to get
 things deployed:
 
 - In the AWS ECS UI, view the running tasks in the cluster and stop any old

@@ -1,9 +1,12 @@
 # OpenDuelyst Infrastructure Documentation
 
+This directory contains documentation for deploying OpenDuelyst servers to AWS
+using [Terraform](https://developer.hashicorp.com/terraform).
+
 - [Provisioning Infrastructure with Terraform](TERRAFORM.md)
-- [PostgreSQL Database](POSTGRES.md)
-- [Deploying OpenDuelyst Builds](DEPLOYMENTS.md)
 - [Cloud Cost Management](COSTS.md)
+- [Deploying OpenDuelyst to AWS](DEPLOYS.md)
+- [PostgreSQL Database](POSTGRES.md)
 
 ## Infrastructure Diagram
 
