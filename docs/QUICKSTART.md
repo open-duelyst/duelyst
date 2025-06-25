@@ -20,7 +20,6 @@
 - [Socket.io v4 Documentation](https://socket.io/docs/v4/)
 - [JSON Web Token Documentation](https://jwt.io/)
 
-
 ## Installing Dependencies <a id="dependencies" />
 
 ### Node.js
@@ -60,7 +59,6 @@ configuration needed. From your Firebase project settings page, click the
 
 First, click "Database Secrets" and create a new legacy token.
 Create a file named `.env` in the repo root with the following contents:
-
 ```bash
 FIREBASE_URL=<YOUR_FIREBASE_URL>
 FIREBASE_LEGACY_TOKEN=<YOUR_FIREBASE_LEGACY_TOKEN>
@@ -98,17 +96,24 @@ The value of `<your-firebase-url>` should be
 slash. Including the Firebase URL here enables the game client to communicate
 with the server code.
 
-## Building Desktop Clients                                                     
-                                                                                
-After building the app, the desktop clients can be built separately:            
-```bash                                                                         
-cd desktop                                                                      
-# replace <platform> with 'mac', 'macm1', 'windows', 'linux', or 'all'          
-yarn build:<platform>                                                           
-yarn start:<platform>                                                           
-```                                                                             
-                                                                                
-Prebuilt desktop clients can also be downloaded                                 
+## Building Desktop Clients
+
+After building the app, the desktop clients can be built separately:
+```bash
+cd desktop
+yarn install --include=dev
+# replace <platform> with 'mac', 'macm1', 'windows', 'linux', or 'all'
+yarn build:<platform>
+yarn start:<platform>
+```
+
+The compiled client will be in the `dist/src` directory.
+
+On Mac or Linux, install Wine to enable building Windows desktop clients. On
+Mac, use `brew install --cask wine-stable`. On Linux, install `libgconf-2-4`
+in order to avoid some build errors.
+
+Prebuilt desktop clients can also be downloaded
 [here](https://github.com/open-duelyst/duelyst/releases).
 
 ## Starting the Game Server with Docker <a id="start" />
