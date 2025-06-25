@@ -38,7 +38,7 @@ jobs:
           node-modules-
 
     - name: install node dependencies
-      run: yarn install --dev
+      run: yarn install
 
     - name: compile typescript dependencies
       run: yarn tsc:chroma-js

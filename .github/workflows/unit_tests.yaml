@@ -42,7 +42,7 @@ jobs:
           node-modules-
 
     - name: install node dependencies
-      run: yarn install --dev
+      run: yarn install
 
     - name: run unit tests
       run: yarn test:unit
