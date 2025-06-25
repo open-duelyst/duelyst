@@ -595,67 +595,6 @@
     "@babel/helper-string-parser" "^7.27.1"
     "@babel/helper-validator-identifier" "^7.27.1"
 
-"@bower_components/backbone.babysitter@marionettejs/backbone.babysitter#^0.1.0":
-  version "0.1.12"
-  resolved "https://codeload.github.com/marionettejs/backbone.babysitter/tar.gz/efd475f2e915775e790065b80d129f8a5b356c26"
-  dependencies:
-    backbone ">=0.9.9 <=1.3.x"
-    underscore ">=1.4.0 <=1.8.3"
-
-"@bower_components/backbone.marionette@marionettejs/backbone.marionette#2.2.2":
-  version "2.2.2"
-  resolved "https://codeload.github.com/marionettejs/backbone.marionette/tar.gz/d0244db89fb8a5bce8f1422a5294b25c0d6cb459"
-  dependencies:
-    backbone "1.0.0 - 1.1.2"
-    backbone.babysitter "^0.1.0"
-    backbone.wreqr "^1.0.0"
-    underscore "1.4.4 - 1.6.0"
-
-"@bower_components/backbone.wreqr@marionettejs/backbone.wreqr#^1.0.0":
-  version "1.4.0"
-  resolved "https://codeload.github.com/marionettejs/backbone.wreqr/tar.gz/ce4665f7e13ec46d66fe9215f5a91199e29dff51"
-  dependencies:
-    backbone ">=0.9.9 <=1.3.x"
-    underscore ">=1.3.3 <=1.8.3"
-
-"@bower_components/backbone@jashkenas/backbone#1.1.2":
-  version "1.1.2"
-  resolved "https://codeload.github.com/jashkenas/backbone/tar.gz/53f77901a4ea9c7cf75d3db93ddddf491998d90f"
-  dependencies:
-    underscore ">=1.5.0"
-
-"@bower_components/backfire@firebase/backfire#~0.4.0":
-  version "0.4.0"
-  resolved "https://codeload.github.com/firebase/backfire/tar.gz/24f4289845b6960edce983ababa0fbf3d235a0fc"
-  dependencies:
-    firebase "2.0.x"
-
-"@bower_components/bootstrap-sass-official@twbs/bootstrap-sass#3.4.3":
-  version "3.4.3"
-  resolved "https://codeload.github.com/twbs/bootstrap-sass/tar.gz/6b0ca5025c64f2e5696c8719cfce7148c78d0a50"
-
-"@bower_components/firebase@firebase/firebase-bower#2.0.x":
-  version "0.0.0"
-  resolved "https://codeload.github.com/firebase/firebase-bower/tar.gz/e9b8b4f85de46362aa4af6556c1c3639e7ebe038"
-
-"@bower_components/font-awesome@FortAwesome/Font-Awesome#4.7.0":
-  version "4.7.0"
-  resolved "https://codeload.github.com/FortAwesome/Font-Awesome/tar.gz/a8386aae19e200ddb0f6845b5feeee5eb7013687"
-
-"@bower_components/jquery@components/jquery#~2.0.3":
-  version "2.0.3"
-  resolved "https://codeload.github.com/components/jquery/tar.gz/452a56b52b8f4a032256cdb8b6838f25f0bdb3d2"
-
-"@bower_components/underscore@jashkenas/underscore#1.6.0":
-  version "1.6.0"
-  resolved "https://codeload.github.com/jashkenas/underscore/tar.gz/1f4bf626f23a99f7a676f5076dc1b1475554c8f7"
-
-"@bower_components/velocity@julianshapiro/velocity#~1.2.0":
-  version "1.2.3"
-  resolved "https://codeload.github.com/julianshapiro/velocity/tar.gz/1ad0a8196fa973f96e347a9b7f5bdaf7498ed1a6"
-  dependencies:
-    jquery ">= 1.4.3"
-
 "@choojs/findup@^0.2.0":
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/@choojs/findup/-/findup-0.2.1.tgz#ac13c59ae7be6e1da64de0779a0a7f03d75615a3"
@@ -2931,6 +2870,16 @@ backbone.babysitter@^0.1.0:
     backbone ">=0.9.9 <=1.3.x"
     underscore ">=1.4.0 <=1.8.3"
 
+backbone.marionette@2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/backbone.marionette/-/backbone.marionette-2.2.2.tgz#d91060225f7101fdb4ca9af1955d7f017c4dc223"
+  integrity sha512-TfxACff0x0YTu8W9/dsyv1QQEVY0uE7dghaubFTa1EfTyd1v7uFqUEAhJIAOqIofTwKwOlCkCgKaoMTe4Y6Qiw==
+  dependencies:
+    backbone "1.0.0 - 1.1.2"
+    backbone.babysitter "^0.1.0"
+    backbone.wreqr "^1.0.0"
+    underscore "1.4.4 - 1.6.0"
+
 backbone.wreqr@^1.0.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/backbone.wreqr/-/backbone.wreqr-1.4.0.tgz#7682030c9aaf090ecd873b21dbf48501693b2696"
@@ -2939,7 +2888,7 @@ backbone.wreqr@^1.0.0:
     backbone ">=0.9.9 <=1.3.x"
     underscore ">=1.3.3 <=1.8.3"
 
-"backbone@1.0.0 - 1.1.2":
+"backbone@1.0.0 - 1.1.2", backbone@1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/backbone/-/backbone-1.1.2.tgz#c2c04c66bf87268fb82c177acebeff7d37ba6f2d"
   integrity sha512-bdiYFVF+mXQ3712Urje2uvYClLPXOd2jsvp8AHlPyMKqpHRPCmCxZf099kCRadhA2sMxp761XB2aZ0/HYF4fDg==
@@ -2959,6 +2908,9 @@ backbone@1.2.1:
   integrity sha512-aK+k3TiU4tQDUrRCymDDE7XDFnMVuyE6zbZ4JX7mb4pJbQTVOH997/kyBzb8wB2s5Y/Oh7EUfj+sZhwRPxWwow==
   dependencies:
     underscore ">=1.8.3"
+
+backfire@./packages/backfire:
+  version "0.0.0"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -3212,6 +3164,11 @@ body-parser@1.20.3, body-parser@^1.12.2, body-parser@^1.6.5:
     raw-body "2.5.2"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+bootstrap-sass@3.4.3:
+  version "3.4.3"
+  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.3.tgz#742cc8f4286303ae9fe8e4c95237321eae73766c"
+  integrity sha512-vPgFnGMp1jWZZupOND65WS6mkR8rxhJxndT/AcMbqcq1hHMdkcH4sMPhznLzzoHOHkSCrd6J9F8pWBriPCKP2Q==
 
 bowser@^2.11.0:
   version "2.11.0"
@@ -6799,13 +6756,6 @@ firebase@2.0.3:
   dependencies:
     faye-websocket ">=0.6.0"
 
-firebase@2.0.x:
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/firebase/-/firebase-2.0.6.tgz#83b4753e5596995150ae0892d963153fc1490436"
-  integrity sha512-zFB0kCDeF/i4Tasth+D7LsvRV+j7uaIHNucdA9CphIPTmfRVerMEEJ+3PKBJahpmpRz4pRsJXemRQsYxYPt23Q==
-  dependencies:
-    faye-websocket ">=0.6.0"
-
 first-chunk-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/first-chunk-stream/-/first-chunk-stream-1.0.0.tgz#59bfb50cd905f60d7c394cd3d9acaab4e6ad934e"
@@ -6849,6 +6799,11 @@ flush-write-stream@^1.0.2:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
+
+font-awesome@4.7.0:
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/font-awesome/-/font-awesome-4.7.0.tgz#8fa8cf0411a1a31afd07b06d2902bb9fc815a133"
+  integrity sha512-U6kGnykA/6bFmg1M/oT9EkFeIYv7JlX3bozwQJWiiLz6L0w3F5vBVPxHlwyX/vtNq1ckcpRKOB9f2Qal/VtFpg==
 
 for-each@^0.3.3, for-each@^0.3.5:
   version "0.3.5"
@@ -9522,6 +9477,11 @@ jpegtran-bin@^3.0.0:
     bin-build "^2.0.0"
     bin-wrapper "^3.0.0"
     logalot "^2.0.0"
+
+jquery@2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-2.1.4.tgz#228bde698a0c61431dc2630a6a154f15890d2317"
+  integrity sha512-wWR+eCq/T/Qt0NcFyM+QVho0ZVzWxFYANijmSMImXiM5mjr1aOaf4SF0eOEPc92bbK2L2vDpxw3lIszus7eO8Q==
 
 "jquery@>= 1.4.3":
   version "3.7.1"
@@ -15430,6 +15390,13 @@ vary@^1, vary@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
+
+velocity-animate@~1.2.0:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/velocity-animate/-/velocity-animate-1.2.3.tgz#f8b7c66fef9cfd5acfa605cdf0adca8e302db728"
+  integrity sha512-Ualq2Xec/7wa/6QH1COw5WEOOIwiJzKzwtW5LbwvNuhyzwDVK/hOZEyOJ6gD6HfXk9Tjc9IE5qXqtlvXtFcI+Q==
+  dependencies:
+    jquery ">= 1.4.3"
 
 verror@1.10.0:
   version "1.10.0"
