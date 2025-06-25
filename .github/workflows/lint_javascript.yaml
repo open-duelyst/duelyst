@@ -34,7 +34,7 @@ jobs:
     - name: install node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18
+        node-version: 24
 
     # Caching node_modules saves 50s on builds which don't modify dependencies.
     # Compared to yarn caching, it saves an additional 27 seconds.
@@ -47,7 +47,7 @@ jobs:
           node-modules-
 
     - name: install node dependencies
-      run: yarn install --dev
+      run: yarn install
 
     - name: compile typescript dependencies
       run: yarn tsc:chroma-js

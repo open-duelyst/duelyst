@@ -1,7 +1,7 @@
 # Helper scripts for performing a full rebuild before starting the backend.
 
 # Install dependencies.
-yarn install --dev || exit 1
+yarn install || exit 1
 
 # Build the game client.
 if [ -z $FIREBASE_URL ]; then
