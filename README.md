@@ -5,55 +5,50 @@
 This is the source code for Duelyst, a digital collectible card game and
 turn-based strategy hybrid developed by Counterplay Games and released in 2016.
 
-## Running the Game Locally
+This repo preserves the state of the game as it existed before the shutdown in
+2020, with improvements targeting the code and infrastructure. The game is
+playable by hosting a local server; there is no public server available at the
+moment.
 
-If you'd like to run the game locally or contribute to OpenDuelyst, check out
-our [Documentation](docs/README.md), especially the [Roadmap](docs/ROADMAP.md)
-and [Contributor Guide](docs/CONTRIBUTING.md).
+When playing locally, all factions and cards are unlocked, and you start with
+bonus Gold and Spirit for building new decks.
 
-You can also join the OpenDuelyst developer Discord server
-[here](https://discord.gg/HhUWfZ9cxe). This Discord server is focused on the
-development of OpenDuelyst, and has channels for frontend, backend, and
-infrastructure discussions, but it is open for anyone to join.
+For more information, you can join the Discord server for this project
+[here](https://discord.gg/HhUWfZ9cxe).
 
-## Downloading the Desktop Clients
+## Quick Start
 
-Desktop clients for Windows, Mac, and Linux can be downloaded on the
-[Releases](https://github.com/open-duelyst/duelyst/releases) page. They can be
-used against your local environment.
+Running Duelyst locally requires a free Google Firebase account, software for
+running Docker containers, and a Node.js environment. For detailed instructions,
+see the [Quick Start Guide](docs/QUICKSTART.md).
 
 ## Playing on Android or iOS
 
-We have basic support for playing on mobile web currently. To hide the
-status/navigation bar in Chrome or Safari, open the game and select "Add to
-Home Screen". When you open the game from the home screen, the status bar will
-be hidden.
+The game can currently be played in Chrome or Safari on mobile platforms. Use
+the "Add to Home Screen" browser feature to hide the status bar during gameplay.
 
 ## Filing Issues and Reporting Bugs
 
 If you encounter a bug and would like to report it, first check the
 [Open Issues](https://github.com/open-duelyst/duelyst/issues/) to see if the
-bug has already been reported. If not, feel free to create a new issue with the
-`bug` label.
+bug has already been reported. If not, create a new issue with the `bug` label.
 
 If you would like to request a technical feature or enhancement to the code,
 you can create a new issue with the `enhancement` label.
 
-Since OpenDuelyst is currently focused on recreating the game as it last
-existed in v1.96.17, please avoid creating feature requests related to balance
-changes.
+## Contributing
 
-## Localization
+If you're interested in contributing to the project, check out the
+[Contributor Guide](docs/CONTRIBUTING.md). This has some important details
+on technical issues and programming practices.
+
+### Localization
 
 The game currently includes English and German localization. If you'd like to
 contribute translations for another language, take a look at the
 `app/localization/locales` directory. You can copy the `en` folder and start
 updating strings for the new language, then submit a Pull Request with your
-contribution.
-
-There are about 4,500 localized strings, so this can also be done a little bit
-at a time. Once the translations are in, we can help get the language included
-in the game.
+contributions.
 
 ## License
 

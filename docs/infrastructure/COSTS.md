@@ -127,16 +127,6 @@ Redis:
 - This instance type has 2 vCPU and 500MB of memory.
 - After the Free Tier expires, this is around $12/mo
 
-### Self-hosted Redis and Postgres (about $4/mo)
-
-In order to avoid the $24/mo in billing after the Free Tier expires, we can run
-Redis and Postgres in ECS instead. This comes with its own costs, including:
-
-- One `t4g.micro` Spot instance to provide the compute ($1.83/mo)
-- One DNS hosted zone for service discovery via AWS CloudMap ($0.50/mo)
-- One 8GB EBS disk for persisting Postgres data across containers ($0.64/mo)
-- 8GB EBS disk snapshots for backups ($0.40/mo each)
-
 ### CDN: S3 and CloudFront ($0/month)
 
 S3:
