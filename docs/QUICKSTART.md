@@ -46,6 +46,7 @@ volta install node@24
 volta install yarn@1
 corepack enable
 corepack yarn set version berry
+corepack yarn add --dev cross-env
 ```
 
 ### Google Firebase
