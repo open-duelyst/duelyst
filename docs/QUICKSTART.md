@@ -22,24 +22,36 @@
 
 ## Installing Dependencies <a id="dependencies" />
 
+### Volta
+https://volta.sh/
+
+For Unix environments:
+```bash
+curl https://get.volta.sh | bash
+```
+
+For Windows environments:
+```bash
+winget install Volta.Volta
+```
+
 ### Node.js
 
 To build the code, you will need Node.js, NPM, and Yarn.
 
 For Windows environments, install Volta, Node.js v24, and Yarn v1.
 
-For Unix environments:
 ```bash
-curl https://get.volta.sh | bash
 volta install node@24
 volta install yarn@1
 corepack enable
-yarn set version berry
+corepack yarn set version berry
+corepack yarn add --dev cross-env
 ```
 
 ### Google Firebase
 
-In order to successfully run the game, you will need a 
+In order to successfully run the game, you will need a
 [Firebase Realtime Database](https://firebase.google.com/docs/database/). This
 is a free service which requires a Google Firebase account.
 
@@ -95,9 +107,9 @@ will appear in the main menu.
 Now that dependencies are installed, you can build the game code and its
 assets. This step will take a few minutes.
 ```bash
-yarn workspaces focus
-yarn tsc:chroma-js
-FIREBASE_URL=<your-firebase-url> yarn build
+corepack yarn workspaces focus
+corepack yarn tsc:chroma-js
+cross-env FIREBASE_URL=<your-firebase-url> corepack yarn build
 ```
 
 The value of `<your-firebase-url>` should be
@@ -110,10 +122,10 @@ with the server code.
 After building the app, the desktop clients can be built separately:
 ```bash
 cd desktop
-yarn workspaces focus
+corepack yarn workspaces focus
 # replace <platform> with 'mac', 'windows', 'linux', or 'all'
-yarn build:<platform>
-yarn start:<platform>
+corepack yarn build:<platform>
+corepack yarn start:<platform>
 ```
 
 The compiled client will be in the `dist/src` directory.

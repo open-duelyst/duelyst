@@ -6,8 +6,8 @@ COPY .yarnrc.yml /duelyst/
 COPY yarn.lock /duelyst/
 COPY packages /duelyst/packages
 RUN corepack enable
-RUN yarn set version berry
-RUN yarn install && yarn cache clean
+RUN corepack yarn set version berry
+RUN corepack yarn workspaces focus -A && corepack yarn cache clean
 
 COPY version.json /duelyst/
 COPY app/*.coffee /duelyst/app/
