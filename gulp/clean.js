@@ -19,7 +19,7 @@ export function web() {
     'dist/src/duelyst.css',
     'dist/src/index.html',
     'dist/src/vendor.js',
-    'dist/src/resources/locales'
+    'dist/src/resources/locales',
   ]);
 }
 
