@@ -19,12 +19,8 @@ export function web() {
     'dist/src/duelyst.css',
     'dist/src/index.html',
     'dist/src/vendor.js',
+    'dist/src/resources/locales'
   ]);
-}
-
-// Cleans out localization files only
-export function locales() {
-  return del('dist/src/resources/locales');
 }
 
 // Cleans out git remotes from the dist folder

@@ -38,7 +38,6 @@ gutil.log(`${gutil.colors.yellow(`GULP :: minification = ${opts.minify}`)}`);
 gulp.task('clean:all', clean.all);
 gulp.task('clean:app', clean.app);
 gulp.task('clean:web', clean.web);
-gulp.task('clean:locales', clean.locales);
 gulp.task('clean:git', clean.git);
 gulp.task('css', css);
 gulp.task('html', html.main);
@@ -135,8 +134,7 @@ gulp.task('autowatch', (cb) => {
 // Define aliases for task groupings
 gulp.task('source', gulp.series(
   validateFirebase,
-  gulp.parallel('vendor', 'css', 'html'),
-  'localization:copy',
+  gulp.parallel('vendor', 'css', 'html', 'localization:copy'),
   'rsx:packages',
   'js',
 ));
@@ -161,11 +159,7 @@ gulp.task('build:app', gulp.series(
 ));
 gulp.task('build:web', gulp.series(
   'clean:web',
-  'clean:locales',
-  'html',
-  'css',
-  'vendor',
-  'localization:copy',
+  gulp.parallel('vendor', 'css', 'html', 'localization:copy'),
 ));
 
 // register standalone page
