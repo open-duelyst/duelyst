@@ -8,7 +8,34 @@ moment = require 'moment'
 
 # Collect valid boss IDs.
 BossIds = Object.values(Cards.Boss)
-BrokenBossIds = [200106] # These bosses are missing resources and cause login crashes.
+BrokenBossIds = [
+  Cards.Boss.Boss6Wings,
+  Cards.Boss.Boss6Chassis,
+  Cards.Boss.Boss6Sword,
+  Cards.Boss.Boss6Helm,
+  Cards.Boss.Boss6Prime,
+  Cards.Boss.Boss9Clone,
+  Cards.Boss.Boss12Idol,
+  Cards.Boss.Boss24Valiant,
+  Cards.Boss.Boss26Companion,
+  Cards.Boss.Boss31Treat1,
+  Cards.Boss.Boss31Treat2,
+  Cards.Boss.Boss31Treat3,
+  Cards.Boss.Boss31Haunt1,
+  Cards.Boss.Boss31Haunt2,
+  Cards.Boss.Boss31Haunt3,
+  Cards.Boss.Boss32_2,
+  Cards.Boss.Boss33_1,
+  Cards.Boss.Boss33_2,
+  Cards.Boss.Boss33_3,
+  Cards.Boss.Boss33_4,
+  Cards.Boss.Boss34_2,
+  Cards.Boss.Boss36_2,
+  Cards.Boss.Boss36_3,
+  Cards.Boss.FrostfireImp,
+  Cards.Boss.FrostfireTiger,
+  Cards.Boss.FrostfireSnowchaser,
+] # These bosses are missing resources and cause login crashes.
 BossIds = BossIds.filter (id) -> return BrokenBossIds.indexOf(id) == -1
 
 oneDay = 24 * 60 * 60 * 1000 # Milliseconds.
