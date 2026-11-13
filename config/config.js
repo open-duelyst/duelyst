@@ -81,9 +81,8 @@ const config = convict({
   },
   jwt: {
     tokenExpiration: {
-      doc: 'Time (in minutes) before tokens expire.',
-      format: 'int',
-      default: 60 * 24 * 14, // 14 days in minutes
+      doc: 'Time (in seconds or an string describing a time span [rauchg/ms]) before tokens expire.',
+      default: '14d',
       env: 'TOKEN_EXPIRES',
     },
   },
