@@ -25,13 +25,13 @@ class RarityFactory
         id: Rarity.Common
         name: i18next.t("rarity.rarity_common")
         devName: "common"
-        spiritCost: 20
+        spiritCost: 40
         spiritReward: 10
-        spiritCostPrismatic: 100
-        spiritRewardPrismatic: 50
+        spiritCostPrismatic: 200
+        spiritRewardPrismatic: 40
         cosmeticHardPrice: 100
-        spiritCostCosmetic: 250
-        spiritRewardCosmetic: 125
+        spiritCostCosmetic: 500
+        spiritRewardCosmetic: 50
         bonusRewardCount: 1
         color: {r: 255, g: 255, b: 255}
         hex: "#CCCCCC"
@@ -42,13 +42,13 @@ class RarityFactory
         id: Rarity.Rare
         name: i18next.t("rarity.rarity_rare")
         devName: "rare"
-        spiritCost: 50
-        spiritReward: 25
-        spiritCostPrismatic: 175
-        spiritRewardPrismatic: 90
+        spiritCost: 100
+        spiritReward: 20
+        spiritCostPrismatic: 350
+        spiritRewardPrismatic: 100
         cosmeticHardPrice: 150
-        spiritCostCosmetic: 500
-        spiritRewardCosmetic: 250
+        spiritCostCosmetic: 1000
+        spiritRewardCosmetic: 100
         bonusRewardCount: 1
         color: {r: 56, g: 93, b: 255}
         hex: "#6dcff6"
@@ -59,13 +59,13 @@ class RarityFactory
         id: Rarity.Epic
         name: i18next.t("rarity.rarity_epic")
         devName: "epic"
-        spiritCost: 175
-        spiritReward: 90
-        spiritCostPrismatic: 450
-        spiritRewardPrismatic: 225
+        spiritCost: 350
+        spiritReward: 100
+        spiritCostPrismatic: 900
+        spiritRewardPrismatic: 350
         cosmeticHardPrice: 200
-        spiritCostCosmetic: 750
-        spiritRewardCosmetic: 375
+        spiritCostCosmetic: 1500
+        spiritRewardCosmetic: 150
         bonusRewardCount: 2
         color: {r: 144, g: 41, b: 255}
         hex: "#f49ac1"
@@ -76,13 +76,13 @@ class RarityFactory
         id: Rarity.Legendary
         name: i18next.t("rarity.rarity_legendary")
         devName: "legendary"
-        spiritCost: 450
-        spiritReward: 225
-        spiritCostPrismatic: 900
-        spiritRewardPrismatic: 450
+        spiritCost: 900
+        spiritReward: 350
+        spiritCostPrismatic: 1800
+        spiritRewardPrismatic: 900
         cosmeticHardPrice: 400
-        spiritCostCosmetic: 1500
-        spiritRewardCosmetic: 750
+        spiritCostCosmetic: 3000
+        spiritRewardCosmetic: 350
         bonusRewardCount: 2
         color: {r: 255, g: 120, b: 0}
         hex: "#ffac49"
@@ -105,10 +105,10 @@ class RarityFactory
         id: Rarity.Mythron
         devName: "mythron"
         name: "Mythron"
-        spiritCost: 600
-        spiritReward: 300
-        spiritCostPrismatic: 1200
-        spiritRewardPrismatic: 600
+        spiritCost: 1200
+        spiritReward: 0
+        spiritCostPrismatic: 2400
+        spiritRewardPrismatic: 1200
         bonusRewardCount: 0
         color: {r: 189, g: 189, b: 189}
         hex: "#BDBDBD"
