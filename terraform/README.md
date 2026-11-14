@@ -1,5 +1,11 @@
 # Provisioning Infrastructure with Terraform
 
+## Regarding Terraform
+
+This document contains historical information about configuring AWS infrastructure
+with Terraform. This supported the historical staging environment, which is no
+longer active. This documentation has been retained as reference material.
+
 ## Cloud Providers
 
 OpenDuelyst has components in both Google Cloud (Firebase Realtime Database)

@@ -37,8 +37,6 @@ directories commonly used when working on the game:
 	building the code
 - `package.json` contains our Node.js dependencies
 - `server` contains code for the HTTP API server and the WebSocket game servers
-- `terraform` contains code for provisioning staging and production
-	environments
 - `test` contains unit and integration tests
 - `worker` contains code for the worker, which processes asynchronous
 	background jobs

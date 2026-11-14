@@ -38,15 +38,16 @@ The script will first build the base Node.js image used by all services, and
 will then build per-service images on top of it. If the builds succeed, the
 resulting images will then be uploaded to AWS ECR using the AWS CLI. Each image
 will be uploaded into its own public ECR "repository" inside the provided ECR
-"registry" (which is unique per AWS account). These repository values match
-those used in our Terraform configuration.
+"registry" (which is unique per AWS account).
 
 ## Step 2: Deploy Backend Services
+This example uses AWS ECS and Terraform, but this workflow could be adapted to
+any containerized compute platform, such as Kubernetes, if desired.
 
 This step requires ECS and EC2 permissions in AWS, but would not require any
 permissions if automated.
 
-The deployed version of each backend service is currently managed in Terraform
+The deployed version of each backend service is currently codified in Terraform
 [here](../terraform/staging/ecs.tf). Update the `deployed_version` attributes
 for the backend services, and then run `terraform apply` to create new task
 definitions and initiate deployments.

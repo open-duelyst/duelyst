@@ -1,20 +1,6 @@
 ## Summary
 
-Describe your changes here. Remove any inapplicable sections.
-
-**App changes (`app/`, etc.):**
-
-- ...
-
-**Server changes (`config/`, `server/`, `worker/`, etc.):**
-
-- ...
-
-**Build changes (`docker/`, `gulp/`, `scripts/`, etc.):**
-
-- ...
-
-**Infrastructure changes (`.github/`, `terraform/`, etc.):**
+Describe your changes here.
 
 - ...
 
